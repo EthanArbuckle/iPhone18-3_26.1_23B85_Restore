@@ -1,0 +1,14 @@
+@interface ProvisioningPerformVerificationFlowSection.PerformVerificationMethodSetFlowItem
+- (_TtCC9PassKitUI42ProvisioningPerformVerificationFlowSectionP33_1C14A3D2168F27576646641497AEDFBF36PerformVerificationMethodSetFlowItem)init;
+@end
+
+@implementation ProvisioningPerformVerificationFlowSection.PerformVerificationMethodSetFlowItem
+
+- (_TtCC9PassKitUI42ProvisioningPerformVerificationFlowSectionP33_1C14A3D2168F27576646641497AEDFBF36PerformVerificationMethodSetFlowItem)init
+{
+  result = _swift_stdlib_reportUnimplementedInitializer();
+  __break(1u);
+  return result;
+}
+
+@end

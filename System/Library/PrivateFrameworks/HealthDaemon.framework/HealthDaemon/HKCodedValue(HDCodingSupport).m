@@ -1,0 +1,125 @@
+@interface HKCodedValue(HDCodingSupport)
++ (id)createWithCodable:()HDCodingSupport;
+- (HDCodableCodedValue)codableRepresentationForSync;
+@end
+
+@implementation HKCodedValue(HDCodingSupport)
+
++ (id)createWithCodable:()HDCodingSupport
+{
+  v28 = *MEMORY[0x277D85DE8];
+  v3 = a3;
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    v4 = v3;
+    v5 = MEMORY[0x277CCD5C0];
+    v6 = [v4 codings];
+    v7 = [(HKMedicalCoding *)v5 _medicalCodingsWithCodable:v6];
+
+    if (v7)
+    {
+      v8 = MEMORY[0x277CCD550];
+      v9 = [v4 value];
+      v10 = [v8 createWithCodable:v9];
+
+      if (v10)
+      {
+        v11 = [v4 referenceRanges];
+
+        if (v11)
+        {
+          v22 = v10;
+          v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
+          v23 = 0u;
+          v24 = 0u;
+          v25 = 0u;
+          v26 = 0u;
+          v12 = [v4 referenceRanges];
+          v13 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+          if (v13)
+          {
+            v14 = v13;
+            v15 = *v24;
+            while (2)
+            {
+              for (i = 0; i != v14; ++i)
+              {
+                if (*v24 != v15)
+                {
+                  objc_enumerationMutation(v12);
+                }
+
+                v17 = [MEMORY[0x277CCD890] createWithCodable:*(*(&v23 + 1) + 8 * i)];
+                if (!v17)
+                {
+
+                  v19 = 0;
+                  v10 = v22;
+                  goto LABEL_19;
+                }
+
+                v18 = v17;
+                [v11 addObject:v17];
+              }
+
+              v14 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+              if (v14)
+              {
+                continue;
+              }
+
+              break;
+            }
+          }
+
+          v10 = v22;
+        }
+
+        v19 = [MEMORY[0x277CCD1A0] codedValueWithCodings:v7 value:v10 referenceRanges:v11];
+LABEL_19:
+      }
+
+      else
+      {
+        v19 = 0;
+      }
+    }
+
+    else
+    {
+      v19 = 0;
+    }
+  }
+
+  else
+  {
+    v19 = 0;
+  }
+
+  v20 = *MEMORY[0x277D85DE8];
+
+  return v19;
+}
+
+- (HDCodableCodedValue)codableRepresentationForSync
+{
+  v2 = objc_alloc_init(HDCodableCodedValue);
+  v3 = MEMORY[0x277CCD5C0];
+  v4 = [a1 codings];
+  v5 = [(HKMedicalCoding *)v3 _codeableRepresentationForMedicalCodings:v4];
+  [(HDCodableCodedValue *)v2 setCodings:v5];
+
+  v6 = [a1 value];
+  v7 = [v6 codableRepresentationForSync];
+  [(HDCodableCodedValue *)v2 setValue:v7];
+
+  v8 = [a1 referenceRanges];
+  v9 = [v8 hk_map:&__block_literal_global_495];
+  v10 = [v9 mutableCopy];
+  [(HDCodableCodedValue *)v2 setReferenceRanges:v10];
+
+  return v2;
+}
+
+@end

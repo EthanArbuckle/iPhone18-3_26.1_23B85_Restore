@@ -1,0 +1,930 @@
+@interface IMCustomSlider
+- (BOOL)_controlScrubbing;
+- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (CGPoint)offset;
+- (CGPoint)tapPosition;
+- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5;
+- (IMCustomSlider)initWithCoder:(id)a3;
+- (IMCustomSlider)initWithFrame:(CGRect)a3;
+- (IMCustomSliderDelegate)delegate;
+- (UIEdgeInsets)touchInsets;
+- (float)_scaleForIdealValueForVerticalPosition:(double)a3;
+- (float)_scaleForVerticalPosition:(double)a3;
+- (id)_imageForKey:(id)a3 forState:(unint64_t)a4;
+- (void)_setImage:(id)a3 key:(id)a4 forState:(unint64_t)a5;
+- (void)_sliderFluidInteractionWillBegin:(id)a3 withLocation:(CGPoint)a4;
+- (void)_sliderFluidInteractionWillContinue:(id)a3 withLocation:(CGPoint)a4;
+- (void)_sliderFluidInteractionWillEnd:(id)a3;
+- (void)cancelTrackingWithEvent:(id)a3;
+- (void)dealloc;
+- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)layoutSubviews;
+- (void)setThumb:(id)a3;
+- (void)setTrackBreadcrumbImage:(id)a3 forState:(unint64_t)a4;
+- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
+- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)updateFactor:(double)a3;
+@end
+
+@implementation IMCustomSlider
+
+- (IMCustomSlider)initWithCoder:(id)a3
+{
+  v4.receiver = self;
+  v4.super_class = IMCustomSlider;
+  result = [(IMCustomSlider *)&v4 initWithCoder:a3];
+  if (result)
+  {
+    result->_fineScrubbingVerticalRange = 220.0;
+  }
+
+  return result;
+}
+
+- (IMCustomSlider)initWithFrame:(CGRect)a3
+{
+  v7.receiver = self;
+  v7.super_class = IMCustomSlider;
+  v3 = [(IMCustomSlider *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = v3;
+  if (v3)
+  {
+    v3->_fineScrubbingVerticalRange = 220.0;
+    v3->_tapToPosition = 0;
+    v3->_trackingTapPosition = 0;
+    if (_UISolariumEnabled())
+    {
+      v5 = objc_opt_new();
+      [v5 setExpansionFactor:1.0];
+      [v5 setDelegate:v4];
+      [v5 setStretchLimit:0.0];
+      [(IMCustomSlider *)v4 _setSliderStyle:110];
+      [(IMCustomSlider *)v4 _setSliderConfiguration:v5];
+    }
+  }
+
+  return v4;
+}
+
+- (void)dealloc
+{
+  objc_storeWeak(&self->_delegate, 0);
+  thumb = self->_thumb;
+  self->_thumb = 0;
+
+  perStateContent = self->_perStateContent;
+  self->_perStateContent = 0;
+
+  [(CALayer *)self->_breadcrumbLayer removeFromSuperlayer];
+  v5.receiver = self;
+  v5.super_class = IMCustomSlider;
+  [(IMCustomSlider *)&v5 dealloc];
+}
+
+- (void)_sliderFluidInteractionWillBegin:(id)a3 withLocation:(CGPoint)a4
+{
+  if (self->_tapToPosition)
+  {
+    self->_trackingTapPosition = 1;
+    self->_tapPosition = a4;
+  }
+}
+
+- (void)_sliderFluidInteractionWillContinue:(id)a3 withLocation:(CGPoint)a4
+{
+  if (vabdd_f64(self->_tapPosition.x, a4.x) >= 0.00999999978 || vabdd_f64(self->_tapPosition.y, a4.y) >= 0.00999999978)
+  {
+    self->_trackingTapPosition = 0;
+  }
+}
+
+- (void)_sliderFluidInteractionWillEnd:(id)a3
+{
+  v4 = a3;
+  if (self->_tapToPosition && self->_trackingTapPosition)
+  {
+    v10 = v4;
+    v5 = [UIView userInterfaceLayoutDirectionForSemanticContentAttribute:[(IMCustomSlider *)self semanticContentAttribute]]== &dword_0 + 1;
+    [(IMCustomSlider *)self minimumValue];
+    v7 = v6;
+    [(IMCustomSlider *)self maximumValue];
+    *&v9 = sub_17EF44(self, v5, self->_tapPosition.x, self->_tapPosition.y, v7, v8);
+    [(IMCustomSlider *)self setValue:0 animated:v9];
+    [(IMCustomSlider *)self sendActionsForControlEvents:4096];
+    v4 = v10;
+  }
+
+  self->_trackingTapPosition = 0;
+}
+
+- (void)layoutSubviews
+{
+  v36.receiver = self;
+  v36.super_class = IMCustomSlider;
+  [(IMCustomSlider *)&v36 layoutSubviews];
+  v3 = [(IMCustomSlider *)self breadcrumbLayer];
+  if (v3)
+  {
+    [(IMCustomSlider *)self bounds];
+    v5 = v4;
+    v7 = v6;
+    v9 = v8;
+    v11 = v10;
+    [(IMCustomSlider *)self trackRectForBounds:?];
+    v13 = v12;
+    v15 = v14;
+    v17 = v16;
+    v19 = v18;
+    [(IMCustomSlider *)self value];
+    LODWORD(v34) = v20;
+    v35 = v15;
+    [(IMCustomSlider *)self thumbRectForBounds:v5 trackRect:v7 value:v9, v11, v13, v15, v17, v19, v34];
+    v22 = v21;
+    v24 = v23;
+    v26 = v25;
+    v28 = v27;
+    [(IMCustomSlider *)self breadcrumbValue];
+    v30 = v13 + v29 * v17;
+    v37.origin.x = v22;
+    v37.origin.y = v24;
+    v37.size.width = v26;
+    v37.size.height = v28;
+    if (v30 >= CGRectGetMinX(v37))
+    {
+      v39.origin.x = v22;
+      v39.origin.y = v24;
+      v39.size.width = v26;
+      v39.size.height = v28;
+      MaxX = CGRectGetMaxX(v39);
+      v40.origin.x = v22;
+      v40.origin.y = v24;
+      v40.size.width = v26;
+      v40.size.height = v28;
+      v31 = v30 - CGRectGetMaxX(v40);
+      v30 = MaxX;
+    }
+
+    else
+    {
+      v38.origin.x = v22;
+      v38.origin.y = v24;
+      v38.size.width = v26;
+      v38.size.height = v28;
+      v31 = CGRectGetMinX(v38) - v30;
+    }
+
+    v33 = fmax(v31, 0.0);
+    +[CATransaction begin];
+    [CATransaction setDisableActions:1];
+    [v3 setFrame:{v30, v35, v33, v19}];
+    +[CATransaction commit];
+  }
+}
+
+- (void)setThumb:(id)a3
+{
+  v5 = a3;
+  if (self->_thumb != v5)
+  {
+    v6 = v5;
+    objc_storeStrong(&self->_thumb, a3);
+    [(IMCustomSlider *)self setThumbImage:v6 forState:0];
+    v5 = [(IMCustomSlider *)self setThumbImage:v6 forState:1];
+  }
+
+  _objc_release_x2(v5);
+}
+
+- (void)setTrackBreadcrumbImage:(id)a3 forState:(unint64_t)a4
+{
+  [(IMCustomSlider *)self _setImage:a3 key:@"breadcrumbImage" forState:a4];
+  v8 = [(IMCustomSlider *)self trackBreadcrumbImageForState:[(IMCustomSlider *)self state]];
+  v5 = v8;
+  v6 = [v8 CGImage];
+  v7 = [(IMCustomSlider *)self breadcrumbLayer];
+  [v7 setContents:v6];
+}
+
+- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5
+{
+  height = a4.size.height;
+  width = a4.size.width;
+  v27.receiver = self;
+  v27.super_class = IMCustomSlider;
+  [(IMCustomSlider *)&v27 thumbRectForBounds:a3.origin.x trackRect:a3.origin.y value:a3.size.width, a3.size.height, a4.origin.x, a4.origin.y, LODWORD(a5)];
+  x = v8;
+  v11 = v10;
+  v13 = v12;
+  v15 = v14;
+  if (_UISolariumEnabled() && [(IMCustomSlider *)self _sliderStyle]== &stru_68.sectname[6])
+  {
+    x = width * a5;
+    v16 = height * 0.5;
+    v13 = 1.0;
+    v15 = 1.0;
+  }
+
+  else
+  {
+    p_offset = &self->_offset;
+    if (self->_offset.x != 0.0)
+    {
+      [(IMCustomSlider *)self maximumValue];
+      v19 = v18 * 0.5;
+      if ((v18 * 0.5) == 0.0)
+      {
+        x = p_offset->x;
+      }
+
+      else
+      {
+        v20 = v19;
+        v21 = a5;
+        v22 = p_offset->x;
+        if (v19 >= a5)
+        {
+          x = x - v22 * (1.0 - v21 / v20);
+        }
+
+        else
+        {
+          x = x + (v21 - v20) * v22 / v20;
+        }
+      }
+    }
+
+    v16 = v11 + self->_offset.y;
+  }
+
+  v23 = x;
+  v24 = v13;
+  v25 = v15;
+  result.size.height = v25;
+  result.size.width = v24;
+  result.origin.y = v16;
+  result.origin.x = v23;
+  return result;
+}
+
+- (float)_scaleForIdealValueForVerticalPosition:(double)a3
+{
+  v5 = [(IMCustomSlider *)self fineScrubbing];
+  LODWORD(v6) = 1.0;
+  if (v5)
+  {
+    [(IMCustomSlider *)self fineScrubbingVerticalRange];
+    v8 = vabdd_f64(a3, self->_beginLocation.y);
+    if (v7 >= v8)
+    {
+      v7 = v8;
+    }
+
+    v9 = fmax(v7, 20.0) + -20.0;
+    v10 = v9;
+    [(IMCustomSlider *)self fineScrubbingVerticalRange];
+    v12 = v10 / (v11 + -20.0);
+    if (v12 <= 0.15)
+    {
+      v12 = v12 / 0.15;
+      v13 = 0.33333;
+    }
+
+    else
+    {
+      v13 = 0.025;
+    }
+
+    v14 = 1.0 - fmaxf(powf(v12, v13), 0.0);
+    if (v14 > 1.0)
+    {
+      v14 = 1.0;
+    }
+
+    *&v6 = fmaxf(v14, 0.0);
+  }
+
+  return *&v6;
+}
+
+- (float)_scaleForVerticalPosition:(double)a3
+{
+  v5 = [(IMCustomSlider *)self fineScrubbing];
+  result = 1.0;
+  if (v5)
+  {
+    if (isPad())
+    {
+      v7 = 20.0;
+    }
+
+    else
+    {
+      v7 = 0.0;
+    }
+
+    [(IMCustomSlider *)self fineScrubbingVerticalRange];
+    v9 = vabdd_f64(a3, self->_beginLocation.y);
+    if (v8 >= v9)
+    {
+      v8 = v9;
+    }
+
+    if (v7 >= v8)
+    {
+      v10 = v7;
+    }
+
+    else
+    {
+      v10 = v8;
+    }
+
+    if (isPad())
+    {
+      v11 = 20.0;
+    }
+
+    else
+    {
+      v11 = 0.0;
+    }
+
+    v12 = v10 - v11;
+    v13 = v12;
+    [(IMCustomSlider *)self fineScrubbingVerticalRange];
+    v15 = v14;
+    if (isPad())
+    {
+      v16 = 20.0;
+    }
+
+    else
+    {
+      v16 = 0.0;
+    }
+
+    v17 = v13 / (v15 - v16);
+    result = 1.0 - v17;
+    if (result < 0.09)
+    {
+      return 0.09;
+    }
+  }
+
+  return result;
+}
+
+- (void)updateFactor:(double)a3
+{
+  self->_factor = a3;
+  *&a3 = a3;
+  [(IMCustomSlider *)self _setSliderSpeedMultiplier:a3];
+  factor = self->_factor;
+  if (factor <= 0.1)
+  {
+    v5 = 3;
+  }
+
+  else if (factor > 0.35 || factor <= 0.1)
+  {
+    v5 = factor > 0.35 && factor <= 0.75;
+  }
+
+  else
+  {
+    v5 = 2;
+  }
+
+  if (v5 != self->_speed)
+  {
+    self->_speed = v5;
+    v6 = [(IMCustomSlider *)self delegate];
+    if (objc_opt_respondsToSelector())
+    {
+      [v6 fineScrubSpeedChanged:self];
+    }
+  }
+}
+
+- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+{
+  y = a3.y;
+  x = a3.x;
+  [(IMCustomSlider *)self bounds];
+  top = self->_touchInsets.top;
+  left = self->_touchInsets.left;
+  v10 = v9 + left;
+  v12 = v11 + top;
+  v14 = v13 - (left + self->_touchInsets.right);
+  v16 = v15 - (top + self->_touchInsets.bottom);
+  v17 = x;
+  v18 = y;
+
+  return CGRectContainsPoint(*&v10, *&v17);
+}
+
+- (void)touchesMoved:(id)a3 withEvent:(id)a4
+{
+  v6 = a3;
+  v25.receiver = self;
+  v25.super_class = IMCustomSlider;
+  [(IMCustomSlider *)&v25 touchesMoved:v6 withEvent:a4];
+  if (_UISolariumEnabled())
+  {
+    v7 = [(IMCustomSlider *)self trackingTouches];
+    v8 = [v6 anyObject];
+    [(IMCustomSlider *)self setTrackingTouches:1];
+    if (v7)
+    {
+      if (v8)
+      {
+        [v8 locationInView:self];
+        v10 = v9;
+        v12 = v11;
+        [(IMCustomSlider *)self _scaleForVerticalPosition:v11];
+        [(IMCustomSlider *)self updateFactor:v13];
+        self->_previousLocation.x = v10;
+        self->_previousLocation.y = v12;
+      }
+    }
+
+    else
+    {
+      v14 = [(IMCustomSlider *)self trackBreadcrumbImageForState:[(IMCustomSlider *)self state]];
+      if (v14)
+      {
+        [(IMCustomSlider *)self value];
+        [(IMCustomSlider *)self setBreadcrumbValue:?];
+        v15 = +[CALayer layer];
+        [v15 setContents:{objc_msgSend(v14, "CGImage")}];
+        v16 = [(IMCustomSlider *)self layer];
+        [v16 addSublayer:v15];
+
+        [(IMCustomSlider *)self setBreadcrumbLayer:v15];
+      }
+
+      v17 = [(IMCustomSlider *)self highlightedThumb];
+
+      if (v17)
+      {
+        v18 = [(IMCustomSlider *)self highlightedThumb];
+        [(IMCustomSlider *)self setThumbImage:v18 forState:0];
+
+        v19 = [(IMCustomSlider *)self highlightedThumb];
+        [(IMCustomSlider *)self setThumbImage:v19 forState:1];
+      }
+
+      if ([(IMCustomSlider *)self _controlScrubbing]&& v8)
+      {
+        [v8 locationInView:self];
+        self->_previousLocation.x = v20;
+        self->_previousLocation.y = v21;
+        self->_beginLocation = self->_previousLocation;
+        [(IMCustomSlider *)self updateFactor:1.0];
+      }
+
+      v22 = [(IMCustomSlider *)self delegate];
+      v23 = objc_opt_respondsToSelector();
+
+      if (v23)
+      {
+        v24 = [(IMCustomSlider *)self delegate];
+        [v24 beginTracking:self];
+      }
+    }
+  }
+}
+
+- (void)touchesEnded:(id)a3 withEvent:(id)a4
+{
+  v6 = a3;
+  v18.receiver = self;
+  v18.super_class = IMCustomSlider;
+  [(IMCustomSlider *)&v18 touchesEnded:v6 withEvent:a4];
+  if (_UISolariumEnabled())
+  {
+    v7 = [v6 anyObject];
+    if (v7)
+    {
+      if (![(IMCustomSlider *)self trackingTouches])
+      {
+        v8 = [(IMCustomSlider *)self delegate];
+        v9 = objc_opt_respondsToSelector();
+
+        if (v9)
+        {
+          v10 = [(IMCustomSlider *)self delegate];
+          [v7 locationInView:self];
+          [v10 tapped:self atLocation:?];
+        }
+      }
+    }
+
+    v11 = [(IMCustomSlider *)self highlightedThumb];
+
+    if (v11)
+    {
+      v12 = [(IMCustomSlider *)self thumb];
+      [(IMCustomSlider *)self setThumbImage:v12 forState:0];
+
+      v13 = [(IMCustomSlider *)self thumb];
+      [(IMCustomSlider *)self setThumbImage:v13 forState:1];
+    }
+
+    if ([(IMCustomSlider *)self trackingTouches])
+    {
+      v14 = [(IMCustomSlider *)self delegate];
+      v15 = objc_opt_respondsToSelector();
+
+      if (v15)
+      {
+        v16 = [(IMCustomSlider *)self delegate];
+        [v16 endTracking:self];
+      }
+    }
+
+    v17 = [(IMCustomSlider *)self breadcrumbLayer];
+    [v17 removeFromSuperlayer];
+
+    [(IMCustomSlider *)self setBreadcrumbLayer:0];
+    [(IMCustomSlider *)self setTrackingTouches:0];
+  }
+}
+
+- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+{
+  v12.receiver = self;
+  v12.super_class = IMCustomSlider;
+  [(IMCustomSlider *)&v12 touchesCancelled:a3 withEvent:a4];
+  if (_UISolariumEnabled())
+  {
+    v5 = [(IMCustomSlider *)self breadcrumbLayer];
+    [v5 removeFromSuperlayer];
+
+    [(IMCustomSlider *)self setBreadcrumbLayer:0];
+    v6 = [(IMCustomSlider *)self highlightedThumb];
+
+    if (v6)
+    {
+      v7 = [(IMCustomSlider *)self thumb];
+      [(IMCustomSlider *)self setThumbImage:v7 forState:0];
+
+      v8 = [(IMCustomSlider *)self thumb];
+      [(IMCustomSlider *)self setThumbImage:v8 forState:1];
+    }
+
+    if ([(IMCustomSlider *)self trackingTouches])
+    {
+      v9 = [(IMCustomSlider *)self delegate];
+      v10 = objc_opt_respondsToSelector();
+
+      if (v10)
+      {
+        v11 = [(IMCustomSlider *)self delegate];
+        [v11 endTracking:self];
+      }
+    }
+
+    [(IMCustomSlider *)self setTrackingTouches:0];
+  }
+}
+
+- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+{
+  v6 = a3;
+  v19.receiver = self;
+  v19.super_class = IMCustomSlider;
+  v7 = [(IMCustomSlider *)&v19 beginTrackingWithTouch:v6 withEvent:a4];
+  if ((_UISolariumEnabled() & 1) == 0)
+  {
+    v8 = [(IMCustomSlider *)self delegate];
+    if (v7)
+    {
+      v9 = [(IMCustomSlider *)self trackBreadcrumbImageForState:[(IMCustomSlider *)self state]];
+      if (v9)
+      {
+        [(IMCustomSlider *)self value];
+        [(IMCustomSlider *)self setBreadcrumbValue:?];
+        v10 = +[CALayer layer];
+        [v10 setContents:{objc_msgSend(v9, "CGImage")}];
+        v11 = [(IMCustomSlider *)self layer];
+        [v11 addSublayer:v10];
+
+        [(IMCustomSlider *)self setBreadcrumbLayer:v10];
+      }
+    }
+
+    else if (objc_opt_respondsToSelector())
+    {
+      [v6 locationInView:self];
+      [v8 tapped:self atLocation:?];
+    }
+
+    v12 = [(IMCustomSlider *)self highlightedThumb];
+    v13 = v12 != 0 && v7;
+
+    if (v13 == 1)
+    {
+      v14 = [(IMCustomSlider *)self highlightedThumb];
+      [(IMCustomSlider *)self setThumbImage:v14 forState:0];
+
+      v15 = [(IMCustomSlider *)self highlightedThumb];
+      [(IMCustomSlider *)self setThumbImage:v15 forState:1];
+    }
+
+    if (v7)
+    {
+      if ([(IMCustomSlider *)self _controlScrubbing])
+      {
+        [v6 locationInView:self];
+        self->_previousLocation.x = v16;
+        self->_previousLocation.y = v17;
+        self->_beginLocation = self->_previousLocation;
+        [(IMCustomSlider *)self updateFactor:1.0];
+      }
+
+      if (objc_opt_respondsToSelector())
+      {
+        [v8 beginTracking:self];
+      }
+    }
+  }
+
+  return v7;
+}
+
+- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  if ([(IMCustomSlider *)self _controlScrubbing]&& !_UISolariumEnabled())
+  {
+    if ([(IMCustomSlider *)self isTracking])
+    {
+      [v6 locationInView:self];
+      v10 = v9;
+      v12 = v11;
+      [(IMCustomSlider *)self _scaleForVerticalPosition:v11];
+      v14 = v13;
+      [(IMCustomSlider *)self updateFactor:v13];
+      v15 = [UIView userInterfaceLayoutDirectionForSemanticContentAttribute:[(IMCustomSlider *)self semanticContentAttribute]];
+      v16 = v10 - self->_previousLocation.x;
+      [(IMCustomSlider *)self maximumValue];
+      v18 = v17;
+      [(IMCustomSlider *)self minimumValue];
+      v20 = (v18 - v19);
+      [(IMCustomSlider *)self bounds];
+      [(IMCustomSlider *)self trackRectForBounds:?];
+      v21 = v16 * (v20 / CGRectGetWidth(v43));
+      if (v15 == UIUserInterfaceLayoutDirectionRightToLeft)
+      {
+        v22 = -v21;
+      }
+
+      else
+      {
+        v22 = v21;
+      }
+
+      [(IMCustomSlider *)self value];
+      v24 = v23;
+      v25 = v23 + v22 * v14;
+      y = self->_previousLocation.y;
+      v27 = v12 - y;
+      v28 = v12 - y < 0.0;
+      v29 = v12 > y;
+      v30 = -(v12 - y);
+      if (v29 && v28)
+      {
+        v12 = -v12;
+      }
+
+      else
+      {
+        v30 = v27;
+      }
+
+      if (v30 > 0.0)
+      {
+        [(IMCustomSlider *)self minimumValue];
+        v32 = v31;
+        [(IMCustomSlider *)self maximumValue];
+        v34 = sub_17EF44(self, v15 == UIUserInterfaceLayoutDirectionRightToLeft, v10, v12, v32, v33) - v24;
+        [(IMCustomSlider *)self _scaleForIdealValueForVerticalPosition:v12];
+        v25 = v25 + (v34 * v35);
+      }
+
+      [(IMCustomSlider *)self minimumValue];
+      v37 = v36;
+      [(IMCustomSlider *)self maximumValue];
+      v39 = v38;
+      if (v25 <= v39)
+      {
+        v39 = v25;
+      }
+
+      if (v39 <= v37)
+      {
+        *&v39 = v37;
+      }
+
+      else
+      {
+        *&v39 = v39;
+      }
+
+      [(IMCustomSlider *)self setValue:0 animated:v39];
+      [(IMCustomSlider *)self sendActionsForControlEvents:4096];
+      self->_previousLocation.x = v10;
+      self->_previousLocation.y = v12;
+    }
+
+    v8 = [(IMCustomSlider *)self isTracking];
+  }
+
+  else
+  {
+    v42.receiver = self;
+    v42.super_class = IMCustomSlider;
+    v8 = [(IMCustomSlider *)&v42 continueTrackingWithTouch:v6 withEvent:v7];
+  }
+
+  v40 = v8;
+
+  return v40;
+}
+
+- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  if (_UISolariumEnabled())
+  {
+    v14.receiver = self;
+    v14.super_class = IMCustomSlider;
+    [(IMCustomSlider *)&v14 endTrackingWithTouch:v6 withEvent:v7];
+  }
+
+  else
+  {
+    v8 = [(IMCustomSlider *)self highlightedThumb];
+
+    if (v8)
+    {
+      v9 = [(IMCustomSlider *)self thumb];
+      [(IMCustomSlider *)self setThumbImage:v9 forState:0];
+
+      v10 = [(IMCustomSlider *)self thumb];
+      [(IMCustomSlider *)self setThumbImage:v10 forState:1];
+    }
+
+    v11 = [(IMCustomSlider *)self delegate];
+    if ([(IMCustomSlider *)self isTracking]&& (objc_opt_respondsToSelector() & 1) != 0)
+    {
+      [v11 endTracking:self];
+    }
+
+    v12 = [(IMCustomSlider *)self breadcrumbLayer];
+    [v12 removeFromSuperlayer];
+
+    [(IMCustomSlider *)self setBreadcrumbLayer:0];
+    if (![(IMCustomSlider *)self _controlScrubbing])
+    {
+      v13.receiver = self;
+      v13.super_class = IMCustomSlider;
+      [(IMCustomSlider *)&v13 endTrackingWithTouch:v6 withEvent:v7];
+    }
+  }
+}
+
+- (void)cancelTrackingWithEvent:(id)a3
+{
+  v4 = a3;
+  if (_UISolariumEnabled())
+  {
+    v9.receiver = self;
+    v9.super_class = IMCustomSlider;
+    [(IMCustomSlider *)&v9 cancelTrackingWithEvent:v4];
+  }
+
+  else
+  {
+    v5 = [(IMCustomSlider *)self breadcrumbLayer];
+    [v5 removeFromSuperlayer];
+
+    [(IMCustomSlider *)self setBreadcrumbLayer:0];
+    v6 = [(IMCustomSlider *)self highlightedThumb];
+
+    if (v6)
+    {
+      v7 = [(IMCustomSlider *)self thumb];
+      [(IMCustomSlider *)self setThumbImage:v7 forState:0];
+
+      v8 = [(IMCustomSlider *)self thumb];
+      [(IMCustomSlider *)self setThumbImage:v8 forState:1];
+    }
+  }
+}
+
+- (id)_imageForKey:(id)a3 forState:(unint64_t)a4
+{
+  v6 = a3;
+  v7 = [(IMCustomSlider *)self perStateContent];
+  v8 = [NSNumber numberWithUnsignedInteger:a4];
+  v9 = [v7 objectForKeyedSubscript:v8];
+  v10 = [v9 objectForKeyedSubscript:v6];
+  v11 = v10;
+  if (v10)
+  {
+    v12 = v10;
+  }
+
+  else
+  {
+    v13 = [(IMCustomSlider *)self perStateContent];
+    v14 = [v13 objectForKeyedSubscript:&off_2E6AB8];
+    v12 = [v14 objectForKeyedSubscript:v6];
+  }
+
+  return v12;
+}
+
+- (void)_setImage:(id)a3 key:(id)a4 forState:(unint64_t)a5
+{
+  v16 = a3;
+  v8 = a4;
+  v9 = [(IMCustomSlider *)self perStateContent];
+
+  if (!v9)
+  {
+    v10 = +[NSMutableDictionary dictionary];
+    [(IMCustomSlider *)self setPerStateContent:v10];
+  }
+
+  v11 = [(IMCustomSlider *)self perStateContent];
+  v12 = [NSNumber numberWithUnsignedInteger:a5];
+  v13 = [v11 objectForKeyedSubscript:v12];
+
+  if (!v13)
+  {
+    v13 = +[NSMutableDictionary dictionary];
+    v14 = [(IMCustomSlider *)self perStateContent];
+    v15 = [NSNumber numberWithUnsignedInteger:a5];
+    [v14 setObject:v13 forKeyedSubscript:v15];
+  }
+
+  [v13 setObject:v16 forKeyedSubscript:v8];
+}
+
+- (BOOL)_controlScrubbing
+{
+  if ([(IMCustomSlider *)self fineScrubbing])
+  {
+    return 1;
+  }
+
+  return [(IMCustomSlider *)self scrubToPointingDevice];
+}
+
+- (CGPoint)offset
+{
+  x = self->_offset.x;
+  y = self->_offset.y;
+  result.y = y;
+  result.x = x;
+  return result;
+}
+
+- (IMCustomSliderDelegate)delegate
+{
+  WeakRetained = objc_loadWeakRetained(&self->_delegate);
+
+  return WeakRetained;
+}
+
+- (UIEdgeInsets)touchInsets
+{
+  top = self->_touchInsets.top;
+  left = self->_touchInsets.left;
+  bottom = self->_touchInsets.bottom;
+  right = self->_touchInsets.right;
+  result.right = right;
+  result.bottom = bottom;
+  result.left = left;
+  result.top = top;
+  return result;
+}
+
+- (CGPoint)tapPosition
+{
+  x = self->_tapPosition.x;
+  y = self->_tapPosition.y;
+  result.y = y;
+  result.x = x;
+  return result;
+}
+
+@end

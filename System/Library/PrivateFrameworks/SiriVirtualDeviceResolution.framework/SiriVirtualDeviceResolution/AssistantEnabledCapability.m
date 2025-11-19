@@ -1,0 +1,60 @@
+@interface AssistantEnabledCapability
++ (id)capabilityDescriptionMatchingSupportStatus:(int64_t)a3;
+- (BOOL)matchesWithDescriptions:(id)a3;
+- (NSString)key;
+- (int64_t)supportsAssistantEnabled;
+- (void)encodeWithCoder:(id)a3;
+- (void)setKey:(id)a3;
+@end
+
+@implementation AssistantEnabledCapability
+
+- (NSString)key
+{
+  sub_2698FA308();
+  v2 = sub_2699038FC();
+
+  return v2;
+}
+
+- (void)setKey:(id)a3
+{
+  v4 = sub_26990390C();
+  v6 = v5;
+  v7 = self;
+  sub_2698FA3D0(v4, v6);
+}
+
+- (int64_t)supportsAssistantEnabled
+{
+  v2 = self;
+  v3 = sub_2698FA6B8();
+
+  return v3;
+}
+
++ (id)capabilityDescriptionMatchingSupportStatus:(int64_t)a3
+{
+  v3 = sub_2698FA75C(a3);
+
+  return v3;
+}
+
+- (BOOL)matchesWithDescriptions:(id)a3
+{
+  type metadata accessor for CapabilityDescription();
+  v4 = sub_269903A0C();
+  v5 = self;
+  v6 = sub_2698FA7D4(v4);
+
+  return v6 & 1;
+}
+
+- (void)encodeWithCoder:(id)a3
+{
+  v4 = a3;
+  v5 = self;
+  sub_2698FAB94(v4);
+}
+
+@end

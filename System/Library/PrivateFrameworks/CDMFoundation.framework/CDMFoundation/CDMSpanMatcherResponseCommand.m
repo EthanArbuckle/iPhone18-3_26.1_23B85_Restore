@@ -1,0 +1,38 @@
+@interface CDMSpanMatcherResponseCommand
+- (CDMSpanMatcherResponseCommand)initWithResponse:(id)a3;
+- (id)description;
+@end
+
+@implementation CDMSpanMatcherResponseCommand
+
+- (id)description
+{
+  if (self->_spanMatchResponse)
+  {
+    v3 = [MEMORY[0x1E69D1438] printableSpanMatchResponse:?];
+  }
+
+  else
+  {
+    v3 = @"nil";
+  }
+
+  return v3;
+}
+
+- (CDMSpanMatcherResponseCommand)initWithResponse:(id)a3
+{
+  v5 = a3;
+  v9.receiver = self;
+  v9.super_class = CDMSpanMatcherResponseCommand;
+  v6 = [(CDMBaseCommand *)&v9 init];
+  v7 = v6;
+  if (v6)
+  {
+    objc_storeStrong(&v6->_spanMatchResponse, a3);
+  }
+
+  return v7;
+}
+
+@end

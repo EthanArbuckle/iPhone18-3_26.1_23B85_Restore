@@ -1,0 +1,26 @@
+@interface BookmarkBadge
+- (_TtC23ShelfKitCollectionViews13BookmarkBadge)initWithCoder:(id)a3;
+- (void)primaryActionTriggered;
+@end
+
+@implementation BookmarkBadge
+
+- (_TtC23ShelfKitCollectionViews13BookmarkBadge)initWithCoder:(id)a3
+{
+  *(&self->super.super.super.super.super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews13BookmarkBadge_bookmarkButtonPresenter) = 0;
+  result = sub_30D648();
+  __break(1u);
+  return result;
+}
+
+- (void)primaryActionTriggered
+{
+  if (*(&self->super.super.super.super.super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews13BookmarkBadge_bookmarkButtonPresenter))
+  {
+    v2 = self;
+
+    sub_30A378();
+  }
+}
+
+@end

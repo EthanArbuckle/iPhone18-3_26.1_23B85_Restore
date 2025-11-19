@@ -1,0 +1,448 @@
+@interface SRDatastore
++ (void)initialize;
+- (BOOL)writeSampleBytes:(z_size_t)a3 length:(SRError *)a4 timestamp:(double)a5 error:;
+- (void)dealloc;
+- (void)initWithSampleFile:(void *)a3 metadataFile:(void *)a4 configurationFile:(uint64_t)a5 permission:(uint64_t)a6 defaults:(uint64_t)a7 writingStats:;
+- (void)syncMappedFiles;
+@end
+
+@implementation SRDatastore
+
++ (void)initialize
+{
+  if (objc_opt_class() == a1)
+  {
+    SRLogDatastore = os_log_create("com.apple.SensorKit", "Datastore");
+  }
+}
+
+- (void)initWithSampleFile:(void *)a3 metadataFile:(void *)a4 configurationFile:(uint64_t)a5 permission:(uint64_t)a6 defaults:(uint64_t)a7 writingStats:
+{
+  v45 = *MEMORY[0x277D85DE8];
+  if (!a1)
+  {
+    v14 = 0;
+    goto LABEL_38;
+  }
+
+  v38.receiver = a1;
+  v38.super_class = SRDatastore;
+  v13 = objc_msgSendSuper2(&v38, sel_init);
+  v14 = v13;
+  if (v13)
+  {
+    v13[1] = a5;
+    if (a6)
+    {
+      v15 = *(a6 + 16);
+      if (a7)
+      {
+        goto LABEL_5;
+      }
+    }
+
+    else
+    {
+      v15 = 0;
+      if (a7)
+      {
+LABEL_5:
+        v16 = *(a7 + 56);
+        v17 = *(a7 + 64);
+        if (v17)
+        {
+          if (a6)
+          {
+            v18 = *(a6 + 64);
+          }
+
+          else
+          {
+            v18 = 0.0;
+          }
+
+          v19 = *(a7 + 8);
+          if (v19)
+          {
+            v20 = *(a7 + 16) / v19;
+          }
+
+          else
+          {
+            v20 = NAN;
+          }
+
+          v21 = (exp2((v18 - v20) / v18) * v17);
+          if (a6)
+          {
+            v22 = *(a6 + 72);
+          }
+
+          else
+          {
+            v22 = 0.0;
+          }
+
+          v23 = v22 * v15;
+          if (v23 <= v21)
+          {
+            v15 = v21;
+          }
+
+          else
+          {
+            v15 = v23;
+          }
+        }
+      }
+    }
+
+    if (a2)
+    {
+      v24 = [-[NSFileHandle pathname](a2) lastPathComponent];
+    }
+
+    else
+    {
+      v24 = 0;
+    }
+
+    [v24 doubleValue];
+    [(SRWritingStats *)a7 updateSegmentCreationTime:v15 rateAdjustedSize:v25];
+    if (a7)
+    {
+      v26 = SRLogDatastore;
+      if (os_log_type_enabled(SRLogDatastore, OS_LOG_TYPE_INFO))
+      {
+        if (a6)
+        {
+          v27 = *(a6 + 64);
+          v28 = *(a6 + 16);
+        }
+
+        else
+        {
+          v28 = 0;
+          v27 = 0;
+        }
+
+        *buf = 138412802;
+        v40 = a7;
+        v41 = 2050;
+        v42 = v27;
+        v43 = 2048;
+        v44 = v28;
+        _os_log_impl(&dword_26561F000, v26, OS_LOG_TYPE_INFO, "Writing Stats: %@\nExpected segment lifetime: %{public}f\nDefault segment size: %lu", buf, 0x20u);
+      }
+    }
+
+    if (a6)
+    {
+      v29 = *(a6 + 44);
+    }
+
+    else
+    {
+      v29 = 0.0;
+    }
+
+    v30 = (v29 * v15) / NSPageSize();
+    if (a6)
+    {
+      v31 = *(a6 + 32);
+    }
+
+    else
+    {
+      v31 = 0;
+    }
+
+    if (v31 < v30)
+    {
+      v30 = v31;
+    }
+
+    if (v30 <= 1)
+    {
+      v32 = 1;
+    }
+
+    else
+    {
+      v32 = v30;
+    }
+
+    v33 = v32 * NSPageSize();
+    if (a6)
+    {
+      v14[2] = *(a6 + 32);
+      v34 = *(a6 + 40);
+      v35 = *(a6 + 24);
+    }
+
+    else
+    {
+      v35 = 0;
+      v14[2] = 0;
+      v34 = 0;
+    }
+
+    *(v14 + 6) = v34;
+    v14[4] = a6;
+    v14[5] = [[SRFrameStore alloc] initWithFileHandle:a2 maxSize:v33 permission:v14[1] defaults:a6];
+    if (a3)
+    {
+      v14[6] = [[SRFrameStore alloc] initWithFileHandle:a3 maxSize:v35 permission:v14[1] defaults:a6];
+    }
+
+    if (a4)
+    {
+      v14[7] = [[SRFrameStore alloc] initWithFileHandle:a4 maxSize:v35 permission:v14[1] defaults:a6];
+    }
+  }
+
+LABEL_38:
+  v36 = *MEMORY[0x277D85DE8];
+  return v14;
+}
+
+- (void)dealloc
+{
+  if (self)
+  {
+    objc_setProperty_atomic(self, a2, 0, 40);
+    objc_setProperty_atomic(self, v3, 0, 48);
+    objc_setProperty_atomic(self, v4, 0, 56);
+  }
+
+  self->_defaults = 0;
+  v5.receiver = self;
+  v5.super_class = SRDatastore;
+  [(SRDatastore *)&v5 dealloc];
+}
+
+- (BOOL)writeSampleBytes:(z_size_t)a3 length:(SRError *)a4 timestamp:(double)a5 error:
+{
+  v46 = *MEMORY[0x277D85DE8];
+  if (!result)
+  {
+    goto LABEL_46;
+  }
+
+  v9 = result;
+  Property = objc_getProperty(result, a2, 40, 1);
+  if (!Property)
+  {
+    v20 = SRLogDatastore;
+    if (os_log_type_enabled(SRLogDatastore, OS_LOG_TYPE_INFO))
+    {
+      LOWORD(v42) = 0;
+      v21 = "No disk space available, dropping data";
+      v22 = v20;
+      v23 = OS_LOG_TYPE_INFO;
+      v24 = 2;
+LABEL_42:
+      _os_log_impl(&dword_26561F000, v22, v23, v21, &v42, v24);
+    }
+
+LABEL_43:
+    if (!a4)
+    {
+      goto LABEL_45;
+    }
+
+    v40 = [SRError errorWithCode:12291];
+    result = 0;
+    *a4 = v40;
+    goto LABEL_46;
+  }
+
+  v11 = Property;
+  v12 = Property[2];
+  if (v12)
+  {
+    v13 = v12[6] - v12[3] + v12[2];
+  }
+
+  else
+  {
+    v13 = 0;
+  }
+
+  if (v13 >= a3 + 20)
+  {
+    goto LABEL_21;
+  }
+
+  v14 = SRLogDatastore;
+  if (os_log_type_enabled(SRLogDatastore, OS_LOG_TYPE_INFO))
+  {
+    if (v12)
+    {
+      v15 = v12[6] - v12[3] + v12[2];
+    }
+
+    else
+    {
+      v15 = 0;
+    }
+
+    v42 = 134349312;
+    v43 = v15;
+    v44 = 2050;
+    v45 = a3 + 20;
+    _os_log_impl(&dword_26561F000, v14, OS_LOG_TYPE_INFO, "Not enough free space (%{public}zu) to write %{public}zu. Attempting to expand the mapped region", &v42, 0x16u);
+  }
+
+  v16 = *(v9 + 16) * NSPageSize();
+  v17 = *(v11 + 24);
+  if (v17 && (v18 = *(v17 + 16)) != 0)
+  {
+    v19 = *(v18 + 4);
+  }
+
+  else
+  {
+    v25 = *(v11 + 16);
+    if (v25)
+    {
+      v19 = *(v25 + 24) - *(v25 + 16) + 56;
+    }
+
+    else
+    {
+      v19 = 56;
+    }
+  }
+
+  v26 = ((v19 + a3) * *(v9 + 24));
+  v27 = SRLogDatastore;
+  if (v16 <= v26)
+  {
+    if (os_log_type_enabled(SRLogDatastore, OS_LOG_TYPE_DEFAULT))
+    {
+      if (v17 && (v31 = *(v17 + 16)) != 0)
+      {
+        v32 = *(v31 + 4);
+      }
+
+      else
+      {
+        v39 = *(v11 + 16);
+        if (v39)
+        {
+          v32 = *(v39 + 24) - *(v39 + 16) + 56;
+        }
+
+        else
+        {
+          v32 = 56;
+        }
+      }
+
+      v42 = 134349312;
+      v43 = a3;
+      v44 = 2050;
+      v45 = v16 - v32;
+      v21 = "Trying to write %{public}zd but only have %{public}llul available. Dropping the data.";
+      v22 = v27;
+      v23 = OS_LOG_TYPE_DEFAULT;
+      v24 = 22;
+      goto LABEL_42;
+    }
+
+    goto LABEL_43;
+  }
+
+  if (os_log_type_enabled(SRLogDatastore, OS_LOG_TYPE_INFO))
+  {
+    v42 = 134217984;
+    v43 = v26;
+    _os_log_impl(&dword_26561F000, v27, OS_LOG_TYPE_INFO, "Expanding the mapped region to %llu bytes while a new segment is fetched", &v42, 0xCu);
+  }
+
+  if (([(SRFrameStore *)v11 resizeMappedRegionTo:v26]& 1) == 0)
+  {
+    goto LABEL_43;
+  }
+
+LABEL_21:
+  v28 = *(v11 + 24);
+  if (v28 && (v29 = *(v28 + 16)) != 0)
+  {
+    v30 = *(v29 + 4);
+  }
+
+  else
+  {
+    v33 = *(v11 + 16);
+    if (v33)
+    {
+      v30 = *(v33 + 24) - *(v33 + 16) + 56;
+    }
+
+    else
+    {
+      v30 = 56;
+    }
+  }
+
+  [(SRFrameStore *)v11 writeFrameForBytes:a2 length:a3 timestamp:a4 error:a5];
+  v34 = *(v11 + 24);
+  if (v34 && (v35 = *(v34 + 16)) != 0)
+  {
+    v36 = *(v35 + 4);
+  }
+
+  else
+  {
+    v37 = *(v11 + 16);
+    if (v37)
+    {
+      v36 = *(v37 + 24) - *(v37 + 16) + 56;
+    }
+
+    else
+    {
+      v36 = 56;
+    }
+  }
+
+  if (v36 >= v30 + a3)
+  {
+    result = 1;
+  }
+
+  else
+  {
+    v38 = SRLogDatastore;
+    result = os_log_type_enabled(SRLogDatastore, OS_LOG_TYPE_INFO);
+    if (result)
+    {
+      LOWORD(v42) = 0;
+      _os_log_impl(&dword_26561F000, v38, OS_LOG_TYPE_INFO, "Failed to write frames", &v42, 2u);
+LABEL_45:
+      result = 0;
+    }
+  }
+
+LABEL_46:
+  v41 = *MEMORY[0x277D85DE8];
+  return result;
+}
+
+- (void)syncMappedFiles
+{
+  if (a1)
+  {
+    Property = objc_getProperty(a1, a2, 40, 1);
+    [(SRFrameStore *)Property sync];
+    v5 = objc_getProperty(a1, v4, 48, 1);
+    [(SRFrameStore *)v5 sync];
+    v7 = objc_getProperty(a1, v6, 56, 1);
+
+    [(SRFrameStore *)v7 sync];
+  }
+}
+
+@end

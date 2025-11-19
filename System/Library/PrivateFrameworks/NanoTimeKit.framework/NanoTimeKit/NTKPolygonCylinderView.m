@@ -1,0 +1,169 @@
+@interface NTKPolygonCylinderView
+- (NTKPolygonCylinderView)init;
+- (void)_informFaceViewsOfRotation;
+- (void)_setRotationAngle:(double)a3;
+- (void)_updateTransform;
+- (void)layoutSubviews;
+- (void)setNumberOfSides:(unint64_t)a3;
+- (void)transitionToFraction:(double)a3 fromSideAtIndex:(unint64_t)a4 toSideAtIndex:(unint64_t)a5;
+- (void)transitionToSideAtIndex:(unint64_t)a3;
+@end
+
+@implementation NTKPolygonCylinderView
+
+- (NTKPolygonCylinderView)init
+{
+  v15.receiver = self;
+  v15.super_class = NTKPolygonCylinderView;
+  v2 = [(NTKPolygonCylinderView *)&v15 init];
+  v3 = v2;
+  if (v2)
+  {
+    v4 = [(NTKPolygonCylinderView *)v2 layer];
+    v5 = *(MEMORY[0x277CD9DE8] + 48);
+    v10[2] = *(MEMORY[0x277CD9DE8] + 32);
+    v10[3] = v5;
+    v10[4] = *(MEMORY[0x277CD9DE8] + 64);
+    v6 = *(MEMORY[0x277CD9DE8] + 80);
+    v7 = *(MEMORY[0x277CD9DE8] + 16);
+    v10[0] = *MEMORY[0x277CD9DE8];
+    v10[1] = v7;
+    v11 = v6;
+    v12 = 0xBF6B4E81B4E81B4FLL;
+    v8 = *(MEMORY[0x277CD9DE8] + 112);
+    v13 = *(MEMORY[0x277CD9DE8] + 96);
+    v14 = v8;
+    [v4 setSublayerTransform:v10];
+
+    [(NTKPolygonCylinderView *)v3 _setRotationAngle:0.0];
+  }
+
+  return v3;
+}
+
+- (void)setNumberOfSides:(unint64_t)a3
+{
+  if ([(NTKPolygonCylinderView *)self numberOfSides]!= a3)
+  {
+    [(_NTKPolygonCylinderTransformView *)self->_transformView removeFromSuperview];
+    v5 = [[_NTKPolygonCylinderTransformView alloc] initWithNumberOfFaces:a3];
+    transformView = self->_transformView;
+    self->_transformView = v5;
+
+    v7 = self->_transformView;
+
+    [(NTKPolygonCylinderView *)self addSubview:v7];
+  }
+}
+
+- (void)transitionToSideAtIndex:(unint64_t)a3
+{
+  [(NTKPolygonCylinderView *)self _rotationAngleForFaceIndex:a3];
+
+  [(NTKPolygonCylinderView *)self _setRotationAngle:?];
+}
+
+- (void)transitionToFraction:(double)a3 fromSideAtIndex:(unint64_t)a4 toSideAtIndex:(unint64_t)a5
+{
+  v8 = [(NTKPolygonCylinderView *)self numberOfSides];
+  if (v8 - 1 == a4 && a5 == 0)
+  {
+    a5 = v8;
+  }
+
+  if (a5 == v8 - 1)
+  {
+    v10 = v8;
+  }
+
+  else
+  {
+    v10 = 0;
+  }
+
+  if (a4)
+  {
+    v11 = a4;
+  }
+
+  else
+  {
+    v11 = v10;
+  }
+
+  [(NTKPolygonCylinderView *)self _rotationAngleForFaceIndex:v11];
+  [(NTKPolygonCylinderView *)self _rotationAngleForFaceIndex:a5];
+  CLKInterpolateBetweenFloatsClipped();
+
+  [(NTKPolygonCylinderView *)self _setRotationAngle:?];
+}
+
+- (void)layoutSubviews
+{
+  [(NTKPolygonCylinderView *)self bounds];
+  v4 = v3;
+  v6 = v5;
+  v8 = v7;
+  v10 = v9;
+  v11 = [(_NTKPolygonCylinderTransformView *)self->_transformView setBounds:?];
+  transformView = self->_transformView;
+  MEMORY[0x2318D8E70](v11, v4, v6, v8, v10);
+  [(_NTKPolygonCylinderTransformView *)transformView setCenter:?];
+
+  [(NTKPolygonCylinderView *)self _updateTransform];
+}
+
+- (void)_setRotationAngle:(double)a3
+{
+    ;
+  }
+
+  v4 = a3;
+  self->_rotationAngle = fmodf(v4, 6.2832);
+  [(NTKPolygonCylinderView *)self _updateTransform];
+
+  [(NTKPolygonCylinderView *)self _informFaceViewsOfRotation];
+}
+
+- (void)_informFaceViewsOfRotation
+{
+  transformView = self->_transformView;
+  v3[0] = MEMORY[0x277D85DD0];
+  v3[1] = 3221225472;
+  v3[2] = __52__NTKPolygonCylinderView__informFaceViewsOfRotation__block_invoke;
+  v3[3] = &unk_2787869B0;
+  v3[4] = self;
+  [(_NTKPolygonCylinderTransformView *)transformView enumerateFaceViewsWithBlock:v3];
+}
+
+void __52__NTKPolygonCylinderView__informFaceViewsOfRotation__block_invoke(uint64_t a1, uint64_t a2, void *a3)
+{
+  v7 = a3;
+  if (objc_opt_respondsToSelector())
+  {
+    [*(a1 + 32) _rotationAngleForFaceIndex:a2];
+    v6 = vabdd_f64(*(*(a1 + 32) + 416), v5);
+    if (v6 > 3.14159265)
+    {
+      v6 = 6.28318531 - v6;
+    }
+
+    [v7 setRotationFromFront:v6];
+  }
+}
+
+- (void)_updateTransform
+{
+  [(_NTKPolygonCylinderTransformView *)self->_transformView faceDistanceToCenter];
+  memset(&v8, 0, sizeof(v8));
+  CATransform3DMakeTranslation(&v8, 0.0, 0.0, -v3);
+  rotationAngle = self->_rotationAngle;
+  v6 = v8;
+  CATransform3DRotate(&v7, &v6, rotationAngle, 1.0, 0.0, 0.0);
+  v8 = v7;
+  v5 = [(_NTKPolygonCylinderTransformView *)self->_transformView layer];
+  v7 = v8;
+  [v5 setTransform:&v7];
+}
+
+@end

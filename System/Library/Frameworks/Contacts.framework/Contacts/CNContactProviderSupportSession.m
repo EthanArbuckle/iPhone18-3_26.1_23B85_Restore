@@ -1,0 +1,119 @@
+@interface CNContactProviderSupportSession
+- (BOOL)isEqual:(id)a3;
+- (CNContactProviderSupportSession)init;
+- (CNContactProviderSupportSession)initWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)a3;
+- (id)description;
+- (void)encodeWithCoder:(id)a3;
+@end
+
+@implementation CNContactProviderSupportSession
+
+- (CNContactProviderSupportSession)init
+{
+  v10.receiver = self;
+  v10.super_class = CNContactProviderSupportSession;
+  v2 = [(CNContactProviderSupportSession *)&v10 init];
+  v3 = v2;
+  if (v2)
+  {
+    objc_storeStrong(&v2->_synchronizationReason, @"App Requested");
+    v4 = objc_alloc_init(MEMORY[0x1E696AE38]);
+    progress = v3->_progress;
+    v3->_progress = v4;
+
+    displayName = v3->_displayName;
+    v3->_displayName = &stru_1F094DAB0;
+
+    userInfo = v3->_userInfo;
+    v3->_userInfo = MEMORY[0x1E695E0F8];
+
+    v8 = v3;
+  }
+
+  return v3;
+}
+
+- (id)description
+{
+  v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
+  v4 = [v3 appendName:@"reason" object:self->_synchronizationReason];
+  v5 = [v3 appendName:@"displayName" object:self->_displayName];
+  v6 = [v3 appendName:@"userInfo" object:self->_userInfo];
+  v7 = [v3 appendName:@"progress" object:self->_progress];
+  v8 = [v3 build];
+
+  return v8;
+}
+
+- (CNContactProviderSupportSession)initWithCoder:(id)a3
+{
+  v4 = a3;
+  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_synchronizationReason"];
+  v6 = [v5 copy];
+  synchronizationReason = self->_synchronizationReason;
+  self->_synchronizationReason = v6;
+
+  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_displayName"];
+  v9 = [v8 copy];
+  displayName = self->_displayName;
+  self->_displayName = v9;
+
+  v11 = MEMORY[0x1E695DFD8];
+  v12 = objc_opt_class();
+  v13 = objc_opt_class();
+  v14 = objc_opt_class();
+  v15 = objc_opt_class();
+  v16 = [v11 setWithObjects:{v12, v13, v14, v15, objc_opt_class(), 0}];
+  v17 = [v4 decodeObjectOfClasses:v16 forKey:@"_userInfo"];
+
+  v18 = [v17 copy];
+  userInfo = self->_userInfo;
+  self->_userInfo = v18;
+
+  return self;
+}
+
+- (void)encodeWithCoder:(id)a3
+{
+  synchronizationReason = self->_synchronizationReason;
+  v5 = a3;
+  [v5 encodeObject:synchronizationReason forKey:@"_synchronizationReason"];
+  [v5 encodeObject:self->_displayName forKey:@"_displayName"];
+  [v5 encodeObject:self->_userInfo forKey:@"_userInfo"];
+}
+
+- (id)copyWithZone:(_NSZone *)a3
+{
+  v4 = objc_alloc_init(CNContactProviderSupportSession);
+  v5 = [(CNContactProviderSupportSession *)self synchronizationReason];
+  [(CNContactProviderSupportSession *)v4 setSynchronizationReason:v5];
+
+  v6 = [(CNContactProviderSupportSession *)self displayName];
+  [(CNContactProviderSupportSession *)v4 setDisplayName:v6];
+
+  v7 = [(CNContactProviderSupportSession *)self userInfo];
+  [(CNContactProviderSupportSession *)v4 setUserInfo:v7];
+
+  v8 = [(CNContactProviderSupportSession *)self progress];
+  [(CNContactProviderSupportSession *)v4 setProgress:v8];
+
+  return v4;
+}
+
+- (BOOL)isEqual:(id)a3
+{
+  v4 = a3;
+  v13 = 1;
+  if (self != v4)
+  {
+    if ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v5 = -[CNContactProviderSupportSession synchronizationReason](self, "synchronizationReason"), v6 = -[CNContactProviderSupportSession synchronizationReason](v4, "synchronizationReason"), v5 | v6) && ![v5 isEqual:v6] || (v7 = -[CNContactProviderSupportSession progress](self, "progress"), v8 = -[CNContactProviderSupportSession progress](v4, "progress"), v7 | v8) && !objc_msgSend(v7, "isEqual:", v8) || (v9 = -[CNContactProviderSupportSession displayName](self, "displayName"), v10 = -[CNContactProviderSupportSession displayName](v4, "displayName"), v9 | v10) && !objc_msgSend(v9, "isEqual:", v10) || (v11 = -[CNContactProviderSupportSession userInfo](self, "userInfo"), v12 = -[CNContactProviderSupportSession userInfo](v4, "userInfo"), v11 | v12) && !objc_msgSend(v11, "isEqual:", v12))
+    {
+      v13 = 0;
+    }
+  }
+
+  return v13;
+}
+
+@end

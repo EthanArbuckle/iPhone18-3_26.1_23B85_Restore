@@ -1,0 +1,433 @@
+@interface SUUIJSRestrictions
+- (BOOL)isRestrictedApp:(id)a3;
+- (SUUIJSRestrictions)initWithAppContext:(id)a3 clientContext:(id)a4;
+- (int64_t)_explicitRestrictionAlertTypeForTypeString:(id)a3;
+- (void)didDisplayExplicitRestrictionAlertOfType:(id)a3;
+- (void)isExplicitContentDisallowedInCurrentStoreFront:(id)a3;
+- (void)isExplicitContentRestrictedByDefaultInCurrentStoreFront:(id)a3;
+- (void)isRestrictionsPasscodeSet:(id)a3;
+- (void)presentExplicitRestrictionAlertIfNeededOfType:(id)a3 :(id)a4;
+- (void)shouldDisplayExplicitRestrictionAlertOfType:(id)a3 :(id)a4;
+@end
+
+@implementation SUUIJSRestrictions
+
+- (SUUIJSRestrictions)initWithAppContext:(id)a3 clientContext:(id)a4
+{
+  v7 = a4;
+  v11.receiver = self;
+  v11.super_class = SUUIJSRestrictions;
+  v8 = [(IKJSObject *)&v11 initWithAppContext:a3];
+  v9 = v8;
+  if (v8)
+  {
+    objc_storeStrong(&v8->_clientContext, a4);
+  }
+
+  return v9;
+}
+
+- (BOOL)isRestrictedApp:(id)a3
+{
+  v3 = a3;
+  if ([MEMORY[0x277D7FD68] isRestrictedAppBundleIdentifier:v3])
+  {
+    LOBYTE(v4) = 1;
+  }
+
+  else if ([v3 isEqualToString:@"com.apple.facetime"])
+  {
+    v5 = MGGetBoolAnswer();
+    v4 = v5 & MGGetBoolAnswer() ^ 1;
+  }
+
+  else
+  {
+    LOBYTE(v4) = 0;
+  }
+
+  return v4;
+}
+
+- (void)isExplicitContentRestrictedByDefaultInCurrentStoreFront:(id)a3
+{
+  v4 = MEMORY[0x277CD4650];
+  v5 = a3;
+  v6 = [v4 managedValueWithValue:v5];
+  v7 = [v5 context];
+
+  v8 = [v7 virtualMachine];
+
+  [v8 addManagedReference:v6 withOwner:self];
+  v9 = [(IKJSObject *)self appContext];
+  v10 = MEMORY[0x277D69C38];
+  v14[0] = MEMORY[0x277D85DD0];
+  v14[1] = 3221225472;
+  v14[2] = __78__SUUIJSRestrictions_isExplicitContentRestrictedByDefaultInCurrentStoreFront___block_invoke;
+  v14[3] = &unk_2798F86A0;
+  v15 = v9;
+  v16 = v6;
+  v17 = v8;
+  v18 = self;
+  v11 = v8;
+  v12 = v6;
+  v13 = v9;
+  [v10 isExplicitContentRestrictedByDefaultInCurrentStoreFront:v14];
+}
+
+void __78__SUUIJSRestrictions_isExplicitContentRestrictedByDefaultInCurrentStoreFront___block_invoke(uint64_t a1, char a2)
+{
+  v7[0] = MEMORY[0x277D85DD0];
+  v7[1] = 3221225472;
+  v7[2] = __78__SUUIJSRestrictions_isExplicitContentRestrictedByDefaultInCurrentStoreFront___block_invoke_2;
+  v7[3] = &unk_2798F8678;
+  v4 = *(a1 + 32);
+  v8 = *(a1 + 40);
+  v11 = a2;
+  v5 = *(a1 + 48);
+  v6 = *(a1 + 56);
+  v9 = v5;
+  v10 = v6;
+  [v4 evaluate:v7 completionBlock:0];
+}
+
+void __78__SUUIJSRestrictions_isExplicitContentRestrictedByDefaultInCurrentStoreFront___block_invoke_2(uint64_t a1)
+{
+  v6[1] = *MEMORY[0x277D85DE8];
+  v2 = [*(a1 + 32) value];
+  v3 = [MEMORY[0x277CCABB0] numberWithBool:*(a1 + 56)];
+  v6[0] = v3;
+  v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
+  v5 = [v2 callWithArguments:v4];
+
+  [*(a1 + 40) removeManagedReference:*(a1 + 32) withOwner:*(a1 + 48)];
+}
+
+- (void)isExplicitContentDisallowedInCurrentStoreFront:(id)a3
+{
+  v4 = MEMORY[0x277CD4650];
+  v5 = a3;
+  v6 = [v4 managedValueWithValue:v5];
+  v7 = [v5 context];
+
+  v8 = [v7 virtualMachine];
+
+  [v8 addManagedReference:v6 withOwner:self];
+  v9 = [(IKJSObject *)self appContext];
+  v10 = MEMORY[0x277D69C38];
+  v14[0] = MEMORY[0x277D85DD0];
+  v14[1] = 3221225472;
+  v14[2] = __69__SUUIJSRestrictions_isExplicitContentDisallowedInCurrentStoreFront___block_invoke;
+  v14[3] = &unk_2798F86A0;
+  v15 = v9;
+  v16 = v6;
+  v17 = v8;
+  v18 = self;
+  v11 = v8;
+  v12 = v6;
+  v13 = v9;
+  [v10 isExplicitContentDisallowedInCurrentStoreFront:v14];
+}
+
+void __69__SUUIJSRestrictions_isExplicitContentDisallowedInCurrentStoreFront___block_invoke(uint64_t a1, char a2)
+{
+  v7[0] = MEMORY[0x277D85DD0];
+  v7[1] = 3221225472;
+  v7[2] = __69__SUUIJSRestrictions_isExplicitContentDisallowedInCurrentStoreFront___block_invoke_2;
+  v7[3] = &unk_2798F8678;
+  v4 = *(a1 + 32);
+  v8 = *(a1 + 40);
+  v11 = a2;
+  v5 = *(a1 + 48);
+  v6 = *(a1 + 56);
+  v9 = v5;
+  v10 = v6;
+  [v4 evaluate:v7 completionBlock:0];
+}
+
+void __69__SUUIJSRestrictions_isExplicitContentDisallowedInCurrentStoreFront___block_invoke_2(uint64_t a1)
+{
+  v6[1] = *MEMORY[0x277D85DE8];
+  v2 = [*(a1 + 32) value];
+  v3 = [MEMORY[0x277CCABB0] numberWithBool:*(a1 + 56)];
+  v6[0] = v3;
+  v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
+  v5 = [v2 callWithArguments:v4];
+
+  [*(a1 + 40) removeManagedReference:*(a1 + 32) withOwner:*(a1 + 48)];
+}
+
+- (void)isRestrictionsPasscodeSet:(id)a3
+{
+  v4 = MEMORY[0x277CD4650];
+  v5 = a3;
+  v6 = [v4 managedValueWithValue:v5];
+  v7 = [v5 context];
+
+  v8 = [v7 virtualMachine];
+
+  [v8 addManagedReference:v6 withOwner:self];
+  v9 = [(IKJSObject *)self appContext];
+  v10 = MEMORY[0x277D69C38];
+  v14[0] = MEMORY[0x277D85DD0];
+  v14[1] = 3221225472;
+  v14[2] = __48__SUUIJSRestrictions_isRestrictionsPasscodeSet___block_invoke;
+  v14[3] = &unk_2798F86A0;
+  v15 = v9;
+  v16 = v6;
+  v17 = v8;
+  v18 = self;
+  v11 = v8;
+  v12 = v6;
+  v13 = v9;
+  [v10 isRestrictionsPasscodeSet:v14];
+}
+
+void __48__SUUIJSRestrictions_isRestrictionsPasscodeSet___block_invoke(uint64_t a1, char a2)
+{
+  v7[0] = MEMORY[0x277D85DD0];
+  v7[1] = 3221225472;
+  v7[2] = __48__SUUIJSRestrictions_isRestrictionsPasscodeSet___block_invoke_2;
+  v7[3] = &unk_2798F8678;
+  v4 = *(a1 + 32);
+  v8 = *(a1 + 40);
+  v11 = a2;
+  v5 = *(a1 + 48);
+  v6 = *(a1 + 56);
+  v9 = v5;
+  v10 = v6;
+  [v4 evaluate:v7 completionBlock:0];
+}
+
+void __48__SUUIJSRestrictions_isRestrictionsPasscodeSet___block_invoke_2(uint64_t a1)
+{
+  v6[1] = *MEMORY[0x277D85DE8];
+  v2 = [*(a1 + 32) value];
+  v3 = [MEMORY[0x277CCABB0] numberWithBool:*(a1 + 56)];
+  v6[0] = v3;
+  v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
+  v5 = [v2 callWithArguments:v4];
+
+  [*(a1 + 40) removeManagedReference:*(a1 + 32) withOwner:*(a1 + 48)];
+}
+
+- (void)shouldDisplayExplicitRestrictionAlertOfType:(id)a3 :(id)a4
+{
+  v6 = MEMORY[0x277CD4650];
+  v7 = a4;
+  v8 = a3;
+  v9 = [v6 managedValueWithValue:v7];
+  v10 = [v7 context];
+
+  v11 = [v10 virtualMachine];
+
+  [v11 addManagedReference:v9 withOwner:self];
+  v12 = [(IKJSObject *)self appContext];
+  v13 = [(SUUIJSRestrictions *)self _explicitRestrictionAlertTypeForTypeString:v8];
+
+  if (v13 < 0)
+  {
+    v21[0] = MEMORY[0x277D85DD0];
+    v21[1] = 3221225472;
+    v21[2] = __67__SUUIJSRestrictions_shouldDisplayExplicitRestrictionAlertOfType::__block_invoke_3;
+    v21[3] = &unk_2798F86C8;
+    v15 = &v22;
+    v16 = v23;
+    v22 = v9;
+    v23[0] = v11;
+    v23[1] = self;
+    v19 = v11;
+    v20 = v9;
+    [v12 evaluate:v21 completionBlock:0];
+  }
+
+  else
+  {
+    v14 = MEMORY[0x277D69C38];
+    v24[0] = MEMORY[0x277D85DD0];
+    v24[1] = 3221225472;
+    v24[2] = __67__SUUIJSRestrictions_shouldDisplayExplicitRestrictionAlertOfType::__block_invoke;
+    v24[3] = &unk_2798F86A0;
+    v15 = &v25;
+    v16 = &v26;
+    v25 = v12;
+    v26 = v9;
+    v27 = v11;
+    v28 = self;
+    v17 = v11;
+    v18 = v9;
+    [v14 shouldDisplayExplicitRestrictionAlertOfType:v13 completionBlock:v24];
+  }
+}
+
+void __67__SUUIJSRestrictions_shouldDisplayExplicitRestrictionAlertOfType::__block_invoke(uint64_t a1, char a2)
+{
+  v7[0] = MEMORY[0x277D85DD0];
+  v7[1] = 3221225472;
+  v7[2] = __67__SUUIJSRestrictions_shouldDisplayExplicitRestrictionAlertOfType::__block_invoke_2;
+  v7[3] = &unk_2798F8678;
+  v4 = *(a1 + 32);
+  v8 = *(a1 + 40);
+  v11 = a2;
+  v5 = *(a1 + 48);
+  v6 = *(a1 + 56);
+  v9 = v5;
+  v10 = v6;
+  [v4 evaluate:v7 completionBlock:0];
+}
+
+void __67__SUUIJSRestrictions_shouldDisplayExplicitRestrictionAlertOfType::__block_invoke_2(uint64_t a1)
+{
+  v6[1] = *MEMORY[0x277D85DE8];
+  v2 = [*(a1 + 32) value];
+  v3 = [MEMORY[0x277CCABB0] numberWithBool:*(a1 + 56)];
+  v6[0] = v3;
+  v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
+  v5 = [v2 callWithArguments:v4];
+
+  [*(a1 + 40) removeManagedReference:*(a1 + 32) withOwner:*(a1 + 48)];
+}
+
+void __67__SUUIJSRestrictions_shouldDisplayExplicitRestrictionAlertOfType::__block_invoke_3(uint64_t a1)
+{
+  v3 = [*(a1 + 32) value];
+  v2 = [v3 callWithArguments:&unk_286BBE0A0];
+  [*(a1 + 40) removeManagedReference:*(a1 + 32) withOwner:*(a1 + 48)];
+}
+
+- (void)didDisplayExplicitRestrictionAlertOfType:(id)a3
+{
+  v3 = [(SUUIJSRestrictions *)self _explicitRestrictionAlertTypeForTypeString:a3];
+  if ((v3 & 0x8000000000000000) == 0)
+  {
+    v4 = v3;
+    v5 = MEMORY[0x277D69C38];
+
+    [v5 didDisplayExplicitRestrictionAlertOfType:v4];
+  }
+}
+
+- (void)presentExplicitRestrictionAlertIfNeededOfType:(id)a3 :(id)a4
+{
+  v6 = MEMORY[0x277CD4650];
+  v7 = a4;
+  v8 = a3;
+  v9 = [v6 managedValueWithValue:v7];
+  v10 = [v7 context];
+
+  v11 = [v10 virtualMachine];
+
+  [v11 addManagedReference:v9 withOwner:self];
+  v12 = [(IKJSObject *)self appContext];
+  v13 = [(SUUIJSRestrictions *)self _explicitRestrictionAlertTypeForTypeString:v8];
+
+  if (v13 < 0)
+  {
+    v17[0] = MEMORY[0x277D85DD0];
+    v17[1] = 3221225472;
+    v17[2] = __69__SUUIJSRestrictions_presentExplicitRestrictionAlertIfNeededOfType::__block_invoke_3;
+    v17[3] = &unk_2798F86C8;
+    v18 = v9;
+    v19 = v11;
+    v20 = self;
+    v16 = v11;
+    v14 = v9;
+    [v12 evaluate:v17 completionBlock:0];
+
+    v15 = v18;
+  }
+
+  else
+  {
+    v14 = [[SUUIExplicitRestrictionAlertController alloc] initWithClientContext:self->_clientContext];
+    v21[0] = MEMORY[0x277D85DD0];
+    v21[1] = 3221225472;
+    v21[2] = __69__SUUIJSRestrictions_presentExplicitRestrictionAlertIfNeededOfType::__block_invoke;
+    v21[3] = &unk_2798F86A0;
+    v22 = v12;
+    v23 = v9;
+    v24 = v11;
+    v25 = self;
+    v15 = v11;
+    v16 = v9;
+    [(SUUIExplicitRestrictionAlertController *)v14 presentExplicitRestrictionAlertIfNeededOfType:v13 completionBlock:v21];
+  }
+}
+
+void __69__SUUIJSRestrictions_presentExplicitRestrictionAlertIfNeededOfType::__block_invoke(uint64_t a1, char a2)
+{
+  v7[0] = MEMORY[0x277D85DD0];
+  v7[1] = 3221225472;
+  v7[2] = __69__SUUIJSRestrictions_presentExplicitRestrictionAlertIfNeededOfType::__block_invoke_2;
+  v7[3] = &unk_2798F8678;
+  v4 = *(a1 + 32);
+  v8 = *(a1 + 40);
+  v11 = a2;
+  v5 = *(a1 + 48);
+  v6 = *(a1 + 56);
+  v9 = v5;
+  v10 = v6;
+  [v4 evaluate:v7 completionBlock:0];
+}
+
+void __69__SUUIJSRestrictions_presentExplicitRestrictionAlertIfNeededOfType::__block_invoke_2(uint64_t a1)
+{
+  v6[1] = *MEMORY[0x277D85DE8];
+  v2 = [*(a1 + 32) value];
+  v3 = [MEMORY[0x277CCABB0] numberWithBool:*(a1 + 56)];
+  v6[0] = v3;
+  v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
+  v5 = [v2 callWithArguments:v4];
+
+  [*(a1 + 40) removeManagedReference:*(a1 + 32) withOwner:*(a1 + 48)];
+}
+
+void __69__SUUIJSRestrictions_presentExplicitRestrictionAlertIfNeededOfType::__block_invoke_3(uint64_t a1)
+{
+  v3 = [*(a1 + 32) value];
+  v2 = [v3 callWithArguments:&unk_286BBE0B8];
+  [*(a1 + 40) removeManagedReference:*(a1 + 32) withOwner:*(a1 + 48)];
+}
+
+- (int64_t)_explicitRestrictionAlertTypeForTypeString:(id)a3
+{
+  v3 = a3;
+  if ([v3 isEqualToString:@"onLaunch"])
+  {
+    v4 = 0;
+  }
+
+  else if ([v3 isEqualToString:@"onContainerLoad"])
+  {
+    v4 = 1;
+  }
+
+  else if ([v3 isEqualToString:@"onPlay"])
+  {
+    v4 = 2;
+  }
+
+  else if ([v3 isEqualToString:@"onPurchase"])
+  {
+    v4 = 3;
+  }
+
+  else if ([v3 isEqualToString:@"onAddToLibrary"])
+  {
+    v4 = 4;
+  }
+
+  else if ([v3 isEqualToString:@"onOpen"])
+  {
+    v4 = 5;
+  }
+
+  else
+  {
+    v4 = -1;
+  }
+
+  return v4;
+}
+
+@end

@@ -1,0 +1,1371 @@
+@interface PKPeerPaymentQuoteRequest
+- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqualToPeerPaymentQuoteRequest:(id)a3;
+- (PKPeerPaymentQuoteRequest)init;
+- (PKPeerPaymentQuoteRequest)initWithCoder:(id)a3;
+- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4 deviceIdentifier:(id)a5 deviceScore:(id)a6 odiAssessment:(id)a7 deviceMetadata:(id)a8;
+- (id)description;
+- (unint64_t)hash;
+- (void)encodeWithCoder:(id)a3;
+- (void)updateWithPaymentPass:(id)a3 externalFundingSource:(unint64_t)a4;
+@end
+
+@implementation PKPeerPaymentQuoteRequest
+
+- (void)updateWithPaymentPass:(id)a3 externalFundingSource:(unint64_t)a4
+{
+  v14 = a3;
+  if (v14)
+  {
+    v6 = [v14 devicePrimaryInAppPaymentApplication];
+    v7 = [v6 dpanIdentifier];
+    [(PKPeerPaymentQuoteRequest *)self setDPANIdentifier:v7];
+
+    v8 = [v14 primaryAccountIdentifier];
+    [(PKPeerPaymentQuoteRequest *)self setFPANIdentifier:v8];
+
+    if (self->_dpanIdentifier)
+    {
+      self->_externalFundingSource = a4;
+      v9 = [v14 devicePrimaryInAppPaymentApplication];
+      self->_paymentNetwork = [v9 paymentNetworkIdentifier];
+      self->_paymentMethodType = [v9 paymentType];
+      v10 = [v14 localizedDescription];
+      paymentMethodDescription = self->_paymentMethodDescription;
+      self->_paymentMethodDescription = v10;
+
+      v12 = [v14 primaryAccountNumberSuffix];
+      paymentMethodSuffix = self->_paymentMethodSuffix;
+      self->_paymentMethodSuffix = v12;
+    }
+  }
+}
+
+- (PKPeerPaymentQuoteRequest)init
+{
+  v7.receiver = self;
+  v7.super_class = PKPeerPaymentQuoteRequest;
+  v2 = [(PKOverlayableWebServiceRequest *)&v7 init];
+  if (v2)
+  {
+    v3 = [MEMORY[0x1E696AFB0] UUID];
+    v4 = [v3 UUIDString];
+    orderIdentifier = v2->_orderIdentifier;
+    v2->_orderIdentifier = v4;
+  }
+
+  return v2;
+}
+
+- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4 deviceIdentifier:(id)a5 deviceScore:(id)a6 odiAssessment:(id)a7 deviceMetadata:(id)a8
+{
+  v124 = *MEMORY[0x1E69E9840];
+  v14 = a3;
+  v15 = a4;
+  v16 = a5;
+  v17 = a6;
+  v18 = a7;
+  v19 = a8;
+  v20 = v19;
+  if (!v14)
+  {
+    v22 = PKLogFacilityTypeGetObject(0xCuLL);
+    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    {
+      v25 = objc_opt_class();
+      v24 = NSStringFromClass(v25);
+      *buf = 138543618;
+      v121 = v24;
+      v122 = 2082;
+      v123 = "url";
+      goto LABEL_145;
+    }
+
+LABEL_146:
+    v104 = 0;
+    goto LABEL_147;
+  }
+
+  if (!v15)
+  {
+    v22 = PKLogFacilityTypeGetObject(0xCuLL);
+    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    {
+      v26 = objc_opt_class();
+      v24 = NSStringFromClass(v26);
+      *buf = 138543618;
+      v121 = v24;
+      v122 = 2082;
+      v123 = "appleAccountInformation";
+      goto LABEL_145;
+    }
+
+    goto LABEL_146;
+  }
+
+  if (!v16)
+  {
+    v22 = PKLogFacilityTypeGetObject(0xCuLL);
+    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    {
+      v27 = objc_opt_class();
+      v24 = NSStringFromClass(v27);
+      *buf = 138543618;
+      v121 = v24;
+      v122 = 2082;
+      v123 = "deviceIdentifier";
+      goto LABEL_145;
+    }
+
+    goto LABEL_146;
+  }
+
+  if (!v19)
+  {
+    v22 = PKLogFacilityTypeGetObject(0xCuLL);
+    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    {
+      v28 = objc_opt_class();
+      v24 = NSStringFromClass(v28);
+      *buf = 138543618;
+      v121 = v24;
+      v122 = 2082;
+      v123 = "deviceMetadata";
+      goto LABEL_145;
+    }
+
+    goto LABEL_146;
+  }
+
+  if (!self->_amount)
+  {
+    v22 = PKLogFacilityTypeGetObject(0xCuLL);
+    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    {
+      v29 = objc_opt_class();
+      v24 = NSStringFromClass(v29);
+      *buf = 138543618;
+      v121 = v24;
+      v122 = 2082;
+      v123 = "_amount";
+      goto LABEL_145;
+    }
+
+    goto LABEL_146;
+  }
+
+  if (!self->_currency)
+  {
+    v22 = PKLogFacilityTypeGetObject(0xCuLL);
+    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    {
+      v30 = objc_opt_class();
+      v24 = NSStringFromClass(v30);
+      *buf = 138543618;
+      v121 = v24;
+      v122 = 2082;
+      v123 = "_currency";
+      goto LABEL_145;
+    }
+
+    goto LABEL_146;
+  }
+
+  if (self->_externalFundingSource == 1 && !self->_dpanIdentifier)
+  {
+    v22 = PKLogFacilityTypeGetObject(0xCuLL);
+    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    {
+      v42 = objc_opt_class();
+      v24 = NSStringFromClass(v42);
+      *buf = 138543618;
+      v121 = v24;
+      v122 = 2082;
+      v123 = "_dpanIdentifier";
+      goto LABEL_145;
+    }
+
+    goto LABEL_146;
+  }
+
+  destination = self->_destination;
+  if (destination == 2)
+  {
+    if (!self->_bankName)
+    {
+      v22 = PKLogFacilityTypeGetObject(0xCuLL);
+      if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+      {
+        v46 = objc_opt_class();
+        v24 = NSStringFromClass(v46);
+        *buf = 138543618;
+        v121 = v24;
+        v122 = 2082;
+        v123 = "_bankName";
+        goto LABEL_145;
+      }
+
+      goto LABEL_146;
+    }
+
+    if (!self->_routingNumber)
+    {
+      v22 = PKLogFacilityTypeGetObject(0xCuLL);
+      if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+      {
+        v47 = objc_opt_class();
+        v24 = NSStringFromClass(v47);
+        *buf = 138543618;
+        v121 = v24;
+        v122 = 2082;
+        v123 = "_routingNumber";
+        goto LABEL_145;
+      }
+
+      goto LABEL_146;
+    }
+
+    if (!self->_accountNumber)
+    {
+      v22 = PKLogFacilityTypeGetObject(0xCuLL);
+      if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+      {
+        v103 = objc_opt_class();
+        v24 = NSStringFromClass(v103);
+        *buf = 138543618;
+        v121 = v24;
+        v122 = 2082;
+        v123 = "_accountNumber";
+        goto LABEL_145;
+      }
+
+      goto LABEL_146;
+    }
+  }
+
+  else if (destination == 1)
+  {
+    if (!self->_recipientIdentifier)
+    {
+      v22 = PKLogFacilityTypeGetObject(0xCuLL);
+      if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+      {
+        v45 = objc_opt_class();
+        v24 = NSStringFromClass(v45);
+        *buf = 138543618;
+        v121 = v24;
+        v122 = 2082;
+        v123 = "_recipientIdentifier";
+        goto LABEL_145;
+      }
+
+      goto LABEL_146;
+    }
+
+    if (!self->_senderAddress)
+    {
+      v22 = PKLogFacilityTypeGetObject(0xCuLL);
+      if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+      {
+        v23 = objc_opt_class();
+        v24 = NSStringFromClass(v23);
+        *buf = 138543618;
+        v121 = v24;
+        v122 = 2082;
+        v123 = "_senderAddress";
+LABEL_145:
+        _os_log_impl(&dword_1AD337000, v22, OS_LOG_TYPE_DEFAULT, "Request %{public}@ missing parameter '%{public}s'.", buf, 0x16u);
+
+        goto LABEL_146;
+      }
+
+      goto LABEL_146;
+    }
+  }
+
+  v113 = v18;
+  v22 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v14 endpointComponents:&unk_1F23B4748 queryParameters:0 appleAccountInformation:v15];
+  [v22 setHTTPMethod:@"POST"];
+  [v22 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+  v31 = [MEMORY[0x1E695DF90] dictionary];
+  v112 = v17;
+  if (v17)
+  {
+    v32 = [v17 hexEncoding];
+    [v31 setObject:v32 forKey:@"deviceScore"];
+  }
+
+  if (v113)
+  {
+    [v31 setObject:v113 forKey:@"odiAssessment"];
+  }
+
+  v33 = [v20 dictionaryRepresentation];
+  [v31 setObject:v33 forKey:@"deviceMetadata"];
+
+  [v31 setObject:v16 forKey:@"deviceIdentifier"];
+  [v31 setObject:self->_orderIdentifier forKey:@"orderIdentifier"];
+  amount = self->_amount;
+  if (amount)
+  {
+    v35 = [(NSDecimalNumber *)amount stringValue];
+    [v31 setObject:v35 forKey:@"amount"];
+  }
+
+  currency = self->_currency;
+  if (currency)
+  {
+    [v31 setObject:currency forKey:@"currency"];
+  }
+
+  if (self->_externalFundingSource == 1)
+  {
+    v37 = @"dpan";
+  }
+
+  else
+  {
+    v37 = @"none";
+  }
+
+  v38 = v37;
+  [v31 setObject:v38 forKey:@"externalFundingSource"];
+
+  v39 = self->_source - 1;
+  if (v39 > 2)
+  {
+    v40 = @"unknown";
+  }
+
+  else
+  {
+    v40 = off_1E79E2EE0[v39];
+  }
+
+  [v31 setObject:v40 forKey:@"source"];
+  if (!self->_preserveCurrentBalance)
+  {
+    goto LABEL_63;
+  }
+
+  if (self->_externalFundingSource == 1)
+  {
+    if (self->_dpanIdentifier)
+    {
+      v41 = 1;
+      goto LABEL_64;
+    }
+
+    v43 = PKLogFacilityTypeGetObject(0xCuLL);
+    if (!os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
+    {
+      goto LABEL_62;
+    }
+
+    *buf = 0;
+    v44 = "Ignoring request for preserveCurrentBalance because dpanIdentifier is missing";
+    goto LABEL_61;
+  }
+
+  v43 = PKLogFacilityTypeGetObject(0xCuLL);
+  if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
+  {
+    *buf = 0;
+    v44 = "Ignoring request for preserveCurrentBalance because the externalFundingSourceType is not DPAN";
+LABEL_61:
+    _os_log_impl(&dword_1AD337000, v43, OS_LOG_TYPE_DEFAULT, v44, buf, 2u);
+  }
+
+LABEL_62:
+
+LABEL_63:
+  v41 = 0;
+LABEL_64:
+  v48 = [MEMORY[0x1E696AD98] numberWithBool:v41];
+  [v31 setObject:v48 forKey:@"preserveCurrentBalance"];
+
+  v49 = self->_destination;
+  if (v49)
+  {
+    v50 = PKPeerPaymentQuoteRequestDestinationTypeToString(v49);
+    [v31 setObject:v50 forKey:@"destination"];
+  }
+
+  v51 = self->_source - 1;
+  if (v51 > 2)
+  {
+    v52 = @"unknown";
+  }
+
+  else
+  {
+    v52 = off_1E79E2EE0[v51];
+  }
+
+  [v31 setObject:v52 forKey:@"source"];
+  requestToken = self->_requestToken;
+  if (requestToken && ![(PKPeerPaymentRequestToken *)requestToken isInformalRequestToken])
+  {
+    v54 = [(PKPeerPaymentRequestToken *)self->_requestToken requestToken];
+    [v31 setObject:v54 forKey:@"requestToken"];
+  }
+
+  context = self->_context;
+  if (context > 1)
+  {
+    if (context == 3)
+    {
+      v56 = @"informalRequest";
+      goto LABEL_85;
+    }
+
+    if (context == 2)
+    {
+      v56 = @"formalRequest";
+      goto LABEL_85;
+    }
+
+LABEL_79:
+    v56 = @"unknown";
+    goto LABEL_85;
+  }
+
+  if (context)
+  {
+    if (context == 1)
+    {
+      v56 = @"user";
+LABEL_85:
+      [v31 setObject:v56 forKey:@"context"];
+      goto LABEL_86;
+    }
+
+    goto LABEL_79;
+  }
+
+  v57 = self->_requestToken;
+  if (v57)
+  {
+    v58 = [(PKPeerPaymentRequestToken *)v57 isInformalRequestToken];
+    v59 = @"formalRequest";
+    if (v58)
+    {
+      v59 = @"informalRequest";
+    }
+  }
+
+  else
+  {
+    v59 = @"user";
+  }
+
+  v106 = v59;
+  [v31 setObject:v106 forKey:@"context"];
+
+LABEL_86:
+  if (self->_externalFundingSource == 1 || self->_destination == 4)
+  {
+    dpanIdentifier = self->_dpanIdentifier;
+    if (dpanIdentifier)
+    {
+      [v31 setObject:dpanIdentifier forKey:@"dpanIdentifier"];
+    }
+
+    fpanIdentifier = self->_fpanIdentifier;
+    if (fpanIdentifier)
+    {
+      [v31 setObject:fpanIdentifier forKey:@"fpanIdentifier"];
+    }
+
+    paymentNetwork = self->_paymentNetwork;
+    if (paymentNetwork)
+    {
+      v63 = PKPaymentNetworkNameForPaymentCredentialType(paymentNetwork);
+      [v31 setObject:v63 forKey:@"paymentNetwork"];
+    }
+
+    paymentMethodType = self->_paymentMethodType;
+    if (paymentMethodType)
+    {
+      v65 = PKPaymentMethodTypeToString(paymentMethodType);
+      [v31 setObject:v65 forKey:@"paymentMethodType"];
+    }
+
+    paymentMethodDescription = self->_paymentMethodDescription;
+    if (paymentMethodDescription)
+    {
+      [v31 setObject:paymentMethodDescription forKey:@"paymentMethodDescription"];
+    }
+
+    paymentMethodSuffix = self->_paymentMethodSuffix;
+    if (paymentMethodSuffix)
+    {
+      [v31 setObject:paymentMethodSuffix forKey:@"paymentMethodSuffix"];
+    }
+  }
+
+  v68 = [MEMORY[0x1E696AD98] numberWithBool:self->_hasUpdatedPaymentMethod];
+  [v31 setObject:v68 forKey:@"hasUpdatedPaymentMethod"];
+
+  paymentMode = self->_paymentMode;
+  if (paymentMode)
+  {
+    v70 = PKPeerPaymentPaymentModeToString(paymentMode);
+    [v31 setObject:v70 forKey:@"paymentMode"];
+  }
+
+  v71 = self->_destination;
+  if (v71 > 2)
+  {
+    v17 = v112;
+    if (v71 == 3)
+    {
+      threshold = self->_threshold;
+      if (threshold)
+      {
+        [v31 setObject:threshold forKey:@"threshold"];
+      }
+
+      recurringPaymentIdentifier = self->_recurringPaymentIdentifier;
+      if (!recurringPaymentIdentifier)
+      {
+        goto LABEL_164;
+      }
+
+      v90 = @"recurringPaymentIdentifier";
+    }
+
+    else
+    {
+      if (v71 != 5)
+      {
+        goto LABEL_164;
+      }
+
+      deviceTapFlow = self->_deviceTapFlow;
+      if (!deviceTapFlow)
+      {
+        goto LABEL_164;
+      }
+
+      if (deviceTapFlow == 1)
+      {
+        recurringPaymentIdentifier = @"tapFirst";
+      }
+
+      else
+      {
+        recurringPaymentIdentifier = @"tapLast";
+      }
+
+      v90 = @"deviceTapFlow";
+    }
+
+    [v31 setObject:recurringPaymentIdentifier forKey:v90];
+  }
+
+  else
+  {
+    v17 = v112;
+    if (v71 == 1)
+    {
+      recipientIdentifier = self->_recipientIdentifier;
+      if (recipientIdentifier)
+      {
+        [v31 setObject:recipientIdentifier forKey:@"recipientIdentifier"];
+      }
+
+      senderAddress = self->_senderAddress;
+      if (senderAddress)
+      {
+        v93 = PKIDSNormalizedAddress(senderAddress);
+        if (v93)
+        {
+          [v31 setObject:v93 forKey:@"senderAddress"];
+        }
+      }
+
+      v94 = self->_recurringPaymentIdentifier;
+      if (v94)
+      {
+        [v31 setObject:v94 forKey:@"recurringPaymentIdentifier"];
+      }
+
+      frequency = self->_frequency;
+      if (frequency)
+      {
+        v96 = PKPeerPaymentRecurringPaymentFrequencyToString(frequency);
+        [v31 setObject:v96 forKey:@"frequency"];
+      }
+
+      startDate = self->_startDate;
+      if (startDate)
+      {
+        v98 = [MEMORY[0x1E695DEE8] currentCalendar];
+        v99 = [v98 timeZone];
+        v100 = PKPaymentDateStringFromDateWithTimeZone(startDate, v99);
+        [v31 setObject:v100 forKey:@"startDate"];
+      }
+
+      v17 = v112;
+      if (self->_recurringPaymentIdentifier)
+      {
+        goto LABEL_164;
+      }
+
+      v101 = [MEMORY[0x1E696AD98] numberWithBool:self->_sendImmediately];
+      [v31 setObject:v101 forKey:@"sendImmediately"];
+      goto LABEL_158;
+    }
+
+    if (v71 == 2)
+    {
+      quoteCertificatesResponse = self->_quoteCertificatesResponse;
+      if (quoteCertificatesResponse)
+      {
+        v73 = [(PKPeerPaymentQuoteCertificatesResponse *)quoteCertificatesResponse encryptionVersion];
+        v115 = [v73 isEqualToString:@"EV_ECC_v1-ASN.1"];
+
+        if (v115)
+        {
+          v74 = [MEMORY[0x1E695DF90] dictionary];
+          v75 = v74;
+          bankName = self->_bankName;
+          if (bankName)
+          {
+            [v74 setObject:bankName forKey:@"bankName"];
+          }
+
+          routingNumber = self->_routingNumber;
+          if (routingNumber)
+          {
+            [v75 setObject:routingNumber forKey:@"routingNumber"];
+          }
+
+          v111 = v31;
+          accountNumber = self->_accountNumber;
+          if (accountNumber)
+          {
+            [v75 setObject:accountNumber forKey:@"accountNumber"];
+          }
+
+          v79 = PKLogFacilityTypeGetObject(0xCuLL);
+          if (os_log_type_enabled(v79, OS_LOG_TYPE_DEFAULT))
+          {
+            v116 = MEMORY[0x1E696AEC0];
+            v80 = [v75 allKeys];
+            v117 = [v116 stringWithFormat:@"Encrypted Account Number keys: %@", v80];
+            *buf = 138477827;
+            v121 = v117;
+            _os_log_impl(&dword_1AD337000, v79, OS_LOG_TYPE_DEFAULT, "%{private}@", buf, 0xCu);
+          }
+
+          v81 = v79;
+          v114 = v75;
+          v82 = [objc_opt_class() _HTTPBodyWithDictionary:v75];
+          v83 = [(PKPeerPaymentQuoteCertificatesResponse *)self->_quoteCertificatesResponse encryptionCertificates];
+          v119 = 0;
+          v84 = v82;
+          v85 = PKPeerPaymentEncryptDataWithCertChain(v82, v83, &v119);
+          v118 = v119;
+
+          if (v85)
+          {
+            v86 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v85 encoding:4];
+            v31 = v111;
+            [v111 setObject:v86 forKey:@"encryptedAccountNumbers"];
+            [v111 setObject:@"EV_ECC_v1-ASN.1" forKey:@"encryptionVersion"];
+            v87 = [v118 hexEncoding];
+            [v111 setObject:v87 forKey:@"publicKeyHash"];
+
+            v17 = v112;
+          }
+
+          else
+          {
+            if (os_log_type_enabled(v81, OS_LOG_TYPE_DEFAULT))
+            {
+              *buf = 0;
+              _os_log_impl(&dword_1AD337000, v81, OS_LOG_TYPE_DEFAULT, "Error: Failed to generate encrypted account numbers structure. This is bad!", buf, 2u);
+            }
+
+            v86 = v81;
+            v31 = v111;
+            v17 = v112;
+          }
+
+          goto LABEL_164;
+        }
+
+        v107 = self->_quoteCertificatesResponse;
+        if (v107)
+        {
+          v108 = PKLogFacilityTypeGetObject(0xCuLL);
+          if (os_log_type_enabled(v108, OS_LOG_TYPE_DEFAULT))
+          {
+            v109 = [(PKPeerPaymentQuoteCertificatesResponse *)v107 encryptionVersion];
+            *buf = 138543362;
+            v121 = v109;
+            _os_log_impl(&dword_1AD337000, v108, OS_LOG_TYPE_DEFAULT, "Error: Failed to generate encrypted account numbers structure. Unknown encryption version: %{public}@", buf, 0xCu);
+          }
+
+          goto LABEL_159;
+        }
+      }
+
+      v101 = PKLogFacilityTypeGetObject(0xCuLL);
+      if (os_log_type_enabled(v101, OS_LOG_TYPE_DEFAULT))
+      {
+        *buf = 0;
+        _os_log_impl(&dword_1AD337000, v101, OS_LOG_TYPE_DEFAULT, "Error: Failed to generate encrypted account numbers structure. Missing quoteCertificatesResponse.", buf, 2u);
+      }
+
+LABEL_158:
+
+LABEL_159:
+      v17 = v112;
+    }
+  }
+
+LABEL_164:
+  v110 = [objc_opt_class() _HTTPBodyWithDictionary:v31];
+  [v22 setHTTPBody:v110];
+
+  v104 = [v22 copy];
+  v18 = v113;
+LABEL_147:
+
+  return v104;
+}
+
+- (PKPeerPaymentQuoteRequest)initWithCoder:(id)a3
+{
+  v4 = a3;
+  v46.receiver = self;
+  v46.super_class = PKPeerPaymentQuoteRequest;
+  v5 = [(PKOverlayableWebServiceRequest *)&v46 init];
+  if (v5)
+  {
+    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"orderIdentifier"];
+    orderIdentifier = v5->_orderIdentifier;
+    v5->_orderIdentifier = v6;
+
+    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
+    amount = v5->_amount;
+    v5->_amount = v8;
+
+    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currency"];
+    currency = v5->_currency;
+    v5->_currency = v10;
+
+    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"externalFundingSource"];
+    v5->_externalFundingSource = [v12 unsignedIntegerValue];
+
+    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"destination"];
+    v5->_destination = [v13 unsignedIntegerValue];
+
+    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"context"];
+    v5->_context = [v14 unsignedIntegerValue];
+
+    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"source"];
+    v5->_source = [v15 unsignedIntegerValue];
+
+    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestToken"];
+    requestToken = v5->_requestToken;
+    v5->_requestToken = v16;
+
+    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dpanIdentifier"];
+    dpanIdentifier = v5->_dpanIdentifier;
+    v5->_dpanIdentifier = v18;
+
+    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentNetwork"];
+    v5->_paymentNetwork = [v20 integerValue];
+
+    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentMethodType"];
+    v5->_paymentMethodType = [v21 unsignedIntegerValue];
+
+    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentMethodDescription"];
+    paymentMethodDescription = v5->_paymentMethodDescription;
+    v5->_paymentMethodDescription = v22;
+
+    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentMethodSuffix"];
+    paymentMethodSuffix = v5->_paymentMethodSuffix;
+    v5->_paymentMethodSuffix = v24;
+
+    v5->_hasUpdatedPaymentMethod = [v4 decodeBoolForKey:@"hasUpdatedPaymentMethod"];
+    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recipientIdentifier"];
+    recipientIdentifier = v5->_recipientIdentifier;
+    v5->_recipientIdentifier = v26;
+
+    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"senderAddress"];
+    senderAddress = v5->_senderAddress;
+    v5->_senderAddress = v28;
+
+    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recipientAddress"];
+    recipientAddress = v5->_recipientAddress;
+    v5->_recipientAddress = v30;
+
+    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"routingNumber"];
+    routingNumber = v5->_routingNumber;
+    v5->_routingNumber = v32;
+
+    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountNumber"];
+    accountNumber = v5->_accountNumber;
+    v5->_accountNumber = v34;
+
+    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"quoteCertificatesResponse"];
+    quoteCertificatesResponse = v5->_quoteCertificatesResponse;
+    v5->_quoteCertificatesResponse = v36;
+
+    v5->_preserveCurrentBalance = [v4 decodeBoolForKey:@"preserveCurrentBalance"];
+    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recurringPaymentIdentifier"];
+    recurringPaymentIdentifier = v5->_recurringPaymentIdentifier;
+    v5->_recurringPaymentIdentifier = v38;
+
+    v5->_frequency = [v4 decodeIntegerForKey:@"frequency"];
+    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+    startDate = v5->_startDate;
+    v5->_startDate = v40;
+
+    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"threshold"];
+    threshold = v5->_threshold;
+    v5->_threshold = v42;
+
+    v5->_sendImmediately = [v4 decodeBoolForKey:@"sendImmediately"];
+    v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentMode"];
+    v5->_paymentMode = [v44 unsignedIntegerValue];
+  }
+
+  return v5;
+}
+
+- (void)encodeWithCoder:(id)a3
+{
+  orderIdentifier = self->_orderIdentifier;
+  v5 = a3;
+  [v5 encodeObject:orderIdentifier forKey:@"orderIdentifier"];
+  [v5 encodeObject:self->_amount forKey:@"amount"];
+  [v5 encodeObject:self->_currency forKey:@"currency"];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_externalFundingSource];
+  [v5 encodeObject:v6 forKey:@"externalFundingSource"];
+
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_destination];
+  [v5 encodeObject:v7 forKey:@"destination"];
+
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_context];
+  [v5 encodeObject:v8 forKey:@"context"];
+
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_source];
+  [v5 encodeObject:v9 forKey:@"source"];
+
+  [v5 encodeObject:self->_requestToken forKey:@"requestToken"];
+  [v5 encodeObject:self->_dpanIdentifier forKey:@"dpanIdentifier"];
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:self->_paymentNetwork];
+  [v5 encodeObject:v10 forKey:@"paymentNetwork"];
+
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_paymentMethodType];
+  [v5 encodeObject:v11 forKey:@"paymentMethodType"];
+
+  [v5 encodeObject:self->_paymentMethodDescription forKey:@"paymentMethodDescription"];
+  [v5 encodeObject:self->_paymentMethodSuffix forKey:@"paymentMethodSuffix"];
+  [v5 encodeBool:self->_hasUpdatedPaymentMethod forKey:@"hasUpdatedPaymentMethod"];
+  [v5 encodeObject:self->_recipientIdentifier forKey:@"recipientIdentifier"];
+  [v5 encodeObject:self->_senderAddress forKey:@"senderAddress"];
+  [v5 encodeObject:self->_recipientAddress forKey:@"recipientAddress"];
+  [v5 encodeObject:self->_routingNumber forKey:@"routingNumber"];
+  [v5 encodeObject:self->_accountNumber forKey:@"accountNumber"];
+  [v5 encodeObject:self->_quoteCertificatesResponse forKey:@"quoteCertificatesResponse"];
+  [v5 encodeBool:self->_preserveCurrentBalance forKey:@"preserveCurrentBalance"];
+  [v5 encodeObject:self->_recurringPaymentIdentifier forKey:@"recurringPaymentIdentifier"];
+  [v5 encodeInteger:self->_frequency forKey:@"frequency"];
+  [v5 encodeObject:self->_startDate forKey:@"startDate"];
+  [v5 encodeObject:self->_threshold forKey:@"threshold"];
+  [v5 encodeBool:self->_sendImmediately forKey:@"sendImmediately"];
+  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_paymentMode];
+  [v5 encodeObject:v12 forKey:@"paymentMode"];
+}
+
+- (id)description
+{
+  v3 = MEMORY[0x1E696AD60];
+  v4 = objc_opt_class();
+  v5 = NSStringFromClass(v4);
+  v6 = [v3 stringWithFormat:@"<%@: %p ", v5, self];;
+
+  [v6 appendFormat:@"orderIdentifier: '%@'; ", self->_orderIdentifier];
+  [v6 appendFormat:@"amount: '%@'; ", self->_amount];
+  [v6 appendFormat:@"currency: '%@'; ", self->_currency];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_externalFundingSource];
+  [v6 appendFormat:@"externalFundingSource: '%@'; ", v7];
+
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_destination];
+  [v6 appendFormat:@"destination: '%@'; ", v8];
+
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_context];
+  [v6 appendFormat:@"context: '%@'; ", v9];
+
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_source];
+  [v6 appendFormat:@"source: '%@'; ", v10];
+
+  [v6 appendFormat:@"requestToken: '%@'; ", self->_requestToken];
+  [v6 appendFormat:@"dpanIdentifier: '%@'; ", self->_dpanIdentifier];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:self->_paymentNetwork];
+  [v6 appendFormat:@"paymentNetwork: '%@'; ", v11];
+
+  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_paymentMethodType];
+  [v6 appendFormat:@"paymentMethodType: '%@'; ", v12];
+
+  [v6 appendFormat:@"paymentMethodDescription: '%@'; ", self->_paymentMethodDescription];
+  [v6 appendFormat:@"paymentMethodSuffix: '%@'; ", self->_paymentMethodSuffix];
+  v13 = [MEMORY[0x1E696AD98] numberWithBool:self->_hasUpdatedPaymentMethod];
+  [v6 appendFormat:@"hasUpdatedPaymentMethod: '%@'; ", v13];
+
+  [v6 appendFormat:@"recipientIdentifier: '%@'; ", self->_recipientIdentifier];
+  [v6 appendFormat:@"senderAddress: '%@'; ", self->_senderAddress];
+  [v6 appendFormat:@"recipientAddress: '%@'; ", self->_recipientAddress];
+  [v6 appendFormat:@"routingNumber: '%@'; ", self->_routingNumber];
+  [v6 appendFormat:@"accountNumber: '%@'; ", self->_accountNumber];
+  [v6 appendFormat:@"quoteCertificatesResponse: '%@'; ", self->_quoteCertificatesResponse];
+  v14 = [MEMORY[0x1E696AD98] numberWithBool:self->_preserveCurrentBalance];
+  [v6 appendFormat:@"preserveCurrentBalance: '%@'; ", v14];
+
+  [v6 appendFormat:@"recurringPaymentIdentifier: '%@'; ", self->_recurringPaymentIdentifier];
+  v15 = PKPeerPaymentRecurringPaymentFrequencyToString(self->_frequency);
+  [v6 appendFormat:@"frequency: '%@'; ", v15];
+
+  [v6 appendFormat:@"startDate: '%@'; ", self->_startDate];
+  [v6 appendFormat:@"threshold: '%@'; ", self->_threshold];
+  v16 = [MEMORY[0x1E696AD98] numberWithBool:self->_sendImmediately];
+  [v6 appendFormat:@"sendImmediately: '%@'; ", v16];
+
+  v17 = PKPeerPaymentPaymentModeToString(self->_paymentMode);
+  [v6 appendFormat:@"paymentMode: %@", v17];
+
+  [v6 appendFormat:@">"];
+  v18 = [MEMORY[0x1E696AEC0] stringWithString:v6];
+
+  return v18;
+}
+
+- (unint64_t)hash
+{
+  v3 = [MEMORY[0x1E695DF70] array];
+  v4 = v3;
+  if (self->_orderIdentifier)
+  {
+    [v3 addObject:?];
+  }
+
+  if (self->_amount)
+  {
+    [v4 addObject:?];
+  }
+
+  if (self->_currency)
+  {
+    [v4 addObject:?];
+  }
+
+  if (self->_requestToken)
+  {
+    [v4 addObject:?];
+  }
+
+  if (self->_dpanIdentifier)
+  {
+    [v4 addObject:?];
+  }
+
+  if (self->_paymentMethodDescription)
+  {
+    [v4 addObject:?];
+  }
+
+  if (self->_paymentMethodSuffix)
+  {
+    [v4 addObject:?];
+  }
+
+  if (self->_recipientIdentifier)
+  {
+    [v4 addObject:?];
+  }
+
+  if (self->_senderAddress)
+  {
+    [v4 addObject:?];
+  }
+
+  if (self->_recipientAddress)
+  {
+    [v4 addObject:?];
+  }
+
+  if (self->_routingNumber)
+  {
+    [v4 addObject:?];
+  }
+
+  if (self->_accountNumber)
+  {
+    [v4 addObject:?];
+  }
+
+  if (self->_quoteCertificatesResponse)
+  {
+    [v4 addObject:?];
+  }
+
+  if (self->_recurringPaymentIdentifier)
+  {
+    [v4 addObject:?];
+  }
+
+  if (self->_startDate)
+  {
+    [v4 addObject:?];
+  }
+
+  if (self->_threshold)
+  {
+    [v4 addObject:?];
+  }
+
+  v5 = PKCombinedHash(17, v4);
+  v6 = self->_externalFundingSource - v5 + 32 * v5;
+  v7 = self->_destination - v6 + 32 * v6;
+  v8 = self->_context - v7 + 32 * v7;
+  v9 = self->_source - v8 + 32 * v8;
+  v10 = self->_paymentNetwork - v9 + 32 * v9;
+  v11 = self->_paymentMethodType - v10 + 32 * v10;
+  v12 = self->_hasUpdatedPaymentMethod - v11 + 32 * v11;
+  v13 = self->_preserveCurrentBalance - v12 + 32 * v12;
+  v14 = self->_frequency - v13 + 32 * v13;
+  v15 = self->_sendImmediately - v14 + 32 * v14;
+  v16 = self->_paymentMode - v15 + 32 * v15;
+
+  return v16;
+}
+
+- (BOOL)isEqual:(id)a3
+{
+  v4 = a3;
+  v5 = v4;
+  if (v4 == self)
+  {
+    v6 = 1;
+  }
+
+  else
+  {
+    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPeerPaymentQuoteRequest *)self isEqualToPeerPaymentQuoteRequest:v5];
+  }
+
+  return v6;
+}
+
+- (BOOL)isEqualToPeerPaymentQuoteRequest:(id)a3
+{
+  v4 = a3;
+  orderIdentifier = self->_orderIdentifier;
+  v6 = v4[12];
+  if (orderIdentifier)
+  {
+    v7 = v6 == 0;
+  }
+
+  else
+  {
+    v7 = 1;
+  }
+
+  if (v7)
+  {
+    if (orderIdentifier != v6)
+    {
+      goto LABEL_101;
+    }
+  }
+
+  else if (([(NSString *)orderIdentifier isEqual:?]& 1) == 0)
+  {
+    goto LABEL_101;
+  }
+
+  amount = self->_amount;
+  v9 = v4[13];
+  if (amount)
+  {
+    v10 = v9 == 0;
+  }
+
+  else
+  {
+    v10 = 1;
+  }
+
+  if (v10)
+  {
+    if (amount != v9)
+    {
+      goto LABEL_101;
+    }
+  }
+
+  else if (([(NSDecimalNumber *)amount isEqual:?]& 1) == 0)
+  {
+    goto LABEL_101;
+  }
+
+  currency = self->_currency;
+  v12 = v4[14];
+  if (currency)
+  {
+    v13 = v12 == 0;
+  }
+
+  else
+  {
+    v13 = 1;
+  }
+
+  if (v13)
+  {
+    if (currency != v12)
+    {
+      goto LABEL_101;
+    }
+  }
+
+  else if (([(NSString *)currency isEqual:?]& 1) == 0)
+  {
+    goto LABEL_101;
+  }
+
+  if (self->_externalFundingSource != v4[15] || self->_destination != v4[16] || self->_context != v4[17] || self->_source != v4[18])
+  {
+    goto LABEL_101;
+  }
+
+  requestToken = self->_requestToken;
+  v15 = v4[19];
+  if (requestToken && v15)
+  {
+    if (![(PKPeerPaymentRequestToken *)requestToken isEqual:?])
+    {
+      goto LABEL_101;
+    }
+  }
+
+  else if (requestToken != v15)
+  {
+    goto LABEL_101;
+  }
+
+  dpanIdentifier = self->_dpanIdentifier;
+  v17 = v4[20];
+  if (dpanIdentifier && v17)
+  {
+    if (([(NSString *)dpanIdentifier isEqual:?]& 1) == 0)
+    {
+      goto LABEL_101;
+    }
+  }
+
+  else if (dpanIdentifier != v17)
+  {
+    goto LABEL_101;
+  }
+
+  if (self->_paymentNetwork != v4[22] || self->_paymentMethodType != v4[23])
+  {
+    goto LABEL_101;
+  }
+
+  paymentMethodDescription = self->_paymentMethodDescription;
+  v19 = v4[24];
+  if (paymentMethodDescription && v19)
+  {
+    if (([(NSString *)paymentMethodDescription isEqual:?]& 1) == 0)
+    {
+      goto LABEL_101;
+    }
+  }
+
+  else if (paymentMethodDescription != v19)
+  {
+    goto LABEL_101;
+  }
+
+  paymentMethodSuffix = self->_paymentMethodSuffix;
+  v21 = v4[25];
+  if (paymentMethodSuffix && v21)
+  {
+    if (([(NSString *)paymentMethodSuffix isEqual:?]& 1) == 0)
+    {
+      goto LABEL_101;
+    }
+  }
+
+  else if (paymentMethodSuffix != v21)
+  {
+    goto LABEL_101;
+  }
+
+  if (self->_hasUpdatedPaymentMethod != *(v4 + 89))
+  {
+    goto LABEL_101;
+  }
+
+  recipientIdentifier = self->_recipientIdentifier;
+  v23 = v4[26];
+  if (recipientIdentifier && v23)
+  {
+    if (([(NSString *)recipientIdentifier isEqual:?]& 1) == 0)
+    {
+      goto LABEL_101;
+    }
+  }
+
+  else if (recipientIdentifier != v23)
+  {
+    goto LABEL_101;
+  }
+
+  senderAddress = self->_senderAddress;
+  v25 = v4[27];
+  if (senderAddress && v25)
+  {
+    if (([(NSString *)senderAddress isEqual:?]& 1) == 0)
+    {
+      goto LABEL_101;
+    }
+  }
+
+  else if (senderAddress != v25)
+  {
+    goto LABEL_101;
+  }
+
+  recipientAddress = self->_recipientAddress;
+  v27 = v4[30];
+  if (recipientAddress && v27)
+  {
+    if (([(NSString *)recipientAddress isEqual:?]& 1) == 0)
+    {
+      goto LABEL_101;
+    }
+  }
+
+  else if (recipientAddress != v27)
+  {
+    goto LABEL_101;
+  }
+
+  routingNumber = self->_routingNumber;
+  v29 = v4[33];
+  if (routingNumber && v29)
+  {
+    if (([(NSString *)routingNumber isEqual:?]& 1) == 0)
+    {
+      goto LABEL_101;
+    }
+  }
+
+  else if (routingNumber != v29)
+  {
+    goto LABEL_101;
+  }
+
+  accountNumber = self->_accountNumber;
+  v31 = v4[34];
+  if (accountNumber && v31)
+  {
+    if (([(NSString *)accountNumber isEqual:?]& 1) == 0)
+    {
+      goto LABEL_101;
+    }
+  }
+
+  else if (accountNumber != v31)
+  {
+    goto LABEL_101;
+  }
+
+  quoteCertificatesResponse = self->_quoteCertificatesResponse;
+  v33 = v4[35];
+  if (quoteCertificatesResponse && v33)
+  {
+    if (([(PKPeerPaymentQuoteCertificatesResponse *)quoteCertificatesResponse isEqual:?]& 1) == 0)
+    {
+      goto LABEL_101;
+    }
+  }
+
+  else if (quoteCertificatesResponse != v33)
+  {
+    goto LABEL_101;
+  }
+
+  recurringPaymentIdentifier = self->_recurringPaymentIdentifier;
+  v35 = v4[36];
+  if (recurringPaymentIdentifier && v35)
+  {
+    if (([(NSString *)recurringPaymentIdentifier isEqual:?]& 1) == 0)
+    {
+      goto LABEL_101;
+    }
+  }
+
+  else if (recurringPaymentIdentifier != v35)
+  {
+    goto LABEL_101;
+  }
+
+  startDate = self->_startDate;
+  v37 = v4[38];
+  if (startDate && v37)
+  {
+    if (([(NSDate *)startDate isEqual:?]& 1) == 0)
+    {
+      goto LABEL_101;
+    }
+  }
+
+  else if (startDate != v37)
+  {
+    goto LABEL_101;
+  }
+
+  threshold = self->_threshold;
+  v39 = v4[39];
+  if (!threshold || !v39)
+  {
+    if (threshold == v39)
+    {
+      goto LABEL_97;
+    }
+
+LABEL_101:
+    v40 = 0;
+    goto LABEL_102;
+  }
+
+  if (([(NSDecimalNumber *)threshold isEqual:?]& 1) == 0)
+  {
+    goto LABEL_101;
+  }
+
+LABEL_97:
+  if (self->_frequency != v4[37] || self->_sendImmediately != *(v4 + 90) || self->_paymentMode != v4[28])
+  {
+    goto LABEL_101;
+  }
+
+  v40 = self->_preserveCurrentBalance == *(v4 + 88);
+LABEL_102:
+
+  return v40;
+}
+
+@end

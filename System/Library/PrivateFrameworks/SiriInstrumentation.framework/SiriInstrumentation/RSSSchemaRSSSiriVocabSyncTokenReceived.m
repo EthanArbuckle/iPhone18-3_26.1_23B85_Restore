@@ -1,0 +1,227 @@
+@interface RSSSchemaRSSSiriVocabSyncTokenReceived
+- (BOOL)isEqual:(id)a3;
+- (NSData)jsonData;
+- (RSSSchemaRSSSiriVocabSyncTokenReceived)initWithDictionary:(id)a3;
+- (RSSSchemaRSSSiriVocabSyncTokenReceived)initWithJSON:(id)a3;
+- (id)dictionaryRepresentation;
+- (id)suppressMessageUnderConditions;
+- (unint64_t)hash;
+- (void)setHasSyncTokenTransferLatencyInMs:(BOOL)a3;
+- (void)writeTo:(id)a3;
+@end
+
+@implementation RSSSchemaRSSSiriVocabSyncTokenReceived
+
+- (RSSSchemaRSSSiriVocabSyncTokenReceived)initWithDictionary:(id)a3
+{
+  v4 = a3;
+  v10.receiver = self;
+  v10.super_class = RSSSchemaRSSSiriVocabSyncTokenReceived;
+  v5 = [(RSSSchemaRSSSiriVocabSyncTokenReceived *)&v10 init];
+  if (v5)
+  {
+    v6 = [v4 objectForKeyedSubscript:@"reason"];
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      -[RSSSchemaRSSSiriVocabSyncTokenReceived setReason:](v5, "setReason:", [v6 intValue]);
+    }
+
+    v7 = [v4 objectForKeyedSubscript:@"syncTokenTransferLatencyInMs"];
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      -[RSSSchemaRSSSiriVocabSyncTokenReceived setSyncTokenTransferLatencyInMs:](v5, "setSyncTokenTransferLatencyInMs:", [v7 unsignedLongLongValue]);
+    }
+
+    v8 = v5;
+  }
+
+  return v5;
+}
+
+- (RSSSchemaRSSSiriVocabSyncTokenReceived)initWithJSON:(id)a3
+{
+  v7 = 0;
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  {
+    v5 = 0;
+  }
+
+  else
+  {
+    self = [(RSSSchemaRSSSiriVocabSyncTokenReceived *)self initWithDictionary:v4];
+    v5 = self;
+  }
+
+  return v5;
+}
+
+- (NSData)jsonData
+{
+  v2 = [(RSSSchemaRSSSiriVocabSyncTokenReceived *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  {
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  return v3;
+}
+
+- (id)dictionaryRepresentation
+{
+  v3 = [MEMORY[0x1E695DF90] dictionary];
+  has = self->_has;
+  if (has)
+  {
+    v5 = [(RSSSchemaRSSSiriVocabSyncTokenReceived *)self reason]- 1;
+    if (v5 > 2)
+    {
+      v6 = @"RSSSIRIVOCABSYNCDATATOKENTRANSFERREASON_UNKNOWN";
+    }
+
+    else
+    {
+      v6 = off_1E78E2320[v5];
+    }
+
+    [v3 setObject:v6 forKeyedSubscript:@"reason"];
+    has = self->_has;
+  }
+
+  if ((has & 2) != 0)
+  {
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[RSSSchemaRSSSiriVocabSyncTokenReceived syncTokenTransferLatencyInMs](self, "syncTokenTransferLatencyInMs")}];
+    [v3 setObject:v7 forKeyedSubscript:@"syncTokenTransferLatencyInMs"];
+  }
+
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+
+  return v3;
+}
+
+- (unint64_t)hash
+{
+  if (*&self->_has)
+  {
+    v2 = 2654435761 * self->_reason;
+    if ((*&self->_has & 2) != 0)
+    {
+      goto LABEL_3;
+    }
+
+LABEL_5:
+    v3 = 0;
+    return v3 ^ v2;
+  }
+
+  v2 = 0;
+  if ((*&self->_has & 2) == 0)
+  {
+    goto LABEL_5;
+  }
+
+LABEL_3:
+  v3 = 2654435761u * self->_syncTokenTransferLatencyInMs;
+  return v3 ^ v2;
+}
+
+- (BOOL)isEqual:(id)a3
+{
+  v4 = a3;
+  if (![v4 isMemberOfClass:objc_opt_class()])
+  {
+    goto LABEL_10;
+  }
+
+  has = self->_has;
+  v6 = v4[24];
+  if ((*&has & 1) != (v6 & 1))
+  {
+    goto LABEL_10;
+  }
+
+  if (*&has)
+  {
+    reason = self->_reason;
+    if (reason != [v4 reason])
+    {
+LABEL_10:
+      v10 = 0;
+      goto LABEL_11;
+    }
+
+    has = self->_has;
+    v6 = v4[24];
+  }
+
+  v8 = (*&has >> 1) & 1;
+  if (v8 != ((v6 >> 1) & 1))
+  {
+    goto LABEL_10;
+  }
+
+  if (v8)
+  {
+    syncTokenTransferLatencyInMs = self->_syncTokenTransferLatencyInMs;
+    if (syncTokenTransferLatencyInMs != [v4 syncTokenTransferLatencyInMs])
+    {
+      goto LABEL_10;
+    }
+  }
+
+  v10 = 1;
+LABEL_11:
+
+  return v10;
+}
+
+- (void)writeTo:(id)a3
+{
+  v4 = a3;
+  has = self->_has;
+  v6 = v4;
+  if (has)
+  {
+    PBDataWriterWriteInt32Field();
+    v4 = v6;
+    has = self->_has;
+  }
+
+  if ((has & 2) != 0)
+  {
+    PBDataWriterWriteUint64Field();
+    v4 = v6;
+  }
+}
+
+- (void)setHasSyncTokenTransferLatencyInMs:(BOOL)a3
+{
+  if (a3)
+  {
+    v3 = 2;
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  *&self->_has = *&self->_has & 0xFD | v3;
+}
+
+- (id)suppressMessageUnderConditions
+{
+  v2 = objc_alloc_init(SISensitiveConditionsSet);
+  [(SISensitiveConditionsSet *)v2 addCondition:1];
+
+  return v2;
+}
+
+@end

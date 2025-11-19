@@ -1,0 +1,73 @@
+@interface AVKeyPathFlattener
+- (AVKeyPathFlattener)init;
+- (id)dependentProperty;
+- (id)topLevelDependencyProperty;
+- (void)dealloc;
+- (void)declareKeyPathDependenciesWithRegistry:(id)a3;
+@end
+
+@implementation AVKeyPathFlattener
+
+- (void)declareKeyPathDependenciesWithRegistry:(id)a3
+{
+  v5 = [(AVTwoPartKeyPath *)self->_dependencyKeyPath topLevelPropertyKey];
+  [a3 valueForKey:@"dependentProperty" dependsOnValueAtKeyPath:{-[AVTwoPartKeyPath initWithTopLevelPropertyKey:secondLevelPropertyKey:]([AVTwoPartKeyPath alloc], "initWithTopLevelPropertyKey:secondLevelPropertyKey:", @"topLevelDependencyProperty", -[AVTwoPartKeyPath secondLevelPropertyKey](self->_dependencyKeyPath, "secondLevelPropertyKey"))}];
+  v6 = [[AVTwoPartKeyPath alloc] initWithTopLevelPropertyKey:@"observedObject" secondLevelPropertyKey:v5];
+
+  [a3 valueForKey:@"topLevelDependencyProperty" dependsOnValueAtKeyPath:v6];
+}
+
+- (AVKeyPathFlattener)init
+{
+  v4 = MEMORY[0x1E695DF30];
+  v5 = *MEMORY[0x1E695D920];
+  v6 = NSStringFromSelector(sel_initForObservingValueAtKeyPath_onObject_);
+  v12 = [v4 exceptionWithName:v5 reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"Not available.  Use %@ instead", v7, v8, v9, v10, v11, v6), 0}];
+  objc_exception_throw(v12);
+}
+
+- (void)dealloc
+{
+  [(AVKeyPathDependencyManager *)self->_dependencyManager cancelAllCallbacks];
+
+  v3.receiver = self;
+  v3.super_class = AVKeyPathFlattener;
+  [(AVKeyPathFlattener *)&v3 dealloc];
+}
+
+- (id)topLevelDependencyProperty
+{
+  v3 = [(AVTwoPartKeyPath *)self->_dependencyKeyPath topLevelPropertyKey];
+  v4 = objc_opt_respondsToSelector();
+  observedObject = self->_observedObject;
+  if (v4)
+  {
+
+    return [observedObject valueForKeyForKVO:v3];
+  }
+
+  else
+  {
+
+    return [observedObject valueForKey:v3];
+  }
+}
+
+- (id)dependentProperty
+{
+  v3 = [(AVTwoPartKeyPath *)self->_dependencyKeyPath secondLevelPropertyKey];
+  v4 = [(AVKeyPathFlattener *)self topLevelDependencyProperty];
+  if (objc_opt_respondsToSelector())
+  {
+
+    return [v4 valueForKeyForKVO:v3];
+  }
+
+  else
+  {
+
+    return [v4 valueForKey:v3];
+  }
+}
+
+@end

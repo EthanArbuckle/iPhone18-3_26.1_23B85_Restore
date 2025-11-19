@@ -1,0 +1,14 @@
+@interface DOCItemCollectionViewSectionHeader.SortButtonContainerView
+- (_TtCC26DocumentManagerExecutables34DOCItemCollectionViewSectionHeaderP33_01DF393BC1153E369869A3FC5380444B23SortButtonContainerView)initWithFrame:(CGRect)a3;
+@end
+
+@implementation DOCItemCollectionViewSectionHeader.SortButtonContainerView
+
+- (_TtCC26DocumentManagerExecutables34DOCItemCollectionViewSectionHeaderP33_01DF393BC1153E369869A3FC5380444B23SortButtonContainerView)initWithFrame:(CGRect)a3
+{
+  result = _swift_stdlib_reportUnimplementedInitializer();
+  __break(1u);
+  return result;
+}
+
+@end

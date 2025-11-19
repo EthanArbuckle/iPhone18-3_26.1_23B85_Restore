@@ -1,0 +1,193 @@
+@interface SiriUITextField
++ (id)imageWithImage:(id)a3 tintColor:(id)a4;
+- (CGRect)caretRectForPosition:(id)a3;
+- (CGRect)clearButtonRectForBounds:(CGRect)a3;
+- (CGRect)leftViewRectForBounds:(CGRect)a3;
+- (CGRect)rightViewRectForBounds:(CGRect)a3;
+- (CGRect)textRectForBounds:(CGRect)a3;
+- (SiriUITextField)initWithFrame:(CGRect)a3;
+- (void)_configureClearButton;
+@end
+
+@implementation SiriUITextField
+
+- (SiriUITextField)initWithFrame:(CGRect)a3
+{
+  v6.receiver = self;
+  v6.super_class = SiriUITextField;
+  v3 = [(SiriUITextField *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = v3;
+  if (v3)
+  {
+    [(SiriUITextField *)v3 setRightViewMode:0];
+    [(SiriUITextField *)v4 setClearButtonMode:1];
+    [(SiriUITextField *)v4 setClearButtonStyle:1];
+    [(SiriUITextField *)v4 setLoadKeyboardsForSiriLanguage:1];
+    [(SiriUITextField *)v4 _configureClearButton];
+  }
+
+  return v4;
+}
+
+- (void)_configureClearButton
+{
+  v3 = MEMORY[0x277D755B8];
+  v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+  v5 = [v3 imageNamed:@"clear" inBundle:v4 compatibleWithTraitCollection:0];
+  v6 = [v5 imageWithRenderingMode:2];
+  v12 = [v6 _imageThatSuppressesAccessibilityHairlineThickening];
+
+  v7 = objc_opt_class();
+  v8 = [MEMORY[0x277D75348] whiteColor];
+  v9 = [v7 imageWithImage:v12 tintColor:v8];
+
+  v10 = [(SiriUITextField *)self _clearButton];
+  [v10 setImage:v9 forState:1];
+
+  v11 = [(SiriUITextField *)self _clearButton];
+  [v11 setImage:v9 forState:0];
+}
+
+- (CGRect)textRectForBounds:(CGRect)a3
+{
+  height = a3.size.height;
+  width = a3.size.width;
+  v5 = a3.origin.x + 10.0;
+  v6 = a3.origin.y + 1.0;
+  [(SiriUITextField *)self clearButtonRect];
+  v8 = width - (v7 + 10.0);
+  v9 = v5;
+  v10 = v6;
+  v11 = height;
+  result.size.height = v11;
+  result.size.width = v8;
+  result.origin.y = v10;
+  result.origin.x = v9;
+  return result;
+}
+
+- (CGRect)leftViewRectForBounds:(CGRect)a3
+{
+  v3 = *MEMORY[0x277CBF3A0];
+  v4 = *(MEMORY[0x277CBF3A0] + 8);
+  v5 = *(MEMORY[0x277CBF3A0] + 16);
+  v6 = *(MEMORY[0x277CBF3A0] + 24);
+  result.size.height = v6;
+  result.size.width = v5;
+  result.origin.y = v4;
+  result.origin.x = v3;
+  return result;
+}
+
+- (CGRect)clearButtonRectForBounds:(CGRect)a3
+{
+  v21.receiver = self;
+  v21.super_class = SiriUITextField;
+  [(SiriUITextField *)&v21 clearButtonRectForBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = v4;
+  v7 = v6;
+  v9 = v8;
+  v11 = v10 + -0.5;
+  v12 = MEMORY[0x277CBEAF8];
+  v13 = [MEMORY[0x277CBEAF8] currentLocale];
+  v14 = [v13 languageCode];
+  v15 = [v12 characterDirectionForLanguage:v14];
+
+  if ((((v15 != 2) ^ SiriLanguageIsRTL()) & 1) == 0)
+  {
+    [(SiriUITextField *)self bounds];
+    Width = CGRectGetWidth(v22);
+    v23.origin.x = v5;
+    v23.origin.y = v11;
+    v23.size.width = v7;
+    v23.size.height = v9;
+    v5 = Width - CGRectGetMaxX(v23);
+  }
+
+  v17 = v5;
+  v18 = v11;
+  v19 = v7;
+  v20 = v9;
+  result.size.height = v20;
+  result.size.width = v19;
+  result.origin.y = v18;
+  result.origin.x = v17;
+  return result;
+}
+
+- (CGRect)rightViewRectForBounds:(CGRect)a3
+{
+  v3 = *MEMORY[0x277CBF3A0];
+  v4 = *(MEMORY[0x277CBF3A0] + 8);
+  v5 = *(MEMORY[0x277CBF3A0] + 16);
+  v6 = *(MEMORY[0x277CBF3A0] + 24);
+  result.size.height = v6;
+  result.size.width = v5;
+  result.origin.y = v4;
+  result.origin.x = v3;
+  return result;
+}
+
+- (CGRect)caretRectForPosition:(id)a3
+{
+  v4 = a3;
+  if ([(SiriUITextField *)self isFirstResponder])
+  {
+    v17.receiver = self;
+    v17.super_class = SiriUITextField;
+    [(SiriUITextField *)&v17 caretRectForPosition:v4];
+    v6 = v5;
+    v8 = v7;
+    v10 = v9;
+    v12 = v11;
+  }
+
+  else
+  {
+    v6 = *MEMORY[0x277CBF3A0];
+    v8 = *(MEMORY[0x277CBF3A0] + 8);
+    v10 = *(MEMORY[0x277CBF3A0] + 16);
+    v12 = *(MEMORY[0x277CBF3A0] + 24);
+  }
+
+  v13 = v6;
+  v14 = v8;
+  v15 = v10;
+  v16 = v12;
+  result.size.height = v16;
+  result.size.width = v15;
+  result.origin.y = v14;
+  result.origin.x = v13;
+  return result;
+}
+
++ (id)imageWithImage:(id)a3 tintColor:(id)a4
+{
+  v5 = a4;
+  v6 = a3;
+  [v6 size];
+  UIGraphicsBeginImageContextWithOptions(v17, 0, 0.0);
+  CurrentContext = UIGraphicsGetCurrentContext();
+  v8 = *MEMORY[0x277CBF348];
+  v9 = *(MEMORY[0x277CBF348] + 8);
+  [v6 size];
+  v11 = v10;
+  v13 = v12;
+  CGContextSetBlendMode(CurrentContext, kCGBlendModeNormal);
+  [v6 drawInRect:{v8, v9, v11, v13}];
+
+  CGContextSetBlendMode(CurrentContext, kCGBlendModeSourceIn);
+  [v5 setFill];
+
+  v18.origin.x = v8;
+  v18.origin.y = v9;
+  v18.size.width = v11;
+  v18.size.height = v13;
+  CGContextFillRect(CurrentContext, v18);
+  v14 = UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext();
+
+  return v14;
+}
+
+@end

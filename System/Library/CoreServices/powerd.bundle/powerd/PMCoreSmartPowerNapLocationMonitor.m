@@ -1,0 +1,194 @@
+@interface PMCoreSmartPowerNapLocationMonitor
+- (BOOL)areAllRemoteDevicesAway;
+- (PMCoreSmartPowerNapLocationMonitor)initWithQueue:(id)a3;
+- (id)placeToString:(int)a3;
+- (void)registerForLocalLOISignals;
+- (void)registerForRemoteLOISignals;
+- (void)updateRemoteLOISyncState:(unint64_t)a3;
+@end
+
+@implementation PMCoreSmartPowerNapLocationMonitor
+
+- (PMCoreSmartPowerNapLocationMonitor)initWithQueue:(id)a3
+{
+  v5 = a3;
+  if (qword_1000ACA90 != -1)
+  {
+    sub_100064088();
+  }
+
+  if ((byte_1000ACA88 & 1) != 0 || (v6 = MGGetStringAnswer(), v7 = [v6 isEqualToString:@"iPad"], v6, !v7))
+  {
+    v16 = 0;
+  }
+
+  else
+  {
+    v18.receiver = self;
+    v18.super_class = PMCoreSmartPowerNapLocationMonitor;
+    v8 = [(PMCoreSmartPowerNapLocationMonitor *)&v18 init];
+    if (v8)
+    {
+      v24 = 0;
+      v25 = &v24;
+      v26 = 0x2050000000;
+      v9 = qword_1000ACA98;
+      v27 = qword_1000ACA98;
+      if (!qword_1000ACA98)
+      {
+        *buf = _NSConcreteStackBlock;
+        v20 = 3221225472;
+        v21 = sub_10002C3A4;
+        v22 = &unk_1000994A8;
+        v23 = &v24;
+        sub_10002C3A4(buf);
+        v9 = v25[3];
+      }
+
+      v10 = v9;
+      _Block_object_dispose(&v24, 8);
+      v11 = [[v9 alloc] initWithClientName:@"com.apple.powerd"];
+      contextSyncClient = v8->_contextSyncClient;
+      v8->_contextSyncClient = v11;
+
+      objc_storeStrong(&v8->_queue, a3);
+      v13 = +[NSMutableDictionary dictionary];
+      remoteLOIs = v8->_remoteLOIs;
+      v8->_remoteLOIs = v13;
+
+      [(PMCoreSmartPowerNapLocationMonitor *)v8 registerForLocalLOISignals];
+      [(PMCoreSmartPowerNapLocationMonitor *)v8 registerForRemoteLOISignals];
+      [(PMCoreSmartPowerNapLocationMonitor *)v8 updateRemoteLOISyncState:1];
+    }
+
+    v15 = qword_1000AB9A8;
+    if (os_log_type_enabled(qword_1000AB9A8, OS_LOG_TYPE_DEFAULT))
+    {
+      *buf = 0;
+      _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Initialized CoreSmartPowerNapLocationMonitor", buf, 2u);
+    }
+
+    self = v8;
+    v16 = self;
+  }
+
+  return v16;
+}
+
+- (id)placeToString:(int)a3
+{
+  if (a3 > 4)
+  {
+    return @"Error";
+  }
+
+  else
+  {
+    return off_1000996D0[a3];
+  }
+}
+
+- (void)registerForLocalLOISignals
+{
+  v3 = +[BMStreams semanticLocationStream];
+  if (objc_opt_class())
+  {
+    v4 = [BMBiomeScheduler alloc];
+    v5 = [(PMCoreSmartPowerNapLocationMonitor *)self queue];
+    v6 = [v4 initWithIdentifier:@"com.apple.powerd.biomeLocalLOI" targetQueue:v5];
+
+    v7 = [v3 publisher];
+    v8 = [(PMCoreSmartPowerNapLocationMonitor *)self addCSPNFiltersToBMDSL:v7];
+
+    v9 = [v8 subscribeOn:v6];
+    v11[0] = _NSConcreteStackBlock;
+    v11[1] = 3221225472;
+    v11[2] = sub_10002B780;
+    v11[3] = &unk_100099630;
+    v11[4] = self;
+    v10 = [v9 sinkWithCompletion:&stru_100099608 receiveInput:v11];
+
+    [(PMCoreSmartPowerNapLocationMonitor *)self setSink:v10];
+  }
+}
+
+- (void)registerForRemoteLOISignals
+{
+  v3 = BiomeLibrary();
+  v4 = [v3 ContextSync];
+  v5 = [v4 LOI];
+
+  v6 = [BMBiomeScheduler alloc];
+  v7 = [(PMCoreSmartPowerNapLocationMonitor *)self queue];
+  v8 = [v6 initWithIdentifier:@"com.apple.powerd.biomeRemoteLOI" targetQueue:v7];
+
+  v9 = [v5 DSLPublisher];
+  v10 = [(PMCoreSmartPowerNapLocationMonitor *)self addCSPNFiltersToBMDSL:v9];
+
+  v11 = [v10 subscribeOn:v8];
+  v13[0] = _NSConcreteStackBlock;
+  v13[1] = 3221225472;
+  v13[2] = sub_10002BAF0;
+  v13[3] = &unk_100099630;
+  v13[4] = self;
+  v12 = [v11 sinkWithCompletion:&stru_100099650 receiveInput:v13];
+}
+
+- (void)updateRemoteLOISyncState:(unint64_t)a3
+{
+  v5 = [(PMCoreSmartPowerNapLocationMonitor *)self queue];
+  v6[0] = _NSConcreteStackBlock;
+  v6[1] = 3221225472;
+  v6[2] = sub_10002BE58;
+  v6[3] = &unk_100099678;
+  v6[4] = self;
+  v6[5] = a3;
+  dispatch_async(v5, v6);
+}
+
+- (BOOL)areAllRemoteDevicesAway
+{
+  v15 = 0u;
+  v16 = 0u;
+  v17 = 0u;
+  v18 = 0u;
+  v3 = [(PMCoreSmartPowerNapLocationMonitor *)self remoteLOIs];
+  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  if (v4)
+  {
+    v5 = 0;
+    v6 = *v16;
+    do
+    {
+      for (i = 0; i != v4; i = i + 1)
+      {
+        if (*v16 != v6)
+        {
+          objc_enumerationMutation(v3);
+        }
+
+        v8 = *(*(&v15 + 1) + 8 * i);
+        v9 = [(PMCoreSmartPowerNapLocationMonitor *)self remoteLOIs];
+        v10 = [v9 objectForKeyedSubscript:v8];
+        v11 = [(PMCoreSmartPowerNapLocationMonitor *)self localLOI];
+
+        if (v10 != v11)
+        {
+          ++v5;
+        }
+      }
+
+      v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    }
+
+    while (v4);
+    v4 = v5;
+  }
+
+  v12 = [(PMCoreSmartPowerNapLocationMonitor *)self remoteLOIs];
+  v13 = [v12 count] == v4;
+
+  return v13;
+}
+
+@end

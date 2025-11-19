@@ -1,0 +1,412 @@
+@interface RMConfigurationStatusArchiver
++ (BOOL)_removeStatusFileAndParentIfEmptyAtURL:(id)a3 madeChanges:(BOOL *)a4 error:(id *)a5;
++ (BOOL)_removeStatusFileDirectoryAtURL:(id)a3 madeChanges:(BOOL *)a4 error:(id *)a5;
++ (BOOL)removeAllStatusForStoreIdentifier:(id)a3 error:(id *)a4;
++ (BOOL)removeStatusForStoreIdentifier:(id)a3 declarationIdentifier:(id)a4 declarationServerToken:(id)a5 error:(id *)a6;
++ (BOOL)removeStatusForStoreIdentifier:(id)a3 declarationIdentifier:(id)a4 declarationServerToken:(id)a5 sourceIdentifier:(id)a6 error:(id *)a7;
++ (BOOL)validStatusForStoreIdentifier:(id)a3 declarationIdentifier:(id)a4 serverToken:(id)a5;
++ (id)_getStatusFileURLForStoreIdentifier:(id)a3 declarationIdentifier:(id)a4 declarationServerToken:(id)a5 sourceIdentifier:(id)a6;
++ (id)fileSystemSafeCharacterSet;
++ (id)statusForStoreIdentifier:(id)a3 declarationIdentifier:(id)a4 serverToken:(id)a5;
+@end
+
+@implementation RMConfigurationStatusArchiver
+
++ (id)statusForStoreIdentifier:(id)a3 declarationIdentifier:(id)a4 serverToken:(id)a5
+{
+  v7 = a4;
+  v8 = a5;
+  v9 = [RMConfigurationStatusArchiver _getStatusDirectoryURLWithStoreIdentifier:a3 declarationIdentifier:v7 declarationServerToken:v8 createIfNeeded:0];
+  v10 = +[NSFileManager defaultManager];
+  v11 = [v10 contentsOfDirectoryAtURL:v9 includingPropertiesForKeys:0 options:1 error:0];
+
+  if ([v11 count])
+  {
+    v31 = v8;
+    v32 = v7;
+    v33 = objc_opt_new();
+    v37 = 0u;
+    v38 = 0u;
+    v39 = 0u;
+    v40 = 0u;
+    v29 = v11;
+    v12 = v11;
+    v13 = [v12 countByEnumeratingWithState:&v37 objects:v45 count:16];
+    v30 = v9;
+    if (v13)
+    {
+      v14 = v13;
+      v15 = 0;
+      v16 = *v38;
+      v17 = 1;
+      do
+      {
+        for (i = 0; i != v14; i = i + 1)
+        {
+          v19 = v15;
+          if (*v38 != v16)
+          {
+            objc_enumerationMutation(v12);
+          }
+
+          v20 = *(*(&v37 + 1) + 8 * i);
+          v36 = v15;
+          v21 = [RMJSONUtilities deserializeJSONDictionaryAtFileURL:v20 error:&v36, v29];
+          v15 = v36;
+
+          if (v21)
+          {
+            v22 = [v21 objectForKeyedSubscript:@"valid"];
+            v23 = [v22 BOOLValue];
+
+            v17 &= v23;
+            v24 = [v21 objectForKeyedSubscript:@"reasons"];
+            if (v24)
+            {
+              v34[0] = _NSConcreteStackBlock;
+              v34[1] = 3221225472;
+              v34[2] = sub_1000249E4;
+              v34[3] = &unk_1000D1900;
+              v35 = v33;
+              [v24 enumerateObjectsUsingBlock:v34];
+            }
+          }
+
+          else
+          {
+            v24 = +[RMLog configurationStatusArchiver];
+            if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+            {
+              *buf = 138543362;
+              v44 = v15;
+              _os_log_error_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "Could not deserialize status: %{public}@", buf, 0xCu);
+            }
+          }
+        }
+
+        v14 = [v12 countByEnumeratingWithState:&v37 objects:v45 count:16];
+      }
+
+      while (v14);
+    }
+
+    else
+    {
+      v15 = 0;
+      v17 = 1;
+    }
+
+    v41[0] = @"identifier";
+    v41[1] = @"server-token";
+    v8 = v31;
+    v7 = v32;
+    v42[0] = v32;
+    v42[1] = v31;
+    v41[2] = @"valid";
+    v26 = [NSNumber numberWithBool:v17 & 1];
+    v42[2] = v26;
+    v27 = [NSDictionary dictionaryWithObjects:v42 forKeys:v41 count:3];
+    v25 = [v27 mutableCopy];
+
+    if ([v33 count])
+    {
+      [v25 setObject:v33 forKeyedSubscript:@"reasons"];
+    }
+
+    v11 = v29;
+    v9 = v30;
+  }
+
+  else
+  {
+    v25 = 0;
+  }
+
+  return v25;
+}
+
++ (BOOL)validStatusForStoreIdentifier:(id)a3 declarationIdentifier:(id)a4 serverToken:(id)a5
+{
+  v5 = [RMConfigurationStatusArchiver statusForStoreIdentifier:a3 declarationIdentifier:a4 serverToken:a5];
+  v6 = v5;
+  if (v5)
+  {
+    v7 = [v5 objectForKeyedSubscript:@"valid"];
+    v8 = [v7 BOOLValue];
+  }
+
+  else
+  {
+    v8 = 0;
+  }
+
+  return v8;
+}
+
++ (BOOL)removeStatusForStoreIdentifier:(id)a3 declarationIdentifier:(id)a4 declarationServerToken:(id)a5 error:(id *)a6
+{
+  v8 = [RMConfigurationStatusArchiver _getStatusDirectoryURLWithStoreIdentifier:a3 declarationIdentifier:a4 declarationServerToken:a5 createIfNeeded:0];
+  v14 = 0;
+  v9 = [a1 _removeStatusFileDirectoryAtURL:v8 madeChanges:&v14 error:a6];
+  if (v9 && v14 == 1)
+  {
+    v10 = +[RMSubscribedStatusKeyPathUpdater sharedUpdater];
+    [v10 notifyStatusDidChangeForDeclarations];
+
+    v11 = +[RMStoreController sharedController];
+    [v11 observerStoresDidChange];
+
+    v12 = +[RMStoreController sharedController];
+    [v12 declarationStatusDidChange];
+  }
+
+  return v9;
+}
+
++ (BOOL)removeStatusForStoreIdentifier:(id)a3 declarationIdentifier:(id)a4 declarationServerToken:(id)a5 sourceIdentifier:(id)a6 error:(id *)a7
+{
+  v9 = [a1 _getStatusFileURLForStoreIdentifier:a3 declarationIdentifier:a4 declarationServerToken:a5 sourceIdentifier:a6];
+  v15 = 0;
+  v10 = [a1 _removeStatusFileAndParentIfEmptyAtURL:v9 madeChanges:&v15 error:a7];
+  if (v10 && v15 == 1)
+  {
+    v11 = +[RMSubscribedStatusKeyPathUpdater sharedUpdater];
+    [v11 notifyStatusDidChangeForDeclarations];
+
+    v12 = +[RMStoreController sharedController];
+    [v12 observerStoresDidChange];
+
+    v13 = +[RMStoreController sharedController];
+    [v13 declarationStatusDidChange];
+  }
+
+  return v10;
+}
+
++ (BOOL)removeAllStatusForStoreIdentifier:(id)a3 error:(id *)a4
+{
+  v5 = a3;
+  v6 = [RMLocations statusDirectoryURLCreateIfNeeded:0];
+  v7 = [v6 URLByAppendingPathComponent:v5 isDirectory:1];
+
+  v20 = 0;
+  v8 = +[NSFileManager defaultManager];
+  v9 = [v7 path];
+  v10 = [v8 fileExistsAtPath:v9 isDirectory:&v20];
+
+  if (v10)
+  {
+    v19 = 0;
+    v11 = [v8 removeItemAtURL:v7 error:&v19];
+    v12 = v19;
+    v13 = +[RMLog configurationStatusArchiver];
+    v14 = v13;
+    if (v11)
+    {
+      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+      {
+        sub_100025B10();
+      }
+
+      v15 = +[RMStoreController sharedController];
+      [v15 observerStoresDidChange];
+
+      v16 = +[RMStoreController sharedController];
+      [v16 declarationStatusDidChange];
+    }
+
+    else
+    {
+      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      {
+        sub_100025AA8();
+      }
+
+      if (a4 && v12)
+      {
+        v18 = v12;
+        *a4 = v12;
+      }
+    }
+  }
+
+  else
+  {
+    v12 = +[RMLog configurationStatusArchiver];
+    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+    {
+      sub_100025A40();
+    }
+
+    LOBYTE(v11) = 1;
+  }
+
+  return v11;
+}
+
++ (id)fileSystemSafeCharacterSet
+{
+  if (qword_1000E67E0 != -1)
+  {
+    sub_100025B78();
+  }
+
+  v3 = qword_1000E67D8;
+
+  return v3;
+}
+
++ (id)_getStatusFileURLForStoreIdentifier:(id)a3 declarationIdentifier:(id)a4 declarationServerToken:(id)a5 sourceIdentifier:(id)a6
+{
+  v9 = a6;
+  v10 = [RMConfigurationStatusArchiver _getStatusDirectoryURLWithStoreIdentifier:a3 declarationIdentifier:a4 declarationServerToken:a5 createIfNeeded:1];
+  v11 = [NSString stringWithFormat:@"%@.json", v9];
+
+  v12 = [v10 URLByAppendingPathComponent:v11 isDirectory:0];
+
+  return v12;
+}
+
++ (BOOL)_removeStatusFileDirectoryAtURL:(id)a3 madeChanges:(BOOL *)a4 error:(id *)a5
+{
+  v7 = a3;
+  v18 = 0;
+  v8 = +[NSFileManager defaultManager];
+  v9 = [v7 path];
+  v10 = [v8 fileExistsAtPath:v9 isDirectory:&v18];
+
+  if (v10)
+  {
+    v17 = 0;
+    v11 = [v8 removeItemAtURL:v7 error:&v17];
+    v12 = v17;
+    v13 = +[RMLog configurationStatusArchiver];
+    v14 = v13;
+    if (v11)
+    {
+      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+      {
+        sub_100025CC4();
+      }
+
+      *a4 = 1;
+    }
+
+    else
+    {
+      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      {
+        sub_100025C5C();
+      }
+
+      if (a5 && v12)
+      {
+        v16 = v12;
+        *a5 = v12;
+      }
+    }
+  }
+
+  else
+  {
+    v12 = +[RMLog configurationStatusArchiver];
+    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+    {
+      sub_100025BF4();
+    }
+
+    LOBYTE(v11) = 1;
+  }
+
+  return v11;
+}
+
++ (BOOL)_removeStatusFileAndParentIfEmptyAtURL:(id)a3 madeChanges:(BOOL *)a4 error:(id *)a5
+{
+  v7 = a3;
+  v27 = 0;
+  v8 = +[NSFileManager defaultManager];
+  v9 = [v7 path];
+  v10 = [v8 fileExistsAtPath:v9 isDirectory:&v27];
+
+  if (v10)
+  {
+    v26 = 0;
+    v11 = [v8 removeItemAtURL:v7 error:&v26];
+    v12 = v26;
+    v13 = +[RMLog configurationStatusArchiver];
+    v14 = v13;
+    if (v11)
+    {
+      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+      {
+        sub_100025DFC();
+      }
+
+      v15 = [v7 path];
+      v16 = [v15 stringByDeletingLastPathComponent];
+
+      v17 = [v8 contentsOfDirectoryAtPath:v16 error:0];
+      v18 = v17;
+      if (v17 && ![v17 count])
+      {
+        v25 = v12;
+        v21 = [v8 removeItemAtPath:v16 error:&v25];
+        v19 = v25;
+
+        v22 = +[RMLog configurationStatusArchiver];
+        v23 = v22;
+        if (v21)
+        {
+          if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
+          {
+            sub_100025ECC();
+          }
+        }
+
+        else if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+        {
+          sub_100025E64();
+        }
+      }
+
+      else
+      {
+        v19 = v12;
+      }
+
+      *a4 = 1;
+
+      v12 = v19;
+    }
+
+    else
+    {
+      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      {
+        sub_100025D94();
+      }
+
+      if (a5 && v12)
+      {
+        v20 = v12;
+        *a5 = v12;
+      }
+    }
+  }
+
+  else
+  {
+    v12 = +[RMLog configurationStatusArchiver];
+    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+    {
+      sub_100025D2C();
+    }
+
+    LOBYTE(v11) = 1;
+  }
+
+  return v11;
+}
+
+@end

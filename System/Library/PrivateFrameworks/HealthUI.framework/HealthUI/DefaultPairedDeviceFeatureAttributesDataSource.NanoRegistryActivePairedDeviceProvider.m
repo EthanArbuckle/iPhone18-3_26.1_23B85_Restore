@@ -1,0 +1,14 @@
+@interface DefaultPairedDeviceFeatureAttributesDataSource.NanoRegistryActivePairedDeviceProvider
+- (_TtCC8HealthUI46DefaultPairedDeviceFeatureAttributesDataSourceP33_3C865D9EABCD2E889047E2D14D69B8F938NanoRegistryActivePairedDeviceProvider)init;
+@end
+
+@implementation DefaultPairedDeviceFeatureAttributesDataSource.NanoRegistryActivePairedDeviceProvider
+
+- (_TtCC8HealthUI46DefaultPairedDeviceFeatureAttributesDataSourceP33_3C865D9EABCD2E889047E2D14D69B8F938NanoRegistryActivePairedDeviceProvider)init
+{
+  result = _swift_stdlib_reportUnimplementedInitializer();
+  __break(1u);
+  return result;
+}
+
+@end

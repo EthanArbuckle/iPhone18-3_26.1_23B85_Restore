@@ -1,0 +1,199 @@
+@interface HKMHValenceSummaryQuery
++ (void)configureClientInterface:(id)a3;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)dayIndexRange;
+- (HKMHValenceSummaryQuery)initWithDayIndexRange:(id)a3 gregorianCalendar:(id)a4 predicate:(id)a5 resultsHandler:(id)a6;
+- (void)client_deliverValenceSummary:(id)a3 queryUUID:(id)a4;
+- (void)queue_deliverError:(id)a3;
+- (void)queue_populateConfiguration:(id)a3;
+- (void)queue_queryDidDeactivate:(id)a3;
+- (void)queue_validate;
+@end
+
+@implementation HKMHValenceSummaryQuery
+
+- (HKMHValenceSummaryQuery)initWithDayIndexRange:(id)a3 gregorianCalendar:(id)a4 predicate:(id)a5 resultsHandler:(id)a6
+{
+  var1 = a3.var1;
+  var0 = a3.var0;
+  v12 = a4;
+  v13 = a6;
+  v14 = MEMORY[0x277CCDA38];
+  v15 = a5;
+  v16 = [v14 stateOfMindType];
+  v21.receiver = self;
+  v21.super_class = HKMHValenceSummaryQuery;
+  v17 = [(HKQuery *)&v21 _initWithObjectType:v16 predicate:v15];
+
+  if (v17)
+  {
+    v17->_dayIndexRange.start = var0;
+    v17->_dayIndexRange.duration = var1;
+    objc_storeStrong(&v17->_gregorianCalendar, a4);
+    v18 = [v13 copy];
+    resultsHandler = v17->_resultsHandler;
+    v17->_resultsHandler = v18;
+  }
+
+  return v17;
+}
+
+- (void)client_deliverValenceSummary:(id)a3 queryUUID:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  v8 = [(HKQuery *)self queue];
+  block[0] = MEMORY[0x277D85DD0];
+  block[1] = 3221225472;
+  block[2] = __66__HKMHValenceSummaryQuery_client_deliverValenceSummary_queryUUID___block_invoke;
+  block[3] = &unk_2798A98E0;
+  block[4] = self;
+  v12 = v7;
+  v13 = v6;
+  v9 = v6;
+  v10 = v7;
+  dispatch_async(v8, block);
+}
+
+void __66__HKMHValenceSummaryQuery_client_deliverValenceSummary_queryUUID___block_invoke(uint64_t a1)
+{
+  v16 = *MEMORY[0x277D85DE8];
+  _HKInitializeLogging();
+  v2 = *MEMORY[0x277CCC2F0];
+  if (os_log_type_enabled(*MEMORY[0x277CCC2F0], OS_LOG_TYPE_DEFAULT))
+  {
+    v3 = *(a1 + 32);
+    v4 = v2;
+    *buf = 138543362;
+    v15 = objc_opt_class();
+    v5 = v15;
+    _os_log_impl(&dword_25895E000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received ValenceSummary", buf, 0xCu);
+  }
+
+  v6 = MEMORY[0x259C8F310](*(*(a1 + 32) + 152));
+  v7 = v6;
+  if (v6)
+  {
+    v8 = *(a1 + 32);
+    v9 = *(a1 + 40);
+    v11[0] = MEMORY[0x277D85DD0];
+    v11[1] = 3221225472;
+    v11[2] = __66__HKMHValenceSummaryQuery_client_deliverValenceSummary_queryUUID___block_invoke_292;
+    v11[3] = &unk_2798A98B8;
+    v11[4] = v8;
+    v13 = v6;
+    v12 = *(a1 + 48);
+    [v8 queue_dispatchToClientForUUID:v9 shouldDeactivate:1 block:v11];
+  }
+
+  v10 = *MEMORY[0x277D85DE8];
+}
+
+uint64_t __66__HKMHValenceSummaryQuery_client_deliverValenceSummary_queryUUID___block_invoke_292(void *a1)
+{
+  v11 = *MEMORY[0x277D85DE8];
+  _HKInitializeLogging();
+  v2 = *MEMORY[0x277CCC2F0];
+  if (os_log_type_enabled(*MEMORY[0x277CCC2F0], OS_LOG_TYPE_DEFAULT))
+  {
+    v3 = a1[4];
+    v4 = v2;
+    v9 = 138543362;
+    v10 = objc_opt_class();
+    v5 = v10;
+    _os_log_impl(&dword_25895E000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] Delivering valence summary", &v9, 0xCu);
+  }
+
+  v6 = a1[5];
+  result = (*(a1[6] + 16))(a1[6], a1[4]);
+  v8 = *MEMORY[0x277D85DE8];
+  return result;
+}
+
+- (void)queue_populateConfiguration:(id)a3
+{
+  v5.receiver = self;
+  v5.super_class = HKMHValenceSummaryQuery;
+  v4 = a3;
+  [(HKQuery *)&v5 queue_populateConfiguration:v4];
+  [v4 setDayIndexRange:{self->_dayIndexRange.start, self->_dayIndexRange.duration, v5.receiver, v5.super_class}];
+  [v4 setGregorianCalendar:self->_gregorianCalendar];
+}
+
++ (void)configureClientInterface:(id)a3
+{
+  v4 = a3;
+  v6.receiver = a1;
+  v6.super_class = &OBJC_METACLASS___HKMHValenceSummaryQuery;
+  objc_msgSendSuper2(&v6, sel_configureClientInterface_, v4);
+  v5 = [v4 hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverValenceSummary_queryUUID_ argumentIndex:0 ofReply:0];
+}
+
+- (void)queue_deliverError:(id)a3
+{
+  v4 = a3;
+  v5 = MEMORY[0x259C8F310](self->_resultsHandler);
+  v6 = [(HKQuery *)self clientQueue];
+  block[0] = MEMORY[0x277D85DD0];
+  block[1] = 3221225472;
+  block[2] = __46__HKMHValenceSummaryQuery_queue_deliverError___block_invoke;
+  block[3] = &unk_2798A98B8;
+  v10 = v4;
+  v11 = v5;
+  block[4] = self;
+  v7 = v4;
+  v8 = v5;
+  dispatch_async(v6, block);
+}
+
+uint64_t __46__HKMHValenceSummaryQuery_queue_deliverError___block_invoke(void *a1)
+{
+  v11 = *MEMORY[0x277D85DE8];
+  _HKInitializeLogging();
+  v2 = *MEMORY[0x277CCC2F0];
+  if (os_log_type_enabled(*MEMORY[0x277CCC2F0], OS_LOG_TYPE_DEFAULT))
+  {
+    v3 = a1[4];
+    v4 = v2;
+    v9 = 138543362;
+    v10 = objc_opt_class();
+    v5 = v10;
+    _os_log_impl(&dword_25895E000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] Throwing error", &v9, 0xCu);
+  }
+
+  v6 = a1[5];
+  result = (*(a1[6] + 16))(a1[6], a1[4]);
+  v8 = *MEMORY[0x277D85DE8];
+  return result;
+}
+
+- (void)queue_validate
+{
+  v3.receiver = self;
+  v3.super_class = HKMHValenceSummaryQuery;
+  [(HKQuery *)&v3 queue_validate];
+  if (!self->_resultsHandler)
+  {
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CCE1C8] format:{@"%@ resultsHandler must not be nil", objc_opt_class()}];
+  }
+}
+
+- (void)queue_queryDidDeactivate:(id)a3
+{
+  v5.receiver = self;
+  v5.super_class = HKMHValenceSummaryQuery;
+  [(HKQuery *)&v5 queue_queryDidDeactivate:a3];
+  resultsHandler = self->_resultsHandler;
+  self->_resultsHandler = 0;
+}
+
+- ($0AC6E346AE4835514AAA8AC86D8F4844)dayIndexRange
+{
+  p_dayIndexRange = &self->_dayIndexRange;
+  start = self->_dayIndexRange.start;
+  duration = p_dayIndexRange->duration;
+  result.var1 = duration;
+  result.var0 = start;
+  return result;
+}
+
+@end

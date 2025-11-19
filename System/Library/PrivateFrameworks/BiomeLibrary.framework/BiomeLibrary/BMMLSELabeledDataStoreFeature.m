@@ -1,0 +1,1106 @@
+@interface BMMLSELabeledDataStoreFeature
++ (id)columns;
++ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)protoFields;
+- (BMMLSELabeledDataStoreFeature)initWithFeatureName:(int)a3 featureValue:(id)a4 featureItselfVersion:(id)a5 featureFreshnessInHours:(id)a6 eventVolumeToComputeFeature:(id)a7 timeSpentToComputeFeature:(id)a8;
+- (BMMLSELabeledDataStoreFeature)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)a3;
+- (NSString)description;
+- (id)initByReadFrom:(id)a3;
+- (id)jsonDictionary;
+- (id)serialize;
+- (void)writeTo:(id)a3;
+@end
+
+@implementation BMMLSELabeledDataStoreFeature
+
+- (BOOL)isEqual:(id)a3
+{
+  v4 = a3;
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    v5 = v4;
+    v6 = [(BMMLSELabeledDataStoreFeature *)self featureName];
+    if (v6 == [v5 featureName])
+    {
+      v7 = [(BMMLSELabeledDataStoreFeature *)self featureValue];
+      v8 = [v5 featureValue];
+      v9 = v8;
+      if (v7 == v8)
+      {
+      }
+
+      else
+      {
+        v10 = [(BMMLSELabeledDataStoreFeature *)self featureValue];
+        v11 = [v5 featureValue];
+        v12 = [v10 isEqual:v11];
+
+        if (!v12)
+        {
+          goto LABEL_28;
+        }
+      }
+
+      if (!-[BMMLSELabeledDataStoreFeature hasFeatureItselfVersion](self, "hasFeatureItselfVersion") && ![v5 hasFeatureItselfVersion] || -[BMMLSELabeledDataStoreFeature hasFeatureItselfVersion](self, "hasFeatureItselfVersion") && objc_msgSend(v5, "hasFeatureItselfVersion") && (v14 = -[BMMLSELabeledDataStoreFeature featureItselfVersion](self, "featureItselfVersion"), v14 == objc_msgSend(v5, "featureItselfVersion")))
+      {
+        if (!-[BMMLSELabeledDataStoreFeature hasFeatureFreshnessInHours](self, "hasFeatureFreshnessInHours") && ![v5 hasFeatureFreshnessInHours] || -[BMMLSELabeledDataStoreFeature hasFeatureFreshnessInHours](self, "hasFeatureFreshnessInHours") && objc_msgSend(v5, "hasFeatureFreshnessInHours") && (v15 = -[BMMLSELabeledDataStoreFeature featureFreshnessInHours](self, "featureFreshnessInHours"), v15 == objc_msgSend(v5, "featureFreshnessInHours")))
+        {
+          if (!-[BMMLSELabeledDataStoreFeature hasEventVolumeToComputeFeature](self, "hasEventVolumeToComputeFeature") && ![v5 hasEventVolumeToComputeFeature] || -[BMMLSELabeledDataStoreFeature hasEventVolumeToComputeFeature](self, "hasEventVolumeToComputeFeature") && objc_msgSend(v5, "hasEventVolumeToComputeFeature") && (v16 = -[BMMLSELabeledDataStoreFeature eventVolumeToComputeFeature](self, "eventVolumeToComputeFeature"), v16 == objc_msgSend(v5, "eventVolumeToComputeFeature")))
+          {
+            if (!-[BMMLSELabeledDataStoreFeature hasTimeSpentToComputeFeature](self, "hasTimeSpentToComputeFeature") && ![v5 hasTimeSpentToComputeFeature])
+            {
+              v13 = 1;
+              goto LABEL_29;
+            }
+
+            if (-[BMMLSELabeledDataStoreFeature hasTimeSpentToComputeFeature](self, "hasTimeSpentToComputeFeature") && [v5 hasTimeSpentToComputeFeature])
+            {
+              v17 = [(BMMLSELabeledDataStoreFeature *)self timeSpentToComputeFeature];
+              v13 = v17 == [v5 timeSpentToComputeFeature];
+LABEL_29:
+
+              goto LABEL_30;
+            }
+          }
+        }
+      }
+    }
+
+LABEL_28:
+    v13 = 0;
+    goto LABEL_29;
+  }
+
+  v13 = 0;
+LABEL_30:
+
+  return v13;
+}
+
+- (id)jsonDictionary
+{
+  v24[6] = *MEMORY[0x1E69E9840];
+  v3 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMLSELabeledDataStoreFeature featureName](self, "featureName")}];
+  v4 = [(BMMLSELabeledDataStoreFeature *)self featureValue];
+  v5 = [v4 jsonDictionary];
+
+  if ([(BMMLSELabeledDataStoreFeature *)self hasFeatureItselfVersion])
+  {
+    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMMLSELabeledDataStoreFeature featureItselfVersion](self, "featureItselfVersion")}];
+  }
+
+  else
+  {
+    v6 = 0;
+  }
+
+  if ([(BMMLSELabeledDataStoreFeature *)self hasFeatureFreshnessInHours])
+  {
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMMLSELabeledDataStoreFeature featureFreshnessInHours](self, "featureFreshnessInHours")}];
+  }
+
+  else
+  {
+    v7 = 0;
+  }
+
+  if ([(BMMLSELabeledDataStoreFeature *)self hasEventVolumeToComputeFeature])
+  {
+    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMMLSELabeledDataStoreFeature eventVolumeToComputeFeature](self, "eventVolumeToComputeFeature")}];
+  }
+
+  else
+  {
+    v8 = 0;
+  }
+
+  if ([(BMMLSELabeledDataStoreFeature *)self hasTimeSpentToComputeFeature])
+  {
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMMLSELabeledDataStoreFeature timeSpentToComputeFeature](self, "timeSpentToComputeFeature")}];
+  }
+
+  else
+  {
+    v9 = 0;
+  }
+
+  v23[0] = @"featureName";
+  v10 = v3;
+  if (!v3)
+  {
+    v10 = [MEMORY[0x1E695DFB0] null];
+  }
+
+  v19 = v10;
+  v21 = v5;
+  v24[0] = v10;
+  v23[1] = @"featureValue";
+  v11 = v5;
+  if (!v5)
+  {
+    v11 = [MEMORY[0x1E695DFB0] null];
+  }
+
+  v24[1] = v11;
+  v23[2] = @"featureItselfVersion";
+  v12 = v6;
+  if (!v6)
+  {
+    v12 = [MEMORY[0x1E695DFB0] null];
+  }
+
+  v22 = v3;
+  v24[2] = v12;
+  v23[3] = @"featureFreshnessInHours";
+  v13 = v7;
+  if (!v7)
+  {
+    v13 = [MEMORY[0x1E695DFB0] null];
+  }
+
+  v24[3] = v13;
+  v23[4] = @"eventVolumeToComputeFeature";
+  v14 = v8;
+  if (!v8)
+  {
+    v14 = [MEMORY[0x1E695DFB0] null];
+  }
+
+  v24[4] = v14;
+  v23[5] = @"timeSpentToComputeFeature";
+  v15 = v9;
+  if (!v9)
+  {
+    v15 = [MEMORY[0x1E695DFB0] null];
+  }
+
+  v24[5] = v15;
+  v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:{6, v19}];
+  if (v9)
+  {
+    if (v8)
+    {
+      goto LABEL_27;
+    }
+
+LABEL_36:
+
+    if (v7)
+    {
+      goto LABEL_28;
+    }
+
+    goto LABEL_37;
+  }
+
+  if (!v8)
+  {
+    goto LABEL_36;
+  }
+
+LABEL_27:
+  if (v7)
+  {
+    goto LABEL_28;
+  }
+
+LABEL_37:
+
+LABEL_28:
+  if (!v6)
+  {
+  }
+
+  if (v21)
+  {
+    if (v22)
+    {
+      goto LABEL_32;
+    }
+  }
+
+  else
+  {
+
+    if (v22)
+    {
+      goto LABEL_32;
+    }
+  }
+
+LABEL_32:
+  v17 = *MEMORY[0x1E69E9840];
+
+  return v16;
+}
+
+- (BMMLSELabeledDataStoreFeature)initWithJSONDictionary:(id)a3 error:(id *)a4
+{
+  v72[1] = *MEMORY[0x1E69E9840];
+  v6 = a3;
+  v7 = [v6 objectForKeyedSubscript:@"featureName"];
+  if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  {
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      v9 = v7;
+    }
+
+    else
+    {
+      objc_opt_class();
+      if ((objc_opt_isKindOfClass() & 1) == 0)
+      {
+        if (!a4)
+        {
+          v8 = 0;
+          v20 = 0;
+          goto LABEL_59;
+        }
+
+        v38 = objc_alloc(MEMORY[0x1E696ABC0]);
+        v39 = *MEMORY[0x1E698F240];
+        v71 = *MEMORY[0x1E696A578];
+        v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"featureName"];
+        v72[0] = v21;
+        v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v72 forKeys:&v71 count:1];
+        v40 = [v38 initWithDomain:v39 code:2 userInfo:v11];
+        v8 = 0;
+        v20 = 0;
+        *a4 = v40;
+        goto LABEL_57;
+      }
+
+      v9 = [MEMORY[0x1E696AD98] numberWithInt:BMMLSEVirtualFeatureStoreFeaturefeatureNameFromString(v7)];
+    }
+
+    v8 = v9;
+  }
+
+  else
+  {
+    v8 = 0;
+  }
+
+  v10 = [v6 objectForKeyedSubscript:@"featureValue"];
+  if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  {
+    objc_opt_class();
+    if ((objc_opt_isKindOfClass() & 1) == 0)
+    {
+      if (!a4)
+      {
+        v20 = 0;
+        goto LABEL_58;
+      }
+
+      v55 = v7;
+      v23 = v8;
+      v24 = objc_alloc(MEMORY[0x1E696ABC0]);
+      v25 = *MEMORY[0x1E698F240];
+      v69 = *MEMORY[0x1E696A578];
+      v70 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"featureValue"];
+      v11 = v70;
+      v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v70 forKeys:&v69 count:1];
+      v27 = v24;
+      v8 = v23;
+      v7 = v55;
+      *a4 = [v27 initWithDomain:v25 code:2 userInfo:v26];
+
+      v20 = 0;
+      goto LABEL_56;
+    }
+
+    v21 = v10;
+    v60 = 0;
+    v11 = [[BMMLSELabeledDataStoreFeatureFeatureValue alloc] initWithJSONDictionary:v21 error:&v60];
+    v22 = v60;
+    if (v22)
+    {
+      if (a4)
+      {
+        v22 = v22;
+        *a4 = v22;
+      }
+
+      v20 = 0;
+      goto LABEL_57;
+    }
+  }
+
+  else
+  {
+    v11 = 0;
+  }
+
+  v12 = [v6 objectForKeyedSubscript:@"featureItselfVersion"];
+  v59 = self;
+  if (!v12 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  {
+    v58 = 0;
+LABEL_15:
+    v13 = [v6 objectForKeyedSubscript:@"featureFreshnessInHours"];
+    v53 = v12;
+    if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+    {
+      objc_opt_class();
+      if ((objc_opt_isKindOfClass() & 1) == 0)
+      {
+        if (!a4)
+        {
+          v57 = 0;
+          v20 = 0;
+          goto LABEL_54;
+        }
+
+        v33 = v7;
+        v34 = v8;
+        v35 = objc_alloc(MEMORY[0x1E696ABC0]);
+        v49 = a4;
+        v36 = *MEMORY[0x1E698F240];
+        v65 = *MEMORY[0x1E696A578];
+        v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"featureFreshnessInHours"];
+        v66 = v17;
+        v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v66 forKeys:&v65 count:1];
+        v37 = v35;
+        v8 = v34;
+        v7 = v33;
+        v57 = 0;
+        v20 = 0;
+        *v49 = [v37 initWithDomain:v36 code:2 userInfo:v14];
+        goto LABEL_53;
+      }
+
+      v57 = v13;
+    }
+
+    else
+    {
+      v57 = 0;
+    }
+
+    v14 = [v6 objectForKeyedSubscript:@"eventVolumeToComputeFeature"];
+    v54 = v7;
+    v52 = v11;
+    if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+    {
+      objc_opt_class();
+      if ((objc_opt_isKindOfClass() & 1) == 0)
+      {
+        if (!a4)
+        {
+          v17 = 0;
+          v20 = 0;
+          goto LABEL_53;
+        }
+
+        v16 = v8;
+        v50 = objc_alloc(MEMORY[0x1E696ABC0]);
+        v41 = *MEMORY[0x1E698F240];
+        v63 = *MEMORY[0x1E696A578];
+        v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"eventVolumeToComputeFeature"];
+        v64 = v19;
+        [MEMORY[0x1E695DF20] dictionaryWithObjects:&v64 forKeys:&v63 count:1];
+        v18 = v42 = a4;
+        v43 = [v50 initWithDomain:v41 code:2 userInfo:v18];
+        v17 = 0;
+        v20 = 0;
+        *v42 = v43;
+        goto LABEL_51;
+      }
+
+      v15 = a4;
+      v16 = v8;
+      v17 = v14;
+    }
+
+    else
+    {
+      v15 = a4;
+      v16 = v8;
+      v17 = 0;
+    }
+
+    v18 = [v6 objectForKeyedSubscript:@"timeSpentToComputeFeature"];
+    if (!v18 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    {
+      v19 = 0;
+LABEL_24:
+      v11 = v52;
+      v20 = -[BMMLSELabeledDataStoreFeature initWithFeatureName:featureValue:featureItselfVersion:featureFreshnessInHours:eventVolumeToComputeFeature:timeSpentToComputeFeature:](v59, "initWithFeatureName:featureValue:featureItselfVersion:featureFreshnessInHours:eventVolumeToComputeFeature:timeSpentToComputeFeature:", [v16 intValue], v52, v58, v57, v17, v19);
+      v59 = v20;
+LABEL_52:
+
+      v8 = v16;
+      v7 = v54;
+LABEL_53:
+
+      v12 = v53;
+      goto LABEL_54;
+    }
+
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      v19 = v18;
+      goto LABEL_24;
+    }
+
+    if (v15)
+    {
+      v51 = objc_alloc(MEMORY[0x1E696ABC0]);
+      v48 = *MEMORY[0x1E698F240];
+      v61 = *MEMORY[0x1E696A578];
+      v44 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"timeSpentToComputeFeature"];
+      v62 = v44;
+      v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v62 forKeys:&v61 count:1];
+      *v15 = [v51 initWithDomain:v48 code:2 userInfo:v45];
+    }
+
+    v19 = 0;
+    v20 = 0;
+LABEL_51:
+    v11 = v52;
+    goto LABEL_52;
+  }
+
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    v58 = v12;
+    goto LABEL_15;
+  }
+
+  if (!a4)
+  {
+    v58 = 0;
+    v20 = 0;
+    goto LABEL_55;
+  }
+
+  v56 = v7;
+  v28 = v8;
+  v29 = objc_alloc(MEMORY[0x1E696ABC0]);
+  v30 = *MEMORY[0x1E698F240];
+  v67 = *MEMORY[0x1E696A578];
+  v57 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"featureItselfVersion"];
+  v68 = v57;
+  v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v68 forKeys:&v67 count:1];
+  v31 = v29;
+  v8 = v28;
+  v7 = v56;
+  v32 = [v31 initWithDomain:v30 code:2 userInfo:v13];
+  v58 = 0;
+  v20 = 0;
+  *a4 = v32;
+LABEL_54:
+
+  self = v59;
+LABEL_55:
+
+LABEL_56:
+  v21 = v10;
+LABEL_57:
+
+  v10 = v21;
+LABEL_58:
+
+LABEL_59:
+  v46 = *MEMORY[0x1E69E9840];
+  return v20;
+}
+
+- (id)serialize
+{
+  v3 = objc_opt_new();
+  [(BMMLSELabeledDataStoreFeature *)self writeTo:v3];
+  v4 = [v3 immutableData];
+
+  return v4;
+}
+
+- (void)writeTo:(id)a3
+{
+  v4 = a3;
+  featureName = self->_featureName;
+  PBDataWriterWriteUint32Field();
+  if (self->_featureValue)
+  {
+    PBDataWriterPlaceMark();
+    [(BMMLSELabeledDataStoreFeatureFeatureValue *)self->_featureValue writeTo:v4];
+    PBDataWriterRecallMark();
+  }
+
+  if (self->_hasFeatureItselfVersion)
+  {
+    featureItselfVersion = self->_featureItselfVersion;
+    PBDataWriterWriteUint32Field();
+  }
+
+  if (self->_hasFeatureFreshnessInHours)
+  {
+    featureFreshnessInHours = self->_featureFreshnessInHours;
+    PBDataWriterWriteUint32Field();
+  }
+
+  if (self->_hasEventVolumeToComputeFeature)
+  {
+    eventVolumeToComputeFeature = self->_eventVolumeToComputeFeature;
+    PBDataWriterWriteUint32Field();
+  }
+
+  if (self->_hasTimeSpentToComputeFeature)
+  {
+    timeSpentToComputeFeature = self->_timeSpentToComputeFeature;
+    PBDataWriterWriteUint32Field();
+  }
+}
+
+- (id)initByReadFrom:(id)a3
+{
+  v4 = a3;
+  v54.receiver = self;
+  v54.super_class = BMMLSELabeledDataStoreFeature;
+  v5 = [(BMEventBase *)&v54 init];
+  if (!v5)
+  {
+    goto LABEL_99;
+  }
+
+  v6 = [v4 position];
+  if (v6 < [v4 length])
+  {
+    while (1)
+    {
+      if ([v4 hasError])
+      {
+        goto LABEL_97;
+      }
+
+      v7 = 0;
+      v8 = 0;
+      v9 = 0;
+      while (1)
+      {
+        LOBYTE(v55[0]) = 0;
+        v10 = [v4 position] + 1;
+        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        {
+          v12 = [v4 data];
+          [v12 getBytes:v55 range:{objc_msgSend(v4, "position"), 1}];
+
+          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+        }
+
+        else
+        {
+          [v4 _setError];
+        }
+
+        v9 |= (v55[0] & 0x7F) << v7;
+        if ((v55[0] & 0x80) == 0)
+        {
+          break;
+        }
+
+        v7 += 7;
+        v13 = v8++ >= 9;
+        if (v13)
+        {
+          v14 = 0;
+          goto LABEL_16;
+        }
+      }
+
+      v14 = [v4 hasError] ? 0 : v9;
+LABEL_16:
+      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      {
+        goto LABEL_97;
+      }
+
+      v15 = v14 >> 3;
+      if ((v14 >> 3) > 3)
+      {
+        break;
+      }
+
+      if (v15 == 1)
+      {
+        v29 = 0;
+        v30 = 0;
+        v31 = 0;
+        while (1)
+        {
+          LOBYTE(v55[0]) = 0;
+          v32 = [v4 position] + 1;
+          if (v32 >= [v4 position] && (v33 = objc_msgSend(v4, "position") + 1, v33 <= objc_msgSend(v4, "length")))
+          {
+            v34 = [v4 data];
+            [v34 getBytes:v55 range:{objc_msgSend(v4, "position"), 1}];
+
+            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          }
+
+          else
+          {
+            [v4 _setError];
+          }
+
+          v31 |= (v55[0] & 0x7F) << v29;
+          if ((v55[0] & 0x80) == 0)
+          {
+            break;
+          }
+
+          v29 += 7;
+          if (v30++ > 8)
+          {
+            goto LABEL_77;
+          }
+        }
+
+        if (([v4 hasError] & 1) != 0 || v31 > 0x2C5)
+        {
+LABEL_77:
+          LODWORD(v31) = 0;
+        }
+
+        v5->_featureName = v31;
+        goto LABEL_96;
+      }
+
+      if (v15 != 2)
+      {
+        if (v15 != 3)
+        {
+          goto LABEL_61;
+        }
+
+        v16 = 0;
+        v17 = 0;
+        v18 = 0;
+        v5->_hasFeatureItselfVersion = 1;
+        while (1)
+        {
+          LOBYTE(v55[0]) = 0;
+          v19 = [v4 position] + 1;
+          if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+          {
+            v21 = [v4 data];
+            [v21 getBytes:v55 range:{objc_msgSend(v4, "position"), 1}];
+
+            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          }
+
+          else
+          {
+            [v4 _setError];
+          }
+
+          v18 |= (v55[0] & 0x7F) << v16;
+          if ((v55[0] & 0x80) == 0)
+          {
+            break;
+          }
+
+          v16 += 7;
+          v13 = v17++ >= 9;
+          if (v13)
+          {
+            v22 = 0;
+            goto LABEL_86;
+          }
+        }
+
+        if ([v4 hasError])
+        {
+          v22 = 0;
+        }
+
+        else
+        {
+          v22 = v18;
+        }
+
+LABEL_86:
+        v50 = 28;
+LABEL_95:
+        *(&v5->super.super.isa + v50) = v22;
+        goto LABEL_96;
+      }
+
+      v55[0] = 0;
+      v55[1] = 0;
+      if (!PBReaderPlaceMark())
+      {
+        goto LABEL_98;
+      }
+
+      v42 = [[BMMLSELabeledDataStoreFeatureFeatureValue alloc] initByReadFrom:v4];
+      if (!v42)
+      {
+        goto LABEL_98;
+      }
+
+      featureValue = v5->_featureValue;
+      v5->_featureValue = v42;
+
+      PBReaderRecallMark();
+LABEL_96:
+      v51 = [v4 position];
+      if (v51 >= [v4 length])
+      {
+        goto LABEL_97;
+      }
+    }
+
+    switch(v15)
+    {
+      case 4:
+        v36 = 0;
+        v37 = 0;
+        v38 = 0;
+        v5->_hasFeatureFreshnessInHours = 1;
+        while (1)
+        {
+          LOBYTE(v55[0]) = 0;
+          v39 = [v4 position] + 1;
+          if (v39 >= [v4 position] && (v40 = objc_msgSend(v4, "position") + 1, v40 <= objc_msgSend(v4, "length")))
+          {
+            v41 = [v4 data];
+            [v41 getBytes:v55 range:{objc_msgSend(v4, "position"), 1}];
+
+            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          }
+
+          else
+          {
+            [v4 _setError];
+          }
+
+          v38 |= (v55[0] & 0x7F) << v36;
+          if ((v55[0] & 0x80) == 0)
+          {
+            break;
+          }
+
+          v36 += 7;
+          v13 = v37++ >= 9;
+          if (v13)
+          {
+            v22 = 0;
+            goto LABEL_82;
+          }
+        }
+
+        if ([v4 hasError])
+        {
+          v22 = 0;
+        }
+
+        else
+        {
+          v22 = v38;
+        }
+
+LABEL_82:
+        v50 = 32;
+        break;
+      case 5:
+        v44 = 0;
+        v45 = 0;
+        v46 = 0;
+        v5->_hasEventVolumeToComputeFeature = 1;
+        while (1)
+        {
+          LOBYTE(v55[0]) = 0;
+          v47 = [v4 position] + 1;
+          if (v47 >= [v4 position] && (v48 = objc_msgSend(v4, "position") + 1, v48 <= objc_msgSend(v4, "length")))
+          {
+            v49 = [v4 data];
+            [v49 getBytes:v55 range:{objc_msgSend(v4, "position"), 1}];
+
+            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          }
+
+          else
+          {
+            [v4 _setError];
+          }
+
+          v46 |= (v55[0] & 0x7F) << v44;
+          if ((v55[0] & 0x80) == 0)
+          {
+            break;
+          }
+
+          v44 += 7;
+          v13 = v45++ >= 9;
+          if (v13)
+          {
+            v22 = 0;
+            goto LABEL_94;
+          }
+        }
+
+        if ([v4 hasError])
+        {
+          v22 = 0;
+        }
+
+        else
+        {
+          v22 = v46;
+        }
+
+LABEL_94:
+        v50 = 36;
+        break;
+      case 6:
+        v23 = 0;
+        v24 = 0;
+        v25 = 0;
+        v5->_hasTimeSpentToComputeFeature = 1;
+        while (1)
+        {
+          LOBYTE(v55[0]) = 0;
+          v26 = [v4 position] + 1;
+          if (v26 >= [v4 position] && (v27 = objc_msgSend(v4, "position") + 1, v27 <= objc_msgSend(v4, "length")))
+          {
+            v28 = [v4 data];
+            [v28 getBytes:v55 range:{objc_msgSend(v4, "position"), 1}];
+
+            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          }
+
+          else
+          {
+            [v4 _setError];
+          }
+
+          v25 |= (v55[0] & 0x7F) << v23;
+          if ((v55[0] & 0x80) == 0)
+          {
+            break;
+          }
+
+          v23 += 7;
+          v13 = v24++ >= 9;
+          if (v13)
+          {
+            v22 = 0;
+            goto LABEL_90;
+          }
+        }
+
+        if ([v4 hasError])
+        {
+          v22 = 0;
+        }
+
+        else
+        {
+          v22 = v25;
+        }
+
+LABEL_90:
+        v50 = 40;
+        break;
+      default:
+LABEL_61:
+        if ((PBReaderSkipValueWithTag() & 1) == 0)
+        {
+          goto LABEL_98;
+        }
+
+        goto LABEL_96;
+    }
+
+    goto LABEL_95;
+  }
+
+LABEL_97:
+  if ([v4 hasError])
+  {
+LABEL_98:
+    v52 = 0;
+  }
+
+  else
+  {
+LABEL_99:
+    v52 = v5;
+  }
+
+  return v52;
+}
+
+- (NSString)description
+{
+  v3 = objc_alloc(MEMORY[0x1E696AEC0]);
+  v4 = BMMLSEVirtualFeatureStoreFeaturefeatureNameAsString([(BMMLSELabeledDataStoreFeature *)self featureName]);
+  v5 = [(BMMLSELabeledDataStoreFeature *)self featureValue];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMMLSELabeledDataStoreFeature featureItselfVersion](self, "featureItselfVersion")}];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMMLSELabeledDataStoreFeature featureFreshnessInHours](self, "featureFreshnessInHours")}];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMMLSELabeledDataStoreFeature eventVolumeToComputeFeature](self, "eventVolumeToComputeFeature")}];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMMLSELabeledDataStoreFeature timeSpentToComputeFeature](self, "timeSpentToComputeFeature")}];
+  v10 = [v3 initWithFormat:@"BMMLSELabeledDataStoreFeature with featureName: %@, featureValue: %@, featureItselfVersion: %@, featureFreshnessInHours: %@, eventVolumeToComputeFeature: %@, timeSpentToComputeFeature: %@", v4, v5, v6, v7, v8, v9];
+
+  return v10;
+}
+
+- (BMMLSELabeledDataStoreFeature)initWithFeatureName:(int)a3 featureValue:(id)a4 featureItselfVersion:(id)a5 featureFreshnessInHours:(id)a6 eventVolumeToComputeFeature:(id)a7 timeSpentToComputeFeature:(id)a8
+{
+  v15 = a4;
+  v16 = a5;
+  v17 = a6;
+  v18 = a7;
+  v19 = a8;
+  v26.receiver = self;
+  v26.super_class = BMMLSELabeledDataStoreFeature;
+  v20 = [(BMEventBase *)&v26 init];
+  if (v20)
+  {
+    v20->_dataVersion = [objc_opt_class() latestDataVersion];
+    v20->_featureName = a3;
+    objc_storeStrong(&v20->_featureValue, a4);
+    if (v16)
+    {
+      v20->_hasFeatureItselfVersion = 1;
+      v21 = [v16 unsignedIntValue];
+    }
+
+    else
+    {
+      v21 = 0;
+      v20->_hasFeatureItselfVersion = 0;
+    }
+
+    v20->_featureItselfVersion = v21;
+    if (v17)
+    {
+      v20->_hasFeatureFreshnessInHours = 1;
+      v22 = [v17 unsignedIntValue];
+    }
+
+    else
+    {
+      v22 = 0;
+      v20->_hasFeatureFreshnessInHours = 0;
+    }
+
+    v20->_featureFreshnessInHours = v22;
+    if (v18)
+    {
+      v20->_hasEventVolumeToComputeFeature = 1;
+      v23 = [v18 unsignedIntValue];
+    }
+
+    else
+    {
+      v23 = 0;
+      v20->_hasEventVolumeToComputeFeature = 0;
+    }
+
+    v20->_eventVolumeToComputeFeature = v23;
+    if (v19)
+    {
+      v20->_hasTimeSpentToComputeFeature = 1;
+      v24 = [v19 unsignedIntValue];
+    }
+
+    else
+    {
+      v24 = 0;
+      v20->_hasTimeSpentToComputeFeature = 0;
+    }
+
+    v20->_timeSpentToComputeFeature = v24;
+  }
+
+  return v20;
+}
+
++ (id)protoFields
+{
+  v11[6] = *MEMORY[0x1E69E9840];
+  v2 = [objc_alloc(MEMORY[0x1E698F2C8]) initWithName:@"featureName" number:1 type:4 subMessageClass:0];
+  v11[0] = v2;
+  v3 = [objc_alloc(MEMORY[0x1E698F2C8]) initWithName:@"featureValue" number:2 type:14 subMessageClass:objc_opt_class()];
+  v11[1] = v3;
+  v4 = [objc_alloc(MEMORY[0x1E698F2C8]) initWithName:@"featureItselfVersion" number:3 type:4 subMessageClass:0];
+  v11[2] = v4;
+  v5 = [objc_alloc(MEMORY[0x1E698F2C8]) initWithName:@"featureFreshnessInHours" number:4 type:4 subMessageClass:0];
+  v11[3] = v5;
+  v6 = [objc_alloc(MEMORY[0x1E698F2C8]) initWithName:@"eventVolumeToComputeFeature" number:5 type:4 subMessageClass:0];
+  v11[4] = v6;
+  v7 = [objc_alloc(MEMORY[0x1E698F2C8]) initWithName:@"timeSpentToComputeFeature" number:6 type:4 subMessageClass:0];
+  v11[5] = v7;
+  v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:6];
+
+  v9 = *MEMORY[0x1E69E9840];
+
+  return v8;
+}
+
++ (id)columns
+{
+  v11[6] = *MEMORY[0x1E69E9840];
+  v2 = [objc_alloc(MEMORY[0x1E698F2E8]) initWithName:@"featureName" dataType:0 requestOnly:0 fieldNumber:1 protoDataType:4 convertedType:0];
+  v3 = [objc_alloc(MEMORY[0x1E698F2D8]) initWithName:@"featureValue_json" dataType:5 requestOnly:1 extractBlock:&__block_literal_global_248];
+  v4 = [objc_alloc(MEMORY[0x1E698F2E8]) initWithName:@"featureItselfVersion" dataType:0 requestOnly:0 fieldNumber:3 protoDataType:4 convertedType:0];
+  v5 = [objc_alloc(MEMORY[0x1E698F2E8]) initWithName:@"featureFreshnessInHours" dataType:0 requestOnly:0 fieldNumber:4 protoDataType:4 convertedType:0];
+  v6 = [objc_alloc(MEMORY[0x1E698F2E8]) initWithName:@"eventVolumeToComputeFeature" dataType:0 requestOnly:0 fieldNumber:5 protoDataType:4 convertedType:0];
+  v7 = [objc_alloc(MEMORY[0x1E698F2E8]) initWithName:@"timeSpentToComputeFeature" dataType:0 requestOnly:0 fieldNumber:6 protoDataType:4 convertedType:0];
+  v11[0] = v2;
+  v11[1] = v3;
+  v11[2] = v4;
+  v11[3] = v5;
+  v11[4] = v6;
+  v11[5] = v7;
+  v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:6];
+
+  v9 = *MEMORY[0x1E69E9840];
+
+  return v8;
+}
+
+id __40__BMMLSELabeledDataStoreFeature_columns__block_invoke(uint64_t a1, void *a2)
+{
+  v2 = [a2 eventBodyKeepingBackingData:1];
+  v3 = [v2 featureValue];
+  v4 = [v3 jsonDictionary];
+  v5 = BMConvertObjectToJSONString();
+
+  return v5;
+}
+
++ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
+{
+  if (a4)
+  {
+    v4 = 0;
+  }
+
+  else
+  {
+    v5 = MEMORY[0x1E69C65B8];
+    v6 = a3;
+    v7 = [[v5 alloc] initWithData:v6];
+
+    v8 = [[BMMLSELabeledDataStoreFeature alloc] initByReadFrom:v7];
+    v4 = v8;
+    if (v8)
+    {
+      v8[5] = 0;
+    }
+  }
+
+  return v4;
+}
+
+@end

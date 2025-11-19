@@ -1,0 +1,13 @@
+@interface PRPosterSnapshotDefinition
+@end
+
+@implementation PRPosterSnapshotDefinition
+
+uint64_t __148__PRPosterSnapshotDefinition_AmbientAdditions__defaultAmbientPosterSnapshotDefinitionWithRenderingContent_ambientDisplayStyle_idealizedTime_isIdle___block_invoke()
+{
+  defaultAmbientPosterSnapshotDefinitionWithRenderingContent_ambientDisplayStyle_idealizedTime_isIdle__definitionRegistry = objc_opt_new();
+
+  return MEMORY[0x1EEE66BB8]();
+}
+
+@end

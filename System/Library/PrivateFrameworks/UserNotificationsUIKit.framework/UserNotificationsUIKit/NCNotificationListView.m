@@ -1,0 +1,7863 @@
+@interface NCNotificationListView
+- (BOOL)_animateVisibleRectAdjustmentIfNecessaryWithVisibleRect:(CGRect)a3;
+- (BOOL)_isAlwaysPresentedAtTopOfScreenForView:(id)a3;
+- (BOOL)_isAnimatingForParentNotificationListView;
+- (BOOL)_isCurrentlyInDisplayListAsStackMode;
+- (BOOL)_isFeaturedLeadingViewAtIndex:(unint64_t)a3;
+- (BOOL)_isGrouping;
+- (BOOL)_isLayoutFromBottomUp;
+- (BOOL)_isPerformingContentModification;
+- (BOOL)_isPerformingRollUnderListLayoutForView:(id)a3 atIndex:(unint64_t)a4 viewHeight:(double)a5 atLayoutOffset:(double)MinY targetTransform:(CGAffineTransform *)a7 targetAlpha:(double *)a8 viewFrame:(CGRect *)a9;
+- (BOOL)_isShowingFeaturedLeadingViews;
+- (BOOL)_isTopSubviewHeightLessThanVisibleRect;
+- (BOOL)_isViewWithinVisibleRectForHeight:(double)a3 layoutOffset:(double)a4;
+- (BOOL)_isVisibleView:(id)a3;
+- (BOOL)_shouldAnimateListLayoutForView:(id)a3 atIndex:(unint64_t)a4 isExistingView:(BOOL)a5 isPerformingRollUnderLayout:(BOOL)a6 shouldUpdateTransformedView:(BOOL)a7;
+- (BOOL)_shouldPerformClipping;
+- (BOOL)_shouldRollUnderView:(id)a3 withHeight:(double)a4 layoutOffset:(double)a5;
+- (BOOL)_shouldUpdateTransformedView:(id)a3 toFrame:(CGRect)a4 alpha:(double)a5 transform:(CGAffineTransform *)a6;
+- (BOOL)containsVisibleView:(id)a3;
+- (BOOL)isNotificationListViewCurrentlyVisible;
+- (BOOL)isPerformingRemovalAnimation;
+- (BOOL)isRolledUnderView:(id)a3 atIndex:(unint64_t)a4;
+- (BOOL)isVisibleForViewAtIndex:(unint64_t)a3;
+- (CGAffineTransform)_scaleTransformForGroupingAnimationForViewAtIndex:(SEL)a3 leadingViewHeight:(unint64_t)a4;
+- (CGAffineTransform)_transformForRollUnderForView:(SEL)a3 withHeight:(id)a4 layoutOffset:(double)a5;
+- (CGAffineTransform)overrideTopViewDimmingTransform;
+- (CGRect)_frameForViewAtIndex:(unint64_t)a3;
+- (CGRect)_visibleRect;
+- (CGRect)visibleRect;
+- (CGSize)_scaleForRollUnderView:(id)a3 withHeight:(double)a4 layoutOffset:(double)a5;
+- (CGSize)cachedSize;
+- (CGSize)sizeThatFits:(CGSize)a3;
+- (NCNotificationListView)initWithModelType:(Class)a3 purpose:(id)a4 purposeWithSensitiveTextHashed:(id)a5;
+- (NCNotificationListViewDataSource)dataSource;
+- (NSNumber)distanceScrolledBeyondBottomOfContent;
+- (double)_adjustedFrictionForRevealAnimation;
+- (double)_adjustedTensionForRevealAnimation;
+- (double)_alphaForRollUnderForView:(id)a3 withHeight:(double)a4 layoutOffset:(double)a5;
+- (double)_animationFriction;
+- (double)_animationTension;
+- (double)_bottomSpacingForItemAtIndex:(unint64_t)a3;
+- (double)_calculateSizeForGrouped:(BOOL)a3 size:(CGSize)a4 ignoreFeaturedLeadingView:(BOOL)a5 ignoreExpandedGroupStack:(BOOL)a6 inDisplayListAsStackMode:(BOOL)a7 dynamicGroupedOverlapHeightMultiple:(id)a8;
+- (double)_footerViewHeight;
+- (double)_headerViewHeight;
+- (double)_heightForFeaturedLeadingView;
+- (double)_heightForFeaturedLeadingViewInRect:(CGRect)a3;
+- (double)_initialLayoutOffset;
+- (double)_layoutViewIfNecessaryAtIndex:(unint64_t)a3 layoutOffset:(double)a4 startingLayoutOffset:(double)a5;
+- (double)_positionOffsetForRevealHintingForItemAtIndex:(unint64_t)a3;
+- (double)_resolvedViewOverlap;
+- (double)_revealAnimationDelayForObjectAtIndex:(unint64_t)a3;
+- (double)_rollUnderThresholdOffset;
+- (double)_rollUnderTranslationTopMargin;
+- (double)_targetContentHeightForProposedHeight:(double)a3;
+- (double)_topSpacingForItemAtIndex:(unint64_t)a3;
+- (double)_unclampedTranslationProgressForView:(id)a3 withHeight:(double)a4 layoutOffset:(double)a5;
+- (double)_verticalTranslationForRollUnderView:(id)a3 withHeight:(double)a4 layoutOffset:(double)a5 scale:(CGSize)a6;
+- (double)_verticalTranslationProgressForView:(id)a3 withHeight:(double)a4 layoutOffset:(double)a5;
+- (double)_verticalVelocityForSuperview;
+- (double)_widthForFeaturedLeadingView;
+- (double)_widthForFeaturedLeadingViewInRect:(CGRect)a3;
+- (double)_widthForListViewInRect:(CGRect)a3;
+- (double)calculateSizeForGrouped:(BOOL)a3 ignoreFeaturedLeadingView:(BOOL)a4 ignoreExpandedGroupStack:(BOOL)a5 inDisplayListAsStackMode:(BOOL)a6 dynamicGroupedOverlapHeightMultiple:(id)a7;
+- (double)firstItemOffset;
+- (double)layoutOffsetForViewAtIndex:(unint64_t)a3;
+- (double)stackedItemSizes;
+- (id)_anySuperNotificationListView;
+- (id)_backgroundGlassFromDataSource;
+- (id)_backgroundViewFromDataSource;
+- (id)_currentAnimator;
+- (id)_currentHighFrameRateAnimator;
+- (id)_directSuperListView;
+- (id)_footerViewFromDataSource;
+- (id)_getDepth;
+- (id)_headerViewFromDataSource;
+- (id)_hoverViewFromDataSource;
+- (id)_listViewForView:(id)a3;
+- (id)_overlayViewFromDataSource;
+- (id)_rootSuperListView;
+- (id)_viewForItemAtIndex:(unint64_t)a3;
+- (id)debugDescriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)purposeHashed:(BOOL)a3;
+- (id)succinctDescription;
+- (id)visibleViewAtIndex:(unint64_t)a3;
+- (int64_t)_cachedApparentZDepthOfCoplanarViews;
+- (int64_t)_cachedApparentZDepthOfLastCoplanarView;
+- (int64_t)_cachedApparentZDepthOfNonCoplanarViews;
+- (int64_t)_uncachedApparentZDepthOfCoplanarViews;
+- (int64_t)_uncachedApparentZDepthOfLastCoplanarView;
+- (int64_t)_uncachedApparentZDepthOfNonCoplanarViews;
+- (unint64_t)_bottomTransitionTransformerForView:(id)a3;
+- (unint64_t)count;
+- (unint64_t)effectiveGlassModeFromExistingMode:(unint64_t)a3 shouldHideGlass:(BOOL)a4;
+- (void)_adjustContentSizeHeightIfNecessaryForUpdatedHeight:(double)a3;
+- (void)_adjustContentSizeWidthIfNecessary;
+- (void)_animateVisibleRectHeight:(double)a3;
+- (void)_appendBaseDescriptionToBuilder:(id)a3;
+- (void)_configureClippingIfNecessary;
+- (void)_configureStackDimmingForGroupedView:(id)a3 transform:(CGAffineTransform *)a4;
+- (void)_currentAnimator;
+- (void)_decrementRemovalAnimationCount;
+- (void)_drawRollUnderAreaInDebugViewIfNecessaryWithTopY:(double)a3;
+- (void)_giveDataSourceUpdatedTransformWhichIncludesSubviewsXTranslation;
+- (void)_incrementRemovalAnimationCount;
+- (void)_invalidateCachedApparentZDepths;
+- (void)_layoutBackgroundViewIfNecessary;
+- (void)_layoutFooterViewForGroupingIfNecessary;
+- (void)_layoutFooterViewIfNecessaryAtLayoutOffset:(double)a3;
+- (void)_layoutForGrouping;
+- (void)_layoutForList;
+- (void)_layoutGroupedViewForGroupingLayout:(id)a3 atIndex:(unint64_t)a4 isExistingView:(BOOL)a5 leadingViewHeight:(double)a6 alpha:(double)a7;
+- (void)_layoutHeaderViewForGroupingIfNecessaryWithMaxYOffset:(double)a3;
+- (void)_layoutHeaderViewIfNecessaryAtLayoutOffset:(double)a3;
+- (void)_layoutHiddenViewsForGroupingLayoutIfNecessaryWithLeadingViewHeight:(double)a3;
+- (void)_layoutHoverViewIfNecessary;
+- (void)_layoutLeadingViewForGroupingLayoutIfNecessary:(id)a3 hasShadow:(BOOL)a4 isExistingView:(BOOL)a5;
+- (void)_layoutOverlayViewIfNecessary;
+- (void)_notifyDataSourceViewWillBeRemoved:(id)a3;
+- (void)_performInsertionAnimationForView:(id)a3;
+- (void)_performRemovalAnimationForView:(id)a3 index:(unint64_t)a4 isHorizontallyDisplaced:(BOOL)a5;
+- (void)_performRetargetableAnimationForView:(id)a3 type:(unint64_t)a4 animationBlock:(id)a5 completionBlock:(id)a6;
+- (void)_performViewAnimationBlock:(id)a3 completionBlock:(id)a4 type:(unint64_t)a5;
+- (void)_performViewAnimationBlock:(id)a3 completionBlock:(id)a4 withTension:(double)a5 friction:(double)a6 type:(unint64_t)a7;
+- (void)_recycleViewIfNecessary:(id)a3 withDataSource:(id)a4;
+- (void)_removeAllStoredVisibleViews;
+- (void)_removeStoredVisibleViewAtIndex:(unint64_t)a3;
+- (void)_resetClipping;
+- (void)_setContentHiddenForView:(id)a3 contentHidden:(BOOL)a4;
+- (void)_setHiddenBelowStackForView:(id)a3 hiddenBelowStack:(BOOL)a4;
+- (void)_setNeedsUpdateOfApparentZPositionsOfListCells;
+- (void)_setRevealAlphaForView:(id)a3 desiredAlpha:(double)a4;
+- (void)_setVisibleRectWithoutAlteringAnimations:(CGRect)a3;
+- (void)_setVisibleView:(id)a3 atIndex:(unint64_t)a4;
+- (void)_setupClipping;
+- (void)_setupVisibleRectHeightFloatAnimatablePropertyWithStartingValue:(double)a3;
+- (void)_updateBlurFilterForHeaderView:(id)a3 translation:(double)a4;
+- (void)_updateBottomMarginAdjustmentAnimationForView:(id)a3 isPerformingRollUnderLayout:(BOOL)a4;
+- (void)_updateDebugViewFrame;
+- (void)_updateLayoutParametersForHiddenGroupListViewAnimationForView:(id)a3 targetTransform:(CGAffineTransform *)a4 targetAlpha:(double *)a5;
+- (void)_updateStackedViewsForGrouping:(BOOL)a3;
+- (void)_updateStoredVisibleViewsForViewInsertedAtIndex:(unint64_t)a3;
+- (void)_updateStoredVisibleViewsForViewRemovedAtIndex:(unint64_t)a3;
+- (void)_updateSuperViewLayoutForSizeChangeIfNeeded;
+- (void)_updateTransformedView:(id)a3 toFrame:(CGRect)a4;
+- (void)_updateTransformedView:(id)a3 toFrame:(CGRect)a4 withTransform:(CGAffineTransform *)a5;
+- (void)_updateVisibleViewsForUpdatedVisibleRect:(CGRect)a3;
+- (void)addSubview:(id)a3;
+- (void)bringSubviewToFront:(id)a3;
+- (void)didExitAlwaysOn;
+- (void)didMoveToSuperview;
+- (void)insertViewAtIndex:(unint64_t)a3 animated:(BOOL)a4;
+- (void)invalidateData;
+- (void)layoutSubviews;
+- (void)recycleVisibleViews;
+- (void)reloadFooterViewAnimated:(BOOL)a3;
+- (void)reloadHeaderView;
+- (void)reloadHoverView;
+- (void)reloadViewAtIndex:(unint64_t)a3;
+- (void)removeViewAtIndex:(unint64_t)a3 animated:(BOOL)a4 isHorizontallyDisplaced:(BOOL)a5;
+- (void)revealNotificationContentBelowGroupedViewIfNecessary:(id)a3;
+- (void)setActiveRevealTransitioning:(BOOL)a3;
+- (void)setAdditionalYOffset:(double)a3;
+- (void)setAnimatingAdditionalYOffset:(BOOL)a3;
+- (void)setBounds:(CGRect)a3;
+- (void)setCenter:(CGPoint)a3;
+- (void)setContentSize:(CGSize)a3;
+- (void)setFeaturedLeadingViewOcclusionTranslation:(double)a3;
+- (void)setFrame:(CGRect)a3;
+- (void)setGrouped:(BOOL)a3;
+- (void)setGroupedTranslation:(double)a3;
+- (void)setGroupingViewOverlapCompressionFactor:(double)a3;
+- (void)setHiddenBelowStack:(BOOL)a3;
+- (void)setInteractionTranslation:(double)a3;
+- (void)setInteractionTranslationPercentage:(double)a3;
+- (void)setInteractionVelocity:(double)a3;
+- (void)setMaximumLeadingViewHeight:(double)a3;
+- (void)setNeedsUpdateOfApparentZPositionsOfListCells;
+- (void)setOverrideLeadingViewHeight:(double)a3;
+- (void)setOverrideTopViewDimmingTransform:(CGAffineTransform *)a3;
+- (void)setPerformingContentRevealAnimation:(BOOL)a3;
+- (void)setPreferredBottomTransitionTransformer:(unint64_t)a3;
+- (void)setRevealPercentage:(double)a3;
+- (void)setRevealed:(BOOL)a3;
+- (void)setShowContentForGroupedViews:(BOOL)a3;
+- (void)setSublistsRevealed:(BOOL)a3;
+- (void)setSubviewPerformingGroupingAnimation:(BOOL)a3;
+- (void)setTransform:(CGAffineTransform *)a3;
+- (void)setVisibleRect:(CGRect)a3;
+- (void)setVisibleRectBottomMarginForRollUnder:(double)a3;
+- (void)subviewDidLayout;
+- (void)updateApparentZPositionsOfListCellsGivenApparentZPositionForListView:(int64_t)a3 withRootScrollVelocity:(double)a4 andGlassVisibility:(BOOL)a5;
+- (void)updateBottomViewTransitionStyleWithTraitCollection:(id)a3;
+- (void)updateSubviewTranslation:(double)a3;
+@end
+
+@implementation NCNotificationListView
+
+- (NCNotificationListViewDataSource)dataSource
+{
+  WeakRetained = objc_loadWeakRetained(&self->_dataSource);
+
+  return WeakRetained;
+}
+
+- (double)_rollUnderTranslationTopMargin
+{
+  [(NCNotificationListView *)self bounds];
+  MaxY = CGRectGetMaxY(v9);
+  [(NCNotificationListView *)self _visibleRect];
+  v4 = MaxY - CGRectGetMaxY(v10);
+  if (v4 >= 104.0)
+  {
+    v5 = 1.0;
+  }
+
+  else
+  {
+    v5 = v4 / 104.0;
+  }
+
+  [(NCNotificationListView *)self _rollUnderThresholdOffset];
+  v7 = v6 + v5 * v5 * -52.0;
+  [(NCNotificationListView *)self _drawRollUnderAreaInDebugViewIfNecessaryWithTopY:v7];
+  return v7;
+}
+
+- (double)_rollUnderThresholdOffset
+{
+  [(NCNotificationListView *)self visibleRect];
+  MaxY = CGRectGetMaxY(v6);
+  [(NCNotificationListView *)self visibleRectBottomMarginForRollUnder];
+  return MaxY - v4;
+}
+
+- (double)_footerViewHeight
+{
+  v3 = [(NCNotificationListView *)self dataSource];
+  v4 = 0.0;
+  if (objc_opt_respondsToSelector())
+  {
+    [(NCNotificationListView *)self bounds];
+    [(NCNotificationListView *)self _widthForListViewInRect:?];
+    [v3 footerViewHeightForNotificationList:self withWidth:?];
+    v4 = v5;
+  }
+
+  return v4;
+}
+
+- (void)layoutSubviews
+{
+  v15.receiver = self;
+  v15.super_class = NCNotificationListView;
+  [(NCNotificationListView *)&v15 layoutSubviews];
+  v3 = [(NCNotificationListView *)self dataSource];
+  if (objc_opt_respondsToSelector())
+  {
+    [v3 notificationListWillLayoutSubviews];
+  }
+
+  v4 = [(NCNotificationListView *)self coplanarViewIndices];
+  v5 = [(NCNotificationListView *)self nonCoplanarViewIndices];
+  v6 = objc_alloc_init(MEMORY[0x277CCAB58]);
+  [(NCNotificationListView *)self setCoplanarViewIndices:v6];
+
+  v7 = objc_alloc_init(MEMORY[0x277CCAB58]);
+  [(NCNotificationListView *)self setNonCoplanarViewIndices:v7];
+
+  if ([(NCNotificationListView *)self _isGrouping])
+  {
+    [(NCNotificationListView *)self _layoutForGrouping];
+  }
+
+  else
+  {
+    [(NCNotificationListView *)self _layoutForList];
+  }
+
+  v8 = [(NCNotificationListView *)self coplanarViewIndices];
+  v9 = [(NCNotificationListView *)self nonCoplanarViewIndices];
+  if (self->_needsForcedGlassUpdate || ![v8 isEqual:v4] || (objc_msgSend(v9, "isEqual:", v5) & 1) == 0)
+  {
+    [(NCNotificationListView *)self _invalidateCachedApparentZDepths];
+    [(NCNotificationListView *)self setNeedsUpdateOfApparentZPositionsOfListCells];
+  }
+
+  [(NCNotificationListView *)self alpha];
+  v11 = v10 < 1.0 && [(NCNotificationListView *)self _isGrouping]&& [(NCNotificationListView *)self count]> 1;
+  v12 = [(NCNotificationListView *)self layer];
+  [v12 setAllowsGroupOpacity:v11];
+
+  [(NCNotificationListView *)self _adjustContentSizeWidthIfNecessary];
+  [(NCNotificationListView *)self _layoutBackgroundViewIfNecessary];
+  [(NCNotificationListView *)self _layoutHoverViewIfNecessary];
+  v13 = [(NCNotificationListView *)self insertedViewIndices];
+  [v13 removeAllObjects];
+
+  v14 = [(NCNotificationListView *)self reloadedViewIndices];
+  [v14 removeAllObjects];
+
+  [(NCNotificationListView *)self setRemovedViewIndex:0x7FFFFFFFFFFFFFFFLL];
+  [(NCNotificationListView *)self setPerformingGroupingAnimation:0];
+  [(NCNotificationListView *)self setSubviewPerformingGroupingAnimation:0];
+  [(NCNotificationListView *)self setPerformingRevealAnimation:0];
+  [(NCNotificationListView *)self setPerformingHeaderReloadAnimation:0];
+  [(NCNotificationListView *)self setPerformingContentRevealAnimation:0];
+  [(NCNotificationListView *)self setPerformingVisibleRectAdjustment:0];
+  [(NCNotificationListView *)self setPerformingStackVisibilityAnimation:0];
+  [(NCNotificationListView *)self setPerformingInteractiveTranslationAnimation:0];
+  [(NCNotificationListView *)self setPerformingRevealTransitionAnimation:0];
+  [(NCNotificationListView *)self setPerformingBottomMarginAdjustmentAnimation:0];
+  [(NCNotificationListView *)self setPerformingInteractionVelocityAnimation:0];
+  [(NCNotificationListView *)self setPerformingOverrideLeadingViewHeightAdjustment:0];
+  [(NCNotificationListView *)self visibleRect];
+  [(NCNotificationListView *)self _updateVisibleViewsForUpdatedVisibleRect:?];
+  [(NCNotificationListView *)self _layoutOverlayViewIfNecessary];
+  [(NCNotificationListView *)self setPerformedFirstLayout:1];
+  if (objc_opt_respondsToSelector())
+  {
+    [v3 notificationListDidLayoutSubviews];
+  }
+}
+
+- (BOOL)_isGrouping
+{
+  v3 = [(NCNotificationListView *)self isGrouped];
+  if (v3)
+  {
+
+    LOBYTE(v3) = [(NCNotificationListView *)self supportsGrouping];
+  }
+
+  return v3;
+}
+
+- (void)_layoutForList
+{
+  [(NCNotificationListView *)self _initialLayoutOffset];
+  v4 = v3;
+  [(NCNotificationListView *)self _layoutHeaderViewIfNecessaryAtLayoutOffset:?];
+  [(NCNotificationListView *)self _headerViewHeight];
+  v5 = 0.0;
+  v7 = v6 <= 0.0;
+  v8 = 0.0;
+  if (!v7)
+  {
+    [(NCNotificationListView *)self _headerViewHeight];
+    v10 = v9;
+    [(NCListAnimationSettings *)self->_animationSettings headerSpacing];
+    v8 = v10 + v11;
+  }
+
+  v12 = v4 + v8;
+  v13 = [(NCNotificationListView *)self count];
+  if (v13)
+  {
+    v14 = v13;
+    [(NCNotificationListView *)self _topSpacingForItemAtIndex:0];
+    v15 = 0;
+    v16 = 0;
+    v12 = v12 + v17;
+    MinY = v12;
+    do
+    {
+      v19 = [(NCNotificationListView *)self visibleViewAtIndex:v15];
+      v20 = [(NCNotificationListView *)self _listViewForView:v19];
+      v21 = v20;
+      if (v20 && ([v20 isRevealed] & 1) == 0 && !-[NCNotificationListView isActiveRevealTransitioning](self, "isActiveRevealTransitioning"))
+      {
+        v22 = [(NCNotificationListView *)self _isTopSubviewHeightLessThanVisibleRect];
+        v23 = 100.0;
+        if (v22)
+        {
+          v23 = 0.0;
+        }
+
+        v24 = v12 + v23;
+        [(NCNotificationListView *)self _topSpacingForItemAtIndex:v15];
+        v5 = v24 - v25;
+        v16 = 1;
+      }
+
+      if (!v15)
+      {
+        [v19 frame];
+        MinY = CGRectGetMinY(v43);
+      }
+
+      [(NCNotificationListView *)self _layoutViewIfNecessaryAtIndex:v15 layoutOffset:v12 startingLayoutOffset:MinY];
+      v27 = v26;
+      if (v26 > v12 + 0.001)
+      {
+        [(NCNotificationListView *)self _bottomSpacingForItemAtIndex:v15];
+        v29 = v27 + v28;
+        [v21 additionalBottomSpace];
+        v12 = v29 + v30;
+      }
+
+      [(NCNotificationListView *)self sendSubviewToBack:v19];
+
+      ++v15;
+    }
+
+    while (v14 != v15);
+  }
+
+  else
+  {
+    v16 = 0;
+  }
+
+  [(NCNotificationListView *)self footerViewVerticalMargin];
+  [(NCNotificationListView *)self _layoutFooterViewIfNecessaryAtLayoutOffset:v12 + v31];
+  [(NCNotificationListView *)self _footerViewHeight];
+  v32 = 0.0;
+  if (v33 > 0.0)
+  {
+    [(NCNotificationListView *)self _footerViewHeight];
+    v35 = v34;
+    [(NCNotificationListView *)self footerViewVerticalMargin];
+    v32 = v35 + v36;
+  }
+
+  v37 = [(NCNotificationListView *)self isPerformingHeaderGroupingAnimation];
+  v38 = [(NCNotificationListView *)self headerView];
+  if (v37)
+  {
+    [(NCNotificationListView *)self sendSubviewToBack:v38];
+  }
+
+  else
+  {
+    [(NCNotificationListView *)self bringSubviewToFront:v38];
+  }
+
+  v39 = v12 + v32;
+  v40 = [(NCNotificationListView *)self footerView];
+  [(NCNotificationListView *)self sendSubviewToBack:v40];
+
+  if (v16)
+  {
+    v41 = v5;
+  }
+
+  else
+  {
+    v41 = v39;
+  }
+
+  if (v41 < 0.0)
+  {
+    v41 = 0.0;
+  }
+
+  [(NCNotificationListView *)self _adjustContentSizeHeightIfNecessaryForUpdatedHeight:v41];
+}
+
+- (double)_initialLayoutOffset
+{
+  if (![(NCNotificationListView *)self layoutFromBottom])
+  {
+    return 0.0;
+  }
+
+  v3 = [(NCNotificationListView *)self dataSource];
+  [(NCNotificationListView *)self bounds];
+  [(NCNotificationListView *)self _widthForListViewInRect:?];
+  v5 = v4;
+  if ([(NCNotificationListView *)self areSublistsRevealed]&& ![(NCNotificationListView *)self isActiveRevealTransitioning])
+  {
+    v6 = [(NCNotificationListView *)self count];
+  }
+
+  else
+  {
+    v6 = [(NCNotificationListView *)self indexForReveal];
+  }
+
+  v8 = v6;
+  v9 = 0.0;
+  if (v6)
+  {
+    v10 = 0;
+    do
+    {
+      [v3 notificationListView:self heightForItemAtIndex:v10 withWidth:-[NCNotificationListView _isCurrentlyInDisplayListAsStackMode](self inDisplayListAsStackMode:"_isCurrentlyInDisplayListAsStackMode") ignoreExpandedGroupStack:{0, v5}];
+      if (v11 > 0.0)
+      {
+        v12 = v11;
+        if (!v10)
+        {
+          [(NCNotificationListView *)self _topSpacingForItemAtIndex:0];
+          v9 = v9 + v13;
+        }
+
+        [(NCNotificationListView *)self _bottomSpacingForItemAtIndex:v10];
+        v9 = v9 + v12 + v14;
+      }
+
+      ++v10;
+    }
+
+    while (v8 != v10);
+  }
+
+  [(NCNotificationListView *)self visibleRectBottomMarginForRollUnder];
+  [(NCNotificationListView *)self bounds];
+  CGRectGetHeight(v18);
+  [(NCNotificationListView *)self contentInset];
+  [(NCNotificationListView *)self interactionTranslation];
+  v15 = [(NCNotificationListView *)self traitCollection];
+  [v15 displayScale];
+  UIFloorToScale();
+  v17 = v16;
+
+  return v17;
+}
+
+- (double)_headerViewHeight
+{
+  v3 = [(NCNotificationListView *)self dataSource];
+  v4 = 0.0;
+  if (objc_opt_respondsToSelector())
+  {
+    [(NCNotificationListView *)self bounds];
+    [(NCNotificationListView *)self _widthForListViewInRect:?];
+    [v3 headerViewHeightForNotificationList:self withWidth:?];
+    v4 = v5;
+  }
+
+  return v4;
+}
+
+- (CGRect)visibleRect
+{
+  if (self->_visibleRectIsBounds)
+  {
+    [(NCNotificationListView *)self bounds];
+  }
+
+  else
+  {
+    [(NCNotificationListView *)self _visibleRect];
+  }
+
+  result.size.height = v5;
+  result.size.width = v4;
+  result.origin.y = v3;
+  result.origin.x = v2;
+  return result;
+}
+
+- (CGRect)_visibleRect
+{
+  x = self->__visibleRect.origin.x;
+  y = self->__visibleRect.origin.y;
+  width = self->__visibleRect.size.width;
+  height = self->__visibleRect.size.height;
+  result.size.height = height;
+  result.size.width = width;
+  result.origin.y = y;
+  result.origin.x = x;
+  return result;
+}
+
+- (id)_headerViewFromDataSource
+{
+  v3 = [(NCNotificationListView *)self dataSource];
+  if (objc_opt_respondsToSelector())
+  {
+    v4 = [v3 headerViewForNotificationList:self];
+  }
+
+  else
+  {
+    v4 = 0;
+  }
+
+  return v4;
+}
+
+- (unint64_t)count
+{
+  v3 = [(NCNotificationListView *)self dataSource];
+  v4 = [v3 notificationListViewNumberOfItems:self];
+
+  return v4;
+}
+
+- (BOOL)_isCurrentlyInDisplayListAsStackMode
+{
+  v3 = [(NCNotificationListView *)self dataSource];
+  if (objc_opt_respondsToSelector())
+  {
+    v4 = [v3 isCurrentlyInDisplayListAsStackMode:self];
+  }
+
+  else
+  {
+    v4 = 0;
+  }
+
+  return v4;
+}
+
+- (CGSize)cachedSize
+{
+  width = self->_cachedSize.width;
+  height = self->_cachedSize.height;
+  result.height = height;
+  result.width = width;
+  return result;
+}
+
+- (void)_giveDataSourceUpdatedTransformWhichIncludesSubviewsXTranslation
+{
+  v3 = [(NCNotificationListView *)self _directSuperListView];
+  v4 = [v3 dataSource];
+  if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
+  {
+    memset(&v9, 0, sizeof(v9));
+    [(NCNotificationListView *)self groupedTranslation];
+    CGAffineTransformMakeTranslation(&v9, v5, 0.0);
+    memset(&v8, 0, sizeof(v8));
+    [(NCNotificationListView *)self transform];
+    v6 = v9;
+    CGAffineTransformConcat(&v8, &t1, &v6);
+    t1 = v8;
+    [v4 notificationListView:v3 changingTransformOfView:self toTransform:&t1];
+  }
+}
+
+- (id)_directSuperListView
+{
+  v2 = [(NCNotificationListView *)self superview];
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    v3 = v2;
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  v4 = v3;
+
+  return v3;
+}
+
+- (void)_invalidateCachedApparentZDepths
+{
+  self->_cachedApparentZDepthOfLastCoplanarView = 0x8000000000000000;
+  self->_cachedApparentZDepthOfCoplanarViews = 0x8000000000000000;
+  self->_cachedApparentZDepthOfNonCoplanarViews = 0x8000000000000000;
+  v2 = [(NCNotificationListView *)self _directSuperListView];
+  [v2 _invalidateCachedApparentZDepths];
+}
+
+- (void)setNeedsUpdateOfApparentZPositionsOfListCells
+{
+  v3 = [(NCNotificationListView *)self _rootSuperListView];
+  v4 = v3;
+  if (v3)
+  {
+    v5 = v3;
+  }
+
+  else
+  {
+    v5 = self;
+  }
+
+  v6 = v5;
+
+  [(NCNotificationListView *)v6 _setNeedsUpdateOfApparentZPositionsOfListCells];
+}
+
+- (id)_rootSuperListView
+{
+  v2 = [(NCNotificationListView *)self superview];
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    v3 = [v2 _rootSuperListView];
+    v4 = v3;
+    if (v3)
+    {
+      v5 = v3;
+    }
+
+    else
+    {
+      v5 = v2;
+    }
+
+    v6 = v5;
+  }
+
+  else
+  {
+    v6 = 0;
+  }
+
+  return v6;
+}
+
+- (void)_adjustContentSizeWidthIfNecessary
+{
+  [(NCNotificationListView *)self frame];
+  Width = CGRectGetWidth(v6);
+  [(NCNotificationListView *)self contentSize];
+  if (vabdd_f64(v4, Width) >= 2.22044605e-16)
+  {
+
+    [(NCNotificationListView *)self setContentSize:Width];
+  }
+}
+
+- (void)_layoutBackgroundViewIfNecessary
+{
+  v3 = [(NCNotificationListView *)self _backgroundGlassFromDataSource];
+  backgroundGlass = self->_backgroundGlass;
+  self->_backgroundGlass = v3;
+
+  [(NCNotificationListView *)self _setBackground:self->_backgroundGlass];
+
+  [(NCNotificationListView *)self _setContinuousCornerRadius:28.0];
+}
+
+- (id)_backgroundViewFromDataSource
+{
+  v3 = [(NCNotificationListView *)self dataSource];
+  if (objc_opt_respondsToSelector())
+  {
+    v4 = [v3 backgroundViewForNotificationList:self];
+  }
+
+  else
+  {
+    v4 = 0;
+  }
+
+  return v4;
+}
+
+- (void)_layoutHoverViewIfNecessary
+{
+  if (self->_hoverView)
+  {
+    goto LABEL_6;
+  }
+
+  if (![(NCNotificationListView *)self isGrouped])
+  {
+    v3 = [(NCNotificationListView *)self _hoverViewFromDataSource];
+    hoverView = self->_hoverView;
+    self->_hoverView = v3;
+
+    if (!self->_hoverView)
+    {
+      return;
+    }
+
+    [(NCNotificationListView *)self addSubview:?];
+  }
+
+  if (self->_hoverView)
+  {
+LABEL_6:
+    v5 = [(NCNotificationListView *)self isGrouped];
+    v6 = self->_hoverView;
+    if (v5)
+    {
+      v7 = v6;
+      v8 = self->_hoverView;
+      self->_hoverView = 0;
+
+      v65[0] = MEMORY[0x277D85DD0];
+      v65[1] = 3221225472;
+      v65[2] = __53__NCNotificationListView__layoutHoverViewIfNecessary__block_invoke_2;
+      v65[3] = &unk_27836F6A8;
+      v66 = v7;
+      v62[0] = MEMORY[0x277D85DD0];
+      v62[1] = 3221225472;
+      v62[2] = __53__NCNotificationListView__layoutHoverViewIfNecessary__block_invoke_3;
+      v62[3] = &unk_27836F560;
+      v63 = v66;
+      v64 = self;
+      v9 = v66;
+      [(NCNotificationListView *)self _performViewAnimationBlock:v65 completionBlock:v62 type:0];
+    }
+
+    else
+    {
+      [(NCNotificationListView *)self bringSubviewToFront:v6];
+      [(NCNotificationListView *)self bounds];
+      v11 = v10;
+      v13 = v12;
+      v15 = v14;
+      v17 = v16;
+      [(NCNotificationListView *)self visibleRect];
+      v60 = v19;
+      v61 = v18;
+      v58 = v21;
+      v59 = v20;
+      [(UIView *)self->_hoverView frame];
+      v23 = v22;
+      v25 = v24;
+      v27 = v26;
+      v29 = v28;
+      if ([(NCNotificationListView *)self _shouldReverseLayoutDirection])
+      {
+        [(NCNotificationListView *)self horizontalInsetMargin];
+        v31 = v30;
+        [(NCListAnimationSettings *)self->_animationSettings hoverViewTrailingMargin];
+        v33 = v31 + v32;
+      }
+
+      else
+      {
+        v68.origin.x = v11;
+        v68.origin.y = v13;
+        v68.size.width = v15;
+        v68.size.height = v17;
+        Width = CGRectGetWidth(v68);
+        [(NCNotificationListView *)self horizontalInsetMargin];
+        v36 = Width - v35;
+        v69.origin.x = v23;
+        v69.origin.y = v25;
+        v69.size.width = v27;
+        v69.size.height = v29;
+        v37 = v36 - CGRectGetWidth(v69);
+        [(NCListAnimationSettings *)self->_animationSettings hoverViewTrailingMargin];
+        v33 = v37 - v38;
+      }
+
+      v39 = [(NCNotificationListView *)self isHoverViewHidden];
+      v70.origin.x = v61;
+      v70.origin.y = v60;
+      v70.size.width = v59;
+      v70.size.height = v58;
+      MinY = CGRectGetMinY(v70);
+      [(NCListAnimationSettings *)self->_animationSettings hoverViewMovingTopMargin];
+      v42 = MinY > v41;
+      self->_hoverViewHidden = MinY <= v41;
+      v43 = 1.0;
+      if (!v42)
+      {
+        v43 = 0.0;
+      }
+
+      [(UIView *)self->_hoverView setAlpha:v43];
+      v71.origin.x = v61;
+      v71.origin.y = v60;
+      v71.size.width = v59;
+      v71.size.height = v58;
+      v44 = CGRectGetMinY(v71);
+      [(NCListAnimationSettings *)self->_animationSettings hoverViewMovingTopMargin];
+      v46 = v44 + v45;
+      height = self->_cachedSize.height;
+      [(NCListAnimationSettings *)self->_animationSettings hoverViewBottomMarginMinimum];
+      v49 = height - v48;
+      if (v46 >= v49)
+      {
+        v50 = v49;
+      }
+
+      else
+      {
+        v50 = v46;
+      }
+
+      v51 = v39 && !self->_hoverViewHidden;
+      [(UIView *)self->_hoverView frame];
+      v73.origin.x = v52;
+      v73.origin.y = v53;
+      v73.size.width = v54;
+      v73.size.height = v55;
+      v72.origin.x = v33;
+      v72.origin.y = v50;
+      v72.size.width = v27;
+      v72.size.height = v29;
+      if (!CGRectEqualToRect(v72, v73))
+      {
+        v56 = [(NCNotificationListView *)self hoverView];
+        [v56 setFrame:{v33, v50, v27, v29}];
+
+        if (v51)
+        {
+          v57 = [(NCNotificationListView *)self hoverView];
+          [v57 setAlpha:0.0];
+
+          v67[0] = MEMORY[0x277D85DD0];
+          v67[1] = 3221225472;
+          v67[2] = __53__NCNotificationListView__layoutHoverViewIfNecessary__block_invoke;
+          v67[3] = &unk_27836F6A8;
+          v67[4] = self;
+          [(NCNotificationListView *)self _performViewAnimationBlock:v67 completionBlock:0 type:0];
+        }
+      }
+    }
+  }
+}
+
+- (id)_hoverViewFromDataSource
+{
+  v3 = [(NCNotificationListView *)self dataSource];
+  if (objc_opt_respondsToSelector())
+  {
+    v4 = [v3 hoverViewForNotificationList:self];
+  }
+
+  else
+  {
+    v4 = 0;
+  }
+
+  return v4;
+}
+
+- (BOOL)isNotificationListViewCurrentlyVisible
+{
+  v3 = [(NCNotificationListView *)self superview];
+  if (v3)
+  {
+    if ([(NCNotificationListView *)self isRevealed])
+    {
+      v4 = 1;
+    }
+
+    else
+    {
+      [(NCNotificationListView *)self revealPercentage];
+      v4 = v5 > 0.0;
+    }
+  }
+
+  else
+  {
+    v4 = 0;
+  }
+
+  return v4;
+}
+
+- (BOOL)_isShowingFeaturedLeadingViews
+{
+  v3 = [(NCNotificationListView *)self dataSource];
+  if (objc_opt_respondsToSelector())
+  {
+    v4 = [v3 isShowingFeaturedLeadingViewsForNotificationListView:self];
+  }
+
+  else
+  {
+    v4 = 0;
+  }
+
+  return v4;
+}
+
+- (void)_layoutOverlayViewIfNecessary
+{
+  if (self->_overlayView)
+  {
+    goto LABEL_6;
+  }
+
+  if (![(NCNotificationListView *)self isGrouped])
+  {
+    v3 = [(NCNotificationListView *)self _overlayViewFromDataSource];
+    overlayView = self->_overlayView;
+    self->_overlayView = v3;
+
+    v5 = self->_overlayView;
+    if (!v5)
+    {
+      return;
+    }
+
+    [(NCNotificationListView *)self bounds];
+    [(UIView *)v5 setFrame:?];
+    [(NCNotificationListView *)self addSubview:self->_overlayView];
+  }
+
+  if (self->_overlayView)
+  {
+LABEL_6:
+    [(NCNotificationListView *)self bringSubviewToFront:?];
+    [(NCNotificationListView *)self bounds];
+    x = v6;
+    y = v8;
+    width = v10;
+    height = v12;
+    [(NCNotificationListView *)self overrideLeadingViewHeight];
+    if (v14 > 0.0)
+    {
+      [(NCNotificationListView *)self overrideLeadingViewHeight];
+      height = v15;
+    }
+
+    [(NCNotificationListView *)self frame];
+    v17 = v16;
+    if (![(NCNotificationListView *)self isGrouped])
+    {
+      v29.origin.x = x;
+      v29.origin.y = y;
+      v29.size.width = width;
+      v29.size.height = height;
+      v30 = CGRectInset(v29, -v17, 0.0);
+      x = v30.origin.x;
+      y = v30.origin.y;
+      width = v30.size.width;
+      height = v30.size.height;
+    }
+
+    if ([(NCNotificationListView *)self isRevealed])
+    {
+      v18 = 1.0;
+    }
+
+    else
+    {
+      v18 = 0.0;
+    }
+
+    [(UIView *)self->_overlayView frame];
+    v32.origin.x = v19;
+    v32.origin.y = v20;
+    v32.size.width = v21;
+    v32.size.height = v22;
+    v31.origin.x = x;
+    v31.origin.y = y;
+    v31.size.width = width;
+    v31.size.height = height;
+    if (!CGRectEqualToRect(v31, v32) || ([(UIView *)self->_overlayView alpha], v18 != v23))
+    {
+      aBlock[0] = MEMORY[0x277D85DD0];
+      aBlock[1] = 3221225472;
+      aBlock[2] = __55__NCNotificationListView__layoutOverlayViewIfNecessary__block_invoke;
+      aBlock[3] = &unk_278370E90;
+      aBlock[4] = self;
+      *&aBlock[5] = v18;
+      *&aBlock[6] = x;
+      *&aBlock[7] = y;
+      *&aBlock[8] = width;
+      *&aBlock[9] = height;
+      v24 = _Block_copy(aBlock);
+      v27[0] = MEMORY[0x277D85DD0];
+      v27[1] = 3221225472;
+      v27[2] = __55__NCNotificationListView__layoutOverlayViewIfNecessary__block_invoke_2;
+      v27[3] = &unk_27836F6A8;
+      v27[4] = self;
+      v25 = _Block_copy(v27);
+      if ([(NCNotificationListView *)self isPerformingOverrideLeadingViewHeightAdjustment]|| [(NCNotificationListView *)self isReactiveLayout])
+      {
+        v26 = [(NCNotificationListView *)self _currentAnimator];
+        [v26 performAnimationType:0 withoutAnimation:v24];
+
+        v25[2](v25);
+      }
+
+      else
+      {
+        [(NCNotificationListView *)self _performViewAnimationBlock:v24 completionBlock:v25 type:0];
+      }
+    }
+  }
+}
+
+- (id)_overlayViewFromDataSource
+{
+  v3 = [(NCNotificationListView *)self dataSource];
+  if (objc_opt_respondsToSelector())
+  {
+    v4 = [v3 overlayViewForNotificationList:self];
+  }
+
+  else
+  {
+    v4 = 0;
+  }
+
+  return v4;
+}
+
+- (id)_footerViewFromDataSource
+{
+  v3 = [(NCNotificationListView *)self dataSource];
+  if (objc_opt_respondsToSelector())
+  {
+    v4 = [v3 footerViewForNotificationList:self];
+  }
+
+  else
+  {
+    v4 = 0;
+  }
+
+  return v4;
+}
+
+- (void)_layoutForGrouping
+{
+  if (![(NCNotificationListView *)self _isGrouping])
+  {
+    return;
+  }
+
+  v3 = [(NCNotificationListView *)self dataSource];
+  v4 = [v3 notificationListViewNumberOfItems:self];
+  if (![(NCNotificationListView *)self showStackBelowLeadingView])
+  {
+    v6 = 1;
+LABEL_10:
+    v9 = 0;
+    Height = 0.0;
+    v10 = MEMORY[0x277CBF2C0];
+    while (1)
+    {
+      v11 = [(NCNotificationListView *)self visibleViewAtIndex:v9];
+      if (v11)
+      {
+        [(NCNotificationListView *)self sendSubviewToBack:v11];
+        v12 = v11;
+        if (!v9)
+        {
+          goto LABEL_23;
+        }
+      }
+
+      else
+      {
+        v12 = [(NCNotificationListView *)self _viewForItemAtIndex:v9];
+        [(NCNotificationListView *)self _setHiddenBelowStackForView:v12 hiddenBelowStack:v9 != 0];
+        [(NCNotificationListView *)self _setVisibleView:v12 atIndex:v9];
+        [(NCNotificationListView *)self addSubview:v12];
+        [v12 setAlpha:0.0];
+        v17 = v10[1];
+        v19 = *v10;
+        v18 = v19;
+        v20 = v17;
+        v21 = v10[2];
+        v16 = v21;
+        [v12 setTransform:&v19];
+        v19 = v18;
+        v20 = v17;
+        v21 = v16;
+        [(NCNotificationListView *)self _configureStackDimmingForGroupedView:v12 transform:&v19];
+        [(NCNotificationListView *)self sendSubviewToBack:v12];
+        if (!v9)
+        {
+          [(NCNotificationListView *)self setCachedSizeValid:0];
+LABEL_23:
+          [(NCNotificationListView *)self bringSubviewToFront:v12];
+          [(NCNotificationListView *)self _layoutLeadingViewForGroupingLayoutIfNecessary:v12 hasShadow:v4 > 1 isExistingView:v11 != 0];
+          [v12 frame];
+          Height = CGRectGetHeight(v23);
+          v14 = 1;
+          if (v11)
+          {
+            goto LABEL_17;
+          }
+
+LABEL_16:
+          [v12 setAlpha:1.0];
+          goto LABEL_17;
+        }
+      }
+
+      [(NCNotificationListView *)self groupingViewOverlapAlphaFactor];
+      [(NCNotificationListView *)self _layoutGroupedViewForGroupingLayout:v12 atIndex:v9 isExistingView:v11 != 0 leadingViewHeight:Height alpha:v13];
+      v14 = 0;
+      if (!v11)
+      {
+        goto LABEL_16;
+      }
+
+LABEL_17:
+      if (v14)
+      {
+        [(NCNotificationListView *)self coplanarViewIndices];
+      }
+
+      else
+      {
+        [(NCNotificationListView *)self groupingViewOverlapAlphaFactor];
+        [v12 setAlpha:?];
+        [(NCNotificationListView *)self nonCoplanarViewIndices];
+      }
+      v15 = ;
+      [v15 addIndex:v9];
+
+      [v12 frame];
+      MaxY = CGRectGetMaxY(v22);
+
+      if (v6 == ++v9)
+      {
+        goto LABEL_7;
+      }
+    }
+  }
+
+  [(NCListAnimationSettings *)self->_animationSettings groupListMaxViewCount];
+  if (v5 > v4)
+  {
+    v5 = v4;
+  }
+
+  v6 = v5;
+  if (v5)
+  {
+    goto LABEL_10;
+  }
+
+  Height = 0.0;
+  MaxY = 0.0;
+LABEL_7:
+  [(NCNotificationListView *)self _layoutHeaderViewForGroupingIfNecessaryWithMaxYOffset:Height];
+  [(NCNotificationListView *)self _layoutFooterViewForGroupingIfNecessary];
+  [(NCNotificationListView *)self _layoutHiddenViewsForGroupingLayoutIfNecessaryWithLeadingViewHeight:Height];
+  [(NCNotificationListView *)self _adjustContentSizeHeightIfNecessaryForUpdatedHeight:MaxY];
+}
+
+- (double)_animationTension
+{
+  [(NCListAnimationSettings *)self->_animationSettings animationTension];
+  v4 = v3;
+  if ([(NCNotificationListView *)self isPerformingRevealAnimation])
+  {
+
+    [(NCNotificationListView *)self _adjustedTensionForRevealAnimation];
+  }
+
+  else if ([(NCNotificationListView *)self isPerformingInteractionVelocityAnimation])
+  {
+    [(NCListAnimationSettings *)self->_animationSettings animationTension];
+    v7 = v6;
+    [(NCListAnimationSettings *)self->_animationSettings animationTensionVelocityFactor];
+    v9 = v8;
+    [(NCNotificationListView *)self interactionVelocity];
+    return v7 + v9 * v10;
+  }
+
+  else
+  {
+    return v4;
+  }
+
+  return result;
+}
+
+- (double)_animationFriction
+{
+  [(NCListAnimationSettings *)self->_animationSettings animationFriction];
+  v4 = v3;
+  if ([(NCNotificationListView *)self isPerformingRevealAnimation])
+  {
+
+    [(NCNotificationListView *)self _adjustedFrictionForRevealAnimation];
+  }
+
+  else if ([(NCNotificationListView *)self isPerformingInteractionVelocityAnimation])
+  {
+    [(NCListAnimationSettings *)self->_animationSettings animationFriction];
+    v7 = v6;
+    [(NCListAnimationSettings *)self->_animationSettings animationFrictionVelocityFactor];
+    v9 = v8;
+    [(NCNotificationListView *)self interactionVelocity];
+    return v7 + v9 * v10;
+  }
+
+  else
+  {
+    return v4;
+  }
+
+  return result;
+}
+
+- (id)_currentHighFrameRateAnimator
+{
+  v3 = [NCHighFrameRateAnimator alloc];
+  v4 = [(NCNotificationListView *)self _currentAnimator];
+  v5 = [(NCHighFrameRateAnimator *)v3 initWithAnimator:v4];
+
+  return v5;
+}
+
+- (id)_currentAnimator
+{
+  v3 = [(NCNotificationListView *)self dataSource];
+  if (objc_opt_respondsToSelector())
+  {
+    v4 = [v3 animator];
+  }
+
+  else
+  {
+    v5 = *MEMORY[0x277D77DD0];
+    if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_FAULT))
+    {
+      [(NCNotificationListView *)v3 _currentAnimator];
+    }
+
+    v4 = NCDefaultAnimator();
+  }
+
+  v6 = v4;
+
+  return v6;
+}
+
+- (CGAffineTransform)overrideTopViewDimmingTransform
+{
+  v3 = *&self[56].ty;
+  *&retstr->a = *&self[56].d;
+  *&retstr->c = v3;
+  *&retstr->tx = *&self[57].b;
+  return self;
+}
+
+- (void)_layoutFooterViewForGroupingIfNecessary
+{
+  v3 = [(NCNotificationListView *)self footerView];
+  if (v3)
+  {
+    v4 = [(NCNotificationListView *)self viewsPerformingAnimation];
+    v5 = [v4 containsObject:v3];
+
+    if ((v5 & 1) == 0)
+    {
+      v6 = [(NCNotificationListView *)self viewsPerformingAnimation];
+      [v6 addObject:v3];
+
+      [v3 frame];
+      v8 = v7;
+      v10 = v9;
+      v12 = v11;
+      [(NCNotificationListView *)self sendSubviewToBack:v3];
+      v15[0] = MEMORY[0x277D85DD0];
+      v15[1] = 3221225472;
+      v15[2] = __65__NCNotificationListView__layoutFooterViewForGroupingIfNecessary__block_invoke;
+      v15[3] = &unk_27836FDF8;
+      v16 = v3;
+      v17 = v8;
+      v18 = 0;
+      v19 = v10;
+      v20 = v12;
+      v13[0] = MEMORY[0x277D85DD0];
+      v13[1] = 3221225472;
+      v13[2] = __65__NCNotificationListView__layoutFooterViewForGroupingIfNecessary__block_invoke_2;
+      v13[3] = &unk_27836F560;
+      v13[4] = self;
+      v14 = v16;
+      [(NCNotificationListView *)self _performViewAnimationBlock:v15 completionBlock:v13 type:0];
+    }
+  }
+}
+
+- (void)_updateDebugViewFrame
+{
+  debugView = self->_debugView;
+  if (debugView)
+  {
+    [(NCNotificationListView *)self bounds];
+
+    [(NCNotificationListDebugView *)debugView setFrame:?];
+  }
+}
+
+- (void)didExitAlwaysOn
+{
+  v7 = [(NCNotificationListView *)self dataSource];
+  v3 = [v7 notificationListViewNumberOfItems:self];
+  if (v3)
+  {
+    v4 = v3;
+    for (i = 0; i != v4; ++i)
+    {
+      v6 = [(NCNotificationListView *)self _viewForItemAtIndex:i];
+      [v6 layoutIfNeeded];
+    }
+  }
+}
+
+- (void)_removeAllStoredVisibleViews
+{
+  v17 = *MEMORY[0x277D85DE8];
+  v12 = 0u;
+  v13 = 0u;
+  v14 = 0u;
+  v15 = 0u;
+  v3 = [(NCNotificationListView *)self visibleViews];
+  v4 = [v3 allValues];
+
+  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  if (v5)
+  {
+    v6 = v5;
+    v7 = *v13;
+    do
+    {
+      for (i = 0; i != v6; ++i)
+      {
+        if (*v13 != v7)
+        {
+          objc_enumerationMutation(v4);
+        }
+
+        v9 = *(*(&v12 + 1) + 8 * i);
+        v10 = [v9 superview];
+
+        if (v10 == self)
+        {
+          [v9 removeFromSuperview];
+          [(NCNotificationListView *)self _recycleViewIfNecessary:v9];
+        }
+      }
+
+      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    }
+
+    while (v6);
+  }
+
+  v11 = [(NCNotificationListView *)self visibleViews];
+  [v11 removeAllObjects];
+}
+
+- (void)recycleVisibleViews
+{
+  [(NCNotificationListView *)self _removeAllStoredVisibleViews];
+  headerView = self->_headerView;
+  if (headerView)
+  {
+    [(UIView *)headerView removeFromSuperview];
+    [(NCNotificationListView *)self _recycleViewIfNecessary:self->_headerView];
+    v4 = self->_headerView;
+    self->_headerView = 0;
+  }
+
+  footerView = self->_footerView;
+  if (footerView)
+  {
+    [(UIView *)footerView removeFromSuperview];
+    [(NCNotificationListView *)self _recycleViewIfNecessary:self->_footerView];
+    v6 = self->_footerView;
+    self->_footerView = 0;
+  }
+
+  backgroundView = self->_backgroundView;
+  if (backgroundView)
+  {
+    [(UIView *)backgroundView removeFromSuperview];
+    [(NCNotificationListView *)self _recycleViewIfNecessary:self->_backgroundView];
+    v8 = self->_backgroundView;
+    self->_backgroundView = 0;
+  }
+
+  [(NCNotificationListView *)self setNeedsUpdateOfApparentZPositionsOfListCells];
+}
+
+- (double)_resolvedViewOverlap
+{
+  [(NCListAnimationSettings *)self->_animationSettings viewOverlap];
+  v4 = v3;
+  [(NCNotificationListView *)self groupingViewOverlapCompressionFactor];
+  return v4 * v5;
+}
+
+- (NCNotificationListView)initWithModelType:(Class)a3 purpose:(id)a4 purposeWithSensitiveTextHashed:(id)a5
+{
+  v42[1] = *MEMORY[0x277D85DE8];
+  v9 = a4;
+  v10 = a5;
+  v41.receiver = self;
+  v41.super_class = NCNotificationListView;
+  v11 = [(NCNotificationListView *)&v41 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+  v12 = v11;
+  if (v11)
+  {
+    objc_storeStrong(&v11->_purpose, a4);
+    objc_storeStrong(&v12->_purposeWithSensitiveTextHashed, a5);
+    v13 = NSStringFromClass(a3);
+    model = v12->_model;
+    v12->_model = v13;
+
+    v15 = +[NCUNUIKitPrototypeDomain rootSettings];
+    v12->_animationSettings = [v15 listAnimationSettings];
+
+    v16 = objc_alloc_init(MEMORY[0x277CBEB58]);
+    insertedViewIndices = v12->_insertedViewIndices;
+    v12->_insertedViewIndices = v16;
+
+    v18 = objc_alloc_init(MEMORY[0x277CBEB58]);
+    reloadedViewIndices = v12->_reloadedViewIndices;
+    v12->_reloadedViewIndices = v18;
+
+    v20 = objc_alloc_init(MEMORY[0x277CCAB58]);
+    coplanarViewIndices = v12->_coplanarViewIndices;
+    v12->_coplanarViewIndices = v20;
+
+    v22 = objc_alloc_init(MEMORY[0x277CCAB58]);
+    nonCoplanarViewIndices = v12->_nonCoplanarViewIndices;
+    v12->_nonCoplanarViewIndices = v22;
+
+    [(NCNotificationListView *)v12 setRemovedViewIndex:0x7FFFFFFFFFFFFFFFLL];
+    [(NCNotificationListView *)v12 setShowsHorizontalScrollIndicator:0];
+    [(NCNotificationListView *)v12 setAlwaysBounceVertical:1];
+    v24 = [MEMORY[0x277D75348] clearColor];
+    [(NCNotificationListView *)v12 setBackgroundColor:v24];
+
+    [(NCNotificationListView *)v12 setClipsToBounds:0];
+    v25 = [(NCNotificationListView *)v12 layer];
+    [v25 setAllowsGroupOpacity:0];
+
+    [(NCNotificationListView *)v12 setRevealed:1];
+    v26 = objc_alloc_init(MEMORY[0x277CBEB38]);
+    visibleViews = v12->_visibleViews;
+    v12->_visibleViews = v26;
+
+    v28 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    viewsPerformingAnimation = v12->_viewsPerformingAnimation;
+    v12->_viewsPerformingAnimation = v28;
+
+    v30 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    viewsPerformingBottomMarginAdjustmentAnimation = v12->_viewsPerformingBottomMarginAdjustmentAnimation;
+    v12->_viewsPerformingBottomMarginAdjustmentAnimation = v30;
+
+    v32 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    viewsPerformingRollUnderLayout = v12->_viewsPerformingRollUnderLayout;
+    v12->_viewsPerformingRollUnderLayout = v32;
+
+    [(NCNotificationListView *)v12 _setIgnoresLayerTransformForSafeAreaInsets:1];
+    v12->_performedFirstLayout = 0;
+    v12->_hiddenBelowStack = 0;
+    v12->_hoverViewHidden = 1;
+    v12->_groupingAnimationStyle = 0;
+    v12->_horizontalInsetMargin = 0.0;
+    v12->_backgroundViewHorizontalOutsetMargin = 0.0;
+    [(NCListAnimationSettings *)v12->_animationSettings viewSpacing];
+    v12->_footerViewVerticalMargin = v34;
+    v12->_numberOfFeaturedLeadingViews = 0;
+    *&v12->_showStackBelowLeadingView = 1;
+    v12->_leadingContentShouldFillList = 0;
+    v12->_groupedOverlapHeightMultiple = 1.0;
+    v12->_interactionTranslationPercentage = 0.0;
+    v12->_preferredBottomTransitionTransformer = 1;
+    v12->_shouldLimitViewHeightForRollUnder = 0;
+    v12->_groupingViewOverlapCompressionFactor = 1.0;
+    v12->_groupingViewOverlapAlphaFactor = 1.0;
+    v12->_shadowAlphaFactor = 1.0;
+    v12->_useAnimatorForHeightChangeAnimation = 0;
+    v12->_performingScrollingAnimation = 0;
+    v12->_supportsHeaderViewRollUnder = 1;
+    v12->_rootScrollVelocity = 1.79769313e308;
+    v12->_needsForcedGlassUpdate = 0;
+    v12->_needsUpdateOfApparentZPositionsOfListCells = 0;
+    [(NCNotificationListView *)v12 setScrollEnabled:0];
+    v35 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@('%@')", v12->_model, v12->_purpose];
+    [(NCNotificationListView *)v12 setAccessibilityIdentifier:v35];
+
+    v36 = [(NCNotificationListView *)v12 traitCollection];
+    [(NCNotificationListView *)v12 updateBottomViewTransitionStyleWithTraitCollection:v36];
+  }
+
+  v37 = objc_opt_self();
+  v42[0] = v37;
+  v38 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:1];
+  v39 = [(NCNotificationListView *)v12 registerForTraitChanges:v38 withTarget:v12 action:sel__layoutBackgroundViewIfNecessary];
+
+  return v12;
+}
+
+- (CGSize)sizeThatFits:(CGSize)a3
+{
+  height = a3.height;
+  width = a3.width;
+  if ([(NCNotificationListView *)self isCachedSizeValid])
+  {
+
+    [(NCNotificationListView *)self cachedSize];
+  }
+
+  else
+  {
+    [(NCNotificationListView *)self _calculateSizeForGrouped:[(NCNotificationListView *)self _isGrouping] size:0 ignoreFeaturedLeadingView:0 ignoreExpandedGroupStack:[(NCNotificationListView *)self _isCurrentlyInDisplayListAsStackMode] inDisplayListAsStackMode:0 dynamicGroupedOverlapHeightMultiple:width, height];
+    v9 = v8;
+    [(NCNotificationListView *)self setCachedSize:width, v8];
+    [(NCNotificationListView *)self setCachedSizeValid:1];
+    v6 = width;
+    v7 = v9;
+  }
+
+  result.height = v7;
+  result.width = v6;
+  return result;
+}
+
+- (double)calculateSizeForGrouped:(BOOL)a3 ignoreFeaturedLeadingView:(BOOL)a4 ignoreExpandedGroupStack:(BOOL)a5 inDisplayListAsStackMode:(BOOL)a6 dynamicGroupedOverlapHeightMultiple:(id)a7
+{
+  v7 = a6;
+  v8 = a5;
+  v9 = a4;
+  v10 = a3;
+  v12 = a7;
+  [(NCNotificationListView *)self bounds];
+  [(NCNotificationListView *)self _calculateSizeForGrouped:v10 size:v9 ignoreFeaturedLeadingView:v8 ignoreExpandedGroupStack:v7 inDisplayListAsStackMode:v12 dynamicGroupedOverlapHeightMultiple:v13, v14];
+  v16 = v15;
+
+  return v16;
+}
+
+- (double)_calculateSizeForGrouped:(BOOL)a3 size:(CGSize)a4 ignoreFeaturedLeadingView:(BOOL)a5 ignoreExpandedGroupStack:(BOOL)a6 inDisplayListAsStackMode:(BOOL)a7 dynamicGroupedOverlapHeightMultiple:(id)a8
+{
+  v8 = a7;
+  v9 = a6;
+  v10 = a5;
+  height = a4.height;
+  width = a4.width;
+  v13 = a3;
+  v15 = a8;
+  v16 = [(NCNotificationListView *)self dataSource];
+  v17 = [v16 notificationListViewNumberOfItems:self];
+  [(NCNotificationListView *)self _widthForListViewInRect:0.0, 0.0, width, height];
+  v19 = v18;
+  if (v15)
+  {
+    [v15 bs_CGFloatValue];
+  }
+
+  else
+  {
+    [(NCNotificationListView *)self groupedOverlapHeightMultiple];
+  }
+
+  v21 = v20;
+  if (v13)
+  {
+    if (v17)
+    {
+      [v16 notificationListView:self heightForItemAtIndex:0 withWidth:v8 inDisplayListAsStackMode:v9 ignoreExpandedGroupStack:v19];
+      v22 = [(NCNotificationListView *)self showStackBelowLeadingView];
+      v20 = 0.0;
+      if (v22)
+      {
+        if (v17 == 2)
+        {
+          v20 = 1.0;
+        }
+
+        if (v17 <= 2)
+        {
+          v23 = v20;
+        }
+
+        else
+        {
+          v23 = 2.0;
+        }
+
+        [(NCNotificationListView *)self _resolvedViewOverlap];
+        v20 = v23 * (v21 * v24);
+      }
+    }
+  }
+
+  else
+  {
+    [(NCNotificationListView *)self _headerViewHeight];
+    v25 = 0.0;
+    if (v26 > 0.0)
+    {
+      [(NCNotificationListView *)self _headerViewHeight];
+      v28 = v27;
+      [(NCListAnimationSettings *)self->_animationSettings headerSpacing];
+      v25 = v28 + v29 + 0.0;
+    }
+
+    if (v17)
+    {
+      v30 = [(NCNotificationListView *)self _isShowingFeaturedLeadingViews];
+      v31 = 0;
+      if (!v10 && v30)
+      {
+        [(NCNotificationListView *)self _heightForFeaturedLeadingViewInRect:0.0, 0.0, width, height];
+        v33 = v25 + v32;
+        [(NCListAnimationSettings *)self->_animationSettings viewSpacing];
+        v25 = v33 + v34;
+        v31 = [(NCNotificationListView *)self numberOfFeaturedLeadingViews];
+      }
+
+      if (v31 < v17)
+      {
+        do
+        {
+          [v16 notificationListView:self heightForItemAtIndex:v31 withWidth:v8 inDisplayListAsStackMode:v9 ignoreExpandedGroupStack:v19];
+          if (v35 <= 0.0)
+          {
+            [(NCListAnimationSettings *)self->_animationSettings viewSpacing];
+            v25 = v25 - v42;
+          }
+
+          else
+          {
+            v36 = v35;
+            if (!v31)
+            {
+              [(NCNotificationListView *)self _topSpacingForItemAtIndex:0];
+              v25 = v25 + v37;
+            }
+
+            v38 = [(NCNotificationListView *)self isRevealed];
+            v39 = 0.0;
+            if (!v38)
+            {
+              [(NCNotificationListView *)self _positionOffsetForRevealHintingForItemAtIndex:v31, 0.0];
+            }
+
+            v40 = v36 + v25 + v39;
+            [(NCNotificationListView *)self _bottomSpacingForItemAtIndex:v31];
+            v25 = v40 + v41;
+          }
+
+          ++v31;
+        }
+
+        while (v17 != v31);
+      }
+    }
+
+    [(NCNotificationListView *)self _footerViewHeight];
+    v44 = v43;
+    v20 = 0.0;
+    if (v44 > 0.0)
+    {
+      [(NCNotificationListView *)self footerViewVerticalMargin];
+      v20 = v44 + v45;
+    }
+  }
+
+  v46 = [(NCNotificationListView *)self traitCollection];
+  [v46 displayScale];
+  UICeilToScale();
+  v48 = v47;
+
+  return v48;
+}
+
+- (void)subviewDidLayout
+{
+  v2 = [(NCNotificationListView *)self dataSource];
+  if (objc_opt_respondsToSelector())
+  {
+    [v2 notificationListDidLayoutSubviews];
+  }
+}
+
+- (void)addSubview:(id)a3
+{
+  v4.receiver = self;
+  v4.super_class = NCNotificationListView;
+  [(NCNotificationListView *)&v4 addSubview:a3];
+  if (self->_debugView)
+  {
+    [(NCNotificationListView *)self bringSubviewToFront:?];
+  }
+}
+
+- (void)bringSubviewToFront:(id)a3
+{
+  v6.receiver = self;
+  v6.super_class = NCNotificationListView;
+  v4 = a3;
+  [(NCNotificationListView *)&v6 bringSubviewToFront:v4];
+  debugView = self->_debugView;
+
+  if (debugView != v4)
+  {
+    [(NCNotificationListView *)self bringSubviewToFront:debugView, v6.receiver, v6.super_class];
+  }
+}
+
+- (void)setFrame:(CGRect)a3
+{
+  height = a3.size.height;
+  width = a3.size.width;
+  y = a3.origin.y;
+  x = a3.origin.x;
+  v10.receiver = self;
+  v10.super_class = NCNotificationListView;
+  [(NCNotificationListView *)&v10 setFrame:?];
+  if (![(NCNotificationListView *)self hasPerformedFirstLayout])
+  {
+    [(NCNotificationListView *)self layoutIfNeeded];
+  }
+
+  [(NCNotificationListView *)self _updateDebugViewFrame];
+  v8 = [(NCNotificationListView *)self _directSuperListView];
+  v9 = [v8 dataSource];
+  if (v9 && (objc_opt_respondsToSelector() & 1) != 0)
+  {
+    [v9 notificationListView:v8 changingFrameOfView:self toFrame:{x, y, width, height}];
+  }
+}
+
+- (void)setBounds:(CGRect)a3
+{
+  height = a3.size.height;
+  width = a3.size.width;
+  y = a3.origin.y;
+  x = a3.origin.x;
+  [(NCNotificationListView *)self bounds];
+  v16.origin.x = v8;
+  v16.origin.y = v9;
+  v16.size.width = v10;
+  v16.size.height = v11;
+  v15.origin.x = x;
+  v15.origin.y = y;
+  v15.size.width = width;
+  v15.size.height = height;
+  if (!CGRectEqualToRect(v15, v16))
+  {
+    v14.receiver = self;
+    v14.super_class = NCNotificationListView;
+    [(NCNotificationListView *)&v14 setBounds:x, y, width, height];
+    [(NCNotificationListView *)self _updateDebugViewFrame];
+    v12 = [(NCNotificationListView *)self _directSuperListView];
+    v13 = [v12 dataSource];
+    if (v13)
+    {
+      if (objc_opt_respondsToSelector())
+      {
+        [v13 notificationListView:v12 changingBoundsOfView:self toBounds:{x, y, width, height}];
+      }
+    }
+  }
+}
+
+- (void)setAdditionalYOffset:(double)a3
+{
+  if (self->_additionalYOffset != a3)
+  {
+    self->_additionalYOffset = a3;
+    [(NCNotificationListView *)self setAnimatingAdditionalYOffset:fabs(a3) > 0.001];
+
+    [(NCNotificationListView *)self setNeedsLayout];
+  }
+}
+
+- (void)setCenter:(CGPoint)a3
+{
+  y = a3.y;
+  x = a3.x;
+  [(NCNotificationListView *)self center];
+  if (x != v7 || y != v6)
+  {
+    v11.receiver = self;
+    v11.super_class = NCNotificationListView;
+    [(NCNotificationListView *)&v11 setCenter:x, y];
+    v9 = [(NCNotificationListView *)self _directSuperListView];
+    v10 = [v9 dataSource];
+    if (v10)
+    {
+      if (objc_opt_respondsToSelector())
+      {
+        [v10 notificationListView:v9 changingCenterOfView:self toCenter:{x, y}];
+      }
+    }
+  }
+}
+
+- (void)setTransform:(CGAffineTransform *)a3
+{
+  v6.receiver = self;
+  v6.super_class = NCNotificationListView;
+  v4 = *&a3->c;
+  v5[0] = *&a3->a;
+  v5[1] = v4;
+  v5[2] = *&a3->tx;
+  [(NCNotificationListView *)&v6 setTransform:v5];
+  [(NCNotificationListView *)self _giveDataSourceUpdatedTransformWhichIncludesSubviewsXTranslation];
+}
+
+- (void)didMoveToSuperview
+{
+  v5.receiver = self;
+  v5.super_class = NCNotificationListView;
+  [(NCNotificationListView *)&v5 didMoveToSuperview];
+  v3 = [(NCNotificationListView *)self superview];
+
+  if (v3)
+  {
+    v4 = [(NCNotificationListView *)self _getDepth];
+    [(NCNotificationListView *)self setDepth:v4];
+
+    [(NCNotificationListView *)self setCachedSizeValid:0];
+    [(NCNotificationListView *)self _invalidateCachedApparentZDepths];
+    [(NCNotificationListView *)self setNeedsUpdateOfApparentZPositionsOfListCells];
+    [NCNotificationListDebugView configureDebugGuidesIfNecessaryForView:self];
+  }
+}
+
+- (void)setPreferredBottomTransitionTransformer:(unint64_t)a3
+{
+  if (self->_preferredBottomTransitionTransformer != a3)
+  {
+    self->_preferredBottomTransitionTransformer = a3;
+    v5 = [(NCNotificationListView *)self traitCollection];
+    [(NCNotificationListView *)self updateBottomViewTransitionStyleWithTraitCollection:v5];
+  }
+}
+
+- (void)setGroupingViewOverlapCompressionFactor:(double)a3
+{
+  if (self->_groupingViewOverlapCompressionFactor != a3)
+  {
+    self->_groupingViewOverlapCompressionFactor = a3;
+    [(NCNotificationListView *)self setNeedsLayout];
+  }
+}
+
+- (void)updateBottomViewTransitionStyleWithTraitCollection:(id)a3
+{
+  v4 = a3;
+  v5 = v4;
+  preferredBottomTransitionTransformer = self->_preferredBottomTransitionTransformer;
+  if (preferredBottomTransitionTransformer)
+  {
+    if (_NCIsNotVerticalSpaceConstrained(v4) && ([v5 preferredContentSizeCategory], v7 = objc_claimAutoreleasedReturnValue(), IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v7), v7, !IsAccessibilityCategory))
+    {
+      preferredBottomTransitionTransformer = self->_preferredBottomTransitionTransformer;
+    }
+
+    else
+    {
+      preferredBottomTransitionTransformer = 0;
+    }
+  }
+
+  self->_currentBottomTransitionTransformer = preferredBottomTransitionTransformer;
+  v9 = [(NCNotificationListView *)self visibleViews];
+  v10 = [v9 allValues];
+  v12 = MEMORY[0x277D85DD0];
+  v13 = 3221225472;
+  v14 = __77__NCNotificationListView_updateBottomViewTransitionStyleWithTraitCollection___block_invoke;
+  v15 = &unk_278370E08;
+  v16 = self;
+  v17 = v5;
+  v11 = v5;
+  [v10 enumerateObjectsUsingBlock:&v12];
+
+  if ([(NCNotificationListView *)self hasPerformedFirstLayout:v12])
+  {
+    [(NCNotificationListView *)self setNeedsLayout];
+  }
+}
+
+void __77__NCNotificationListView_updateBottomViewTransitionStyleWithTraitCollection___block_invoke(uint64_t a1, void *a2)
+{
+  v3 = *(a1 + 32);
+  v4 = a2;
+  v5 = [v3 _listViewForView:v4];
+  [v5 updateTraitsIfNeeded];
+
+  v6 = [*(a1 + 32) _listViewForView:v4];
+
+  [v6 updateBottomViewTransitionStyleWithTraitCollection:*(a1 + 40)];
+}
+
+- (double)firstItemOffset
+{
+  if ([(NCNotificationListView *)self count])
+  {
+    v3 = 0;
+    while (1)
+    {
+      v4 = [(NCNotificationListView *)self visibleViewAtIndex:v3];
+      objc_opt_class();
+      if ((objc_opt_isKindOfClass() & 1) != 0 && ![(NCNotificationListView *)self _isAlwaysPresentedAtTopOfScreenForView:v4])
+      {
+        break;
+      }
+
+      if (++v3 >= [(NCNotificationListView *)self count])
+      {
+        goto LABEL_6;
+      }
+    }
+
+    [v4 frame];
+    v11 = v10;
+
+    return v11;
+  }
+
+  else
+  {
+LABEL_6:
+    [(NCNotificationListView *)self frame];
+
+    return CGRectGetHeight(*&v5);
+  }
+}
+
+- (double)stackedItemSizes
+{
+  v3 = [(NCNotificationListView *)self count];
+  v4 = 0.0;
+  if (v3 == 2)
+  {
+    v4 = 1.0;
+  }
+
+  if (v3 <= 2)
+  {
+    v5 = v4;
+  }
+
+  else
+  {
+    v5 = 2.0;
+  }
+
+  [(NCNotificationListView *)self groupedOverlapHeightMultiple];
+  v7 = v6;
+  [(NCListAnimationSettings *)self->_animationSettings viewOverlap];
+  return v5 * (v7 * v8);
+}
+
+- (NSNumber)distanceScrolledBeyondBottomOfContent
+{
+  v3 = [MEMORY[0x277D759A0] mainScreen];
+  [v3 bounds];
+  Height = CGRectGetHeight(v14);
+
+  [(NCNotificationListView *)self contentSize];
+  v6 = Height - v5;
+  [(NCNotificationListView *)self _footerViewHeight];
+  v8 = v6 - v7;
+  [(NCNotificationListView *)self contentOffset];
+  v10 = v8 + v9;
+  if (v8 + v9 <= 0.0)
+  {
+    v11 = 0;
+  }
+
+  else
+  {
+    *&v10 = v10;
+    v11 = [MEMORY[0x277CCABB0] numberWithFloat:v10];
+  }
+
+  return v11;
+}
+
+- (id)purposeHashed:(BOOL)a3
+{
+  v3 = &OBJC_IVAR___NCNotificationListView__purpose;
+  if (a3)
+  {
+    v3 = &OBJC_IVAR___NCNotificationListView__purposeWithSensitiveTextHashed;
+  }
+
+  return *(&self->super.super.super.super.isa + *v3);
+}
+
+- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+{
+  v4 = MEMORY[0x277CF0C00];
+  v5 = a3;
+  v6 = [v4 builderWithObject:self];
+  v11[0] = MEMORY[0x277D85DD0];
+  v11[1] = 3221225472;
+  v11[2] = __64__NCNotificationListView_descriptionBuilderWithMultilinePrefix___block_invoke;
+  v11[3] = &unk_27836F560;
+  v11[4] = self;
+  v7 = v6;
+  v12 = v7;
+  [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v11];
+
+  v8 = v12;
+  v9 = v7;
+
+  return v7;
+}
+
+- (id)descriptionWithMultilinePrefix:(id)a3
+{
+  v3 = [(NCNotificationListView *)self descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [v3 build];
+
+  return v4;
+}
+
+- (id)succinctDescription
+{
+  v2 = [(NCNotificationListView *)self succinctDescriptionBuilder];
+  v3 = [v2 build];
+
+  return v3;
+}
+
+- (id)debugDescriptionWithMultilinePrefix:(id)a3
+{
+  v4 = MEMORY[0x277CF0C00];
+  v5 = a3;
+  v6 = [v4 builderWithObject:self];
+  [v6 setUseDebugDescription:1];
+  v20[0] = MEMORY[0x277D85DD0];
+  v20[1] = 3221225472;
+  v20[2] = __62__NCNotificationListView_debugDescriptionWithMultilinePrefix___block_invoke;
+  v20[3] = &unk_27836F560;
+  v20[4] = self;
+  v7 = v6;
+  v21 = v7;
+  [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v20];
+  v14 = MEMORY[0x277D85DD0];
+  v15 = 3221225472;
+  v16 = __62__NCNotificationListView_debugDescriptionWithMultilinePrefix___block_invoke_2;
+  v17 = &unk_27836F560;
+  v18 = self;
+  v19 = v7;
+  v8 = v7;
+  [v8 appendBodySectionWithName:@"Data" multilinePrefix:v5 block:&v14];
+  v9 = [(NCNotificationListView *)self subviews:v14];
+  v10 = [v9 bs_compactMap:&__block_literal_global_11];
+
+  v11 = [v10 sortedArrayUsingComparator:&__block_literal_global_62];
+
+  [v8 appendArraySection:v11 withName:@"Subview" multilinePrefix:v5 skipIfEmpty:1];
+  v12 = [v8 build];
+
+  return v12;
+}
+
+id __62__NCNotificationListView_debugDescriptionWithMultilinePrefix___block_invoke_2(uint64_t a1)
+{
+  v2 = [*(a1 + 32) depth];
+
+  v3 = *(a1 + 40);
+  if (v2)
+  {
+    v4 = [*(a1 + 32) depth];
+    v5 = [v3 appendUnsignedInteger:objc_msgSend(v4 withName:{"unsignedIntegerValue"), @"ListDepth"}];
+  }
+
+  else
+  {
+    [*(a1 + 40) appendString:@"<nil>" withName:@"ListDepth"];
+  }
+
+  v6 = [*(a1 + 32) index];
+
+  v7 = *(a1 + 40);
+  if (v6)
+  {
+    v8 = [*(a1 + 32) index];
+    v9 = [v7 appendUnsignedInteger:objc_msgSend(v8 withName:{"unsignedIntegerValue"), @"Index"}];
+  }
+
+  else
+  {
+    [*(a1 + 40) appendString:@"<nil>" withName:@"Index"];
+  }
+
+  return [*(a1 + 40) appendInteger:objc_msgSend(*(a1 + 32) withName:{"count"), @"ItemCount"}];
+}
+
+void *__62__NCNotificationListView_debugDescriptionWithMultilinePrefix___block_invoke_3(uint64_t a1, void *a2)
+{
+  v2 = a2;
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    v3 = v2;
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  v4 = v3;
+
+  return v3;
+}
+
+uint64_t __62__NCNotificationListView_debugDescriptionWithMultilinePrefix___block_invoke_4(uint64_t a1, void *a2, void *a3)
+{
+  v4 = a2;
+  v5 = a3;
+  [v4 frame];
+  v7 = v6;
+  [v5 frame];
+  if (v7 == v8)
+  {
+    v9 = 0;
+  }
+
+  else
+  {
+    [v4 frame];
+    v11 = v10;
+    [v5 frame];
+    if (v11 >= v12)
+    {
+      v9 = 1;
+    }
+
+    else
+    {
+      v9 = -1;
+    }
+  }
+
+  return v9;
+}
+
+- (id)_getDepth
+{
+  v2 = [(NCNotificationListView *)self superview];
+  if (v2)
+  {
+    v3 = v2;
+    v4 = 0;
+    do
+    {
+      objc_opt_class();
+      v4 += objc_opt_isKindOfClass() & 1;
+      v5 = [v3 superview];
+
+      v3 = v5;
+    }
+
+    while (v5);
+  }
+
+  else
+  {
+    v4 = 0;
+  }
+
+  v6 = MEMORY[0x277CCABB0];
+
+  return [v6 numberWithUnsignedInteger:v4];
+}
+
+- (void)_appendBaseDescriptionToBuilder:(id)a3
+{
+  purpose = self->_purpose;
+  v5 = a3;
+  [v5 appendString:purpose withName:@"Purpose"];
+  [v5 appendString:self->_model withName:@"Model"];
+  [(NCNotificationListView *)self _visibleRect];
+  v6 = [v5 appendRect:@"VisibleRect" withName:?];
+  [(NCNotificationListView *)self frame];
+  v7 = [v5 appendRect:@"Frame" withName:?];
+  [(NCNotificationListView *)self contentSize];
+  v8 = [v5 appendSize:@"ContentSize" withName:?];
+  [(NCNotificationListView *)self contentOffset];
+  v9 = [v5 appendPoint:@"ContentOffset" withName:?];
+  v10 = [v5 appendBool:-[NCNotificationListView isHidden](self withName:{"isHidden"), @"IsHidden"}];
+  [(NCNotificationListView *)self alpha];
+  v11 = [v5 appendFloat:@"Alpha" withName:?];
+  [(NCNotificationListView *)self transform];
+  v12 = NSStringFromCGAffineTransform(&v13);
+  [v5 appendString:v12 withName:@"Transform"];
+}
+
+- (BOOL)_isViewWithinVisibleRectForHeight:(double)a3 layoutOffset:(double)a4
+{
+  [(NCNotificationListView *)self visibleRect];
+  MinY = CGRectGetMinY(v12);
+  [(NCNotificationListView *)self visibleRect];
+  Height = CGRectGetHeight(v13);
+  [(NCListAnimationSettings *)self->_animationSettings viewVisibilityMargin];
+  if (a3 + a4 < MinY - v9)
+  {
+    return 0;
+  }
+
+  [(NCListAnimationSettings *)self->_animationSettings viewVisibilityMargin];
+  return MinY + Height + v11 > a4;
+}
+
+- (double)_targetContentHeightForProposedHeight:(double)a3
+{
+  v5 = [(NCNotificationListView *)self dataSource];
+  if (objc_opt_respondsToSelector())
+  {
+    [v5 targetContentHeightForNotificationList:self];
+    a3 = v6;
+  }
+
+  return a3;
+}
+
+- (void)_adjustContentSizeHeightIfNecessaryForUpdatedHeight:(double)a3
+{
+  [(NCNotificationListView *)self _targetContentHeightForProposedHeight:a3];
+  v5 = v4;
+  [(NCNotificationListView *)self contentSize];
+  if ((BSFloatApproximatelyEqualToFloat() & 1) == 0)
+  {
+    [(NCNotificationListView *)self setCachedSizeValid:0];
+    if ([(NCNotificationListView *)self isScrollEnabled])
+    {
+      if (([(NCNotificationListView *)self isTracking]& 1) == 0 && ([(NCNotificationListView *)self isDecelerating]& 1) == 0)
+      {
+        [(NCNotificationListView *)self bounds];
+        v7 = v5 - v6;
+        [(NCNotificationListView *)self contentInset];
+        v9 = v8 + v7;
+        [(NCNotificationListView *)self contentOffset];
+        if (v10 >= v9)
+        {
+          [(NCNotificationListView *)self contentInset];
+          v12 = -v11;
+          if (v9 <= v12)
+          {
+            v9 = v12;
+          }
+
+          if ([(NCNotificationListView *)self useAnimatorForHeightChangeAnimation])
+          {
+            if ([(NCNotificationListView *)self isScrollAnimating])
+            {
+              v13 = [(NCNotificationListView *)self _currentAnimator];
+              v17[0] = MEMORY[0x277D85DD0];
+              v17[1] = 3221225472;
+              v17[2] = __78__NCNotificationListView__adjustContentSizeHeightIfNecessaryForUpdatedHeight___block_invoke;
+              v17[3] = &unk_27836FDD0;
+              v17[4] = self;
+              *&v17[5] = v9;
+              [v13 animateByRetargetingType:5 animations:v17 completion:&__block_literal_global_97];
+            }
+
+            else
+            {
+              v16[0] = MEMORY[0x277D85DD0];
+              v16[1] = 3221225472;
+              v16[2] = __78__NCNotificationListView__adjustContentSizeHeightIfNecessaryForUpdatedHeight___block_invoke_3;
+              v16[3] = &unk_27836FDD0;
+              v16[4] = self;
+              *&v16[5] = v9;
+              [(NCNotificationListView *)self _performViewAnimationBlock:v16 completionBlock:&__block_literal_global_99 type:5];
+            }
+          }
+
+          else
+          {
+            [(NCNotificationListView *)self _setContentOffsetWithDecelerationAnimation:0.0, v9];
+          }
+
+          v14 = [(NCNotificationListView *)self superview];
+          [v14 setNeedsLayout];
+        }
+      }
+    }
+
+    v15[0] = MEMORY[0x277D85DD0];
+    v15[1] = 3221225472;
+    v15[2] = __78__NCNotificationListView__adjustContentSizeHeightIfNecessaryForUpdatedHeight___block_invoke_5;
+    v15[3] = &unk_27836FDD0;
+    v15[4] = self;
+    *&v15[5] = v5;
+    [(NCNotificationListView *)self _performViewAnimationBlock:v15 completionBlock:0 type:0];
+    [(NCNotificationListView *)self _updateSuperViewLayoutForSizeChangeIfNeeded];
+  }
+}
+
+uint64_t __78__NCNotificationListView__adjustContentSizeHeightIfNecessaryForUpdatedHeight___block_invoke_5(uint64_t a1)
+{
+  v2 = *(a1 + 32);
+  [v2 frame];
+  Width = CGRectGetWidth(v7);
+  v4 = *(a1 + 40);
+
+  return [v2 setContentSize:{Width, v4}];
+}
+
+- (void)_updateSuperViewLayoutForSizeChangeIfNeeded
+{
+  v3 = [(NCNotificationListView *)self traitCollection];
+  v4 = [v3 _backlightLuminance];
+
+  if (v4 == 2)
+  {
+    v7 = [(NCNotificationListView *)self _directSuperListView];
+    if ([v7 isDecelerating])
+    {
+      [v7 isPerformingScrollingAnimation];
+    }
+
+    else
+    {
+      v5 = [v7 isDragging];
+      if (([v7 isPerformingScrollingAnimation] & 1) == 0 && (v5 & 1) == 0)
+      {
+        v6 = [(NCNotificationListView *)self superview];
+        [v6 setNeedsLayout];
+      }
+    }
+  }
+
+  else
+  {
+    v7 = [(NCNotificationListView *)self superview];
+    [v7 setNeedsLayout];
+  }
+}
+
+- (void)setContentSize:(CGSize)a3
+{
+  v3 = fmax(a3.height, self->_minimumContentHeight);
+  v4.receiver = self;
+  v4.super_class = NCNotificationListView;
+  [(NCNotificationListView *)&v4 setContentSize:a3.width, v3];
+}
+
+void __55__NCNotificationListView__layoutOverlayViewIfNecessary__block_invoke(uint64_t a1)
+{
+  v2 = [*(a1 + 32) overlayView];
+  [v2 setAlpha:*(a1 + 40)];
+
+  v3 = [*(a1 + 32) overlayView];
+  [v3 setFrame:{*(a1 + 48), *(a1 + 56), *(a1 + 64), *(a1 + 72)}];
+}
+
+uint64_t __55__NCNotificationListView__layoutOverlayViewIfNecessary__block_invoke_2(uint64_t a1)
+{
+  result = [*(a1 + 32) isGrouped];
+  if (result)
+  {
+    [*(*(a1 + 32) + 2584) removeFromSuperview];
+    v3 = *(a1 + 32);
+
+    return [v3 setOverlayView:0];
+  }
+
+  return result;
+}
+
+void __53__NCNotificationListView__layoutHoverViewIfNecessary__block_invoke(uint64_t a1)
+{
+  v1 = [*(a1 + 32) hoverView];
+  [v1 setAlpha:1.0];
+}
+
+uint64_t __53__NCNotificationListView__layoutHoverViewIfNecessary__block_invoke_3(uint64_t a1)
+{
+  v2 = *(a1 + 32);
+  v3 = [*(a1 + 40) hoverView];
+
+  v4 = *(a1 + 32);
+  if (v2 == v3)
+  {
+    v7 = [*(a1 + 40) isHoverViewHidden];
+    v8 = 1.0;
+    if (v7)
+    {
+      v8 = 0.0;
+    }
+
+    return [v4 setAlpha:v8];
+  }
+
+  else
+  {
+    v5 = *(a1 + 32);
+
+    return [v5 removeFromSuperview];
+  }
+}
+
+- (void)_layoutHeaderViewIfNecessaryAtLayoutOffset:(double)a3
+{
+  [(NCNotificationListView *)self _headerViewHeight];
+  v6 = v5;
+  if ([NCNotificationListView _isViewWithinVisibleRectForHeight:"_isViewWithinVisibleRectForHeight:layoutOffset:" layoutOffset:?])
+  {
+    [(NCNotificationListView *)self bounds];
+    [(NCNotificationListView *)self _widthForListViewInRect:?];
+    v8 = v7;
+    headerView = self->_headerView;
+    if (headerView)
+    {
+      v10 = headerView;
+LABEL_11:
+      [(NCNotificationListView *)self sendSubviewToBack:v10];
+      if ([(NCNotificationListView *)self isPerformingHeaderReloadAnimation])
+      {
+        [(UIView *)v10 setAlpha:0.0];
+      }
+
+      if ([(NCNotificationListView *)self supportsHeaderViewRollUnder])
+      {
+        v21 = [(NCNotificationListView *)self _shouldRollUnderView:v10 withHeight:v6 layoutOffset:a3];
+      }
+
+      else
+      {
+        v21 = 0;
+      }
+
+      [(NCNotificationListView *)self horizontalInsetMargin];
+      v23 = v22;
+      v24 = 1.0;
+      if (![(NCNotificationListView *)self isRevealed])
+      {
+        [(NCListAnimationSettings *)self->_animationSettings headerViewRevealAlphaPercentage];
+        v26 = v25;
+        [(NCNotificationListView *)self revealPercentage];
+        v24 = v26 * v27;
+      }
+
+      v28 = *(MEMORY[0x277CBF2C0] + 16);
+      *&v56.a = *MEMORY[0x277CBF2C0];
+      *&v56.c = v28;
+      *&v56.tx = *(MEMORY[0x277CBF2C0] + 32);
+      if ([(NCNotificationListView *)self count])
+      {
+        v29 = [(NCNotificationListView *)self visibleViews];
+        v30 = [v29 objectForKey:&unk_283015440];
+
+        v31 = [(NCNotificationListView *)self dataSource];
+        [v31 notificationListView:self heightForItemAtIndex:0 withWidth:-[NCNotificationListView _isCurrentlyInDisplayListAsStackMode](self inDisplayListAsStackMode:"_isCurrentlyInDisplayListAsStackMode") ignoreExpandedGroupStack:{0, v8}];
+        v33 = v32;
+
+        [(NCNotificationListView *)self layoutOffsetForViewAtIndex:0];
+        v35 = v34;
+        if ([(NCNotificationListView *)self supportsHeaderViewRollUnder]&& v30 && [(NCNotificationListView *)self _shouldRollUnderView:v30 withHeight:v33 layoutOffset:v35])
+        {
+          [(NCListAnimationSettings *)self->_animationSettings rollUnderLimitHeightMax];
+          if (v33 >= v36)
+          {
+            v33 = v36;
+          }
+
+          [(NCNotificationListView *)self _visibleRect];
+          if (v6 + a3 > CGRectGetMaxY(v58))
+          {
+            v24 = 0.0;
+            [(UIView *)v10 setAlpha:0.0];
+          }
+
+          [(NCNotificationListView *)self _alphaForRollUnderForView:v10 withHeight:v6 layoutOffset:a3];
+          v24 = v24 * v37;
+          memset(&v55, 0, sizeof(v55));
+          [(NCNotificationListView *)self _transformForRollUnderForView:v30 withHeight:v33 layoutOffset:v35];
+          CGAffineTransformMakeTranslation(&v56, 0.0, fmin(v35 + 0.0 - (v6 + a3), 0.0));
+        }
+
+        else if (v21)
+        {
+          [(NCNotificationListView *)self _alphaForRollUnderForView:v10 withHeight:v6 layoutOffset:a3];
+          v24 = v24 * v38;
+          [(NCNotificationListView *)self _transformForRollUnderForView:v10 withHeight:v6 layoutOffset:a3];
+        }
+
+        v39 = [(NCNotificationListView *)self _currentAnimator];
+        v52[0] = MEMORY[0x277D85DD0];
+        v52[1] = 3221225472;
+        v52[2] = __69__NCNotificationListView__layoutHeaderViewIfNecessaryAtLayoutOffset___block_invoke;
+        v52[3] = &unk_278370EB8;
+        v52[4] = self;
+        v53 = v10;
+        v54 = v56;
+        [v39 performAnimationType:0 withoutAnimation:v52];
+      }
+
+      else if (v21)
+      {
+        [(NCNotificationListView *)self _alphaForRollUnderForView:v10 withHeight:v6 layoutOffset:a3];
+        v24 = v24 * v40;
+        [(NCNotificationListView *)self _transformForRollUnderForView:v10 withHeight:v6 layoutOffset:a3];
+      }
+
+      v55 = v56;
+      if ([(NCNotificationListView *)self _shouldUpdateTransformedView:v10 toFrame:&v55 alpha:v23 transform:a3, v8, v6, v24])
+      {
+        aBlock[0] = MEMORY[0x277D85DD0];
+        aBlock[1] = 3221225472;
+        aBlock[2] = __69__NCNotificationListView__layoutHeaderViewIfNecessaryAtLayoutOffset___block_invoke_2;
+        aBlock[3] = &unk_278370EE0;
+        aBlock[4] = self;
+        v45 = v10;
+        v46 = v23;
+        v47 = a3;
+        v48 = v8;
+        v49 = v6;
+        v50 = v56;
+        v51 = v24;
+        v41 = _Block_copy(aBlock);
+        if ([(NCNotificationListView *)self isPerformingGroupingAnimation]&& ![(NCNotificationListView *)self _isAnimationStyleDissolve]|| [(NCNotificationListView *)self isPerformingRevealAnimation])
+        {
+          [(NCNotificationListView *)self setPerformingHeaderGroupingAnimation:[(NCNotificationListView *)self isPerformingGroupingAnimation]];
+          v43[0] = MEMORY[0x277D85DD0];
+          v43[1] = 3221225472;
+          v43[2] = __69__NCNotificationListView__layoutHeaderViewIfNecessaryAtLayoutOffset___block_invoke_3;
+          v43[3] = &unk_27836F6A8;
+          v43[4] = self;
+          [(NCNotificationListView *)self _performViewAnimationBlock:v41 completionBlock:v43 type:0];
+        }
+
+        else
+        {
+          v42 = [(NCNotificationListView *)self _currentAnimator];
+          [v42 performAnimationType:0 withoutAnimation:v41];
+        }
+      }
+
+      return;
+    }
+
+    v13 = [(NCNotificationListView *)self _headerViewFromDataSource];
+    v14 = self->_headerView;
+    self->_headerView = v13;
+
+    [(NCNotificationListView *)self _headerViewHeight];
+    v6 = v15;
+    [(NCNotificationListView *)self horizontalInsetMargin];
+    v17 = v16;
+    v18 = [(NCNotificationListView *)self isPerformingGroupingAnimation];
+    v19 = 0.0;
+    if (v18)
+    {
+      [(NCListAnimationSettings *)self->_animationSettings headerViewInitialOffsetHeightPercentage];
+      v19 = v6 * v20;
+    }
+
+    [(NCNotificationListView *)self _updateTransformedView:self->_headerView toFrame:v17, v19 + a3, v8, v6];
+    [(UIView *)self->_headerView setAlpha:0.0];
+    [(NCNotificationListView *)self addSubview:self->_headerView];
+    v10 = self->_headerView;
+    if (v10)
+    {
+      goto LABEL_11;
+    }
+  }
+
+  else
+  {
+    v11 = self->_headerView;
+    if (v11)
+    {
+      [(UIView *)v11 removeFromSuperview];
+      [(NCNotificationListView *)self _recycleViewIfNecessary:self->_headerView];
+      v12 = self->_headerView;
+      self->_headerView = 0;
+    }
+  }
+}
+
+uint64_t __69__NCNotificationListView__layoutHeaderViewIfNecessaryAtLayoutOffset___block_invoke(uint64_t a1)
+{
+  if (([*(a1 + 32) isPerformingBottomMarginAdjustmentAnimation] & 1) == 0 && (objc_msgSend(*(a1 + 32), "isPerformingRevealAnimation") & 1) == 0 && (objc_msgSend(*(a1 + 32), "isPerformingGroupingAnimation") & 1) == 0)
+  {
+    v2 = *(a1 + 40);
+    v3 = *(a1 + 64);
+    v5[0] = *(a1 + 48);
+    v5[1] = v3;
+    v5[2] = *(a1 + 80);
+    [v2 setTransform:v5];
+  }
+
+  return [*(a1 + 32) _updateBlurFilterForHeaderView:*(a1 + 40) translation:fabs(*(a1 + 88))];
+}
+
+uint64_t __69__NCNotificationListView__layoutHeaderViewIfNecessaryAtLayoutOffset___block_invoke_2(uint64_t a1)
+{
+  v2 = *(a1 + 32);
+  v3 = *(a1 + 40);
+  v4 = *(a1 + 48);
+  v5 = *(a1 + 56);
+  v6 = *(a1 + 64);
+  v7 = *(a1 + 72);
+  v8 = *(a1 + 96);
+  v10[0] = *(a1 + 80);
+  v10[1] = v8;
+  v10[2] = *(a1 + 112);
+  [v2 _updateTransformedView:v3 toFrame:v10 withTransform:{v4, v5, v6, v7}];
+  return [*(a1 + 40) setAlpha:*(a1 + 128)];
+}
+
+- (void)_updateBlurFilterForHeaderView:(id)a3 translation:(double)a4
+{
+  v17[1] = *MEMORY[0x277D85DE8];
+  v6 = a3;
+  if (self->_currentBottomTransitionTransformer == 1 && ((v7 = [(NCNotificationListView *)self supportsHeaderViewRollUnder], a4 >= 0.0) ? (v8 = !v7) : (v8 = 1), !v8 && [(NCNotificationListView *)self count]))
+  {
+    [(NCListAnimationSettings *)self->_animationSettings headerViewRevealBlurTranslationDistance];
+    v10 = a4 / v9;
+    [(NCListAnimationSettings *)self->_animationSettings headerViewRevealBlurRadiusMax];
+    v12 = v10 * v11;
+    v13 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA328]];
+    [v13 setName:@"gaussianBlur"];
+    v14 = [MEMORY[0x277CCABB0] numberWithDouble:v12];
+    [v13 setValue:v14 forKey:@"inputRadius"];
+
+    v15 = [v6 layer];
+    v17[0] = v13;
+    v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
+    [v15 setFilters:v16];
+  }
+
+  else
+  {
+    v13 = [v6 layer];
+    [v13 setFilters:MEMORY[0x277CBEBF8]];
+  }
+}
+
+- (void)_layoutFooterViewIfNecessaryAtLayoutOffset:(double)a3
+{
+  [(NCNotificationListView *)self _footerViewHeight];
+  v6 = v5;
+  v7 = [NCNotificationListView _isViewWithinVisibleRectForHeight:"_isViewWithinVisibleRectForHeight:layoutOffset:" layoutOffset:?];
+  footerView = self->_footerView;
+  if (v7)
+  {
+    if (footerView)
+    {
+      v9 = footerView;
+    }
+
+    else
+    {
+      v11 = [(NCNotificationListView *)self _footerViewFromDataSource];
+      v12 = self->_footerView;
+      self->_footerView = v11;
+
+      [(NCNotificationListView *)self addSubview:self->_footerView];
+      v9 = self->_footerView;
+      if (!v9)
+      {
+        return;
+      }
+    }
+
+    [(NCNotificationListView *)self sendSubviewToBack:v9];
+    [(NCNotificationListView *)self horizontalInsetMargin];
+    v14 = v13;
+    [(NCNotificationListView *)self bounds];
+    [(NCNotificationListView *)self _widthForListViewInRect:?];
+    v16 = v15;
+    if ([(NCNotificationListView *)self _shouldRollUnderView:v9 withHeight:v6 layoutOffset:a3])
+    {
+      [(NCNotificationListView *)self _alphaForRollUnderForView:v9 withHeight:v6 layoutOffset:a3];
+      v18 = v17;
+      v36 = 0u;
+      v37 = 0u;
+      v35 = 0u;
+      [(NCNotificationListView *)self _transformForRollUnderForView:v9 withHeight:v6 layoutOffset:a3];
+    }
+
+    else
+    {
+      v19 = *(MEMORY[0x277CBF2C0] + 16);
+      v35 = *MEMORY[0x277CBF2C0];
+      v36 = v19;
+      v37 = *(MEMORY[0x277CBF2C0] + 32);
+      v18 = 1.0;
+    }
+
+    v20 = self->_footerView;
+    v32 = v35;
+    v33 = v36;
+    v34 = v37;
+    if ([(NCNotificationListView *)self _shouldUpdateTransformedView:v20 toFrame:&v32 alpha:v14 transform:a3, v16, v6, v18])
+    {
+      if ([(NCNotificationListView *)self isPerformingVisibleRectAdjustment])
+      {
+        v21 = self->_footerView;
+        v32 = v35;
+        v33 = v36;
+        v34 = v37;
+        [(NCNotificationListView *)self _updateTransformedView:v21 toFrame:&v32 withTransform:v14, a3, v16, v6];
+        [(UIView *)v9 setAlpha:v18];
+      }
+
+      else
+      {
+        v22[0] = MEMORY[0x277D85DD0];
+        v22[1] = 3221225472;
+        v22[2] = __69__NCNotificationListView__layoutFooterViewIfNecessaryAtLayoutOffset___block_invoke;
+        v22[3] = &unk_278370EE0;
+        v22[4] = self;
+        v23 = v9;
+        v24 = v14;
+        v25 = a3;
+        v26 = v16;
+        v27 = v6;
+        v28 = v35;
+        v29 = v36;
+        v30 = v37;
+        v31 = v18;
+        [(NCNotificationListView *)self _performViewAnimationBlock:v22 completionBlock:0 type:0];
+      }
+    }
+  }
+
+  else if (footerView)
+  {
+    [(UIView *)footerView removeFromSuperview];
+    [(NCNotificationListView *)self _recycleViewIfNecessary:self->_footerView];
+    v10 = self->_footerView;
+    self->_footerView = 0;
+  }
+}
+
+uint64_t __69__NCNotificationListView__layoutFooterViewIfNecessaryAtLayoutOffset___block_invoke(uint64_t a1)
+{
+  v2 = *(a1 + 32);
+  v3 = *(a1 + 40);
+  v4 = *(a1 + 48);
+  v5 = *(a1 + 56);
+  v6 = *(a1 + 64);
+  v7 = *(a1 + 72);
+  v8 = *(a1 + 96);
+  v10[0] = *(a1 + 80);
+  v10[1] = v8;
+  v10[2] = *(a1 + 112);
+  [v2 _updateTransformedView:v3 toFrame:v10 withTransform:{v4, v5, v6, v7}];
+  return [*(a1 + 40) setAlpha:*(a1 + 128)];
+}
+
+- (BOOL)_isAlwaysPresentedAtTopOfScreenForView:(id)a3
+{
+  v3 = a3;
+  v4 = [v3 purpose];
+  if ([v4 isEqualToString:@"clock"])
+  {
+    v5 = 1;
+  }
+
+  else
+  {
+    v6 = [v3 purpose];
+    v5 = [v6 isEqualToString:@"AdjunctTopSticky"];
+  }
+
+  return v5;
+}
+
+- (double)_layoutViewIfNecessaryAtIndex:(unint64_t)a3 layoutOffset:(double)a4 startingLayoutOffset:(double)a5
+{
+  v9 = [(NCNotificationListView *)self dataSource];
+  v10 = [(NCNotificationListView *)self _isFeaturedLeadingViewAtIndex:a3];
+  if (v10)
+  {
+    [(NCNotificationListView *)self _widthForFeaturedLeadingView];
+    v12 = v11;
+    [(NCNotificationListView *)self _heightForFeaturedLeadingView];
+  }
+
+  else
+  {
+    [(NCNotificationListView *)self bounds];
+    [(NCNotificationListView *)self _widthForListViewInRect:?];
+    v12 = v14;
+    [v9 notificationListView:self heightForItemAtIndex:a3 withWidth:-[NCNotificationListView _isCurrentlyInDisplayListAsStackMode](self inDisplayListAsStackMode:"_isCurrentlyInDisplayListAsStackMode") ignoreExpandedGroupStack:{0, v14}];
+  }
+
+  v15 = v13;
+  v16 = [NCNotificationListView _isViewWithinVisibleRectForHeight:"_isViewWithinVisibleRectForHeight:layoutOffset:" layoutOffset:?];
+  v17 = [(NCNotificationListView *)self visibleViewAtIndex:a3];
+  v18 = v17;
+  if (v16)
+  {
+    v124 = v10;
+    v19 = objc_opt_class();
+    v20 = v18;
+    if (v19)
+    {
+      if (objc_opt_isKindOfClass())
+      {
+        v21 = v20;
+      }
+
+      else
+      {
+        v21 = 0;
+      }
+    }
+
+    else
+    {
+      v21 = 0;
+    }
+
+    v33 = v21;
+
+    v34 = 0.0;
+    v123 = v9;
+    if (v33)
+    {
+      if ([(NCNotificationListView *)self _isAlwaysPresentedAtTopOfScreenForView:v33])
+      {
+        [v33 setUserInteractionEnabled:0];
+      }
+
+      else
+      {
+        [(NCNotificationListView *)self additionalYOffset];
+        v34 = v35;
+      }
+    }
+
+    v36 = v34 + a4;
+    v37 = [(NCNotificationListView *)self _isAnimationStyleDissolve];
+    v38 = [(NCNotificationListView *)self _hasBottomTransitionTransformerForView:v20];
+    v39 = MEMORY[0x277CBF2C0];
+    if (v20)
+    {
+      LOBYTE(v122) = v38;
+      v18 = v20;
+    }
+
+    else
+    {
+      v40 = [(NCNotificationListView *)self _viewForItemAtIndex:a3];
+      v122 = [(NCNotificationListView *)self _hasBottomTransitionTransformerForView:v40];
+      v41 = objc_opt_class();
+      v18 = v40;
+      if (v41)
+      {
+        if (objc_opt_isKindOfClass())
+        {
+          v42 = v18;
+        }
+
+        else
+        {
+          v42 = 0;
+        }
+      }
+
+      else
+      {
+        v42 = 0;
+      }
+
+      v45 = v42;
+
+      [(NCNotificationListView *)self _setHiddenBelowStackForView:v18 hiddenBelowStack:0];
+      [v123 notificationListView:self heightForItemAtIndex:a3 withWidth:-[NCNotificationListView _isCurrentlyInDisplayListAsStackMode](self inDisplayListAsStackMode:"_isCurrentlyInDisplayListAsStackMode") ignoreExpandedGroupStack:{0, v12}];
+      v15 = v46;
+      [(NCNotificationListView *)self _setVisibleView:v18 atIndex:a3];
+      [(NCNotificationListView *)self addSubview:v18];
+      if ([(NCNotificationListView *)self isPerformingGroupingAnimation])
+      {
+        v47 = [(NCNotificationListView *)self _currentAnimator];
+        v155[0] = MEMORY[0x277D85DD0];
+        v155[1] = 3221225472;
+        v155[2] = __90__NCNotificationListView__layoutViewIfNecessaryAtIndex_layoutOffset_startingLayoutOffset___block_invoke;
+        v155[3] = &unk_27836F6A8;
+        v156 = v18;
+        [v47 performAnimationType:0 withoutAnimation:v155];
+      }
+
+      v48 = [(NCNotificationListView *)self isRevealed];
+      v49 = 0.0;
+      if (v48)
+      {
+        v49 = 1.0;
+      }
+
+      [(NCNotificationListView *)self _setRevealAlphaForView:v18 desiredAlpha:v49];
+      [(NCNotificationListView *)self horizontalInsetMargin];
+      v51 = v50;
+      if (v10)
+      {
+        v52 = [(NCNotificationListView *)self _shouldReverseLayoutDirection];
+        v53 = a3;
+        if (v52)
+        {
+          v53 = [(NCNotificationListView *)self numberOfFeaturedLeadingViews]+ ~a3;
+        }
+
+        v54 = v53;
+        [(NCListAnimationSettings *)self->_animationSettings featuredLeadingViewSpacing];
+        v51 = v51 + v54 * (v12 + v55);
+      }
+
+      v119 = v39[1];
+      v121 = *v39;
+      *&v154.a = *v39;
+      *&v154.c = v119;
+      v117 = v39[2];
+      *&v154.tx = v117;
+      if (a3 && [(NCNotificationListView *)self isPerformingGroupingAnimation])
+      {
+        v56 = 1.0;
+        v57 = v36;
+        if (!v37)
+        {
+          [v123 notificationListView:self heightForItemAtIndex:0 withWidth:-[NCNotificationListView _isCurrentlyInDisplayListAsStackMode](self inDisplayListAsStackMode:"_isCurrentlyInDisplayListAsStackMode") ignoreExpandedGroupStack:{0, v12}];
+          [(NCNotificationListView *)self _scaleTransformForGroupingAnimationForViewAtIndex:a3 leadingViewHeight:?];
+          v56 = 0.0;
+          v57 = a5;
+        }
+      }
+
+      else
+      {
+        v56 = 1.0;
+        v57 = v36;
+        if (!v37)
+        {
+          if ([(NCNotificationListView *)self isSubviewPerformingGroupingAnimation]&& ([(NCNotificationListView *)self visibleRect], v36 < CGRectGetMaxY(v160)))
+          {
+            [(NCNotificationListView *)self visibleRect];
+            MaxY = CGRectGetMaxY(v161);
+            v59 = a3 * 100.0;
+            v56 = 0.0;
+            if (v122)
+            {
+              v59 = 0.0;
+            }
+
+            v57 = v59 + MaxY;
+            if (v122)
+            {
+              [(NCListAnimationSettings *)self->_animationSettings rollUnderScaleMinimum];
+              v61 = v60;
+              [(NCListAnimationSettings *)self->_animationSettings rollUnderScaleMinimum];
+              CGAffineTransformMakeScale(&v153, v61, v62);
+              *&v154.a = *&v153.a;
+              *&v154.c = *&v153.c;
+              v63 = *&v153.tx;
+            }
+
+            else
+            {
+              *&v154.a = v121;
+              *&v154.c = v119;
+              v63 = v117;
+            }
+
+            *&v154.tx = v63;
+          }
+
+          else
+          {
+            v56 = 0.0;
+            if (v122 && ([(NCNotificationListView *)self _isAnimatingForParentNotificationListView]|| [(NCNotificationListView *)self isPerformingRevealAnimation]|| [(NCNotificationListView *)self isPerformingRevealTransitionAnimation]))
+            {
+              [(NCNotificationListView *)self _transformForRollUnderForView:v18 withHeight:v15 layoutOffset:v36, v117, v119];
+              v154 = v153;
+            }
+
+            v57 = v36;
+          }
+        }
+      }
+
+      *&v153.a = v121;
+      *&v153.c = v119;
+      *&v153.tx = v117;
+      [v18 setTransform:{&v153, v117, v119}];
+      [v18 setFrame:{v51, v57, v12, v15}];
+      v153 = v154;
+      [v18 setTransform:&v153];
+      [v18 setAlpha:v56];
+      *&v153.a = v121;
+      *&v153.c = v120;
+      *&v153.tx = v118;
+      [(NCNotificationListView *)self _configureStackDimmingForGroupedView:v18 transform:&v153];
+      v33 = v45;
+    }
+
+    if (!v10)
+    {
+      [(NCNotificationListView *)self sendSubviewToBack:v18];
+    }
+
+    [(NCNotificationListView *)self _setHiddenBelowStackForView:v18 hiddenBelowStack:0];
+    [(NCNotificationListView *)self _setContentHiddenForView:v18 contentHidden:0];
+    if ([(NCNotificationListView *)self isReactiveLayout])
+    {
+      v64 = v39[1];
+      *&v154.a = *v39;
+      *&v154.c = v64;
+      *&v154.tx = v39[2];
+      [v18 setTransform:&v154];
+    }
+
+    if (v10)
+    {
+      [(NCNotificationListView *)self _heightForFeaturedLeadingView];
+      v15 = v65;
+      [(NCNotificationListView *)self horizontalInsetMargin];
+      v67 = v66;
+      v68 = [(NCNotificationListView *)self _shouldReverseLayoutDirection];
+      v69 = a3;
+      if (v68)
+      {
+        v69 = [(NCNotificationListView *)self numberOfFeaturedLeadingViews]+ ~a3;
+      }
+
+      v70 = v69;
+      [(NCListAnimationSettings *)self->_animationSettings featuredLeadingViewSpacing];
+      v72 = (v12 + v71) * v70;
+    }
+
+    else
+    {
+      [(NCNotificationListView *)self horizontalInsetMargin];
+      v67 = v73;
+      v72 = 0.0;
+    }
+
+    v74 = [(NCNotificationListView *)self isRevealed];
+    v75 = 0.0;
+    v76 = 0.0;
+    if (!v74)
+    {
+      [(NCNotificationListView *)self _positionOffsetForRevealHintingForItemAtIndex:a3, 0.0];
+    }
+
+    v77 = v67 + v72;
+    v78 = v36 + v76;
+    [(NCNotificationListView *)self interactionTranslationPercentage];
+    v80 = v79;
+    [(NCNotificationListView *)self interactionTranslationFocalPointY];
+    v82 = -(v80 * (v81 - v36));
+    [(NCListAnimationSettings *)self->_animationSettings interactionTranslationCollapseVerticalOffsetFactor];
+    v84 = v78 + v82 * v83;
+    if (![(NCNotificationListView *)self isRevealed])
+    {
+      if ([(NCNotificationListView *)self isPerformingRevealAnimation])
+      {
+        v75 = 150.0;
+      }
+
+      else
+      {
+        v75 = 0.0;
+      }
+    }
+
+    v137.a = v77;
+    v137.b = v84 + v75;
+    v137.c = v12;
+    v137.d = v15;
+    v85 = [(NCNotificationListView *)self isRevealed];
+    v86 = 1.0;
+    if (!v85)
+    {
+      [(NCNotificationListView *)self revealPercentage];
+      v86 = v87 / (a3 * 0.5 + 1.0);
+    }
+
+    t1.a = v86;
+    v88 = v39[1];
+    *&v154.a = *v39;
+    *&v154.c = v88;
+    *&v154.tx = v39[2];
+    v89 = [(NCNotificationListView *)self _isPerformingRollUnderListLayoutForView:v18 atIndex:a3 viewHeight:&v154 atLayoutOffset:&t1 targetTransform:&v137 targetAlpha:v15 viewFrame:v36];
+    [(NCNotificationListView *)self _updateBottomMarginAdjustmentAnimationForView:v18 isPerformingRollUnderLayout:v89];
+    [(NCNotificationListView *)self _updateLayoutParametersForHiddenGroupListViewAnimationForView:v18 targetTransform:&v154 targetAlpha:&t1];
+    if ([(NCNotificationListView *)self isPerformingGroupingAnimation]&& v37)
+    {
+      v90 = [(NCNotificationListView *)self _currentAnimator];
+      v148[0] = MEMORY[0x277D85DD0];
+      v148[1] = 3221225472;
+      v148[2] = __90__NCNotificationListView__layoutViewIfNecessaryAtIndex_layoutOffset_startingLayoutOffset___block_invoke_2;
+      v148[3] = &unk_278370F08;
+      v148[4] = self;
+      v149 = v18;
+      v150 = *&v137.a;
+      v151 = *&v137.c;
+      v152 = v20 != 0;
+      [v90 performAnimationType:0 withoutAnimation:v148];
+    }
+
+    ty = v154.ty;
+    v92 = [(NCNotificationListView *)self animationSettings];
+    [v92 animationYTranslationThresholdForRollUnderGlassTransition];
+    v94 = v93;
+
+    if (ty < v94 && v89)
+    {
+      goto LABEL_86;
+    }
+
+    v97 = [v33 coplanarViewIndices];
+    if ([v97 count])
+    {
+    }
+
+    else
+    {
+      v108 = [v33 nonCoplanarViewIndices];
+      v109 = [v108 count];
+
+      if (v109)
+      {
+LABEL_86:
+        v96 = [(NCNotificationListView *)self nonCoplanarViewIndices];
+        goto LABEL_90;
+      }
+    }
+
+    v96 = [(NCNotificationListView *)self coplanarViewIndices];
+LABEL_90:
+    v98 = v96;
+    [v96 addIndex:a3];
+
+    v153 = v154;
+    if (![(NCNotificationListView *)self _shouldUpdateTransformedView:v18 toFrame:&v153 alpha:v137.a transform:v137.b, v137.c, v137.d, t1.a])
+    {
+LABEL_108:
+      v113 = [(NCNotificationListView *)self insertedViewIndices];
+      v114 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+      v115 = [v113 containsObject:v114];
+
+      v9 = v123;
+      if (v115)
+      {
+        [(NCNotificationListView *)self _performInsertionAnimationForView:v18];
+      }
+
+      if (!v124 || [(NCNotificationListView *)self numberOfFeaturedLeadingViews]- 1 <= a3)
+      {
+        v36 = v36 + v15;
+      }
+
+      a4 = v36 - v34;
+
+      goto LABEL_114;
+    }
+
+    v99 = [(NCNotificationListView *)self _shouldAnimateListLayoutForView:v18 atIndex:a3 isExistingView:v20 != 0 isPerformingRollUnderLayout:v89 shouldUpdateTransformedView:1];
+    if ([(NCNotificationListView *)self isPerformingContentRevealAnimation])
+    {
+      if (!a3)
+      {
+LABEL_96:
+        v101 = 1;
+        goto LABEL_98;
+      }
+    }
+
+    else
+    {
+      v100 = [(NCNotificationListView *)self isPerformingGroupingAnimation];
+      if (!a3 && v100)
+      {
+        goto LABEL_96;
+      }
+    }
+
+    v102 = [(NCNotificationListView *)self reloadedViewIndices];
+    v103 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v101 = [v102 containsObject:v103];
+
+LABEL_98:
+    aBlock[0] = MEMORY[0x277D85DD0];
+    aBlock[1] = 3221225472;
+    aBlock[2] = __90__NCNotificationListView__layoutViewIfNecessaryAtIndex_layoutOffset_startingLayoutOffset___block_invoke_3;
+    aBlock[3] = &unk_278370F30;
+    aBlock[4] = self;
+    v104 = v18;
+    v142 = v104;
+    v143 = *&v137.a;
+    v144 = *&v137.c;
+    v145 = v154;
+    a = t1.a;
+    v147 = v101;
+    v105 = _Block_copy(aBlock);
+    if (v99)
+    {
+      if (!(v122 | ![(NCNotificationListView *)self isPerformingRevealAnimation]))
+      {
+        [(NCNotificationListView *)self _revealAnimationDelayForObjectAtIndex:a3];
+        v111 = dispatch_time(0, (v110 * 1000000000.0));
+        block[0] = MEMORY[0x277D85DD0];
+        block[1] = 3221225472;
+        block[2] = __90__NCNotificationListView__layoutViewIfNecessaryAtIndex_layoutOffset_startingLayoutOffset___block_invoke_4;
+        block[3] = &unk_278370B58;
+        block[4] = self;
+        v139 = v104;
+        v140 = v105;
+        dispatch_after(v111, MEMORY[0x277D85CD0], block);
+
+        goto LABEL_107;
+      }
+    }
+
+    else
+    {
+      v106 = [(NCNotificationListView *)self viewsPerformingAnimation];
+      v107 = [v106 containsObject:v104];
+
+      if (!v107)
+      {
+        v112 = [(NCNotificationListView *)self _currentAnimator];
+        [v112 performAnimationType:0 withoutAnimation:v105];
+
+        goto LABEL_107;
+      }
+    }
+
+    [(NCNotificationListView *)self _performRetargetableAnimationForView:v104 type:0 animationBlock:v105 completionBlock:0];
+LABEL_107:
+
+    goto LABEL_108;
+  }
+
+  if (v17)
+  {
+    v22 = [(NCNotificationListView *)self _listViewForView:v17];
+    [(NCNotificationListView *)self visibleRect];
+    if (CGRectGetMinY(v157) < a4 && (-[NCNotificationListView _isAnimatingForParentNotificationListView](self, "_isAnimatingForParentNotificationListView") || [v22 isGrouped] && (objc_msgSend(v18, "center"), (BSFloatApproximatelyEqualToFloat() & 1) == 0)))
+    {
+      [(NCNotificationListView *)self sendSubviewToBack:v18];
+      [(NCNotificationListView *)self horizontalInsetMargin];
+      v24 = v23;
+      v25 = a4;
+      if ([(NCNotificationListView *)self _hasBottomTransitionTransformerForView:v18])
+      {
+        [(NCNotificationListView *)self visibleRect];
+        v26 = CGRectGetMaxY(v158);
+        [(NCListAnimationSettings *)self->_animationSettings notRevealedPlacementOffset];
+        v25 = v26 + v27;
+      }
+
+      [(NCNotificationListView *)self _visibleRect];
+      v28 = v25 - CGRectGetMaxY(v159);
+      [(NCListAnimationSettings *)self->_animationSettings rollUnderNotVisibleTranslation];
+      memset(&v154, 0, sizeof(v154));
+      CGAffineTransformMakeTranslation(&v154, 0.0, v28 - v29);
+      memset(&v153, 0, sizeof(v153));
+      [(NCListAnimationSettings *)self->_animationSettings rollUnderScaleMinimum];
+      v31 = v30;
+      [(NCListAnimationSettings *)self->_animationSettings rollUnderScaleMinimum];
+      CGAffineTransformMakeScale(&v153, v31, v32);
+      t1 = v153;
+      memset(&v137, 0, sizeof(v137));
+      t2 = v154;
+      CGAffineTransformConcat(&v137, &t1, &t2);
+      v128[0] = MEMORY[0x277D85DD0];
+      v128[1] = 3221225472;
+      v128[2] = __90__NCNotificationListView__layoutViewIfNecessaryAtIndex_layoutOffset_startingLayoutOffset___block_invoke_5;
+      v128[3] = &unk_278370F58;
+      v128[4] = self;
+      v129 = v18;
+      v130 = v24;
+      v131 = v25;
+      v132 = v12;
+      v133 = v15;
+      v134 = v137;
+      v125[0] = MEMORY[0x277D85DD0];
+      v125[1] = 3221225472;
+      v125[2] = __90__NCNotificationListView__layoutViewIfNecessaryAtIndex_layoutOffset_startingLayoutOffset___block_invoke_6;
+      v125[3] = &unk_278370F80;
+      v125[4] = self;
+      v126 = v129;
+      v127 = a3;
+      [(NCNotificationListView *)self _performRetargetableAnimationForView:v126 type:0 animationBlock:v128 completionBlock:v125];
+    }
+
+    else
+    {
+      v43 = [(NCNotificationListView *)self viewsPerformingAnimation];
+      v44 = [v43 containsObject:v18];
+
+      if ((v44 & 1) == 0)
+      {
+        [(NCNotificationListView *)self _removeStoredVisibleViewAtIndex:a3];
+      }
+    }
+  }
+
+  if (![(NCNotificationListView *)self _isShowingFeaturedLeadingViews]|| [(NCNotificationListView *)self numberOfFeaturedLeadingViews]- 1 <= a3)
+  {
+    a4 = v15 + a4;
+  }
+
+LABEL_114:
+
+  return a4;
+}
+
+uint64_t __90__NCNotificationListView__layoutViewIfNecessaryAtIndex_layoutOffset_startingLayoutOffset___block_invoke_2(uint64_t a1)
+{
+  v2 = *(a1 + 32);
+  v3 = *(a1 + 40);
+  v4 = [v2 traitCollection];
+  [v4 displayScale];
+  UIRectRoundToScale();
+  [v2 _updateTransformedView:v3 toFrame:?];
+
+  result = [*(a1 + 40) setAlpha:0.0];
+  if ((*(a1 + 80) & 1) == 0)
+  {
+    v6 = *(a1 + 40);
+
+    return [v6 layoutIfNeeded];
+  }
+
+  return result;
+}
+
+uint64_t __90__NCNotificationListView__layoutViewIfNecessaryAtIndex_layoutOffset_startingLayoutOffset___block_invoke_3(uint64_t a1)
+{
+  v2 = *(a1 + 32);
+  v3 = *(a1 + 40);
+  v4 = *(a1 + 48);
+  v5 = *(a1 + 56);
+  v6 = *(a1 + 64);
+  v7 = *(a1 + 72);
+  v8 = *(a1 + 96);
+  v13 = *(a1 + 80);
+  v14 = v8;
+  v15 = *(a1 + 112);
+  [v2 _updateTransformedView:v3 toFrame:&v13 withTransform:{v4, v5, v6, v7}];
+  [*(a1 + 32) _setRevealAlphaForView:*(a1 + 40) desiredAlpha:*(a1 + 128)];
+  if (*(a1 + 136) == 1)
+  {
+    [*(a1 + 40) layoutIfNeeded];
+  }
+
+  v9 = *(a1 + 32);
+  v10 = *(a1 + 40);
+  v11 = *(MEMORY[0x277CBF2C0] + 16);
+  v13 = *MEMORY[0x277CBF2C0];
+  v14 = v11;
+  v15 = *(MEMORY[0x277CBF2C0] + 32);
+  return [v9 _configureStackDimmingForGroupedView:v10 transform:&v13];
+}
+
+uint64_t __90__NCNotificationListView__layoutViewIfNecessaryAtIndex_layoutOffset_startingLayoutOffset___block_invoke_5(uint64_t a1)
+{
+  v2 = *(a1 + 32);
+  v3 = *(a1 + 40);
+  v4 = *(a1 + 48);
+  v5 = *(a1 + 56);
+  v6 = *(a1 + 64);
+  v7 = *(a1 + 72);
+  v8 = *(a1 + 96);
+  v10[0] = *(a1 + 80);
+  v10[1] = v8;
+  v10[2] = *(a1 + 112);
+  [v2 _updateTransformedView:v3 toFrame:v10 withTransform:{v4, v5, v6, v7}];
+  return [*(a1 + 40) setAlpha:0.0];
+}
+
+uint64_t __90__NCNotificationListView__layoutViewIfNecessaryAtIndex_layoutOffset_startingLayoutOffset___block_invoke_6(uint64_t a1)
+{
+  v2 = [*(a1 + 32) viewsPerformingAnimation];
+  [v2 removeObject:*(a1 + 40)];
+
+  v3 = *(a1 + 32);
+  v4 = *(a1 + 48);
+
+  return [v3 _removeStoredVisibleViewAtIndex:v4];
+}
+
+- (BOOL)_isPerformingRollUnderListLayoutForView:(id)a3 atIndex:(unint64_t)a4 viewHeight:(double)a5 atLayoutOffset:(double)MinY targetTransform:(CGAffineTransform *)a7 targetAlpha:(double *)a8 viewFrame:(CGRect *)a9
+{
+  v15 = a3;
+  v16 = [(NCNotificationListView *)self _listViewForView:v15];
+  v17 = [(NCNotificationListView *)self _shouldRollUnderView:v15 withHeight:a5 layoutOffset:MinY];
+  if (!v17)
+  {
+    height = 0.0;
+LABEL_15:
+    [v16 setOverrideLeadingViewHeight:height];
+    goto LABEL_16;
+  }
+
+  v18 = a5;
+  if ([(NCNotificationListView *)self currentBottomTransitionTransformer]!= 2)
+  {
+    [(NCListAnimationSettings *)self->_animationSettings rollUnderLimitHeightMax];
+    if (v19 <= a5)
+    {
+      v18 = v19;
+    }
+
+    else
+    {
+      v18 = a5;
+    }
+  }
+
+  v20 = *a8;
+  [(NCNotificationListView *)self _alphaForRollUnderForView:v15 withHeight:v18 layoutOffset:MinY];
+  *a8 = v20 * v21;
+  [(NCNotificationListView *)self _transformForRollUnderForView:v15 withHeight:v18 layoutOffset:MinY];
+  *&a7->a = v32;
+  *&a7->c = v33;
+  *&a7->tx = v34;
+  height = 0.0;
+  if (v18 < a5)
+  {
+    [(NCNotificationListView *)self _rollUnderThresholdOffset];
+    height = v23 - (a7->ty + MinY);
+  }
+
+  if (height > a5)
+  {
+    height = a5;
+  }
+
+  if (v16)
+  {
+    goto LABEL_15;
+  }
+
+  if (height <= 0.0)
+  {
+    height = a9->size.height;
+  }
+
+  a9->size.height = height;
+LABEL_16:
+  v24 = 0.0;
+  if ([(NCNotificationListView *)self _hasBottomTransitionTransformerForView:v15])
+  {
+    [(NCNotificationListView *)self maximumLeadingViewHeight];
+    if (v25 <= 0.0)
+    {
+      if (![(NCNotificationListView *)self shouldLimitViewHeightForRollUnder])
+      {
+        goto LABEL_27;
+      }
+
+      [(NCNotificationListView *)self _rollUnderThresholdOffset];
+      v29 = v28;
+      if (([v16 isGrouped] & 1) == 0)
+      {
+        [(NCNotificationListView *)self visibleRect];
+        MinY = CGRectGetMinY(v35);
+      }
+
+      v27 = v29 - MinY;
+    }
+
+    else
+    {
+      [(NCNotificationListView *)self maximumLeadingViewHeight];
+      v27 = v26;
+    }
+
+    if (v27 > 0.0)
+    {
+      [(NCListAnimationSettings *)self->_animationSettings rollUnderLimitHeightMax];
+      if (v27 >= v30)
+      {
+        v24 = v27;
+      }
+
+      else
+      {
+        v24 = v30;
+      }
+    }
+  }
+
+LABEL_27:
+  [v16 setMaximumLeadingViewHeight:v24];
+
+  return v17;
+}
+
+- (void)_updateBottomMarginAdjustmentAnimationForView:(id)a3 isPerformingRollUnderLayout:(BOOL)a4
+{
+  v4 = a4;
+  v10 = a3;
+  if (v4)
+  {
+    if ([(NCNotificationListView *)self isPerformingBottomMarginAdjustmentAnimation])
+    {
+      v6 = [(NCNotificationListView *)self viewsPerformingBottomMarginAdjustmentAnimation];
+      [v6 addObject:v10];
+LABEL_6:
+    }
+  }
+
+  else
+  {
+    v7 = [(NCNotificationListView *)self viewsPerformingBottomMarginAdjustmentAnimation];
+    v8 = [v7 containsObject:v10];
+
+    if (v8)
+    {
+      v6 = [(NCNotificationListView *)self viewsPerformingBottomMarginAdjustmentAnimation];
+      [v6 removeObject:v10];
+      goto LABEL_6;
+    }
+  }
+
+  v9 = [(NCNotificationListView *)self _listViewForView:v10];
+  if (v9 && [(NCNotificationListView *)self isPerformingBottomMarginAdjustmentAnimation])
+  {
+    [v9 setPerformingBottomMarginAdjustmentAnimation:1];
+  }
+}
+
+- (void)_updateLayoutParametersForHiddenGroupListViewAnimationForView:(id)a3 targetTransform:(CGAffineTransform *)a4 targetAlpha:(double *)a5
+{
+  v8 = a3;
+  v9 = [(NCNotificationListView *)self _listViewForView:v8];
+  if (!-[NCNotificationListView isReactiveLayout](self, "isReactiveLayout") && v9 && ([v9 isRevealed] & 1) == 0 && objc_msgSend(v9, "isGrouped") && -[NCNotificationListView _hasBottomTransitionTransformerForView:](self, "_hasBottomTransitionTransformerForView:", v8))
+  {
+    memset(&v19, 0, sizeof(v19));
+    [(NCListAnimationSettings *)self->_animationSettings rollUnderNotRevealedTranslationY];
+    CGAffineTransformMakeTranslation(&v19, 0.0, v10);
+    memset(&v18, 0, sizeof(v18));
+    [(NCListAnimationSettings *)self->_animationSettings rollUnderNotRevealedScale];
+    v12 = v11;
+    [(NCListAnimationSettings *)self->_animationSettings rollUnderNotRevealedScale];
+    CGAffineTransformMakeScale(&v18, v12, v13);
+    t1 = v19;
+    v15 = v18;
+    CGAffineTransformConcat(&v17, &t1, &v15);
+    v14 = *&v17.c;
+    *&a4->a = *&v17.a;
+    *&a4->c = v14;
+    *&a4->tx = *&v17.tx;
+    *a5 = 0.0;
+  }
+}
+
+- (BOOL)_shouldAnimateListLayoutForView:(id)a3 atIndex:(unint64_t)a4 isExistingView:(BOOL)a5 isPerformingRollUnderLayout:(BOOL)a6 shouldUpdateTransformedView:(BOOL)a7
+{
+  v7 = a7;
+  v8 = a6;
+  v12 = a3;
+  v13 = [(NCNotificationListView *)self insertedViewIndices];
+  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v15 = [v13 containsObject:v14];
+
+  v16 = [(NCNotificationListView *)self reloadedViewIndices];
+  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v18 = [v16 containsObject:v17];
+
+  v19 = !a5 && [(NCNotificationListView *)self isPerformingGroupingAnimation];
+  if ([(NCNotificationListView *)self isPerformingInteractiveTranslationAnimation])
+  {
+    [(NCNotificationListView *)self interactionTranslation];
+    v21 = v20 == 0.0;
+  }
+
+  else
+  {
+    v21 = 0;
+  }
+
+  if (![(NCNotificationListView *)self isPerformingVisibleRectAdjustment]|| [(NCNotificationListView *)self isPerformingGroupingAnimation]|| [(NCNotificationListView *)self _isPerformingContentModification])
+  {
+    LOBYTE(v22) = 0;
+  }
+
+  else
+  {
+    v22 = ![(NCNotificationListView *)self isListRevealTargetContentOffsetClamped]&& !v21;
+  }
+
+  v23 = 0;
+  if (!(v15 & 1 | !a5) && (v22 & 1) == 0)
+  {
+    v23 = v7 & ~[(NCNotificationListView *)self isActiveRevealTransitioning];
+  }
+
+  if ([(NCNotificationListView *)self isPerformingBottomMarginAdjustmentAnimation])
+  {
+    v24 = 1;
+  }
+
+  else
+  {
+    v25 = [(NCNotificationListView *)self viewsPerformingBottomMarginAdjustmentAnimation];
+    v24 = [v25 containsObject:v12];
+  }
+
+  v26 = [(NCNotificationListView *)self _listViewForView:v12];
+  v27 = v26;
+  if (v26)
+  {
+    v28 = [v26 isPerformingRevealAnimation];
+  }
+
+  else
+  {
+    v28 = 0;
+  }
+
+  if ([(NCNotificationListView *)self isPerformingRevealAnimation]|| [(NCNotificationListView *)self isActiveRevealTransitioning])
+  {
+    v29 = ![(NCNotificationListView *)self _hasBottomTransitionTransformerForView:v12];
+    if (v23)
+    {
+      goto LABEL_23;
+    }
+
+LABEL_26:
+    if (v19)
+    {
+      goto LABEL_29;
+    }
+
+    goto LABEL_27;
+  }
+
+  v29 = 0;
+  if (!v23)
+  {
+    goto LABEL_26;
+  }
+
+LABEL_23:
+  if (v19 & 1 | ![(NCNotificationListView *)self isAnimatingAdditionalYOffset])
+  {
+    goto LABEL_29;
+  }
+
+LABEL_27:
+  if ((-[NCNotificationListView isSubviewPerformingGroupingAnimation](self, "isSubviewPerformingGroupingAnimation") | v28 | v18) & 1) != 0 || (([v27 isPerformingRemovalAnimation] | v29))
+  {
+LABEL_29:
+    v30 = 1;
+    if (!v8)
+    {
+      goto LABEL_36;
+    }
+
+    goto LABEL_30;
+  }
+
+  v30 = [(NCNotificationListView *)self isPerformingRemovalAnimation];
+  if (!v8)
+  {
+    goto LABEL_36;
+  }
+
+LABEL_30:
+  if (!-[NCNotificationListView isPerformingGroupingAnimation](self, "isPerformingGroupingAnimation") && ((-[NCNotificationListView isSubviewPerformingGroupingAnimation](self, "isSubviewPerformingGroupingAnimation") | v24) & 1) == 0 && ([v27 isPerformingRemovalAnimation] & 1) == 0)
+  {
+    v31 = [(NCNotificationListView *)self isPerformingRemovalAnimation];
+    goto LABEL_37;
+  }
+
+LABEL_36:
+  v31 = 1;
+LABEL_37:
+  [(NCNotificationListView *)self contentLayoutOffset];
+  v33 = v32 <= 0.0 || v27 == 0;
+  v34 = !v33;
+  if (!v33)
+  {
+    v19 = [v27 insertedViewIndices];
+    if ([v19 count])
+    {
+      v35 = 0;
+LABEL_52:
+
+      goto LABEL_53;
+    }
+
+    if (![(NCNotificationListView *)self _isLayoutFromBottomUp])
+    {
+      v35 = 1;
+      goto LABEL_52;
+    }
+
+LABEL_49:
+    v36 = [(NCNotificationListView *)self insertedViewIndices];
+    v35 = [v36 count] == 0;
+
+    if (!v34)
+    {
+      goto LABEL_53;
+    }
+
+    goto LABEL_52;
+  }
+
+  if ([(NCNotificationListView *)self _isLayoutFromBottomUp])
+  {
+    goto LABEL_49;
+  }
+
+  v35 = 1;
+LABEL_53:
+
+  return v30 && v31 && v35;
+}
+
+- (BOOL)_isPerformingContentModification
+{
+  v3 = [(NCNotificationListView *)self insertedViewIndices];
+  if ([v3 count])
+  {
+    v4 = 1;
+  }
+
+  else
+  {
+    v5 = [(NCNotificationListView *)self reloadedViewIndices];
+    if ([v5 count])
+    {
+      v4 = 1;
+    }
+
+    else
+    {
+      v4 = [(NCNotificationListView *)self removedViewIndex]!= 0x7FFFFFFFFFFFFFFFLL;
+    }
+  }
+
+  return v4;
+}
+
+- (double)_positionOffsetForRevealHintingForItemAtIndex:(unint64_t)a3
+{
+  v5 = [(NCNotificationListView *)self _viewForItemAtIndex:?];
+  v6 = [(NCNotificationListView *)self _hasBottomTransitionTransformerForView:v5];
+
+  result = 0.0;
+  if (!v6)
+  {
+    [(NCNotificationListView *)self revealPercentage];
+    return pow(v8, (a3 + 1)) * 8.0;
+  }
+
+  return result;
+}
+
+- (void)setAnimatingAdditionalYOffset:(BOOL)a3
+{
+  v17 = *MEMORY[0x277D85DE8];
+  animatingAdditionalYOffset = self->_animatingAdditionalYOffset;
+  self->_animatingAdditionalYOffset = a3;
+  if (animatingAdditionalYOffset != a3)
+  {
+    v4 = a3;
+    v14 = 0u;
+    v15 = 0u;
+    v12 = 0u;
+    v13 = 0u;
+    v5 = [(NCNotificationListView *)self visibleViews];
+    v6 = [v5 allValues];
+
+    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    if (v7)
+    {
+      v8 = v7;
+      v9 = *v13;
+      do
+      {
+        for (i = 0; i != v8; ++i)
+        {
+          if (*v13 != v9)
+          {
+            objc_enumerationMutation(v6);
+          }
+
+          v11 = *(*(&v12 + 1) + 8 * i);
+          objc_opt_class();
+          if (objc_opt_isKindOfClass())
+          {
+            [v11 setAnimatingAdditionalYOffset:v4];
+          }
+        }
+
+        v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      }
+
+      while (v8);
+    }
+  }
+}
+
+- (void)_layoutHeaderViewForGroupingIfNecessaryWithMaxYOffset:(double)a3
+{
+  v5 = [(NCNotificationListView *)self headerView];
+  if (v5)
+  {
+    v6 = [(NCNotificationListView *)self viewsPerformingAnimation];
+    v7 = [v6 containsObject:v5];
+
+    if ((v7 & 1) == 0)
+    {
+      v8 = [(NCNotificationListView *)self viewsPerformingAnimation];
+      [v8 addObject:v5];
+
+      [v5 frame];
+      v10 = v9;
+      v12 = v11;
+      v14 = v13;
+      v16 = v15;
+      if (![(NCNotificationListView *)self _isAnimationStyleDissolve])
+      {
+        v27.origin.x = v10;
+        v27.origin.y = v12;
+        v27.size.width = v14;
+        v27.size.height = v16;
+        v17 = a3 - CGRectGetHeight(v27);
+        v28.origin.x = v10;
+        v28.origin.y = v12;
+        v28.size.width = v14;
+        v28.size.height = v16;
+        v18 = CGRectGetMaxY(v28) * 0.5;
+        if (v17 >= v18)
+        {
+          v12 = v18;
+        }
+
+        else
+        {
+          v12 = v17;
+        }
+      }
+
+      [(NCNotificationListView *)self sendSubviewToBack:v5];
+      v21[0] = MEMORY[0x277D85DD0];
+      v21[1] = 3221225472;
+      v21[2] = __80__NCNotificationListView__layoutHeaderViewForGroupingIfNecessaryWithMaxYOffset___block_invoke;
+      v21[3] = &unk_27836FDF8;
+      v22 = v5;
+      v23 = v10;
+      v24 = v12;
+      v25 = v14;
+      v26 = v16;
+      v19[0] = MEMORY[0x277D85DD0];
+      v19[1] = 3221225472;
+      v19[2] = __80__NCNotificationListView__layoutHeaderViewForGroupingIfNecessaryWithMaxYOffset___block_invoke_2;
+      v19[3] = &unk_27836F560;
+      v19[4] = self;
+      v20 = v22;
+      [(NCNotificationListView *)self _performViewAnimationBlock:v21 completionBlock:v19 type:0];
+    }
+  }
+}
+
+uint64_t __80__NCNotificationListView__layoutHeaderViewForGroupingIfNecessaryWithMaxYOffset___block_invoke(uint64_t a1)
+{
+  [*(a1 + 32) setFrame:{*(a1 + 40), *(a1 + 48), *(a1 + 56), *(a1 + 64)}];
+  v2 = *(a1 + 32);
+
+  return [v2 setAlpha:0.0];
+}
+
+uint64_t __80__NCNotificationListView__layoutHeaderViewForGroupingIfNecessaryWithMaxYOffset___block_invoke_2(uint64_t a1)
+{
+  v2 = [*(a1 + 32) viewsPerformingAnimation];
+  [v2 removeObject:*(a1 + 40)];
+
+  [*(a1 + 40) removeFromSuperview];
+  [*(a1 + 32) _recycleViewIfNecessary:*(a1 + 40)];
+  v3 = *(a1 + 32);
+
+  return [v3 setHeaderView:0];
+}
+
+uint64_t __65__NCNotificationListView__layoutFooterViewForGroupingIfNecessary__block_invoke(uint64_t a1)
+{
+  [*(a1 + 32) setFrame:{*(a1 + 40), *(a1 + 48), *(a1 + 56), *(a1 + 64)}];
+  v2 = *(a1 + 32);
+
+  return [v2 setAlpha:0.0];
+}
+
+uint64_t __65__NCNotificationListView__layoutFooterViewForGroupingIfNecessary__block_invoke_2(uint64_t a1)
+{
+  v2 = [*(a1 + 32) viewsPerformingAnimation];
+  [v2 removeObject:*(a1 + 40)];
+
+  [*(a1 + 40) removeFromSuperview];
+  [*(a1 + 32) _recycleViewIfNecessary:*(a1 + 40)];
+  v3 = *(a1 + 32);
+
+  return [v3 setFooterView:0];
+}
+
+- (CGRect)_frameForViewAtIndex:(unint64_t)a3
+{
+  [(NCNotificationListView *)self bounds];
+  [(NCNotificationListView *)self _widthForListViewInRect:?];
+  v6 = v5;
+  v7 = [(NCNotificationListView *)self dataSource];
+  [v7 notificationListView:self heightForItemAtIndex:a3 withWidth:-[NCNotificationListView _isCurrentlyInDisplayListAsStackMode](self inDisplayListAsStackMode:"_isCurrentlyInDisplayListAsStackMode") ignoreExpandedGroupStack:{0, v6}];
+  Height = v8;
+
+  if ([(NCNotificationListView *)self leadingContentShouldFillList]&& [(NCNotificationListView *)self count]== 1 && ![(NCNotificationListView *)self isPerformingGroupingAnimation])
+  {
+    [(NCNotificationListView *)self bounds];
+    Height = CGRectGetHeight(v20);
+  }
+
+  v10 = [(NCNotificationListView *)self _directSuperListView];
+  v11 = [v10 visibleViewAtIndex:0];
+
+  if (!a3 && v11 != self)
+  {
+    [(NCNotificationListView *)self overrideLeadingViewHeight];
+    if (v12 > 0.0)
+    {
+      [(NCNotificationListView *)self overrideLeadingViewHeight];
+      if (v13 < Height)
+      {
+        Height = v13;
+      }
+    }
+
+    [(NCNotificationListView *)self maximumLeadingViewHeight];
+    if (v14 > 0.0)
+    {
+      [(NCNotificationListView *)self maximumLeadingViewHeight];
+      if (v15 < Height)
+      {
+        Height = v15;
+      }
+    }
+  }
+
+  [(NCNotificationListView *)self horizontalInsetMargin];
+  v17 = 0.0;
+  v18 = v6;
+  v19 = Height;
+  result.size.height = v19;
+  result.size.width = v18;
+  result.origin.y = v17;
+  result.origin.x = v16;
+  return result;
+}
+
+- (void)_layoutLeadingViewForGroupingLayoutIfNecessary:(id)a3 hasShadow:(BOOL)a4 isExistingView:(BOOL)a5
+{
+  v7 = a3;
+  [(NCNotificationListView *)self _frameForViewAtIndex:0];
+  v9 = v8;
+  v11 = v10;
+  v13 = v12;
+  v15 = v14;
+  if (!a5)
+  {
+    v16 = [(NCNotificationListView *)self _currentAnimator];
+    v74[0] = MEMORY[0x277D85DD0];
+    v74[1] = 3221225472;
+    v74[2] = __98__NCNotificationListView__layoutLeadingViewForGroupingLayoutIfNecessary_hasShadow_isExistingView___block_invoke;
+    v74[3] = &unk_27836FDF8;
+    v75 = v7;
+    v76 = v9;
+    v77 = v11;
+    v78 = v13;
+    v79 = v15;
+    [v16 performAnimationType:0 withoutAnimation:v74];
+  }
+
+  v17 = [(NCNotificationListView *)self insertedViewIndices];
+  v18 = [v17 containsObject:&unk_283015440];
+
+  v19 = [(NCNotificationListView *)self reloadedViewIndices];
+  v20 = [v19 containsObject:&unk_283015440];
+
+  if ((v18 & 1) != 0 || v20)
+  {
+    [(NCNotificationListView *)self setCachedSizeValid:0];
+  }
+
+  [(NCNotificationListView *)self interactionTranslationPercentage];
+  v22 = v21;
+  [(NCListAnimationSettings *)self->_animationSettings interactionTranslationVerticalOffsetMax];
+  v24 = v23;
+  [(NCNotificationListView *)self interactionTranslationPercentage];
+  v26 = v25;
+  [(NCListAnimationSettings *)self->_animationSettings interactionTranslationOffsetMax];
+  v28 = -(v26 * v27) - v22 * v24;
+  if (v11 != v28 || ([v7 frame], v83.origin.x = v29, v83.origin.y = v30, v83.size.width = v31, v83.size.height = v32, v80.origin.x = v9, v80.origin.y = v11, v80.size.width = v13, v80.size.height = v15, v18 & 1 | !CGRectEqualToRect(v80, v83) | v20 & 1) || -[NCNotificationListView isPerformingStackVisibilityAnimation](self, "isPerformingStackVisibilityAnimation") || -[NCNotificationListView isPerformingInteractiveTranslationAnimation](self, "isPerformingInteractiveTranslationAnimation") || (objc_msgSend(v7, "alpha"), v33 != 1.0))
+  {
+    v34 = MEMORY[0x277CBF2C0];
+    if (v18 && (v81.origin.x = v9, v81.origin.y = v28, v81.size.width = v13, v81.size.height = v15, [(NCNotificationListView *)self _isViewWithinVisibleRectForHeight:CGRectGetHeight(v81) layoutOffset:0.0]))
+    {
+      [v7 setFrame:{v9, v28, v13, v15}];
+      [(NCListAnimationSettings *)self->_animationSettings animationInsertionStartAlpha];
+      [v7 setAlpha:?];
+      if ([(NCNotificationListView *)self isPerformingGroupingAnimation])
+      {
+        v35 = 1.0;
+        if (![(NCNotificationListView *)self _isAnimationStyleDissolve])
+        {
+          [(NCListAnimationSettings *)self->_animationSettings animationScaleWhileGrouping];
+          v35 = v36;
+        }
+
+        memset(&v73, 0, sizeof(v73));
+        CGAffineTransformMakeScale(&v73, v35, v35);
+        v37 = [(NCNotificationListView *)self _isAnimationStyleDissolve];
+        v38 = 0.0;
+        if (!v37)
+        {
+          [(NCListAnimationSettings *)self->_animationSettings animationTranslation];
+          v40 = v39;
+          v82.origin.x = v9;
+          v82.origin.y = v28;
+          v82.size.width = v13;
+          v82.size.height = v15;
+          v38 = v40 + (1.0 - v35) * -0.5 * CGRectGetHeight(v82);
+        }
+
+        memset(&v72, 0, sizeof(v72));
+        CGAffineTransformMakeTranslation(&v72, 0.0, v38);
+        t1 = v73;
+        memset(&v71, 0, sizeof(v71));
+        t2 = v72;
+        CGAffineTransformConcat(&v71, &t1, &t2);
+        t1 = v71;
+        p_t1 = &t1;
+      }
+
+      else
+      {
+        v45 = [(NCNotificationListView *)self count];
+        animationSettings = self->_animationSettings;
+        if (v45 < 2)
+        {
+          [(NCListAnimationSettings *)animationSettings animationScale];
+        }
+
+        else
+        {
+          [(NCListAnimationSettings *)animationSettings animationScaleGroupInsertion];
+        }
+
+        memset(&v73, 0, sizeof(v73));
+        CGAffineTransformMakeScale(&v73, v47, v47);
+        v72 = v73;
+        p_t1 = &v72;
+      }
+
+      [v7 setTransform:p_t1];
+    }
+
+    else
+    {
+      [v7 setAlpha:1.0];
+      if (![(NCNotificationListView *)self isPerformingGroupingAnimation]&& ![(NCNotificationListView *)self isPerformingContentRevealAnimation])
+      {
+        v42 = [(NCNotificationListView *)self removedViewIndex];
+        v43 = v28 == 0.0 ? 1 : v20;
+        if (v42 && (v43 & 1) == 0)
+        {
+          v44 = v34[1];
+          *&v73.a = *v34;
+          *&v73.c = v44;
+          *&v73.tx = v34[2];
+          [(NCNotificationListView *)self _updateTransformedView:v7 toFrame:&v73 withTransform:v9, v28, v13, v15];
+        }
+      }
+    }
+
+    if ([(NCNotificationListView *)self isHiddenBelowStack])
+    {
+      v48 = [(NCNotificationListView *)self showContentForGroupedViews]^ 1;
+    }
+
+    else
+    {
+      v48 = 0;
+    }
+
+    if ([(NCNotificationListView *)self isPerformingGroupingAnimation]|| [(NCNotificationListView *)self isPerformingContentRevealAnimation])
+    {
+      v49 = 1;
+    }
+
+    else
+    {
+      v49 = ([(NCNotificationListView *)self removedViewIndex]== 0) | v20;
+    }
+
+    v57 = v34[1];
+    *&v73.a = *v34;
+    *&v73.c = v57;
+    *&v73.tx = v34[2];
+    if ([(NCNotificationListView *)self _shouldUpdateTransformedView:v7 toFrame:&v73 alpha:v9 transform:v28, v13, v15, 1.0, *&v73.tx, *&v73.ty, v57, *&v73.a, *&v73.b]|| [(NCNotificationListView *)self isPerformingStackVisibilityAnimation]|| [(NCNotificationListView *)self isPerformingInteractiveTranslationAnimation])
+    {
+      v50 = ![(NCNotificationListView *)self isPerformingOverrideLeadingViewHeightAdjustment]|| [(NCNotificationListView *)self isPerformingGroupingAnimation]|| [(NCNotificationListView *)self isPerformingContentRevealAnimation]|| [(NCNotificationListView *)self isPerformingRevealAnimation]|| [(NCNotificationListView *)self isPerformingBottomMarginAdjustmentAnimation];
+      v51 = [(NCNotificationListView *)self insertedViewIndices];
+      v52 = [v51 containsObject:&unk_283015440];
+
+      if (v52 && v50)
+      {
+        [(NCNotificationListView *)self _performInsertionAnimationForView:v7];
+      }
+
+      else
+      {
+        aBlock[0] = MEMORY[0x277D85DD0];
+        aBlock[1] = 3221225472;
+        aBlock[2] = __98__NCNotificationListView__layoutLeadingViewForGroupingLayoutIfNecessary_hasShadow_isExistingView___block_invoke_2;
+        aBlock[3] = &unk_278370FA8;
+        aBlock[4] = self;
+        v61 = v7;
+        v62 = v9;
+        v63 = v28;
+        v64 = v13;
+        v65 = v15;
+        v66 = 0x3FF0000000000000;
+        v67 = v49 & 1;
+        v68 = v48;
+        v53 = _Block_copy(aBlock);
+        if ([(NCNotificationListView *)self isPerformingContentRevealAnimation])
+        {
+          if ([(NCNotificationListView *)self isDeviceAuthenticated])
+          {
+            v54 = 4;
+          }
+
+          else
+          {
+            v54 = 0;
+          }
+        }
+
+        else
+        {
+          v54 = 0;
+        }
+
+        if (v50)
+        {
+          [(NCNotificationListView *)self _performViewAnimationBlock:v53 completionBlock:0 type:v54];
+        }
+
+        else
+        {
+          v55 = [(NCNotificationListView *)self _currentAnimator];
+          [v55 performAnimationType:v54 withoutAnimation:v53];
+        }
+      }
+    }
+
+    else
+    {
+      [(NCNotificationListView *)self _setContentHiddenForView:v7 contentHidden:v48];
+      *&v73.a = v59;
+      *&v73.c = v58;
+      *&v73.tx = v56;
+      [(NCNotificationListView *)self _configureStackDimmingForGroupedView:v7 transform:&v73];
+    }
+  }
+}
+
+uint64_t __98__NCNotificationListView__layoutLeadingViewForGroupingLayoutIfNecessary_hasShadow_isExistingView___block_invoke_2(uint64_t a1)
+{
+  v2 = *(a1 + 32);
+  v3 = *(a1 + 40);
+  v4 = *(a1 + 48);
+  v5 = *(a1 + 56);
+  v6 = *(a1 + 64);
+  v7 = *(a1 + 72);
+  v8 = *(MEMORY[0x277CBF2C0] + 16);
+  v14 = *MEMORY[0x277CBF2C0];
+  v15 = *MEMORY[0x277CBF2C0];
+  v12 = *(MEMORY[0x277CBF2C0] + 32);
+  v13 = v8;
+  v16 = v8;
+  v17 = v12;
+  [v2 _updateTransformedView:v3 toFrame:&v15 withTransform:{v4, v5, v6, v7}];
+  [*(a1 + 40) setAlpha:*(a1 + 80)];
+  if (*(a1 + 88) == 1)
+  {
+    [*(a1 + 40) layoutIfNeeded];
+  }
+
+  [*(a1 + 32) _setContentHiddenForView:*(a1 + 40) contentHidden:*(a1 + 89)];
+  v9 = *(a1 + 32);
+  v10 = *(a1 + 40);
+  v15 = v14;
+  v16 = v13;
+  v17 = v12;
+  return [v9 _configureStackDimmingForGroupedView:v10 transform:&v15];
+}
+
+- (void)_layoutGroupedViewForGroupingLayout:(id)a3 atIndex:(unint64_t)a4 isExistingView:(BOOL)a5 leadingViewHeight:(double)a6 alpha:(double)a7
+{
+  v7 = a5;
+  v10 = a3;
+  [(NCNotificationListView *)self _frameForViewAtIndex:a4];
+  y = v61.origin.y;
+  x = v61.origin.x;
+  width = v61.size.width;
+  height = v61.size.height;
+  v13 = CGRectGetHeight(v61);
+  [(NCNotificationListView *)self groupedOverlapHeightMultiple];
+  v15 = v14;
+  [(NCNotificationListView *)self _resolvedViewOverlap];
+  v17 = v16;
+  [(NCNotificationListView *)self interactionTranslationPercentage];
+  v19 = v18;
+  [(NCListAnimationSettings *)self->_animationSettings interactionTranslationOffsetMax];
+  v21 = v20;
+  v22 = 0.0;
+  if (![(NCNotificationListView *)self isHiddenBelowStack]&& [(NCNotificationListView *)self showStackBelowLeadingView])
+  {
+    v22 = (v19 * v21 + v15 * v17) * a4;
+  }
+
+  [(NCNotificationListView *)self interactionTranslationPercentage];
+  v24 = v23;
+  [(NCListAnimationSettings *)self->_animationSettings interactionTranslationVerticalOffsetMax];
+  v26 = dbl_21E9463D0[a4 == 1];
+  v27 = v22 - v24 * v25 + v41;
+  [(NCNotificationListView *)self overrideLeadingViewHeight];
+  if (v28 > 0.0)
+  {
+    [(NCNotificationListView *)self overrideLeadingViewHeight];
+    if (v29 < v27)
+    {
+      v27 = v29;
+    }
+  }
+
+  memset(&v60.c, 0, 32);
+  if (v27 >= v13)
+  {
+    v30 = v26;
+  }
+
+  else
+  {
+    v30 = v27 / v13;
+  }
+
+  *&v60.a = 0uLL;
+  CGAffineTransformMakeScale(&v60, v26, v30);
+  [(NCNotificationListView *)self groupedTranslation];
+  v31 = v27 - (v30 * 0.5 + 0.5) * v13;
+  memset(&v59, 0, sizeof(v59));
+  CGAffineTransformMakeTranslation(&v59, v32, v31);
+  t1 = v60;
+  memset(&v58, 0, sizeof(v58));
+  t2 = v59;
+  CGAffineTransformConcat(&v58, &t1, &t2);
+  t1 = v58;
+  if ([(NCNotificationListView *)self _shouldUpdateTransformedView:v10 toFrame:&t1 alpha:x transform:y, width, height, 1.0])
+  {
+    aBlock[0] = MEMORY[0x277D85DD0];
+    aBlock[1] = 3221225472;
+    aBlock[2] = __109__NCNotificationListView__layoutGroupedViewForGroupingLayout_atIndex_isExistingView_leadingViewHeight_alpha___block_invoke;
+    aBlock[3] = &unk_278370FD0;
+    v33 = v10;
+    v46 = v33;
+    v47 = self;
+    v48 = v40;
+    v49 = x;
+    v50 = y;
+    v51 = width;
+    v52 = height;
+    v53 = v58;
+    v54 = v60;
+    v55 = a4;
+    v34 = _Block_copy(aBlock);
+    if (![(NCNotificationListView *)self isPerformingOverrideLeadingViewHeightAdjustment]|| [(NCNotificationListView *)self isPerformingGroupingAnimation]|| [(NCNotificationListView *)self isPerformingContentRevealAnimation]|| ([(NCNotificationListView *)self overrideLeadingViewHeight], v35 == 0.0) || [(NCNotificationListView *)self isPerformingBottomMarginAdjustmentAnimation])
+    {
+      v36 = 1;
+      if (!v7)
+      {
+        goto LABEL_29;
+      }
+    }
+
+    else
+    {
+      v36 = [(NCNotificationListView *)self _hasBottomTransitionTransformerForView:v33];
+      if (!v7)
+      {
+        goto LABEL_29;
+      }
+    }
+
+    if (v36)
+    {
+      if ([(NCNotificationListView *)self isPerformingGroupingAnimation]|| [(NCNotificationListView *)self isPerformingContentRevealAnimation]|| [(NCNotificationListView *)self isPerformingStackVisibilityAnimation]|| [(NCNotificationListView *)self isPerformingInteractiveTranslationAnimation]|| [(NCNotificationListView *)self removedViewIndex]< 3)
+      {
+        goto LABEL_27;
+      }
+
+      v37 = [(NCNotificationListView *)self reloadedViewIndices];
+      if ([v37 count])
+      {
+LABEL_26:
+
+LABEL_27:
+        [(NCNotificationListView *)self _performViewAnimationBlock:v34 completionBlock:0 type:0];
+LABEL_30:
+
+        goto LABEL_31;
+      }
+
+      v38 = [(NCNotificationListView *)self insertedViewIndices];
+      if ([v38 count])
+      {
+
+        goto LABEL_26;
+      }
+
+      if (v33)
+      {
+        [v33 transform];
+        v39 = v44;
+      }
+
+      else
+      {
+        v39 = 0.0;
+      }
+
+      if (v31 != v39)
+      {
+        goto LABEL_27;
+      }
+    }
+
+LABEL_29:
+    v34[2](v34);
+    goto LABEL_30;
+  }
+
+LABEL_31:
+}
+
+uint64_t __109__NCNotificationListView__layoutGroupedViewForGroupingLayout_atIndex_isExistingView_leadingViewHeight_alpha___block_invoke(uint64_t a1)
+{
+  [*(a1 + 32) setAlpha:*(a1 + 48)];
+  v3 = *(a1 + 32);
+  v2 = *(a1 + 40);
+  v4 = *(a1 + 56);
+  v5 = *(a1 + 64);
+  v6 = *(a1 + 72);
+  v7 = *(a1 + 80);
+  v8 = *(a1 + 104);
+  v13 = *(a1 + 88);
+  v14 = v8;
+  v15 = *(a1 + 120);
+  [v2 _updateTransformedView:v3 toFrame:&v13 withTransform:{v4, v5, v6, v7}];
+  v10 = *(a1 + 32);
+  v9 = *(a1 + 40);
+  v11 = *(a1 + 152);
+  v13 = *(a1 + 136);
+  v14 = v11;
+  v15 = *(a1 + 168);
+  [v9 _configureStackDimmingForGroupedView:v10 transform:&v13];
+  return [*(a1 + 40) _setContentHiddenForGroupedView:*(a1 + 32) atIndex:*(a1 + 184)];
+}
+
+- (void)_setContentHiddenForView:(id)a3 contentHidden:(BOOL)a4
+{
+  v4 = a4;
+  v9 = a3;
+  objc_opt_class();
+  v5 = (objc_opt_isKindOfClass() & 1) == 0;
+  v6 = v9;
+  if (v5)
+  {
+    v6 = 0;
+  }
+
+  v7 = [v6 notificationViewController];
+  v8 = v7;
+  if (v7 && [v7 isNotificationContentViewHidden] != v4)
+  {
+    [v8 setNotificationContentViewHidden:v4];
+  }
+}
+
+- (void)revealNotificationContentBelowGroupedViewIfNecessary:(id)a3
+{
+  v4 = a3;
+  v5 = [(NCNotificationListView *)self visibleViews];
+  v9 = [v5 objectForKey:&unk_283015440];
+
+  v6 = v9;
+  if (v9 == v4)
+  {
+    v7 = [(NCNotificationListView *)self visibleViews];
+    v8 = [v7 objectForKey:&unk_283015458];
+
+    [(NCNotificationListView *)self _setContentHiddenForView:v8 contentHidden:0];
+    v6 = v9;
+  }
+}
+
+- (void)_configureStackDimmingForGroupedView:(id)a3 transform:(CGAffineTransform *)a4
+{
+  v6 = a3;
+  v7 = [(NCNotificationListView *)self visibleViews];
+  v8 = [v7 objectForKey:&unk_283015440];
+
+  if (v8 == v6)
+  {
+    [(NCNotificationListView *)self overrideTopViewDimmingTransform];
+    v9 = v18;
+    *&a4->a = v17;
+    *&a4->c = v9;
+    *&a4->tx = v19;
+  }
+
+  v10 = v6;
+  if (v10 && (objc_opt_respondsToSelector() & 1) != 0)
+  {
+    v11 = *&a4->c;
+    v17 = *&a4->a;
+    v18 = v11;
+    v19 = *&a4->tx;
+    [v10 configureStackDimmingForTransform:&v17];
+  }
+
+  objc_opt_class();
+  isKindOfClass = objc_opt_isKindOfClass();
+  if (v10 && (isKindOfClass & 1) != 0)
+  {
+    v13 = v10;
+    if (![(NCNotificationListView *)self _isGrouping])
+    {
+      v14 = MEMORY[0x277CBF2C0];
+      v15 = *(MEMORY[0x277CBF2C0] + 16);
+      *&a4->a = *MEMORY[0x277CBF2C0];
+      *&a4->c = v15;
+      *&a4->tx = *(v14 + 32);
+    }
+
+    v16 = *&a4->c;
+    v17 = *&a4->a;
+    v18 = v16;
+    v19 = *&a4->tx;
+    [v13 setOverrideTopViewDimmingTransform:&v17];
+  }
+}
+
+- (void)_layoutHiddenViewsForGroupingLayoutIfNecessaryWithLeadingViewHeight:(double)a3
+{
+  v5 = [(NCNotificationListView *)self visibleViews];
+  v6 = [v5 allKeys];
+
+  v7 = [v6 sortedArrayUsingComparator:&__block_literal_global_123];
+
+  v8 = [(NCNotificationListView *)self dataSource];
+  v9 = [v8 notificationListViewNumberOfItems:self];
+  if ([(NCNotificationListView *)self showStackBelowLeadingView])
+  {
+    [(NCListAnimationSettings *)self->_animationSettings groupListMaxViewCount];
+    if (v10 > v9)
+    {
+      v10 = v9;
+    }
+
+    v11 = v10;
+  }
+
+  else
+  {
+    v11 = 1;
+  }
+
+  v12[0] = MEMORY[0x277D85DD0];
+  v12[1] = 3221225472;
+  v12[2] = __94__NCNotificationListView__layoutHiddenViewsForGroupingLayoutIfNecessaryWithLeadingViewHeight___block_invoke_2;
+  v12[3] = &unk_278371018;
+  v12[4] = self;
+  v12[5] = v11;
+  *&v12[6] = a3;
+  [v7 enumerateObjectsUsingBlock:v12];
+}
+
+void __94__NCNotificationListView__layoutHiddenViewsForGroupingLayoutIfNecessaryWithLeadingViewHeight___block_invoke_2(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  v4 = [v3 unsignedIntegerValue];
+  if (v4 >= *(a1 + 40))
+  {
+    v5 = v4;
+    v6 = [*(a1 + 32) visibleViews];
+    v7 = [v6 objectForKey:v3];
+
+    [v7 bounds];
+    v9 = v8;
+    v11 = v10;
+    v13 = v12;
+    [*(a1 + 32) horizontalInsetMargin];
+    v15 = v14;
+    if (([*(a1 + 32) _isAnimationStyleDissolve] & 1) == 0)
+    {
+      v28.origin.x = v15;
+      v28.origin.y = v9;
+      v28.size.width = v11;
+      v28.size.height = v13;
+      v9 = fmax(*(a1 + 48) - CGRectGetHeight(v28), 0.0);
+    }
+
+    [*(a1 + 32) sendSubviewToBack:v7];
+    v16 = [*(a1 + 32) nonCoplanarViewIndices];
+    [v16 addIndex:v5];
+
+    v26 = 0u;
+    v27 = 0u;
+    v25 = 0u;
+    if ([*(a1 + 32) _isAnimationStyleDissolve])
+    {
+      v17 = *(MEMORY[0x277CBF2C0] + 16);
+      v25 = *MEMORY[0x277CBF2C0];
+      v26 = v17;
+      v27 = *(MEMORY[0x277CBF2C0] + 32);
+    }
+
+    else
+    {
+      v18 = *(a1 + 32);
+      v19 = [v3 unsignedIntegerValue];
+      if (v18)
+      {
+        [v18 _scaleTransformForGroupingAnimationForViewAtIndex:v19 leadingViewHeight:*(a1 + 48)];
+      }
+
+      else
+      {
+        v26 = 0u;
+        v27 = 0u;
+        v25 = 0u;
+      }
+    }
+
+    v20 = *(a1 + 32);
+    v22 = v25;
+    v23 = v26;
+    v24 = v27;
+    [v20 _updateTransformedView:v7 toFrame:&v22 withTransform:{v15, v9, v11, v13}];
+    v21 = *(a1 + 32);
+    v22 = v25;
+    v23 = v26;
+    v24 = v27;
+    [v21 _configureStackDimmingForGroupedView:v7 transform:&v22];
+    [*(a1 + 32) _removeStoredVisibleViewAtIndex:{objc_msgSend(v3, "unsignedIntegerValue")}];
+  }
+}
+
+- (void)setVisibleRect:(CGRect)a3
+{
+  if (self->_visibleRectIsBounds)
+  {
+    [(NCNotificationListView *)self bounds:a3.origin.x];
+  }
+
+  UIRoundToViewScale();
+  v5 = v4;
+  UIRoundToViewScale();
+  v7 = v6;
+  UIRoundToViewScale();
+  v9 = v8;
+  UIRoundToViewScale();
+  v11 = v10;
+  [(NCNotificationListView *)self _visibleRect];
+  v14.origin.x = v5;
+  v14.origin.y = v7;
+  v14.size.width = v9;
+  v14.size.height = v11;
+  if (!CGRectEqualToRect(v13, v14))
+  {
+    if (![(NCNotificationListView *)self _animateVisibleRectAdjustmentIfNecessaryWithVisibleRect:v5, v7, v9, v11])
+    {
+      [(NCNotificationListView *)self _setVisibleRectWithoutAlteringAnimations:v5, v7, v9, v11];
+    }
+
+    [(NCNotificationListView *)self setPerformingVisibleRectAdjustment:1];
+    [(NCNotificationListView *)self setNeedsLayout];
+    [(NCNotificationListView *)self _visibleRect];
+
+    [(NCNotificationListView *)self _updateVisibleViewsForUpdatedVisibleRect:?];
+  }
+}
+
+- (void)_setVisibleRectWithoutAlteringAnimations:(CGRect)a3
+{
+  height = a3.size.height;
+  width = a3.size.width;
+  y = a3.origin.y;
+  x = a3.origin.x;
+  [(NCNotificationListView *)self willChangeValueForKey:@"visibleRect"];
+  self->__visibleRect.origin.x = x;
+  self->__visibleRect.origin.y = y;
+  self->__visibleRect.size.width = width;
+  self->__visibleRect.size.height = height;
+
+  [(NCNotificationListView *)self didChangeValueForKey:@"visibleRect"];
+}
+
+- (void)setRevealPercentage:(double)a3
+{
+  if (vabdd_f64(self->_revealPercentage, a3) >= 2.22044605e-16)
+  {
+    self->_revealPercentage = a3;
+    [(NCNotificationListView *)self setCachedSizeValid:0];
+
+    [(NCNotificationListView *)self setNeedsLayout];
+  }
+}
+
+- (void)setRevealed:(BOOL)a3
+{
+  if (self->_revealed != a3)
+  {
+    self->_revealed = a3;
+    [(NCNotificationListView *)self setPerformingRevealAnimation:1];
+    [(NCNotificationListView *)self setCachedSizeValid:0];
+
+    [(NCNotificationListView *)self setNeedsLayout];
+  }
+}
+
+- (void)setPerformingContentRevealAnimation:(BOOL)a3
+{
+  v3 = a3;
+  v5 = [(NCNotificationListView *)self isNotificationListViewCurrentlyVisible];
+  self->_performingContentRevealAnimation = v5 && v3;
+  if (v5 && v3)
+  {
+    [(NCNotificationListView *)self setCachedSizeValid:0];
+
+    [(NCNotificationListView *)self setNeedsLayout];
+  }
+}
+
+- (void)setSubviewPerformingGroupingAnimation:(BOOL)a3
+{
+  v3 = a3;
+  v5 = [(NCNotificationListView *)self isNotificationListViewCurrentlyVisible];
+  self->_subviewPerformingGroupingAnimation = v5 && v3;
+  if (v5 && v3)
+  {
+    v6 = [(NCNotificationListView *)self superview];
+    v7 = [(NCNotificationListView *)self _listViewForView:v6];
+    [v7 setSubviewPerformingGroupingAnimation:1];
+
+    [(NCNotificationListView *)self setCachedSizeValid:0];
+
+    [(NCNotificationListView *)self setNeedsLayout];
+  }
+}
+
+- (void)setGrouped:(BOOL)a3
+{
+  if (self->_grouped != a3)
+  {
+    v3 = a3;
+    v5 = [(NCNotificationListView *)self isNotificationListViewCurrentlyVisible];
+    v8 = [(NCNotificationListView *)self dataSource];
+    if (objc_opt_respondsToSelector())
+    {
+      v5 = v5 & [v8 isEligibleToPerformGroupAnimationForNotificationList:self toGrouped:v3];
+    }
+
+    [(NCNotificationListView *)self setGroupedTranslation:0.0];
+    [(NCNotificationListView *)self setPerformingGroupingAnimation:v5];
+    v6 = [(NCNotificationListView *)self superview];
+    v7 = [(NCNotificationListView *)self _listViewForView:v6];
+    [v7 setSubviewPerformingGroupingAnimation:v5];
+
+    self->_grouped = v3;
+    [(NCNotificationListView *)self setCachedSizeValid:0];
+    [(NCNotificationListView *)self _updateStackedViewsForGrouping:v3];
+    [(NCNotificationListView *)self setNeedsUpdateOfApparentZPositionsOfListCells];
+    [(NCNotificationListView *)self setNeedsLayout];
+  }
+}
+
+- (void)insertViewAtIndex:(unint64_t)a3 animated:(BOOL)a4
+{
+  v4 = a4;
+  v7 = [(NCNotificationListView *)self insertedViewIndices];
+  v8 = [v7 copy];
+
+  v12[0] = MEMORY[0x277D85DD0];
+  v12[1] = 3221225472;
+  v12[2] = __53__NCNotificationListView_insertViewAtIndex_animated___block_invoke;
+  v12[3] = &unk_278371040;
+  v12[4] = self;
+  v12[5] = a3;
+  [v8 enumerateObjectsUsingBlock:v12];
+  if (v4)
+  {
+    v9 = [(NCNotificationListView *)self insertedViewIndices];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    [v9 addObject:v10];
+  }
+
+  [(NCNotificationListView *)self _updateStoredVisibleViewsForViewInsertedAtIndex:a3];
+  [(NCNotificationListView *)self setCachedSizeValid:0];
+  [(NCNotificationListView *)self setNeedsUpdateOfApparentZPositionsOfListCells];
+  [(NCNotificationListView *)self setNeedsLayout];
+  v11 = [(NCNotificationListView *)self superview];
+  [v11 setNeedsLayout];
+}
+
+void __53__NCNotificationListView_insertViewAtIndex_animated___block_invoke(uint64_t a1, void *a2)
+{
+  v8 = a2;
+  v3 = [v8 unsignedIntegerValue];
+  if (v3 > *(a1 + 40))
+  {
+    v4 = v3;
+    v5 = [*(a1 + 32) insertedViewIndices];
+    [v5 removeObject:v8];
+
+    v6 = [*(a1 + 32) insertedViewIndices];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v4 + 1];
+    [v6 addObject:v7];
+  }
+}
+
+- (void)removeViewAtIndex:(unint64_t)a3 animated:(BOOL)a4 isHorizontallyDisplaced:(BOOL)a5
+{
+  v5 = a5;
+  v6 = a4;
+  v10 = [(NCNotificationListView *)self visibleViewAtIndex:?];
+  [(NCNotificationListView *)self _updateStoredVisibleViewsForViewRemovedAtIndex:a3];
+  if (v10)
+  {
+    if (v6 && [(NCNotificationListView *)self isNotificationListViewCurrentlyVisible])
+    {
+      [(NCNotificationListView *)self _performRemovalAnimationForView:v10 index:a3 isHorizontallyDisplaced:v5];
+    }
+
+    else
+    {
+      v9 = [(NCNotificationListView *)self dataSource];
+      [(NCNotificationListView *)self _notifyDataSourceViewWillBeRemoved:v10];
+      [v10 removeFromSuperview];
+      [(NCNotificationListView *)self _recycleViewIfNecessary:v10];
+      if (objc_opt_respondsToSelector())
+      {
+        [v9 notificationListView:self didRemoveView:v10];
+      }
+    }
+  }
+
+  [(NCNotificationListView *)self setRemovedViewIndex:a3];
+  if (v5)
+  {
+    [(NCNotificationListView *)self _configureClippingIfNecessary];
+  }
+
+  [(NCNotificationListView *)self setCachedSizeValid:0];
+  [(NCNotificationListView *)self setNeedsUpdateOfApparentZPositionsOfListCells];
+  [(NCNotificationListView *)self setNeedsLayout];
+}
+
+- (void)reloadViewAtIndex:(unint64_t)a3
+{
+  if ([(NCNotificationListView *)self isNotificationListViewCurrentlyVisible])
+  {
+    v5 = [(NCNotificationListView *)self reloadedViewIndices];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    [v5 addObject:v6];
+  }
+
+  [(NCNotificationListView *)self setCachedSizeValid:0];
+  [(NCNotificationListView *)self setNeedsUpdateOfApparentZPositionsOfListCells];
+  [(NCNotificationListView *)self setNeedsLayout];
+  v7 = [(NCNotificationListView *)self superview];
+  [v7 setNeedsLayout];
+}
+
+- (void)invalidateData
+{
+  [(NCNotificationListView *)self _removeAllStoredVisibleViews];
+  headerView = self->_headerView;
+  if (headerView)
+  {
+    [(UIView *)headerView removeFromSuperview];
+    [(NCNotificationListView *)self _recycleViewIfNecessary:self->_headerView];
+    v4 = self->_headerView;
+    self->_headerView = 0;
+  }
+
+  footerView = self->_footerView;
+  if (footerView)
+  {
+    [(UIView *)footerView removeFromSuperview];
+    [(NCNotificationListView *)self _recycleViewIfNecessary:self->_footerView];
+    v6 = self->_footerView;
+    self->_footerView = 0;
+  }
+
+  backgroundView = self->_backgroundView;
+  if (backgroundView)
+  {
+    [(UIView *)backgroundView removeFromSuperview];
+    v8 = self->_backgroundView;
+    self->_backgroundView = 0;
+  }
+
+  hoverView = self->_hoverView;
+  if (hoverView)
+  {
+    [(UIView *)hoverView removeFromSuperview];
+    v10 = self->_hoverView;
+    self->_hoverView = 0;
+  }
+
+  [(NCNotificationListView *)self setCachedSizeValid:0];
+  [(NCNotificationListView *)self _invalidateCachedApparentZDepths];
+
+  [(NCNotificationListView *)self setNeedsLayout];
+}
+
+- (void)reloadHeaderView
+{
+  if (self->_headerView)
+  {
+    [(NCNotificationListView *)self setPerformingHeaderReloadAnimation:1];
+    v3 = self->_headerView;
+    headerView = self->_headerView;
+    self->_headerView = 0;
+
+    objc_initWeak(&location, self);
+    v13[0] = MEMORY[0x277D85DD0];
+    v13[1] = 3221225472;
+    v13[2] = __42__NCNotificationListView_reloadHeaderView__block_invoke;
+    v13[3] = &unk_27836F560;
+    v14 = v3;
+    v15 = self;
+    v6 = MEMORY[0x277D85DD0];
+    v7 = 3221225472;
+    v8 = __42__NCNotificationListView_reloadHeaderView__block_invoke_2;
+    v9 = &unk_278371068;
+    v5 = v14;
+    v10 = v5;
+    objc_copyWeak(&v12, &location);
+    v11 = self;
+    [(NCNotificationListView *)self _performViewAnimationBlock:v13 completionBlock:&v6 type:0];
+    [(NCNotificationListView *)self setCachedSizeValid:0, v6, v7, v8, v9];
+    [(NCNotificationListView *)self setNeedsUpdateOfApparentZPositionsOfListCells];
+    [(NCNotificationListView *)self setNeedsLayout];
+    objc_destroyWeak(&v12);
+
+    objc_destroyWeak(&location);
+  }
+}
+
+uint64_t __42__NCNotificationListView_reloadHeaderView__block_invoke(uint64_t a1)
+{
+  v2 = *(a1 + 32);
+  v3 = [*(a1 + 40) animationSettings];
+  [v3 headerViewRemoveAnimationTransform];
+  v5 = v4;
+  v6 = [*(a1 + 40) animationSettings];
+  [v6 headerViewRemoveAnimationTransform];
+  CGAffineTransformMakeScale(&v9, v5, v7);
+  [v2 setTransform:&v9];
+
+  return [*(a1 + 32) setAlpha:0.0];
+}
+
+void __42__NCNotificationListView_reloadHeaderView__block_invoke_2(id *a1)
+{
+  v2 = a1[4];
+  WeakRetained = objc_loadWeakRetained(a1 + 6);
+  v4 = [WeakRetained headerView];
+
+  if (v2 != v4)
+  {
+    [a1[4] removeFromSuperview];
+    [a1[4] setAlpha:1.0];
+    v5 = a1[4];
+    v6 = *(MEMORY[0x277CBF2C0] + 16);
+    v7[0] = *MEMORY[0x277CBF2C0];
+    v7[1] = v6;
+    v7[2] = *(MEMORY[0x277CBF2C0] + 32);
+    [v5 setTransform:v7];
+    [a1[5] _recycleViewIfNecessary:a1[4]];
+  }
+}
+
+- (void)reloadFooterViewAnimated:(BOOL)a3
+{
+  footerView = self->_footerView;
+  if (footerView)
+  {
+    v4 = a3;
+    v6 = footerView;
+    v7 = self->_footerView;
+    self->_footerView = 0;
+
+    objc_initWeak(&location, self);
+    if (v4)
+    {
+      v12[0] = MEMORY[0x277D85DD0];
+      v12[1] = 3221225472;
+      v12[2] = __51__NCNotificationListView_reloadFooterViewAnimated___block_invoke;
+      v12[3] = &unk_27836F6A8;
+      v13 = v6;
+      v8[0] = MEMORY[0x277D85DD0];
+      v8[1] = 3221225472;
+      v8[2] = __51__NCNotificationListView_reloadFooterViewAnimated___block_invoke_2;
+      v8[3] = &unk_278371068;
+      v9 = v13;
+      objc_copyWeak(&v11, &location);
+      v10 = self;
+      [(NCNotificationListView *)self _performViewAnimationBlock:v12 completionBlock:v8 type:0];
+      objc_destroyWeak(&v11);
+    }
+
+    else
+    {
+      [(UIView *)v6 removeFromSuperview];
+      [(UIView *)v6 setAlpha:1.0];
+      [(NCNotificationListView *)self _recycleViewIfNecessary:v6];
+    }
+
+    [(NCNotificationListView *)self setCachedSizeValid:0];
+    [(NCNotificationListView *)self setNeedsUpdateOfApparentZPositionsOfListCells];
+    [(NCNotificationListView *)self setNeedsLayout];
+    objc_destroyWeak(&location);
+  }
+}
+
+void __51__NCNotificationListView_reloadFooterViewAnimated___block_invoke_2(uint64_t a1)
+{
+  v2 = *(a1 + 32);
+  WeakRetained = objc_loadWeakRetained((a1 + 48));
+  v4 = [WeakRetained footerView];
+
+  if (v2 != v4)
+  {
+    [*(a1 + 32) removeFromSuperview];
+    [*(a1 + 32) setAlpha:1.0];
+    v6 = *(a1 + 32);
+    v5 = *(a1 + 40);
+
+    [v5 _recycleViewIfNecessary:v6];
+  }
+}
+
+- (void)reloadHoverView
+{
+  hoverView = self->_hoverView;
+  if (hoverView)
+  {
+    self->_hoverView = 0;
+    v4 = hoverView;
+
+    [(UIView *)v4 removeFromSuperview];
+    [(NCNotificationListView *)self _recycleViewIfNecessary:v4];
+
+    [(NCNotificationListView *)self setNeedsUpdateOfApparentZPositionsOfListCells];
+
+    [(NCNotificationListView *)self setNeedsLayout];
+  }
+}
+
+- (void)setActiveRevealTransitioning:(BOOL)a3
+{
+  if (self->_activeRevealTransitioning != a3)
+  {
+    v3 = a3;
+    self->_activeRevealTransitioning = a3;
+    [(NCNotificationListView *)self setPerformingRevealTransitionAnimation:1];
+    [(NCNotificationListView *)self setCachedSizeValid:0];
+    [(NCNotificationListView *)self setNeedsLayout];
+    if (v3)
+    {
+
+      [(NCNotificationListView *)self layoutIfNeeded];
+    }
+  }
+}
+
+- (double)layoutOffsetForViewAtIndex:(unint64_t)a3
+{
+  [(NCNotificationListView *)self _initialLayoutOffset];
+  v6 = v5;
+  if ([(NCNotificationListView *)self count]> a3)
+  {
+    v7 = [(NCNotificationListView *)self dataSource];
+    [(NCNotificationListView *)self _headerViewHeight];
+    v8 = 0.0;
+    if (v9 > 0.0)
+    {
+      [(NCNotificationListView *)self _headerViewHeight];
+      v11 = v10;
+      [(NCListAnimationSettings *)self->_animationSettings viewSpacing];
+      v8 = v11 + v12;
+    }
+
+    v6 = v6 + v8;
+    if ([(NCNotificationListView *)self _isShowingFeaturedLeadingViews])
+    {
+      if ([(NCNotificationListView *)self numberOfFeaturedLeadingViews]<= a3)
+      {
+        [(NCNotificationListView *)self _heightForFeaturedLeadingView];
+        v14 = v6 + v13;
+        [(NCListAnimationSettings *)self->_animationSettings viewSpacing];
+        v6 = v14 + v15;
+      }
+
+      v16 = [(NCNotificationListView *)self numberOfFeaturedLeadingViews];
+    }
+
+    else
+    {
+      v16 = 0;
+    }
+
+    [(NCNotificationListView *)self bounds];
+    [(NCNotificationListView *)self _widthForListViewInRect:?];
+    if (v16 < a3)
+    {
+      v18 = v17;
+      do
+      {
+        [v7 notificationListView:self heightForItemAtIndex:v16 withWidth:-[NCNotificationListView _isCurrentlyInDisplayListAsStackMode](self inDisplayListAsStackMode:"_isCurrentlyInDisplayListAsStackMode") ignoreExpandedGroupStack:{0, v18}];
+        if (v19 > 0.0)
+        {
+          v20 = v19;
+          if (!v16)
+          {
+            [(NCNotificationListView *)self _topSpacingForItemAtIndex:0];
+            v6 = v6 + v21;
+          }
+
+          v22 = [(NCNotificationListView *)self isRevealed];
+          v23 = 0.0;
+          if (!v22)
+          {
+            [(NCNotificationListView *)self _positionOffsetForRevealHintingForItemAtIndex:v16, 0.0];
+          }
+
+          v24 = v20 + v6 + v23;
+          [(NCNotificationListView *)self _bottomSpacingForItemAtIndex:v16];
+          v6 = v24 + v25;
+        }
+
+        ++v16;
+      }
+
+      while (a3 != v16);
+    }
+  }
+
+  return v6;
+}
+
+- (BOOL)isVisibleForViewAtIndex:(unint64_t)a3
+{
+  if ([(NCNotificationListView *)self count]<= a3)
+  {
+    return 0;
+  }
+
+  [(NCNotificationListView *)self layoutOffsetForViewAtIndex:a3];
+  v6 = v5;
+  v7 = [(NCNotificationListView *)self dataSource];
+  [(NCNotificationListView *)self bounds];
+  [(NCNotificationListView *)self _widthForListViewInRect:?];
+  [v7 notificationListView:self heightForItemAtIndex:a3 withWidth:-[NCNotificationListView _isCurrentlyInDisplayListAsStackMode](self inDisplayListAsStackMode:"_isCurrentlyInDisplayListAsStackMode") ignoreExpandedGroupStack:{0, v8}];
+  v10 = v9;
+
+  [(NCNotificationListView *)self visibleRect];
+  if (v6 >= CGRectGetMaxY(v12))
+  {
+    return 0;
+  }
+
+  [(NCNotificationListView *)self visibleRect];
+  return v6 + v10 > CGRectGetMinY(v13);
+}
+
+- (void)updateSubviewTranslation:(double)a3
+{
+  if (![(NCNotificationListView *)self isGrouped]|| [(NCNotificationListView *)self isPerformingGroupingAnimation])
+  {
+    a3 = 0.0;
+  }
+
+  [(NCNotificationListView *)self setGroupedTranslation:a3];
+}
+
+- (void)setHiddenBelowStack:(BOOL)a3
+{
+  if (self->_hiddenBelowStack != a3)
+  {
+    self->_hiddenBelowStack = a3;
+    self->_performingStackVisibilityAnimation = 1;
+    [(NCNotificationListView *)self setCachedSizeValid:0];
+
+    [(NCNotificationListView *)self setNeedsLayout];
+  }
+}
+
+- (void)setOverrideTopViewDimmingTransform:(CGAffineTransform *)a3
+{
+  p_overrideTopViewDimmingTransform = &self->_overrideTopViewDimmingTransform;
+  v6 = *&self->_overrideTopViewDimmingTransform.c;
+  *&t1.a = *&self->_overrideTopViewDimmingTransform.a;
+  *&t1.c = v6;
+  *&t1.tx = *&self->_overrideTopViewDimmingTransform.tx;
+  v7 = *&a3->c;
+  *&v13.a = *&a3->a;
+  *&v13.c = v7;
+  *&v13.tx = *&a3->tx;
+  if (!CGAffineTransformEqualToTransform(&t1, &v13))
+  {
+    v8 = *&a3->a;
+    v9 = *&a3->tx;
+    *&p_overrideTopViewDimmingTransform->c = *&a3->c;
+    *&p_overrideTopViewDimmingTransform->tx = v9;
+    *&p_overrideTopViewDimmingTransform->a = v8;
+    v10 = [(NCNotificationListView *)self visibleViews];
+    v11 = [v10 objectForKey:&unk_283015440];
+
+    if (v11)
+    {
+      v12 = *&a3->c;
+      *&t1.a = *&a3->a;
+      *&t1.c = v12;
+      *&t1.tx = *&a3->tx;
+      [(NCNotificationListView *)self _configureStackDimmingForGroupedView:v11 transform:&t1];
+    }
+  }
+}
+
+- (void)setFeaturedLeadingViewOcclusionTranslation:(double)a3
+{
+  v5 = [(NCNotificationListView *)self visibleViews];
+  v15 = [v5 objectForKey:&unk_283015440];
+
+  if (v15)
+  {
+    v6 = [(NCNotificationListView *)self _isFeaturedLeadingViewAtIndex:0];
+    if (v6)
+    {
+      [(NCNotificationListView *)self _widthForFeaturedLeadingView];
+      v8 = v7;
+      v9 = [(NCNotificationListView *)self _shouldReverseLayoutDirection];
+      v10 = -a3;
+      if (!v9)
+      {
+        v10 = a3;
+      }
+
+      v11 = v8 + v10;
+      [(NCListAnimationSettings *)self->_animationSettings featuredViewOcclusionMinimumAlpha];
+      v13 = v12;
+      [(NCListAnimationSettings *)self->_animationSettings featuredViewOcclusionMinimumAlpha];
+      v6 = [v15 setAlpha:v13 + (1.0 - v14) * (v11 / v8)];
+    }
+  }
+
+  MEMORY[0x2821F96F8](v6);
+}
+
+- (void)setShowContentForGroupedViews:(BOOL)a3
+{
+  if (self->_showContentForGroupedViews != a3)
+  {
+    self->_showContentForGroupedViews = a3;
+    [(NCNotificationListView *)self setNeedsLayout];
+  }
+}
+
+- (void)setInteractionTranslationPercentage:(double)a3
+{
+  if (vabdd_f64(self->_interactionTranslationPercentage, a3) >= 2.22044605e-16)
+  {
+    [(NCNotificationListView *)self setPerformingInteractiveTranslationAnimation:1];
+    self->_interactionTranslationPercentage = a3;
+
+    [(NCNotificationListView *)self setNeedsLayout];
+  }
+}
+
+- (void)setVisibleRectBottomMarginForRollUnder:(double)a3
+{
+  if (vabdd_f64(a3, self->_visibleRectBottomMarginForRollUnder) >= 2.22044605e-16)
+  {
+    [(NCNotificationListView *)self setPerformingBottomMarginAdjustmentAnimation:1];
+    self->_visibleRectBottomMarginForRollUnder = a3;
+
+    [(NCNotificationListView *)self setNeedsLayout];
+  }
+}
+
+- (void)setInteractionTranslation:(double)a3
+{
+  if (vabdd_f64(a3, self->_interactionTranslation) >= 2.22044605e-16)
+  {
+    [(NCNotificationListView *)self setPerformingInteractiveTranslationAnimation:1];
+    self->_interactionTranslation = a3;
+
+    [(NCNotificationListView *)self setNeedsLayout];
+  }
+}
+
+- (void)setInteractionVelocity:(double)a3
+{
+  if (vabdd_f64(a3, self->_interactionVelocity) >= 2.22044605e-16)
+  {
+    [(NCNotificationListView *)self setPerformingInteractionVelocityAnimation:1];
+    self->_interactionVelocity = a3;
+
+    [(NCNotificationListView *)self setNeedsLayout];
+  }
+}
+
+- (BOOL)isRolledUnderView:(id)a3 atIndex:(unint64_t)a4
+{
+  v6 = a3;
+  [(NCNotificationListView *)self layoutOffsetForViewAtIndex:a4];
+  v8 = v7;
+  v9 = [(NCNotificationListView *)self dataSource];
+  [(NCNotificationListView *)self bounds];
+  [(NCNotificationListView *)self _widthForListViewInRect:?];
+  [v9 notificationListView:self heightForItemAtIndex:a4 withWidth:-[NCNotificationListView _isCurrentlyInDisplayListAsStackMode](self inDisplayListAsStackMode:"_isCurrentlyInDisplayListAsStackMode") ignoreExpandedGroupStack:{0, v10}];
+  v12 = v11;
+
+  LOBYTE(a4) = [(NCNotificationListView *)self _shouldRollUnderView:v6 withHeight:v12 layoutOffset:v8];
+  return a4;
+}
+
+- (void)setSublistsRevealed:(BOOL)a3
+{
+  if (self->_sublistsRevealed != a3)
+  {
+    self->_sublistsRevealed = a3;
+    [(NCNotificationListView *)self setNeedsLayout];
+  }
+}
+
+- (void)setOverrideLeadingViewHeight:(double)a3
+{
+  if (vabdd_f64(self->_overrideLeadingViewHeight, a3) >= 2.22044605e-16)
+  {
+    [(NCNotificationListView *)self setPerformingOverrideLeadingViewHeightAdjustment:1];
+    self->_overrideLeadingViewHeight = a3;
+
+    [(NCNotificationListView *)self setNeedsLayout];
+  }
+}
+
+- (void)setMaximumLeadingViewHeight:(double)a3
+{
+  if (vabdd_f64(self->_maximumLeadingViewHeight, a3) >= 2.22044605e-16)
+  {
+    self->_maximumLeadingViewHeight = a3;
+    [(NCNotificationListView *)self setNeedsLayout];
+  }
+}
+
+- (BOOL)isPerformingRemovalAnimation
+{
+  if ([(NCNotificationListView *)self removalAnimationCount]> 0)
+  {
+    return 1;
+  }
+
+  v4 = [(NCNotificationListView *)self _directSuperListView];
+  v5 = [v4 isPerformingRemovalAnimation];
+
+  return v5;
+}
+
+- (void)_incrementRemovalAnimationCount
+{
+  v3 = [(NCNotificationListView *)self removalAnimationCount]+ 1;
+
+  [(NCNotificationListView *)self setRemovalAnimationCount:v3];
+}
+
+- (void)_decrementRemovalAnimationCount
+{
+  v3 = [(NCNotificationListView *)self removalAnimationCount];
+  if (v3 <= 1)
+  {
+    v4 = 1;
+  }
+
+  else
+  {
+    v4 = v3;
+  }
+
+  [(NCNotificationListView *)self setRemovalAnimationCount:v4 - 1];
+}
+
+- (id)visibleViewAtIndex:(unint64_t)a3
+{
+  v4 = [(NCNotificationListView *)self visibleViews];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v6 = [v4 objectForKey:v5];
+
+  return v6;
+}
+
+- (BOOL)containsVisibleView:(id)a3
+{
+  v16 = *MEMORY[0x277D85DE8];
+  v4 = a3;
+  v11 = 0u;
+  v12 = 0u;
+  v13 = 0u;
+  v14 = 0u;
+  v5 = [(NCNotificationListView *)self subviews];
+  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  if (v6)
+  {
+    v7 = *v12;
+    while (2)
+    {
+      for (i = 0; i != v6; ++i)
+      {
+        if (*v12 != v7)
+        {
+          objc_enumerationMutation(v5);
+        }
+
+        v9 = *(*(&v11 + 1) + 8 * i);
+        if (v9 == v4 || (objc_opt_respondsToSelector() & 1) != 0 && ([v9 containsVisibleView:v4] & 1) != 0)
+        {
+          LOBYTE(v6) = 1;
+          goto LABEL_13;
+        }
+      }
+
+      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      if (v6)
+      {
+        continue;
+      }
+
+      break;
+    }
+  }
+
+LABEL_13:
+
+  return v6;
+}
+
+- (BOOL)_isVisibleView:(id)a3
+{
+  v4 = a3;
+  v5 = [(NCNotificationListView *)self visibleViews];
+  v6 = [v5 allValues];
+  v7 = [v6 containsObject:v4];
+
+  return v7;
+}
+
+- (void)_setVisibleView:(id)a3 atIndex:(unint64_t)a4
+{
+  v6 = a3;
+  if (v6)
+  {
+    v15 = v6;
+    v7 = [(NCNotificationListView *)self visibleViews];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+    [v7 setObject:v15 forKey:v8];
+
+    v9 = [(NCNotificationListView *)self _listViewForView:v15];
+    v10 = [(NCNotificationListView *)self traitCollection];
+    [v9 updateBottomViewTransitionStyleWithTraitCollection:v10];
+
+    v11 = objc_opt_class();
+    v12 = v15;
+    if (v11)
+    {
+      if (objc_opt_isKindOfClass())
+      {
+        v13 = v12;
+      }
+
+      else
+      {
+        v13 = 0;
+      }
+    }
+
+    else
+    {
+      v13 = 0;
+    }
+
+    v14 = v13;
+
+    if (v14)
+    {
+      [v14 _setNeedsUpdateOfApparentZPositionsOfListCells];
+    }
+  }
+
+  MEMORY[0x2821F96F8](v6);
+}
+
+- (void)_updateStoredVisibleViewsForViewInsertedAtIndex:(unint64_t)a3
+{
+  v5 = [(NCNotificationListView *)self visibleViews];
+  v6 = [v5 allKeys];
+  v7 = [v6 copy];
+
+  v8 = [v7 sortedArrayUsingComparator:&__block_literal_global_136];
+
+  v9[0] = MEMORY[0x277D85DD0];
+  v9[1] = 3221225472;
+  v9[2] = __74__NCNotificationListView__updateStoredVisibleViewsForViewInsertedAtIndex___block_invoke_2;
+  v9[3] = &unk_278371090;
+  v9[4] = self;
+  v9[5] = a3;
+  [v8 enumerateObjectsUsingBlock:v9];
+}
+
+void __74__NCNotificationListView__updateStoredVisibleViewsForViewInsertedAtIndex___block_invoke_2(uint64_t a1, void *a2)
+{
+  v10 = a2;
+  v3 = [v10 unsignedIntegerValue];
+  if (v3 >= *(a1 + 40))
+  {
+    v4 = v3;
+    v5 = [*(a1 + 32) visibleViews];
+    v6 = [v5 objectForKey:v10];
+
+    v7 = [*(a1 + 32) visibleViews];
+    [v7 removeObjectForKey:v10];
+
+    v8 = [*(a1 + 32) visibleViews];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v4 + 1];
+    [v8 setObject:v6 forKey:v9];
+  }
+}
+
+- (void)_updateStoredVisibleViewsForViewRemovedAtIndex:(unint64_t)a3
+{
+  v5 = [(NCNotificationListView *)self visibleViews];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  [v5 removeObjectForKey:v6];
+
+  v7 = [(NCNotificationListView *)self visibleViews];
+  v8 = [v7 allKeys];
+  v9 = [v8 copy];
+
+  v10 = [v9 sortedArrayUsingComparator:&__block_literal_global_138];
+
+  v11[0] = MEMORY[0x277D85DD0];
+  v11[1] = 3221225472;
+  v11[2] = __73__NCNotificationListView__updateStoredVisibleViewsForViewRemovedAtIndex___block_invoke_2;
+  v11[3] = &unk_278371090;
+  v11[4] = self;
+  v11[5] = a3;
+  [v10 enumerateObjectsUsingBlock:v11];
+}
+
+void __73__NCNotificationListView__updateStoredVisibleViewsForViewRemovedAtIndex___block_invoke_2(uint64_t a1, void *a2)
+{
+  v10 = a2;
+  v3 = [v10 unsignedIntegerValue];
+  if (v3 >= *(a1 + 40))
+  {
+    v4 = v3;
+    v5 = [*(a1 + 32) visibleViews];
+    v6 = [v5 objectForKey:v10];
+
+    v7 = [*(a1 + 32) visibleViews];
+    [v7 removeObjectForKey:v10];
+
+    v8 = [*(a1 + 32) visibleViews];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v4 - 1];
+    [v8 setObject:v6 forKey:v9];
+  }
+}
+
+- (void)_removeStoredVisibleViewAtIndex:(unint64_t)a3
+{
+  v5 = [(NCNotificationListView *)self visibleViews];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v9 = [v5 objectForKey:v6];
+
+  if (v9)
+  {
+    [v9 removeFromSuperview];
+    v7 = [(NCNotificationListView *)self visibleViews];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    [v7 removeObjectForKey:v8];
+
+    [(NCNotificationListView *)self _recycleViewIfNecessary:v9];
+  }
+}
+
+- (void)_updateVisibleViewsForUpdatedVisibleRect:(CGRect)a3
+{
+  v42 = *MEMORY[0x277D85DE8];
+  v37 = 0u;
+  v38 = 0u;
+  v39 = 0u;
+  v40 = 0u;
+  v4 = [(NCNotificationListView *)self visibleViews];
+  v5 = [v4 allValues];
+
+  v6 = [v5 countByEnumeratingWithState:&v37 objects:v41 count:16];
+  if (v6)
+  {
+    v7 = v6;
+    v8 = *v38;
+    do
+    {
+      for (i = 0; i != v7; ++i)
+      {
+        if (*v38 != v8)
+        {
+          objc_enumerationMutation(v5);
+        }
+
+        v10 = [(NCNotificationListView *)self _listViewForView:*(*(&v37 + 1) + 8 * i)];
+        v11 = v10;
+        if (v10)
+        {
+          [v10 frame];
+          v13 = v12;
+          v15 = v14;
+          v17 = v16;
+          v19 = v18;
+          [(NCNotificationListView *)self visibleRectBottomMarginForRollUnder];
+          UIRectInset();
+          x = v43.origin.x;
+          y = v43.origin.y;
+          width = v43.size.width;
+          height = v43.size.height;
+          v52.origin.x = v13;
+          v52.origin.y = v15;
+          v52.size.width = v17;
+          v52.size.height = v19;
+          if (CGRectIntersectsRect(v43, v52))
+          {
+            v44.origin.x = x;
+            v44.origin.y = y;
+            v44.size.width = width;
+            v44.size.height = height;
+            v53.origin.x = v13;
+            v53.origin.y = v15;
+            v53.size.width = v17;
+            rect = v19;
+            v53.size.height = v19;
+            v45 = CGRectIntersection(v44, v53);
+            v36 = v45.origin.x;
+            v33 = v45.origin.y;
+            v34 = v45.size.width;
+            v24 = v45.size.height;
+            if ([v11 isPerformingGroupingAnimation])
+            {
+              v46.origin.x = x;
+              v46.origin.y = y;
+              v46.size.width = width;
+              v46.size.height = height;
+              MaxY = CGRectGetMaxY(v46);
+              v47.origin.x = v13;
+              v47.origin.y = v15;
+              v47.size.width = v17;
+              v47.size.height = rect;
+              v26 = MaxY - CGRectGetMinY(v47);
+              if (v24 < v26)
+              {
+                v24 = v26;
+              }
+            }
+
+            v27 = v34;
+            v28 = v33 - v15;
+          }
+
+          else
+          {
+            v48.origin.x = v13;
+            v48.origin.y = v15;
+            v48.size.width = v17;
+            v48.size.height = v19;
+            v35 = v13;
+            v29 = v17;
+            v30 = v19;
+            MinY = CGRectGetMinY(v48);
+            v49.origin.x = x;
+            v49.origin.y = y;
+            v49.size.width = width;
+            v49.size.height = height;
+            v36 = 0.0;
+            v28 = 0.0;
+            if (MinY <= CGRectGetMaxY(v49))
+            {
+              v50.origin.x = v35;
+              v50.origin.y = v15;
+              v50.size.width = v29;
+              v50.size.height = v30;
+              v28 = CGRectGetHeight(v50);
+            }
+
+            v51.origin.x = v35;
+            v51.origin.y = v15;
+            v51.size.width = v29;
+            v51.size.height = v30;
+            v27 = CGRectGetWidth(v51);
+            v24 = 0.0;
+          }
+
+          [v11 setVisibleRect:{v36, v28, v27, v24, *&rect}];
+          if ([(NCNotificationListView *)self isPerformingBottomMarginAdjustmentAnimation])
+          {
+            [v11 setPerformingBottomMarginAdjustmentAnimation:1];
+          }
+        }
+      }
+
+      v7 = [v5 countByEnumeratingWithState:&v37 objects:v41 count:16];
+    }
+
+    while (v7);
+  }
+}
+
+- (BOOL)_isTopSubviewHeightLessThanVisibleRect
+{
+  v3 = [(NCNotificationListView *)self visibleViews];
+  v4 = [v3 objectForKey:&unk_283015440];
+
+  if (v4)
+  {
+    [v4 frame];
+    v6 = v5;
+    v8 = v7;
+    v10 = v9;
+    v12 = v11;
+    [(NCNotificationListView *)self visibleRect];
+    v14 = v13;
+    v16 = v15;
+    v18 = v17;
+    v20 = v19;
+    v24.origin.x = v6;
+    v24.origin.y = v8;
+    v24.size.width = v10;
+    v24.size.height = v12;
+    Height = CGRectGetHeight(v24);
+    v25.origin.x = v14;
+    v25.origin.y = v16;
+    v25.size.width = v18;
+    v25.size.height = v20;
+    v22 = Height < CGRectGetHeight(v25);
+  }
+
+  else
+  {
+    v22 = 0;
+  }
+
+  return v22;
+}
+
+- (void)_setRevealAlphaForView:(id)a3 desiredAlpha:(double)a4
+{
+  v12 = a3;
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    v6 = v12;
+  }
+
+  else
+  {
+    v6 = 0;
+  }
+
+  v7 = v6;
+  v8 = v7;
+  if (v7 && ([v7 isRevealed] & 1) == 0 && objc_msgSend(v8, "_isGrouping"))
+  {
+    [v8 revealPercentage];
+    a4 = v9;
+  }
+
+  [v12 alpha];
+  if (a4 * v10 == 0.0)
+  {
+    [v12 alpha];
+    if (v11 != 0.0 || a4 != 0.0)
+    {
+      [(NCNotificationListView *)self setNeedsForcedGlassUpdate:1];
+    }
+  }
+
+  [v12 setAlpha:a4];
+}
+
+- (void)_performInsertionAnimationForView:(id)a3
+{
+  v29[2] = *MEMORY[0x277D85DE8];
+  v4 = a3;
+  if ([(NCNotificationListView *)self groupingAnimationStyle]== 1)
+  {
+    v5 = *(MEMORY[0x277CBF2C0] + 16);
+    *&v28.a = *MEMORY[0x277CBF2C0];
+    *&v28.c = v5;
+    *&v28.tx = *(MEMORY[0x277CBF2C0] + 32);
+    v6 = &v28;
+  }
+
+  else
+  {
+    memset(&v28, 0, sizeof(v28));
+    [(NCListAnimationSettings *)self->_animationSettings animationScale];
+    v8 = v7;
+    [(NCListAnimationSettings *)self->_animationSettings animationScale];
+    CGAffineTransformMakeScale(&v28, v8, v9);
+    v27 = v28;
+    v6 = &v27;
+  }
+
+  [v4 setTransform:v6];
+  v10 = [(NCNotificationListView *)self isRevealed];
+  v11 = 0.0;
+  if (v10)
+  {
+    v11 = 1.0;
+  }
+
+  [v4 setAlpha:v11];
+  v12 = [NCDecomposedAnimation alloc];
+  v25[0] = MEMORY[0x277D85DD0];
+  v25[1] = 3221225472;
+  v25[2] = __60__NCNotificationListView__performInsertionAnimationForView___block_invoke;
+  v25[3] = &unk_27836F6A8;
+  v13 = v4;
+  v26 = v13;
+  v14 = [(NCListAnimationSettings *)self->_animationSettings insertionAnimation_scaleX];
+  v15 = [(NCDecomposedAnimation *)v12 initWithAnimationBlock:v25 settings:v14 name:@"scale.x"];
+
+  v16 = [NCDecomposedAnimation alloc];
+  v23[0] = MEMORY[0x277D85DD0];
+  v23[1] = 3221225472;
+  v23[2] = __60__NCNotificationListView__performInsertionAnimationForView___block_invoke_2;
+  v23[3] = &unk_27836F6A8;
+  v24 = v13;
+  animationSettings = self->_animationSettings;
+  v18 = v13;
+  v19 = [(NCListAnimationSettings *)animationSettings insertionAnimation_scaleY:v23[0]];
+  v20 = [(NCDecomposedAnimation *)v16 initWithAnimationBlock:v23 settings:v19 name:@"scale.y"];
+
+  v21 = [(NCNotificationListView *)self _currentHighFrameRateAnimator];
+  v29[0] = v15;
+  v29[1] = v20;
+  v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:2];
+  [v21 animateWithDecomposedAnimations:v22 completion:0];
+
+  [(NCNotificationListView *)self setNeedsUpdateOfApparentZPositionsOfListCells];
+}
+
+void __60__NCNotificationListView__performInsertionAnimationForView___block_invoke(uint64_t a1)
+{
+  v1 = [*(a1 + 32) layer];
+  [v1 setValue:&unk_283015458 forKeyPath:@"transform.scale.x"];
+}
+
+void __60__NCNotificationListView__performInsertionAnimationForView___block_invoke_2(uint64_t a1)
+{
+  v1 = [*(a1 + 32) layer];
+  [v1 setValue:&unk_283015458 forKeyPath:@"transform.scale.y"];
+}
+
+- (void)_performRemovalAnimationForView:(id)a3 index:(unint64_t)a4 isHorizontallyDisplaced:(BOOL)a5
+{
+  v7 = a3;
+  v8 = [(NCNotificationListView *)self dataSource];
+  v9 = [(NCNotificationListView *)self _rootSuperListView];
+  [(NCNotificationListView *)self _incrementRemovalAnimationCount];
+  [v9 _incrementRemovalAnimationCount];
+  objc_initWeak(&location, self);
+  v20[0] = MEMORY[0x277D85DD0];
+  v20[1] = 3221225472;
+  v20[2] = __88__NCNotificationListView__performRemovalAnimationForView_index_isHorizontallyDisplaced___block_invoke;
+  v20[3] = &unk_2783710B8;
+  v10 = v7;
+  v21 = v10;
+  objc_copyWeak(&v23, &location);
+  v24 = a5;
+  v22 = self;
+  v14[0] = MEMORY[0x277D85DD0];
+  v14[1] = 3221225472;
+  v14[2] = __88__NCNotificationListView__performRemovalAnimationForView_index_isHorizontallyDisplaced___block_invoke_2;
+  v14[3] = &unk_2783710E0;
+  objc_copyWeak(&v19, &location);
+  v11 = v10;
+  v15 = v11;
+  v16 = self;
+  v12 = v8;
+  v17 = v12;
+  v13 = v9;
+  v18 = v13;
+  [(NCNotificationListView *)self _performViewAnimationBlock:v20 completionBlock:v14 type:3];
+
+  objc_destroyWeak(&v19);
+  objc_destroyWeak(&v23);
+
+  objc_destroyWeak(&location);
+}
+
+void __88__NCNotificationListView__performRemovalAnimationForView_index_isHorizontallyDisplaced___block_invoke(uint64_t a1)
+{
+  [*(a1 + 32) frame];
+  v3 = v2;
+  v5 = v4;
+  v7 = v6;
+  v9 = v8;
+  WeakRetained = objc_loadWeakRetained((a1 + 48));
+  if ([WeakRetained _isAnimationStyleDissolve])
+  {
+    v11 = *(a1 + 32);
+    v12 = 0.0;
+    goto LABEL_25;
+  }
+
+  if (*(a1 + 56) != 1 || (v13 = 1.0, [WeakRetained isPerformingGroupingAnimation]))
+  {
+    v14 = [WeakRetained animationSettings];
+    [v14 animationScaleWhileGrouping];
+    v13 = v15;
+  }
+
+  memset(&v30, 0, sizeof(v30));
+  CGAffineTransformMakeScale(&v30, v13, v13);
+  if (*(a1 + 56) == 1 && [WeakRetained _isLayoutFromBottomUp])
+  {
+    if (![WeakRetained isGrouped])
+    {
+      if ([WeakRetained isPerformingGroupingAnimation])
+      {
+        goto LABEL_12;
+      }
+
+      goto LABEL_17;
+    }
+
+    v16 = [WeakRetained count] == 0;
+  }
+
+  else
+  {
+    v16 = 0;
+  }
+
+  if ([WeakRetained isPerformingGroupingAnimation])
+  {
+LABEL_12:
+    v17 = [WeakRetained animationSettings];
+    [v17 animationTranslationWhileGrouping];
+    v19 = v18;
+    v31.origin.x = v3;
+    v31.origin.y = v5;
+    v31.size.width = v7;
+    v31.size.height = v9;
+    v20 = v19 + (1.0 - v13) * -0.5 * CGRectGetHeight(v31);
+LABEL_15:
+
+    goto LABEL_18;
+  }
+
+  if (!v16)
+  {
+    v17 = [WeakRetained animationSettings];
+    [v17 animationTranslation];
+    v20 = -v21;
+    goto LABEL_15;
+  }
+
+LABEL_17:
+  [*(a1 + 32) bounds];
+  v20 = -CGRectGetHeight(v32);
+LABEL_18:
+  v22 = 0.0;
+  if (*(a1 + 56) == 1 && ([WeakRetained isPerformingGroupingAnimation] & 1) == 0)
+  {
+    [WeakRetained bounds];
+    v22 = CGRectGetWidth(v33) * 1.5;
+  }
+
+  v23 = [WeakRetained _shouldReverseLayoutDirection];
+  v24 = -v22;
+  memset(&v29.c, 0, 32);
+  if (v23)
+  {
+    v24 = v22;
+  }
+
+  *&v29.a = 0uLL;
+  CGAffineTransformMakeTranslation(&v29, v24, v20);
+  t1 = v30;
+  memset(&v28, 0, sizeof(v28));
+  v26 = v29;
+  CGAffineTransformConcat(&v28, &t1, &v26);
+  v25 = *(a1 + 32);
+  t1 = v28;
+  [v25 setTransform:&t1];
+  v11 = *(a1 + 32);
+  v12 = 1.0;
+  if (!*(a1 + 56))
+  {
+    v12 = 0.0;
+  }
+
+LABEL_25:
+  [v11 setAlpha:v12];
+  [*(a1 + 40) _notifyDataSourceViewWillBeRemoved:*(a1 + 32)];
+}
+
+void __88__NCNotificationListView__performRemovalAnimationForView_index_isHorizontallyDisplaced___block_invoke_2(id *a1)
+{
+  v2 = *MEMORY[0x277D77DD0];
+  if (os_signpost_enabled(*MEMORY[0x277D77DD0]))
+  {
+    LOWORD(v9[0]) = 0;
+    _os_signpost_emit_with_name_impl(&dword_21E77E000, v2, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "NC_NOTIFICATION_DISMISSAL_END", " enableTelemetry=YES ", v9, 2u);
+  }
+
+  kdebug_trace();
+  WeakRetained = objc_loadWeakRetained(a1 + 8);
+  v4 = [a1[4] superview];
+  v5 = v4;
+  if (v4 == WeakRetained)
+  {
+    v6 = [a1[5] _isVisibleView:a1[4]];
+
+    if ((v6 & 1) == 0)
+    {
+      [a1[4] removeFromSuperview];
+      v7 = a1[4];
+      v8 = *(MEMORY[0x277CBF2C0] + 16);
+      v9[0] = *MEMORY[0x277CBF2C0];
+      v9[1] = v8;
+      v9[2] = *(MEMORY[0x277CBF2C0] + 32);
+      [v7 setTransform:v9];
+      [a1[5] _recycleViewIfNecessary:a1[4] withDataSource:a1[6]];
+    }
+  }
+
+  else
+  {
+  }
+
+  [a1[5] _decrementRemovalAnimationCount];
+  [a1[7] _decrementRemovalAnimationCount];
+  [WeakRetained _configureClippingIfNecessary];
+  if (objc_opt_respondsToSelector())
+  {
+    [a1[6] notificationListView:a1[5] didRemoveView:a1[4]];
+  }
+
+  [a1[5] setNeedsUpdateOfApparentZPositionsOfListCells];
+}
+
+- (void)_notifyDataSourceViewWillBeRemoved:(id)a3
+{
+  v5 = a3;
+  v4 = [(NCNotificationListView *)self dataSource];
+  if (objc_opt_respondsToSelector())
+  {
+    [v4 notificationListView:self willRemoveView:v5];
+  }
+}
+
+- (void)_performViewAnimationBlock:(id)a3 completionBlock:(id)a4 type:(unint64_t)a5
+{
+  v8 = a4;
+  v12 = a3;
+  [(NCNotificationListView *)self _animationTension];
+  v10 = v9;
+  [(NCNotificationListView *)self _animationFriction];
+  [(NCNotificationListView *)self _performViewAnimationBlock:v12 completionBlock:v8 withTension:a5 friction:v10 type:v11];
+}
+
+- (void)_performViewAnimationBlock:(id)a3 completionBlock:(id)a4 withTension:(double)a5 friction:(double)a6 type:(unint64_t)a7
+{
+  v12 = a4;
+  v13 = a3;
+  v14 = [(NCNotificationListView *)self _currentHighFrameRateAnimator];
+  v16[0] = MEMORY[0x277D85DD0];
+  v16[1] = 3221225472;
+  v16[2] = __95__NCNotificationListView__performViewAnimationBlock_completionBlock_withTension_friction_type___block_invoke;
+  v16[3] = &unk_27836F8E8;
+  v17 = v12;
+  v15 = v12;
+  [v14 animateUsingSpringWithTension:0 friction:a7 interactive:v13 type:v16 animations:a5 completion:a6];
+}
+
+uint64_t __95__NCNotificationListView__performViewAnimationBlock_completionBlock_withTension_friction_type___block_invoke(uint64_t a1)
+{
+  result = *(a1 + 32);
+  if (result)
+  {
+    return (*(result + 16))();
+  }
+
+  return result;
+}
+
+- (void)_performRetargetableAnimationForView:(id)a3 type:(unint64_t)a4 animationBlock:(id)a5 completionBlock:(id)a6
+{
+  v10 = a3;
+  v11 = a5;
+  v12 = a6;
+  v13 = [(NCNotificationListView *)self viewsPerformingAnimation];
+  v14 = [v13 containsObject:v10];
+
+  if (v14)
+  {
+    v15 = [(NCNotificationListView *)self _currentHighFrameRateAnimator];
+    v23[0] = MEMORY[0x277D85DD0];
+    v23[1] = 3221225472;
+    v23[2] = __99__NCNotificationListView__performRetargetableAnimationForView_type_animationBlock_completionBlock___block_invoke_2;
+    v23[3] = &unk_278371130;
+    v16 = &v25;
+    v24[1] = self;
+    v25 = v12;
+    v17 = v24;
+    v24[0] = v10;
+    v18 = v10;
+    v19 = v12;
+    [v15 animateByRetargetingType:a4 animations:v11 completion:v23];
+  }
+
+  else
+  {
+    if (v10)
+    {
+      v20 = [(NCNotificationListView *)self viewsPerformingAnimation];
+      [v20 addObject:v10];
+    }
+
+    v26[0] = MEMORY[0x277D85DD0];
+    v26[1] = 3221225472;
+    v26[2] = __99__NCNotificationListView__performRetargetableAnimationForView_type_animationBlock_completionBlock___block_invoke;
+    v26[3] = &unk_278371108;
+    v16 = &v28;
+    v27[1] = self;
+    v28 = v12;
+    v17 = v27;
+    v27[0] = v10;
+    v21 = v10;
+    v22 = v12;
+    [(NCNotificationListView *)self _performViewAnimationBlock:v11 completionBlock:v26 type:a4];
+  }
+}
+
+void __99__NCNotificationListView__performRetargetableAnimationForView_type_animationBlock_completionBlock___block_invoke(uint64_t a1)
+{
+  v2 = *(a1 + 48);
+  if (v2)
+  {
+    (*(v2 + 16))();
+  }
+
+  if (*(a1 + 32))
+  {
+    v3 = [*(a1 + 40) viewsPerformingAnimation];
+    [v3 removeObject:*(a1 + 32)];
+  }
+}
+
+void __99__NCNotificationListView__performRetargetableAnimationForView_type_animationBlock_completionBlock___block_invoke_2(uint64_t a1, int a2, int a3)
+{
+  if (a2 && a3)
+  {
+    v4 = *(a1 + 48);
+    if (v4)
+    {
+      (*(v4 + 16))();
+    }
+
+    if (*(a1 + 32))
+    {
+      v5 = [*(a1 + 40) viewsPerformingAnimation];
+      [v5 removeObject:*(a1 + 32)];
+    }
+  }
+}
+
+- (double)_adjustedTensionForRevealAnimation
+{
+  [(NCNotificationListView *)self _verticalVelocityForSuperview];
+  v4 = v3;
+  [(NCListAnimationSettings *)self->_animationSettings revealHintingAnimationTension];
+  v6 = v5;
+  [(NCListAnimationSettings *)self->_animationSettings revealHintingAnimationTensionVelocityFactor];
+  return v6 + v7 * v4;
+}
+
+- (double)_adjustedFrictionForRevealAnimation
+{
+  [(NCNotificationListView *)self _verticalVelocityForSuperview];
+  v4 = v3;
+  [(NCListAnimationSettings *)self->_animationSettings revealHintingAnimationFriction];
+  v6 = v5;
+  [(NCListAnimationSettings *)self->_animationSettings revealHintingAnimationFrictionVelocityFactor];
+  return v6 + v7 * v4;
+}
+
+- (double)_verticalVelocityForSuperview
+{
+  v2 = [(NCNotificationListView *)self superview];
+  objc_opt_class();
+  v3 = 0.0;
+  if (objc_opt_isKindOfClass())
+  {
+    [v2 _verticalVelocity];
+    v3 = fabs(v4);
+  }
+
+  return v3;
+}
+
+- (double)_revealAnimationDelayForObjectAtIndex:(unint64_t)a3
+{
+  v4 = ([(NCNotificationListView *)self revealIndexOffset]+ a3);
+  [(NCListAnimationSettings *)self->_animationSettings revealGestureAnimationRevealDelayStep];
+  return fmin(fmax(v5 * v4, 0.0), 1.0);
+}
+
+- (void)_configureClippingIfNecessary
+{
+  if ([(NCNotificationListView *)self _shouldPerformClipping])
+  {
+
+    [(NCNotificationListView *)self _setupClipping];
+  }
+
+  else
+  {
+
+    [(NCNotificationListView *)self _resetClipping];
+  }
+}
+
+- (void)_setupClipping
+{
+  v3 = [(NCNotificationListView *)self layer];
+  [v3 setMaskedCorners:15];
+
+  [(NCNotificationListView *)self _setContinuousCornerRadius:13.0];
+
+  [(NCNotificationListView *)self setClipsToBounds:1];
+}
+
+- (void)_resetClipping
+{
+  v3 = [(NCNotificationListView *)self layer];
+  [v3 setMaskedCorners:0];
+
+  [(NCNotificationListView *)self setClipsToBounds:0];
+}
+
+- (BOOL)_shouldPerformClipping
+{
+  v3 = [(NCNotificationListView *)self traitCollection];
+  v4 = _NCShouldPlatterClipped();
+
+  if (!v4)
+  {
+    return 0;
+  }
+
+  if ([(NCNotificationListView *)self _isGrouping])
+  {
+    [(NCNotificationListView *)self groupedTranslation];
+    v6 = fabs(v5);
+    [(NCNotificationListView *)self horizontalInsetMargin];
+    if (v6 > v7)
+    {
+      return 1;
+    }
+  }
+
+  return [(NCNotificationListView *)self removedViewIndex]!= 0x7FFFFFFFFFFFFFFFLL;
+}
+
+- (unint64_t)_bottomTransitionTransformerForView:(id)a3
+{
+  v4 = a3;
+  v5 = [(NCNotificationListView *)self currentBottomTransitionTransformer];
+  if (v5 - 1 > 1)
+  {
+    v6 = 0;
+  }
+
+  else
+  {
+    v6 = v5;
+    v7 = [(NCNotificationListView *)self _listViewForView:v4];
+    v8 = v7;
+    if (v7)
+    {
+      v6 = [v7 currentBottomTransitionTransformer];
+    }
+  }
+
+  return v6;
+}
+
+- (id)_backgroundGlassFromDataSource
+{
+  v3 = [(NCNotificationListView *)self dataSource];
+  if (objc_opt_respondsToSelector())
+  {
+    v4 = [v3 backgroundGlassForNotificationList:self];
+  }
+
+  else
+  {
+    v4 = 0;
+  }
+
+  return v4;
+}
+
+- (id)_listViewForView:(id)a3
+{
+  v3 = a3;
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    v4 = v3;
+  }
+
+  else
+  {
+    v4 = 0;
+  }
+
+  v5 = v4;
+
+  return v4;
+}
+
+- (void)_recycleViewIfNecessary:(id)a3 withDataSource:(id)a4
+{
+  v10 = a3;
+  v6 = a4;
+  v7 = v6;
+  if (v6)
+  {
+    v8 = v6;
+  }
+
+  else
+  {
+    v8 = [(NCNotificationListView *)self dataSource];
+    if (!v8)
+    {
+      goto LABEL_6;
+    }
+  }
+
+  if (objc_opt_respondsToSelector())
+  {
+    v9 = [(NCNotificationListView *)self _listViewForView:v10];
+    [v9 recycleVisibleViews];
+
+    [v8 recycleView:v10];
+  }
+
+LABEL_6:
+}
+
+- (CGAffineTransform)_scaleTransformForGroupingAnimationForViewAtIndex:(SEL)a3 leadingViewHeight:(unint64_t)a4
+{
+  v9 = [(NCNotificationListView *)self dataSource];
+  [(NCNotificationListView *)self bounds];
+  [(NCNotificationListView *)self _widthForListViewInRect:?];
+  [v9 notificationListView:self heightForItemAtIndex:a4 withWidth:-[NCNotificationListView _isCurrentlyInDisplayListAsStackMode](self inDisplayListAsStackMode:"_isCurrentlyInDisplayListAsStackMode") ignoreExpandedGroupStack:{0, v10}];
+  v12 = v11;
+
+  v13 = 0.0;
+  if (![(NCNotificationListView *)self isHiddenBelowStack]&& [(NCNotificationListView *)self showStackBelowLeadingView])
+  {
+    [(NCNotificationListView *)self groupedOverlapHeightMultiple];
+    v15 = v14;
+    [(NCNotificationListView *)self _resolvedViewOverlap];
+    v17 = v15 * v16;
+    v18 = 0.0;
+    if (a4)
+    {
+      v18 = 1.0;
+    }
+
+    v13 = v17 * v18;
+  }
+
+  v19 = pow(0.94, a4);
+  if (v13 + a5 >= v12)
+  {
+    v20 = v19;
+  }
+
+  else
+  {
+    v20 = (v13 + a5) / v12;
+  }
+
+  if (v20 >= v19)
+  {
+    v20 = v19;
+  }
+
+  *&retstr->c = 0u;
+  *&retstr->tx = 0u;
+  *&retstr->a = 0u;
+
+  return CGAffineTransformMakeScale(retstr, v19, v20);
+}
+
+- (void)_setHiddenBelowStackForView:(id)a3 hiddenBelowStack:(BOOL)a4
+{
+  v4 = a4;
+  v5 = [(NCNotificationListView *)self _listViewForView:a3];
+  if (v5)
+  {
+    v6 = v5;
+    [v5 setHiddenBelowStack:v4];
+    v5 = v6;
+  }
+}
+
+- (void)_updateStackedViewsForGrouping:(BOOL)a3
+{
+  v5 = [(NCNotificationListView *)self visibleViews];
+  v6[0] = MEMORY[0x277D85DD0];
+  v6[1] = 3221225472;
+  v6[2] = __57__NCNotificationListView__updateStackedViewsForGrouping___block_invoke;
+  v6[3] = &unk_278371158;
+  v7 = a3;
+  v6[4] = self;
+  [v5 enumerateKeysAndObjectsUsingBlock:v6];
+}
+
+void __57__NCNotificationListView__updateStackedViewsForGrouping___block_invoke(uint64_t a1, void *a2, void *a3)
+{
+  v11 = a3;
+  v5 = [a2 unsignedIntegerValue];
+  v6 = v11;
+  v7 = *(a1 + 40);
+  if (v7 == 1 && v5 != 0)
+  {
+    goto LABEL_9;
+  }
+
+  if ((v7 & 1) == 0)
+  {
+    v9 = v5;
+    [*(*(a1 + 32) + 2624) groupListMaxViewCount];
+    if (v10 > v9)
+    {
+      LOBYTE(v7) = *(a1 + 40);
+      v6 = v11;
+LABEL_9:
+      [*(a1 + 32) _setHiddenBelowStackForView:v6 hiddenBelowStack:v7 & 1];
+    }
+  }
+}
+
+- (double)_widthForListViewInRect:(CGRect)a3
+{
+  height = a3.size.height;
+  width = a3.size.width;
+  y = a3.origin.y;
+  x = a3.origin.x;
+  [(NCNotificationListView *)self horizontalInsetMargin];
+  v8 = v7;
+  v11.origin.x = x;
+  v11.origin.y = y;
+  v11.size.width = width;
+  v11.size.height = height;
+  v12 = CGRectInset(v11, v8, 0.0);
+
+  return CGRectGetWidth(v12);
+}
+
+- (void)setGroupedTranslation:(double)a3
+{
+  if (self->_groupedTranslation != a3)
+  {
+    self->_groupedTranslation = a3;
+    [(NCNotificationListView *)self _configureClippingIfNecessary];
+    [(NCNotificationListView *)self _giveDataSourceUpdatedTransformWhichIncludesSubviewsXTranslation];
+
+    [(NCNotificationListView *)self setNeedsLayout];
+  }
+}
+
+- (BOOL)_isAnimatingForParentNotificationListView
+{
+  v3 = [(NCNotificationListView *)self _directSuperListView];
+  v4 = v3;
+  if (v3)
+  {
+    v5 = [v3 viewsPerformingAnimation];
+    v6 = [v5 containsObject:self];
+  }
+
+  else
+  {
+    v6 = 0;
+  }
+
+  return v6;
+}
+
+- (BOOL)_isLayoutFromBottomUp
+{
+  v2 = [(NCNotificationListView *)self _anySuperNotificationListView];
+  v3 = v2;
+  if (v2)
+  {
+    v4 = [v2 traitCollection];
+    v5 = _NCIsNotVerticalSpaceConstrained(v4);
+  }
+
+  else
+  {
+    v5 = 0;
+  }
+
+  return v5;
+}
+
+- (id)_anySuperNotificationListView
+{
+  v2 = [(NCNotificationListView *)self superview];
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    v3 = 0;
+    do
+    {
+      v4 = v2;
+
+      v2 = [v4 superview];
+
+      objc_opt_class();
+      v3 = v4;
+    }
+
+    while ((objc_opt_isKindOfClass() & 1) != 0);
+  }
+
+  else
+  {
+    v4 = 0;
+  }
+
+  return v4;
+}
+
+- (BOOL)_animateVisibleRectAdjustmentIfNecessaryWithVisibleRect:(CGRect)a3
+{
+  height = a3.size.height;
+  width = a3.size.width;
+  y = a3.origin.y;
+  x = a3.origin.x;
+  v8 = [(NCNotificationListView *)self isListRevealTargetContentOffsetClamped];
+  if (v8)
+  {
+    [(NCNotificationListView *)self _visibleRect];
+    v9 = CGRectGetHeight(v13);
+    [(NCNotificationListView *)self _setVisibleRectWithoutAlteringAnimations:x, y, width, height];
+    [(NCNotificationListView *)self _setupVisibleRectHeightFloatAnimatablePropertyWithStartingValue:v9];
+    v14.origin.x = x;
+    v14.origin.y = y;
+    v14.size.width = width;
+    v14.size.height = height;
+    [(NCNotificationListView *)self _animateVisibleRectHeight:CGRectGetHeight(v14)];
+  }
+
+  else
+  {
+    v10 = [(NCNotificationListView *)self visibleRectHeightAnimatableProperty];
+
+    if (v10)
+    {
+      v11 = [(NCNotificationListView *)self visibleRectHeightAnimatableProperty];
+      [v11 invalidate];
+
+      [(NCNotificationListView *)self setVisibleRectHeightAnimatableProperty:0];
+    }
+  }
+
+  return v8;
+}
+
+- (void)_animateVisibleRectHeight:(double)a3
+{
+  v5 = [(NCNotificationListView *)self visibleRectHeightAnimatableProperty];
+
+  if (v5)
+  {
+    v6 = [(NCNotificationListView *)self visibleRectHeightAnimatableProperty];
+    [v6 value];
+    v8 = v7;
+
+    if (v8 != a3)
+    {
+      v13[0] = MEMORY[0x277D85DD0];
+      v13[1] = 3221225472;
+      v13[2] = __52__NCNotificationListView__animateVisibleRectHeight___block_invoke;
+      v13[3] = &unk_27836FDD0;
+      v13[4] = self;
+      *&v13[5] = a3;
+      v12[0] = MEMORY[0x277D85DD0];
+      v12[1] = 3221225472;
+      v12[2] = __52__NCNotificationListView__animateVisibleRectHeight___block_invoke_2;
+      v12[3] = &unk_27836F6A8;
+      v12[4] = self;
+      [(NCNotificationListView *)self _adjustedTensionForRevealAnimation];
+      v10 = v9;
+      [(NCNotificationListView *)self _adjustedFrictionForRevealAnimation];
+      [(NCNotificationListView *)self _performViewAnimationBlock:v13 completionBlock:v12 withTension:0 friction:v10 type:v11];
+    }
+  }
+}
+
+void __52__NCNotificationListView__animateVisibleRectHeight___block_invoke(uint64_t a1)
+{
+  v2 = [*(a1 + 32) visibleRectHeightAnimatableProperty];
+  [v2 setValue:*(a1 + 40)];
+}
+
+- (void)_setupVisibleRectHeightFloatAnimatablePropertyWithStartingValue:(double)a3
+{
+  v13[1] = *MEMORY[0x277D85DE8];
+  objc_initWeak(&location, self);
+  visibleRectHeightAnimatableProperty = self->_visibleRectHeightAnimatableProperty;
+  if (!visibleRectHeightAnimatableProperty)
+  {
+    v6 = objc_alloc_init(MEMORY[0x277D75D38]);
+    v7 = self->_visibleRectHeightAnimatableProperty;
+    self->_visibleRectHeightAnimatableProperty = v6;
+
+    [(UIViewFloatAnimatableProperty *)self->_visibleRectHeightAnimatableProperty setVelocityUsableForVFD:1];
+    visibleRectHeightAnimatableProperty = self->_visibleRectHeightAnimatableProperty;
+  }
+
+  [(UIViewFloatAnimatableProperty *)visibleRectHeightAnimatableProperty setValue:a3];
+  v8 = MEMORY[0x277D75D18];
+  v13[0] = self->_visibleRectHeightAnimatableProperty;
+  v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
+  v10[0] = MEMORY[0x277D85DD0];
+  v10[1] = 3221225472;
+  v10[2] = __90__NCNotificationListView__setupVisibleRectHeightFloatAnimatablePropertyWithStartingValue___block_invoke;
+  v10[3] = &unk_27836F498;
+  objc_copyWeak(&v11, &location);
+  [v8 _createTransformerWithInputAnimatableProperties:v9 presentationValueChangedCallback:v10];
+
+  objc_destroyWeak(&v11);
+  objc_destroyWeak(&location);
+}
+
+void __90__NCNotificationListView__setupVisibleRectHeightFloatAnimatablePropertyWithStartingValue___block_invoke(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  if (WeakRetained)
+  {
+    v11 = WeakRetained;
+    v2 = WeakRetained[326];
+    if (v2 && [v11 isRevealed])
+    {
+      [v2 presentationValue];
+      v4 = v3;
+      [v11 visibleRect];
+      v6 = v5;
+      v8 = v7;
+      v10 = v9;
+      [v11 _setVisibleRectWithoutAlteringAnimations:?];
+      [v11 setPerformingVisibleRectAdjustment:1];
+      [v11 setNeedsLayout];
+      [v11 _updateVisibleViewsForUpdatedVisibleRect:{v6, v8, v10, v4}];
+    }
+
+    WeakRetained = v11;
+  }
+}
+
+- (BOOL)_isFeaturedLeadingViewAtIndex:(unint64_t)a3
+{
+  if ([(NCNotificationListView *)self numberOfFeaturedLeadingViews]<= a3)
+  {
+    return 0;
+  }
+
+  return [(NCNotificationListView *)self _isShowingFeaturedLeadingViews];
+}
+
+- (double)_widthForFeaturedLeadingViewInRect:(CGRect)a3
+{
+  height = a3.size.height;
+  width = a3.size.width;
+  y = a3.origin.y;
+  x = a3.origin.x;
+  [(NCNotificationListView *)self horizontalInsetMargin];
+  v9 = v8;
+  v14.origin.x = x;
+  v14.origin.y = y;
+  v14.size.width = width;
+  v14.size.height = height;
+  v15 = CGRectInset(v14, v9, 0.0);
+  v10 = CGRectGetWidth(v15);
+  v11 = ([(NCNotificationListView *)self numberOfFeaturedLeadingViews]- 1);
+  [(NCListAnimationSettings *)self->_animationSettings featuredLeadingViewSpacing];
+  return (v10 - v11 * v12) / [(NCNotificationListView *)self numberOfFeaturedLeadingViews];
+}
+
+- (double)_widthForFeaturedLeadingView
+{
+  [(NCNotificationListView *)self bounds];
+
+  [(NCNotificationListView *)self _widthForFeaturedLeadingViewInRect:?];
+  return result;
+}
+
+- (double)_heightForFeaturedLeadingViewInRect:(CGRect)a3
+{
+  [(NCNotificationListView *)self _widthForFeaturedLeadingViewInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = v4;
+  v6 = [(NCNotificationListView *)self dataSource];
+  if ([(NCNotificationListView *)self numberOfFeaturedLeadingViews])
+  {
+    v7 = 0;
+    v8 = 0.0;
+    do
+    {
+      [v6 notificationListView:self heightForItemAtIndex:v7 withWidth:-[NCNotificationListView _isCurrentlyInDisplayListAsStackMode](self inDisplayListAsStackMode:"_isCurrentlyInDisplayListAsStackMode") ignoreExpandedGroupStack:{0, v5}];
+      if (v8 < v9)
+      {
+        v8 = v9;
+      }
+
+      ++v7;
+    }
+
+    while ([(NCNotificationListView *)self numberOfFeaturedLeadingViews]> v7);
+  }
+
+  else
+  {
+    v8 = 0.0;
+  }
+
+  return v8;
+}
+
+- (double)_heightForFeaturedLeadingView
+{
+  [(NCNotificationListView *)self bounds];
+
+  [(NCNotificationListView *)self _heightForFeaturedLeadingViewInRect:?];
+  return result;
+}
+
+- (void)_updateTransformedView:(id)a3 toFrame:(CGRect)a4
+{
+  height = a4.size.height;
+  width = a4.size.width;
+  v19 = a3;
+  UIRectGetCenter();
+  v7 = [(NCNotificationListView *)self traitCollection];
+  [v7 displayScale];
+  UIPointRoundToScale();
+  v9 = v8;
+  v11 = v10;
+
+  [v19 frame];
+  UIRectGetCenter();
+  if (v9 != v13 || v11 != v12)
+  {
+    [v19 setCenter:{v9, v11}];
+  }
+
+  [v19 bounds];
+  v22.origin.x = v15;
+  v22.origin.y = v16;
+  v22.size.width = v17;
+  v22.size.height = v18;
+  v21.origin.x = 0.0;
+  v21.origin.y = 0.0;
+  v21.size.width = width;
+  v21.size.height = height;
+  if (!CGRectEqualToRect(v21, v22))
+  {
+    [v19 setBounds:{0.0, 0.0, width, height}];
+  }
+}
+
+- (void)_updateTransformedView:(id)a3 toFrame:(CGRect)a4 withTransform:(CGAffineTransform *)a5
+{
+  height = a4.size.height;
+  width = a4.size.width;
+  y = a4.origin.y;
+  x = a4.origin.x;
+  v11 = a3;
+  [(NCNotificationListView *)self _updateTransformedView:v11 toFrame:x, y, width, height];
+  if (v11)
+  {
+    [v11 transform];
+  }
+
+  else
+  {
+    memset(&t1, 0, sizeof(t1));
+  }
+
+  v12 = *&a5->c;
+  *&v14.a = *&a5->a;
+  *&v14.c = v12;
+  *&v14.tx = *&a5->tx;
+  if (!CGAffineTransformEqualToTransform(&t1, &v14))
+  {
+    v13 = *&a5->c;
+    *&t1.a = *&a5->a;
+    *&t1.c = v13;
+    *&t1.tx = *&a5->tx;
+    [v11 setTransform:&t1];
+  }
+}
+
+- (BOOL)_shouldUpdateTransformedView:(id)a3 toFrame:(CGRect)a4 alpha:(double)a5 transform:(CGAffineTransform *)a6
+{
+  height = a4.size.height;
+  width = a4.size.width;
+  y = a4.origin.y;
+  x = a4.origin.x;
+  v12 = a3;
+  [v12 bounds];
+  v13 = CGRectGetWidth(v27);
+  v28.origin.x = x;
+  v28.origin.y = y;
+  v28.size.width = width;
+  v28.size.height = height;
+  if (v13 == CGRectGetWidth(v28) && ([v12 bounds], v14 = CGRectGetHeight(v29), v30.origin.x = x, v30.origin.y = y, v30.size.width = width, v30.size.height = height, v14 == CGRectGetHeight(v30)))
+  {
+    [v12 center];
+    v18 = v17;
+    v20 = v19;
+    UIRectGetCenter();
+    LOBYTE(v15) = 1;
+    if (v18 == v22 && v20 == v21)
+    {
+      [v12 alpha];
+      if (v23 == a5)
+      {
+        if (v12)
+        {
+          [v12 transform];
+        }
+
+        else
+        {
+          memset(&t1, 0, sizeof(t1));
+        }
+
+        v24 = *&a6->c;
+        *&v25.a = *&a6->a;
+        *&v25.c = v24;
+        *&v25.tx = *&a6->tx;
+        v15 = !CGAffineTransformEqualToTransform(&t1, &v25);
+      }
+    }
+  }
+
+  else
+  {
+    LOBYTE(v15) = 1;
+  }
+
+  return v15;
+}
+
+- (BOOL)_shouldRollUnderView:(id)a3 withHeight:(double)a4 layoutOffset:(double)a5
+{
+  v6 = a3;
+  v7 = [(NCNotificationListView *)self _listViewForView:v6];
+  v8 = [(NCNotificationListView *)self traitCollection];
+  [v8 displayScale];
+
+  LODWORD(v8) = [(NCNotificationListView *)self _hasBottomTransitionTransformerForView:v6];
+  if (!v8)
+  {
+    goto LABEL_7;
+  }
+
+  UIRoundToScale();
+  v10 = v9;
+  [(NCNotificationListView *)self _visibleRect];
+  if (v10 < CGRectGetMinY(v16))
+  {
+    goto LABEL_7;
+  }
+
+  UIRoundToScale();
+  v12 = v11;
+  [(NCNotificationListView *)self _rollUnderTranslationTopMargin];
+  UICeilToScale();
+  if (v12 <= v13)
+  {
+    goto LABEL_7;
+  }
+
+  if (!v7)
+  {
+    v14 = 1;
+    goto LABEL_8;
+  }
+
+  if ([v7 isGrouped])
+  {
+    v14 = [v7 isRevealed];
+  }
+
+  else
+  {
+LABEL_7:
+    v14 = 0;
+  }
+
+LABEL_8:
+
+  return v14;
+}
+
+- (void)_drawRollUnderAreaInDebugViewIfNecessaryWithTopY:(double)a3
+{
+  if (self->_debugView && [(NSNumber *)self->_depth unsignedIntegerValue]== 1)
+  {
+    debugView = self->_debugView;
+    [(NCNotificationListView *)self frame];
+    v7 = v6;
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"[Depth=%lu, Index=%lu]: Roll Under Area: %@", -[NSNumber unsignedIntegerValue](self->_depth, "unsignedIntegerValue"), -[NSNumber unsignedIntegerValue](self->_index, "unsignedIntegerValue"), self->_purpose];
+    [(NCNotificationListDebugView *)debugView displayRect:v8 withName:0.0, a3, v7, 156.0];
+  }
+}
+
+- (double)_unclampedTranslationProgressForView:(id)a3 withHeight:(double)a4 layoutOffset:(double)a5
+{
+  v6 = a4 + a5;
+  [(NCNotificationListView *)self _rollUnderTranslationTopMargin];
+  v8 = v7;
+  [(NCNotificationListView *)self _rollUnderTranslationBottomMargin];
+  v10 = v9;
+  result = 0.0;
+  if (v6 > v8)
+  {
+    return (v6 - v8) / (v10 - v8);
+  }
+
+  return result;
+}
+
+- (double)_verticalTranslationProgressForView:(id)a3 withHeight:(double)a4 layoutOffset:(double)a5
+{
+  [(NCNotificationListView *)self _unclampedTranslationProgressForView:a3 withHeight:a4 layoutOffset:a5];
+  v6 = v5;
+  v7 = sin(v5 * 3.14159265 * 0.5);
+  v8 = 0.0;
+  if (v6 >= 0.0)
+  {
+    v8 = v6;
+  }
+
+  if (v8 > 1.0)
+  {
+    v8 = 1.0;
+  }
+
+  return v7 + (v8 - v7) * 0.4;
+}
+
+- (CGSize)_scaleForRollUnderView:(id)a3 withHeight:(double)a4 layoutOffset:(double)a5
+{
+  v8 = a3;
+  [(NCNotificationListView *)self _unclampedTranslationProgressForView:v8 withHeight:a4 layoutOffset:a5];
+  v10 = v9;
+  v11 = [(NCNotificationListView *)self _bottomTransitionTransformerForView:v8];
+
+  if (v11 == 1)
+  {
+    v12 = (1.0 - cos(v10)) * -0.3 + 1.0;
+    v13 = v12;
+  }
+
+  else
+  {
+    v12 = 1.0;
+    v13 = 1.0;
+    if (v11 == 2)
+    {
+      v12 = fmax(fmin(1.0 - (v10 * 0.95 / 0.4 + 0.0), 1.0), 0.05);
+      v13 = fmax(fmin(1.0 - (v10 * 0.95 + v10 * 0.95 + 0.0), 1.0), 0.05);
+    }
+  }
+
+  result.height = v13;
+  result.width = v12;
+  return result;
+}
+
+- (double)_verticalTranslationForRollUnderView:(id)a3 withHeight:(double)a4 layoutOffset:(double)a5 scale:(CGSize)a6
+{
+  height = a6.height;
+  v10 = a3;
+  [(NCNotificationListView *)self _verticalTranslationProgressForView:v10 withHeight:a4 layoutOffset:a5];
+  v12 = 0.0;
+  if (v11 > 0.0)
+  {
+    v13 = v11;
+    v14 = [(NCNotificationListView *)self _bottomTransitionTransformerForView:v10];
+    if (v14 == 1)
+    {
+      [(NCNotificationListView *)self _rollUnderTranslationTopMargin];
+      v19 = v18;
+      [(NCNotificationListView *)self _rollUnderThresholdOffset];
+      v12 = a4 + a5 - (v19 + v13 * (v20 - v19)) + (1.0 - height) * a4 * -0.5;
+    }
+
+    else if (v14 == 2)
+    {
+      footerCenterY = self->_footerCenterY;
+      v16 = 0.0;
+      if (footerCenterY)
+      {
+        [(NSNumber *)footerCenterY bs_CGFloatValue];
+        v16 = v17;
+      }
+
+      [(NCNotificationListView *)self visibleRect];
+      v12 = -fmin(v16 + CGRectGetMinY(v22) - (a4 * 0.5 + a5), 0.0);
+    }
+  }
+
+  return v12;
+}
+
+- (double)_alphaForRollUnderForView:(id)a3 withHeight:(double)a4 layoutOffset:(double)a5
+{
+  v8 = a3;
+  [(NCNotificationListView *)self _unclampedTranslationProgressForView:v8 withHeight:a4 layoutOffset:a5];
+  v10 = v9;
+  v11 = [(NCNotificationListView *)self _bottomTransitionTransformerForView:v8];
+
+  if (v11 == 1)
+  {
+    v12 = (v10 + -1.2) / -0.2 + 1.0;
+  }
+
+  else
+  {
+    v12 = 1.0;
+    if (v11 == 2)
+    {
+      v12 = 1.0 - ((v10 + -0.2) / 0.2 + 0.0);
+    }
+  }
+
+  if (v12 < 0.0)
+  {
+    v12 = 0.0;
+  }
+
+  if (v12 <= 1.0)
+  {
+    v13 = v12;
+  }
+
+  else
+  {
+    v13 = 1.0;
+  }
+
+  [(NCNotificationListView *)self _visibleRect];
+  if (CGRectGetHeight(v15) == 0.0)
+  {
+    return 0.0;
+  }
+
+  else
+  {
+    return v13;
+  }
+}
+
+- (CGAffineTransform)_transformForRollUnderForView:(SEL)a3 withHeight:(id)a4 layoutOffset:(double)a5
+{
+  v10 = a4;
+  [(NCNotificationListView *)self _scaleForRollUnderView:v10 withHeight:a5 layoutOffset:a6];
+  v12 = v11;
+  v14 = v13;
+  [(NCNotificationListView *)self _verticalTranslationForRollUnderView:v10 withHeight:a5 layoutOffset:a6 scale:v11, v13];
+  v16 = v15;
+
+  memset(&v21, 0, sizeof(v21));
+  CGAffineTransformMakeTranslation(&v21, 0.0, -v16);
+  memset(&v20, 0, sizeof(v20));
+  CGAffineTransformMakeScale(&v20, v12, v14);
+  t1 = v20;
+  v18 = v21;
+  return CGAffineTransformConcat(retstr, &t1, &v18);
+}
+
+- (double)_topSpacingForItemAtIndex:(unint64_t)a3
+{
+  v5 = [(NCNotificationListView *)self dataSource];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([v5 notificationListView:self topSpacingForItemAtIndex:a3], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  {
+    v7 = v6;
+    [v6 floatValue];
+    v9 = v8;
+  }
+
+  else if (a3)
+  {
+    [(NCListAnimationSettings *)self->_animationSettings viewSpacing];
+    v9 = v10;
+  }
+
+  else
+  {
+    v9 = 0.0;
+  }
+
+  return v9;
+}
+
+- (double)_bottomSpacingForItemAtIndex:(unint64_t)a3
+{
+  if ([(NCNotificationListView *)self count]- 1 <= a3)
+  {
+    return 0.0;
+  }
+
+  [(NCNotificationListView *)self _topSpacingForItemAtIndex:a3 + 1];
+  return result;
+}
+
+- (id)_viewForItemAtIndex:(unint64_t)a3
+{
+  v5 = [(NCNotificationListView *)self dataSource];
+  v6 = [v5 notificationListView:self viewForItemAtIndex:a3];
+
+  v7 = objc_opt_class();
+  v8 = v6;
+  if (v7)
+  {
+    if (objc_opt_isKindOfClass())
+    {
+      v9 = v8;
+    }
+
+    else
+    {
+      v9 = 0;
+    }
+  }
+
+  else
+  {
+    v9 = 0;
+  }
+
+  v10 = v9;
+
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  [v10 setIndex:v11];
+
+  return v8;
+}
+
+- (int64_t)_cachedApparentZDepthOfLastCoplanarView
+{
+  result = self->_cachedApparentZDepthOfLastCoplanarView;
+  if (result == 0x8000000000000000)
+  {
+    result = [(NCNotificationListView *)self _uncachedApparentZDepthOfLastCoplanarView];
+    self->_cachedApparentZDepthOfLastCoplanarView = result;
+  }
+
+  return result;
+}
+
+- (int64_t)_cachedApparentZDepthOfCoplanarViews
+{
+  result = self->_cachedApparentZDepthOfCoplanarViews;
+  if (result == 0x8000000000000000)
+  {
+    result = [(NCNotificationListView *)self _uncachedApparentZDepthOfCoplanarViews];
+    self->_cachedApparentZDepthOfCoplanarViews = result;
+  }
+
+  return result;
+}
+
+- (int64_t)_cachedApparentZDepthOfNonCoplanarViews
+{
+  result = self->_cachedApparentZDepthOfNonCoplanarViews;
+  if (result == 0x8000000000000000)
+  {
+    result = [(NCNotificationListView *)self _uncachedApparentZDepthOfNonCoplanarViews];
+    self->_cachedApparentZDepthOfNonCoplanarViews = result;
+  }
+
+  return result;
+}
+
+- (int64_t)_uncachedApparentZDepthOfLastCoplanarView
+{
+  v3 = [(NCNotificationListView *)self coplanarViewIndices];
+  v4 = -[NCNotificationListView visibleViewAtIndex:](self, "visibleViewAtIndex:", [v3 lastIndex]);
+  v5 = objc_opt_class();
+  v6 = v4;
+  if (v5)
+  {
+    if (objc_opt_isKindOfClass())
+    {
+      v7 = v6;
+    }
+
+    else
+    {
+      v7 = 0;
+    }
+  }
+
+  else
+  {
+    v7 = 0;
+  }
+
+  v8 = v7;
+
+  if (v8)
+  {
+    v9 = [v8 apparentZDepth];
+  }
+
+  else
+  {
+    v9 = 1;
+  }
+
+  v10 = objc_opt_class();
+  v11 = v6;
+  if (v10)
+  {
+    if (objc_opt_isKindOfClass())
+    {
+      v12 = v11;
+    }
+
+    else
+    {
+      v12 = 0;
+    }
+  }
+
+  else
+  {
+    v12 = 0;
+  }
+
+  v13 = v12;
+
+  v14 = objc_opt_class();
+  v15 = v11;
+  if (v14)
+  {
+    if (objc_opt_isKindOfClass())
+    {
+      v14 = v15;
+    }
+
+    else
+    {
+      v14 = 0;
+    }
+  }
+
+  if (v14 | v13)
+  {
+    v9 = 1;
+  }
+
+  return v9;
+}
+
+- (int64_t)_uncachedApparentZDepthOfCoplanarViews
+{
+  v3 = [(NCNotificationListView *)self coplanarViewIndices];
+  v7 = 0;
+  v8 = &v7;
+  v9 = 0x2020000000;
+  v10 = 0;
+  v6[0] = MEMORY[0x277D85DD0];
+  v6[1] = 3221225472;
+  v6[2] = __64__NCNotificationListView__uncachedApparentZDepthOfCoplanarViews__block_invoke;
+  v6[3] = &unk_278371180;
+  v6[4] = self;
+  v6[5] = &v7;
+  [v3 enumerateIndexesUsingBlock:v6];
+  v4 = v8[3];
+  _Block_object_dispose(&v7, 8);
+
+  return v4;
+}
+
+void __64__NCNotificationListView__uncachedApparentZDepthOfCoplanarViews__block_invoke(uint64_t a1, uint64_t a2)
+{
+  v3 = [*(a1 + 32) visibleViewAtIndex:a2];
+  v4 = objc_opt_class();
+  v5 = v3;
+  if (v4)
+  {
+    if (objc_opt_isKindOfClass())
+    {
+      v6 = v5;
+    }
+
+    else
+    {
+      v6 = 0;
+    }
+  }
+
+  else
+  {
+    v6 = 0;
+  }
+
+  v7 = v6;
+
+  if (v7)
+  {
+    v8 = [v7 apparentZDepth];
+  }
+
+  else
+  {
+    v8 = 0;
+  }
+
+  v9 = objc_opt_class();
+  v10 = v5;
+  if (v9)
+  {
+    if (objc_opt_isKindOfClass())
+    {
+      v11 = v10;
+    }
+
+    else
+    {
+      v11 = 0;
+    }
+  }
+
+  else
+  {
+    v11 = 0;
+  }
+
+  v12 = v11;
+
+  v13 = objc_opt_class();
+  v17 = v10;
+  if (v13)
+  {
+    if (objc_opt_isKindOfClass())
+    {
+      v14 = v17;
+    }
+
+    else
+    {
+      v14 = 0;
+    }
+  }
+
+  else
+  {
+    v14 = 0;
+  }
+
+  if (v14 | v12)
+  {
+    v15 = 1;
+  }
+
+  else
+  {
+    v15 = v8;
+  }
+
+  v16 = *(*(a1 + 40) + 8);
+  if (*(v16 + 24) > v15)
+  {
+    v15 = *(v16 + 24);
+  }
+
+  *(v16 + 24) = v15;
+}
+
+- (int64_t)_uncachedApparentZDepthOfNonCoplanarViews
+{
+  v3 = [(NCNotificationListView *)self nonCoplanarViewIndices];
+  v7 = 0;
+  v8 = &v7;
+  v9 = 0x2020000000;
+  v10 = 0;
+  v6[0] = MEMORY[0x277D85DD0];
+  v6[1] = 3221225472;
+  v6[2] = __67__NCNotificationListView__uncachedApparentZDepthOfNonCoplanarViews__block_invoke;
+  v6[3] = &unk_278371180;
+  v6[4] = self;
+  v6[5] = &v7;
+  [v3 enumerateIndexesUsingBlock:v6];
+  v4 = v8[3];
+  _Block_object_dispose(&v7, 8);
+
+  return v4;
+}
+
+void __67__NCNotificationListView__uncachedApparentZDepthOfNonCoplanarViews__block_invoke(uint64_t a1, uint64_t a2)
+{
+  v3 = [*(a1 + 32) visibleViewAtIndex:a2];
+  v4 = objc_opt_class();
+  v5 = v3;
+  if (v4)
+  {
+    if (objc_opt_isKindOfClass())
+    {
+      v6 = v5;
+    }
+
+    else
+    {
+      v6 = 0;
+    }
+  }
+
+  else
+  {
+    v6 = 0;
+  }
+
+  v7 = v6;
+
+  if (v7)
+  {
+    v8 = [v7 apparentZDepth];
+  }
+
+  else
+  {
+    v8 = 0;
+  }
+
+  v9 = objc_opt_class();
+  v10 = v5;
+  if (v9)
+  {
+    if (objc_opt_isKindOfClass())
+    {
+      v11 = v10;
+    }
+
+    else
+    {
+      v11 = 0;
+    }
+  }
+
+  else
+  {
+    v11 = 0;
+  }
+
+  v12 = v11;
+
+  v13 = objc_opt_class();
+  v17 = v10;
+  if (v13)
+  {
+    if (objc_opt_isKindOfClass())
+    {
+      v14 = v17;
+    }
+
+    else
+    {
+      v14 = 0;
+    }
+  }
+
+  else
+  {
+    v14 = 0;
+  }
+
+  v15 = v14;
+
+  if (v15 | v12)
+  {
+    v16 = 1;
+  }
+
+  else
+  {
+    v16 = v8;
+  }
+
+  *(*(*(a1 + 40) + 8) + 24) += v16;
+}
+
+- (void)_setNeedsUpdateOfApparentZPositionsOfListCells
+{
+  v19 = *MEMORY[0x277D85DE8];
+  if (!self->_needsUpdateOfApparentZPositionsOfListCells)
+  {
+    self->_needsUpdateOfApparentZPositionsOfListCells = 1;
+    [(NCNotificationListView *)self didSetNeedsUpdateOfApparentZPositionsOfListCells];
+    v16 = 0u;
+    v17 = 0u;
+    v14 = 0u;
+    v15 = 0u;
+    v3 = [(NCNotificationListView *)self visibleViews];
+    v4 = [v3 allValues];
+
+    v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    if (v5)
+    {
+      v6 = v5;
+      v7 = *v15;
+      do
+      {
+        for (i = 0; i != v6; ++i)
+        {
+          if (*v15 != v7)
+          {
+            objc_enumerationMutation(v4);
+          }
+
+          v9 = *(*(&v14 + 1) + 8 * i);
+          v10 = objc_opt_class();
+          v11 = v9;
+          if (v10)
+          {
+            if (objc_opt_isKindOfClass())
+            {
+              v12 = v11;
+            }
+
+            else
+            {
+              v12 = 0;
+            }
+          }
+
+          else
+          {
+            v12 = 0;
+          }
+
+          v13 = v12;
+
+          if (v13)
+          {
+            [v13 _setNeedsUpdateOfApparentZPositionsOfListCells];
+          }
+        }
+
+        v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      }
+
+      while (v6);
+    }
+  }
+}
+
+- (void)updateApparentZPositionsOfListCellsGivenApparentZPositionForListView:(int64_t)a3 withRootScrollVelocity:(double)a4 andGlassVisibility:(BOOL)a5
+{
+  if (self->_needsUpdateOfApparentZPositionsOfListCells)
+  {
+    self->_needsUpdateOfApparentZPositionsOfListCells = 0;
+    self->_needsForcedGlassUpdate = 0;
+    v9 = [(NCNotificationListView *)self coplanarViewIndices];
+    v10 = [(NCNotificationListView *)self nonCoplanarViewIndices];
+    v11 = [(NCNotificationListView *)self _rootSuperListView];
+    v12 = [v11 apparentZDepth];
+
+    v16[0] = MEMORY[0x277D85DD0];
+    v16[1] = 3221225472;
+    v16[2] = __137__NCNotificationListView_updateApparentZPositionsOfListCellsGivenApparentZPositionForListView_withRootScrollVelocity_andGlassVisibility___block_invoke;
+    v16[3] = &unk_2783711A8;
+    a5 ^= 1u;
+    v16[4] = self;
+    v16[5] = a3;
+    *&v16[6] = a4;
+    v17 = a5;
+    v16[7] = v12;
+    [v9 enumerateIndexesUsingBlock:v16];
+    v15[0] = 0;
+    v15[1] = v15;
+    v15[2] = 0x2020000000;
+    v15[3] = a3 - [(NCNotificationListView *)self _cachedApparentZDepthOfLastCoplanarView];
+    v13[0] = MEMORY[0x277D85DD0];
+    v13[1] = 3221225472;
+    v13[2] = __137__NCNotificationListView_updateApparentZPositionsOfListCellsGivenApparentZPositionForListView_withRootScrollVelocity_andGlassVisibility___block_invoke_2;
+    v13[3] = &unk_2783711D0;
+    v13[4] = self;
+    v13[5] = v15;
+    *&v13[6] = a4;
+    v14 = a5;
+    v13[7] = v12;
+    v13[8] = a3;
+    [v10 enumerateIndexesUsingBlock:v13];
+    _Block_object_dispose(v15, 8);
+  }
+}
+
+void __137__NCNotificationListView_updateApparentZPositionsOfListCellsGivenApparentZPositionForListView_withRootScrollVelocity_andGlassVisibility___block_invoke(uint64_t a1, uint64_t a2)
+{
+  v3 = [*(a1 + 32) visibleViewAtIndex:a2];
+  v4 = objc_opt_class();
+  v5 = v3;
+  if (v4)
+  {
+    if (objc_opt_isKindOfClass())
+    {
+      v6 = v5;
+    }
+
+    else
+    {
+      v6 = 0;
+    }
+  }
+
+  else
+  {
+    v6 = 0;
+  }
+
+  v7 = v6;
+
+  if (v7)
+  {
+    [v7 updateApparentZPositionsOfListCellsGivenApparentZPositionForListView:*(a1 + 40) withRootScrollVelocity:(*(a1 + 64) & 1) == 0 andGlassVisibility:*(a1 + 48)];
+  }
+
+  v8 = objc_opt_class();
+  v9 = v5;
+  if (v8)
+  {
+    if (objc_opt_isKindOfClass())
+    {
+      v10 = v9;
+    }
+
+    else
+    {
+      v10 = 0;
+    }
+  }
+
+  else
+  {
+    v10 = 0;
+  }
+
+  v11 = v10;
+
+  if (v11)
+  {
+    [v11 setGlassMode:{objc_msgSend(*(a1 + 32), "effectiveGlassModeFromExistingMode:shouldHideGlass:", objc_msgSend(v11, "glassMode"), *(a1 + 64))}];
+    [v11 setRootScrollVelocity:*(a1 + 48)];
+    [v11 setApparentZDistanceToUser:*(a1 + 56) - *(a1 + 40)];
+  }
+
+  v12 = objc_opt_class();
+  v15 = v9;
+  if (v12)
+  {
+    if (objc_opt_isKindOfClass())
+    {
+      v13 = v15;
+    }
+
+    else
+    {
+      v13 = 0;
+    }
+  }
+
+  else
+  {
+    v13 = 0;
+  }
+
+  v14 = v13;
+
+  if (v14)
+  {
+    [v14 setGlassMode:{objc_msgSend(*(a1 + 32), "effectiveGlassModeFromExistingMode:shouldHideGlass:", objc_msgSend(v14, "glassMode"), *(a1 + 64))}];
+    [v14 setRootScrollVelocity:*(a1 + 48)];
+    [v14 setApparentZDistanceToUser:*(a1 + 56) - *(a1 + 40)];
+  }
+}
+
+void __137__NCNotificationListView_updateApparentZPositionsOfListCellsGivenApparentZPositionForListView_withRootScrollVelocity_andGlassVisibility___block_invoke_2(uint64_t a1, uint64_t a2)
+{
+  v3 = [*(a1 + 32) visibleViewAtIndex:a2];
+  v4 = objc_opt_class();
+  v5 = v3;
+  if (v4)
+  {
+    if (objc_opt_isKindOfClass())
+    {
+      v6 = v5;
+    }
+
+    else
+    {
+      v6 = 0;
+    }
+  }
+
+  else
+  {
+    v6 = 0;
+  }
+
+  v7 = v6;
+
+  if (v7)
+  {
+    [v7 updateApparentZPositionsOfListCellsGivenApparentZPositionForListView:*(*(*(a1 + 40) + 8) + 24) withRootScrollVelocity:(*(a1 + 72) & 1) == 0 andGlassVisibility:*(a1 + 48)];
+    v8 = [v7 apparentZDepth];
+  }
+
+  else
+  {
+    v8 = 0;
+  }
+
+  v9 = objc_opt_class();
+  v10 = v5;
+  if (v9)
+  {
+    if (objc_opt_isKindOfClass())
+    {
+      v11 = v10;
+    }
+
+    else
+    {
+      v11 = 0;
+    }
+  }
+
+  else
+  {
+    v11 = 0;
+  }
+
+  v12 = v11;
+
+  if (v12)
+  {
+    [v12 setGlassMode:{objc_msgSend(*(a1 + 32), "effectiveGlassModeFromExistingMode:shouldHideGlass:", objc_msgSend(v12, "glassMode"), *(a1 + 72))}];
+    [v12 setRootScrollVelocity:*(a1 + 48)];
+    [v12 setApparentZDistanceToUser:*(a1 + 56) - *(*(*(a1 + 40) + 8) + 24)];
+    v8 = 1;
+  }
+
+  v13 = objc_opt_class();
+  v16 = v10;
+  if (v13)
+  {
+    if (objc_opt_isKindOfClass())
+    {
+      v14 = v16;
+    }
+
+    else
+    {
+      v14 = 0;
+    }
+  }
+
+  else
+  {
+    v14 = 0;
+  }
+
+  v15 = v14;
+
+  if (v15)
+  {
+    [v15 setGlassMode:{objc_msgSend(*(a1 + 32), "effectiveGlassModeFromExistingMode:shouldHideGlass:", objc_msgSend(v15, "glassMode"), *(a1 + 72))}];
+    [v15 setRootScrollVelocity:*(a1 + 48)];
+    [v15 setApparentZDistanceToUser:*(a1 + 56) - *(a1 + 64)];
+    v8 = 1;
+  }
+
+  *(*(*(a1 + 40) + 8) + 24) -= v8;
+}
+
+- (unint64_t)effectiveGlassModeFromExistingMode:(unint64_t)a3 shouldHideGlass:(BOOL)a4
+{
+  if (a3 == 1)
+  {
+    v4 = 0;
+  }
+
+  else
+  {
+    v4 = a3;
+  }
+
+  if (a4)
+  {
+    return 1;
+  }
+
+  else
+  {
+    return v4;
+  }
+}
+
+- (void)_currentAnimator
+{
+  v13 = *MEMORY[0x277D85DE8];
+  v5 = a3;
+  v6 = [a2 purposeHashed:1];
+  v7 = 138412802;
+  v8 = a1;
+  v9 = 2112;
+  v10 = a2;
+  v11 = 2112;
+  v12 = v6;
+  _os_log_fault_impl(&dword_21E77E000, v5, OS_LOG_TYPE_FAULT, "Unexpectedly didn't receive animator from data source: %@, for object: %@[%@]", &v7, 0x20u);
+}
+
+@end

@@ -1,0 +1,359 @@
+@interface SBHomeScreenContinuousExposeSwitcherModifier
+- (CGRect)frameForIndex:(unint64_t)a3;
+- (SBHomeScreenContinuousExposeSwitcherModifier)init;
+- (id)handleEvent:(id)a3;
+- (id)handleSwitcherShortcutActionEvent:(id)a3;
+- (id)handleTapSlideOverTongueEvent:(id)a3;
+- (id)responseForProposedChildResponse:(id)a3 childModifier:(id)a4 event:(id)a5;
+@end
+
+@implementation SBHomeScreenContinuousExposeSwitcherModifier
+
+- (SBHomeScreenContinuousExposeSwitcherModifier)init
+{
+  v6.receiver = self;
+  v6.super_class = SBHomeScreenContinuousExposeSwitcherModifier;
+  v2 = [(SBSwitcherModifier *)&v6 init];
+  if (v2)
+  {
+    v3 = objc_alloc_init(SBHomeScreenSwitcherModifier);
+    homeScreenModifier = v2->_homeScreenModifier;
+    v2->_homeScreenModifier = v3;
+
+    [(SBChainableModifier *)v2 addChildModifier:v2->_homeScreenModifier];
+  }
+
+  return v2;
+}
+
+- (id)handleEvent:(id)a3
+{
+  v4 = a3;
+  v5 = [(SBHomeScreenContinuousExposeSwitcherModifier *)self prefersStripHiddenAndDisabled];
+  stripModifier = self->_stripModifier;
+  if (v5)
+  {
+    if (stripModifier)
+    {
+      [(SBWindowingModifier *)stripModifier setState:1];
+      v7 = self->_stripModifier;
+      self->_stripModifier = 0;
+    }
+  }
+
+  else if (!stripModifier)
+  {
+    v8 = objc_alloc_init(SBStripLayoutWindowingModifier);
+    v9 = self->_stripModifier;
+    self->_stripModifier = v8;
+
+    [(SBChainableModifier *)self addChildModifier:self->_stripModifier];
+  }
+
+  v12.receiver = self;
+  v12.super_class = SBHomeScreenContinuousExposeSwitcherModifier;
+  v10 = [(SBChainableModifier *)&v12 handleEvent:v4];
+
+  return v10;
+}
+
+- (id)handleTapSlideOverTongueEvent:(id)a3
+{
+  v23[1] = *MEMORY[0x277D85DE8];
+  v20.receiver = self;
+  v20.super_class = SBHomeScreenContinuousExposeSwitcherModifier;
+  v4 = [(SBSwitcherModifier *)&v20 handleTapSlideOverTongueEvent:a3];
+  v5 = [(SBHomeScreenContinuousExposeSwitcherModifier *)self displayItemInSlideOver];
+  if (v5)
+  {
+    v6 = [SBAppLayout alloc];
+    v23[0] = v5;
+    v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
+    LOBYTE(v17) = 0;
+    v8 = [(SBAppLayout *)v6 initWithItems:v7 centerItem:0 floatingItem:0 configuration:1 centerConfiguration:0 environment:1 hidden:v17 preferredDisplayOrdinal:[(SBHomeScreenContinuousExposeSwitcherModifier *)self displayOrdinal]];
+
+    v9 = [(SBHomeScreenContinuousExposeSwitcherModifier *)self appLayoutByBringingItemToFront:v5 inAppLayout:v8];
+
+    v10 = [(SBHomeScreenContinuousExposeSwitcherModifier *)self layoutAttributesForDisplayItem:v5 inAppLayout:v9];
+    v11 = [(SBSwitcherTransitionRequest *)SBMutableSwitcherTransitionRequest requestForActivatingAppLayout:v9];
+    v19 = 0;
+    memset(v18, 0, sizeof(v18));
+    [(SBDisplayItemLayoutAttributes *)v10 slideOverConfiguration];
+    BYTE1(v19) = 0;
+    v12 = [SBDisplayItemLayoutAttributes attributesByModifyingSlideOverConfiguration:v10];
+
+    v21 = v5;
+    v22 = v12;
+    v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
+    [v11 setDisplayItemLayoutAttributesMap:v13];
+
+    [v11 setSource:60];
+    v14 = [[SBPerformTransitionSwitcherEventResponse alloc] initWithTransitionRequest:v11 gestureInitiated:0];
+    v15 = SBAppendSwitcherModifierResponse(v14, v4);
+
+    v4 = v15;
+  }
+
+  return v4;
+}
+
+- (id)handleSwitcherShortcutActionEvent:(id)a3
+{
+  v24[1] = *MEMORY[0x277D85DE8];
+  v4 = a3;
+  v21.receiver = self;
+  v21.super_class = SBHomeScreenContinuousExposeSwitcherModifier;
+  v5 = [(SBSwitcherModifier *)&v21 handleSwitcherShortcutActionEvent:v4];
+  if (([v4 isHandled] & 1) == 0)
+  {
+    v6 = [(SBHomeScreenContinuousExposeSwitcherModifier *)self windowManagementContext];
+    if ([v6 isFlexibleWindowingEnabled])
+    {
+      v7 = [v4 shortcutActionType];
+
+      if (v7 != 30)
+      {
+        goto LABEL_7;
+      }
+
+      v6 = [(SBHomeScreenContinuousExposeSwitcherModifier *)self displayItemInSlideOver];
+      if (v6)
+      {
+        v8 = [SBAppLayout alloc];
+        v24[0] = v6;
+        v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
+        LOBYTE(v18) = 0;
+        v10 = [(SBAppLayout *)v8 initWithItems:v9 centerItem:0 floatingItem:0 configuration:1 centerConfiguration:0 environment:1 hidden:v18 preferredDisplayOrdinal:[(SBHomeScreenContinuousExposeSwitcherModifier *)self displayOrdinal]];
+
+        v11 = [(SBHomeScreenContinuousExposeSwitcherModifier *)self layoutAttributesForDisplayItem:v6 inAppLayout:v10];
+        v12 = [(SBSwitcherTransitionRequest *)SBMutableSwitcherTransitionRequest requestForActivatingAppLayout:v10];
+        v20 = 0;
+        memset(v19, 0, sizeof(v19));
+        [(SBDisplayItemLayoutAttributes *)v11 slideOverConfiguration];
+        BYTE1(v20) = 0;
+        v13 = [SBDisplayItemLayoutAttributes attributesByModifyingSlideOverConfiguration:v11];
+
+        v22 = v6;
+        v23 = v13;
+        v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
+        [v12 setDisplayItemLayoutAttributesMap:v14];
+
+        v15 = [[SBPerformTransitionSwitcherEventResponse alloc] initWithTransitionRequest:v12 gestureInitiated:0];
+        v16 = SBAppendSwitcherModifierResponse(v15, v5);
+
+        v5 = v16;
+      }
+    }
+  }
+
+LABEL_7:
+
+  return v5;
+}
+
+- (id)responseForProposedChildResponse:(id)a3 childModifier:(id)a4 event:(id)a5
+{
+  v8 = a5;
+  v24.receiver = self;
+  v24.super_class = SBHomeScreenContinuousExposeSwitcherModifier;
+  v9 = [(SBChainableModifier *)&v24 responseForProposedChildResponse:a3 childModifier:a4 event:v8];
+  if ([v8 type] == 1)
+  {
+    v10 = v8;
+    v11 = [v10 fromAppLayout];
+    v12 = [v10 toAppLayout];
+    v13 = [v10 fromPeekConfiguration];
+    v14 = [v10 toPeekConfiguration];
+    if (v11)
+    {
+      if (v12)
+      {
+        v15 = v14;
+        if (SBPeekConfigurationIsValid(v13) && !SBPeekConfigurationIsValid(v15))
+        {
+          v18[0] = MEMORY[0x277D85DD0];
+          v18[1] = 3221225472;
+          v18[2] = __101__SBHomeScreenContinuousExposeSwitcherModifier_responseForProposedChildResponse_childModifier_event___block_invoke;
+          v18[3] = &unk_2783BEA90;
+          v19 = v12;
+          v20 = v11;
+          v21 = v10;
+          v22 = self;
+          v23 = v13;
+          v16 = [v9 responseByTransformingResponseWithTransformer:v18];
+
+          v9 = v16;
+        }
+      }
+    }
+  }
+
+  return v9;
+}
+
+SBAddModifierSwitcherEventResponse *__101__SBHomeScreenContinuousExposeSwitcherModifier_responseForProposedChildResponse_childModifier_event___block_invoke(SBAddModifierSwitcherEventResponse *a1, void *a2)
+{
+  v3 = a2;
+  if ([v3 type] != 31)
+  {
+    goto LABEL_18;
+  }
+
+  v4 = [v3 modifier];
+  v5 = [a1->super.super.super._validator containsAnyItemFromAppLayout:a1->_modifier];
+  validator = a1->super.super.super._validator;
+  if (v5)
+  {
+    v41[0] = MEMORY[0x277D85DD0];
+    v41[1] = 3221225472;
+    v41[2] = __101__SBHomeScreenContinuousExposeSwitcherModifier_responseForProposedChildResponse_childModifier_event___block_invoke_2;
+    v41[3] = &unk_2783A8C90;
+    v42 = a1->_modifier;
+    v7 = [validator appLayoutWithItemsPassingTest:v41];
+    if (v7 && ![a1->_level isIconZoomDisabled])
+    {
+      [(NSString *)a1->_key homeScreenIconFrameForAppLayout:v7];
+    }
+
+    else
+    {
+      v8 = *MEMORY[0x277CBF398];
+      v9 = *(MEMORY[0x277CBF398] + 8);
+      v10 = *(MEMORY[0x277CBF398] + 16);
+      v11 = *(MEMORY[0x277CBF398] + 24);
+    }
+
+    if (CGRectIsNull(*&v8))
+    {
+      v19 = [SBContinuousExposeAppToAppModifier alloc];
+      v20 = [a1->_level transitionID];
+      modifier = a1->_modifier;
+      v36 = v4;
+      v22 = [a1->_level fromInterfaceOrientation];
+      v23 = [a1->_level toAppLayout];
+      v24 = [a1->_level toInterfaceOrientation];
+      v25 = [a1->_level fromDisplayItemLayoutAttributesMap];
+      v26 = [a1->_level toDisplayItemLayoutAttributesMap];
+      v27 = [(SBContinuousExposeAppToAppModifier *)v19 initWithTransitionID:v20 fromAppLayout:modifier fromInterfaceOrientation:v22 toAppLayout:v23 toInterfaceOrientation:v24 fromDisplayItemLayoutAttributesMap:v25 toDisplayItemLayoutAttributesMap:v26];
+    }
+
+    else
+    {
+      v28 = [SBFullScreenToHomeIconZoomSwitcherModifier alloc];
+      v29 = [a1->_level transitionID];
+      v23 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)v28 initWithTransitionID:v29 appLayout:v7 direction:0];
+
+      [(SBFullScreenToHomeIconZoomSwitcherModifier *)v23 setShouldForceDefaultAnchorPointForTransition:1];
+      [(SBFullScreenToHomeIconZoomSwitcherModifier *)v23 setShouldDockOrderFrontDuringTransition:1];
+      v20 = [(NSString *)a1->_key homeScreenIconLocationForAppLayout:v7];
+      [(SBFullScreenToHomeIconZoomSwitcherModifier *)v23 setShouldUpdateIconViewVisibility:SBIconLocationGroupContainsLocation() ^ 1];
+      v27 = [[SBHomePeekToFullScreenTransitionModifier alloc] initWithTransitionModifier:v23 slidingOffPeekingAppLayout:0 fromPeekingConfiguration:1];
+    }
+
+    a1 = [[SBAddModifierSwitcherEventResponse alloc] initWithModifier:v27 level:3];
+    goto LABEL_19;
+  }
+
+  v39[0] = MEMORY[0x277D85DD0];
+  v39[1] = 3221225472;
+  v39[2] = __101__SBHomeScreenContinuousExposeSwitcherModifier_responseForProposedChildResponse_childModifier_event___block_invoke_3;
+  v39[3] = &unk_2783A8C90;
+  v40 = a1->_modifier;
+  v12 = [validator appLayoutWithItemsPassingTest:v39];
+  v37[0] = MEMORY[0x277D85DD0];
+  v37[1] = 3221225472;
+  v37[2] = __101__SBHomeScreenContinuousExposeSwitcherModifier_responseForProposedChildResponse_childModifier_event___block_invoke_4;
+  v37[3] = &unk_2783A8C90;
+  v13 = a1->_modifier;
+  v38 = a1->super.super.super._validator;
+  v14 = [(SBSwitcherModifier *)v13 appLayoutWithItemsPassingTest:v37];
+  if (v12 && ![a1->_level isIconZoomDisabled])
+  {
+    [(NSString *)a1->_key homeScreenIconFrameForAppLayout:v12];
+  }
+
+  else
+  {
+    v15 = *MEMORY[0x277CBF398];
+    v16 = *(MEMORY[0x277CBF398] + 8);
+    v17 = *(MEMORY[0x277CBF398] + 16);
+    v18 = *(MEMORY[0x277CBF398] + 24);
+  }
+
+  IsNull = CGRectIsNull(*&v15);
+  if (!IsNull)
+  {
+    v31 = [SBFullScreenToHomeIconZoomSwitcherModifier alloc];
+    v32 = [a1->_level transitionID];
+    v33 = [(SBFullScreenToHomeIconZoomSwitcherModifier *)v31 initWithTransitionID:v32 appLayout:v12 direction:0];
+
+    [(SBFullScreenToHomeIconZoomSwitcherModifier *)v33 setShouldForceDefaultAnchorPointForTransition:1];
+    [(SBFullScreenToHomeIconZoomSwitcherModifier *)v33 setShouldDockOrderFrontDuringTransition:1];
+    v34 = [(NSString *)a1->_key homeScreenIconLocationForAppLayout:v12];
+    [(SBFullScreenToHomeIconZoomSwitcherModifier *)v33 setShouldUpdateIconViewVisibility:SBIconLocationGroupContainsLocation() ^ 1];
+    v4 = [[SBHomePeekToFullScreenTransitionModifier alloc] initWithTransitionModifier:v33 slidingOffPeekingAppLayout:v14 fromPeekingConfiguration:a1[1].super.super.super.super.isa];
+
+    a1 = [[SBAddModifierSwitcherEventResponse alloc] initWithModifier:v4 level:3];
+  }
+
+  if (IsNull)
+  {
+LABEL_18:
+    a1 = v3;
+  }
+
+LABEL_19:
+
+  return a1;
+}
+
+- (CGRect)frameForIndex:(unint64_t)a3
+{
+  v5 = [(SBHomeScreenContinuousExposeSwitcherModifier *)self appLayouts];
+  v6 = [v5 objectAtIndex:a3];
+
+  v7 = [(SBHomeScreenContinuousExposeSwitcherModifier *)self displayItemLayoutAttributesCalculator];
+  v8 = [(SBHomeScreenContinuousExposeSwitcherModifier *)self appLayoutContainingAppLayout:v6];
+  v9 = [(SBHomeScreenContinuousExposeSwitcherModifier *)self switcherInterfaceOrientation];
+  [(SBHomeScreenContinuousExposeSwitcherModifier *)self floatingDockHeight];
+  v49 = v10;
+  [(SBHomeScreenContinuousExposeSwitcherModifier *)self screenScale];
+  v48 = v11;
+  [(SBHomeScreenContinuousExposeSwitcherModifier *)self containerViewBounds];
+  v13 = v12;
+  v15 = v14;
+  v17 = v16;
+  v19 = v18;
+  v20 = [(SBHomeScreenContinuousExposeSwitcherModifier *)self isDisplayEmbedded];
+  v21 = [(SBHomeScreenContinuousExposeSwitcherModifier *)self prefersStripHidden];
+  v22 = [(SBHomeScreenContinuousExposeSwitcherModifier *)self prefersDockHidden];
+  [(SBHomeScreenContinuousExposeSwitcherModifier *)self leftStatusBarPartIntersectionRegion];
+  v24 = v23;
+  v26 = v25;
+  v28 = v27;
+  v30 = v29;
+  [(SBHomeScreenContinuousExposeSwitcherModifier *)self rightStatusBarPartIntersectionRegion];
+  v35 = [v7 flexibleWindowingAutoLayoutSpaceForAppLayout:v8 containerOrientation:v9 floatingDockHeight:v20 screenScale:v21 bounds:v22 isEmbeddedDisplay:v49 prefersStripHidden:v48 prefersDockHidden:v13 leftStatusBarPartIntersectionRegion:v15 rightStatusBarPartIntersectionRegion:{v17, v19, v24, v26, v28, v30, v31, v32, v33, v34}];
+
+  [v35 boundingBox];
+  v37 = v36;
+  v39 = v38;
+  v50.receiver = self;
+  v50.super_class = SBHomeScreenContinuousExposeSwitcherModifier;
+  [(SBHomeScreenContinuousExposeSwitcherModifier *)&v50 frameForIndex:a3];
+  UIRectGetCenter();
+  v41 = v40 - v37 * 0.5;
+  v43 = v42 - v39 * 0.5;
+
+  v44 = v41;
+  v45 = v43;
+  v46 = v37;
+  v47 = v39;
+  result.size.height = v47;
+  result.size.width = v46;
+  result.origin.y = v45;
+  result.origin.x = v44;
+  return result;
+}
+
+@end

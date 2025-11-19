@@ -1,0 +1,581 @@
+@interface HUUserAccessoryAccessViewController
+- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
+- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
+- (HUUserAccessoryAccessViewController)initWithHome:(id)a3 user:(id)a4 accessoryCategoryType:(id)a5;
+- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
+- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4;
+- (void)viewDidLoad;
+@end
+
+@implementation HUUserAccessoryAccessViewController
+
+- (HUUserAccessoryAccessViewController)initWithHome:(id)a3 user:(id)a4 accessoryCategoryType:(id)a5
+{
+  v10 = a3;
+  v11 = a4;
+  v12 = a5;
+  if (v10)
+  {
+    if (v11)
+    {
+      goto LABEL_3;
+    }
+
+LABEL_8:
+    v22 = [MEMORY[0x277CCA890] currentHandler];
+    [v22 handleFailureInMethod:a2 object:self file:@"HUUserAccessoryAccessViewController.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"user"}];
+
+    if (v12)
+    {
+      goto LABEL_4;
+    }
+
+    goto LABEL_9;
+  }
+
+  v21 = [MEMORY[0x277CCA890] currentHandler];
+  [v21 handleFailureInMethod:a2 object:self file:@"HUUserAccessoryAccessViewController.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"home"}];
+
+  if (!v11)
+  {
+    goto LABEL_8;
+  }
+
+LABEL_3:
+  if (v12)
+  {
+    goto LABEL_4;
+  }
+
+LABEL_9:
+  v23 = [MEMORY[0x277CCA890] currentHandler];
+  [v23 handleFailureInMethod:a2 object:self file:@"HUUserAccessoryAccessViewController.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"accessoryCategoryType"}];
+
+LABEL_4:
+  v13 = [[HUUserAccessoryAccessItemManager alloc] initWithHome:v10 user:v11 accessoryCategoryType:v12];
+  v24.receiver = self;
+  v24.super_class = HUUserAccessoryAccessViewController;
+  v14 = [(HUItemTableViewController *)&v24 initWithItemManager:v13 tableViewStyle:1];
+  v15 = v14;
+  if (v14)
+  {
+    objc_storeStrong(&v14->_home, a3);
+    objc_storeStrong(&v15->_user, a4);
+    objc_storeStrong(&v15->_accessoryCategoryType, a5);
+    objc_storeStrong(&v15->_userAccessoryAccessItemManager, v13);
+    v16 = objc_opt_new();
+    inFlightAllowedAccessoryRemovals = v15->_inFlightAllowedAccessoryRemovals;
+    v15->_inFlightAllowedAccessoryRemovals = v16;
+
+    v18 = objc_opt_new();
+    inFlightAllowedAccessoryAdditions = v15->_inFlightAllowedAccessoryAdditions;
+    v15->_inFlightAllowedAccessoryAdditions = v18;
+  }
+
+  return v15;
+}
+
+- (void)viewDidLoad
+{
+  v6.receiver = self;
+  v6.super_class = HUUserAccessoryAccessViewController;
+  [(HUItemTableViewController *)&v6 viewDidLoad];
+  v3 = MEMORY[0x277CD1650];
+  v4 = [(HUUserAccessoryAccessViewController *)self accessoryCategoryType];
+  v5 = [v3 hf_userFriendlyLocalizedCapitalizedPluralDescription:v4];
+
+  [(HUUserAccessoryAccessViewController *)self setTitle:v5];
+}
+
+- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+{
+  v5 = a3;
+  v6 = [(HUUserAccessoryAccessViewController *)self userAccessoryAccessItemManager];
+  v7 = [v6 transformedAllowedAccessoryItemProvider];
+  v8 = [v7 items];
+  v9 = [v8 containsObject:v5];
+
+  if (v9)
+  {
+    v10 = [(HUUserAccessoryAccessViewController *)self home];
+    if ([v10 hf_currentUserIsAdministrator])
+    {
+      v11 = [(HUUserAccessoryAccessViewController *)self home];
+      v12 = [(HUUserAccessoryAccessViewController *)self user];
+      [v11 hf_userIsRestrictedGuest:v12];
+    }
+
+    v13 = objc_opt_class();
+  }
+
+  else
+  {
+    v13 = objc_opt_class();
+  }
+
+  return v13;
+}
+
+- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+{
+  v8 = a3;
+  v9 = a4;
+  v22.receiver = self;
+  v22.super_class = HUUserAccessoryAccessViewController;
+  [(HUItemTableViewController *)&v22 setupCell:v8 forItem:v9 indexPath:a5];
+  v10 = [(HUUserAccessoryAccessViewController *)self userAccessoryAccessItemManager];
+  v11 = [v10 transformedAllowedAccessoryItemProvider];
+  v12 = [v11 items];
+  v13 = [v12 containsObject:v9];
+
+  if (v13)
+  {
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      objc_opt_class();
+      v14 = v8;
+      if (objc_opt_isKindOfClass())
+      {
+        v15 = v14;
+      }
+
+      else
+      {
+        v15 = 0;
+      }
+
+      v16 = v15;
+
+      [v16 setDelegate:self];
+      [v16 setIconDisplayStyle:1];
+LABEL_12:
+      v19 = +[HUIconCellContentMetrics compactMetrics];
+      [v16 setContentMetrics:v19];
+
+      v20 = [v9 latestResults];
+      v21 = [v20 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
+      [v16 setAccessibilityIdentifier:v21];
+
+      goto LABEL_13;
+    }
+
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      objc_opt_class();
+      v17 = v8;
+      if (objc_opt_isKindOfClass())
+      {
+        v18 = v17;
+      }
+
+      else
+      {
+        v18 = 0;
+      }
+
+      v16 = v18;
+
+      [v16 setAccessoryView:0];
+      [v16 setAccessoryType:0];
+      [v16 setHideIcon:0];
+      goto LABEL_12;
+    }
+  }
+
+LABEL_13:
+}
+
+- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+{
+  v5 = a4;
+  v6 = a3;
+  objc_opt_class();
+  v7 = [v6 cellForRowAtIndexPath:v5];
+
+  if (objc_opt_isKindOfClass())
+  {
+    v8 = v7;
+  }
+
+  else
+  {
+    v8 = 0;
+  }
+
+  v9 = v8;
+
+  return v9 == 0;
+}
+
+- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4
+{
+  v4 = a4;
+  v53 = *MEMORY[0x277D85DE8];
+  v7 = a3;
+  v8 = [(HUUserAccessoryAccessViewController *)self tableView];
+  v9 = [v8 indexPathForCell:v7];
+
+  v10 = [(HUItemTableViewController *)self itemManager];
+  v11 = [v10 displayedItemAtIndexPath:v9];
+
+  v12 = HFLogForCategory();
+  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  {
+    v13 = [v7 text];
+    *buf = 136315906;
+    v46 = "[HUUserAccessoryAccessViewController switchCell:didTurnOn:]";
+    v47 = 2112;
+    v48 = v13;
+    v49 = 1024;
+    v50 = v4;
+    v51 = 2112;
+    v52 = v11;
+    _os_log_impl(&dword_20CEB6000, v12, OS_LOG_TYPE_DEFAULT, "(%s) User tapped switch cell: '%@' | isOn = %{BOOL}d | item = %@", buf, 0x26u);
+  }
+
+  objc_opt_class();
+  v14 = v11;
+  if (objc_opt_isKindOfClass())
+  {
+    v15 = v14;
+  }
+
+  else
+  {
+    v15 = 0;
+  }
+
+  v16 = v15;
+
+  objc_opt_class();
+  v17 = [v16 sourceItem];
+  if (objc_opt_isKindOfClass())
+  {
+    v18 = v17;
+  }
+
+  else
+  {
+    v18 = 0;
+  }
+
+  v33 = v18;
+
+  v19 = [(HUUserAccessoryAccessViewController *)self home];
+  if (![v19 hf_currentUserIsAdministrator])
+  {
+    goto LABEL_12;
+  }
+
+  v31 = a2;
+  v20 = v4;
+  v21 = [(HUUserAccessoryAccessViewController *)self home];
+  v22 = [(HUUserAccessoryAccessViewController *)self user];
+  v23 = [v21 hf_userIsRestrictedGuest:v22];
+
+  if (v23)
+  {
+    v24 = [v33 accessory];
+    v25 = [(HUUserAccessoryAccessViewController *)self home];
+    v26 = [(HUUserAccessoryAccessViewController *)self user];
+    aBlock[0] = MEMORY[0x277D85DD0];
+    aBlock[1] = 3221225472;
+    aBlock[2] = __60__HUUserAccessoryAccessViewController_switchCell_didTurnOn___block_invoke;
+    aBlock[3] = &unk_277DBC0E8;
+    v44 = v20;
+    v38 = v24;
+    v39 = self;
+    v40 = v25;
+    v41 = v26;
+    v43 = v31;
+    v27 = v7;
+    v42 = v27;
+    v32 = v26;
+    v30 = v25;
+    v19 = v24;
+    v28 = _Block_copy(aBlock);
+    v29 = MEMORY[0x277D75D28];
+    v34[0] = MEMORY[0x277D85DD0];
+    v34[1] = 3221225472;
+    v34[2] = __60__HUUserAccessoryAccessViewController_switchCell_didTurnOn___block_invoke_76;
+    v34[3] = &unk_277DB7EE0;
+    v35 = v27;
+    v36 = v20;
+    [v29 hu_presentingLockLimitAlertIfNeededFromViewController:self home:v30 user:v32 accessory:v19 include:v20 continueActionBlock:v28 cancelActionBlock:v34];
+
+LABEL_12:
+  }
+}
+
+void __60__HUUserAccessoryAccessViewController_switchCell_didTurnOn___block_invoke(uint64_t a1)
+{
+  v29 = *MEMORY[0x277D85DE8];
+  v2 = [*(a1 + 32) hf_servicesWithBulletinBoardNotificationTurnedOff];
+  v3 = v2;
+  v4 = *(a1 + 80) == 1 && [v2 count] != 0;
+  v5 = HFLogForCategory();
+  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  {
+    v6 = *(a1 + 80);
+    *buf = 136316162;
+    v20 = "[HUUserAccessoryAccessViewController switchCell:didTurnOn:]_block_invoke";
+    v21 = 1024;
+    v22 = v4;
+    v23 = 1024;
+    v24 = v6;
+    v25 = 2048;
+    v26 = [v3 count];
+    v27 = 2112;
+    v28 = v3;
+    _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "(%s) displayNotificationAlert = %{BOOL}d because isOn = %{BOOL}d and servicesWithNotificationOff = (%ld) %@", buf, 0x2Cu);
+  }
+
+  objc_initWeak(buf, *(a1 + 40));
+  aBlock[0] = MEMORY[0x277D85DD0];
+  aBlock[1] = 3221225472;
+  aBlock[2] = __60__HUUserAccessoryAccessViewController_switchCell_didTurnOn___block_invoke_50;
+  aBlock[3] = &unk_277DBC0C0;
+  objc_copyWeak(v17, buf);
+  v13 = *(a1 + 48);
+  v14 = *(a1 + 56);
+  v18 = *(a1 + 80);
+  v7 = *(a1 + 32);
+  v9 = *(a1 + 64);
+  v8 = *(a1 + 72);
+  v15 = v7;
+  v17[1] = v8;
+  v16 = v9;
+  v10 = _Block_copy(aBlock);
+  v11 = v10;
+  if (v4)
+  {
+    [*(a1 + 40) hu_presentNotificationAlertForNotificationCapableObjects:v3 notificationsEnabled:1 mainActionBlock:v10 notNowActionBlock:v10];
+  }
+
+  else
+  {
+    (*(v10 + 2))(v10);
+  }
+
+  objc_destroyWeak(v17);
+  objc_destroyWeak(buf);
+}
+
+void __60__HUUserAccessoryAccessViewController_switchCell_didTurnOn___block_invoke_50(uint64_t a1)
+{
+  v55 = *MEMORY[0x277D85DE8];
+  WeakRetained = objc_loadWeakRetained((a1 + 64));
+  v3 = [*(a1 + 32) homeAccessControlForUser:*(a1 + 40)];
+  v4 = objc_alloc(MEMORY[0x277CBEB58]);
+  v5 = [v3 restrictedGuestAccessSettings];
+  v6 = [v5 accessAllowedToAccessories];
+  v7 = [v4 initWithSet:v6];
+
+  if (*(a1 + 80) == 1)
+  {
+    [WeakRetained inFlightAllowedAccessoryAdditions];
+  }
+
+  else
+  {
+    [WeakRetained inFlightAllowedAccessoryRemovals];
+  }
+  v8 = ;
+  [v8 na_safeAddObject:*(a1 + 48)];
+
+  v9 = [WeakRetained inFlightAllowedAccessoryAdditions];
+  v10 = [v7 setByAddingObjectsFromSet:v9];
+  v11 = [v10 mutableCopy];
+
+  v12 = [WeakRetained inFlightAllowedAccessoryRemovals];
+  v13 = [v11 na_setByRemovingObjectsFromSet:v12];
+  v14 = [v13 mutableCopy];
+
+  v15 = HFLogForCategory();
+  if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+  {
+    v16 = NSStringFromSelector(*(a1 + 72));
+    v17 = [WeakRetained inFlightAllowedAccessoryAdditions];
+    v18 = [WeakRetained inFlightAllowedAccessoryRemovals];
+    *buf = 138413058;
+    v46 = WeakRetained;
+    v47 = 2112;
+    v48 = v16;
+    v49 = 2112;
+    v50 = v17;
+    v51 = 2112;
+    v52 = v18;
+    _os_log_impl(&dword_20CEB6000, v15, OS_LOG_TYPE_DEFAULT, "%@:%@ In flight additions: %@ | In flight removals: %@", buf, 0x2Au);
+  }
+
+  v19 = [v3 restrictedGuestAccessSettings];
+  v20 = [v19 mutableCopy];
+
+  [v20 setAccessAllowedToAccessories:v14];
+  v21 = [v14 na_map:&__block_literal_global_82];
+  v22 = HFLogForCategory();
+  if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+  {
+    if (*(a1 + 80))
+    {
+      v23 = @"Including";
+    }
+
+    else
+    {
+      v23 = @"Removing";
+    }
+
+    v24 = [*(a1 + 48) hf_minimumDescription];
+    v25 = [v14 count];
+    *buf = 136316162;
+    v46 = "[HUUserAccessoryAccessViewController switchCell:didTurnOn:]_block_invoke_2";
+    v47 = 2112;
+    v48 = v23;
+    v49 = 2112;
+    v50 = v24;
+    v51 = 2048;
+    v52 = v25;
+    v53 = 2112;
+    v54 = v21;
+    _os_log_impl(&dword_20CEB6000, v22, OS_LOG_TYPE_DEFAULT, "(%s) %@ accessory %@. Updating allowed accessories to (count: %ld) %@", buf, 0x34u);
+  }
+
+  v26 = MEMORY[0x277D2C900];
+  v42[0] = MEMORY[0x277D85DD0];
+  v42[1] = 3221225472;
+  v42[2] = __60__HUUserAccessoryAccessViewController_switchCell_didTurnOn___block_invoke_60;
+  v42[3] = &unk_277DB8200;
+  v27 = v3;
+  v43 = v27;
+  v28 = v20;
+  v44 = v28;
+  v29 = [v26 futureWithBlock:v42];
+  v39[0] = MEMORY[0x277D85DD0];
+  v39[1] = 3221225472;
+  v39[2] = __60__HUUserAccessoryAccessViewController_switchCell_didTurnOn___block_invoke_63;
+  v39[3] = &unk_277DB8620;
+  objc_copyWeak(&v41, (a1 + 64));
+  v40 = *(a1 + 48);
+  v30 = [v29 addCompletionBlock:v39];
+  v36[0] = MEMORY[0x277D85DD0];
+  v36[1] = 3221225472;
+  v36[2] = __60__HUUserAccessoryAccessViewController_switchCell_didTurnOn___block_invoke_2_65;
+  v36[3] = &unk_277DB7E68;
+  v37 = *(a1 + 32);
+  v38 = *(a1 + 40);
+  v31 = [v29 addSuccessBlock:v36];
+  v33[0] = MEMORY[0x277D85DD0];
+  v33[1] = 3221225472;
+  v33[2] = __60__HUUserAccessoryAccessViewController_switchCell_didTurnOn___block_invoke_2_72;
+  v33[3] = &unk_277DBC098;
+  v34 = *(a1 + 56);
+  v35 = *(a1 + 80);
+  v32 = [v29 addFailureBlock:v33];
+
+  objc_destroyWeak(&v41);
+}
+
+void __60__HUUserAccessoryAccessViewController_switchCell_didTurnOn___block_invoke_60(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  v5 = *(a1 + 32);
+  v4 = *(a1 + 40);
+  v7[0] = MEMORY[0x277D85DD0];
+  v7[1] = 3221225472;
+  v7[2] = __60__HUUserAccessoryAccessViewController_switchCell_didTurnOn___block_invoke_2;
+  v7[3] = &unk_277DB8C00;
+  v8 = v3;
+  v6 = v3;
+  [v5 updateRestrictedGuestSettings:v4 completionHandler:v7];
+}
+
+void __60__HUUserAccessoryAccessViewController_switchCell_didTurnOn___block_invoke_2(uint64_t a1, void *a2)
+{
+  v10 = *MEMORY[0x277D85DE8];
+  v3 = a2;
+  v4 = HFLogForCategory();
+  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  {
+    v6 = 136315394;
+    v7 = "[HUUserAccessoryAccessViewController switchCell:didTurnOn:]_block_invoke_2";
+    v8 = 2112;
+    v9 = v3;
+    _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "(%s) Finished attempt to update guest access settings with error %@", &v6, 0x16u);
+  }
+
+  v5 = *(a1 + 32);
+  if (v3)
+  {
+    [v5 finishWithError:v3];
+  }
+
+  else
+  {
+    [v5 finishWithNoResult];
+  }
+}
+
+void __60__HUUserAccessoryAccessViewController_switchCell_didTurnOn___block_invoke_63(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 40));
+  v2 = [WeakRetained inFlightAllowedAccessoryAdditions];
+  [v2 removeObject:*(a1 + 32)];
+
+  v3 = [WeakRetained inFlightAllowedAccessoryRemovals];
+  [v3 removeObject:*(a1 + 32)];
+}
+
+void __60__HUUserAccessoryAccessViewController_switchCell_didTurnOn___block_invoke_2_65(uint64_t a1)
+{
+  v9 = *MEMORY[0x277D85DE8];
+  v2 = HFLogForCategory();
+  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  {
+    *buf = 136315138;
+    v8 = "[HUUserAccessoryAccessViewController switchCell:didTurnOn:]_block_invoke_2";
+    _os_log_impl(&dword_20CEB6000, v2, OS_LOG_TYPE_DEFAULT, "(%s) Successfully updated allowed accessories.", buf, 0xCu);
+  }
+
+  v3 = [MEMORY[0x277D146E8] sharedDispatcher];
+  v4[0] = MEMORY[0x277D85DD0];
+  v4[1] = 3221225472;
+  v4[2] = __60__HUUserAccessoryAccessViewController_switchCell_didTurnOn___block_invoke_67;
+  v4[3] = &unk_277DB9920;
+  v5 = *(a1 + 32);
+  v6 = *(a1 + 40);
+  [v3 dispatchHomeObserverMessage:v4 sender:0];
+}
+
+void __60__HUUserAccessoryAccessViewController_switchCell_didTurnOn___block_invoke_67(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  if (objc_opt_respondsToSelector())
+  {
+    [v3 home:*(a1 + 32) didUpdateAccessControlForUser:*(a1 + 40)];
+  }
+}
+
+void __60__HUUserAccessoryAccessViewController_switchCell_didTurnOn___block_invoke_2_72(uint64_t a1, void *a2)
+{
+  v10 = *MEMORY[0x277D85DE8];
+  v3 = a2;
+  v4 = HFLogForCategory();
+  if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+  {
+    v6 = 136315394;
+    v7 = "[HUUserAccessoryAccessViewController switchCell:didTurnOn:]_block_invoke_2";
+    v8 = 2112;
+    v9 = v3;
+    _os_log_error_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_ERROR, "(%s) Failed to update allowed accessories with error: %@.", &v6, 0x16u);
+  }
+
+  v5 = [MEMORY[0x277D14640] sharedHandler];
+  [v5 handleError:v3 operationType:*MEMORY[0x277D13C78] options:0 retryBlock:0 cancelBlock:0];
+
+  [*(a1 + 32) setOn:(*(a1 + 40) & 1) == 0 animated:1];
+}
+
+@end

@@ -1,0 +1,303 @@
+@interface NEIKEv2SecurityContextChaCha20Poly1305
+- (_DWORD)initWithEncryptionProtocol:(void *)a3 outgoingEncryptionKey:(void *)a4 incomingEncryptionKey:;
+- (id)decryptPayloadData:(id)a3 authenticatedHeaders:(id)a4;
+- (void)dealloc;
+@end
+
+@implementation NEIKEv2SecurityContextChaCha20Poly1305
+
+- (id)decryptPayloadData:(id)a3 authenticatedHeaders:(id)a4
+{
+  *&v35[5] = *MEMORY[0x1E69E9840];
+  v6 = a3;
+  v7 = a4;
+  v8 = v7;
+  if (!v6)
+  {
+    v20 = ne_log_obj();
+    if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
+    {
+      __s = 136315138;
+      *v35 = "[NEIKEv2SecurityContextChaCha20Poly1305 decryptPayloadData:authenticatedHeaders:]";
+      v21 = "%s called with null payloadData";
+LABEL_17:
+      v22 = v20;
+      v23 = 12;
+      goto LABEL_35;
+    }
+
+LABEL_22:
+
+LABEL_23:
+    v17 = 0;
+    goto LABEL_12;
+  }
+
+  if (!v7)
+  {
+    v20 = ne_log_obj();
+    if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
+    {
+      __s = 136315138;
+      *v35 = "[NEIKEv2SecurityContextChaCha20Poly1305 decryptPayloadData:authenticatedHeaders:]";
+      v21 = "%s called with null authenticatedHeaders";
+      goto LABEL_17;
+    }
+
+    goto LABEL_22;
+  }
+
+  v9 = [v6 length];
+  v10 = v9;
+  if (self && self->super._minimumEncryptedPayloadSize > v9)
+  {
+    v24 = ne_log_obj();
+    if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+    {
+      __s = 67109120;
+      v35[0] = v10;
+      _os_log_error_impl(&dword_1BA83C000, v24, OS_LOG_TYPE_ERROR, "Cannot decrypt, encrypted data length %u too short", &__s, 8u);
+    }
+
+    goto LABEL_23;
+  }
+
+  ccchacha20poly1305_info();
+  v11 = ccchacha20poly1305_reset();
+  if (v11)
+  {
+    v25 = v11;
+    v20 = ne_log_obj();
+    if (!os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
+    {
+      goto LABEL_22;
+    }
+
+    __s = 67109120;
+    v35[0] = v25;
+    v21 = "ccchacha20poly1305_reset failed: %d";
+    v22 = v20;
+    v23 = 8;
+LABEL_35:
+    _os_log_fault_impl(&dword_1BA83C000, v22, OS_LOG_TYPE_FAULT, v21, &__s, v23);
+    goto LABEL_22;
+  }
+
+  *v35 = 0;
+  __s = *self->incomingEncryptionSalt;
+  [v6 getBytes:v35 length:8];
+  v12 = ccchacha20poly1305_setnonce();
+  memset_s(&__s, 0xCuLL, 0, 0xCuLL);
+  if (v12)
+  {
+    v14 = ne_log_obj();
+    if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
+    {
+      v32 = 67109120;
+      v33 = v12;
+      v26 = "ccchacha20poly1305_setnonce failed: %d";
+LABEL_28:
+      _os_log_fault_impl(&dword_1BA83C000, v14, OS_LOG_TYPE_FAULT, v26, &v32, 8u);
+    }
+
+LABEL_33:
+    v17 = 0;
+    goto LABEL_11;
+  }
+
+  [v8 length];
+  [v8 bytes];
+  v13 = ccchacha20poly1305_aad();
+  if (v13)
+  {
+    v27 = v13;
+    v14 = ne_log_obj();
+    if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
+    {
+      v32 = 67109120;
+      v33 = v27;
+      v26 = "ccchacha20poly1305_aad failed: %d";
+      goto LABEL_28;
+    }
+
+    goto LABEL_33;
+  }
+
+  v14 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:v10 - 24];
+  [v6 bytes];
+  [v14 mutableBytes];
+  v15 = ccchacha20poly1305_decrypt();
+  if (v15)
+  {
+    v28 = v15;
+    v29 = ne_log_obj();
+    if (!os_log_type_enabled(v29, OS_LOG_TYPE_FAULT))
+    {
+LABEL_32:
+
+      goto LABEL_33;
+    }
+
+    v32 = 67109120;
+    v33 = v28;
+    v30 = "ccchacha20poly1305_decrypt failed: %d";
+LABEL_37:
+    _os_log_fault_impl(&dword_1BA83C000, v29, OS_LOG_TYPE_FAULT, v30, &v32, 8u);
+    goto LABEL_32;
+  }
+
+  v16 = ccchacha20poly1305_verify();
+  if (v16)
+  {
+    v31 = v16;
+    v29 = ne_log_obj();
+    if (!os_log_type_enabled(v29, OS_LOG_TYPE_FAULT))
+    {
+      goto LABEL_32;
+    }
+
+    v32 = 67109120;
+    v33 = v31;
+    v30 = "ccchacha20poly1305_verify failed: %d";
+    goto LABEL_37;
+  }
+
+  v17 = [NEIKEv2SecurityContext removePaddingFromDecryptedPayload:v14];
+LABEL_11:
+
+LABEL_12:
+  v18 = *MEMORY[0x1E69E9840];
+  return v17;
+}
+
+- (void)dealloc
+{
+  memset_s(&self->outgoingEncryptionContext, 0x100uLL, 0, 0x100uLL);
+  memset_s(&self->incomingEncryptionContext, 0x100uLL, 0, 0x100uLL);
+  memset_s(self->outgoingEncryptionSalt, 4uLL, 0, 4uLL);
+  memset_s(self->incomingEncryptionSalt, 4uLL, 0, 4uLL);
+  v3.receiver = self;
+  v3.super_class = NEIKEv2SecurityContextChaCha20Poly1305;
+  [(NEIKEv2SecurityContextChaCha20Poly1305 *)&v3 dealloc];
+}
+
+- (_DWORD)initWithEncryptionProtocol:(void *)a3 outgoingEncryptionKey:(void *)a4 incomingEncryptionKey:
+{
+  v20 = *MEMORY[0x1E69E9840];
+  v7 = a2;
+  v8 = a3;
+  v9 = a4;
+  v10 = v9;
+  if (!a1)
+  {
+    goto LABEL_24;
+  }
+
+  if (!v7)
+  {
+    v12 = ne_log_obj();
+    if (!os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
+    {
+      goto LABEL_23;
+    }
+
+    v18 = 136315138;
+    v19 = "[NEIKEv2SecurityContextChaCha20Poly1305 initWithEncryptionProtocol:outgoingEncryptionKey:incomingEncryptionKey:]";
+    v13 = "%s called with null encryptionProtocol";
+LABEL_16:
+    v14 = v12;
+    v15 = 12;
+LABEL_22:
+    _os_log_fault_impl(&dword_1BA83C000, v14, OS_LOG_TYPE_FAULT, v13, &v18, v15);
+    goto LABEL_23;
+  }
+
+  if (!v8)
+  {
+    v12 = ne_log_obj();
+    if (!os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
+    {
+      goto LABEL_23;
+    }
+
+    v18 = 136315138;
+    v19 = "[NEIKEv2SecurityContextChaCha20Poly1305 initWithEncryptionProtocol:outgoingEncryptionKey:incomingEncryptionKey:]";
+    v13 = "%s called with null outgoingEncryptionKey";
+    goto LABEL_16;
+  }
+
+  if (!v9)
+  {
+    v12 = ne_log_obj();
+    if (!os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
+    {
+      goto LABEL_23;
+    }
+
+    v18 = 136315138;
+    v19 = "[NEIKEv2SecurityContextChaCha20Poly1305 initWithEncryptionProtocol:outgoingEncryptionKey:incomingEncryptionKey:]";
+    v13 = "%s called with null incomingEncryptionKey";
+    goto LABEL_16;
+  }
+
+  if (v7[2] != 28)
+  {
+    goto LABEL_24;
+  }
+
+  a1 = [(NEIKEv2SecurityContext *)a1 initWithMinimumEncryptedPayloadSize:?];
+  if (!a1)
+  {
+    goto LABEL_24;
+  }
+
+  [v8 getBytes:a1 + 132 range:{objc_msgSend(v8, "length") - 4, 4}];
+  objc_opt_self();
+  arc4random_buf(a1 + 134, 8uLL);
+  ccchacha20poly1305_info();
+  [v8 bytes];
+  if (ccchacha20poly1305_init())
+  {
+    v12 = ne_log_obj();
+    if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
+    {
+      LOWORD(v18) = 0;
+      v13 = "ccchacha20poly1305_init failed";
+LABEL_21:
+      v14 = v12;
+      v15 = 2;
+      goto LABEL_22;
+    }
+
+LABEL_23:
+
+LABEL_24:
+    v11 = 0;
+    goto LABEL_25;
+  }
+
+  [v10 getBytes:a1 + 133 range:{objc_msgSend(v10, "length") - 4, 4}];
+  ccchacha20poly1305_info();
+  [v10 bytes];
+  if (ccchacha20poly1305_init())
+  {
+    v12 = ne_log_obj();
+    if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
+    {
+      LOWORD(v18) = 0;
+      v13 = "ccchacha20poly1305_init failed";
+      goto LABEL_21;
+    }
+
+    goto LABEL_23;
+  }
+
+  a1 = a1;
+  v11 = a1;
+LABEL_25:
+
+  v16 = *MEMORY[0x1E69E9840];
+  return v11;
+}
+
+@end

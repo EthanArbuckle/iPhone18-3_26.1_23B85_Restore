@@ -1,0 +1,606 @@
+@interface MSVSegmentedDecoder
++ (id)decodedObjectOfClass:(Class)a3 fromPackage:(id)a4 userInfo:(id)a5 error:(id *)a6;
++ (id)decodedObjectOfClasses:(id)a3 fromPackage:(id)a4 userInfo:(id)a5 error:(id *)a6;
+- (BOOL)containsValueForKey:(id)a3;
+- (BOOL)decodeBoolForKey:(id)a3;
+- (MSVSegmentedDecoder)initWithCodingPackage:(id)a3 userInfo:(id)a4 error:(id *)a5;
+- (const)decodeBytesForKey:(id)a3 returnedLength:(unint64_t *)a4;
+- (double)decodeDoubleForKey:(id)a3;
+- (float)decodeFloatForKey:(id)a3;
+- (id)_coderForKey:(id)a3;
+- (id)decodeObjectOfClasses:(id)a3 forKey:(id)a4;
+- (id)decodeRootObjectOfClass:(Class)a3 error:(id *)a4;
+- (id)decodeRootObjectOfClasses:(id)a3 error:(id *)a4;
+- (id)error;
+- (id)msv_userInfo;
+- (int)decodeInt32ForKey:(id)a3;
+- (int)decodeIntForKey:(id)a3;
+- (int64_t)decodeInt64ForKey:(id)a3;
+- (void)msv_setUserInfo:(id)a3;
+@end
+
+@implementation MSVSegmentedDecoder
+
+- (id)_coderForKey:(id)a3
+{
+  v17 = *MEMORY[0x1E69E9840];
+  v4 = a3;
+  v12 = 0u;
+  v13 = 0u;
+  v14 = 0u;
+  v15 = 0u;
+  v5 = self->_subcoders;
+  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  if (v6)
+  {
+    v7 = *v13;
+    while (2)
+    {
+      for (i = 0; i != v6; i = i + 1)
+      {
+        if (*v13 != v7)
+        {
+          objc_enumerationMutation(v5);
+        }
+
+        v9 = *(*(&v12 + 1) + 8 * i);
+        if ([v9 containsValueForKey:{v4, v12}])
+        {
+          v6 = v9;
+          goto LABEL_11;
+        }
+      }
+
+      v6 = [(NSArray *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      if (v6)
+      {
+        continue;
+      }
+
+      break;
+    }
+  }
+
+LABEL_11:
+
+  v10 = *MEMORY[0x1E69E9840];
+
+  return v6;
+}
+
+- (void)msv_setUserInfo:(id)a3
+{
+  v18 = *MEMORY[0x1E69E9840];
+  v4 = a3;
+  v5 = [v4 copy];
+  userInfo = self->_userInfo;
+  self->_userInfo = v5;
+
+  v15 = 0u;
+  v16 = 0u;
+  v13 = 0u;
+  v14 = 0u;
+  v7 = self->_subcoders;
+  v8 = [(NSArray *)v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  if (v8)
+  {
+    v9 = v8;
+    v10 = *v14;
+    do
+    {
+      v11 = 0;
+      do
+      {
+        if (*v14 != v10)
+        {
+          objc_enumerationMutation(v7);
+        }
+
+        [*(*(&v13 + 1) + 8 * v11++) msv_setUserInfo:{v4, v13}];
+      }
+
+      while (v9 != v11);
+      v9 = [(NSArray *)v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    }
+
+    while (v9);
+  }
+
+  v12 = *MEMORY[0x1E69E9840];
+}
+
+- (id)msv_userInfo
+{
+  if (self->_userInfo)
+  {
+    return self->_userInfo;
+  }
+
+  else
+  {
+    return MEMORY[0x1E695E0F8];
+  }
+}
+
+- (const)decodeBytesForKey:(id)a3 returnedLength:(unint64_t *)a4
+{
+  v22 = *MEMORY[0x1E69E9840];
+  v6 = a3;
+  v17 = 0u;
+  v18 = 0u;
+  v19 = 0u;
+  v20 = 0u;
+  v7 = self->_subcoders;
+  v8 = [(NSArray *)v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  if (v8)
+  {
+    v9 = v8;
+    v10 = *v18;
+    while (2)
+    {
+      v11 = 0;
+      do
+      {
+        if (*v18 != v10)
+        {
+          objc_enumerationMutation(v7);
+        }
+
+        v12 = *(*(&v17 + 1) + 8 * v11);
+        v13 = [v12 decodeBytesForKey:v6 returnedLength:{a4, v17}];
+        if (v13)
+        {
+          v14 = v13;
+          goto LABEL_11;
+        }
+
+        ++v11;
+      }
+
+      while (v9 != v11);
+      v9 = [(NSArray *)v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      if (v9)
+      {
+        continue;
+      }
+
+      break;
+    }
+  }
+
+  v14 = 0;
+LABEL_11:
+
+  v15 = *MEMORY[0x1E69E9840];
+  return v14;
+}
+
+- (double)decodeDoubleForKey:(id)a3
+{
+  v4 = a3;
+  v5 = [(MSVSegmentedDecoder *)self _coderForKey:v4];
+  [v5 decodeDoubleForKey:v4];
+  v7 = v6;
+
+  return v7;
+}
+
+- (float)decodeFloatForKey:(id)a3
+{
+  v4 = a3;
+  v5 = [(MSVSegmentedDecoder *)self _coderForKey:v4];
+  [v5 decodeFloatForKey:v4];
+  v7 = v6;
+
+  return v7;
+}
+
+- (int64_t)decodeInt64ForKey:(id)a3
+{
+  v4 = a3;
+  v5 = [(MSVSegmentedDecoder *)self _coderForKey:v4];
+  v6 = [v5 decodeInt64ForKey:v4];
+
+  return v6;
+}
+
+- (int)decodeInt32ForKey:(id)a3
+{
+  v4 = a3;
+  v5 = [(MSVSegmentedDecoder *)self _coderForKey:v4];
+  v6 = [v5 decodeInt32ForKey:v4];
+
+  return v6;
+}
+
+- (int)decodeIntForKey:(id)a3
+{
+  v4 = a3;
+  v5 = [(MSVSegmentedDecoder *)self _coderForKey:v4];
+  v6 = [v5 decodeIntForKey:v4];
+
+  return v6;
+}
+
+- (BOOL)decodeBoolForKey:(id)a3
+{
+  v4 = a3;
+  v5 = [(MSVSegmentedDecoder *)self _coderForKey:v4];
+  v6 = [v5 decodeBoolForKey:v4];
+
+  return v6;
+}
+
+- (id)decodeObjectOfClasses:(id)a3 forKey:(id)a4
+{
+  v22 = *MEMORY[0x1E69E9840];
+  v6 = a3;
+  v7 = a4;
+  v17 = 0u;
+  v18 = 0u;
+  v19 = 0u;
+  v20 = 0u;
+  v8 = self->_subcoders;
+  v9 = [(NSArray *)v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  if (v9)
+  {
+    v10 = v9;
+    v11 = *v18;
+    while (2)
+    {
+      for (i = 0; i != v10; ++i)
+      {
+        if (*v18 != v11)
+        {
+          objc_enumerationMutation(v8);
+        }
+
+        v13 = [*(*(&v17 + 1) + 8 * i) decodeObjectOfClasses:v6 forKey:{v7, v17}];
+        if (v13)
+        {
+          v14 = v13;
+          goto LABEL_11;
+        }
+      }
+
+      v10 = [(NSArray *)v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      if (v10)
+      {
+        continue;
+      }
+
+      break;
+    }
+  }
+
+  v14 = 0;
+LABEL_11:
+
+  v15 = *MEMORY[0x1E69E9840];
+
+  return v14;
+}
+
+- (BOOL)containsValueForKey:(id)a3
+{
+  v3 = [(MSVSegmentedDecoder *)self _coderForKey:a3];
+  v4 = v3 != 0;
+
+  return v4;
+}
+
+- (id)decodeRootObjectOfClass:(Class)a3 error:(id *)a4
+{
+  v6 = [MEMORY[0x1E695DFD8] setWithObject:a3];
+  v7 = [(MSVSegmentedDecoder *)self decodeRootObjectOfClasses:v6 error:a4];
+
+  return v7;
+}
+
+- (id)decodeRootObjectOfClasses:(id)a3 error:(id *)a4
+{
+  v37 = *MEMORY[0x1E69E9840];
+  v7 = a3;
+  if (([v7 containsObject:self->_rootClass] & 1) == 0)
+  {
+    v24 = [MEMORY[0x1E696AAA8] currentHandler];
+    [v24 handleFailureInMethod:a2 object:self file:@"MSVSegmentedEncoder.m" lineNumber:223 description:{@"Attempt to decode package of archived class: %@", self->_rootClass}];
+  }
+
+  v33 = 0u;
+  v34 = 0u;
+  v31 = 0u;
+  v32 = 0u;
+  v8 = self->_subcoders;
+  v9 = [(NSArray *)v8 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  if (v9)
+  {
+    v10 = *v32;
+    do
+    {
+      for (i = 0; i != v9; ++i)
+      {
+        if (*v32 != v10)
+        {
+          objc_enumerationMutation(v8);
+        }
+
+        [*(*(&v31 + 1) + 8 * i) beginDecodingPartialTopLevelObjectOfClasses:v7];
+      }
+
+      v9 = [(NSArray *)v8 countByEnumeratingWithState:&v31 objects:v36 count:16];
+    }
+
+    while (v9);
+  }
+
+  v12 = [objc_alloc(self->_rootClass) initWithCoder:self];
+  v29 = 0u;
+  v30 = 0u;
+  v27 = 0u;
+  v28 = 0u;
+  v13 = self->_subcoders;
+  v14 = [(NSArray *)v13 countByEnumeratingWithState:&v27 objects:v35 count:16];
+  if (v14)
+  {
+    v15 = *v28;
+    do
+    {
+      for (j = 0; j != v14; ++j)
+      {
+        if (*v28 != v15)
+        {
+          objc_enumerationMutation(v13);
+        }
+
+        [*(*(&v27 + 1) + 8 * j) finishDecodingPartialTopLevelObject];
+      }
+
+      v14 = [(NSArray *)v13 countByEnumeratingWithState:&v27 objects:v35 count:16];
+    }
+
+    while (v14);
+  }
+
+  v17 = [(MSVSegmentedCodingPackage *)self->_package allVersions];
+  v25[0] = MEMORY[0x1E69E9820];
+  v25[1] = 3221225472;
+  v25[2] = __55__MSVSegmentedDecoder_decodeRootObjectOfClasses_error___block_invoke;
+  v25[3] = &unk_1E7982520;
+  v18 = v12;
+  v26 = v18;
+  [v17 enumerateKeysAndObjectsUsingBlock:v25];
+
+  v19 = [(MSVSegmentedDecoder *)self error];
+  if (v19)
+  {
+
+    if (a4)
+    {
+      v20 = v19;
+      *a4 = v19;
+    }
+
+    [(MSVSegmentedDecoder *)self __setError:0];
+    v18 = 0;
+  }
+
+  else if (a4 && !v18)
+  {
+    [MEMORY[0x1E696ABC0] msv_errorWithDomain:*MEMORY[0x1E696A250] code:4865 debugDescription:@"failed to decode root object"];
+    *a4 = v18 = 0;
+  }
+
+  v21 = v18;
+
+  v22 = *MEMORY[0x1E69E9840];
+
+  return v21;
+}
+
+void __55__MSVSegmentedDecoder_decodeRootObjectOfClasses_error___block_invoke(uint64_t a1, void *a2, void *a3)
+{
+  v4 = *(a1 + 32);
+  v5 = a2;
+  [v4 didRestoreVersion:objc_msgSend(a3 forSegment:{"integerValue"), v5}];
+}
+
+- (id)error
+{
+  v17 = *MEMORY[0x1E69E9840];
+  v12 = 0u;
+  v13 = 0u;
+  v14 = 0u;
+  v15 = 0u;
+  v3 = self->_subcoders;
+  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  if (v4)
+  {
+    v5 = v4;
+    v6 = *v13;
+    while (2)
+    {
+      for (i = 0; i != v5; ++i)
+      {
+        if (*v13 != v6)
+        {
+          objc_enumerationMutation(v3);
+        }
+
+        v8 = [*(*(&v12 + 1) + 8 * i) error];
+        if (v8)
+        {
+          v9 = v8;
+
+          goto LABEL_11;
+        }
+      }
+
+      v5 = [(NSArray *)v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      if (v5)
+      {
+        continue;
+      }
+
+      break;
+    }
+  }
+
+  v9 = [(MSVSegmentedDecoder *)self decodeError];
+LABEL_11:
+  v10 = *MEMORY[0x1E69E9840];
+
+  return v9;
+}
+
+- (MSVSegmentedDecoder)initWithCodingPackage:(id)a3 userInfo:(id)a4 error:(id *)a5
+{
+  v38 = *MEMORY[0x1E69E9840];
+  v9 = a3;
+  v10 = a4;
+  v36.receiver = self;
+  v36.super_class = MSVSegmentedDecoder;
+  v11 = [(MSVSegmentedDecoder *)&v36 init];
+  if (!v11)
+  {
+    goto LABEL_17;
+  }
+
+  v12 = [v10 copy];
+  v13 = v12;
+  v14 = MEMORY[0x1E695E0F8];
+  if (v12)
+  {
+    v15 = v12;
+  }
+
+  else
+  {
+    v15 = MEMORY[0x1E695E0F8];
+  }
+
+  objc_storeStrong(&v11->_userInfo, v15);
+
+  objc_storeStrong(&v11->_package, a3);
+  v16 = [(MSVSegmentedCodingPackage *)v11->_package archivedClass];
+  rootClass = v11->_rootClass;
+  v11->_rootClass = v16;
+
+  package = v11->_package;
+  v35 = 0;
+  v19 = [(MSVSegmentedCodingPackage *)package decodersWithError:&v35];
+  v20 = v35;
+  subcoders = v11->_subcoders;
+  v11->_subcoders = v19;
+
+  v33 = 0u;
+  v34 = 0u;
+  v31 = 0u;
+  v32 = 0u;
+  v22 = v11->_subcoders;
+  v23 = [(NSArray *)v22 countByEnumeratingWithState:&v31 objects:v37 count:16];
+  if (v23)
+  {
+    v24 = v23;
+    v25 = *v32;
+    if (v10)
+    {
+      v14 = v10;
+    }
+
+    do
+    {
+      for (i = 0; i != v24; ++i)
+      {
+        if (*v32 != v25)
+        {
+          objc_enumerationMutation(v22);
+        }
+
+        [*(*(&v31 + 1) + 8 * i) msv_setUserInfo:{v14, v31}];
+      }
+
+      v24 = [(NSArray *)v22 countByEnumeratingWithState:&v31 objects:v37 count:16];
+    }
+
+    while (v24);
+  }
+
+  if (v20)
+  {
+    if (a5)
+    {
+      v27 = v20;
+      *a5 = v20;
+    }
+
+    v28 = 0;
+  }
+
+  else
+  {
+LABEL_17:
+    v28 = v11;
+  }
+
+  v29 = *MEMORY[0x1E69E9840];
+  return v28;
+}
+
++ (id)decodedObjectOfClasses:(id)a3 fromPackage:(id)a4 userInfo:(id)a5 error:(id *)a6
+{
+  v9 = a3;
+  v10 = a5;
+  v11 = a4;
+  v20 = 0;
+  v12 = [[MSVSegmentedDecoder alloc] initWithCodingPackage:v11 userInfo:v10 error:&v20];
+
+  v13 = v20;
+  if (v13)
+  {
+    v14 = v13;
+    v15 = 0;
+  }
+
+  else
+  {
+    v19 = 0;
+    v15 = [(MSVSegmentedDecoder *)v12 decodeRootObjectOfClasses:v9 error:&v19];
+    v14 = v19;
+    if (!v14)
+    {
+      v15 = v15;
+      v17 = v15;
+      goto LABEL_8;
+    }
+  }
+
+  if (a6)
+  {
+    v16 = v14;
+    v17 = 0;
+    *a6 = v14;
+  }
+
+  else
+  {
+    v17 = 0;
+  }
+
+LABEL_8:
+
+  return v17;
+}
+
++ (id)decodedObjectOfClass:(Class)a3 fromPackage:(id)a4 userInfo:(id)a5 error:(id *)a6
+{
+  v10 = MEMORY[0x1E695DFD8];
+  v11 = a5;
+  v12 = a4;
+  v13 = [v10 setWithObject:a3];
+  v14 = [a1 decodedObjectOfClasses:v13 fromPackage:v12 userInfo:v11 error:a6];
+
+  return v14;
+}
+
+@end

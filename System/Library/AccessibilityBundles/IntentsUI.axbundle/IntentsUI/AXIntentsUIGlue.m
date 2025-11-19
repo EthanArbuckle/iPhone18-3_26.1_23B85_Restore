@@ -1,0 +1,30 @@
+@interface AXIntentsUIGlue
++ (void)accessibilityInitializeBundle;
+@end
+
+@implementation AXIntentsUIGlue
+
++ (void)accessibilityInitializeBundle
+{
+  if (!_Failover)
+  {
+    v2 = [MEMORY[0x29EDBD6E8] sharedInstance];
+    [v2 performValidations:&__block_literal_global withPreValidationHandler:&__block_literal_global_282 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_291];
+
+    _Failover = [objc_allocWithZone(AXIntentsUIGlue) init];
+
+    MEMORY[0x2A1C71028]();
+  }
+}
+
+uint64_t __48__AXIntentsUIGlue_accessibilityInitializeBundle__block_invoke_2(uint64_t a1, void *a2)
+{
+  v2 = a2;
+  [v2 setValidationTargetName:@"IntentsUI AX"];
+  [v2 setOverrideProcessName:@"IntentsUI"];
+  [v2 setDebugBuild:0];
+
+  return MEMORY[0x2A1C5E698]();
+}
+
+@end

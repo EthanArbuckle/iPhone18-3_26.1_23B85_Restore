@@ -1,0 +1,31 @@
+@interface FBSScene(SBSUIRemoteAlertSceneClientComponent)
+- (void)SBSUI_remoteAlertComponent;
+@end
+
+@implementation FBSScene(SBSUIRemoteAlertSceneClientComponent)
+
+- (void)SBSUI_remoteAlertComponent
+{
+  v2 = objc_opt_class();
+  v3 = [a1 componentForExtension:v2 ofClass:objc_opt_class()];
+  v4 = objc_opt_class();
+  v5 = v3;
+  if (v4)
+  {
+    if (objc_opt_isKindOfClass())
+    {
+      v4 = v5;
+    }
+
+    else
+    {
+      v4 = 0;
+    }
+  }
+
+  v6 = v4;
+
+  return v4;
+}
+
+@end

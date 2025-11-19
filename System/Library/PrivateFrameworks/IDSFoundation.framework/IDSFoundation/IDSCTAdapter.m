@@ -1,0 +1,1399 @@
+@interface IDSCTAdapter
++ (BOOL)isPhoneNumber:(id)a3 equivalentToExistingPhoneNumber:(id)a4;
++ (id)sharedInstance;
+- (BOOL)_legacy_supportsSMSIdentification;
+- (BOOL)doesAnySIMSupportsSimultaneousVoiceAndDataRightNow;
+- (BOOL)dualSIMCapabilityEnabled;
+- (BOOL)hasMultipleSIMs;
+- (BOOL)isAnySIMInserted;
+- (BOOL)isAnySIMUsable;
+- (BOOL)isPNRNumber:(id)a3 andPhoneBookNumber:(id)a4 differentEnoughFromSIMIdentifier:(id)a5 toReregisterWithNewNumber:(id *)a6;
+- (BOOL)isPhoneNumberEmergencyNumber:(id)a3;
+- (BOOL)supportsIdentification;
+- (IDSCTAdapter)initWithCoreTelephonyClient:(id)a3 systemMonitor:(id)a4;
+- (id)CTPNRForSIM:(id)a3;
+- (id)PNRRegistrationPriorityListWithError:(id *)a3;
+- (id)SIMForIdentifier:(id)a3;
+- (id)_unlocked_currentSIMsWithFilterOptions:(unsigned __int8)a3 error:(id *)a4;
+- (id)carrierBundleValueFromAllSIMsForKey:(id)a3 ofType:(Class)a4 withFallback:(id)a5;
+- (id)carrierBundleValueFromSIM:(id)a3 forKey:(id)a4 ofType:(Class)a5 withFallback:(id)a6;
+- (id)contextForSim:(id)a3;
+- (id)currentSIMsWithFilterOptions:(unsigned __int8)a3 error:(id *)a4;
+- (unsigned)_filterOptionsNeededForPNRSupportStatus:(id)a3;
+- (void)SIMStatusDidChange:(id)a3 status:(id)a4;
+- (void)_checkRegistrationStateForContext:(id)a3;
+- (void)_iterateListenersForSelector:(SEL)a3 block:(id)a4;
+- (void)_locked_accessCache:(id)a3;
+- (void)_unlocked_iterateListenersForSelector:(SEL)a3 block:(id)a4;
+- (void)addListener:(id)a3;
+- (void)carrierBundleChange:(id)a3;
+- (void)context:(id)a3 capabilitiesChanged:(id)a4;
+- (void)context:(id)a3 pnrSupportChanged:(BOOL)a4;
+- (void)dealloc;
+- (void)didDetectSimDeactivation:(id)a3 info:(id)a4;
+- (void)dualSimCapabilityDidChange;
+- (void)operatorBundleChange:(id)a3;
+- (void)phoneNumberChanged:(id)a3;
+- (void)pnrReadyStateNotification:(id)a3 regState:(BOOL)a4;
+- (void)removeListener:(id)a3;
+- (void)subscriptionInfoDidChange;
+@end
+
+@implementation IDSCTAdapter
+
++ (id)sharedInstance
+{
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = sub_1A7AFF008;
+  block[3] = &unk_1E77DD328;
+  block[4] = a1;
+  if (qword_1ED5DF800 != -1)
+  {
+    dispatch_once(&qword_1ED5DF800, block);
+  }
+
+  v2 = qword_1ED5DF7F0;
+
+  return v2;
+}
+
+- (BOOL)supportsIdentification
+{
+  v7 = 0;
+  v8 = &v7;
+  v9 = 0x2020000000;
+  v10 = 0;
+  v5[0] = 0;
+  v5[1] = v5;
+  v5[2] = 0x2020000000;
+  v6 = 0;
+  v4[0] = MEMORY[0x1E69E9820];
+  v4[1] = 3221225472;
+  v4[2] = sub_1A7B01160;
+  v4[3] = &unk_1E77E25B0;
+  v4[4] = self;
+  v4[5] = v5;
+  v4[6] = &v7;
+  [(IDSCTAdapter *)self _locked_accessCache:v4];
+  v2 = *(v8 + 24);
+  _Block_object_dispose(v5, 8);
+  _Block_object_dispose(&v7, 8);
+  return v2;
+}
+
+- (void)subscriptionInfoDidChange
+{
+  v3 = [MEMORY[0x1E69A6138] sms];
+  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  {
+    *buf = 0;
+    _os_log_impl(&dword_1A7AD9000, v3, OS_LOG_TYPE_DEFAULT, "Sub info changed -- clearing value", buf, 2u);
+  }
+
+  v4[0] = MEMORY[0x1E69E9820];
+  v4[1] = 3221225472;
+  v4[2] = sub_1A7B090D8;
+  v4[3] = &unk_1E77E0818;
+  v4[4] = self;
+  [(IDSCTAdapter *)self _locked_accessCache:v4];
+  [(IDSCTAdapter *)self _iterateListenersForSelector:sel_SIMInformationDidChange block:&unk_1F1AAB820];
+}
+
+- (BOOL)doesAnySIMSupportsSimultaneousVoiceAndDataRightNow
+{
+  v5 = 0;
+  v6 = &v5;
+  v7 = 0x2020000000;
+  v8 = 0;
+  v4[0] = MEMORY[0x1E69E9820];
+  v4[1] = 3221225472;
+  v4[2] = sub_1A7B09498;
+  v4[3] = &unk_1E77E2588;
+  v4[4] = self;
+  v4[5] = &v5;
+  [(IDSCTAdapter *)self _locked_accessCache:v4];
+  v2 = *(v6 + 24);
+  _Block_object_dispose(&v5, 8);
+  return v2;
+}
+
+- (IDSCTAdapter)initWithCoreTelephonyClient:(id)a3 systemMonitor:(id)a4
+{
+  v7 = a3;
+  v8 = a4;
+  v18.receiver = self;
+  v18.super_class = IDSCTAdapter;
+  v9 = [(IDSCTAdapter *)&v18 init];
+  v10 = v9;
+  if (v9)
+  {
+    v9->_lock._os_unfair_lock_opaque = 0;
+    v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
+    registrationStateByLabelID = v10->_registrationStateByLabelID;
+    v10->_registrationStateByLabelID = v11;
+
+    v13 = objc_alloc_init(IDSCTAdapterCache);
+    cache = v10->_cache;
+    v10->_cache = v13;
+
+    objc_storeStrong(&v10->_coreTelephonyClient, a3);
+    [v10->_coreTelephonyClient setDelegate:v10];
+    v15 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    listeners = v10->_listeners;
+    v10->_listeners = v15;
+
+    objc_storeStrong(&v10->_systemMonitor, a4);
+    if (([(IMSystemMonitor *)v10->_systemMonitor isActive]& 1) == 0)
+    {
+      [(IMSystemMonitor *)v10->_systemMonitor setActive:1];
+    }
+
+    [(IMSystemMonitor *)v10->_systemMonitor addListener:v10];
+  }
+
+  return v10;
+}
+
+- (void)dealloc
+{
+  [(IMSystemMonitor *)self->_systemMonitor removeListener:self];
+  v3.receiver = self;
+  v3.super_class = IDSCTAdapter;
+  [(IDSCTAdapter *)&v3 dealloc];
+}
+
+- (BOOL)dualSIMCapabilityEnabled
+{
+  v5 = 0;
+  v6 = &v5;
+  v7 = 0x2020000000;
+  v8 = 0;
+  v4[0] = MEMORY[0x1E69E9820];
+  v4[1] = 3221225472;
+  v4[2] = sub_1A7C6BCC8;
+  v4[3] = &unk_1E77E2588;
+  v4[4] = self;
+  v4[5] = &v5;
+  [(IDSCTAdapter *)self _locked_accessCache:v4];
+  v2 = *(v6 + 24);
+  _Block_object_dispose(&v5, 8);
+  return v2;
+}
+
+- (BOOL)isAnySIMUsable
+{
+  v5 = 0;
+  v6 = &v5;
+  v7 = 0x2020000000;
+  v8 = 0;
+  v4[0] = MEMORY[0x1E69E9820];
+  v4[1] = 3221225472;
+  v4[2] = sub_1A7C6BF24;
+  v4[3] = &unk_1E77E2588;
+  v4[4] = self;
+  v4[5] = &v5;
+  [(IDSCTAdapter *)self _locked_accessCache:v4];
+  v2 = *(v6 + 24);
+  _Block_object_dispose(&v5, 8);
+  return v2;
+}
+
+- (BOOL)isAnySIMInserted
+{
+  v5 = 0;
+  v6 = &v5;
+  v7 = 0x2020000000;
+  v8 = 0;
+  v4[0] = MEMORY[0x1E69E9820];
+  v4[1] = 3221225472;
+  v4[2] = sub_1A7C6C2D8;
+  v4[3] = &unk_1E77E2588;
+  v4[4] = self;
+  v4[5] = &v5;
+  [(IDSCTAdapter *)self _locked_accessCache:v4];
+  v2 = *(v6 + 24);
+  _Block_object_dispose(&v5, 8);
+  return v2;
+}
+
+- (BOOL)hasMultipleSIMs
+{
+  v2 = [(IDSCTAdapter *)self currentSIMsWithError:0];
+  v3 = [v2 __imArrayByApplyingBlock:&unk_1F1AAB780];
+  v4 = [v3 count] > 1;
+
+  return v4;
+}
+
+- (BOOL)_legacy_supportsSMSIdentification
+{
+  *&v16[7] = *MEMORY[0x1E69E9840];
+  v11 = 0;
+  v9 = 0u;
+  v10 = 0u;
+  if (qword_1EB2BC140 != -1)
+  {
+    sub_1A7E1F388();
+  }
+
+  if (qword_1EB2BC150 != -1)
+  {
+    sub_1A7E1F39C();
+  }
+
+  v12 = -86;
+  v2 = off_1EB2BC138(*MEMORY[0x1E695E480], nullsub_8, &v9);
+  if (!v2)
+  {
+    v7 = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    {
+      *buf = 0;
+      _os_log_impl(&dword_1A7AD9000, v7, OS_LOG_TYPE_DEFAULT, "Could not create CT server connection to query _CTServerConnectionIsPhoneNumberRegistrationSupported", buf, 2u);
+    }
+
+    return 1;
+  }
+
+  v3 = v2;
+  v4 = off_1EB2BC148(v2, &v12);
+  v5 = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  {
+    *buf = 67109632;
+    v14 = v12;
+    v15 = 1024;
+    *v16 = v4;
+    v16[2] = 2048;
+    *&v16[3] = v4 >> 32;
+    _os_log_impl(&dword_1A7AD9000, v5, OS_LOG_TYPE_DEFAULT, "_CTServerConnectionIsPhoneNumberRegistrationSupported returned value { registrationSupported: %d, error: (%d:%ld) }", buf, 0x18u);
+  }
+
+  CFRelease(v3);
+  if (v4)
+  {
+    v6 = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    {
+      *buf = 67109376;
+      v14 = v4;
+      v15 = 2048;
+      *v16 = v4 >> 32;
+      _os_log_impl(&dword_1A7AD9000, v6, OS_LOG_TYPE_DEFAULT, "Failed to query _CTServerConnectionIsPhoneNumberRegistrationSupported from CT { error: (%d:%ld) }", buf, 0x12u);
+    }
+
+    return 1;
+  }
+
+  return v12 != 0;
+}
+
+- (id)carrierBundleValueFromAllSIMsForKey:(id)a3 ofType:(Class)a4 withFallback:(id)a5
+{
+  v23 = *MEMORY[0x1E69E9840];
+  v8 = a3;
+  v9 = a5;
+  v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
+  v18 = 0u;
+  v19 = 0u;
+  v20 = 0u;
+  v21 = 0u;
+  v11 = [(IDSCTAdapter *)self currentSIMsWithError:0, 0];
+  v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  if (v12)
+  {
+    v13 = v12;
+    v14 = *v19;
+    do
+    {
+      for (i = 0; i != v13; ++i)
+      {
+        if (*v19 != v14)
+        {
+          objc_enumerationMutation(v11);
+        }
+
+        v16 = [(IDSCTAdapter *)self carrierBundleValueFromSIM:*(*(&v18 + 1) + 8 * i) forKey:v8 ofType:a4 withFallback:v9];
+        if (v16)
+        {
+          [v10 addObject:v16];
+        }
+      }
+
+      v13 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    }
+
+    while (v13);
+  }
+
+  return v10;
+}
+
+- (id)carrierBundleValueFromSIM:(id)a3 forKey:(id)a4 ofType:(Class)a5 withFallback:(id)a6
+{
+  v40 = *MEMORY[0x1E69E9840];
+  v10 = a3;
+  v11 = a4;
+  v12 = a6;
+  objc_opt_class();
+  if ((objc_opt_isKindOfClass() & 1) == 0)
+  {
+    v13 = [v10 SIMIdentifier];
+    v14 = [(IDSCTAdapter *)self SIMForIdentifier:v13];
+
+    v10 = v14;
+  }
+
+  v15 = [v10 context];
+  v16 = [objc_alloc(MEMORY[0x1E6964F68]) initWithBundleType:1];
+  if (v15)
+  {
+    coreTelephonyClient = self->_coreTelephonyClient;
+    v31 = 0;
+    v18 = [coreTelephonyClient copyCarrierBundleValue:v15 key:v11 bundleType:v16 error:&v31];
+    v19 = v31;
+    if (v18)
+    {
+      isKindOfClass = objc_opt_isKindOfClass();
+      v21 = [MEMORY[0x1E69A6138] sms];
+      v22 = v21;
+      if (isKindOfClass)
+      {
+        if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+        {
+          *buf = 138412546;
+          v33 = v11;
+          v34 = 2112;
+          v35 = v18;
+          _os_log_impl(&dword_1A7AD9000, v22, OS_LOG_TYPE_DEFAULT, "Found carrier bundle value { key: %@, value: %@ }", buf, 0x16u);
+        }
+
+        v23 = v18;
+        goto LABEL_22;
+      }
+
+      if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
+      {
+        v29 = objc_opt_class();
+        *buf = 138413058;
+        v33 = v11;
+        v34 = 2112;
+        v35 = v12;
+        v36 = 2112;
+        v37 = a5;
+        v38 = 2112;
+        v39 = v29;
+        v30 = v29;
+        _os_log_fault_impl(&dword_1A7AD9000, v22, OS_LOG_TYPE_FAULT, "Unexpected type loading carrier bundle value { key: %@, fallbackValue: %@, expectedClass: %@, foundClass: %@ }", buf, 0x2Au);
+      }
+    }
+
+    else
+    {
+      v24 = [MEMORY[0x1E69A6138] sms];
+      v25 = v24;
+      if (v19)
+      {
+        if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+        {
+          *buf = 138412802;
+          v33 = v11;
+          v34 = 2112;
+          v35 = v12;
+          v36 = 2112;
+          v37 = v19;
+          _os_log_error_impl(&dword_1A7AD9000, v25, OS_LOG_TYPE_ERROR, "Failed to load carrier bundle value { key: %@, fallbackValue: %@, carrierBundleError: %@ }", buf, 0x20u);
+        }
+      }
+
+      else if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
+      {
+        sub_1A7E1F3B0();
+      }
+    }
+
+    v23 = 0;
+LABEL_22:
+
+    goto LABEL_23;
+  }
+
+  v19 = [MEMORY[0x1E69A6138] sms];
+  if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+  {
+    *buf = 138412802;
+    v33 = v11;
+    v34 = 2112;
+    v35 = v12;
+    v36 = 2112;
+    v37 = 0;
+    _os_log_impl(&dword_1A7AD9000, v19, OS_LOG_TYPE_DEFAULT, "Unable to load subscription context to look up carrier bundle value -- falling back { key: %@, fallbackValue: %@, subscriptionError: %@ }", buf, 0x20u);
+  }
+
+  v23 = 0;
+LABEL_23:
+
+  if (v23)
+  {
+    v26 = v23;
+  }
+
+  else
+  {
+    v26 = v12;
+  }
+
+  v27 = v26;
+
+  return v26;
+}
+
+- (id)_unlocked_currentSIMsWithFilterOptions:(unsigned __int8)a3 error:(id *)a4
+{
+  v47 = *MEMORY[0x1E69E9840];
+  os_unfair_lock_assert_owner(&self->_lock);
+  v7 = [(IDSCTAdapter *)self cache];
+  v8 = [v7 sims];
+
+  v9 = &off_1A7E40000;
+  if (v8)
+  {
+    goto LABEL_23;
+  }
+
+  if (_os_feature_enabled_impl())
+  {
+    v10 = [(IDSCTAdapter *)self coreTelephonyClient];
+    v42 = 0;
+    v11 = [v10 getActiveContexts:&v42];
+    v12 = v42;
+
+    if (v11)
+    {
+      objc_initWeak(&location, self);
+      v13 = [v11 existingUserSubscriptions];
+      v38[0] = MEMORY[0x1E69E9820];
+      v38[1] = 3221225472;
+      v38[2] = sub_1A7C6D308;
+      v38[3] = &unk_1E77E25D8;
+      objc_copyWeak(&v39, &location);
+      v38[4] = self;
+      v40 = a3;
+      v14 = [v13 __imArrayByApplyingBlock:v38];
+      v15 = [(IDSCTAdapter *)self cache];
+      [v15 setSims:v14];
+
+      v16 = [MEMORY[0x1E69A6138] sms];
+      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+      {
+        *buf = 138412290;
+        v44 = v11;
+        _os_log_impl(&dword_1A7AD9000, v16, OS_LOG_TYPE_DEFAULT, "Loaded active contexts { contexts: %@ }", buf, 0xCu);
+      }
+
+      v17 = [MEMORY[0x1E69A6138] sms];
+      if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+      {
+        v34 = [(IDSCTAdapter *)self cache];
+        v18 = [v34 sims];
+        v19 = [v18 count];
+        v20 = [(IDSCTAdapter *)self cache];
+        v21 = [v20 sims];
+        *buf = 134218242;
+        v44 = v19;
+        v45 = 2112;
+        v46 = v21;
+        _os_log_impl(&dword_1A7AD9000, v17, OS_LOG_TYPE_DEFAULT, "Found %lu IDSCTSIM(s): %@", buf, 0x16u);
+
+        v9 = &off_1A7E40000;
+      }
+
+      objc_destroyWeak(&v39);
+      objc_destroyWeak(&location);
+    }
+
+    else
+    {
+      v28 = [MEMORY[0x1E69A6138] sms];
+      if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+      {
+        *buf = 138412290;
+        v44 = v12;
+        _os_log_impl(&dword_1A7AD9000, v28, OS_LOG_TYPE_DEFAULT, "Unable to load subscription contexts { subError: %@ }", buf, 0xCu);
+      }
+    }
+
+    goto LABEL_19;
+  }
+
+  coreTelephonyClient = self->_coreTelephonyClient;
+  v37 = 0;
+  v11 = [coreTelephonyClient getSubscriptionInfoWithError:&v37];
+  v12 = v37;
+  if (v11)
+  {
+    v23 = [v11 subscriptions];
+    v24 = [v23 __imArrayByApplyingBlock:&unk_1F1AAB7E0];
+    v25 = [(IDSCTAdapter *)self cache];
+    [v25 setSims:v24];
+
+    v26 = [MEMORY[0x1E69A6138] sms];
+    if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
+    {
+      *buf = 138412290;
+      v44 = v11;
+      v27 = "Loaded subscription contexts { subInfo: %@ }";
+LABEL_14:
+      _os_log_impl(&dword_1A7AD9000, v26, OS_LOG_TYPE_DEFAULT, v27, buf, 0xCu);
+    }
+  }
+
+  else
+  {
+    v26 = [MEMORY[0x1E69A6138] sms];
+    if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
+    {
+      *buf = 138412290;
+      v44 = v12;
+      v27 = "Unable to load subscription contexts { subError: %@ }";
+      goto LABEL_14;
+    }
+  }
+
+LABEL_19:
+  if (a4 && v12)
+  {
+    v29 = v12;
+    *a4 = v12;
+  }
+
+LABEL_23:
+  v30 = [(IDSCTAdapter *)self cache];
+  v31 = [v30 sims];
+  v35[0] = MEMORY[0x1E69E9820];
+  v35[1] = *(v9 + 303);
+  v35[2] = sub_1A7C6D840;
+  v35[3] = &unk_1E77E2618;
+  v36 = a3;
+  v32 = [v31 __imArrayByFilteringWithBlock:v35];
+
+  return v32;
+}
+
+- (unsigned)_filterOptionsNeededForPNRSupportStatus:(id)a3
+{
+  v3 = a3;
+  if ([v3 isSupported])
+  {
+    v4 = 0;
+  }
+
+  else
+  {
+    v4 = [v3 isDisallowedByMDM];
+  }
+
+  return v4;
+}
+
+- (id)currentSIMsWithFilterOptions:(unsigned __int8)a3 error:(id *)a4
+{
+  v16 = 0;
+  v17 = &v16;
+  v18 = 0x3032000000;
+  v19 = sub_1A7C6DA4C;
+  v20 = sub_1A7C6DA5C;
+  v21 = 0;
+  v10 = 0;
+  v11 = &v10;
+  v12 = 0x3032000000;
+  v13 = sub_1A7C6DA4C;
+  v14 = sub_1A7C6DA5C;
+  v15 = 0;
+  v8[0] = MEMORY[0x1E69E9820];
+  v8[1] = 3221225472;
+  v8[2] = sub_1A7C6DA64;
+  v8[3] = &unk_1E77E2640;
+  v8[4] = self;
+  v8[5] = &v16;
+  v9 = a3;
+  v8[6] = &v10;
+  [(IDSCTAdapter *)self _locked_accessCache:v8];
+  if (a4)
+  {
+    v5 = v11[5];
+    if (v5)
+    {
+      *a4 = v5;
+    }
+  }
+
+  v6 = v17[5];
+  _Block_object_dispose(&v10, 8);
+
+  _Block_object_dispose(&v16, 8);
+
+  return v6;
+}
+
+- (id)SIMForIdentifier:(id)a3
+{
+  v18 = *MEMORY[0x1E69E9840];
+  v4 = a3;
+  v13 = 0u;
+  v14 = 0u;
+  v15 = 0u;
+  v16 = 0u;
+  v5 = [(IDSCTAdapter *)self currentSIMsWithError:0, 0];
+  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  if (v6)
+  {
+    v7 = *v14;
+    while (2)
+    {
+      for (i = 0; i != v6; i = i + 1)
+      {
+        if (*v14 != v7)
+        {
+          objc_enumerationMutation(v5);
+        }
+
+        v9 = *(*(&v13 + 1) + 8 * i);
+        v10 = [v9 SIMIdentifier];
+        v11 = [v10 isEqualToString:v4];
+
+        if (v11)
+        {
+          v6 = v9;
+          goto LABEL_11;
+        }
+      }
+
+      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      if (v6)
+      {
+        continue;
+      }
+
+      break;
+    }
+  }
+
+LABEL_11:
+
+  return v6;
+}
+
+- (id)contextForSim:(id)a3
+{
+  v26 = *MEMORY[0x1E69E9840];
+  v4 = a3;
+  objc_opt_class();
+  if ((objc_opt_isKindOfClass() & 1) == 0)
+  {
+    v5 = [v4 SIMIdentifier];
+    v6 = [(IDSCTAdapter *)self SIMForIdentifier:v5];
+
+    v4 = v6;
+  }
+
+  v7 = [v4 context];
+  coreTelephonyClient = self->_coreTelephonyClient;
+  v19 = 0;
+  v9 = [coreTelephonyClient getPNRContext:v7 outError:&v19];
+  v10 = v19;
+  v11 = v10;
+  if (!v9 || v10)
+  {
+    v17 = [MEMORY[0x1E69A6138] sms];
+    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    {
+      sub_1A7E1F434();
+    }
+
+    v16 = 0;
+  }
+
+  else
+  {
+    v12 = [v9 isReady];
+    v13 = [MEMORY[0x1E69A6138] sms];
+    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    {
+      v14 = @"NO";
+      *buf = 138412802;
+      if (v12)
+      {
+        v14 = @"YES";
+      }
+
+      v21 = v14;
+      v22 = 2112;
+      v23 = v9;
+      v24 = 2112;
+      v25 = v4;
+      _os_log_impl(&dword_1A7AD9000, v13, OS_LOG_TYPE_DEFAULT, "Fetched SIMContext for SIM {validContext: %@, PNRContext: %@, context: %@}", buf, 0x20u);
+    }
+
+    if (v12)
+    {
+      v15 = v9;
+    }
+
+    else
+    {
+      v15 = 0;
+    }
+
+    v16 = v15;
+  }
+
+  return v16;
+}
+
+- (BOOL)isPNRNumber:(id)a3 andPhoneBookNumber:(id)a4 differentEnoughFromSIMIdentifier:(id)a5 toReregisterWithNewNumber:(id *)a6
+{
+  v55 = *MEMORY[0x1E69E9840];
+  v40 = a3;
+  v9 = a4;
+  v10 = a5;
+  v45 = 0;
+  v11 = [(IDSCTAdapter *)self currentSIMsWithError:&v45];
+  v39 = v45;
+  v41 = 0u;
+  v42 = 0u;
+  v43 = 0u;
+  v44 = 0u;
+  v12 = v11;
+  v13 = [v12 countByEnumeratingWithState:&v41 objects:v54 count:16];
+  if (!v13)
+  {
+    goto LABEL_9;
+  }
+
+  v14 = v13;
+  v15 = *v42;
+  while (2)
+  {
+    for (i = 0; i != v14; ++i)
+    {
+      if (*v42 != v15)
+      {
+        objc_enumerationMutation(v12);
+      }
+
+      v17 = *(*(&v41 + 1) + 8 * i);
+      v18 = [v17 SIMIdentifier];
+      v19 = [v18 isEqualToString:v10];
+
+      if (v19)
+      {
+        v20 = v17;
+        v21 = [(IDSCTAdapter *)self contextForSim:v20];
+
+        if (!v20)
+        {
+          goto LABEL_17;
+        }
+
+        v22 = [MEMORY[0x1E69A6138] sms];
+        v23 = v9;
+        v24 = v40;
+        if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+        {
+          *buf = 138413058;
+          v47 = v40;
+          v48 = 2112;
+          v49 = v23;
+          v50 = 2112;
+          v51 = v20;
+          v52 = 2112;
+          v53 = v21;
+          _os_log_impl(&dword_1A7AD9000, v22, OS_LOG_TYPE_DEFAULT, "** Checking for phone number change { phoneNumber: %@, phoneBookNumber: %@, matchingSIM: %@, matchingSIMContext: %@ }", buf, 0x2Au);
+        }
+
+        if (v21)
+        {
+          v25 = [v21 phoneNumberOnSIM];
+          v26 = sub_1A7C6E1AC(v25, v23);
+          if (v26)
+          {
+            v27 = [v21 phoneNumberOnSIM];
+            if (sub_1A7C6E1AC(v27, v40))
+            {
+              v28 = 1;
+              goto LABEL_33;
+            }
+
+            if (!v40)
+            {
+              v28 = 0;
+              goto LABEL_33;
+            }
+
+            v36 = v27;
+LABEL_30:
+            v35 = [v21 phoneNumber];
+            v28 = sub_1A7C6E1AC(v35, v40);
+
+            v27 = v37;
+            if (!v26)
+            {
+LABEL_34:
+
+              v33 = a6;
+              v29 = v39;
+              if (!a6 || !v28)
+              {
+                goto LABEL_19;
+              }
+
+              v34 = [v21 phoneNumberOnSIM];
+              goto LABEL_37;
+            }
+
+LABEL_33:
+
+            goto LABEL_34;
+          }
+
+          if (v40)
+          {
+            goto LABEL_30;
+          }
+        }
+
+        else
+        {
+          v31 = [v20 phoneNumber];
+          if (sub_1A7C6E1AC(v31, v23))
+          {
+            v32 = [v20 phoneNumber];
+            v28 = sub_1A7C6E1AC(v32, v40);
+
+            v21 = 0;
+            v33 = a6;
+            if (!a6)
+            {
+              goto LABEL_18;
+            }
+
+            v29 = v39;
+            if (!v28)
+            {
+              goto LABEL_19;
+            }
+
+            v34 = [v20 phoneNumber];
+            v21 = 0;
+LABEL_37:
+            *v33 = v34;
+            LOBYTE(v28) = 1;
+            goto LABEL_19;
+          }
+
+          v21 = 0;
+        }
+
+        LOBYTE(v28) = 0;
+        goto LABEL_18;
+      }
+    }
+
+    v14 = [v12 countByEnumeratingWithState:&v41 objects:v54 count:16];
+    if (v14)
+    {
+      continue;
+    }
+
+    break;
+  }
+
+LABEL_9:
+
+  v20 = 0;
+  v21 = 0;
+LABEL_17:
+  LOBYTE(v28) = 0;
+  v23 = v9;
+  v24 = v40;
+LABEL_18:
+  v29 = v39;
+LABEL_19:
+
+  return v28;
+}
+
++ (BOOL)isPhoneNumber:(id)a3 equivalentToExistingPhoneNumber:(id)a4
+{
+  v23 = *MEMORY[0x1E69E9840];
+  v5 = a3;
+  v6 = a4;
+  if ([v5 length] || objc_msgSend(v6, "length"))
+  {
+    if ([v5 length] && objc_msgSend(v6, "length"))
+    {
+      v7 = [v6 _IDFromFZIDType:0];
+      v8 = [v7 _stripFZIDPrefix];
+
+      v9 = [v5 _IDFromFZIDType:0];
+      v10 = [v9 _stripFZIDPrefix];
+
+      if ([v8 hasPrefix:@"+"])
+      {
+        v11 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"+"];
+        v12 = [v8 stringByRemovingCharactersFromSet:v11];
+
+        v8 = v12;
+      }
+
+      v13 = (_IDSAreIDsEquivalent(v10, v8) & 1) != 0 || (_IDSAreIDsEquivalent(v8, v10) & 1) != 0 || [v8 rangeOfString:v10] != 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v10, "rangeOfString:", v8) != 0x7FFFFFFFFFFFFFFFLL;
+      v14 = [MEMORY[0x1E69A6138] sms];
+      if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      {
+        v15 = @"NO";
+        v17 = 138412802;
+        v18 = v5;
+        v19 = 2112;
+        if (v13)
+        {
+          v15 = @"YES";
+        }
+
+        v20 = v6;
+        v21 = 2112;
+        v22 = v15;
+        _os_log_impl(&dword_1A7AD9000, v14, OS_LOG_TYPE_DEFAULT, "Determined whether phone numbers are equivalent { phoneNumber: %@, existingPhoneNumber: %@, equivalent: %@ }", &v17, 0x20u);
+      }
+    }
+
+    else
+    {
+      LOBYTE(v13) = 0;
+    }
+  }
+
+  else
+  {
+    LOBYTE(v13) = 1;
+  }
+
+  return v13;
+}
+
+- (BOOL)isPhoneNumberEmergencyNumber:(id)a3
+{
+  v33 = *MEMORY[0x1E69E9840];
+  v4 = a3;
+  if (IMStringIsInHardcodedEmergencyNumberSet())
+  {
+    v5 = 1;
+  }
+
+  else
+  {
+    v24 = 0u;
+    v25 = 0u;
+    v22 = 0u;
+    v23 = 0u;
+    v6 = [(IDSCTAdapter *)self currentSIMsWithError:0];
+    v7 = [v6 countByEnumeratingWithState:&v22 objects:v32 count:16];
+    if (v7)
+    {
+      v9 = v7;
+      v10 = *v23;
+      *&v8 = 138412802;
+      v20 = v8;
+      while (2)
+      {
+        for (i = 0; i != v9; ++i)
+        {
+          if (*v23 != v10)
+          {
+            objc_enumerationMutation(v6);
+          }
+
+          v12 = *(*(&v22 + 1) + 8 * i);
+          coreTelephonyClient = self->_coreTelephonyClient;
+          v14 = [v12 context];
+          v21 = 0;
+          v15 = [coreTelephonyClient isEmergencyNumber:v14 number:v4 error:&v21];
+          v16 = v21;
+
+          if (v16)
+          {
+            v17 = [MEMORY[0x1E69A6138] sms];
+            if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+            {
+              v18 = [v12 context];
+              *buf = v20;
+              v27 = v4;
+              v28 = 2112;
+              v29 = v18;
+              v30 = 2112;
+              v31 = v16;
+              _os_log_error_impl(&dword_1A7AD9000, v17, OS_LOG_TYPE_ERROR, "Failed to check if number is emergency number { phoneNumber: %@, context: %@, error: %@ }", buf, 0x20u);
+            }
+          }
+
+          if (v15)
+          {
+            v5 = 1;
+            goto LABEL_17;
+          }
+        }
+
+        v9 = [v6 countByEnumeratingWithState:&v22 objects:v32 count:16];
+        if (v9)
+        {
+          continue;
+        }
+
+        break;
+      }
+    }
+
+    v5 = 0;
+LABEL_17:
+  }
+
+  return v5;
+}
+
+- (id)CTPNRForSIM:(id)a3
+{
+  v3 = a3;
+  v4 = [IDSCTPNR alloc];
+  v5 = [objc_alloc(MEMORY[0x1E69650A0]) initWithQueue:0];
+  v6 = [(IDSCTPNR *)v4 _initWithCoreTelephonyClient:v5 SIM:v3];
+
+  return v6;
+}
+
+- (void)addListener:(id)a3
+{
+  if (a3)
+  {
+    v4 = a3;
+    os_unfair_lock_lock(&self->_lock);
+    [(NSHashTable *)self->_listeners addObject:v4];
+
+    os_unfair_lock_unlock(&self->_lock);
+  }
+}
+
+- (void)removeListener:(id)a3
+{
+  if (a3)
+  {
+    v4 = a3;
+    os_unfair_lock_lock(&self->_lock);
+    [(NSHashTable *)self->_listeners removeObject:v4];
+
+    os_unfair_lock_unlock(&self->_lock);
+  }
+}
+
+- (void)_unlocked_iterateListenersForSelector:(SEL)a3 block:(id)a4
+{
+  v17 = *MEMORY[0x1E69E9840];
+  v5 = a4;
+  os_unfair_lock_assert_owner(&self->_lock);
+  v14 = 0u;
+  v15 = 0u;
+  v12 = 0u;
+  v13 = 0u;
+  v6 = self->_listeners;
+  v7 = [(NSHashTable *)v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  if (v7)
+  {
+    v8 = v7;
+    v9 = *v13;
+    do
+    {
+      v10 = 0;
+      do
+      {
+        if (*v13 != v9)
+        {
+          objc_enumerationMutation(v6);
+        }
+
+        v11 = *(*(&v12 + 1) + 8 * v10);
+        if (objc_opt_respondsToSelector())
+        {
+          v5[2](v5, v11);
+        }
+
+        ++v10;
+      }
+
+      while (v8 != v10);
+      v8 = [(NSHashTable *)v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    }
+
+    while (v8);
+  }
+}
+
+- (void)_iterateListenersForSelector:(SEL)a3 block:(id)a4
+{
+  v6 = a4;
+  os_unfair_lock_lock(&self->_lock);
+  [(IDSCTAdapter *)self _unlocked_iterateListenersForSelector:a3 block:v6];
+
+  os_unfair_lock_unlock(&self->_lock);
+}
+
+- (void)_checkRegistrationStateForContext:(id)a3
+{
+  v21 = *MEMORY[0x1E69E9840];
+  v4 = a3;
+  os_unfair_lock_lock(&self->_lock);
+  v5 = [v4 labelID];
+  if (!v5)
+  {
+    v13 = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    {
+      *buf = 138412290;
+      v20 = v4;
+      _os_log_impl(&dword_1A7AD9000, v13, OS_LOG_TYPE_DEFAULT, "No label ID found for context -- ignoring { context: %@ }", buf, 0xCu);
+    }
+
+    goto LABEL_15;
+  }
+
+  v6 = [(NSMutableDictionary *)self->_registrationStateByLabelID objectForKeyedSubscript:v5];
+  coreTelephonyClient = self->_coreTelephonyClient;
+  v18 = 0;
+  v8 = [coreTelephonyClient getPNRContext:v4 outError:&v18];
+  v9 = v18;
+  if (v8)
+  {
+    v10 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "isReady")}];
+    v11 = v10;
+    if (!v6 || !v10 || (v12 = [v10 BOOLValue], v12 != objc_msgSend(v6, "BOOLValue")))
+    {
+      v15[0] = MEMORY[0x1E69E9820];
+      v15[1] = 3221225472;
+      v15[2] = sub_1A7C6ECBC;
+      v15[3] = &unk_1E77E2668;
+      v16 = v4;
+      v17 = v11;
+      [(IDSCTAdapter *)self _unlocked_iterateListenersForSelector:sel_SIM_didUpdateRegistrationState_ block:v15];
+    }
+
+    [(NSMutableDictionary *)self->_registrationStateByLabelID setObject:v11 forKeyedSubscript:v5];
+  }
+
+  else
+  {
+    v14 = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    {
+      *buf = 138412290;
+      v20 = v9;
+      _os_log_impl(&dword_1A7AD9000, v14, OS_LOG_TYPE_DEFAULT, "Failed loading PNRContext -- exiting { error: %@ }", buf, 0xCu);
+    }
+
+    os_unfair_lock_unlock(&self->_lock);
+    v11 = 0;
+  }
+
+  if (v8)
+  {
+LABEL_15:
+    os_unfair_lock_unlock(&self->_lock);
+  }
+}
+
+- (void)_locked_accessCache:(id)a3
+{
+  v4 = a3;
+  os_unfair_lock_lock(&self->_lock);
+  v4[2](v4);
+
+  os_unfair_lock_unlock(&self->_lock);
+}
+
+- (id)PNRRegistrationPriorityListWithError:(id *)a3
+{
+  v4 = [(IDSCTAdapter *)self coreTelephonyClient];
+  v11 = 0;
+  v5 = [v4 getPNRPriorityRegistrationListWithError:&v11];
+  v6 = v11;
+
+  if (v6)
+  {
+    v7 = [MEMORY[0x1E69A6138] sms];
+    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    {
+      sub_1A7E1F4B8();
+    }
+  }
+
+  v8 = [v5 __imArrayByApplyingBlock:&unk_1F1AAB800];
+  if (a3 && v6)
+  {
+    v9 = v6;
+    *a3 = v6;
+  }
+
+  return v8;
+}
+
+- (void)dualSimCapabilityDidChange
+{
+  v3 = [MEMORY[0x1E69A6138] sms];
+  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  {
+    *buf = 0;
+    _os_log_impl(&dword_1A7AD9000, v3, OS_LOG_TYPE_DEFAULT, "Sim cap changed -- clearing value", buf, 2u);
+  }
+
+  v4[0] = MEMORY[0x1E69E9820];
+  v4[1] = 3221225472;
+  v4[2] = sub_1A7C6EFA0;
+  v4[3] = &unk_1E77E0818;
+  v4[4] = self;
+  [(IDSCTAdapter *)self _locked_accessCache:v4];
+}
+
+- (void)SIMStatusDidChange:(id)a3 status:(id)a4
+{
+  v5 = [MEMORY[0x1E69A6138] sms];
+  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  {
+    *buf = 0;
+    _os_log_impl(&dword_1A7AD9000, v5, OS_LOG_TYPE_DEFAULT, "Sim status changed -- clearing value", buf, 2u);
+  }
+
+  v6[0] = MEMORY[0x1E69E9820];
+  v6[1] = 3221225472;
+  v6[2] = sub_1A7C6F0B0;
+  v6[3] = &unk_1E77E0818;
+  v6[4] = self;
+  [(IDSCTAdapter *)self _locked_accessCache:v6];
+}
+
+- (void)phoneNumberChanged:(id)a3
+{
+  v4 = MEMORY[0x1E69A6138];
+  v5 = a3;
+  v6 = [v4 sms];
+  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  {
+    *buf = 0;
+    _os_log_impl(&dword_1A7AD9000, v6, OS_LOG_TYPE_DEFAULT, "Phone number changed -- clearing value", buf, 2u);
+  }
+
+  v7[0] = MEMORY[0x1E69E9820];
+  v7[1] = 3221225472;
+  v7[2] = sub_1A7C6F208;
+  v7[3] = &unk_1E77E0818;
+  v7[4] = self;
+  [(IDSCTAdapter *)self _locked_accessCache:v7];
+  [(IDSCTAdapter *)self _iterateListenersForSelector:sel_SIMInformationDidChange block:&unk_1F1AAB840];
+  [(IDSCTAdapter *)self _checkRegistrationStateForContext:v5];
+}
+
+- (void)context:(id)a3 pnrSupportChanged:(BOOL)a4
+{
+  v5 = [MEMORY[0x1E69A6138] sms];
+  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  {
+    *v6 = 0;
+    _os_log_impl(&dword_1A7AD9000, v5, OS_LOG_TYPE_DEFAULT, "PNR support changed -- clearing value", v6, 2u);
+  }
+
+  [(IDSCTAdapter *)self subscriptionInfoDidChange];
+}
+
+- (void)pnrReadyStateNotification:(id)a3 regState:(BOOL)a4
+{
+  v5 = MEMORY[0x1E69A6138];
+  v6 = a3;
+  v7 = [v5 sms];
+  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  {
+    *buf = 0;
+    _os_log_impl(&dword_1A7AD9000, v7, OS_LOG_TYPE_DEFAULT, "PNR ready state changed -- clearing value", buf, 2u);
+  }
+
+  v8[0] = MEMORY[0x1E69E9820];
+  v8[1] = 3221225472;
+  v8[2] = sub_1A7C6F3D0;
+  v8[3] = &unk_1E77E0818;
+  v8[4] = self;
+  [(IDSCTAdapter *)self _locked_accessCache:v8];
+  [(IDSCTAdapter *)self _checkRegistrationStateForContext:v6];
+}
+
+- (void)carrierBundleChange:(id)a3
+{
+  v4 = [MEMORY[0x1E69A6138] sms];
+  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  {
+    *v5 = 0;
+    _os_log_impl(&dword_1A7AD9000, v4, OS_LOG_TYPE_DEFAULT, "Carrier bundle changed -- clearing value", v5, 2u);
+  }
+
+  [(IDSCTAdapter *)self _iterateListenersForSelector:sel_carrierBundleInformationDidChange block:&unk_1F1AAB860];
+  [(IDSCTAdapter *)self _iterateListenersForSelector:sel_SIMInformationDidChange block:&unk_1F1AAB880];
+}
+
+- (void)operatorBundleChange:(id)a3
+{
+  v4 = [MEMORY[0x1E69A6138] sms];
+  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  {
+    *v5 = 0;
+    _os_log_impl(&dword_1A7AD9000, v4, OS_LOG_TYPE_DEFAULT, "Operator bundle changed -- clearing value", v5, 2u);
+  }
+
+  [(IDSCTAdapter *)self _iterateListenersForSelector:sel_carrierBundleInformationDidChange block:&unk_1F1AAB8A0];
+  [(IDSCTAdapter *)self _iterateListenersForSelector:sel_SIMInformationDidChange block:&unk_1F1AAB8C0];
+}
+
+- (void)didDetectSimDeactivation:(id)a3 info:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  v8 = [MEMORY[0x1E69A6138] sms];
+  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  {
+    *buf = 0;
+    _os_log_impl(&dword_1A7AD9000, v8, OS_LOG_TYPE_DEFAULT, "Detected sim deactivation", buf, 2u);
+  }
+
+  v11[0] = MEMORY[0x1E69E9820];
+  v11[1] = 3221225472;
+  v11[2] = sub_1A7C6F6C0;
+  v11[3] = &unk_1E77E2668;
+  v12 = v6;
+  v13 = v7;
+  v9 = v7;
+  v10 = v6;
+  [(IDSCTAdapter *)self _iterateListenersForSelector:sel_SIM_didDeactivateWithInfo_ block:v11];
+}
+
+- (void)context:(id)a3 capabilitiesChanged:(id)a4
+{
+  v5 = [MEMORY[0x1E69A6138] sms];
+  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  {
+    *buf = 0;
+    _os_log_impl(&dword_1A7AD9000, v5, OS_LOG_TYPE_DEFAULT, "Sim capabilitiesChanged -- clearing value", buf, 2u);
+  }
+
+  v6[0] = MEMORY[0x1E69E9820];
+  v6[1] = 3221225472;
+  v6[2] = sub_1A7C6F808;
+  v6[3] = &unk_1E77E0818;
+  v6[4] = self;
+  [(IDSCTAdapter *)self _locked_accessCache:v6];
+}
+
+@end

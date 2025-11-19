@@ -1,0 +1,14 @@
+@interface LocationListSheetNavigationController.PresentationController
+- (_TtCC7Journal37LocationListSheetNavigationControllerP33_4C3A4C3AE07A41CEB38A55473D4742EF22PresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
+@end
+
+@implementation LocationListSheetNavigationController.PresentationController
+
+- (_TtCC7Journal37LocationListSheetNavigationControllerP33_4C3A4C3AE07A41CEB38A55473D4742EF22PresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+{
+  result = _swift_stdlib_reportUnimplementedInitializer();
+  __break(1u);
+  return result;
+}
+
+@end

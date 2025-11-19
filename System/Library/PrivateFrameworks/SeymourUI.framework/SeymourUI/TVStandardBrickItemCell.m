@@ -1,0 +1,46 @@
+@interface TVStandardBrickItemCell
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (void)prepareForReuse;
+@end
+
+@implementation TVStandardBrickItemCell
+
+- (void)prepareForReuse
+{
+  v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C762550);
+  MEMORY[0x28223BE20](v3 - 8);
+  v5 = &v10 - v4;
+  v6 = type metadata accessor for TVStandardBrickItemCell();
+  v11.receiver = self;
+  v11.super_class = v6;
+  v7 = self;
+  [(TVFocusableCollectionViewCell *)&v11 prepareForReuse];
+  v8 = type metadata accessor for ShelfCellItemInfo();
+  (*(*(v8 - 8) + 56))(v5, 1, 1, v8);
+  v9 = OBJC_IVAR____TtC9SeymourUI23TVStandardBrickItemCell_itemInfo;
+  swift_beginAccess();
+  sub_20B5DF2D4(v5, v7 + v9, &qword_27C762550);
+  swift_endAccess();
+  sub_20BA1DA88();
+}
+
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+{
+  height = a3.height;
+  width = a3.width;
+  v9 = self;
+  v10 = [(TVStandardBrickItemCell *)v9 contentView];
+  *&v11 = a4;
+  *&v12 = a5;
+  [v10 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v11, v12}];
+  v14 = v13;
+  v16 = v15;
+
+  v17 = v14;
+  v18 = v16;
+  result.height = v18;
+  result.width = v17;
+  return result;
+}
+
+@end

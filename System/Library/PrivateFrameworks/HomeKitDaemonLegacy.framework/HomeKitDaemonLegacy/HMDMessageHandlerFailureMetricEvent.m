@@ -1,0 +1,50 @@
+@interface HMDMessageHandlerFailureMetricEvent
+- (HMDMessageHandlerFailureMetricEvent)initWithFailureType:(unint64_t)a3 messageName:(id)a4;
+- (NSDictionary)coreAnalyticsEventDictionary;
+@end
+
+@implementation HMDMessageHandlerFailureMetricEvent
+
+- (NSDictionary)coreAnalyticsEventDictionary
+{
+  v9[2] = *MEMORY[0x277D85DE8];
+  v8[0] = @"messageName";
+  v3 = [(HMDMessageHandlerFailureMetricEvent *)self messageName];
+  v8[1] = @"failureType";
+  v9[0] = v3;
+  v4 = [(HMDMessageHandlerFailureMetricEvent *)self type];
+  v9[1] = v4;
+  v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:2];
+
+  v6 = *MEMORY[0x277D85DE8];
+
+  return v5;
+}
+
+- (HMDMessageHandlerFailureMetricEvent)initWithFailureType:(unint64_t)a3 messageName:(id)a4
+{
+  v7 = a4;
+  v12.receiver = self;
+  v12.super_class = HMDMessageHandlerFailureMetricEvent;
+  v8 = [(HMMLogEvent *)&v12 init];
+  v9 = v8;
+  if (v8)
+  {
+    objc_storeStrong(&v8->_messageName, a4);
+    if (a3 > 2)
+    {
+      v10 = @"unknown";
+    }
+
+    else
+    {
+      v10 = off_27972BB10[a3];
+    }
+
+    objc_storeStrong(&v9->_type, v10);
+  }
+
+  return v9;
+}
+
+@end

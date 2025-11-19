@@ -1,0 +1,174 @@
+@interface SKUIVideoImageDataConsumer
+- (CGSize)landscapeSize;
+- (CGSize)portraitSize;
+- (id)imageForColor:(id)a3 orientation:(unint64_t)a4;
+- (id)imageForImage:(id)a3;
+@end
+
+@implementation SKUIVideoImageDataConsumer
+
+- (id)imageForColor:(id)a3 orientation:(unint64_t)a4
+{
+  v6 = a3;
+  if (!os_variant_has_internal_content() || !_os_feature_enabled_impl() || !os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
+  {
+    if (v6)
+    {
+      goto LABEL_6;
+    }
+
+    goto LABEL_5;
+  }
+
+  [SKUIVideoImageDataConsumer imageForColor:orientation:];
+  if (!v6)
+  {
+LABEL_5:
+    colorScheme = self->_colorScheme;
+    v22 = 0;
+    SKUIIconColorsForColorScheme(colorScheme, &v22, 0, 0);
+    v6 = v22;
+  }
+
+LABEL_6:
+  v8 = *MEMORY[0x277CBF3A0];
+  v9 = *(MEMORY[0x277CBF3A0] + 8);
+  v10 = &OBJC_IVAR___SKUIVideoImageDataConsumer__portraitSize;
+  if (a4 == 2)
+  {
+    v10 = &OBJC_IVAR___SKUIVideoImageDataConsumer__landscapeSize;
+  }
+
+  v11 = (self + *v10);
+  v13 = *v11;
+  v12 = v11[1];
+  v14 = self->_backgroundColor != 0;
+  v15 = [MEMORY[0x277D759A0] mainScreen];
+  [v15 scale];
+  v17 = v16;
+  v24.width = v13;
+  v24.height = v12;
+  UIGraphicsBeginImageContextWithOptions(v24, v14, v17);
+
+  [v6 set];
+  v25.origin.x = v8;
+  v25.origin.y = v9;
+  v25.size.width = v13;
+  v25.size.height = v12;
+  UIRectFill(v25);
+  v18 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.2];
+  [v18 set];
+
+  v19 = [MEMORY[0x277D75208] bezierPathWithRect:{v8, v9, v13, v12}];
+  [v19 stroke];
+  v20 = UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext();
+
+  return v20;
+}
+
+- (id)imageForImage:(id)a3
+{
+  v4 = a3;
+  if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
+  {
+    [SKUIVideoImageDataConsumer imageForImage:];
+  }
+
+  [v4 size];
+  v7 = v5 > v6;
+  v8 = 2;
+  if (v5 <= v6)
+  {
+    v8 = 1;
+  }
+
+  if ((v8 & self->_allowedOrientations) == 0)
+  {
+    v9 = objc_alloc(MEMORY[0x277D755B8]);
+    v10 = [v4 CGImage];
+    [v4 scale];
+    v11 = [v9 initWithCGImage:v10 scale:2 orientation:?];
+
+    [v11 size];
+    v7 = self->_allowedOrientations == 2;
+    v4 = v11;
+  }
+
+  if (v7)
+  {
+    v12 = &OBJC_IVAR___SKUIVideoImageDataConsumer__landscapeSize;
+  }
+
+  else
+  {
+    v12 = &OBJC_IVAR___SKUIVideoImageDataConsumer__portraitSize;
+  }
+
+  v13 = *(&self->super.super.super.isa + *v12);
+  v14 = *MEMORY[0x277CBF3A0];
+  v15 = *(MEMORY[0x277CBF3A0] + 8);
+  v16 = v6 * (v13 / v5);
+  v17 = ceilf(v16);
+  v18 = self->_backgroundColor != 0;
+  [v4 scale];
+  v20 = v19;
+  v27.width = v13;
+  v27.height = v17;
+  UIGraphicsBeginImageContextWithOptions(v27, v18, v20);
+  backgroundColor = self->_backgroundColor;
+  if (backgroundColor)
+  {
+    [(UIColor *)backgroundColor set];
+    v28.origin.x = v14;
+    v28.origin.y = v15;
+    v28.size.width = v13;
+    v28.size.height = v17;
+    UIRectFill(v28);
+  }
+
+  [v4 drawInRect:{v14, v15, v13, v17}];
+  v22 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.2];
+  [v22 set];
+
+  v23 = [MEMORY[0x277D75208] bezierPathWithRect:{v14, v15, v13, v17}];
+  [v23 stroke];
+  v24 = UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext();
+
+  return v24;
+}
+
+- (CGSize)landscapeSize
+{
+  width = self->_landscapeSize.width;
+  height = self->_landscapeSize.height;
+  result.height = height;
+  result.width = width;
+  return result;
+}
+
+- (CGSize)portraitSize
+{
+  width = self->_portraitSize.width;
+  height = self->_portraitSize.height;
+  result.height = height;
+  result.width = width;
+  return result;
+}
+
+- (void)imageForColor:orientation:.cold.1()
+{
+  v2 = *MEMORY[0x277D85DE8];
+  v0 = 136446210;
+  v1 = "[SKUIVideoImageDataConsumer imageForColor:orientation:]";
+}
+
+- (void)imageForImage:.cold.1()
+{
+  v2 = *MEMORY[0x277D85DE8];
+  v0 = 136446210;
+  v1 = "[SKUIVideoImageDataConsumer imageForImage:]";
+}
+
+@end

@@ -1,0 +1,558 @@
+@interface IMAPServiceBodyLoadMonitor
++ (id)_headersToPreserve;
+- (BOOL)progressiveBodyLoadHasStartedForRecord:(void *)a3;
+- (id)_createHeaderDictionaryForData:(id)a3;
+- (id)initForService:(id)a3;
+- (void)_activityCompleted:(id)a3;
+- (void)_postDataAvailableWithUserInfo:(id)a3;
+- (void)dealloc;
+- (void)lengthsOfBodyLoadForRecord:(void *)a3 expected:(unsigned int *)a4 current:(unsigned int *)a5;
+- (void)progressiveMimeParser:(id)a3 beganDataForMimePart:(id)a4;
+- (void)progressiveMimeParser:(id)a3 failedWithError:(id)a4;
+- (void)progressiveMimeParser:(id)a3 finishedMimePart:(id)a4;
+@end
+
+@implementation IMAPServiceBodyLoadMonitor
+
++ (id)_headersToPreserve
+{
+  [a1 mf_lock];
+  if (!qword_10010D7A0)
+  {
+    v3 = [[NSArray alloc] initWithObjects:{@"x-applevm-duration", 0}];
+    v4 = qword_10010D7A0;
+    qword_10010D7A0 = v3;
+  }
+
+  [a1 mf_unlock];
+  v5 = qword_10010D7A0;
+
+  return v5;
+}
+
+- (id)initForService:(id)a3
+{
+  v4 = a3;
+  v17.receiver = self;
+  v17.super_class = IMAPServiceBodyLoadMonitor;
+  v5 = [(IMAPServiceBodyLoadMonitor *)&v17 init];
+  v6 = v5;
+  if (v5)
+  {
+    objc_storeWeak(&v5->_service, v4);
+    v6->mambaID = [v4 getServiceObjLogPrefix];
+    v7 = +[NSMapTable strongToStrongObjectsMapTable];
+    loadContextsByLibraryId = v6->_loadContextsByLibraryId;
+    v6->_loadContextsByLibraryId = v7;
+
+    v9 = sub_100015F94();
+    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    {
+      mambaID = v6->mambaID;
+      v11 = objc_opt_class();
+      *buf = 136316162;
+      v19 = mambaID;
+      v20 = 2080;
+      v21 = " ";
+      v22 = 2112;
+      v23 = v11;
+      v24 = 2048;
+      v25 = v6;
+      v26 = 2112;
+      v27 = v4;
+      v12 = v11;
+      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#I %s%s%@ %p with service %@ created", buf, 0x34u);
+    }
+
+    v13 = +[NSNotificationCenter defaultCenter];
+    WeakRetained = objc_loadWeakRetained(&v6->_service);
+    [v13 addObserver:v6 selector:"_activityCompleted:" name:@"VVServiceTaskEndedNotification" object:WeakRetained];
+
+    v15 = objc_loadWeakRetained(&v6->_service);
+    [v13 addObserver:v6 selector:"_activityCompleted:" name:@"VVServiceTaskCancelledNotification" object:v15];
+  }
+
+  return v6;
+}
+
+- (void)dealloc
+{
+  v3 = +[NSNotificationCenter defaultCenter];
+  [v3 removeObserver:self];
+
+  v4 = sub_100015F94();
+  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  {
+    mambaID = self->mambaID;
+    *buf = 136315906;
+    v9 = mambaID;
+    v10 = 2080;
+    v11 = " ";
+    v12 = 2112;
+    v13 = objc_opt_class();
+    v14 = 2048;
+    v15 = self;
+    v6 = v13;
+    _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "#I %s%s%@ %p deleted", buf, 0x2Au);
+  }
+
+  v7.receiver = self;
+  v7.super_class = IMAPServiceBodyLoadMonitor;
+  [(IMAPServiceBodyLoadMonitor *)&v7 dealloc];
+}
+
+- (id)_createHeaderDictionaryForData:(id)a3
+{
+  v3 = a3;
+  v4 = [[MFMessageHeaders alloc] initWithHeaderData:v3 encoding:0xFFFFFFFFLL];
+  v5 = objc_alloc_init(NSMutableDictionary);
+  v6 = H_CONTENT_TYPE;
+  v7 = [v4 firstHeaderForKey:H_CONTENT_TYPE];
+  if (v7)
+  {
+    [v5 setObject:v7 forKey:v6];
+  }
+
+  v8 = H_CONTENT_TRANSFER_ENCODING;
+  v9 = [v4 firstHeaderForKey:H_CONTENT_TRANSFER_ENCODING];
+
+  if (v9)
+  {
+    [v5 setObject:v9 forKey:v8];
+  }
+
+  v10 = [objc_opt_class() _headersToPreserve];
+  v11 = [v10 count];
+  if (v11)
+  {
+    for (i = 0; i != v11; ++i)
+    {
+      v13 = [v10 objectAtIndex:i];
+      v14 = [v4 firstHeaderForKey:v13];
+
+      if (v14)
+      {
+        [v5 setObject:v14 forKey:v13];
+      }
+
+      v9 = v14;
+    }
+  }
+
+  else
+  {
+    v14 = v9;
+  }
+
+  return v5;
+}
+
+- (void)_activityCompleted:(id)a3
+{
+  v4 = a3;
+  v5 = [v4 userInfo];
+  v6 = v5;
+  if (v5)
+  {
+    v7 = [v5 objectForKey:@"VVTaskType"];
+    v8 = [v7 intValue];
+
+    v9 = [v6 objectForKey:@"VVRecord"];
+    if (v9 && v8 == 2)
+    {
+      WeakRetained = objc_loadWeakRetained(&self->_service);
+      v12 = [WeakRetained getAccountStore];
+      v13 = sub_100092784(v12, v9);
+
+      [(IMAPServiceBodyLoadMonitor *)self mf_lock];
+      if (v13 >= 1)
+      {
+        v14 = [(IMAPServiceBodyLoadMonitor *)self contextForLibraryId:v13 create:0];
+        if (v14)
+        {
+          v15 = sub_100015F94();
+          if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+          {
+            mambaID = self->mambaID;
+            v19 = 136315650;
+            v20 = mambaID;
+            v21 = 2080;
+            v22 = " ";
+            v23 = 2112;
+            v24 = v14;
+            _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "#I %s%sBody context %@ left hanging around after activity completion - time to clean it up.", &v19, 0x20u);
+          }
+
+          [v14 cleanUpErroredFile];
+          v17 = [(IMAPServiceBodyLoadMonitor *)self loadContextsByLibraryId];
+          v18 = [NSNumber numberWithInt:v13];
+          [v17 removeObjectForKey:v18];
+        }
+      }
+
+      [(IMAPServiceBodyLoadMonitor *)self mf_unlock];
+    }
+  }
+}
+
+- (BOOL)progressiveBodyLoadHasStartedForRecord:(void *)a3
+{
+  if (a3)
+  {
+    WeakRetained = objc_loadWeakRetained(&self->_service);
+    v6 = [WeakRetained getAccountStore];
+    v7 = sub_100092784(v6, a3);
+
+    if (v7 < 1)
+    {
+      return 0;
+    }
+  }
+
+  else
+  {
+    v7 = 0x7FFFFFFFLL;
+  }
+
+  [(IMAPServiceBodyLoadMonitor *)self mf_lock];
+  v9 = [(IMAPServiceBodyLoadMonitor *)self contextForLibraryId:v7 create:0];
+  v10 = v9;
+  if (v9)
+  {
+    v8 = [v9 loadHasStarted];
+  }
+
+  else
+  {
+    v8 = 0;
+  }
+
+  [(IMAPServiceBodyLoadMonitor *)self mf_unlock];
+
+  return v8;
+}
+
+- (void)lengthsOfBodyLoadForRecord:(void *)a3 expected:(unsigned int *)a4 current:(unsigned int *)a5
+{
+  if (a3)
+  {
+    WeakRetained = objc_loadWeakRetained(&self->_service);
+    v9 = [WeakRetained getAccountStore];
+    v10 = sub_100092784(v9, a3);
+
+    if (v10 < 1)
+    {
+      return;
+    }
+  }
+
+  else
+  {
+    v10 = 0x7FFFFFFFLL;
+  }
+
+  [(IMAPServiceBodyLoadMonitor *)self mf_lock];
+  v12 = [(IMAPServiceBodyLoadMonitor *)self contextForLibraryId:v10 create:0];
+  if (v12)
+  {
+    if (a4)
+    {
+      *a4 = [v12 expectedLength];
+    }
+
+    if (a5)
+    {
+      *a5 = [v12 currentOffset];
+    }
+  }
+
+  [(IMAPServiceBodyLoadMonitor *)self mf_unlock];
+}
+
+- (void)progressiveMimeParser:(id)a3 beganDataForMimePart:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  v8 = sub_100015F94();
+  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  {
+    mambaID = self->mambaID;
+    v10 = [v7 type];
+    *buf = 136315650;
+    v57 = mambaID;
+    v58 = 2080;
+    v59 = " ";
+    v60 = 2112;
+    v61 = v10;
+    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#I %s%sVVPARSE BEGIN DATA for type [%@]", buf, 0x20u);
+  }
+
+  v11 = [v7 type];
+  if ([v11 isEqualToString:@"audio"])
+  {
+    v12 = [v7 subtype];
+    v13 = [v12 isEqualToString:@"amr"];
+  }
+
+  else
+  {
+    v13 = 0;
+  }
+
+  v14 = +[MFAttachmentManager defaultManager];
+  v15 = [v7 attachmentURLs];
+  v16 = [v15 firstObject];
+  v17 = [v14 attachmentForURL:v16 error:0];
+
+  if ((v13 & 1) != 0 || [v7 isAttachment] && (objc_msgSend(v17, "inferredMimeType"), v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v29, "isEqualToString:", @"audio/amr"), v29, v30))
+  {
+    v18 = [v6 context];
+    v19 = [v7 contentTransferEncoding];
+    v55 = [v7 dispositionParameterForKey:@"size"];
+    v54 = [v7 preservedHeaderValueForKey:@"x-applevm-duration"];
+    v20 = [v19 isEqualToString:@"base64"];
+    *(v18 + 64) = *(v18 + 64) & 0xFE | v20;
+    if (!((v19 == 0) | v20 & 1))
+    {
+      v27 = sub_100015F94();
+      if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+      {
+        v31 = self->mambaID;
+        *buf = 136315394;
+        v57 = v31;
+        v58 = 2080;
+        v59 = " ";
+        _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "#I %s%sBad content transfer encoding; skipping body load", buf, 0x16u);
+      }
+
+      goto LABEL_39;
+    }
+
+    v21 = *(v18 + 24) == 0x7FFFFFFF;
+    WeakRetained = objc_loadWeakRetained(&self->_service);
+    v23 = WeakRetained;
+    if (v21)
+    {
+      v24 = [WeakRetained accountDir];
+      v26 = sub_1000856A8(v24, v25);
+      v27 = [v26 path];
+
+      v28 = 0;
+    }
+
+    else
+    {
+      v32 = [WeakRetained getAccountStore];
+      v28 = sub_1000931E8(v32, *(v18 + 24));
+
+      if (!v28)
+      {
+        v27 = 0;
+LABEL_39:
+
+        goto LABEL_40;
+      }
+
+      v33 = [v54 intValue];
+      if (v33)
+      {
+        v34 = objc_loadWeakRetained(&self->_service);
+        v35 = [v34 getAccountStore];
+        sub_100092944(v35, v28, v33);
+
+        v36 = objc_loadWeakRetained(&self->_service);
+        v37 = [v36 getAccountStore];
+        [v37 save];
+      }
+
+      v23 = objc_loadWeakRetained(&self->_service);
+      v24 = [v23 getAccountStore];
+      v27 = sub_100092DDC(v24, v28);
+    }
+
+    if (v27)
+    {
+      v38 = sub_100015F94();
+      if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
+      {
+        v39 = self->mambaID;
+        *buf = 136315650;
+        v57 = v39;
+        v58 = 2080;
+        v59 = " ";
+        v60 = 2112;
+        v61 = v27;
+        _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "#I %s%sVVPARSE COPYING DATA TO %@", buf, 0x20u);
+      }
+
+      v40 = v27;
+      v41 = open([v27 fileSystemRepresentation], 1538, 448);
+      *(v18 + 28) = v41;
+      if (v41 < 0)
+      {
+        v47 = [[NSString alloc] initWithFormat:@"Unable to open file for writing: %@", v27];
+        v48 = [NSError errorWithDomain:kVVErrorDomain code:1010 localizedDescription:v47];
+        v49 = +[MFActivityMonitor currentTracebleMonitor];
+        [v49 setError:v48];
+      }
+
+      else
+      {
+        if ([v55 length])
+        {
+          v42 = objc_alloc_init(NSMutableDictionary);
+          v43 = *(v18 + 48);
+          *(v18 + 48) = v42;
+
+          v44 = [NSNumber alloc];
+          v45 = objc_loadWeakRetained(&self->_service);
+          if (v45)
+          {
+            self = objc_loadWeakRetained(&self->_service);
+            v46 = [(IMAPServiceBodyLoadMonitor *)self currentTaskType];
+          }
+
+          else
+          {
+            v46 = 0;
+          }
+
+          v50 = [v44 initWithInt:v46];
+          if (v45)
+          {
+          }
+
+          [*(v18 + 48) setObject:v50 forKey:@"VVTaskType"];
+          v52 = [v55 intValue];
+          v53 = [[NSNumber alloc] initWithUnsignedInt:v52];
+          [*(v18 + 48) setObject:v53 forKey:@"VVExpectedDataLength"];
+          [v18 setExpectedLength:v52];
+          if (v28)
+          {
+            [*(v18 + 48) setObject:v28 forKey:@"VVRecord"];
+          }
+        }
+
+        else
+        {
+          v50 = sub_100015F94();
+          if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
+          {
+            v51 = self->mambaID;
+            *buf = 136315394;
+            v57 = v51;
+            v58 = 2080;
+            v59 = " ";
+            _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_DEFAULT, "#I %s%sNo size value; streaming disabled", buf, 0x16u);
+          }
+        }
+
+        [v18 writeDataIfNeeded];
+      }
+    }
+
+    if (v28)
+    {
+      CFRelease(v28);
+    }
+
+    goto LABEL_39;
+  }
+
+LABEL_40:
+}
+
+- (void)progressiveMimeParser:(id)a3 finishedMimePart:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  v8 = sub_100015F94();
+  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  {
+    mambaID = self->mambaID;
+    v10 = [v7 type];
+    v16 = 136315650;
+    v17 = mambaID;
+    v18 = 2080;
+    v19 = " ";
+    v20 = 2112;
+    v21 = v10;
+    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#I %s%sVVPARSE FINISH for type [%@]", &v16, 0x20u);
+  }
+
+  v11 = [v6 context];
+  v12 = v11;
+  if (v11 && (v11[7] & 0x80000000) == 0)
+  {
+    [v11 setMimePartFinishedLoading:1];
+    [v12 writeDataIfNeeded];
+    close(v12[7]);
+    v12[7] = -1;
+    v13 = v12[6] == 0x7FFFFFFF;
+    WeakRetained = objc_loadWeakRetained(&self->_service);
+    v15 = WeakRetained;
+    if (v13)
+    {
+      [WeakRetained _setGreetingCached:1];
+    }
+
+    else
+    {
+      [WeakRetained _setDataForRecordWithIdentifier:v12[6]];
+    }
+  }
+}
+
+- (void)_postDataAvailableWithUserInfo:(id)a3
+{
+  v4 = a3;
+  v5 = sub_100015F94();
+  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  {
+    mambaID = self->mambaID;
+    WeakRetained = objc_loadWeakRetained(&self->_service);
+    v10 = 136315906;
+    v11 = mambaID;
+    v12 = 2080;
+    v13 = " ";
+    v14 = 2112;
+    v15 = WeakRetained;
+    v16 = 2112;
+    v17 = v4;
+    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#I %s%sPosting VVServiceDataAvailableNotification service %@ with userInfo %@", &v10, 0x2Au);
+  }
+
+  v8 = +[NSNotificationCenter defaultCenter];
+  v9 = objc_loadWeakRetained(&self->_service);
+  [v8 postNotificationName:@"VVServiceDataAvailableNotification" object:v9 userInfo:v4];
+}
+
+- (void)progressiveMimeParser:(id)a3 failedWithError:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  v8 = sub_100015F94();
+  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  {
+    mambaID = self->mambaID;
+    v13 = 136315650;
+    v14 = mambaID;
+    v15 = 2080;
+    v16 = " ";
+    v17 = 2112;
+    v18 = v7;
+    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#I %s%sVVPARSE FAIL with error %@", &v13, 0x20u);
+  }
+
+  v10 = +[MFActivityMonitor currentTracebleMonitor];
+  [v10 setError:v7];
+
+  v11 = [v6 context];
+  v12 = v11;
+  if (v11 && (v11[7] & 0x80000000) == 0)
+  {
+    [v11 cleanUpErroredFile];
+  }
+}
+
+@end

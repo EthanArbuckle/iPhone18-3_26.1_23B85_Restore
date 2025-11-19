@@ -1,0 +1,889 @@
+@interface FPDVolumeManager
+- (BOOL)loadEnterpriseVolumeWithError:(id *)a3;
+- (BOOL)loadHomeVolume;
+- (FPDServer)server;
+- (FPDVolumeManager)initWithServer:(id)a3;
+- (id)defaultVolumeForCurrentPersona;
+- (id)getGenstoreVersionsRootURL:(id)a3 volumeIgnoringOwnership:(BOOL)a4;
+- (id)libraryForVolume:(id)a3 createIfNeeded:(BOOL)a4 error:(id *)a5;
+- (statfs)getAllEligibleVolumesWithError:(id *)a3 count:(int *)a4;
+- (void)defaultVolumeForCurrentPersona;
+- (void)enumerateLibrariesForPersona:(id)a3 withBlock:(id)a4;
+- (void)enumerateLibrariesWithBlock:(id)a3;
+- (void)invalidateDevice:(int)a3 reason:(id)a4;
+- (void)invalidateVolume:(id)a3 reason:(id)a4;
+- (void)loadAdditionalVolumesWithCompletion:(id)a3;
+- (void)loadHomeVolume;
+- (void)unregisterVersionsFileCoordinatorForVolume:(id)a3;
+@end
+
+@implementation FPDVolumeManager
+
+- (FPDVolumeManager)initWithServer:(id)a3
+{
+  v4 = a3;
+  v17.receiver = self;
+  v17.super_class = FPDVolumeManager;
+  v5 = [(FPDVolumeManager *)&v17 init];
+  v6 = v5;
+  if (v5)
+  {
+    objc_storeWeak(&v5->_server, v4);
+    v7 = objc_opt_new();
+    volumes = v6->_volumes;
+    v6->_volumes = v7;
+
+    v9 = objc_opt_new();
+    versionsProvidersByVolumeID = v6->_versionsProvidersByVolumeID;
+    v6->_versionsProvidersByVolumeID = v9;
+
+    delegate = v6->_delegate;
+    v6->_delegate = 0;
+
+    v12 = os_log_create("com.apple.FileProvider", "volumes");
+    log = v6->_log;
+    v6->_log = v12;
+
+    v14 = v6->_log;
+    v16 = fpfs_adopt_log();
+    __fp_pop_log();
+  }
+
+  return v6;
+}
+
+- (statfs)getAllEligibleVolumesWithError:(id *)a3 count:(int *)a4
+{
+  v22 = *MEMORY[0x1E69E9840];
+  v6 = getfsstat(0, 0, 2);
+  if ((v6 & 0x80000000) == 0)
+  {
+    v7 = v6;
+    section = __fp_create_section();
+    v8 = fp_current_or_default_log();
+    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    {
+      [FPDVolumeManager getAllEligibleVolumesWithError:? count:?];
+    }
+
+    v9 = 2168 * v7;
+    v10 = malloc_type_malloc((2168 * v7), 0xD363677AuLL);
+    v11 = v10;
+    if (v10)
+    {
+      v12 = getfsstat(v10, v9, 2);
+      if ((v12 & 0x80000000) == 0)
+      {
+        *a4 = v12;
+LABEL_21:
+        __fp_leave_section_Error();
+        goto LABEL_22;
+      }
+
+      v15 = fp_current_or_default_log();
+      if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      {
+        v16 = __error();
+        v17 = strerror(*v16);
+        [(FPDVolumeManager *)v17 getAllEligibleVolumesWithError:v21 count:v15];
+      }
+
+      if (a3)
+      {
+        *a3 = [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:*__error()];
+      }
+
+      free(v11);
+    }
+
+    else
+    {
+      v14 = fp_current_or_default_log();
+      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      {
+        [FPDVolumeManager getAllEligibleVolumesWithError:v14 count:?];
+      }
+
+      if (a3)
+      {
+        [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:12];
+        *a3 = v11 = 0;
+        goto LABEL_21;
+      }
+    }
+
+    v11 = 0;
+    goto LABEL_21;
+  }
+
+  v13 = fp_current_or_default_log();
+  if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+  {
+    [FPDVolumeManager getAllEligibleVolumesWithError:v13 count:?];
+  }
+
+  if (a3)
+  {
+    [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:*__error()];
+    *a3 = v11 = 0;
+  }
+
+  else
+  {
+    v11 = 0;
+  }
+
+LABEL_22:
+  v18 = *MEMORY[0x1E69E9840];
+  return v11;
+}
+
+BOOL __42__FPDVolumeManager_loadSingleVolume_role___block_invoke(uint64_t a1, void *a2, void *a3)
+{
+  v5 = a2;
+  v6 = a3;
+  objc_opt_class();
+  if ((objc_opt_isKindOfClass() & 1) == 0)
+  {
+    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[ASSERT] ‼️ Only FPDVolume are allowed to be evaluated."];
+    v10 = fp_current_or_default_log();
+    if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
+    {
+      __103__FPDDomainExtensionBackend_startProvidingItemAtURL_readerID_readingOptions_request_completionHandler___block_invoke_2_259_cold_5();
+    }
+
+    __assert_rtn("-[FPDVolumeManager loadSingleVolume:role:]_block_invoke", "/Library/Caches/com.apple.xbs/Sources/FileProviderTools/fileproviderd/FPDVolumeManager.m", 190, [v9 UTF8String]);
+  }
+
+  v7 = [v5 dev] == *(*(a1 + 32) + 48);
+
+  return v7;
+}
+
+- (BOOL)loadEnterpriseVolumeWithError:(id *)a3
+{
+  log = self->_log;
+  v14 = fpfs_adopt_log();
+  section = __fp_create_section();
+  v6 = fp_current_or_default_log();
+  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+  {
+    [FPDVolumeManager loadEnterpriseVolumeWithError:];
+  }
+
+  v7 = [MEMORY[0x1E69DF068] sharedManager];
+  v8 = [v7 currentPersona];
+
+  if (([v8 isEnterprisePersona] & 1) == 0)
+  {
+    v9 = fp_current_or_default_log();
+    if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
+    {
+      [FPDVolumeManager loadEnterpriseVolumeWithError:v9];
+    }
+  }
+
+  v10 = [MEMORY[0x1E695DFF8] fp_personaSharedDirectory];
+  v11 = [(FPDVolumeManager *)self loadVolumeWithURL:v10 role:2 error:a3];
+
+  __fp_leave_section_Debug();
+  __fp_pop_log();
+
+  return v11;
+}
+
+- (BOOL)loadHomeVolume
+{
+  v15 = *MEMORY[0x1E69E9840];
+  log = self->_log;
+  v13 = fpfs_adopt_log();
+  v12[1] = __fp_create_section();
+  v4 = fp_current_or_default_log();
+  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+  {
+    [FPDVolumeManager loadHomeVolume];
+  }
+
+  v5 = [MEMORY[0x1E695DFF8] fp_homeDirectory];
+  v12[0] = 0;
+  v6 = [(FPDVolumeManager *)self loadVolumeWithURL:v5 role:1 error:v12];
+  v7 = v12[0];
+  if (!v6)
+  {
+    v8 = fp_current_or_default_log();
+    if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
+    {
+      v9 = [v7 fp_prettyDescription];
+      [(FPDVolumeManager *)v9 loadHomeVolume];
+    }
+  }
+
+  __fp_leave_section_Debug();
+  __fp_pop_log();
+
+  v10 = *MEMORY[0x1E69E9840];
+  return 1;
+}
+
+- (void)loadAdditionalVolumesWithCompletion:(id)a3
+{
+  v4 = a3;
+  log = self->_log;
+  v6 = fpfs_adopt_log();
+  if ((FPFeatureFlagEbihilIsEnabled() & 1) == 0)
+  {
+    v4[2](v4, 0);
+  }
+
+  __fp_pop_log();
+}
+
+- (id)libraryForVolume:(id)a3 createIfNeeded:(BOOL)a4 error:(id *)a5
+{
+  v27 = *MEMORY[0x1E69E9840];
+  v7 = a3;
+  v20 = 0;
+  v21 = &v20;
+  v22 = 0x3032000000;
+  v23 = __Block_byref_object_copy__3;
+  v24 = __Block_byref_object_dispose__3;
+  v25 = 0;
+  v14 = MEMORY[0x1E69E9820];
+  v15 = 3221225472;
+  v16 = __58__FPDVolumeManager_libraryForVolume_createIfNeeded_error___block_invoke;
+  v17 = &unk_1E83BF298;
+  v8 = v7;
+  v18 = v8;
+  v19 = &v20;
+  [(FPDVolumeManager *)self enumerateLibrariesWithBlock:&v14];
+  if (!v21[5])
+  {
+    v9 = fp_current_or_default_log();
+    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    {
+      v10 = [v8 fp_UUID];
+      [FPDVolumeManager libraryForVolume:v10 createIfNeeded:v26 error:v9];
+    }
+
+    if (a5)
+    {
+      *a5 = [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:6];
+    }
+  }
+
+  v11 = v21[5];
+
+  _Block_object_dispose(&v20, 8);
+  v12 = *MEMORY[0x1E69E9840];
+
+  return v11;
+}
+
+uint64_t __58__FPDVolumeManager_libraryForVolume_createIfNeeded_error___block_invoke(uint64_t a1, void *a2)
+{
+  v4 = a2;
+  v5 = [v4 uuid];
+  v6 = [v5 isEqual:*(a1 + 32)];
+
+  if (v6)
+  {
+    objc_storeStrong((*(*(a1 + 40) + 8) + 40), a2);
+  }
+
+  return v6 ^ 1u;
+}
+
+- (void)enumerateLibrariesForPersona:(id)a3 withBlock:(id)a4
+{
+  v60 = *MEMORY[0x1E69E9840];
+  v6 = a3;
+  v45 = a4;
+  v46 = v6;
+  if (v6)
+  {
+    v7 = [MEMORY[0x1E69DF068] sharedManager];
+    v8 = [v7 currentPersona];
+
+    *buf = 0;
+    v9 = [v8 userPersonaUniqueString];
+    v10 = v9;
+    if (v9 == v6 || ([v9 isEqualToString:?] & 1) != 0 || !voucher_process_can_use_arbitrary_personas())
+    {
+      v15 = 0;
+    }
+
+    else
+    {
+      v54 = 0;
+      v11 = [v8 copyCurrentPersonaContextWithError:&v54];
+      v12 = v54;
+      v13 = *buf;
+      *buf = v11;
+
+      if (v12)
+      {
+        v14 = fp_current_or_default_log();
+        if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+        {
+          [FPDProviderDescriptor initWithExtensionRecord:];
+        }
+      }
+
+      v15 = [v8 generateAndRestorePersonaContextWithPersonaUniqueString:v6];
+
+      if (v15)
+      {
+        v16 = fp_current_or_default_log();
+        if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+        {
+          [FPDVolumeManager enumerateLibrariesForPersona:withBlock:];
+        }
+      }
+    }
+
+    v17 = [MEMORY[0x1E69DF068] sharedManager];
+    v18 = [v17 currentPersona];
+
+    if ([v18 isEnterprisePersona])
+    {
+      v53 = 0;
+      v19 = [(FPDVolumeManager *)self loadEnterpriseVolumeWithError:&v53];
+      v20 = v53;
+      if (!v19)
+      {
+        v21 = fp_current_or_default_log();
+        if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+        {
+          v22 = [v20 fp_prettyDescription];
+          [(FPDVolumeManager *)v6 enumerateLibrariesForPersona:v22 withBlock:v59, v21];
+        }
+      }
+
+      v23 = 1;
+    }
+
+    else
+    {
+      v23 = 0;
+    }
+
+    _FPRestorePersona();
+  }
+
+  else
+  {
+    v23 = 0;
+  }
+
+  v24 = self;
+  objc_sync_enter(v24);
+  v25 = [(NSMutableArray *)v24->_volumes copy];
+  objc_sync_exit(v24);
+
+  v51 = 0u;
+  v52 = 0u;
+  v49 = 0u;
+  v50 = 0u;
+  v26 = v25;
+  v27 = [v26 countByEnumeratingWithState:&v49 objects:v58 count:16];
+  if (v27)
+  {
+    v29 = *v50;
+    *&v28 = 138412546;
+    v44 = v28;
+LABEL_25:
+    v30 = 0;
+    while (1)
+    {
+      if (*v50 != v29)
+      {
+        objc_enumerationMutation(v26);
+      }
+
+      v31 = *(*(&v49 + 1) + 8 * v30);
+      if (v23 == ([v31 role] == 2))
+      {
+        v32 = [MEMORY[0x1E69DF068] sharedManager];
+        v33 = [v32 currentPersona];
+
+        v48 = 0;
+        v34 = [v33 userPersonaUniqueString];
+        v35 = v34;
+        if (v34 == v46 || ([v34 isEqualToString:?] & 1) != 0 || !voucher_process_can_use_arbitrary_personas())
+        {
+          v40 = 0;
+        }
+
+        else
+        {
+          v47 = 0;
+          v36 = [v33 copyCurrentPersonaContextWithError:&v47];
+          v37 = v47;
+          v38 = v48;
+          v48 = v36;
+
+          if (v37)
+          {
+            v39 = fp_current_or_default_log();
+            if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
+            {
+              *buf = 138412290;
+              *&buf[4] = v37;
+              _os_log_error_impl(&dword_1CEFC7000, v39, OS_LOG_TYPE_ERROR, "[ERROR] won't restore persona: %@", buf, 0xCu);
+            }
+          }
+
+          v40 = [v33 generateAndRestorePersonaContextWithPersonaUniqueString:v46];
+
+          if (v40)
+          {
+            v41 = fp_current_or_default_log();
+            if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
+            {
+              *buf = v44;
+              *&buf[4] = v46;
+              v56 = 2112;
+              v57 = v40;
+              _os_log_error_impl(&dword_1CEFC7000, v41, OS_LOG_TYPE_ERROR, "[ERROR] Can't adopt persona %@: %@", buf, 0x16u);
+            }
+          }
+        }
+
+        v42 = v45[2](v45, v31);
+
+        _FPRestorePersona();
+        if (!v42)
+        {
+          break;
+        }
+      }
+
+      if (v27 == ++v30)
+      {
+        v27 = [v26 countByEnumeratingWithState:&v49 objects:v58 count:16];
+        if (v27)
+        {
+          goto LABEL_25;
+        }
+
+        break;
+      }
+    }
+  }
+
+  v43 = *MEMORY[0x1E69E9840];
+}
+
+- (void)enumerateLibrariesWithBlock:(id)a3
+{
+  v17 = *MEMORY[0x1E69E9840];
+  v4 = a3;
+  v5 = self;
+  objc_sync_enter(v5);
+  v6 = [(NSMutableArray *)v5->_volumes copy];
+  objc_sync_exit(v5);
+
+  v14 = 0u;
+  v15 = 0u;
+  v12 = 0u;
+  v13 = 0u;
+  v7 = v6;
+  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  if (v8)
+  {
+    v9 = *v13;
+LABEL_3:
+    v10 = 0;
+    while (1)
+    {
+      if (*v13 != v9)
+      {
+        objc_enumerationMutation(v7);
+      }
+
+      if ((v4[2](v4, *(*(&v12 + 1) + 8 * v10)) & 1) == 0)
+      {
+        break;
+      }
+
+      if (v8 == ++v10)
+      {
+        v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        if (v8)
+        {
+          goto LABEL_3;
+        }
+
+        break;
+      }
+    }
+  }
+
+  v11 = *MEMORY[0x1E69E9840];
+}
+
+- (id)defaultVolumeForCurrentPersona
+{
+  v3 = [MEMORY[0x1E69DF068] sharedManager];
+  v4 = [v3 currentPersona];
+
+  v5 = [v4 isEnterprisePersona];
+  v6 = fp_current_or_default_log();
+  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+  {
+    [(FPDVolumeManager *)v5 defaultVolumeForCurrentPersona];
+  }
+
+  v11 = 0;
+  v12 = &v11;
+  v13 = 0x3032000000;
+  v14 = __Block_byref_object_copy__3;
+  v15 = __Block_byref_object_dispose__3;
+  v16 = 0;
+  v9[0] = MEMORY[0x1E69E9820];
+  v9[1] = 3221225472;
+  v9[2] = __50__FPDVolumeManager_defaultVolumeForCurrentPersona__block_invoke;
+  v9[3] = &unk_1E83BF2C0;
+  v10 = v5;
+  v9[4] = &v11;
+  [(FPDVolumeManager *)self enumerateLibrariesWithBlock:v9];
+  v7 = v12[5];
+  _Block_object_dispose(&v11, 8);
+
+  return v7;
+}
+
+uint64_t __50__FPDVolumeManager_defaultVolumeForCurrentPersona__block_invoke(uint64_t a1, void *a2)
+{
+  v4 = a2;
+  v5 = v4;
+  if ((*(a1 + 40) & 1) == 0)
+  {
+    if ([v4 role] == 1)
+    {
+      goto LABEL_5;
+    }
+
+    if ((*(a1 + 40) & 1) == 0)
+    {
+LABEL_7:
+      v6 = 1;
+      goto LABEL_8;
+    }
+  }
+
+  if ([v5 role] != 2)
+  {
+    goto LABEL_7;
+  }
+
+LABEL_5:
+  objc_storeStrong((*(*(a1 + 32) + 8) + 40), a2);
+  v6 = 0;
+LABEL_8:
+
+  return v6;
+}
+
+- (void)invalidateDevice:(int)a3 reason:(id)a4
+{
+  v22 = *MEMORY[0x1E69E9840];
+  v6 = a4;
+  v7 = self;
+  objc_sync_enter(v7);
+  v15 = 0u;
+  v16 = 0u;
+  v17 = 0u;
+  v18 = 0u;
+  v8 = v7->_volumes;
+  v9 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v15 objects:v21 count:16];
+  if (v9)
+  {
+    v10 = *v16;
+    while (2)
+    {
+      for (i = 0; i != v9; i = i + 1)
+      {
+        if (*v16 != v10)
+        {
+          objc_enumerationMutation(v8);
+        }
+
+        v12 = *(*(&v15 + 1) + 8 * i);
+        if ([v12 dev] == a3)
+        {
+          v9 = v12;
+          goto LABEL_11;
+        }
+      }
+
+      v9 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v15 objects:v21 count:16];
+      if (v9)
+      {
+        continue;
+      }
+
+      break;
+    }
+  }
+
+LABEL_11:
+
+  objc_sync_exit(v7);
+  if (v9)
+  {
+    [(FPDVolumeManager *)v7 invalidateVolume:v9 reason:v6];
+  }
+
+  else
+  {
+    v13 = fp_current_or_default_log();
+    if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+    {
+      *buf = 67109120;
+      v20 = a3;
+      _os_log_impl(&dword_1CEFC7000, v13, OS_LOG_TYPE_INFO, "[INFO] No volume found for dev:%d", buf, 8u);
+    }
+  }
+
+  v14 = *MEMORY[0x1E69E9840];
+}
+
+- (void)invalidateVolume:(id)a3 reason:(id)a4
+{
+  v19 = *MEMORY[0x1E69E9840];
+  v7 = a3;
+  v8 = a4;
+  v9 = self;
+  objc_sync_enter(v9);
+  if (([(NSMutableArray *)v9->_volumes containsObject:v7]& 1) == 0)
+  {
+    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    [v14 handleFailureInMethod:a2 object:v9 file:@"FPDVolumeManager.m" lineNumber:449 description:{@"Trying to remove nonexistent volume %@ (existing volumes are %@)", v7, v9->_volumes}];
+  }
+
+  [(NSMutableArray *)v9->_volumes removeObject:v7];
+  objc_sync_exit(v9);
+
+  v10 = [(FPDVolumeManager *)v9 server];
+  v11 = [v10 extensionManager];
+  [v11 updateProviderOnDisappearingVolume:v7 reason:v8];
+
+  [(FPDVolumeManager *)v9 unregisterVersionsFileCoordinatorForVolume:v7];
+  v12 = fp_current_or_default_log();
+  if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+  {
+    *buf = 138543618;
+    v16 = v7;
+    v17 = 2114;
+    v18 = v8;
+    _os_log_impl(&dword_1CEFC7000, v12, OS_LOG_TYPE_INFO, "[INFO] Invalidated volume %{public}@ (reason: %{public}@)", buf, 0x16u);
+  }
+
+  v13 = *MEMORY[0x1E69E9840];
+}
+
+- (void)unregisterVersionsFileCoordinatorForVolume:(id)a3
+{
+  v18 = *MEMORY[0x1E69E9840];
+  v4 = a3;
+  v5 = self;
+  objc_sync_enter(v5);
+  versionsProvidersByVolumeID = v5->_versionsProvidersByVolumeID;
+  v7 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "dev")}];
+  v8 = [(NSMutableDictionary *)versionsProvidersByVolumeID objectForKeyedSubscript:v7];
+
+  v9 = v5->_versionsProvidersByVolumeID;
+  v10 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "dev")}];
+  [(NSMutableDictionary *)v9 removeObjectForKey:v10];
+
+  objc_sync_exit(v5);
+  if (v8)
+  {
+    v11 = fp_current_or_default_log();
+    if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+    {
+      v12 = [v4 root];
+      v14 = 138412546;
+      v15 = v8;
+      v16 = 2112;
+      v17 = v12;
+      _os_log_impl(&dword_1CEFC7000, v11, OS_LOG_TYPE_INFO, "[INFO] 🅾️ Deregistered versions provider %@ for volume %@", &v14, 0x16u);
+    }
+
+    [MEMORY[0x1E696ABF8] _removeFileProvider:v8];
+  }
+
+  v13 = *MEMORY[0x1E69E9840];
+}
+
+void __85__FPDVolumeManager_registerVersionsFileCoordinatorForVolume_volumeIgnoringOwnership___block_invoke(uint64_t a1)
+{
+  v10 = *MEMORY[0x1E69E9840];
+  v2 = fp_current_or_default_log();
+  if (os_log_type_enabled(v2, OS_LOG_TYPE_INFO))
+  {
+    v3 = *(a1 + 32);
+    v4 = *(a1 + 40);
+    v6 = 138412546;
+    v7 = v3;
+    v8 = 2112;
+    v9 = v4;
+    _os_log_impl(&dword_1CEFC7000, v2, OS_LOG_TYPE_INFO, "[INFO] 🅿️ Registered versions provider %@ for path %@", &v6, 0x16u);
+  }
+
+  v5 = *MEMORY[0x1E69E9840];
+}
+
+- (id)getGenstoreVersionsRootURL:(id)a3 volumeIgnoringOwnership:(BOOL)a4
+{
+  v15[2] = *MEMORY[0x1E69E9840];
+  v4 = MEMORY[0x1E695DFF8];
+  if (a4)
+  {
+    v15[0] = a3;
+    v15[1] = @".DocumentRevisions-V100/AllUIDs";
+    v5 = MEMORY[0x1E695DEC8];
+    v6 = a3;
+    v7 = [v5 arrayWithObjects:v15 count:2];
+    v8 = [v4 fileURLWithPathComponents:v7];
+  }
+
+  else
+  {
+    v14[0] = a3;
+    v9 = MEMORY[0x1E696AD98];
+    v10 = a3;
+    v7 = [v9 numberWithUnsignedInt:{getuid(), v14[0], @".DocumentRevisions-V100/PerUID"}];
+    v6 = [v7 stringValue];
+    v14[2] = v6;
+    v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:3];
+    v8 = [v4 fileURLWithPathComponents:v11];
+  }
+
+  v12 = *MEMORY[0x1E69E9840];
+
+  return v8;
+}
+
+- (FPDServer)server
+{
+  WeakRetained = objc_loadWeakRetained(&self->_server);
+
+  return WeakRetained;
+}
+
+- (void)getAllEligibleVolumesWithError:(uint64_t *)a1 count:.cold.1(uint64_t *a1)
+{
+  v8 = *MEMORY[0x1E69E9840];
+  v7 = *a1;
+  OUTLINED_FUNCTION_2_3();
+  _os_log_error_impl(v1, v2, v3, v4, v5, 0x12u);
+  v6 = *MEMORY[0x1E69E9840];
+}
+
+- (void)getAllEligibleVolumesWithError:(NSObject *)a3 count:.cold.2(uint64_t a1, uint64_t a2, NSObject *a3)
+{
+  *a2 = 136315138;
+  *(a2 + 4) = a1;
+  OUTLINED_FUNCTION_5_0(&dword_1CEFC7000, a3, a3, "[ERROR] Unable to retrieve mount points: %s", a2);
+}
+
+- (void)getAllEligibleVolumesWithError:(NSObject *)a1 count:.cold.4(NSObject *a1)
+{
+  v6 = *MEMORY[0x1E69E9840];
+  v2 = __error();
+  strerror(*v2);
+  OUTLINED_FUNCTION_1_0();
+  OUTLINED_FUNCTION_5_0(&dword_1CEFC7000, a1, v3, "[ERROR] Unable to count mount points: %s", v5);
+  v4 = *MEMORY[0x1E69E9840];
+}
+
+- (void)loadSingleVolume:(uint64_t)a3 role:(uint64_t)a4 .cold.1(uint64_t a1, NSObject *a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t a8)
+{
+  v9 = *MEMORY[0x1E69E9840];
+  OUTLINED_FUNCTION_1_2(&dword_1CEFC7000, a2, a3, "[DEBUG] Volume %{public}s not eligible because it is additional and we're not running in the foreground session", a5, a6, a7, a8, 2u);
+  v8 = *MEMORY[0x1E69E9840];
+}
+
+- (void)loadSingleVolume:(uint64_t)a3 role:(uint64_t)a4 .cold.2(uint64_t a1, NSObject *a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t a8)
+{
+  v9 = *MEMORY[0x1E69E9840];
+  OUTLINED_FUNCTION_1_2(&dword_1CEFC7000, a2, a3, "[DEBUG] Volume %{public}s not eligible to store FP library, skipping", a5, a6, a7, a8, 2u);
+  v8 = *MEMORY[0x1E69E9840];
+}
+
+- (void)createVolumeWithStatFS:role:.cold.1()
+{
+  v6 = *MEMORY[0x1E69E9840];
+  OUTLINED_FUNCTION_2_3();
+  _os_log_error_impl(v0, v1, v2, v3, v4, 0x12u);
+  v5 = *MEMORY[0x1E69E9840];
+}
+
+- (void)loadVolumeWithURL:(void *)a1 role:(NSObject *)a2 error:.cold.1(void *a1, NSObject *a2)
+{
+  v10 = *MEMORY[0x1E69E9840];
+  v3 = [a1 fp_shortDescription];
+  v4 = *__error();
+  v6 = 138543618;
+  v7 = v3;
+  v8 = 1024;
+  v9 = v4;
+  _os_log_error_impl(&dword_1CEFC7000, a2, OS_LOG_TYPE_ERROR, "[ERROR] Unable to statfs_ext for enterprise path '%{public}@': %{errno}d", &v6, 0x12u);
+
+  v5 = *MEMORY[0x1E69E9840];
+}
+
+- (void)loadEnterpriseVolumeWithError:.cold.1()
+{
+  v8 = *MEMORY[0x1E69E9840];
+  OUTLINED_FUNCTION_1_0();
+  OUTLINED_FUNCTION_1_2(&dword_1CEFC7000, v0, v1, "[DEBUG] ┏%llx Loading EDS libraries", v2, v3, v4, v5, v7);
+  v6 = *MEMORY[0x1E69E9840];
+}
+
+- (void)loadHomeVolume
+{
+  *buf = 138412290;
+  *(buf + 4) = a1;
+  _os_log_fault_impl(&dword_1CEFC7000, log, OS_LOG_TYPE_FAULT, "[CRIT] Unable to load volumes: %@", buf, 0xCu);
+}
+
+- (void)libraryForVolume:(void *)a1 createIfNeeded:(uint64_t)a2 error:(NSObject *)a3 .cold.1(void *a1, uint64_t a2, NSObject *a3)
+{
+  *a2 = 138543362;
+  *(a2 + 4) = a1;
+  OUTLINED_FUNCTION_5_0(&dword_1CEFC7000, a3, a3, "[ERROR] Volume not found for UUID: %{public}@", a2);
+}
+
+- (void)enumerateLibrariesForPersona:withBlock:.cold.2()
+{
+  v6 = *MEMORY[0x1E69E9840];
+  OUTLINED_FUNCTION_1_0();
+  OUTLINED_FUNCTION_2_3();
+  _os_log_error_impl(v0, v1, v2, v3, v4, 0x16u);
+  v5 = *MEMORY[0x1E69E9840];
+}
+
+- (void)enumerateLibrariesForPersona:(uint8_t *)buf withBlock:(os_log_t)log .cold.3(uint64_t a1, void *a2, uint8_t *buf, os_log_t log)
+{
+  *buf = 138543618;
+  *(buf + 4) = a1;
+  *(buf + 6) = 2112;
+  *(buf + 14) = a2;
+  _os_log_error_impl(&dword_1CEFC7000, log, OS_LOG_TYPE_ERROR, "[ERROR] Could not load EDS volume for %{public}@: %@", buf, 0x16u);
+}
+
+- (void)defaultVolumeForCurrentPersona
+{
+  v7 = *MEMORY[0x1E69E9840];
+  v3 = 136315394;
+  v4 = "[FPDVolumeManager defaultVolumeForCurrentPersona]";
+  v5 = 1024;
+  v6 = a1 & 1;
+  _os_log_debug_impl(&dword_1CEFC7000, a2, OS_LOG_TYPE_DEBUG, "[DEBUG] %s: eds:%d", &v3, 0x12u);
+  v2 = *MEMORY[0x1E69E9840];
+}
+
+@end

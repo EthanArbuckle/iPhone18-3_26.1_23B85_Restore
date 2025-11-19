@@ -1,0 +1,116 @@
+@interface RWIProtocolCSSStyle(IKJSInspector)
++ (id)ik_cssStyleFromDeclarationList:()IKJSInspector forStyleMarkup:withNewLineIndexSet:existingStyle:;
+@end
+
+@implementation RWIProtocolCSSStyle(IKJSInspector)
+
++ (id)ik_cssStyleFromDeclarationList:()IKJSInspector forStyleMarkup:withNewLineIndexSet:existingStyle:
+{
+  v9 = a3;
+  v10 = a4;
+  v11 = a5;
+  v41 = a6;
+  v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v9, "count")}];
+  if ([v9 count])
+  {
+    v13 = 0;
+    do
+    {
+      v14 = [v9 declarationAtIndex:v13];
+      v15 = v14;
+      if (v10)
+      {
+        v16 = [v14 valueRange];
+        [v10 substringWithRange:{v16, v17}];
+      }
+
+      else
+      {
+        [v14 stringValue];
+      }
+      v18 = ;
+      v19 = MEMORY[0x277D7B690];
+      v20 = [v15 name];
+      v21 = [v19 safe_initWithName:v20 value:v18];
+
+      [v21 setParsedOk:1];
+      [v21 setStatus:0];
+      if (v10)
+      {
+        v22 = [v15 range];
+        v24 = [v10 substringWithRange:{v22, v23}];
+        [v21 setText:v24];
+      }
+
+      v25 = MEMORY[0x277D7B6D8];
+      v26 = [v15 range];
+      v28 = [v25 ik_cssSourceRangeForRange:v26 withNewLineIndexSet:{v27, v11}];
+      if (v28)
+      {
+        [v21 setRange:v28];
+      }
+
+      [v12 addObject:v21];
+
+      ++v13;
+    }
+
+    while ([v9 count] > v13);
+  }
+
+  v29 = v41;
+  v30 = v29;
+  if (v29)
+  {
+    [v29 setCssProperties:v12];
+    v31 = v30;
+    if (!v9)
+    {
+      goto LABEL_23;
+    }
+  }
+
+  else
+  {
+    v31 = [MEMORY[0x277D7B6E0] safe_initWithCssProperties:v12 shorthandEntries:MEMORY[0x277CBEBF8]];
+    if (!v9)
+    {
+      goto LABEL_23;
+    }
+  }
+
+  v32 = [v9 range];
+  v42 = v33;
+  v34 = [v30 styleId];
+  v35 = [v34 styleSheetId];
+  v36 = [v35 isEqualToString:@"inline"];
+
+  if (v36)
+  {
+    v37 = [v10 length];
+    v32 = 0;
+  }
+
+  else
+  {
+    v37 = v42;
+  }
+
+  v38 = [MEMORY[0x277D7B6D8] ik_cssSourceRangeForRange:v32 withNewLineIndexSet:{v37, v11}];
+  if (v38)
+  {
+    [v31 setRange:v38];
+  }
+
+  if (v10)
+  {
+    v39 = [v10 substringWithRange:{v32, v37}];
+    [v31 setCssText:v39];
+  }
+
+LABEL_23:
+
+  return v31;
+}
+
+@end

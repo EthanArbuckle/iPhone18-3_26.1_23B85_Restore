@@ -1,0 +1,540 @@
+@interface KNIrisBase
++ (BOOL)isTransition;
++ (void)downgradeAttributes:(id *)a3 animationName:(id *)a4 warning:(id *)a5 type:(int)a6 isToClassic:(BOOL)a7 version:(unint64_t)a8;
++ (void)upgradeAttributes:(id *)a3 animationName:(id)a4 warning:(id *)a5 type:(int)a6 isFromClassic:(BOOL)a7 version:(unint64_t)a8;
+- (KNIrisBase)initWithAnimationContext:(id)a3;
+- (double)p_largestDividedAngleInRect:(CGRect)a3;
+- (unint64_t)p_setupMetalFadeDataBufferContentsWithOpaqueAttributes:(id)a3 frameRect:(CGRect)a4 openFromCenter:(BOOL)a5 maxRadius:(double)a6 center:(id)a7;
+- (unint64_t)p_setupMetalOpaqueDataBufferContentsWithOpaqueAttributes:(id)a3 frameRect:(CGRect)a4 openFromCenter:(BOOL)a5 minRadius:(double)a6 maxRadius:(double)a7 center:(id)a8;
+- (void)animationWillBeginWithContext:(id)a3;
+- (void)p_setupDataBuffersWithFrameRect:(CGRect)a3 openFromCenter:(BOOL)a4 device:(id)a5;
+- (void)p_setupMetalShadersWithContext:(id)a3;
+- (void)renderFrameWithContext:(id)a3;
+@end
+
+@implementation KNIrisBase
+
++ (BOOL)isTransition
+{
+  v2 = +[TSUAssertionHandler currentHandler];
+  v3 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", "+[KNIrisBase isTransition]");
+  v4 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/Widgets/Keynote/Animations/Transitions/KNTransitionIris.m"];
+  [v2 handleFailureInFunction:v3 file:v4 lineNumber:93 description:@"Should be called on base class!"];
+
+  return 0;
+}
+
+- (KNIrisBase)initWithAnimationContext:(id)a3
+{
+  v4.receiver = self;
+  v4.super_class = KNIrisBase;
+  result = [(KNAnimationEffect *)&v4 initWithAnimationContext:a3];
+  if (result)
+  {
+    result->_numDivisionsPerQuadrant = 10;
+  }
+
+  return result;
+}
+
+- (void)p_setupMetalShadersWithContext:(id)a3
+{
+  v4 = a3;
+  v13 = [v4 device];
+  v5 = objc_alloc_init(MTLRenderPipelineColorAttachmentDescriptor);
+  v6 = [v4 pixelFormat];
+
+  [v5 setPixelFormat:v6];
+  [v5 setBlendingEnabled:1];
+  [v5 setDestinationAlphaBlendFactor:5];
+  [v5 setDestinationRGBBlendFactor:5];
+  v7 = [[TSDMetalShader alloc] initDefaultTextureShaderWithDevice:v13 colorAttachment:v5];
+  quadMetalShader = self->_quadMetalShader;
+  self->_quadMetalShader = v7;
+
+  v9 = [[TSDMetalShader alloc] initCustomShaderWithVertexShader:@"transitionIrisVertexShader_Fade" fragmentShader:@"transitionIrisFragmentShader_Fade" device:v13 library:@"KeynoteMetalLibrary" colorAttachment:v5];
+  fadeMetalShader = self->_fadeMetalShader;
+  self->_fadeMetalShader = v9;
+
+  v11 = [[TSDMetalShader alloc] initCustomShaderWithVertexShader:@"transitionIrisVertexShader_Opaque" fragmentShader:@"transitionIrisFragmentShader_Opaque" device:v13 library:@"KeynoteMetalLibrary" colorAttachment:v5];
+  opaqueMetalShader = self->_opaqueMetalShader;
+  self->_opaqueMetalShader = v11;
+}
+
+- (double)p_largestDividedAngleInRect:(CGRect)a3
+{
+  height = a3.size.height;
+  width = a3.size.width;
+  y = a3.origin.y;
+  x = a3.origin.x;
+  [(KNIrisBase *)self p_angleFromQuadrant:0 inRect:?];
+  [(KNIrisBase *)self p_angleFromQuadrant:1 inRect:x, y, width, height];
+  [(KNIrisBase *)self p_angleFromQuadrant:2 inRect:x, y, width, height];
+  TSDDistanceBetweenAnglesInRadians();
+  v9 = v8;
+  TSDDistanceBetweenAnglesInRadians();
+  if (v9 >= v10)
+  {
+    v10 = v9;
+  }
+
+  return v10 / self->_numDivisionsPerQuadrant;
+}
+
+- (unint64_t)p_setupMetalOpaqueDataBufferContentsWithOpaqueAttributes:(id)a3 frameRect:(CGRect)a4 openFromCenter:(BOOL)a5 minRadius:(double)a6 maxRadius:(double)a7 center:(id)a8
+{
+  var1 = a8.var1;
+  var0 = a8.var0;
+  height = a4.size.height;
+  width = a4.size.width;
+  y = a4.origin.y;
+  x = a4.origin.x;
+  v18 = a3;
+  v26 = 0;
+  v27 = &v26;
+  v28 = 0x2020000000;
+  v29 = 0;
+  v22[0] = _NSConcreteStackBlock;
+  v22[1] = 3221225472;
+  v22[2] = sub_12F48C;
+  v22[3] = &unk_45DD80;
+  *&v22[6] = x;
+  *&v22[7] = y;
+  *&v22[8] = width;
+  *&v22[9] = height;
+  *&v22[10] = a6;
+  *&v22[11] = a7;
+  v23 = var0;
+  v24 = var1;
+  v25 = a5;
+  v22[4] = self;
+  v22[5] = &v26;
+  v19 = objc_retainBlock(v22);
+  [(TSDMTLDataBuffer *)self->_opaqueMetalDataBuffer updateMetalDataBufferAttributes:v18 withBlock:v19];
+  v20 = v27[3];
+
+  _Block_object_dispose(&v26, 8);
+  return v20;
+}
+
+- (unint64_t)p_setupMetalFadeDataBufferContentsWithOpaqueAttributes:(id)a3 frameRect:(CGRect)a4 openFromCenter:(BOOL)a5 maxRadius:(double)a6 center:(id)a7
+{
+  var1 = a7.var1;
+  var0 = a7.var0;
+  height = a4.size.height;
+  width = a4.size.width;
+  y = a4.origin.y;
+  x = a4.origin.x;
+  v15 = a3;
+  v22 = 0;
+  v23 = &v22;
+  v24 = 0x2020000000;
+  v25 = 0;
+  v19[0] = _NSConcreteStackBlock;
+  v19[1] = 3221225472;
+  v19[2] = sub_12FA30;
+  v19[3] = &unk_45DDA8;
+  *&v19[6] = x;
+  *&v19[7] = y;
+  *&v19[8] = width;
+  *&v19[9] = height;
+  *&v19[10] = a6;
+  v20 = var0;
+  v21 = var1;
+  v19[4] = self;
+  v19[5] = &v22;
+  v16 = objc_retainBlock(v19);
+  [(TSDMTLDataBuffer *)self->_fadeMetalDataBuffer updateMetalDataBufferAttributes:v15 withBlock:v16];
+  v17 = v23[3];
+
+  _Block_object_dispose(&v22, 8);
+  return v17;
+}
+
+- (void)p_setupDataBuffersWithFrameRect:(CGRect)a3 openFromCenter:(BOOL)a4 device:(id)a5
+{
+  v54 = a4;
+  height = a3.size.height;
+  width = a3.size.width;
+  y = a3.origin.y;
+  x = a3.origin.x;
+  v10 = a5;
+  if (self->_initializedBuffers)
+  {
+    v11 = +[TSUAssertionHandler currentHandler];
+    v12 = [NSString stringWithUTF8String:"[KNIrisBase p_setupDataBuffersWithFrameRect:openFromCenter:device:]"];
+    v13 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/Widgets/Keynote/Animations/Transitions/KNTransitionIris.m"];
+    [v11 handleFailureInFunction:v12 file:v13 lineNumber:327 description:@"We already initialized our data buffers!"];
+  }
+
+  if ([objc_opt_class() isTransition])
+  {
+    v14 = [TSDGPUDataBuffer newDataBufferWithVertexRect:v10 textureRect:x device:y, width, height, TSDRectUnit[0], TSDRectUnit[1], TSDRectUnit[2], TSDRectUnit[3]];
+    quadMetalDataBuffer = self->_quadMetalDataBuffer;
+    self->_quadMetalDataBuffer = v14;
+  }
+
+  v16 = sqrt(width * width + height * height) * 0.5;
+  [(KNIrisBase *)self p_largestDividedAngleInRect:x, y, width, height];
+  v18 = v16 * 1.15384615 / cos(v17 * 0.5);
+  TSDRectWithSize();
+  TSDCenterOfRect();
+  v20 = v19;
+  v22 = v21;
+  v23 = (8 * self->_numDivisionsPerQuadrant) | 2;
+  v24 = kTSDGPUShaderAttributePosition;
+  [TSDGPUDataBufferAttribute attributeWithName:kTSDGPUShaderAttributePosition bufferUsage:35044 dataType:5 normalized:0 componentCount:2];
+  v26 = v25 = v10;
+  v27 = kTSDGPUShaderAttributeTexCoord;
+  v28 = [TSDGPUDataBufferAttribute attributeWithName:kTSDGPUShaderAttributeTexCoord bufferUsage:35044 dataType:5 normalized:0 componentCount:2];
+  [TSDGPUDataBufferAttribute attributeWithName:@"RadiusType" bufferUsage:35044 dataType:5 normalized:0 componentCount:1];
+  v52 = v28;
+  v53 = v26;
+  v57[0] = v26;
+  v51 = v57[1] = v28;
+  v57[2] = v51;
+  v29 = [NSArray arrayWithObjects:v57 count:3];
+  v30 = [TSDGPUDataBuffer newDataBufferWithVertexAttributes:v29 vertexCount:v23 indexElementCount:0 device:v25];
+  opaqueMetalDataBuffer = self->_opaqueMetalDataBuffer;
+  self->_opaqueMetalDataBuffer = v30;
+
+  [(TSDMTLDataBuffer *)self->_opaqueMetalDataBuffer setMetalDrawMode:4];
+  v32 = [TSDGPUDataBufferAttribute attributeWithName:v24 bufferUsage:35044 dataType:5 normalized:0 componentCount:2];
+  v33 = [TSDGPUDataBufferAttribute attributeWithName:v27 bufferUsage:35044 dataType:5 normalized:0 componentCount:2];
+  v34 = [TSDGPUDataBufferAttribute attributeWithName:@"RadiusType" bufferUsage:35044 dataType:5 normalized:0 componentCount:1];
+  v50 = v32;
+  v56[0] = v32;
+  v56[1] = v33;
+  v56[2] = v34;
+  v35 = [NSArray arrayWithObjects:v56 count:3];
+  v55 = v25;
+  v36 = [TSDGPUDataBuffer newDataBufferWithVertexAttributes:v35 vertexCount:v23 indexElementCount:0 device:v25];
+  fadeMetalDataBuffer = self->_fadeMetalDataBuffer;
+  self->_fadeMetalDataBuffer = v36;
+
+  [(TSDMTLDataBuffer *)self->_fadeMetalDataBuffer setMetalDrawMode:4];
+  *&v38 = v20;
+  *&v39 = v22;
+  v40 = [(KNIrisBase *)self p_setupMetalOpaqueDataBufferContentsWithOpaqueAttributes:v29 frameRect:v54 openFromCenter:x minRadius:y maxRadius:width center:height, v16, v18, v38, v39];
+  *&v41 = v20;
+  *&v42 = v22;
+  v43 = [(KNIrisBase *)self p_setupMetalFadeDataBufferContentsWithOpaqueAttributes:v35 frameRect:v54 openFromCenter:x maxRadius:y center:width, height, v18, v41, v42];
+  if (v40 != v23)
+  {
+    v44 = +[TSUAssertionHandler currentHandler];
+    v45 = [NSString stringWithUTF8String:"[KNIrisBase p_setupDataBuffersWithFrameRect:openFromCenter:device:]"];
+    v46 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/Widgets/Keynote/Animations/Transitions/KNTransitionIris.m"];
+    [v44 handleFailureInFunction:v45 file:v46 lineNumber:399 description:{@"Wrong number of opaque vertices! expected %lu, ended up with %lu", v40, v23}];
+  }
+
+  if (v43 != v23)
+  {
+    v47 = +[TSUAssertionHandler currentHandler];
+    v48 = [NSString stringWithUTF8String:"[KNIrisBase p_setupDataBuffersWithFrameRect:openFromCenter:device:]"];
+    v49 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/Widgets/Keynote/Animations/Transitions/KNTransitionIris.m"];
+    [v47 handleFailureInFunction:v48 file:v49 lineNumber:400 description:{@"Wrong number of fade vertices! expected %lu, ended up with %lu", v43, v23}];
+  }
+}
+
+- (void)animationWillBeginWithContext:(id)a3
+{
+  v4 = a3;
+  v5 = [v4 textures];
+  v6 = [v4 direction];
+  v7 = [v5 firstObject];
+  v8 = [v4 metalContext];
+  [(KNIrisBase *)self p_setupMetalShadersWithContext:v8];
+
+  LOBYTE(v6) = (v6 == &stru_20.segname[2]) ^ self->_isBuildOut;
+  [v7 frame];
+  TSDRectWithSize();
+  v10 = v9;
+  v12 = v11;
+  v14 = v13;
+  v16 = v15;
+  v17 = [v4 metalContext];
+  v18 = [v17 device];
+  v19 = v6 & 1;
+  [(KNIrisBase *)self p_setupDataBuffersWithFrameRect:v19 openFromCenter:v18 device:v10, v12, v14, v16];
+
+  [(KNAnimationEffect *)self mvpMatrixWithContext:v4];
+  v30 = vcvt_hight_f32_f64(vcvt_f32_f64(0), 0);
+  [v7 frame];
+  TSDRectWithSize();
+  TSDCenterOfRect();
+  v21.f64[1] = v20;
+  v22 = vcvt_f32_f64(v21);
+  v23 = 64;
+  v24 = 304;
+  v25 = 544;
+  v26 = 3;
+  do
+  {
+    v27 = (self + v23);
+    *v27 = v30;
+    v27[1] = v30;
+    v27[2] = v30;
+    v27[3] = v30;
+    v28 = (self + v24);
+    *v28 = v30;
+    v28[1] = v30;
+    v28[2] = v30;
+    v28[3] = v30;
+    *v28[4].f32 = v22;
+    *v27[4].f32 = v22;
+    v29 = (self + v25);
+    v25 += 24;
+    v29[1] = v22;
+    v24 += 80;
+    v23 += 80;
+    v29[2].i8[0] = v19;
+    --v26;
+  }
+
+  while (v26);
+  *self->_anon_280 = v30;
+  *&self->_anon_280[16] = v30;
+  *&self->_anon_280[32] = v30;
+  *&self->_anon_280[48] = v30;
+}
+
+- (void)renderFrameWithContext:(id)a3
+{
+  v53 = a3;
+  v4 = [v53 textures];
+  v5 = [v53 direction];
+  [v53 percent];
+  if ([v4 count] < 2)
+  {
+    v52 = 0;
+  }
+
+  else
+  {
+    v52 = [v4 objectAtIndexedSubscript:0];
+  }
+
+  v6 = [v4 lastObject];
+  TSUSineMap();
+  v8 = v7;
+  if (v5 == &stru_20.segname[1])
+  {
+    TSUSineMap();
+    v8 = v9;
+  }
+
+  v47 = v5 == &stru_20.segname[2];
+  isBuildOut = self->_isBuildOut;
+  [v6 frame];
+  v12 = v11;
+  v14 = v13;
+  v15 = [v53 metalContext];
+  v16 = [v15 device];
+  v17 = [v15 commandBuffer];
+  v51 = [v15 passDescriptor];
+  v18 = [v15 renderEncoder];
+  v50 = v16;
+  if (!v16)
+  {
+    v19 = +[TSUAssertionHandler currentHandler];
+    v20 = [NSString stringWithUTF8String:"[KNIrisBase renderFrameWithContext:]"];
+    [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/Widgets/Keynote/Animations/Transitions/KNTransitionIris.m"];
+    v22 = v21 = v17;
+    [v19 handleFailureInFunction:v20 file:v22 lineNumber:478 description:{@"invalid nil value for '%s'", "device"}];
+
+    v17 = v21;
+  }
+
+  v49 = v17;
+  if (!v17)
+  {
+    v23 = +[TSUAssertionHandler currentHandler];
+    v24 = [NSString stringWithUTF8String:"[KNIrisBase renderFrameWithContext:]"];
+    v25 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/Widgets/Keynote/Animations/Transitions/KNTransitionIris.m"];
+    [v23 handleFailureInFunction:v24 file:v25 lineNumber:479 description:{@"invalid nil value for '%s'", "commandBuffer"}];
+  }
+
+  if (v51)
+  {
+    if (v18)
+    {
+      goto LABEL_12;
+    }
+  }
+
+  else
+  {
+    v39 = +[TSUAssertionHandler currentHandler];
+    v40 = [NSString stringWithUTF8String:"[KNIrisBase renderFrameWithContext:]"];
+    v41 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/Widgets/Keynote/Animations/Transitions/KNTransitionIris.m"];
+    [v39 handleFailureInFunction:v40 file:v41 lineNumber:480 description:{@"invalid nil value for '%s'", "passDescriptor"}];
+
+    if (v18)
+    {
+      goto LABEL_12;
+    }
+  }
+
+  v42 = +[TSUAssertionHandler currentHandler];
+  v43 = [NSString stringWithUTF8String:"[KNIrisBase renderFrameWithContext:]"];
+  v44 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/Widgets/Keynote/Animations/Transitions/KNTransitionIris.m"];
+  [v42 handleFailureInFunction:v43 file:v44 lineNumber:481 description:{@"invalid nil value for '%s'", "renderEncoder"}];
+
+LABEL_12:
+  v26 = [v6 metalTextureWithContext:v15];
+  v27 = [v52 metalTextureWithContext:v15];
+  v28 = v27;
+  if (v26)
+  {
+    v29 = sqrt(v14 * v14 + v12 * v12) * 0.5;
+    v30 = v47 ^ isBuildOut;
+    v46 = v8 * (v29 * 1.15384615) + v29 * -0.153846154;
+    v48 = v8 * (v29 * 1.15384615);
+    if (v27)
+    {
+      [(TSDMetalShader *)self->_quadMetalShader setPipelineStateWithEncoder:v18 vertexBytes:self->_anon_280];
+      [v18 setFragmentTexture:v28 atIndex:0];
+      [(TSDMTLDataBuffer *)self->_quadMetalDataBuffer drawWithEncoder:v18 atIndex:0];
+    }
+
+    [v18 setFragmentTexture:v26 atIndex:0];
+    v31 = [v53 metalContext];
+    v32 = [v31 currentBuffer];
+
+    v33.f64[0] = v46;
+    v33.f64[1] = v48;
+    v45 = vcvt_f32_f64(v33);
+    *&self->_anon_40[80 * v32 + 72] = v45;
+    [v6 singleTextureOpacity];
+    *&v34 = v34;
+    v35 = &self->_anon_220[24 * v32];
+    *(v35 + 5) = LODWORD(v34);
+    *v35 = v45;
+    [(TSDMetalShader *)self->_fadeMetalShader setPipelineStateWithEncoder:v18 vertexBytes:&self->_anon_40[80 * v32] fragmentBytes:?];
+    [(TSDMTLDataBuffer *)self->_fadeMetalDataBuffer drawWithEncoder:v18 atIndex:0];
+    v36 = v46;
+    if ((v30 & 1) == 0)
+    {
+      v36 = v48;
+    }
+
+    *&v37 = v36;
+    *&self->_anon_130[80 * v32 + 72] = __PAIR64__(v45.u32[1], v37);
+    [v6 singleTextureOpacity];
+    *&v38 = v38;
+    self->_opaqueFragmentInput[v32].Opacity = *&v38;
+    [(TSDMetalShader *)self->_opaqueMetalShader setPipelineStateWithEncoder:v18 vertexBytes:&self->_anon_130[80 * v32] fragmentBytes:?];
+    [(TSDMTLDataBuffer *)self->_opaqueMetalDataBuffer drawWithEncoder:v18 atIndex:0];
+  }
+}
+
++ (void)upgradeAttributes:(id *)a3 animationName:(id)a4 warning:(id *)a5 type:(int)a6 isFromClassic:(BOOL)a7 version:(unint64_t)a8
+{
+  if (a8 <= 0x174876E7FFLL && a7)
+  {
+    v11 = [*a3 objectForKeyedSubscript:{@"KNTransitionAttributesDirection", a4, a5, *&a6, a7}];
+    if (v11)
+    {
+    }
+
+    else
+    {
+      v12 = [*a3 objectForKeyedSubscript:@"KNBuildAttributesDirection"];
+
+      if (!v12)
+      {
+        return;
+      }
+    }
+
+    if (a6 == 3)
+    {
+      v21 = @"KNTransitionAttributesDirection";
+      v13 = [*a3 objectForKeyedSubscript:?];
+      v14 = [v13 unsignedIntegerValue];
+
+      if (v14 == &stru_68.reserved1)
+      {
+        v15 = 41;
+      }
+
+      else
+      {
+        v15 = 42;
+      }
+    }
+
+    else
+    {
+      v21 = @"KNBuildAttributesDirection";
+      v16 = [*a3 objectForKeyedSubscript:?];
+      v17 = [v16 unsignedIntegerValue];
+
+      if (v17 == &stru_68.reserved1)
+      {
+        v15 = 41;
+      }
+
+      else
+      {
+        v15 = 42;
+      }
+
+      if (a6 == 2)
+      {
+        v15 = sub_130B80(v15);
+      }
+    }
+
+    v18 = [*a3 mutableCopy];
+    v19 = [NSNumber numberWithUnsignedInteger:v15];
+    [v18 setObject:v19 forKeyedSubscript:v21];
+
+    v20 = v18;
+    *a3 = v18;
+  }
+}
+
++ (void)downgradeAttributes:(id *)a3 animationName:(id *)a4 warning:(id *)a5 type:(int)a6 isToClassic:(BOOL)a7 version:(unint64_t)a8
+{
+  if (a8 <= 0x174876E7FFLL && a7)
+  {
+    v11 = [*a3 objectForKeyedSubscript:{@"direction", a4, a5, *&a6, a7}];
+
+    if (v11)
+    {
+      v12 = [*a3 objectForKeyedSubscript:@"direction"];
+      v13 = [v12 unsignedIntegerValue];
+
+      if (a6 == 2)
+      {
+        v13 = sub_130B80(v13);
+      }
+
+      v14 = 42;
+      if (v13 == &stru_20.segname[2])
+      {
+        v14 = 173;
+      }
+
+      if (v13 == &stru_20.segname[1])
+      {
+        v15 = 172;
+      }
+
+      else
+      {
+        v15 = v14;
+      }
+
+      v18 = [*a3 mutableCopy];
+      v16 = [NSNumber numberWithUnsignedInteger:v15];
+      [v18 setObject:v16 forKeyedSubscript:@"direction"];
+
+      v17 = v18;
+      *a3 = v18;
+    }
+  }
+}
+
+@end

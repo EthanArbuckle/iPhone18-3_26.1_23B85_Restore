@@ -1,0 +1,756 @@
+@interface PGGraphRelationshipEdge
++ (MAEdgeFilter)confirmedRelationshipFilter;
++ (MAEdgeFilter)inferredRelationshipFilter;
++ (id)familyRelationshipLabels;
++ (id)filter;
++ (id)filterWithRelationship:(id)a3;
++ (id)filterWithRelationship:(id)a3 status:(unint64_t)a4;
++ (id)relationshipSourceToString:(unsigned __int8)a3;
++ (id)supportedRelationshipLabels;
+- (BOOL)hasProperties:(id)a3;
+- (PGGraphRelationshipEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 properties:(id)a7;
+- (PGGraphRelationshipEdge)initWithRelationship:(id)a3 fromPersonNode:(id)a4 toPersonNode:(id)a5 confidence:(double)a6 status:(unint64_t)a7 familyHolidayAttendanceRate:(double)a8 hasParentContactName:(BOOL)a9 hasSameFamilyNameAsMePerson:(BOOL)a10 numberOfMomentsAtHome:(unint64_t)a11 hasAnniversaryDate:(BOOL)a12 isTopTwoPersonsSocialGroup:(BOOL)a13 numberOfLoveEmojisExchanged:(unint64_t)a14 isTopPerson:(BOOL)a15 friendNightOutAttendanceRate:(double)a16 partnerTripAttendanceRate:(double)a17 friendsAndFamilyTripAttendanceRate:(double)a18 weekendAppearanceRatio:(double)a19 momentsAtWorkAppearanceRate:(double)a20 calendarAttendanceRatio:(double)a21 isPersonAgeDifferentThanMeNode:(BOOL)a22 isPersonOldEnoughToBeParentOrGrandparent:(BOOL)a23 isPersonYoungEnoughToBeMeNodeChild:(BOOL)a24 source:(unsigned __int8)a25;
+- (id)_readableStringForProperty:(id)a3;
+- (id)edgeDescription;
+- (id)propertyDictionary;
+@end
+
+@implementation PGGraphRelationshipEdge
+
+- (id)_readableStringForProperty:(id)a3
+{
+  v13[20] = *MEMORY[0x277D85DE8];
+  v12[0] = @"confidence";
+  v12[1] = @"rfamhol";
+  v13[0] = @"SignalConfidence";
+  v13[1] = @"SignalFamilyHolidayAttendanceRatio";
+  v12[2] = @"rparnam";
+  v12[3] = @"rfamnam";
+  v13[2] = @"SignalHasParentContactName";
+  v13[3] = @"SignalHasSameFamilyNameAsMePerson";
+  v12[4] = @"gwnummmtshome";
+  v12[5] = @"rhasanniv";
+  v13[4] = @"SignalNumberOfMomentsAtHome";
+  v13[5] = @"SignalHasAnniversaryDate";
+  v12[6] = @"rtop2sg";
+  v12[7] = @"rlovexch";
+  v13[6] = @"SignalIsTopTwoPersonsSocialGroup";
+  v13[7] = @"SignalNumberOfLoveEmojisExchanged";
+  v12[8] = @"rtop";
+  v12[9] = @"rfrndnghtout";
+  v13[8] = @"SignalTopPerson";
+  v13[9] = @"SignalFriendNightOutAttendanceRatio";
+  v12[10] = @"rprtnrtrip";
+  v12[11] = @"rfrfamtrip";
+  v13[10] = @"SignalPartnerTripAttendanceRatio";
+  v13[11] = @"SignalFriendsAndFamilyTripAttendanceRatio";
+  v12[12] = @"rwkend";
+  v12[13] = @"rwork";
+  v13[12] = @"SignalWeekendAppearanceRatio";
+  v13[13] = @"SignalCoworkerWorkMomentsRatio";
+  v12[14] = @"rcal";
+  v12[15] = @"ragediff";
+  v13[14] = @"SignalCalendarAttendanceRatio";
+  v13[15] = @"SignalAgeDifferentThanMeNode";
+  v12[16] = @"rold";
+  v12[17] = @"rchild";
+  v13[16] = @"SignalAgeOldEnoughToBeParentOrGrandparent";
+  v13[17] = @"SignalAgeYoungEnoughToBeMeNodeChild";
+  v12[18] = @"relstatus";
+  v12[19] = @"relsource";
+  v13[18] = @"RelationshipStatus";
+  v13[19] = @"RelationshipSource";
+  v3 = MEMORY[0x277CBEAC0];
+  v4 = a3;
+  v5 = [v3 dictionaryWithObjects:v13 forKeys:v12 count:20];
+  v6 = [v5 objectForKeyedSubscript:v4];
+  v7 = v6;
+  if (v6)
+  {
+    v8 = v6;
+  }
+
+  else
+  {
+    v8 = v4;
+  }
+
+  v9 = v8;
+
+  v10 = *MEMORY[0x277D85DE8];
+  return v8;
+}
+
+- (id)edgeDescription
+{
+  v32 = *MEMORY[0x277D85DE8];
+  v3 = [(PGGraphRelationshipEdge *)self propertyDictionary];
+  v4 = [MEMORY[0x277CBEB18] array];
+  v27 = 0u;
+  v28 = 0u;
+  v29 = 0u;
+  v30 = 0u;
+  v5 = v3;
+  v6 = [v5 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  if (v6)
+  {
+    v7 = v6;
+    v8 = *v28;
+    do
+    {
+      for (i = 0; i != v7; ++i)
+      {
+        if (*v28 != v8)
+        {
+          objc_enumerationMutation(v5);
+        }
+
+        v10 = *(*(&v27 + 1) + 8 * i);
+        v11 = [(PGGraphRelationshipEdge *)self _readableStringForProperty:v10];
+        v12 = MEMORY[0x277CCACA8];
+        v13 = [v5 objectForKeyedSubscript:v10];
+        v14 = [v12 stringWithFormat:@"%@", v13];
+
+        v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@: %@", v11, v14];
+        [v4 addObject:v15];
+      }
+
+      v7 = [v5 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    }
+
+    while (v7);
+  }
+
+  v16 = [v4 sortedArrayUsingSelector:sel_compare_];
+  v17 = MEMORY[0x277CCACA8];
+  v26.receiver = self;
+  v26.super_class = PGGraphRelationshipEdge;
+  v18 = [(PGGraphOptimizedEdge *)&v26 edgeDescription];
+  relationship = self->_relationship;
+  [(PGGraphRelationshipEdge *)self confidence];
+  v21 = v20;
+  v22 = [v16 componentsJoinedByString:{@", "}];
+  v23 = [v17 stringWithFormat:@"%@ (%@, confidence = %f, %@)", v18, relationship, v21, v22];
+
+  v24 = *MEMORY[0x277D85DE8];
+
+  return v23;
+}
+
+- (id)propertyDictionary
+{
+  v27[20] = *MEMORY[0x277D85DE8];
+  v26[0] = @"confidence";
+  v25 = [MEMORY[0x277CCABB0] numberWithDouble:self->_confidence];
+  v27[0] = v25;
+  v26[1] = @"rfamhol";
+  v24 = [MEMORY[0x277CCABB0] numberWithDouble:self->_familyHolidayAttendanceRate];
+  v27[1] = v24;
+  v26[2] = @"rparnam";
+  v23 = [MEMORY[0x277CCABB0] numberWithBool:*(self + 48) & 1];
+  v27[2] = v23;
+  v26[3] = @"rfamnam";
+  v22 = [MEMORY[0x277CCABB0] numberWithBool:(*(self + 48) >> 1) & 1];
+  v27[3] = v22;
+  v26[4] = @"gwnummmtshome";
+  v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:*(self + 10)];
+  v27[4] = v21;
+  v26[5] = @"rhasanniv";
+  v20 = [MEMORY[0x277CCABB0] numberWithBool:(*(self + 48) >> 2) & 1];
+  v27[5] = v20;
+  v26[6] = @"rtop2sg";
+  v19 = [MEMORY[0x277CCABB0] numberWithBool:(*(self + 48) >> 3) & 1];
+  v27[6] = v19;
+  v26[7] = @"rlovexch";
+  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:*(self + 11)];
+  v27[7] = v18;
+  v26[8] = @"rtop";
+  v17 = [MEMORY[0x277CCABB0] numberWithBool:(*(self + 48) >> 4) & 1];
+  v27[8] = v17;
+  v26[9] = @"rfrndnghtout";
+  v16 = [MEMORY[0x277CCABB0] numberWithDouble:self->_friendNightOutAttendanceRate];
+  v27[9] = v16;
+  v26[10] = @"rprtnrtrip";
+  v15 = [MEMORY[0x277CCABB0] numberWithDouble:self->_partnerTripAttendanceRate];
+  v27[10] = v15;
+  v26[11] = @"rfrfamtrip";
+  v3 = [MEMORY[0x277CCABB0] numberWithDouble:self->_friendsAndFamilyTripAttendanceRate];
+  v27[11] = v3;
+  v26[12] = @"rwkend";
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:self->_weekendAppearanceRatio];
+  v27[12] = v4;
+  v26[13] = @"rwork";
+  v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_momentsAtWorkAppearanceRate];
+  v27[13] = v5;
+  v26[14] = @"rcal";
+  v6 = [MEMORY[0x277CCABB0] numberWithDouble:self->_calendarAttendanceRatio];
+  v27[14] = v6;
+  v26[15] = @"ragediff";
+  v7 = [MEMORY[0x277CCABB0] numberWithBool:(*(self + 48) >> 5) & 1];
+  v27[15] = v7;
+  v26[16] = @"rold";
+  v8 = [MEMORY[0x277CCABB0] numberWithBool:(*(self + 48) >> 6) & 1];
+  v27[16] = v8;
+  v26[17] = @"rchild";
+  v9 = [MEMORY[0x277CCABB0] numberWithBool:self->_isPersonYoungEnoughToBeMeNodeChild];
+  v27[17] = v9;
+  v26[18] = @"relstatus";
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_status];
+  v27[18] = v10;
+  v26[19] = @"relsource";
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:self->_source];
+  v27[19] = v11;
+  v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:20];
+
+  v13 = *MEMORY[0x277D85DE8];
+
+  return v12;
+}
+
+- (BOOL)hasProperties:(id)a3
+{
+  v4 = a3;
+  v5 = v4;
+  if (v4 && [v4 count])
+  {
+    v6 = [v5 objectForKeyedSubscript:@"confidence"];
+    v7 = v6;
+    if (v6)
+    {
+      [v6 doubleValue];
+      if (v8 != self->_confidence)
+      {
+        goto LABEL_45;
+      }
+    }
+
+    v9 = [v5 objectForKeyedSubscript:@"rfamhol"];
+    v7 = v9;
+    if (v9)
+    {
+      [v9 doubleValue];
+      if (v10 != self->_familyHolidayAttendanceRate)
+      {
+        goto LABEL_45;
+      }
+    }
+
+    v11 = [v5 objectForKeyedSubscript:@"rparnam"];
+    v7 = v11;
+    if (v11)
+    {
+      if ([v11 BOOLValue] != (*(self + 48) & 1))
+      {
+        goto LABEL_45;
+      }
+    }
+
+    v12 = [v5 objectForKeyedSubscript:@"rfamnam"];
+    v7 = v12;
+    if (v12)
+    {
+      if ([v12 BOOLValue] == ((*(self + 48) & 2) == 0))
+      {
+        goto LABEL_45;
+      }
+    }
+
+    v13 = [v5 objectForKeyedSubscript:@"gwnummmtshome"];
+    v7 = v13;
+    if (v13)
+    {
+      if ([v13 unsignedIntegerValue] != *(self + 10))
+      {
+        goto LABEL_45;
+      }
+    }
+
+    v14 = [v5 objectForKeyedSubscript:@"rhasanniv"];
+    v7 = v14;
+    if (v14)
+    {
+      if ([v14 BOOLValue] == ((*(self + 48) & 4) == 0))
+      {
+        goto LABEL_45;
+      }
+    }
+
+    v15 = [v5 objectForKeyedSubscript:@"rtop2sg"];
+    v7 = v15;
+    if (v15)
+    {
+      if ([v15 BOOLValue] == ((*(self + 48) & 8) == 0))
+      {
+        goto LABEL_45;
+      }
+    }
+
+    v16 = [v5 objectForKeyedSubscript:@"rlovexch"];
+    v7 = v16;
+    if (v16)
+    {
+      if ([v16 unsignedIntegerValue] != *(self + 11))
+      {
+        goto LABEL_45;
+      }
+    }
+
+    v17 = [v5 objectForKeyedSubscript:@"rtop"];
+    v7 = v17;
+    if (v17)
+    {
+      if ([v17 BOOLValue] == ((*(self + 48) & 0x10) == 0))
+      {
+        goto LABEL_45;
+      }
+    }
+
+    v18 = [v5 objectForKeyedSubscript:@"rfrndnghtout"];
+    v7 = v18;
+    if (v18)
+    {
+      [v18 doubleValue];
+      if (v19 != self->_friendNightOutAttendanceRate)
+      {
+        goto LABEL_45;
+      }
+    }
+
+    v20 = [v5 objectForKeyedSubscript:@"rprtnrtrip"];
+    v7 = v20;
+    if (v20)
+    {
+      [v20 doubleValue];
+      if (v21 != self->_partnerTripAttendanceRate)
+      {
+        goto LABEL_45;
+      }
+    }
+
+    v22 = [v5 objectForKeyedSubscript:@"rfrfamtrip"];
+    v7 = v22;
+    if (v22)
+    {
+      [v22 doubleValue];
+      if (v23 != self->_friendsAndFamilyTripAttendanceRate)
+      {
+        goto LABEL_45;
+      }
+    }
+
+    v24 = [v5 objectForKeyedSubscript:@"rwkend"];
+    v7 = v24;
+    if (v24)
+    {
+      [v24 doubleValue];
+      if (v25 != self->_weekendAppearanceRatio)
+      {
+        goto LABEL_45;
+      }
+    }
+
+    v26 = [v5 objectForKeyedSubscript:@"rwork"];
+    v7 = v26;
+    if (v26)
+    {
+      [v26 doubleValue];
+      if (v27 != self->_momentsAtWorkAppearanceRate)
+      {
+        goto LABEL_45;
+      }
+    }
+
+    v28 = [v5 objectForKeyedSubscript:@"rcal"];
+    v7 = v28;
+    if (v28)
+    {
+      [v28 doubleValue];
+      if (v29 != self->_calendarAttendanceRatio)
+      {
+        goto LABEL_45;
+      }
+    }
+
+    v30 = [v5 objectForKeyedSubscript:@"ragediff"];
+    v7 = v30;
+    if (v30)
+    {
+      if ([v30 BOOLValue] == ((*(self + 48) & 0x20) == 0))
+      {
+        goto LABEL_45;
+      }
+    }
+
+    v31 = [v5 objectForKeyedSubscript:@"rold"];
+    v7 = v31;
+    if (v31)
+    {
+      if ([v31 BOOLValue] == ((*(self + 48) & 0x40) == 0))
+      {
+        goto LABEL_45;
+      }
+    }
+
+    v32 = [v5 objectForKeyedSubscript:@"rchild"];
+    v7 = v32;
+    if (v32)
+    {
+      if (self->_isPersonYoungEnoughToBeMeNodeChild != [v32 BOOLValue])
+      {
+        goto LABEL_45;
+      }
+    }
+
+    v33 = [v5 objectForKeyedSubscript:@"relstatus"];
+    v7 = v33;
+    if (v33)
+    {
+      if ([v33 unsignedIntegerValue] != self->_status)
+      {
+        goto LABEL_45;
+      }
+    }
+
+    v34 = [v5 objectForKeyedSubscript:@"relsource"];
+    v7 = v34;
+    if (v34 && [v34 unsignedIntValue] != self->_source)
+    {
+LABEL_45:
+      v35 = 0;
+    }
+
+    else
+    {
+      v35 = 1;
+    }
+  }
+
+  else
+  {
+    v35 = 1;
+  }
+
+  return v35;
+}
+
+- (PGGraphRelationshipEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 properties:(id)a7
+{
+  v10 = a7;
+  v61 = a5;
+  v59 = a4;
+  v11 = a3;
+  v12 = [v10 objectForKeyedSubscript:@"confidence"];
+  [v12 doubleValue];
+  v14 = v13;
+
+  v15 = [v10 objectForKeyedSubscript:@"rfamhol"];
+  [v15 doubleValue];
+  v17 = v16;
+
+  v18 = [v10 objectForKeyedSubscript:@"rparnam"];
+  v58 = [v18 BOOLValue];
+
+  v19 = [v10 objectForKeyedSubscript:@"rfamnam"];
+  v57 = [v19 BOOLValue];
+
+  v20 = [v10 objectForKeyedSubscript:@"gwnummmtshome"];
+  v56 = [v20 unsignedIntegerValue];
+
+  v21 = [v10 objectForKeyedSubscript:@"rhasanniv"];
+  v55 = [v21 BOOLValue];
+
+  v22 = [v10 objectForKeyedSubscript:@"rtop2sg"];
+  v23 = [v22 BOOLValue];
+
+  v24 = [v10 objectForKeyedSubscript:@"rlovexch"];
+  v25 = [v24 unsignedIntegerValue];
+
+  v26 = [v10 objectForKeyedSubscript:@"rtop"];
+  LOBYTE(v24) = [v26 BOOLValue];
+
+  v27 = [v10 objectForKeyedSubscript:@"rfrndnghtout"];
+  [v27 doubleValue];
+  v29 = v28;
+
+  v30 = [v10 objectForKeyedSubscript:@"rprtnrtrip"];
+  [v30 doubleValue];
+  v32 = v31;
+
+  v33 = [v10 objectForKeyedSubscript:@"rfrfamtrip"];
+  [v33 doubleValue];
+  v35 = v34;
+
+  v36 = [v10 objectForKeyedSubscript:@"rwkend"];
+  [v36 doubleValue];
+  v38 = v37;
+
+  v39 = [v10 objectForKeyedSubscript:@"rwork"];
+  [v39 doubleValue];
+  v41 = v40;
+
+  v42 = [v10 objectForKeyedSubscript:@"rcal"];
+  [v42 doubleValue];
+  v44 = v43;
+
+  v45 = [v10 objectForKeyedSubscript:@"ragediff"];
+  LOBYTE(v42) = [v45 BOOLValue];
+
+  v46 = [v10 objectForKeyedSubscript:@"rold"];
+  LOBYTE(v45) = [v46 BOOLValue];
+
+  v47 = [v10 objectForKeyedSubscript:@"rchild"];
+  LOBYTE(a5) = [v47 BOOLValue];
+
+  v48 = [v10 objectForKeyedSubscript:@"relstatus"];
+  v49 = [v48 unsignedIntegerValue];
+
+  v50 = [v10 objectForKeyedSubscript:@"relsource"];
+
+  LOBYTE(v10) = [v50 unsignedIntValue];
+  BYTE4(v54) = v10;
+  BYTE3(v54) = a5;
+  BYTE2(v54) = v45;
+  BYTE1(v54) = v42;
+  LOBYTE(v54) = v24;
+  BYTE1(v53) = v23;
+  LOBYTE(v53) = v55;
+  v51 = [PGGraphRelationshipEdge initWithRelationship:"initWithRelationship:fromPersonNode:toPersonNode:confidence:status:familyHolidayAttendanceRate:hasParentContactName:hasSameFamilyNameAsMePerson:numberOfMomentsAtHome:hasAnniversaryDate:isTopTwoPersonsSocialGroup:numberOfLoveEmojisExchanged:isTopPerson:friendNightOutAttendanceRate:partnerTripAttendanceRate:friendsAndFamilyTripAttendanceRate:weekendAppearanceRatio:momentsAtWorkAppearanceRate:calendarAttendanceRatio:isPersonAgeDifferentThanMeNode:isPersonOldEnoughToBeParentOrGrandparent:isPersonYoungEnoughToBeMeNodeChild:source:" fromPersonNode:v11 toPersonNode:v59 confidence:v61 status:v49 familyHolidayAttendanceRate:v58 hasParentContactName:v57 hasSameFamilyNameAsMePerson:v14 numberOfMomentsAtHome:v17 hasAnniversaryDate:v29 isTopTwoPersonsSocialGroup:v32 numberOfLoveEmojisExchanged:v35 isTopPerson:v38 friendNightOutAttendanceRate:v41 partnerTripAttendanceRate:v44 friendsAndFamilyTripAttendanceRate:v56 weekendAppearanceRatio:v53 momentsAtWorkAppearanceRate:v25 calendarAttendanceRatio:v54 isPersonAgeDifferentThanMeNode:? isPersonOldEnoughToBeParentOrGrandparent:? isPersonYoungEnoughToBeMeNodeChild:? source:?];
+
+  return v51;
+}
+
+- (PGGraphRelationshipEdge)initWithRelationship:(id)a3 fromPersonNode:(id)a4 toPersonNode:(id)a5 confidence:(double)a6 status:(unint64_t)a7 familyHolidayAttendanceRate:(double)a8 hasParentContactName:(BOOL)a9 hasSameFamilyNameAsMePerson:(BOOL)a10 numberOfMomentsAtHome:(unint64_t)a11 hasAnniversaryDate:(BOOL)a12 isTopTwoPersonsSocialGroup:(BOOL)a13 numberOfLoveEmojisExchanged:(unint64_t)a14 isTopPerson:(BOOL)a15 friendNightOutAttendanceRate:(double)a16 partnerTripAttendanceRate:(double)a17 friendsAndFamilyTripAttendanceRate:(double)a18 weekendAppearanceRatio:(double)a19 momentsAtWorkAppearanceRate:(double)a20 calendarAttendanceRatio:(double)a21 isPersonAgeDifferentThanMeNode:(BOOL)a22 isPersonOldEnoughToBeParentOrGrandparent:(BOOL)a23 isPersonYoungEnoughToBeMeNodeChild:(BOOL)a24 source:(unsigned __int8)a25
+{
+  v25 = a10;
+  v39 = a3;
+  v50.receiver = self;
+  v50.super_class = PGGraphRelationshipEdge;
+  v40 = [(PGGraphEdge *)&v50 initWithSourceNode:a4 targetNode:a5];
+  if (v40)
+  {
+    v41 = [v39 copy];
+    relationship = v40->_relationship;
+    v40->_relationship = v41;
+
+    v40->_confidence = a6;
+    v40->_status = a7;
+    v40->_familyHolidayAttendanceRate = a8;
+    *(v40 + 48) = *(v40 + 48) & 0xFE | a9;
+    if (v25)
+    {
+      v43 = 2;
+    }
+
+    else
+    {
+      v43 = 0;
+    }
+
+    *(v40 + 48) = *(v40 + 48) & 0xFD | v43;
+    *(v40 + 10) = a11;
+    if (a12)
+    {
+      v44 = 4;
+    }
+
+    else
+    {
+      v44 = 0;
+    }
+
+    *(v40 + 48) = *(v40 + 48) & 0xFB | v44;
+    if (a13)
+    {
+      v45 = 8;
+    }
+
+    else
+    {
+      v45 = 0;
+    }
+
+    *(v40 + 48) = *(v40 + 48) & 0xF7 | v45;
+    *(v40 + 11) = a14;
+    if (a15)
+    {
+      v46 = 16;
+    }
+
+    else
+    {
+      v46 = 0;
+    }
+
+    *(v40 + 48) = *(v40 + 48) & 0xEF | v46;
+    v40->_friendNightOutAttendanceRate = a16;
+    v40->_partnerTripAttendanceRate = a17;
+    v40->_friendsAndFamilyTripAttendanceRate = a18;
+    v40->_weekendAppearanceRatio = a19;
+    v40->_momentsAtWorkAppearanceRate = a20;
+    v40->_calendarAttendanceRatio = a21;
+    if (a22)
+    {
+      v47 = 32;
+    }
+
+    else
+    {
+      v47 = 0;
+    }
+
+    *(v40 + 48) = *(v40 + 48) & 0xDF | v47;
+    if (a23)
+    {
+      v48 = 64;
+    }
+
+    else
+    {
+      v48 = 0;
+    }
+
+    *(v40 + 48) = *(v40 + 48) & 0xBF | v48;
+    v40->_isPersonYoungEnoughToBeMeNodeChild = a24;
+    v40->_source = a25;
+  }
+
+  return v40;
+}
+
++ (id)familyRelationshipLabels
+{
+  v7[9] = *MEMORY[0x277D85DE8];
+  v2 = MEMORY[0x277CBEB98];
+  v7[0] = @"FAMILY";
+  v7[1] = @"SISTER";
+  v7[2] = @"BROTHER";
+  v7[3] = @"PARENT";
+  v7[4] = @"MOTHER";
+  v7[5] = @"FATHER";
+  v7[6] = @"CHILD";
+  v7[7] = @"DAUGHTER";
+  v7[8] = @"SON";
+  v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:9];
+  v4 = [v2 setWithArray:v3];
+
+  v5 = *MEMORY[0x277D85DE8];
+
+  return v4;
+}
+
++ (id)filterWithRelationship:(id)a3 status:(unint64_t)a4
+{
+  v12[1] = *MEMORY[0x277D85DE8];
+  v5 = [a1 filterWithRelationship:a3];
+  v11 = @"relstatus";
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v12[0] = v6;
+  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
+  v8 = [v5 filterBySettingProperties:v7];
+
+  v9 = *MEMORY[0x277D85DE8];
+
+  return v8;
+}
+
++ (id)filterWithRelationship:(id)a3
+{
+  v3 = MEMORY[0x277D22C20];
+  v4 = a3;
+  v5 = [[v3 alloc] initWithLabel:v4 domain:300];
+
+  return v5;
+}
+
++ (MAEdgeFilter)inferredRelationshipFilter
+{
+  v8[1] = *MEMORY[0x277D85DE8];
+  v2 = +[PGGraphRelationshipEdge filter];
+  v7 = @"relstatus";
+  v8[0] = &unk_2844821A8;
+  v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
+  v4 = [v2 filterBySettingProperties:v3];
+
+  v5 = *MEMORY[0x277D85DE8];
+
+  return v4;
+}
+
++ (MAEdgeFilter)confirmedRelationshipFilter
+{
+  v8[1] = *MEMORY[0x277D85DE8];
+  v2 = +[PGGraphRelationshipEdge filter];
+  v7 = @"relstatus";
+  v8[0] = &unk_284482190;
+  v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
+  v4 = [v2 filterBySettingProperties:v3];
+
+  v5 = *MEMORY[0x277D85DE8];
+
+  return v4;
+}
+
++ (id)filter
+{
+  v3 = objc_alloc(MEMORY[0x277D22C20]);
+  v4 = [a1 supportedRelationshipLabels];
+  v5 = [v3 initWithLabels:v4 domain:300 properties:MEMORY[0x277CBEC10]];
+
+  return v5;
+}
+
++ (id)relationshipSourceToString:(unsigned __int8)a3
+{
+  if (a3)
+  {
+    return @"Megadome";
+  }
+
+  else
+  {
+    return @"Graph";
+  }
+}
+
++ (id)supportedRelationshipLabels
+{
+  if (supportedRelationshipLabels_onceToken != -1)
+  {
+    dispatch_once(&supportedRelationshipLabels_onceToken, &__block_literal_global_3372);
+  }
+
+  v3 = supportedRelationshipLabels_supportedRelationshipLabels;
+
+  return v3;
+}
+
+void __54__PGGraphRelationshipEdge_supportedRelationshipLabels__block_invoke()
+{
+  v5[17] = *MEMORY[0x277D85DE8];
+  v0 = MEMORY[0x277CBEB98];
+  v5[0] = @"PARTNER";
+  v5[1] = @"FATHER";
+  v5[2] = @"MOTHER";
+  v5[3] = @"BROTHER";
+  v5[4] = @"SISTER";
+  v5[5] = @"DAUGHTER";
+  v5[6] = @"SON";
+  v5[7] = @"PARENT";
+  v5[8] = @"FAMILY";
+  v5[9] = @"FAMILY_SOCIALGROUP";
+  v5[10] = @"CHILD";
+  v5[11] = @"FRIEND";
+  v5[12] = @"COWORKER";
+  v5[13] = @"COWORKER_SOCIALGROUP";
+  v5[14] = @"ACQUAINTANCE";
+  v5[15] = @"VIP";
+  v5[16] = @"HOUSEHOLD_MEMBER";
+  v1 = [MEMORY[0x277CBEA60] arrayWithObjects:v5 count:17];
+  v2 = [v0 setWithArray:v1];
+  v3 = supportedRelationshipLabels_supportedRelationshipLabels;
+  supportedRelationshipLabels_supportedRelationshipLabels = v2;
+
+  v4 = *MEMORY[0x277D85DE8];
+}
+
+@end

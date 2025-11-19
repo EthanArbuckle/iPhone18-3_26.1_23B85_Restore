@@ -1,0 +1,488 @@
+@interface VKToneGenerator
+- (VKToneGenerator)initWithHapticEngineDelegate:(id)a3;
+- (VKWalkAssistHapticEngineDelegate)hapticEngineDelegate;
+- (id)configureAudioEngineWithError:(id *)a3;
+- (void)configurePlayerWithPitchFactor:(float)a3 leftBalance:(float)a4 rightBalance:(float)a5 volume:(float)a6 loop:(BOOL)a7;
+- (void)pause;
+- (void)playOnePulse;
+- (void)playSoundWithPitchFactor:(float)a3 leftBalance:(float)a4 rightBalance:(float)a5 volume:(float)a6 loop:(BOOL)a7;
+- (void)setUsesSoundFeedback:(BOOL)a3;
+- (void)startPulse;
+- (void)stopPulse;
+@end
+
+@implementation VKToneGenerator
+
+- (void)setUsesSoundFeedback:(BOOL)a3
+{
+  if (self->_usesSoundFeedback != a3)
+  {
+    v10[5] = v3;
+    v10[6] = v4;
+    if (a3)
+    {
+      v10[0] = 0;
+      v6 = [(VKToneGenerator *)self configureAudioEngineWithError:v10];
+      v7 = v10[0];
+      audioEngine = self->_audioEngine;
+      self->_audioEngine = v6;
+
+      if (v7)
+      {
+        v9 = AXLogCommon();
+        if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
+        {
+          [VKToneGenerator setUsesSoundFeedback:];
+        }
+      }
+
+      else
+      {
+        self->_usesSoundFeedback = 1;
+      }
+    }
+
+    else
+    {
+      [(AVAudioEngine *)self->_audioEngine stop];
+      self->_usesSoundFeedback = 0;
+    }
+  }
+}
+
+- (VKToneGenerator)initWithHapticEngineDelegate:(id)a3
+{
+  v4 = a3;
+  v19.receiver = self;
+  v19.super_class = VKToneGenerator;
+  v5 = [(VKToneGenerator *)&v19 init];
+  v6 = v5;
+  if (v5)
+  {
+    v5[8] = 0;
+    __asm { FMOV            V0.4S, #1.0 }
+
+    *(v5 + 12) = _Q0;
+    v12 = [MEMORY[0x29EDB9F48] bundleForClass:objc_opt_class()];
+    v13 = [v12 URLForResource:@"3beacon" withExtension:@"aiff"];
+    audioFileURL = v6->_audioFileURL;
+    v6->_audioFileURL = v13;
+
+    audioEngine = v6->_audioEngine;
+    v6->_audioEngine = 0;
+
+    timer = v6->_timer;
+    v6->_timer = 0;
+
+    objc_storeWeak(&v6->_hapticEngineDelegate, v4);
+    v17 = v6;
+  }
+
+  return v6;
+}
+
+- (void)startPulse
+{
+  if (!UIAccessibilityIsVoiceOverRunning())
+  {
+    [(VKToneGenerator *)self stopPulse];
+  }
+
+  if (!self->_timer)
+  {
+    objc_initWeak(&location, self);
+    v16[0] = 0;
+    v16[1] = v16;
+    v16[2] = 0x3032000000;
+    v16[3] = __Block_byref_object_copy_;
+    v16[4] = __Block_byref_object_dispose_;
+    v17 = [MEMORY[0x29EDB8DB0] date];
+    v15[0] = 0;
+    v15[1] = v15;
+    v15[2] = 0x2020000000;
+    v15[3] = 0x3FC3333333333333;
+    v3 = objc_alloc(MEMORY[0x29EDB8E68]);
+    v4 = [MEMORY[0x29EDB8DB0] date];
+    v8 = MEMORY[0x29EDCA5F8];
+    v9 = 3221225472;
+    v10 = __29__VKToneGenerator_startPulse__block_invoke;
+    v11 = &unk_29F3183F8;
+    objc_copyWeak(&v14, &location);
+    v12 = v16;
+    v13 = v15;
+    v5 = [v3 initWithFireDate:v4 interval:1 repeats:&v8 block:0.001];
+    timer = self->_timer;
+    self->_timer = v5;
+
+    v7 = [MEMORY[0x29EDB8E48] currentRunLoop];
+    [v7 addTimer:self->_timer forMode:*MEMORY[0x29EDB8CC0]];
+
+    objc_destroyWeak(&v14);
+    _Block_object_dispose(v15, 8);
+    _Block_object_dispose(v16, 8);
+
+    objc_destroyWeak(&location);
+  }
+}
+
+void __29__VKToneGenerator_startPulse__block_invoke(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 48));
+  if (WeakRetained)
+  {
+    v22 = WeakRetained;
+    [WeakRetained volume];
+    if (v3 <= 0.0)
+    {
+      [v22 pause];
+      v8 = [MEMORY[0x29EDB8DB0] date];
+      v9 = *(*(a1 + 32) + 8);
+      v10 = *(v9 + 40);
+      *(v9 + 40) = v8;
+
+      [v22 maxPulseFrequency];
+      v12 = v11;
+      v13 = a1 + 40;
+LABEL_14:
+      *(*(*v13 + 8) + 24) = 1.0 / v12;
+      WeakRetained = v22;
+      goto LABEL_15;
+    }
+
+    [v22 minPulseFrequency];
+    v5 = v4;
+    [v22 pulseFrequency];
+    if (v5 <= v6)
+    {
+      [v22 pulseFrequency];
+    }
+
+    else
+    {
+      [v22 minPulseFrequency];
+    }
+
+    v12 = 13.0;
+    if (v7 <= 13.0)
+    {
+      [v22 minPulseFrequency];
+      v15 = v14;
+      [v22 pulseFrequency];
+      if (v15 <= v16)
+      {
+        [v22 pulseFrequency];
+      }
+
+      else
+      {
+        [v22 minPulseFrequency];
+      }
+
+      v12 = v17;
+    }
+
+    [*(*(*(a1 + 32) + 8) + 40) timeIntervalSinceNow];
+    v13 = a1 + 40;
+    WeakRetained = v22;
+    if (*(*(*(a1 + 40) + 8) + 24) <= -v18)
+    {
+      v19 = [MEMORY[0x29EDB8DB0] date];
+      v20 = *(*(a1 + 32) + 8);
+      v21 = *(v20 + 40);
+      *(v20 + 40) = v19;
+
+      [v22 playOnePulse];
+      goto LABEL_14;
+    }
+  }
+
+LABEL_15:
+}
+
+- (void)stopPulse
+{
+  timer = self->_timer;
+  if (timer)
+  {
+    [(NSTimer *)timer invalidate];
+    v4 = self->_timer;
+    self->_timer = 0;
+
+    [(VKToneGenerator *)self pause];
+  }
+}
+
+- (id)configureAudioEngineWithError:(id *)a3
+{
+  v5 = objc_alloc_init(MEMORY[0x29EDB8008]);
+  v6 = objc_alloc_init(MEMORY[0x29EDB8030]);
+  player = self->_player;
+  self->_player = v6;
+
+  v8 = [v5 mainMixerNode];
+  mixer = self->_mixer;
+  self->_mixer = v8;
+
+  [v5 attachNode:self->_player];
+  if ([v5 startAndReturnError:a3])
+  {
+    v10 = v5;
+  }
+
+  else
+  {
+    v10 = 0;
+  }
+
+  return v10;
+}
+
+- (void)playOnePulse
+{
+  *&v4 = self->_rightBalance;
+  *&v2 = self->_pitchFactor;
+  *&v5 = self->_volume;
+  *&v3 = self->_leftBalance;
+  [(VKToneGenerator *)self playSoundWithPitchFactor:0 leftBalance:v2 rightBalance:v3 volume:v4 loop:v5];
+  if (self->_shouldPlayHapticPulse)
+  {
+    v8 = [(VKToneGenerator *)self hapticEngineDelegate];
+    *&v7 = self->_volume;
+    [v8 playSingleHapticPulseWithIntensity:v7 duration:self->_pulseDuration];
+  }
+}
+
+- (void)pause
+{
+  if (![(AVAudioEngine *)self->_audioEngine isRunning])
+  {
+    [(AVAudioEngine *)self->_audioEngine startAndReturnError:0];
+  }
+
+  player = self->_player;
+
+  [(AVAudioPlayerNode *)player pause];
+}
+
+- (void)configurePlayerWithPitchFactor:(float)a3 leftBalance:(float)a4 rightBalance:(float)a5 volume:(float)a6 loop:(BOOL)a7
+{
+  if (self->_audioFileURL)
+  {
+    v12 = objc_alloc(MEMORY[0x29EDB8010]);
+    audioFileURL = self->_audioFileURL;
+    v58 = 0;
+    v14 = [v12 initForReading:audioFileURL error:&v58];
+    v15 = v58;
+    if (v15)
+    {
+      v16 = v15;
+      v17 = AXLogCommon();
+      if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
+      {
+        [VKToneGenerator configurePlayerWithPitchFactor:leftBalance:rightBalance:volume:loop:];
+      }
+
+      goto LABEL_35;
+    }
+
+    v17 = [v14 processingFormat];
+    [(AVAudioEngine *)self->_audioEngine connect:self->_player to:self->_mixer format:v17];
+    [v17 sampleRate];
+    v19 = v18;
+    v20 = [v14 length];
+    v21 = objc_alloc(MEMORY[0x29EDB8020]);
+    v22 = [v14 processingFormat];
+    v23 = [v21 initWithPCMFormat:v22 frameCapacity:v20];
+
+    [v23 setFrameLength:v20];
+    v57 = 0;
+    [v14 readIntoBuffer:v23 error:&v57];
+    v16 = v57;
+    if (v16)
+    {
+      v24 = AXLogCommon();
+      if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
+      {
+        [VKToneGenerator configurePlayerWithPitchFactor:leftBalance:rightBalance:volume:loop:];
+      }
+    }
+
+    else
+    {
+      v25 = v19;
+      v26 = v20 / a3;
+      v27 = v26;
+      self->_pulseDuration = (v26 / v25);
+      v28 = objc_alloc(MEMORY[0x29EDB8020]);
+      v29 = [v14 processingFormat];
+      v30 = [v28 initWithPCMFormat:v29 frameCapacity:v27];
+      buffer = self->_buffer;
+      self->_buffer = v30;
+
+      [(AVAudioPCMBuffer *)self->_buffer setFrameLength:v27];
+      v32 = [v17 channelCount];
+      if (v32)
+      {
+        v33 = v32;
+        v34 = v32;
+        v35 = [v23 floatChannelData];
+        v36 = [(AVAudioPCMBuffer *)self->_buffer floatChannelData];
+        v37 = malloc_type_malloc(4 * v33, 0x100004052888210uLL);
+        if (v33 == 1)
+        {
+          if (a4 <= a5)
+          {
+            v38 = a5;
+          }
+
+          else
+          {
+            v38 = a4;
+          }
+
+          *v37 = v38 * a6;
+        }
+
+        else
+        {
+          v39 = (v34 + 3) & 0x1FFFFFFFCLL;
+          v40 = vdupq_n_s64(v34 - 1);
+          v41 = a4 * a6;
+          v42 = a5 * a6;
+          v43 = xmmword_29C71B4F0;
+          v44 = xmmword_29C71B500;
+          v45 = v37 + 2;
+          v46 = vdupq_n_s64(4uLL);
+          do
+          {
+            v47 = vmovn_s64(vcgeq_u64(v40, v44));
+            if (vuzp1_s16(v47, *v40.i8).u8[0])
+            {
+              *(v45 - 2) = v41;
+            }
+
+            if (vuzp1_s16(v47, *&v40).i8[2])
+            {
+              *(v45 - 1) = v42;
+            }
+
+            if (vuzp1_s16(*&v40, vmovn_s64(vcgeq_u64(v40, *&v43))).i32[1])
+            {
+              *v45 = v41;
+              v45[1] = v42;
+            }
+
+            v43 = vaddq_s64(v43, v46);
+            v44 = vaddq_s64(v44, v46);
+            v45 += 4;
+            v39 -= 4;
+          }
+
+          while (v39);
+        }
+
+        v48 = 0;
+        v49 = (v20 - 1);
+        do
+        {
+          if (v27)
+          {
+            v50 = 0;
+            v51 = v37[v48];
+            v52 = *(v35 + 8 * v48);
+            v53 = v36[v48];
+            do
+            {
+              v54 = v50 * a3;
+              if (v54 >= v49)
+              {
+                v56 = *(v52 + 4 * v49);
+              }
+
+              else
+              {
+                v55 = vcvtms_s32_f32(v54);
+                v56 = *(v52 + 4 * v55) + ((*(v52 + 4 * vcvtps_s32_f32(v54)) - *(v52 + 4 * v55)) * (v54 - floorf(v54)));
+              }
+
+              v53[v50++] = v51 * v56;
+            }
+
+            while (v27 != v50);
+          }
+
+          ++v48;
+        }
+
+        while (v48 != v34);
+        free(v37);
+        goto LABEL_34;
+      }
+
+      v24 = AXLogCommon();
+      if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
+      {
+        [VKToneGenerator configurePlayerWithPitchFactor:v24 leftBalance:? rightBalance:? volume:? loop:?];
+      }
+    }
+
+LABEL_34:
+LABEL_35:
+  }
+}
+
+- (void)playSoundWithPitchFactor:(float)a3 leftBalance:(float)a4 rightBalance:(float)a5 volume:(float)a6 loop:(BOOL)a7
+{
+  if (self->_usesSoundFeedback)
+  {
+    v7 = a7;
+    [VKToneGenerator configurePlayerWithPitchFactor:"configurePlayerWithPitchFactor:leftBalance:rightBalance:volume:loop:" leftBalance:? rightBalance:? volume:? loop:?];
+    if (self->_buffer)
+    {
+      if ([(AVAudioEngine *)self->_audioEngine isRunning])
+      {
+        if (v7)
+        {
+          v9 = 5;
+        }
+
+        else
+        {
+          v9 = 4;
+        }
+
+        [(AVAudioPlayerNode *)self->_player scheduleBuffer:self->_buffer atTime:0 options:v9 completionHandler:&__block_literal_global_0];
+        player = self->_player;
+
+        [(AVAudioPlayerNode *)player play];
+      }
+
+      else
+      {
+        v15 = 0;
+        v11 = [(VKToneGenerator *)self configureAudioEngineWithError:&v15];
+        v12 = v15;
+        audioEngine = self->_audioEngine;
+        self->_audioEngine = v11;
+
+        if (v12)
+        {
+          v14 = AXLogCommon();
+          if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
+          {
+            [VKToneGenerator setUsesSoundFeedback:];
+          }
+        }
+      }
+    }
+  }
+}
+
+- (VKWalkAssistHapticEngineDelegate)hapticEngineDelegate
+{
+  WeakRetained = objc_loadWeakRetained(&self->_hapticEngineDelegate);
+
+  return WeakRetained;
+}
+
+@end

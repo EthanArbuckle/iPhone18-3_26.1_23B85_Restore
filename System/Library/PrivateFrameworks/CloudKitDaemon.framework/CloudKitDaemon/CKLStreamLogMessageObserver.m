@@ -1,0 +1,125 @@
+@interface CKLStreamLogMessageObserver
+- (id)_colorString:(id)a3 withForeground:(unint64_t)a4;
+- (void)eventMatched:(id)a3;
+@end
+
+@implementation CKLStreamLogMessageObserver
+
+- (id)_colorString:(id)a3 withForeground:(unint64_t)a4
+{
+  v4 = a4;
+  v6 = a3;
+  if (objc_msgSend_colorOutput(self, v7, v8))
+  {
+    v10 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v9, @"%sm%@\x1B[0m", off_278548630[v4 & 7], v6);
+  }
+
+  else
+  {
+    v10 = &stru_28385ED00;
+  }
+
+  return v10;
+}
+
+- (void)eventMatched:(id)a3
+{
+  v131 = a3;
+  v6 = objc_msgSend_processImagePath(v131, v4, v5);
+  v8 = objc_msgSend__processNameForPath_(self, v7, v6);
+
+  if (!v8)
+  {
+    v11 = objc_msgSend_senderImagePath(v131, v9, v10);
+    v8 = objc_msgSend__processNameForPath_(self, v12, v11);
+  }
+
+  v13 = objc_msgSend_timeZone(v131, v9, v10);
+
+  if (v13)
+  {
+    v16 = objc_msgSend_timeZone(v131, v14, v15);
+    v19 = objc_msgSend_formatter(self, v17, v18);
+    objc_msgSend_setTimeZone_(v19, v20, v16);
+  }
+
+  v21 = objc_msgSend_composedMessage(v131, v14, v15);
+  if (objc_msgSend_hasPrefix_(v21, v22, @"SIM: "))
+  {
+    v25 = objc_msgSend_substringFromIndex_(v21, v23, 5);
+
+    v21 = v25;
+  }
+
+  v26 = objc_msgSend_colorOutput(self, v23, v24);
+  v29 = MEMORY[0x277CCACA8];
+  if (v26)
+  {
+    v30 = objc_msgSend_threadIdentifier(v131, v27, v28);
+    v32 = objc_msgSend_stringWithFormat_(v29, v31, @"%lu", v30);
+    v35 = objc_msgSend_threadIdentifier(v131, v33, v34);
+    v129 = objc_msgSend__colorString_withForeground_(self, v36, v32, v35);
+
+    v37 = MEMORY[0x277CCACA8];
+    v40 = objc_msgSend_activityIdentifier(v131, v38, v39);
+    v42 = objc_msgSend_stringWithFormat_(v37, v41, @"%lu", v40);
+    v45 = objc_msgSend_activityIdentifier(v131, v43, v44);
+    v47 = objc_msgSend__colorString_withForeground_(self, v46, v42, v45);
+
+    v48 = MEMORY[0x277CCACA8];
+    v51 = objc_msgSend_parentActivityIdentifier(v131, v49, v50);
+    v53 = objc_msgSend_stringWithFormat_(v48, v52, @"%lu", v51);
+    v56 = objc_msgSend_parentActivityIdentifier(v131, v54, v55);
+    v58 = objc_msgSend__colorString_withForeground_(self, v57, v53, v56);
+
+    v128 = v47;
+    if (objc_msgSend_type(v131, v59, v60) == 1024 && (objc_msgSend_logType(v131, v61, v62) == 16 || objc_msgSend_logType(v131, v63, v64) == 17))
+    {
+      v65 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v63, @"💩💩💩%@", v21);
+      v67 = objc_msgSend__colorString_withForeground_(self, v66, v65, 0);
+
+      v21 = v67;
+    }
+
+    v126 = objc_alloc(MEMORY[0x277CCACA8]);
+    v70 = objc_msgSend_formatter(self, v68, v69);
+    v127 = objc_msgSend_date(v131, v71, v72);
+    v74 = objc_msgSend_stringFromDate_(v70, v73, v127);
+    v77 = objc_msgSend_hash(v8, v75, v76);
+    objc_msgSend__colorString_withForeground_(self, v78, v8, v77);
+    v79 = v130 = v8;
+    v82 = objc_msgSend_processIdentifier(v131, v80, v81);
+    v85 = objc_msgSend_parentActivityIdentifier(v131, v83, v84);
+    v87 = objc_msgSend__colorString_withForeground_(self, v86, @"|", v85);
+    v90 = objc_msgSend_activityIdentifier(v131, v88, v89);
+    v92 = objc_msgSend__colorString_withForeground_(self, v91, @"|", v90);
+    v94 = v128;
+    v93 = v129;
+    v96 = objc_msgSend_initWithFormat_(v126, v95, @"\x1B[1m\x1B[37m%@\x1B[0m %@[%d:%@:%@:%@]%@%@ %@", v74, v79, v82, v129, v128, v58, v87, v92, v21);
+    v97 = v96;
+    v100 = objc_msgSend_UTF8String(v97, v98, v99);
+    puts(v100);
+
+    v8 = v130;
+  }
+
+  else
+  {
+    v101 = objc_alloc(MEMORY[0x277CCACA8]);
+    v104 = objc_msgSend_formatter(self, v102, v103);
+    v94 = objc_msgSend_date(v131, v105, v106);
+    v58 = objc_msgSend_stringFromDate_(v104, v107, v94);
+    v110 = objc_msgSend_processIdentifier(v131, v108, v109);
+    v113 = objc_msgSend_threadIdentifier(v131, v111, v112);
+    v116 = objc_msgSend_activityIdentifier(v131, v114, v115);
+    v119 = objc_msgSend_parentActivityIdentifier(v131, v117, v118);
+    v125 = v113;
+    v93 = v104;
+    v70 = objc_msgSend_initWithFormat_(v101, v120, @"%@ %@[%d:%llu:%llu:%llu] %@", v58, v8, v110, v125, v116, v119, v21);
+    v121 = v70;
+    v124 = objc_msgSend_UTF8String(v121, v122, v123);
+    puts(v124);
+  }
+}
+
+@end

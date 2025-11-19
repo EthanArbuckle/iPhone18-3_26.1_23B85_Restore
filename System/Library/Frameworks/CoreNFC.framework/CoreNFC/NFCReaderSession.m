@@ -1,0 +1,3277 @@
+@interface NFCReaderSession
++ (BOOL)featureAvailable:(unint64_t)a3;
+- (BOOL)_connectTag:(id)a3 error:(id *)a4;
+- (BOOL)checkPresenceWithError:(id *)a3;
+- (BOOL)connectTag:(id)a3 error:(id *)a4;
+- (BOOL)disconnectTagWithError:(id *)a3;
+- (BOOL)isInvalidated;
+- (BOOL)isReady;
+- (BOOL)validateDelegate:(id)a3 expectedType:(int64_t)a4;
+- (BOOL)writeNdefMessage:(id)a3 error:(id *)a4;
+- (NFCReaderSession)initWithDelegate:(id)a3 sessionDelegateType:(int64_t)a4 queue:(id)a5 pollMethod:(unint64_t)a6 sessionType:(unint64_t)a7 sessionConfig:(unint64_t)a8;
+- (NFReaderSessionInterface)readerProxy;
+- (NFTag)currentTag;
+- (NSString)alertMessage;
+- (id)_convertMessageToInternal:(id)a3;
+- (id)delegate;
+- (id)ndefStatus:(int64_t *)a3 maxMessageLength:(unint64_t *)a4;
+- (id)readNdefMessageWithError:(id *)a3;
+- (id)transceive:(id)a3 tagUpdate:(id *)a4 error:(id *)a5;
+- (id)writeLockNdef;
+- (void)_callbackDidBecomeActive;
+- (void)_callbackDidInvalidateWithError:(id)a3;
+- (void)_invalidateSessionWithCode:(int64_t)a3 message:(id)a4 finalUIState:(int64_t)a5 activateCallback:(BOOL)a6;
+- (void)_restartPollingWithCompletionHandler:(id)a3;
+- (void)_resumeDelegateQueue;
+- (void)_startPollingWithMethod:(unint64_t)a3 sessionConfig:(unint64_t)a4 completionHandler:(id)a5;
+- (void)_stopPollingWithCompletionHandler:(id)a3;
+- (void)beginSession;
+- (void)beginSessionWithConfig:(id)a3;
+- (void)cleanupNFCHardwareManagerRegistration;
+- (void)connectTag:(id)a3 completionHandler:(id)a4;
+- (void)dealloc;
+- (void)didDetectExternalReader;
+- (void)didDetectTags:(id)a3 connectedTagIndex:(unint64_t)a4;
+- (void)didInvalidate;
+- (void)didStartSession:(id)a3;
+- (void)didTerminate:(id)a3;
+- (void)didUIControllerInvalidate:(id)a3;
+- (void)handleSessionResumed;
+- (void)handleSessionSuspended:(id)a3;
+- (void)hwStateDidChange:(unsigned int)a3;
+- (void)invalidateSession;
+- (void)invalidateSessionWithErrorMessage:(id)a3;
+- (void)restartPolling;
+- (void)setAlertMessage:(id)a3;
+- (void)submitBlockOnDelegateQueue:(id)a3;
+- (void)submitBlockOnSessionQueue:(id)a3;
+- (void)submitBlockOnSessionQueueWithDelay:(unint64_t)a3 block:(id)a4;
+@end
+
+@implementation NFCReaderSession
+
+- (void)dealloc
+{
+  if (self->_sessionId)
+  {
+    [(NFCReaderSession *)self cleanupNFCHardwareManagerRegistration];
+  }
+
+  v3.receiver = self;
+  v3.super_class = NFCReaderSession;
+  [(NFCReaderSession *)&v3 dealloc];
+}
+
+- (BOOL)isReady
+{
+  v2 = self;
+  objc_sync_enter(v2);
+  v3 = (v2->_sessionState - 2) < 3;
+  objc_sync_exit(v2);
+
+  return v3;
+}
+
+- (BOOL)isInvalidated
+{
+  v2 = self;
+  objc_sync_enter(v2);
+  v3 = (v2->_sessionState - 5) < 3;
+  objc_sync_exit(v2);
+
+  return v3;
+}
+
+- (NSString)alertMessage
+{
+  v2 = self;
+  objc_sync_enter(v2);
+  v3 = v2->_alertMessage;
+  objc_sync_exit(v2);
+
+  return v3;
+}
+
+- (void)setAlertMessage:(id)a3
+{
+  v5 = a3;
+  v6 = _os_activity_create(&dword_23728C000, "NFCReaderSession setAlertMessage:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
+  state.opaque[0] = 0;
+  state.opaque[1] = 0;
+  os_activity_scope_enter(v6, &state);
+  os_activity_scope_leave(&state);
+
+  v7 = self;
+  objc_sync_enter(v7);
+  v8 = [v5 copy];
+
+  alertMessage = v7->_alertMessage;
+  v7->_alertMessage = v8;
+
+  proxy = v7->_proxy;
+  v14[0] = MEMORY[0x277D85DD0];
+  v14[1] = 3221225472;
+  v14[2] = sub_2372C598C;
+  v14[3] = &unk_278A2A2A8;
+  v14[4] = v7;
+  v14[5] = a2;
+  v11 = [(NFReaderSessionInterface *)proxy synchronousRemoteObjectProxyWithErrorHandler:v14];
+  v12 = v7->_alertMessage;
+  v13[0] = MEMORY[0x277D85DD0];
+  v13[1] = 3221225472;
+  v13[2] = sub_2372C5B14;
+  v13[3] = &unk_278A2A2A8;
+  v13[4] = v7;
+  v13[5] = a2;
+  [v11 updateSharingUIScanText:v12 completion:v13];
+
+  objc_sync_exit(v7);
+}
+
+- (void)invalidateSession
+{
+  v3 = _os_activity_create(&dword_23728C000, "NFCReaderSession invalidateSession", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
+  v4.opaque[0] = 0;
+  v4.opaque[1] = 0;
+  os_activity_scope_enter(v3, &v4);
+  os_activity_scope_leave(&v4);
+
+  [(NFCReaderSession *)self invalidateSessionWithReason:200];
+}
+
+- (void)invalidateSessionWithErrorMessage:(id)a3
+{
+  v4 = a3;
+  v5 = _os_activity_create(&dword_23728C000, "NFCReaderSession invalidateSessionWithErrorMessage:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
+  v6.opaque[0] = 0;
+  v6.opaque[1] = 0;
+  os_activity_scope_enter(v5, &v6);
+  os_activity_scope_leave(&v6);
+
+  [(NFCReaderSession *)self _invalidateSessionWithCode:200 message:v4 finalUIState:2 activateCallback:0];
+}
+
+- (void)_callbackDidBecomeActive
+{
+  v29 = *MEMORY[0x277D85DE8];
+  if (self->_delegateType == 1 && ([(NFCReaderSession *)self delegate], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_opt_respondsToSelector(), v4, (v5 & 1) != 0))
+  {
+    v18[0] = MEMORY[0x277D85DD0];
+    v18[1] = 3221225472;
+    v18[2] = sub_2372C5FDC;
+    v18[3] = &unk_278A29F00;
+    v18[4] = self;
+    [(NFCReaderSession *)self submitBlockOnDelegateQueue:v18];
+  }
+
+  else
+  {
+    Logger = NFLogGetLogger();
+    if (Logger)
+    {
+      v7 = Logger;
+      Class = object_getClass(self);
+      isMetaClass = class_isMetaClass(Class);
+      ClassName = object_getClassName(self);
+      Name = sel_getName(a2);
+      v17 = [(NFCReaderSession *)self delegateType];
+      v12 = 45;
+      if (isMetaClass)
+      {
+        v12 = 43;
+      }
+
+      v7(4, "%c[%{public}s %{public}s]:%i Unknown delegate type: %ld", v12, ClassName, Name, 145, v17);
+    }
+
+    v13 = NFSharedLogGetLogger();
+    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    {
+      v14 = object_getClass(self);
+      if (class_isMetaClass(v14))
+      {
+        v15 = 43;
+      }
+
+      else
+      {
+        v15 = 45;
+      }
+
+      *buf = 67110146;
+      v20 = v15;
+      v21 = 2082;
+      v22 = object_getClassName(self);
+      v23 = 2082;
+      v24 = sel_getName(a2);
+      v25 = 1024;
+      v26 = 145;
+      v27 = 2048;
+      v28 = [(NFCReaderSession *)self delegateType];
+      _os_log_impl(&dword_23728C000, v13, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Unknown delegate type: %ld", buf, 0x2Cu);
+    }
+  }
+
+  v16 = *MEMORY[0x277D85DE8];
+}
+
+- (void)didStartSession:(id)a3
+{
+  v4 = a3;
+  aBlock[0] = MEMORY[0x277D85DD0];
+  aBlock[1] = 3221225472;
+  aBlock[2] = sub_2372C6170;
+  aBlock[3] = &unk_278A2A2D0;
+  v5 = v4;
+  v11 = v5;
+  v12 = self;
+  v6 = _Block_copy(aBlock);
+  v7 = self;
+  objc_sync_enter(v7);
+  if (v5)
+  {
+    v6[2](v6, v5);
+  }
+
+  else
+  {
+    v7->_sessionState = 2;
+    v8[0] = MEMORY[0x277D85DD0];
+    v8[1] = 3221225472;
+    v8[2] = sub_2372C625C;
+    v8[3] = &unk_278A29DC0;
+    v8[4] = v7;
+    v9 = v6;
+    [(NFCReaderSession *)v7 submitBlockOnSessionQueue:v8];
+  }
+
+  objc_sync_exit(v7);
+}
+
+- (void)handleSessionResumed
+{
+  v23 = *MEMORY[0x277D85DE8];
+  Logger = NFLogGetLogger();
+  if (Logger)
+  {
+    v5 = Logger;
+    Class = object_getClass(self);
+    isMetaClass = class_isMetaClass(Class);
+    ClassName = object_getClassName(self);
+    Name = sel_getName(a2);
+    v9 = 45;
+    if (isMetaClass)
+    {
+      v9 = 43;
+    }
+
+    v5(4, "%c[%{public}s %{public}s]:%i Not implemented", v9, ClassName, Name, 197);
+  }
+
+  v10 = NFSharedLogGetLogger();
+  if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+  {
+    v11 = object_getClass(self);
+    if (class_isMetaClass(v11))
+    {
+      v12 = 43;
+    }
+
+    else
+    {
+      v12 = 45;
+    }
+
+    *buf = 67109890;
+    v16 = v12;
+    v17 = 2082;
+    v18 = object_getClassName(self);
+    v19 = 2082;
+    v20 = sel_getName(a2);
+    v21 = 1024;
+    v22 = 197;
+    _os_log_impl(&dword_23728C000, v10, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Not implemented", buf, 0x22u);
+  }
+
+  v13 = *MEMORY[0x277D85DE8];
+}
+
+- (void)handleSessionSuspended:(id)a3
+{
+  v24 = *MEMORY[0x277D85DE8];
+  Logger = NFLogGetLogger();
+  if (Logger)
+  {
+    v6 = Logger;
+    Class = object_getClass(self);
+    isMetaClass = class_isMetaClass(Class);
+    ClassName = object_getClassName(self);
+    Name = sel_getName(a2);
+    v10 = 45;
+    if (isMetaClass)
+    {
+      v10 = 43;
+    }
+
+    v6(4, "%c[%{public}s %{public}s]:%i Not implemented", v10, ClassName, Name, 203);
+  }
+
+  v11 = NFSharedLogGetLogger();
+  if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+  {
+    v12 = object_getClass(self);
+    if (class_isMetaClass(v12))
+    {
+      v13 = 43;
+    }
+
+    else
+    {
+      v13 = 45;
+    }
+
+    *buf = 67109890;
+    v17 = v13;
+    v18 = 2082;
+    v19 = object_getClassName(self);
+    v20 = 2082;
+    v21 = sel_getName(a2);
+    v22 = 1024;
+    v23 = 203;
+    _os_log_impl(&dword_23728C000, v11, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Not implemented", buf, 0x22u);
+  }
+
+  v14 = *MEMORY[0x277D85DE8];
+}
+
+- (void)didTerminate:(id)a3
+{
+  v39 = *MEMORY[0x277D85DE8];
+  v5 = a3;
+  v6 = self;
+  objc_sync_enter(v6);
+  Logger = NFLogGetLogger();
+  if (Logger)
+  {
+    v8 = Logger;
+    Class = object_getClass(v6);
+    isMetaClass = class_isMetaClass(Class);
+    ClassName = object_getClassName(v6);
+    Name = sel_getName(a2);
+    if (v6->_proxy)
+    {
+      v13 = @"YES";
+    }
+
+    else
+    {
+      v13 = @"NO";
+    }
+
+    v14 = 43;
+    if (!isMetaClass)
+    {
+      v14 = 45;
+    }
+
+    v8(5, "%c[%{public}s %{public}s]:%i sessionState=%ld, proxy=%@, error=%@", v14, ClassName, Name, 209, v6->_sessionState, v13, v5);
+  }
+
+  v15 = NFSharedLogGetLogger();
+  if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+  {
+    v16 = object_getClass(v6);
+    if (class_isMetaClass(v16))
+    {
+      v17 = 43;
+    }
+
+    else
+    {
+      v17 = 45;
+    }
+
+    v18 = object_getClassName(v6);
+    v19 = sel_getName(a2);
+    sessionState = v6->_sessionState;
+    if (v6->_proxy)
+    {
+      v21 = @"YES";
+    }
+
+    else
+    {
+      v21 = @"NO";
+    }
+
+    *buf = 67110658;
+    v26 = v17;
+    v27 = 2082;
+    v28 = v18;
+    v29 = 2082;
+    v30 = v19;
+    v31 = 1024;
+    v32 = 209;
+    v33 = 2048;
+    v34 = sessionState;
+    v35 = 2112;
+    v36 = v21;
+    v37 = 2112;
+    v38 = v5;
+    _os_log_impl(&dword_23728C000, v15, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i sessionState=%ld, proxy=%@, error=%@", buf, 0x40u);
+  }
+
+  if ([v5 code] == 64)
+  {
+    v22 = 203;
+  }
+
+  else if ([v5 code] == 5)
+  {
+    v22 = 201;
+  }
+
+  else
+  {
+    v22 = 202;
+  }
+
+  v6->_invalidationCode = v22;
+  proxy = v6->_proxy;
+  v6->_proxy = 0;
+  v6->_sessionState = 7;
+
+  [(NFCReaderSession *)v6 cleanupNFCHardwareManagerRegistration];
+  objc_sync_exit(v6);
+
+  v24 = *MEMORY[0x277D85DE8];
+}
+
+- (void)didUIControllerInvalidate:(id)a3
+{
+  v38 = *MEMORY[0x277D85DE8];
+  v5 = a3;
+  v6 = self;
+  objc_sync_enter(v6);
+  Logger = NFLogGetLogger();
+  if (Logger)
+  {
+    v8 = Logger;
+    Class = object_getClass(v6);
+    isMetaClass = class_isMetaClass(Class);
+    ClassName = object_getClassName(v6);
+    Name = sel_getName(a2);
+    if (v6->_proxy)
+    {
+      v13 = @"YES";
+    }
+
+    else
+    {
+      v13 = @"NO";
+    }
+
+    v14 = 45;
+    if (isMetaClass)
+    {
+      v14 = 43;
+    }
+
+    v8(5, "%c[%{public}s %{public}s]:%i sessionState=%ld, proxy=%@", v14, ClassName, Name, 230, v6->_sessionState, v13);
+  }
+
+  v15 = NFSharedLogGetLogger();
+  if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+  {
+    v16 = object_getClass(v6);
+    if (class_isMetaClass(v16))
+    {
+      v17 = 43;
+    }
+
+    else
+    {
+      v17 = 45;
+    }
+
+    v18 = object_getClassName(v6);
+    v19 = sel_getName(a2);
+    sessionState = v6->_sessionState;
+    if (v6->_proxy)
+    {
+      v21 = @"YES";
+    }
+
+    else
+    {
+      v21 = @"NO";
+    }
+
+    *buf = 67110402;
+    v27 = v17;
+    v28 = 2082;
+    v29 = v18;
+    v30 = 2082;
+    v31 = v19;
+    v32 = 1024;
+    v33 = 230;
+    v34 = 2048;
+    v35 = sessionState;
+    v36 = 2112;
+    v37 = v21;
+    _os_log_impl(&dword_23728C000, v15, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i sessionState=%ld, proxy=%@", buf, 0x36u);
+  }
+
+  if ((v6->_sessionState | 2) != 7)
+  {
+    v22 = [v5 code];
+    v23 = 202;
+    if (v22 == 48)
+    {
+      v23 = 200;
+    }
+
+    v6->_invalidationCode = v23;
+  }
+
+  [(NFCReaderSession *)v6 _invalidateSessionAndActivateCallbackWithCode:v6->_invalidationCode];
+  [(NFCReaderSession *)v6 cleanupNFCHardwareManagerRegistration];
+  proxy = v6->_proxy;
+  v6->_proxy = 0;
+
+  objc_sync_exit(v6);
+  v25 = *MEMORY[0x277D85DE8];
+}
+
+- (void)didDetectTags:(id)a3 connectedTagIndex:(unint64_t)a4
+{
+  v67 = *MEMORY[0x277D85DE8];
+  v7 = a3;
+  v8 = self;
+  objc_sync_enter(v8);
+  Logger = NFLogGetLogger();
+  if (Logger)
+  {
+    v10 = Logger;
+    Class = object_getClass(v8);
+    if (class_isMetaClass(Class))
+    {
+      v12 = 43;
+    }
+
+    else
+    {
+      v12 = 45;
+    }
+
+    ClassName = object_getClassName(v8);
+    Name = sel_getName(a2);
+    currentTag = v8->_currentTag;
+    if (currentTag)
+    {
+      v16 = [(NFTag *)currentTag description];
+      v10(6, "%c[%{public}s %{public}s]:%i Current connectedTag: %@", v12, ClassName, Name, 251, v16);
+    }
+
+    else
+    {
+      v10(6, "%c[%{public}s %{public}s]:%i Current connectedTag: %@", v12, ClassName, Name, 251, @"None");
+    }
+  }
+
+  v17 = NFSharedLogGetLogger();
+  if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+  {
+    v18 = object_getClass(v8);
+    v19 = class_isMetaClass(v18) ? 43 : 45;
+    v20 = object_getClassName(v8);
+    v21 = sel_getName(a2);
+    v22 = v8->_currentTag;
+    if (v22)
+    {
+      v23 = [(NFTag *)v8->_currentTag description];
+    }
+
+    else
+    {
+      v23 = @"None";
+    }
+
+    *buf = 67110146;
+    v56 = v19;
+    v57 = 2082;
+    v58 = v20;
+    v59 = 2082;
+    v60 = v21;
+    v61 = 1024;
+    v62 = 251;
+    v63 = 2112;
+    v64 = v23;
+    _os_log_impl(&dword_23728C000, v17, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Current connectedTag: %@", buf, 0x2Cu);
+    if (v22)
+    {
+    }
+  }
+
+  if (a4 != 0x7FFFFFFFFFFFFFFFLL)
+  {
+    if ([v7 count] <= a4)
+    {
+      v43 = NFLogGetLogger();
+      if (v43)
+      {
+        v44 = v43;
+        v45 = object_getClass(v8);
+        isMetaClass = class_isMetaClass(v45);
+        v53 = object_getClassName(v8);
+        v54 = sel_getName(a2);
+        v47 = 45;
+        if (isMetaClass)
+        {
+          v47 = 43;
+        }
+
+        v44(3, "%c[%{public}s %{public}s]:%i Invalid tag index: %ld", v47, v53, v54, 257, a4);
+      }
+
+      v33 = NFSharedLogGetLogger();
+      if (!os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
+      {
+        goto LABEL_38;
+      }
+
+      v48 = object_getClass(v8);
+      if (class_isMetaClass(v48))
+      {
+        v49 = 43;
+      }
+
+      else
+      {
+        v49 = 45;
+      }
+
+      v50 = object_getClassName(v8);
+      v51 = sel_getName(a2);
+      *buf = 67110146;
+      v56 = v49;
+      v57 = 2082;
+      v58 = v50;
+      v59 = 2082;
+      v60 = v51;
+      v61 = 1024;
+      v62 = 257;
+      v63 = 2048;
+      v64 = a4;
+      v39 = "%c[%{public}s %{public}s]:%i Invalid tag index: %ld";
+      v40 = v33;
+      v41 = OS_LOG_TYPE_ERROR;
+      v42 = 44;
+    }
+
+    else
+    {
+      v24 = [v7 objectAtIndex:a4];
+      v25 = v8->_currentTag;
+      v8->_currentTag = v24;
+
+      v26 = NFLogGetLogger();
+      if (v26)
+      {
+        v27 = v26;
+        v28 = object_getClass(v8);
+        v29 = class_isMetaClass(v28);
+        v30 = object_getClassName(v8);
+        v31 = sel_getName(a2);
+        v32 = 45;
+        if (v29)
+        {
+          v32 = 43;
+        }
+
+        v27(6, "%c[%{public}s %{public}s]:%i ConnectedTag[%ld]: %@", v32, v30, v31, 255, a4, v8->_currentTag);
+      }
+
+      v33 = NFSharedLogGetLogger();
+      if (!os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
+      {
+        goto LABEL_38;
+      }
+
+      v34 = object_getClass(v8);
+      if (class_isMetaClass(v34))
+      {
+        v35 = 43;
+      }
+
+      else
+      {
+        v35 = 45;
+      }
+
+      v36 = object_getClassName(v8);
+      v37 = sel_getName(a2);
+      v38 = v8->_currentTag;
+      *buf = 67110402;
+      v56 = v35;
+      v57 = 2082;
+      v58 = v36;
+      v59 = 2082;
+      v60 = v37;
+      v61 = 1024;
+      v62 = 255;
+      v63 = 2048;
+      v64 = a4;
+      v65 = 2112;
+      v66 = v38;
+      v39 = "%c[%{public}s %{public}s]:%i ConnectedTag[%ld]: %@";
+      v40 = v33;
+      v41 = OS_LOG_TYPE_DEFAULT;
+      v42 = 54;
+    }
+
+    _os_log_impl(&dword_23728C000, v40, v41, v39, buf, v42);
+LABEL_38:
+  }
+
+  v8->_sessionState = 4;
+  objc_sync_exit(v8);
+
+  v52 = *MEMORY[0x277D85DE8];
+}
+
+- (void)didDetectExternalReader
+{
+  v23 = *MEMORY[0x277D85DE8];
+  Logger = NFLogGetLogger();
+  if (Logger)
+  {
+    v5 = Logger;
+    Class = object_getClass(self);
+    isMetaClass = class_isMetaClass(Class);
+    ClassName = object_getClassName(self);
+    Name = sel_getName(a2);
+    v9 = 45;
+    if (isMetaClass)
+    {
+      v9 = 43;
+    }
+
+    v5(5, "%c[%{public}s %{public}s]:%i External reader detected", v9, ClassName, Name, 274);
+  }
+
+  v10 = NFSharedLogGetLogger();
+  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  {
+    v11 = object_getClass(self);
+    if (class_isMetaClass(v11))
+    {
+      v12 = 43;
+    }
+
+    else
+    {
+      v12 = 45;
+    }
+
+    *buf = 67109890;
+    v16 = v12;
+    v17 = 2082;
+    v18 = object_getClassName(self);
+    v19 = 2082;
+    v20 = sel_getName(a2);
+    v21 = 1024;
+    v22 = 274;
+    _os_log_impl(&dword_23728C000, v10, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i External reader detected", buf, 0x22u);
+  }
+
+  [(NFCReaderSession *)self _invalidateSessionWithCode:203];
+  v13 = *MEMORY[0x277D85DE8];
+}
+
+- (void)hwStateDidChange:(unsigned int)a3
+{
+  obj = self;
+  objc_sync_enter(obj);
+  if (a3 == 4)
+  {
+    [(NFCReaderSession *)obj _invalidateSessionWithCode:1];
+  }
+
+  objc_sync_exit(obj);
+}
+
+- (void)didInvalidate
+{
+  v43 = *MEMORY[0x277D85DE8];
+  v3 = self;
+  objc_sync_enter(v3);
+  sessionState = v3->_sessionState;
+  Logger = NFLogGetLogger();
+  v6 = Logger;
+  if (sessionState == 6)
+  {
+    if (Logger)
+    {
+      Class = object_getClass(v3);
+      isMetaClass = class_isMetaClass(Class);
+      ClassName = object_getClassName(v3);
+      Name = sel_getName(a2);
+      v10 = 45;
+      if (isMetaClass)
+      {
+        v10 = 43;
+      }
+
+      v6(5, "%c[%{public}s %{public}s]:%i Drop XPC interrupt callback", v10, ClassName, Name, 303);
+    }
+
+    v11 = NFSharedLogGetLogger();
+    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    {
+      v12 = object_getClass(v3);
+      if (class_isMetaClass(v12))
+      {
+        v13 = 43;
+      }
+
+      else
+      {
+        v13 = 45;
+      }
+
+      *buf = 67109890;
+      v32 = v13;
+      v33 = 2082;
+      v34 = object_getClassName(v3);
+      v35 = 2082;
+      v36 = sel_getName(a2);
+      v37 = 1024;
+      v38 = 303;
+      _os_log_impl(&dword_23728C000, v11, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Drop XPC interrupt callback", buf, 0x22u);
+    }
+  }
+
+  else
+  {
+    if (Logger)
+    {
+      v14 = object_getClass(v3);
+      v15 = class_isMetaClass(v14);
+      v16 = object_getClassName(v3);
+      v17 = sel_getName(a2);
+      if (v3->_proxy)
+      {
+        v18 = @"YES";
+      }
+
+      else
+      {
+        v18 = @"NO";
+      }
+
+      v19 = 45;
+      if (v15)
+      {
+        v19 = 43;
+      }
+
+      v6(5, "%c[%{public}s %{public}s]:%i sessionState=%ld, proxy=%@", v19, v16, v17, 307, v3->_sessionState, v18);
+    }
+
+    v20 = NFSharedLogGetLogger();
+    if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+    {
+      v21 = object_getClass(v3);
+      if (class_isMetaClass(v21))
+      {
+        v22 = 43;
+      }
+
+      else
+      {
+        v22 = 45;
+      }
+
+      v23 = object_getClassName(v3);
+      v24 = sel_getName(a2);
+      v25 = v3->_sessionState;
+      if (v3->_proxy)
+      {
+        v26 = @"YES";
+      }
+
+      else
+      {
+        v26 = @"NO";
+      }
+
+      *buf = 67110402;
+      v32 = v22;
+      v33 = 2082;
+      v34 = v23;
+      v35 = 2082;
+      v36 = v24;
+      v37 = 1024;
+      v38 = 307;
+      v39 = 2048;
+      v40 = v25;
+      v41 = 2112;
+      v42 = v26;
+      _os_log_impl(&dword_23728C000, v20, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i sessionState=%ld, proxy=%@", buf, 0x36u);
+    }
+
+    proxy = v3->_proxy;
+    v3->_proxy = 0;
+
+    if (v3->_invalidationCode)
+    {
+      invalidationCode = v3->_invalidationCode;
+    }
+
+    else
+    {
+      invalidationCode = 202;
+    }
+
+    [(NFCReaderSession *)v3 _invalidateSessionAndActivateCallbackWithCode:invalidationCode];
+    v3->_sessionState = 6;
+    [(NFCReaderSession *)v3 cleanupNFCHardwareManagerRegistration];
+  }
+
+  objc_sync_exit(v3);
+
+  v29 = *MEMORY[0x277D85DE8];
+}
+
+- (id)delegate
+{
+  WeakRetained = objc_loadWeakRetained(&self->_delegate);
+
+  return WeakRetained;
+}
+
+- (void)submitBlockOnSessionQueue:(id)a3
+{
+  v28 = *MEMORY[0x277D85DE8];
+  v5 = a3;
+  sessionQueue = self->_sessionQueue;
+  if (sessionQueue || ([MEMORY[0x277CCA890] currentHandler], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "handleFailureInMethod:object:file:lineNumber:description:", a2, self, @"NFCReaderSession.m", 333, @"Session queue is nil"), v8, (sessionQueue = self->_sessionQueue) != 0))
+  {
+    dispatch_async(sessionQueue, v5);
+  }
+
+  else
+  {
+    Logger = NFLogGetLogger();
+    if (Logger)
+    {
+      v10 = Logger;
+      Class = object_getClass(self);
+      isMetaClass = class_isMetaClass(Class);
+      ClassName = object_getClassName(self);
+      Name = sel_getName(a2);
+      v14 = 45;
+      if (isMetaClass)
+      {
+        v14 = 43;
+      }
+
+      v10(3, "%c[%{public}s %{public}s]:%i Session queue is nil", v14, ClassName, Name, 335);
+    }
+
+    v15 = NFSharedLogGetLogger();
+    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    {
+      v16 = object_getClass(self);
+      if (class_isMetaClass(v16))
+      {
+        v17 = 43;
+      }
+
+      else
+      {
+        v17 = 45;
+      }
+
+      *buf = 67109890;
+      v21 = v17;
+      v22 = 2082;
+      v23 = object_getClassName(self);
+      v24 = 2082;
+      v25 = sel_getName(a2);
+      v26 = 1024;
+      v27 = 335;
+      _os_log_impl(&dword_23728C000, v15, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session queue is nil", buf, 0x22u);
+    }
+
+    v18 = [MEMORY[0x277CCA890] currentHandler];
+    [v18 handleFailureInMethod:a2 object:self file:@"NFCReaderSession.m" lineNumber:336 description:@"Session queue is nil"];
+  }
+
+  v7 = *MEMORY[0x277D85DE8];
+}
+
+- (void)submitBlockOnSessionQueueWithDelay:(unint64_t)a3 block:(id)a4
+{
+  v30 = *MEMORY[0x277D85DE8];
+  v7 = a4;
+  sessionQueue = self->_sessionQueue;
+  if (sessionQueue || ([MEMORY[0x277CCA890] currentHandler], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "handleFailureInMethod:object:file:lineNumber:description:", a2, self, @"NFCReaderSession.m", 344, @"Session queue is nil"), v10, (sessionQueue = self->_sessionQueue) != 0))
+  {
+    dispatch_after(a3, sessionQueue, v7);
+  }
+
+  else
+  {
+    Logger = NFLogGetLogger();
+    if (Logger)
+    {
+      v12 = Logger;
+      Class = object_getClass(self);
+      isMetaClass = class_isMetaClass(Class);
+      ClassName = object_getClassName(self);
+      Name = sel_getName(a2);
+      v16 = 45;
+      if (isMetaClass)
+      {
+        v16 = 43;
+      }
+
+      v12(3, "%c[%{public}s %{public}s]:%i Session queue is nil", v16, ClassName, Name, 346);
+    }
+
+    v17 = NFSharedLogGetLogger();
+    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    {
+      v18 = object_getClass(self);
+      if (class_isMetaClass(v18))
+      {
+        v19 = 43;
+      }
+
+      else
+      {
+        v19 = 45;
+      }
+
+      *buf = 67109890;
+      v23 = v19;
+      v24 = 2082;
+      v25 = object_getClassName(self);
+      v26 = 2082;
+      v27 = sel_getName(a2);
+      v28 = 1024;
+      v29 = 346;
+      _os_log_impl(&dword_23728C000, v17, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session queue is nil", buf, 0x22u);
+    }
+
+    v20 = [MEMORY[0x277CCA890] currentHandler];
+    [v20 handleFailureInMethod:a2 object:self file:@"NFCReaderSession.m" lineNumber:347 description:@"Session queue is nil"];
+  }
+
+  v9 = *MEMORY[0x277D85DE8];
+}
+
+- (void)submitBlockOnDelegateQueue:(id)a3
+{
+  v28 = *MEMORY[0x277D85DE8];
+  v5 = a3;
+  delegateQueue = self->_delegateQueue;
+  if (delegateQueue || ([MEMORY[0x277CCA890] currentHandler], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "handleFailureInMethod:object:file:lineNumber:description:", a2, self, @"NFCReaderSession.m", 355, @"Delegate queue is nil"), v8, (delegateQueue = self->_delegateQueue) != 0))
+  {
+    dispatch_group_notify(self->_sessionStartInProgress, delegateQueue, v5);
+  }
+
+  else
+  {
+    Logger = NFLogGetLogger();
+    if (Logger)
+    {
+      v10 = Logger;
+      Class = object_getClass(self);
+      isMetaClass = class_isMetaClass(Class);
+      ClassName = object_getClassName(self);
+      Name = sel_getName(a2);
+      v14 = 45;
+      if (isMetaClass)
+      {
+        v14 = 43;
+      }
+
+      v10(3, "%c[%{public}s %{public}s]:%i Session queue is nil", v14, ClassName, Name, 357);
+    }
+
+    v15 = NFSharedLogGetLogger();
+    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    {
+      v16 = object_getClass(self);
+      if (class_isMetaClass(v16))
+      {
+        v17 = 43;
+      }
+
+      else
+      {
+        v17 = 45;
+      }
+
+      *buf = 67109890;
+      v21 = v17;
+      v22 = 2082;
+      v23 = object_getClassName(self);
+      v24 = 2082;
+      v25 = sel_getName(a2);
+      v26 = 1024;
+      v27 = 357;
+      _os_log_impl(&dword_23728C000, v15, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session queue is nil", buf, 0x22u);
+    }
+
+    v18 = [MEMORY[0x277CCA890] currentHandler];
+    [v18 handleFailureInMethod:a2 object:self file:@"NFCReaderSession.m" lineNumber:358 description:@"Session queue is nil"];
+  }
+
+  v7 = *MEMORY[0x277D85DE8];
+}
+
+- (void)beginSession
+{
+  v42 = *MEMORY[0x277D85DE8];
+  Logger = NFLogGetLogger();
+  if (Logger)
+  {
+    v5 = Logger;
+    Class = object_getClass(self);
+    isMetaClass = class_isMetaClass(Class);
+    ClassName = object_getClassName(self);
+    Name = sel_getName(a2);
+    v9 = 45;
+    if (isMetaClass)
+    {
+      v9 = 43;
+    }
+
+    v5(6, "%c[%{public}s %{public}s]:%i ", v9, ClassName, Name, 367);
+  }
+
+  v10 = NFSharedLogGetLogger();
+  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  {
+    v11 = object_getClass(self);
+    if (class_isMetaClass(v11))
+    {
+      v12 = 43;
+    }
+
+    else
+    {
+      v12 = 45;
+    }
+
+    *buf = 67109890;
+    v35 = v12;
+    v36 = 2082;
+    v37 = object_getClassName(self);
+    v38 = 2082;
+    v39 = sel_getName(a2);
+    v40 = 1024;
+    v41 = 367;
+    _os_log_impl(&dword_23728C000, v10, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i ", buf, 0x22u);
+  }
+
+  v13 = self;
+  objc_sync_enter(v13);
+  delegateType = v13->_delegateType;
+  if (delegateType <= 3)
+  {
+    if ((delegateType - 2) < 2)
+    {
+      if ([(NFCReaderSession *)v13 sessionType]!= 3 && [(NFCReaderSession *)v13 sessionType]!= 5)
+      {
+        __assert_rtn("[NFCReaderSession beginSession]", "NFCReaderSession.m", 377, "(self.sessionType == CoreNFCSessionTypeTagReader) || (self.sessionType == CoreNFCSessionTypePaymentReader)");
+      }
+
+      goto LABEL_34;
+    }
+
+    if (delegateType == 1)
+    {
+      if ([(NFCReaderSession *)v13 sessionType]!= 2)
+      {
+        __assert_rtn("[NFCReaderSession beginSession]", "NFCReaderSession.m", 383, "self.sessionType == CoreNFCSessionTypeISO15693Reader");
+      }
+
+      goto LABEL_34;
+    }
+
+    goto LABEL_24;
+  }
+
+  if ((delegateType - 4) >= 2)
+  {
+    if (delegateType != 6)
+    {
+LABEL_24:
+      v15 = NFLogGetLogger();
+      if (v15)
+      {
+        v16 = v15;
+        v17 = object_getClass(v13);
+        v18 = class_isMetaClass(v17);
+        v19 = object_getClassName(v13);
+        v33 = sel_getName(a2);
+        v20 = 45;
+        if (v18)
+        {
+          v20 = 43;
+        }
+
+        v16(4, "%c[%{public}s %{public}s]:%i Defaulting to CoreNFCSessionTypeUnknown", v20, v19, v33, 385);
+      }
+
+      v21 = NFSharedLogGetLogger();
+      if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+      {
+        v22 = object_getClass(v13);
+        if (class_isMetaClass(v22))
+        {
+          v23 = 43;
+        }
+
+        else
+        {
+          v23 = 45;
+        }
+
+        v24 = object_getClassName(v13);
+        v25 = sel_getName(a2);
+        *buf = 67109890;
+        v35 = v23;
+        v36 = 2082;
+        v37 = v24;
+        v38 = 2082;
+        v39 = v25;
+        v40 = 1024;
+        v41 = 385;
+        _os_log_impl(&dword_23728C000, v21, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Defaulting to CoreNFCSessionTypeUnknown", buf, 0x22u);
+      }
+
+      goto LABEL_34;
+    }
+
+    if ([(NFCReaderSession *)v13 sessionType]!= 4)
+    {
+      __assert_rtn("[NFCReaderSession beginSession]", "NFCReaderSession.m", 374, "self.sessionType == CoreNFCSessionTypeVASReader");
+    }
+  }
+
+  else if ([(NFCReaderSession *)v13 sessionType]!= 1)
+  {
+    __assert_rtn("[NFCReaderSession beginSession]", "NFCReaderSession.m", 380, "self.sessionType == CoreNFCSessionTypeNDEFReader");
+  }
+
+LABEL_34:
+  pollOption = v13->_pollOption;
+  if ((pollOption & 2) != 0)
+  {
+    sessionConfig = v13->_sessionConfig;
+    v29 = 1;
+    if ((sessionConfig & 0x40) == 0)
+    {
+      v29 = 2;
+    }
+
+    if ((sessionConfig & 0x10) != 0)
+    {
+      v27 = 3;
+    }
+
+    else
+    {
+      v27 = v29;
+    }
+  }
+
+  else if ((pollOption & 0x1C) != 0)
+  {
+    v27 = 3;
+  }
+
+  else
+  {
+    v27 = 0;
+  }
+
+  v30 = [MEMORY[0x277D82B70] sessionConfigWithUIMode:v27 sessionType:-[NFCReaderSession sessionType](v13 initialScanText:"sessionType") vasPass:{v13->_alertMessage, 0}];
+  [(NFCReaderSession *)v13 beginSessionWithConfig:v30];
+
+  objc_sync_exit(v13);
+  v31 = *MEMORY[0x277D85DE8];
+}
+
+- (void)beginSessionWithConfig:(id)a3
+{
+  v5 = a3;
+  v6 = _os_activity_create(&dword_23728C000, "NFCReaderSession beginSessionWithConfig:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
+  state.opaque[0] = 0;
+  state.opaque[1] = 0;
+  os_activity_scope_enter(v6, &state);
+  os_activity_scope_leave(&state);
+
+  if ((self->_sessionState - 5) > 1)
+  {
+    if ((self->_pollOption & 0xFFFFFFFFFFFFFFC1) != 0 || (v8 = [v5 sessionType], pollOption = self->_pollOption, v8 == 5) && (pollOption & 8) == 0 || (pollOption & 0x1C) != 0 && (pollOption & 2) != 0)
+    {
+      [(NFCReaderSession *)self _resumeDelegateQueue];
+      [(NFCReaderSession *)self _invalidateSessionAndActivateCallbackWithCode:1];
+    }
+
+    else if (!self->_proxy)
+    {
+      v10[0] = MEMORY[0x277D85DD0];
+      v10[1] = 3221225472;
+      v10[2] = sub_2372C8068;
+      v10[3] = &unk_278A2A150;
+      v10[4] = self;
+      v12 = a2;
+      v11 = v5;
+      [(NFCReaderSession *)self submitBlockOnSessionQueue:v10];
+    }
+  }
+
+  else
+  {
+    v7 = [NFCError errorWithCode:self->_invalidationCode];
+    [(NFCReaderSession *)self _callbackDidInvalidateWithError:v7];
+  }
+}
+
+- (NFCReaderSession)initWithDelegate:(id)a3 sessionDelegateType:(int64_t)a4 queue:(id)a5 pollMethod:(unint64_t)a6 sessionType:(unint64_t)a7 sessionConfig:(unint64_t)a8
+{
+  v55 = *MEMORY[0x277D85DE8];
+  v15 = a3;
+  v16 = a5;
+  v46.receiver = self;
+  v46.super_class = NFCReaderSession;
+  v17 = [(NFCReaderSession *)&v46 init];
+  v18 = v17;
+  if (!v17)
+  {
+    goto LABEL_10;
+  }
+
+  if (![(NFCReaderSession *)v17 validateDelegate:v15 expectedType:a4])
+  {
+LABEL_21:
+    v31 = 0;
+    goto LABEL_22;
+  }
+
+  v19 = +[NFCHardwareManager sharedHardwareManager];
+  hardwareManager = v18->_hardwareManager;
+  v18->_hardwareManager = v19;
+
+  v18->_delegateType = a4;
+  objc_storeWeak(&v18->_delegate, v15);
+  v21 = MEMORY[0x277D82BB0];
+  if (v16)
+  {
+    objc_storeStrong(&v18->_delegateQueue, a5);
+  }
+
+  else
+  {
+    v22 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
+    v23 = dispatch_queue_create("com.apple.corenfc.readersession.delegate", v22);
+    delegateQueue = v18->_delegateQueue;
+    v18->_delegateQueue = v23;
+
+    dispatch_queue_set_specific(v18->_delegateQueue, *v21, 1, 0);
+  }
+
+  v25 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
+  v26 = dispatch_queue_create("com.apple.corenfc.readersession", v25);
+  sessionQueue = v18->_sessionQueue;
+  v18->_sessionQueue = v26;
+
+  dispatch_queue_set_specific(v18->_sessionQueue, *v21, 1, 0);
+  v18->_sessionType = a7;
+  v18->_pollOption = a6;
+  v18->_sessionConfig = a8;
+  v28 = dispatch_group_create();
+  sessionStartInProgress = v18->_sessionStartInProgress;
+  v18->_sessionStartInProgress = v28;
+
+  if (!v18->_delegateQueue || !v18->_sessionQueue || (v30 = v18->_sessionStartInProgress) == 0)
+  {
+    Logger = NFLogGetLogger();
+    if (Logger)
+    {
+      v33 = Logger;
+      Class = object_getClass(v18);
+      isMetaClass = class_isMetaClass(Class);
+      ClassName = object_getClassName(v18);
+      Name = sel_getName(a2);
+      v37 = 45;
+      if (isMetaClass)
+      {
+        v37 = 43;
+      }
+
+      v33(3, "%c[%{public}s %{public}s]:%i Dispatch resource init failed", v37, ClassName, Name, 537);
+    }
+
+    v38 = NFSharedLogGetLogger();
+    if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
+    {
+      v39 = object_getClass(v18);
+      if (class_isMetaClass(v39))
+      {
+        v40 = 43;
+      }
+
+      else
+      {
+        v40 = 45;
+      }
+
+      v41 = object_getClassName(v18);
+      v42 = sel_getName(a2);
+      *buf = 67109890;
+      v48 = v40;
+      v49 = 2082;
+      v50 = v41;
+      v51 = 2082;
+      v52 = v42;
+      v53 = 1024;
+      v54 = 537;
+      _os_log_impl(&dword_23728C000, v38, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Dispatch resource init failed", buf, 0x22u);
+    }
+
+    goto LABEL_21;
+  }
+
+  dispatch_group_enter(v30);
+  v18->_sessionState = 0;
+LABEL_10:
+  v31 = v18;
+LABEL_22:
+
+  v43 = *MEMORY[0x277D85DE8];
+  return v31;
+}
+
+- (void)_resumeDelegateQueue
+{
+  obj = self;
+  objc_sync_enter(obj);
+  if (!obj->_delegateQueueStarted)
+  {
+    dispatch_group_leave(obj->_sessionStartInProgress);
+    obj->_delegateQueueStarted = 1;
+  }
+
+  objc_sync_exit(obj);
+}
+
+- (void)cleanupNFCHardwareManagerRegistration
+{
+  v3 = [(NFCReaderSession *)self hardwareManager];
+  [v3 dequeueSession:self];
+}
+
+- (BOOL)validateDelegate:(id)a3 expectedType:(int64_t)a4
+{
+  v34 = *MEMORY[0x277D85DE8];
+  v7 = a3;
+  v8 = v7;
+  if (a4 == 1)
+  {
+    v9 = &unk_284A5A270;
+  }
+
+  else
+  {
+    if ((a4 & 0xFFFFFFFFFFFFFFFELL) != 2)
+    {
+      goto LABEL_7;
+    }
+
+    v9 = &unk_284A546A8;
+  }
+
+  if ([v7 conformsToProtocol:v9])
+  {
+LABEL_6:
+    v10 = 1;
+    goto LABEL_35;
+  }
+
+LABEL_7:
+  v11 = 0;
+  if ([v8 conformsToProtocol:&unk_284A5A210])
+  {
+    if (a4 <= 3)
+    {
+      if ((a4 - 2) >= 2)
+      {
+        if (a4)
+        {
+          goto LABEL_11;
+        }
+
+LABEL_16:
+        v11 = @"UNKNOWN";
+        goto LABEL_25;
+      }
+
+      goto LABEL_17;
+    }
+
+    if ((a4 - 4) < 2)
+    {
+      goto LABEL_6;
+    }
+  }
+
+  else
+  {
+    if (a4 <= 3)
+    {
+      if ((a4 - 2) >= 2)
+      {
+        if (a4)
+        {
+LABEL_11:
+          if (a4 == 1)
+          {
+            v11 = @"NFCReaderSessionDelegate";
+          }
+
+          goto LABEL_25;
+        }
+
+        goto LABEL_16;
+      }
+
+LABEL_17:
+      v11 = @"NFCTagReaderSessionDelegate";
+      goto LABEL_25;
+    }
+
+    if ((a4 - 4) < 2)
+    {
+      v11 = @"NFCNDEFReaderSessionDelegate";
+      goto LABEL_25;
+    }
+  }
+
+  if (a4 == 6)
+  {
+    if ([v8 conformsToProtocol:&unk_284A5A2D0])
+    {
+      goto LABEL_6;
+    }
+
+    v11 = @"NFCVASReaderSessionDelegate";
+  }
+
+LABEL_25:
+  Logger = NFLogGetLogger();
+  if (Logger)
+  {
+    v13 = Logger;
+    Class = object_getClass(self);
+    isMetaClass = class_isMetaClass(Class);
+    ClassName = object_getClassName(self);
+    Name = sel_getName(a2);
+    v16 = 45;
+    if (isMetaClass)
+    {
+      v16 = 43;
+    }
+
+    v13(3, "%c[%{public}s %{public}s]:%i Delegate object does not conform to %@ protocol", v16, ClassName, Name, 606, v11);
+  }
+
+  v17 = NFSharedLogGetLogger();
+  if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+  {
+    v18 = object_getClass(self);
+    if (class_isMetaClass(v18))
+    {
+      v19 = 43;
+    }
+
+    else
+    {
+      v19 = 45;
+    }
+
+    *buf = 67110146;
+    v25 = v19;
+    v26 = 2082;
+    v27 = object_getClassName(self);
+    v28 = 2082;
+    v29 = sel_getName(a2);
+    v30 = 1024;
+    v31 = 606;
+    v32 = 2112;
+    v33 = v11;
+    _os_log_impl(&dword_23728C000, v17, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Delegate object does not conform to %@ protocol", buf, 0x2Cu);
+  }
+
+  v10 = 0;
+LABEL_35:
+
+  v20 = *MEMORY[0x277D85DE8];
+  return v10;
+}
+
+- (void)_startPollingWithMethod:(unint64_t)a3 sessionConfig:(unint64_t)a4 completionHandler:(id)a5
+{
+  v14 = a5;
+  v9 = self;
+  objc_sync_enter(v9);
+  proxy = v9->_proxy;
+  if (!v14 || proxy)
+  {
+    v12 = proxy;
+    objc_sync_exit(v9);
+
+    if ((a3 & 0x1C) != 0)
+    {
+      v9 = [(NFReaderSessionInterface *)v12 synchronousRemoteObjectProxyWithErrorHandler:v14];
+      [(NFCReaderSession *)v9 startPollingForTags:a3 sessionConfig:a4 completion:v14];
+    }
+
+    else if ((a3 & 2) != 0)
+    {
+      v9 = [(NFReaderSessionInterface *)v12 synchronousRemoteObjectProxyWithErrorHandler:v14];
+      [(NFCReaderSession *)v9 startPollingForNDEFMessagesWithSessionConfig:a4 completion:v14];
+    }
+
+    else
+    {
+      v13 = [MEMORY[0x277CCA890] currentHandler];
+      [v13 handleFailureInMethod:a2 object:v9 file:@"NFCReaderSession.m" lineNumber:627 description:@"Unsupported poll mode"];
+
+      v9 = [NFCError errorWithCode:1];
+      v14[2](v14, v9);
+    }
+  }
+
+  else
+  {
+    v11 = [NFCError errorWithCode:202];
+    v14[2](v14, v11);
+
+    objc_sync_exit(v9);
+  }
+}
+
+- (void)_stopPollingWithCompletionHandler:(id)a3
+{
+  v4 = self;
+  v5 = a3;
+  objc_sync_enter(v4);
+  proxy = v4->_proxy;
+  v9 = proxy;
+  if (!v5 || proxy)
+  {
+    v8 = proxy;
+    objc_sync_exit(v4);
+
+    v4 = [(NFReaderSessionInterface *)v8 synchronousRemoteObjectProxyWithErrorHandler:v5];
+    [(NFCReaderSession *)v4 stopPollingWithCompletion:v5];
+  }
+
+  else
+  {
+    v7 = [NFCError errorWithCode:202];
+    (*(v5 + 2))(v5, v7);
+
+    objc_sync_exit(v4);
+  }
+}
+
+- (void)_restartPollingWithCompletionHandler:(id)a3
+{
+  v4 = self;
+  v5 = a3;
+  objc_sync_enter(v4);
+  proxy = v4->_proxy;
+  v10 = proxy;
+  if (!v5 || proxy)
+  {
+    v8 = proxy;
+    currentTag = v4->_currentTag;
+    v4->_currentTag = 0;
+
+    v4->_sessionState = 3;
+    objc_sync_exit(v4);
+
+    v4 = [(NFReaderSessionInterface *)v8 synchronousRemoteObjectProxyWithErrorHandler:v5];
+    [(NFCReaderSession *)v4 restartPollingWithCompletion:v5];
+  }
+
+  else
+  {
+    v7 = [NFCError errorWithCode:202];
+    (*(v5 + 2))(v5, v7);
+
+    objc_sync_exit(v4);
+  }
+}
+
+- (NFTag)currentTag
+{
+  v2 = self;
+  objc_sync_enter(v2);
+  v3 = v2->_currentTag;
+  objc_sync_exit(v2);
+
+  return v3;
+}
+
+- (void)connectTag:(id)a3 completionHandler:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  if ([(NFCReaderSession *)self isInvalidated])
+  {
+    v14[0] = MEMORY[0x277D85DD0];
+    v14[1] = 3221225472;
+    v14[2] = sub_2372C9268;
+    v14[3] = &unk_278A29C38;
+    v15 = v7;
+    v8 = v7;
+    [(NFCReaderSession *)self submitBlockOnDelegateQueue:v14];
+    v9 = v15;
+  }
+
+  else
+  {
+    v11[0] = MEMORY[0x277D85DD0];
+    v11[1] = 3221225472;
+    v11[2] = sub_2372C92D0;
+    v11[3] = &unk_278A29DE8;
+    v11[4] = self;
+    v12 = v6;
+    v13 = v7;
+    v10 = v7;
+    [(NFCReaderSession *)self submitBlockOnSessionQueue:v11];
+
+    v9 = v12;
+  }
+}
+
+- (BOOL)connectTag:(id)a3 error:(id *)a4
+{
+  v51 = *MEMORY[0x277D85DE8];
+  v7 = a3;
+  v8 = self;
+  objc_sync_enter(v8);
+  sessionState = v8->_sessionState;
+  if (sessionState == 4)
+  {
+    if (([v7 isEqualToNFTag:v8->_currentTag] & 1) == 0 && v8->_currentTag)
+    {
+      Logger = NFLogGetLogger();
+      if (Logger)
+      {
+        v11 = Logger;
+        Class = object_getClass(v8);
+        isMetaClass = class_isMetaClass(Class);
+        ClassName = object_getClassName(v8);
+        Name = sel_getName(a2);
+        v15 = 45;
+        if (isMetaClass)
+        {
+          v15 = 43;
+        }
+
+        v11(6, "%c[%{public}s %{public}s]:%i Disconnecting previous tag", v15, ClassName, Name, 699);
+      }
+
+      v16 = NFSharedLogGetLogger();
+      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+      {
+        v17 = object_getClass(v8);
+        if (class_isMetaClass(v17))
+        {
+          v18 = 43;
+        }
+
+        else
+        {
+          v18 = 45;
+        }
+
+        *buf = 67109890;
+        v42 = v18;
+        v43 = 2082;
+        v44 = object_getClassName(v8);
+        v45 = 2082;
+        v46 = sel_getName(a2);
+        v47 = 1024;
+        v48 = 699;
+        _os_log_impl(&dword_23728C000, v16, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Disconnecting previous tag", buf, 0x22u);
+      }
+
+      [(NFCReaderSession *)v8 disconnectTagWithError:0];
+    }
+
+    v40 = 0;
+    [(NFCReaderSession *)v8 _connectTag:v7 error:&v40];
+    v19 = v40;
+    v20 = v19;
+    if (a4)
+    {
+      v21 = v19;
+LABEL_27:
+      *a4 = v21;
+    }
+  }
+
+  else
+  {
+    v22 = NFLogGetLogger();
+    if (v22)
+    {
+      v23 = v22;
+      v24 = object_getClass(v8);
+      v25 = class_isMetaClass(v24);
+      v26 = object_getClassName(v8);
+      v27 = sel_getName(a2);
+      v28 = 45;
+      if (v25)
+      {
+        v28 = 43;
+      }
+
+      v23(3, "%c[%{public}s %{public}s]:%i Invalid state, %ld", v28, v26, v27, 692, v8->_sessionState);
+    }
+
+    v29 = NFSharedLogGetLogger();
+    if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+    {
+      v30 = object_getClass(v8);
+      if (class_isMetaClass(v30))
+      {
+        v31 = 43;
+      }
+
+      else
+      {
+        v31 = 45;
+      }
+
+      v32 = object_getClassName(v8);
+      v33 = sel_getName(a2);
+      v34 = v8->_sessionState;
+      *buf = 67110146;
+      v42 = v31;
+      v43 = 2082;
+      v44 = v32;
+      v45 = 2082;
+      v46 = v33;
+      v47 = 1024;
+      v48 = 692;
+      v49 = 2048;
+      v50 = v34;
+      _os_log_impl(&dword_23728C000, v29, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Invalid state, %ld", buf, 0x2Cu);
+    }
+
+    if (a4)
+    {
+      v21 = [NFCError errorWithCode:100];
+      v20 = 0;
+      goto LABEL_27;
+    }
+
+    v20 = 0;
+  }
+
+  objc_sync_exit(v8);
+
+  v36 = sessionState == 4 && v20 == 0;
+  v37 = *MEMORY[0x277D85DE8];
+  return v36;
+}
+
+- (BOOL)_connectTag:(id)a3 error:(id *)a4
+{
+  v60[2] = *MEMORY[0x277D85DE8];
+  v7 = a3;
+  v8 = self;
+  objc_sync_enter(v8);
+  proxy = v8->_proxy;
+  if (proxy)
+  {
+    v10 = proxy;
+    objc_sync_exit(v8);
+
+    v43 = 0;
+    v44 = &v43;
+    v45 = 0x3032000000;
+    v46 = sub_2372C9BDC;
+    v47 = sub_2372C9BEC;
+    v48 = 0;
+    v37 = 0;
+    v38 = &v37;
+    v39 = 0x3032000000;
+    v40 = sub_2372C9BDC;
+    v41 = sub_2372C9BEC;
+    v42 = 0;
+    if (a4)
+    {
+      *a4 = 0;
+    }
+
+    v36[0] = MEMORY[0x277D85DD0];
+    v36[1] = 3221225472;
+    v36[2] = sub_2372C9BF4;
+    v36[3] = &unk_278A2A100;
+    v36[4] = &v43;
+    v11 = [(NFReaderSessionInterface *)v10 synchronousRemoteObjectProxyWithErrorHandler:v36];
+    v35[0] = MEMORY[0x277D85DD0];
+    v35[1] = 3221225472;
+    v35[2] = sub_2372C9C04;
+    v35[3] = &unk_278A2A370;
+    v35[4] = &v43;
+    v35[5] = &v37;
+    [v11 connect:v7 completion:v35];
+
+    v12 = v44[5];
+    v13 = v12 == 0;
+    if (v12)
+    {
+      v14 = [v12 domain];
+      v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"nfcd"];
+      v16 = [v14 isEqualToString:v15];
+
+      if (v16)
+      {
+        v17 = [NFCError errorWithNFCDError:v44[5] defaultNFCErrorCode:100];
+        if ([v17 code] == 203)
+        {
+          -[NFCReaderSession _invalidateSessionWithCode:](v8, "_invalidateSessionWithCode:", [v17 code]);
+        }
+      }
+
+      else
+      {
+        [(NFCReaderSession *)v8 _invalidateSessionWithCode:202];
+        v59[0] = *MEMORY[0x277CCA450];
+        v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"XPC Error"];
+        v59[1] = *MEMORY[0x277CCA7E8];
+        v60[0] = v18;
+        v60[1] = v44[5];
+        v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v60 forKeys:v59 count:2];
+        v17 = [NFCError errorWithCode:202 userInfo:v19];
+      }
+
+      Logger = NFLogGetLogger();
+      if (Logger)
+      {
+        v21 = Logger;
+        Class = object_getClass(v8);
+        isMetaClass = class_isMetaClass(Class);
+        ClassName = object_getClassName(v8);
+        Name = sel_getName(a2);
+        v24 = 45;
+        if (isMetaClass)
+        {
+          v24 = 43;
+        }
+
+        v21(4, "%c[%{public}s %{public}s]:%i %@", v24, ClassName, Name, 750, v17);
+      }
+
+      v25 = NFSharedLogGetLogger();
+      if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+      {
+        v26 = object_getClass(v8);
+        if (class_isMetaClass(v26))
+        {
+          v27 = 43;
+        }
+
+        else
+        {
+          v27 = 45;
+        }
+
+        v28 = object_getClassName(v8);
+        v29 = sel_getName(a2);
+        *buf = 67110146;
+        v50 = v27;
+        v51 = 2082;
+        v52 = v28;
+        v53 = 2082;
+        v54 = v29;
+        v55 = 1024;
+        v56 = 750;
+        v57 = 2112;
+        v58 = v17;
+        _os_log_impl(&dword_23728C000, v25, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i %@", buf, 0x2Cu);
+      }
+
+      if (a4)
+      {
+        v30 = v17;
+        *a4 = v17;
+      }
+    }
+
+    else
+    {
+      v17 = v8;
+      objc_sync_enter(v17);
+      objc_storeStrong(v17 + 8, v38[5]);
+      objc_sync_exit(v17);
+    }
+
+    _Block_object_dispose(&v37, 8);
+    _Block_object_dispose(&v43, 8);
+  }
+
+  else
+  {
+    if (a4)
+    {
+      *a4 = [NFCError errorWithCode:103];
+    }
+
+    objc_sync_exit(v8);
+
+    v13 = 0;
+  }
+
+  v31 = *MEMORY[0x277D85DE8];
+  return v13;
+}
+
+- (BOOL)disconnectTagWithError:(id *)a3
+{
+  v57[2] = *MEMORY[0x277D85DE8];
+  v5 = self;
+  objc_sync_enter(v5);
+  proxy = v5->_proxy;
+  if (proxy)
+  {
+    v7 = proxy;
+    objc_sync_exit(v5);
+
+    v38 = 0;
+    v39 = &v38;
+    v40 = 0x3032000000;
+    v41 = sub_2372C9BDC;
+    v42 = sub_2372C9BEC;
+    v43 = 0;
+    if (a3)
+    {
+      *a3 = 0;
+    }
+
+    v37[0] = MEMORY[0x277D85DD0];
+    v37[1] = 3221225472;
+    v37[2] = sub_2372CA12C;
+    v37[3] = &unk_278A2A100;
+    v37[4] = &v38;
+    v8 = [(NFReaderSessionInterface *)v7 synchronousRemoteObjectProxyWithErrorHandler:v37];
+    v36[0] = MEMORY[0x277D85DD0];
+    v36[1] = 3221225472;
+    v36[2] = sub_2372CA13C;
+    v36[3] = &unk_278A2A100;
+    v36[4] = &v38;
+    [v8 disconnectWithCardRemoval:0 completion:v36];
+
+    v9 = v39[5];
+    v10 = v9 == 0;
+    if (v9)
+    {
+      v11 = [v9 domain];
+      v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"nfcd"];
+      v13 = [v11 isEqualToString:v12];
+
+      if (v13)
+      {
+        v56[0] = *MEMORY[0x277CCA450];
+        v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"Stack Error"];
+        v56[1] = *MEMORY[0x277CCA7E8];
+        v57[0] = v14;
+        v57[1] = v39[5];
+        v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v57 forKeys:v56 count:2];
+        v16 = 100;
+      }
+
+      else
+      {
+        [(NFCReaderSession *)v5 _invalidateSessionWithCode:202];
+        v54[0] = *MEMORY[0x277CCA450];
+        v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"XPC Error"];
+        v54[1] = *MEMORY[0x277CCA7E8];
+        v55[0] = v14;
+        v55[1] = v39[5];
+        v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v55 forKeys:v54 count:2];
+        v16 = 202;
+      }
+
+      v18 = [NFCError errorWithCode:v16 userInfo:v15];
+
+      Logger = NFLogGetLogger();
+      if (Logger)
+      {
+        v20 = Logger;
+        Class = object_getClass(v5);
+        isMetaClass = class_isMetaClass(Class);
+        ClassName = object_getClassName(v5);
+        Name = sel_getName(a2);
+        v23 = 45;
+        if (isMetaClass)
+        {
+          v23 = 43;
+        }
+
+        v20(4, "%c[%{public}s %{public}s]:%i %@", v23, ClassName, Name, 798, v18);
+      }
+
+      v24 = NFSharedLogGetLogger();
+      if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+      {
+        v25 = object_getClass(v5);
+        if (class_isMetaClass(v25))
+        {
+          v26 = 43;
+        }
+
+        else
+        {
+          v26 = 45;
+        }
+
+        v27 = object_getClassName(v5);
+        v28 = sel_getName(a2);
+        *buf = 67110146;
+        v45 = v26;
+        v46 = 2082;
+        v47 = v27;
+        v48 = 2082;
+        v49 = v28;
+        v50 = 1024;
+        v51 = 798;
+        v52 = 2112;
+        v53 = v18;
+        _os_log_impl(&dword_23728C000, v24, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i %@", buf, 0x2Cu);
+      }
+
+      if (a3)
+      {
+        v29 = v18;
+        *a3 = v18;
+      }
+    }
+
+    v30 = v5;
+    objc_sync_enter(v30);
+    currentTag = v30->_currentTag;
+    v30->_currentTag = 0;
+
+    objc_sync_exit(v30);
+    _Block_object_dispose(&v38, 8);
+  }
+
+  else
+  {
+    if (a3)
+    {
+      *a3 = [NFCError errorWithCode:103];
+    }
+
+    v17 = v5->_currentTag;
+    v5->_currentTag = 0;
+
+    objc_sync_exit(v5);
+    v10 = 0;
+  }
+
+  v32 = *MEMORY[0x277D85DE8];
+  return v10;
+}
+
+- (BOOL)checkPresenceWithError:(id *)a3
+{
+  v55[2] = *MEMORY[0x277D85DE8];
+  v5 = self;
+  objc_sync_enter(v5);
+  proxy = v5->_proxy;
+  if (proxy)
+  {
+    v7 = proxy;
+    objc_sync_exit(v5);
+
+    v38 = 0;
+    v39 = &v38;
+    v40 = 0x3032000000;
+    v41 = sub_2372C9BDC;
+    v42 = sub_2372C9BEC;
+    v43 = 0;
+    v34 = 0;
+    v35 = &v34;
+    v36 = 0x2020000000;
+    v37 = 0;
+    if (a3)
+    {
+      *a3 = 0;
+    }
+
+    v33[0] = MEMORY[0x277D85DD0];
+    v33[1] = 3221225472;
+    v33[2] = sub_2372CA5B8;
+    v33[3] = &unk_278A2A100;
+    v33[4] = &v38;
+    v8 = [(NFReaderSessionInterface *)v7 synchronousRemoteObjectProxyWithErrorHandler:v33];
+    v32[0] = MEMORY[0x277D85DD0];
+    v32[1] = 3221225472;
+    v32[2] = sub_2372CA5C8;
+    v32[3] = &unk_278A2A398;
+    v32[4] = &v34;
+    v32[5] = &v38;
+    [v8 checkPresenceWithCompletion:v32];
+
+    v9 = v39[5];
+    if (v9)
+    {
+      v10 = [v9 domain];
+      v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"nfcd"];
+      v12 = [v10 isEqualToString:v11];
+
+      if (v12)
+      {
+        v13 = [NFCError errorWithNFCDError:v39[5] defaultNFCErrorCode:100];
+        if ([v13 code] == 203)
+        {
+          -[NFCReaderSession _invalidateSessionWithCode:](v5, "_invalidateSessionWithCode:", [v13 code]);
+        }
+      }
+
+      else
+      {
+        [(NFCReaderSession *)v5 _invalidateSessionWithCode:202];
+        v54[0] = *MEMORY[0x277CCA450];
+        v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"XPC Error"];
+        v54[1] = *MEMORY[0x277CCA7E8];
+        v55[0] = v15;
+        v55[1] = v39[5];
+        v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v55 forKeys:v54 count:2];
+        v13 = [NFCError errorWithCode:202 userInfo:v16];
+      }
+
+      Logger = NFLogGetLogger();
+      if (Logger)
+      {
+        v18 = Logger;
+        Class = object_getClass(v5);
+        isMetaClass = class_isMetaClass(Class);
+        ClassName = object_getClassName(v5);
+        Name = sel_getName(a2);
+        v21 = 45;
+        if (isMetaClass)
+        {
+          v21 = 43;
+        }
+
+        v18(4, "%c[%{public}s %{public}s]:%i %@", v21, ClassName, Name, 847, v13);
+      }
+
+      v22 = NFSharedLogGetLogger();
+      if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+      {
+        v23 = object_getClass(v5);
+        if (class_isMetaClass(v23))
+        {
+          v24 = 43;
+        }
+
+        else
+        {
+          v24 = 45;
+        }
+
+        v25 = object_getClassName(v5);
+        v26 = sel_getName(a2);
+        *buf = 67110146;
+        v45 = v24;
+        v46 = 2082;
+        v47 = v25;
+        v48 = 2082;
+        v49 = v26;
+        v50 = 1024;
+        v51 = 847;
+        v52 = 2112;
+        v53 = v13;
+        _os_log_impl(&dword_23728C000, v22, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i %@", buf, 0x2Cu);
+      }
+
+      if (a3)
+      {
+        v27 = v13;
+        *a3 = v13;
+      }
+    }
+
+    v14 = *(v35 + 24);
+    _Block_object_dispose(&v34, 8);
+    _Block_object_dispose(&v38, 8);
+  }
+
+  else
+  {
+    if (a3)
+    {
+      *a3 = [NFCError errorWithCode:103];
+    }
+
+    objc_sync_exit(v5);
+
+    v14 = 0;
+  }
+
+  v28 = *MEMORY[0x277D85DE8];
+  return v14 & 1;
+}
+
+- (id)transceive:(id)a3 tagUpdate:(id *)a4 error:(id *)a5
+{
+  v77[2] = *MEMORY[0x277D85DE8];
+  v9 = a3;
+  v10 = self;
+  objc_sync_enter(v10);
+  proxy = v10->_proxy;
+  if (proxy)
+  {
+    v12 = proxy;
+    objc_sync_exit(v10);
+
+    v58 = 0;
+    v59 = &v58;
+    v60 = 0x3032000000;
+    v61 = sub_2372C9BDC;
+    v62 = sub_2372C9BEC;
+    v63 = 0;
+    v52 = 0;
+    v53 = &v52;
+    v54 = 0x3032000000;
+    v55 = sub_2372C9BDC;
+    v56 = sub_2372C9BEC;
+    v57 = 0;
+    v46 = 0;
+    v47 = &v46;
+    v48 = 0x3032000000;
+    v49 = sub_2372C9BDC;
+    v50 = sub_2372C9BEC;
+    v51 = 0;
+    if (a5)
+    {
+      *a5 = 0;
+    }
+
+    v45[0] = MEMORY[0x277D85DD0];
+    v45[1] = 3221225472;
+    v45[2] = sub_2372CABF0;
+    v45[3] = &unk_278A2A100;
+    v45[4] = &v58;
+    v13 = [(NFReaderSessionInterface *)v12 synchronousRemoteObjectProxyWithErrorHandler:v45];
+    v44[0] = MEMORY[0x277D85DD0];
+    v44[1] = 3221225472;
+    v44[2] = sub_2372CAC00;
+    v44[3] = &unk_278A2A3C0;
+    v44[4] = &v52;
+    v44[5] = &v58;
+    v44[6] = &v46;
+    [v13 transceive:v9 completion:v44];
+
+    v14 = v59[5];
+    if (v14)
+    {
+      v15 = [v14 domain];
+      v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"nfcd"];
+      v17 = [v15 isEqualToString:v16];
+
+      if (v17)
+      {
+        if ([v59[5] code] == 10)
+        {
+          v76[0] = *MEMORY[0x277CCA450];
+          v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"Stack Error"];
+          v76[1] = *MEMORY[0x277CCA7E8];
+          v77[0] = v18;
+          v77[1] = v59[5];
+          v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v77 forKeys:v76 count:2];
+          v20 = [NFCError errorWithCode:102 userInfo:v19];
+        }
+
+        else
+        {
+          v20 = [NFCError errorWithNFCDError:v59[5] defaultNFCErrorCode:100];
+        }
+
+        if ([v20 code] == 203)
+        {
+          -[NFCReaderSession _invalidateSessionWithCode:](v10, "_invalidateSessionWithCode:", [v20 code]);
+        }
+      }
+
+      else
+      {
+        [(NFCReaderSession *)v10 _invalidateSessionWithCode:202];
+        v74[0] = *MEMORY[0x277CCA450];
+        v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"XPC Error"];
+        v74[1] = *MEMORY[0x277CCA7E8];
+        v75[0] = v22;
+        v75[1] = v59[5];
+        v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v75 forKeys:v74 count:2];
+        v20 = [NFCError errorWithCode:202 userInfo:v23];
+      }
+
+      Logger = NFLogGetLogger();
+      if (Logger)
+      {
+        v25 = Logger;
+        Class = object_getClass(v10);
+        isMetaClass = class_isMetaClass(Class);
+        ClassName = object_getClassName(v10);
+        Name = sel_getName(a2);
+        v28 = 45;
+        if (isMetaClass)
+        {
+          v28 = 43;
+        }
+
+        v25(4, "%c[%{public}s %{public}s]:%i %@", v28, ClassName, Name, 899, v20);
+      }
+
+      v29 = NFSharedLogGetLogger();
+      if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+      {
+        v30 = object_getClass(v10);
+        v31 = a5;
+        v32 = proxy;
+        v33 = v9;
+        v34 = a4;
+        if (class_isMetaClass(v30))
+        {
+          v35 = 43;
+        }
+
+        else
+        {
+          v35 = 45;
+        }
+
+        v36 = object_getClassName(v10);
+        v37 = sel_getName(a2);
+        *buf = 67110146;
+        v65 = v35;
+        a4 = v34;
+        v9 = v33;
+        proxy = v32;
+        a5 = v31;
+        v66 = 2082;
+        v67 = v36;
+        v68 = 2082;
+        v69 = v37;
+        v70 = 1024;
+        v71 = 899;
+        v72 = 2112;
+        v73 = v20;
+        _os_log_impl(&dword_23728C000, v29, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i %@", buf, 0x2Cu);
+      }
+
+      if (a5)
+      {
+        v38 = v20;
+        *a5 = v20;
+      }
+    }
+
+    v39 = v10;
+    objc_sync_enter(v39);
+    objc_storeStrong(v39 + 8, v47[5]);
+    objc_sync_exit(v39);
+
+    if (a4)
+    {
+      *a4 = v47[5];
+    }
+
+    v21 = v53[5];
+    _Block_object_dispose(&v46, 8);
+
+    _Block_object_dispose(&v52, 8);
+    _Block_object_dispose(&v58, 8);
+  }
+
+  else
+  {
+    if (a5)
+    {
+      *a5 = [NFCError errorWithCode:103];
+    }
+
+    objc_sync_exit(v10);
+
+    v21 = 0;
+  }
+
+  v40 = *MEMORY[0x277D85DE8];
+
+  return v21;
+}
+
+- (void)restartPolling
+{
+  if (![(NFCReaderSession *)self isInvalidated])
+  {
+    v3[0] = MEMORY[0x277D85DD0];
+    v3[1] = 3221225472;
+    v3[2] = sub_2372CAD40;
+    v3[3] = &unk_278A29F00;
+    v3[4] = self;
+    [(NFCReaderSession *)self submitBlockOnSessionQueue:v3];
+  }
+}
+
+- (void)_callbackDidInvalidateWithError:(id)a3
+{
+  v53 = *MEMORY[0x277D85DE8];
+  v5 = a3;
+  v6 = v5;
+  if (!self->_sessionState)
+  {
+    Logger = NFLogGetLogger();
+    if (Logger)
+    {
+      v9 = Logger;
+      Class = object_getClass(self);
+      isMetaClass = class_isMetaClass(Class);
+      ClassName = object_getClassName(self);
+      Name = sel_getName(a2);
+      v13 = 45;
+      if (isMetaClass)
+      {
+        v13 = 43;
+      }
+
+      v9(5, "%c[%{public}s %{public}s]:%i Session has not begun", v13, ClassName, Name, 929);
+    }
+
+    v14 = NFSharedLogGetLogger();
+    if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    {
+      goto LABEL_14;
+    }
+
+    v15 = object_getClass(self);
+    if (class_isMetaClass(v15))
+    {
+      v16 = 43;
+    }
+
+    else
+    {
+      v16 = 45;
+    }
+
+    *buf = 67109890;
+    v44 = v16;
+    v45 = 2082;
+    v46 = object_getClassName(self);
+    v47 = 2082;
+    v48 = sel_getName(a2);
+    v49 = 1024;
+    v50 = 929;
+    v17 = "%c[%{public}s %{public}s]:%i Session has not begun";
+    v18 = v14;
+    v19 = OS_LOG_TYPE_DEFAULT;
+    v20 = 34;
+    goto LABEL_13;
+  }
+
+  if (self->_delegateType == 1)
+  {
+    v41[0] = MEMORY[0x277D85DD0];
+    v41[1] = 3221225472;
+    v41[2] = sub_2372CB260;
+    v41[3] = &unk_278A29E60;
+    v41[4] = self;
+    v42 = v5;
+    [(NFCReaderSession *)self submitBlockOnDelegateQueue:v41];
+    v7 = v42;
+LABEL_18:
+
+    goto LABEL_19;
+  }
+
+  if ([(NFCReaderSession *)self delegateType]== 2 || [(NFCReaderSession *)self delegateType]== 3)
+  {
+    v39[0] = MEMORY[0x277D85DD0];
+    v39[1] = 3221225472;
+    v39[2] = sub_2372CB2B4;
+    v39[3] = &unk_278A29E60;
+    v39[4] = self;
+    v40 = v6;
+    [(NFCReaderSession *)self submitBlockOnDelegateQueue:v39];
+    v7 = v40;
+    goto LABEL_18;
+  }
+
+  if ([(NFCReaderSession *)self delegateType]== 4 || [(NFCReaderSession *)self delegateType]== 5)
+  {
+    v37[0] = MEMORY[0x277D85DD0];
+    v37[1] = 3221225472;
+    v37[2] = sub_2372CB308;
+    v37[3] = &unk_278A29E60;
+    v37[4] = self;
+    v38 = v6;
+    [(NFCReaderSession *)self submitBlockOnDelegateQueue:v37];
+    v7 = v38;
+    goto LABEL_18;
+  }
+
+  if ([(NFCReaderSession *)self delegateType]== 6)
+  {
+    v35[0] = MEMORY[0x277D85DD0];
+    v35[1] = 3221225472;
+    v35[2] = sub_2372CB35C;
+    v35[3] = &unk_278A29E60;
+    v35[4] = self;
+    v36 = v6;
+    [(NFCReaderSession *)self submitBlockOnDelegateQueue:v35];
+    v7 = v36;
+    goto LABEL_18;
+  }
+
+  v22 = NFLogGetLogger();
+  if (v22)
+  {
+    v23 = v22;
+    v24 = object_getClass(self);
+    v25 = class_isMetaClass(v24);
+    v26 = object_getClassName(self);
+    v27 = sel_getName(a2);
+    v28 = 45;
+    if (v25)
+    {
+      v28 = 43;
+    }
+
+    v23(4, "%c[%{public}s %{public}s]:%i Unknown delegate type: %ld", v28, v26, v27, 950, self->_delegateType);
+  }
+
+  v14 = NFSharedLogGetLogger();
+  if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+  {
+    v29 = object_getClass(self);
+    if (class_isMetaClass(v29))
+    {
+      v30 = 43;
+    }
+
+    else
+    {
+      v30 = 45;
+    }
+
+    v31 = object_getClassName(self);
+    v32 = sel_getName(a2);
+    delegateType = self->_delegateType;
+    *buf = 67110146;
+    v44 = v30;
+    v45 = 2082;
+    v46 = v31;
+    v47 = 2082;
+    v48 = v32;
+    v49 = 1024;
+    v50 = 950;
+    v51 = 2048;
+    v52 = delegateType;
+    v17 = "%c[%{public}s %{public}s]:%i Unknown delegate type: %ld";
+    v18 = v14;
+    v19 = OS_LOG_TYPE_ERROR;
+    v20 = 44;
+LABEL_13:
+    _os_log_impl(&dword_23728C000, v18, v19, v17, buf, v20);
+  }
+
+LABEL_14:
+
+LABEL_19:
+  v21 = *MEMORY[0x277D85DE8];
+}
+
+- (void)_invalidateSessionWithCode:(int64_t)a3 message:(id)a4 finalUIState:(int64_t)a5 activateCallback:(BOOL)a6
+{
+  v6 = a6;
+  v62 = *MEMORY[0x277D85DE8];
+  v11 = a4;
+  v12 = self;
+  objc_sync_enter(v12);
+  if ((v12->_sessionState - 5) >= 2)
+  {
+    Logger = NFLogGetLogger();
+    if (Logger)
+    {
+      v14 = Logger;
+      Class = object_getClass(v12);
+      isMetaClass = class_isMetaClass(Class);
+      ClassName = object_getClassName(v12);
+      Name = sel_getName(a2);
+      v17 = 43;
+      if (!isMetaClass)
+      {
+        v17 = 45;
+      }
+
+      v14(6, "%c[%{public}s %{public}s]:%i code=%ld, finalUIState=%ld, activateCallback=%ld", v17, ClassName, Name, 977, a3, a5, v6);
+    }
+
+    v18 = NFSharedLogGetLogger();
+    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    {
+      v19 = object_getClass(v12);
+      if (class_isMetaClass(v19))
+      {
+        v20 = 43;
+      }
+
+      else
+      {
+        v20 = 45;
+      }
+
+      *buf = 67110658;
+      v49 = v20;
+      v50 = 2082;
+      v51 = object_getClassName(v12);
+      v52 = 2082;
+      v53 = sel_getName(a2);
+      v54 = 1024;
+      v55 = 977;
+      v56 = 2048;
+      v57 = a3;
+      v58 = 2048;
+      v59 = a5;
+      v60 = 2048;
+      v61 = v6;
+      _os_log_impl(&dword_23728C000, v18, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i code=%ld, finalUIState=%ld, activateCallback=%ld", buf, 0x40u);
+    }
+
+    if (v12->_sessionState > 2uLL)
+    {
+      if (v11)
+      {
+        proxy = v12->_proxy;
+        v47[0] = MEMORY[0x277D85DD0];
+        v47[1] = 3221225472;
+        v47[2] = sub_2372CB8CC;
+        v47[3] = &unk_278A2A2A8;
+        v47[4] = v12;
+        v47[5] = a2;
+        v22 = [(NFReaderSessionInterface *)proxy synchronousRemoteObjectProxyWithErrorHandler:v47];
+        v46[0] = MEMORY[0x277D85DD0];
+        v46[1] = 3221225472;
+        v46[2] = sub_2372CBA54;
+        v46[3] = &unk_278A2A2A8;
+        v46[4] = v12;
+        v46[5] = a2;
+        [v22 updateSharingUIScanText:v11 completion:v46];
+      }
+
+      if (a5 == 2)
+      {
+        delegateType = v12->_delegateType;
+        if (delegateType <= 6)
+        {
+          if (((1 << delegateType) & 0x6C) != 0)
+          {
+            v24 = v12->_proxy;
+            v45[0] = MEMORY[0x277D85DD0];
+            v45[1] = 3221225472;
+            v45[2] = sub_2372CBBE0;
+            v45[3] = &unk_278A2A2A8;
+            v45[4] = v12;
+            v45[5] = a2;
+            v25 = [(NFReaderSessionInterface *)v24 synchronousRemoteObjectProxyWithErrorHandler:v45];
+            v44[0] = MEMORY[0x277D85DD0];
+            v44[1] = 3221225472;
+            v44[2] = sub_2372CBD68;
+            v44[3] = &unk_278A2A2A8;
+            v44[4] = v12;
+            v44[5] = a2;
+            [v25 updateSharingUIStateOnInvalidation:2 completion:v44];
+          }
+
+          else
+          {
+            v26 = NFLogGetLogger();
+            if (v26)
+            {
+              v27 = v26;
+              v28 = object_getClass(v12);
+              v29 = class_isMetaClass(v28);
+              v30 = object_getClassName(v12);
+              v43 = sel_getName(a2);
+              v31 = 45;
+              if (v29)
+              {
+                v31 = 43;
+              }
+
+              v27(4, "%c[%{public}s %{public}s]:%i Session does not support invalidation with error", v31, v30, v43, 1004);
+            }
+
+            v25 = NFSharedLogGetLogger();
+            if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+            {
+              v32 = object_getClass(v12);
+              if (class_isMetaClass(v32))
+              {
+                v33 = 43;
+              }
+
+              else
+              {
+                v33 = 45;
+              }
+
+              v34 = object_getClassName(v12);
+              v35 = sel_getName(a2);
+              *buf = 67109890;
+              v49 = v33;
+              v50 = 2082;
+              v51 = v34;
+              v52 = 2082;
+              v53 = v35;
+              v54 = 1024;
+              v55 = 1004;
+              _os_log_impl(&dword_23728C000, v25, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Session does not support invalidation with error", buf, 0x22u);
+            }
+          }
+        }
+      }
+    }
+
+    else
+    {
+      [(NFCReaderSession *)v12 cleanupNFCHardwareManagerRegistration];
+    }
+
+    v36 = [(NFReaderSessionInterface *)v12->_proxy remoteObjectProxy];
+    [v36 endSession:&unk_284A4F490];
+
+    sessionId = v12->_sessionId;
+    v12->_sessionId = 0;
+
+    currentTag = v12->_currentTag;
+    v12->_currentTag = 0;
+
+    v12->_sessionState = 5;
+    v12->_invalidationCode = a3;
+  }
+
+  if (v6)
+  {
+    v39 = [NFCError errorWithCode:v12->_invalidationCode];
+    [(NFCReaderSession *)v12 _callbackDidInvalidateWithError:v39];
+  }
+
+  objc_sync_exit(v12);
+
+  v40 = *MEMORY[0x277D85DE8];
+}
+
+- (NFReaderSessionInterface)readerProxy
+{
+  v2 = self;
+  objc_sync_enter(v2);
+  v3 = v2->_proxy;
+  objc_sync_exit(v2);
+
+  return v3;
+}
+
++ (BOOL)featureAvailable:(unint64_t)a3
+{
+  v4 = +[NFCHardwareManager sharedHardwareManager];
+  LOBYTE(a3) = [v4 areFeaturesSupported:a3 outError:0];
+
+  return a3;
+}
+
+- (id)ndefStatus:(int64_t *)a3 maxMessageLength:(unint64_t *)a4
+{
+  v6 = self;
+  objc_sync_enter(v6);
+  proxy = v6->_proxy;
+  if (proxy)
+  {
+    v8 = proxy;
+    objc_sync_exit(v6);
+
+    v25 = 0;
+    v26 = &v25;
+    v27 = 0x2020000000;
+    v28 = 0;
+    v19 = 0;
+    v20 = &v19;
+    v21 = 0x3032000000;
+    v22 = sub_2372C9BDC;
+    v23 = sub_2372C9BEC;
+    v24 = 0;
+    v18[0] = MEMORY[0x277D85DD0];
+    v18[1] = 3221225472;
+    v18[2] = sub_2372CC200;
+    v18[3] = &unk_278A2A100;
+    v18[4] = &v19;
+    v9 = [(NFReaderSessionInterface *)v8 synchronousRemoteObjectProxyWithErrorHandler:v18];
+    v17[0] = MEMORY[0x277D85DD0];
+    v17[1] = 3221225472;
+    v17[2] = sub_2372CC210;
+    v17[3] = &unk_278A2A410;
+    v17[4] = &v19;
+    v17[5] = &v25;
+    v17[6] = a4;
+    [v9 checkNdefSupportWithCompletion:v17];
+
+    if (a3)
+    {
+      *a3 = v26[3];
+    }
+
+    v10 = [NFCError errorWithNFCDError:v20[5] defaultNFCErrorCode:104];
+    v11 = v20[5];
+    v20[5] = v10;
+
+    v12 = v20;
+    v13 = v20[5];
+    if (v13)
+    {
+      v14 = [v13 code];
+      v12 = v20;
+      if (v14 == 203)
+      {
+        -[NFCReaderSession _invalidateSessionWithCode:](v6, "_invalidateSessionWithCode:", [v20[5] code]);
+        v12 = v20;
+      }
+    }
+
+    v15 = v12[5];
+    _Block_object_dispose(&v19, 8);
+
+    _Block_object_dispose(&v25, 8);
+  }
+
+  else
+  {
+    if (a3)
+    {
+      *a3 = 0;
+    }
+
+    v15 = [NFCError errorWithCode:103];
+    objc_sync_exit(v6);
+  }
+
+  return v15;
+}
+
+- (id)readNdefMessageWithError:(id *)a3
+{
+  v4 = self;
+  objc_sync_enter(v4);
+  if (!v4->_currentTag)
+  {
+    if (a3)
+    {
+      v10 = 104;
+LABEL_13:
+      *a3 = [NFCError errorWithCode:v10];
+    }
+
+LABEL_14:
+    objc_sync_exit(v4);
+
+    v9 = 0;
+    goto LABEL_15;
+  }
+
+  proxy = v4->_proxy;
+  if (!proxy)
+  {
+    if (a3)
+    {
+      v10 = 103;
+      goto LABEL_13;
+    }
+
+    goto LABEL_14;
+  }
+
+  v6 = proxy;
+  objc_sync_exit(v4);
+
+  v20 = 0;
+  v21 = &v20;
+  v22 = 0x3032000000;
+  v23 = sub_2372C9BDC;
+  v24 = sub_2372C9BEC;
+  v25 = 0;
+  v14 = 0;
+  v15 = &v14;
+  v16 = 0x3032000000;
+  v17 = sub_2372C9BDC;
+  v18 = sub_2372C9BEC;
+  v19 = 0;
+  v13[0] = MEMORY[0x277D85DD0];
+  v13[1] = 3221225472;
+  v13[2] = sub_2372CC508;
+  v13[3] = &unk_278A2A100;
+  v13[4] = &v14;
+  v7 = [(NFReaderSessionInterface *)v6 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v12[0] = MEMORY[0x277D85DD0];
+  v12[1] = 3221225472;
+  v12[2] = sub_2372CC518;
+  v12[3] = &unk_278A2A438;
+  v12[4] = &v14;
+  v12[5] = &v20;
+  [v7 ndefReadWithCompletion:v12];
+
+  if (a3)
+  {
+    *a3 = v15[5];
+  }
+
+  v8 = v15[5];
+  if (v8 && [v8 code] == 203)
+  {
+    -[NFCReaderSession _invalidateSessionWithCode:](v4, "_invalidateSessionWithCode:", [v15[5] code]);
+  }
+
+  v9 = v21[5];
+  _Block_object_dispose(&v14, 8);
+
+  _Block_object_dispose(&v20, 8);
+LABEL_15:
+
+  return v9;
+}
+
+- (id)_convertMessageToInternal:(id)a3
+{
+  v25 = *MEMORY[0x277D85DE8];
+  v16 = a3;
+  v17 = objc_alloc_init(MEMORY[0x277D82B60]);
+  v20 = 0u;
+  v21 = 0u;
+  v22 = 0u;
+  v23 = 0u;
+  obj = [v16 records];
+  v3 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
+  if (v3)
+  {
+    v4 = v3;
+    v5 = *v21;
+    do
+    {
+      for (i = 0; i != v4; ++i)
+      {
+        if (*v21 != v5)
+        {
+          objc_enumerationMutation(obj);
+        }
+
+        v7 = *(*(&v20 + 1) + 8 * i);
+        v19 = 0;
+        v8 = MEMORY[0x277D82B68];
+        v9 = [v7 typeNameFormat];
+        v10 = [v7 type];
+        v11 = [v7 identifier];
+        v12 = [v7 payload];
+        v13 = [v8 recordsWithTNF:v9 type:v10 identifier:v11 payload:v12 chunkSize:objc_msgSend(v7 outError:{"chunkSize"), &v19}];
+
+        if (!v19)
+        {
+          [v17 addRecordArray:v13];
+        }
+      }
+
+      v4 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
+    }
+
+    while (v4);
+  }
+
+  v14 = *MEMORY[0x277D85DE8];
+
+  return v17;
+}
+
+- (BOOL)writeNdefMessage:(id)a3 error:(id *)a4
+{
+  v6 = a3;
+  if (!v6)
+  {
+    if (a4)
+    {
+      [NFCError errorWithCode:403];
+      *a4 = v12 = 0;
+      goto LABEL_19;
+    }
+
+LABEL_18:
+    v12 = 0;
+    goto LABEL_19;
+  }
+
+  v7 = self;
+  objc_sync_enter(v7);
+  if (!v7->_currentTag)
+  {
+    if (a4)
+    {
+      v14 = 104;
+LABEL_16:
+      *a4 = [NFCError errorWithCode:v14];
+    }
+
+LABEL_17:
+    objc_sync_exit(v7);
+
+    goto LABEL_18;
+  }
+
+  proxy = v7->_proxy;
+  if (!proxy)
+  {
+    if (a4)
+    {
+      v14 = 103;
+      goto LABEL_16;
+    }
+
+    goto LABEL_17;
+  }
+
+  v9 = proxy;
+  objc_sync_exit(v7);
+
+  v18 = 0;
+  v19 = &v18;
+  v20 = 0x3032000000;
+  v21 = sub_2372C9BDC;
+  v22 = sub_2372C9BEC;
+  v23 = 0;
+  v10 = [(NFCReaderSession *)v7 _convertMessageToInternal:v6];
+  v17[0] = MEMORY[0x277D85DD0];
+  v17[1] = 3221225472;
+  v17[2] = sub_2372CCA00;
+  v17[3] = &unk_278A2A100;
+  v17[4] = &v18;
+  v11 = [(NFReaderSessionInterface *)v9 synchronousRemoteObjectProxyWithErrorHandler:v17];
+  v16[0] = MEMORY[0x277D85DD0];
+  v16[1] = 3221225472;
+  v16[2] = sub_2372CCA10;
+  v16[3] = &unk_278A2A100;
+  v16[4] = &v18;
+  [v11 ndefWrite:v10 completion:v16];
+
+  v12 = a4 == 0;
+  if (a4)
+  {
+    *a4 = v19[5];
+  }
+
+  v13 = v19[5];
+  if (v13 && [v13 code] == 203)
+  {
+    -[NFCReaderSession _invalidateSessionWithCode:](v7, "_invalidateSessionWithCode:", [v19[5] code]);
+  }
+
+  _Block_object_dispose(&v18, 8);
+LABEL_19:
+
+  return v12;
+}
+
+- (id)writeLockNdef
+{
+  v2 = self;
+  objc_sync_enter(v2);
+  if (!v2->_currentTag)
+  {
+    v12 = 104;
+LABEL_9:
+    v11 = [NFCError errorWithCode:v12];
+    objc_sync_exit(v2);
+
+    goto LABEL_10;
+  }
+
+  proxy = v2->_proxy;
+  if (!proxy)
+  {
+    v12 = 103;
+    goto LABEL_9;
+  }
+
+  v4 = proxy;
+  objc_sync_exit(v2);
+
+  v16 = 0;
+  v17 = &v16;
+  v18 = 0x3032000000;
+  v19 = sub_2372C9BDC;
+  v20 = sub_2372C9BEC;
+  v21 = 0;
+  v15[0] = MEMORY[0x277D85DD0];
+  v15[1] = 3221225472;
+  v15[2] = sub_2372CCC78;
+  v15[3] = &unk_278A2A100;
+  v15[4] = &v16;
+  v5 = [(NFReaderSessionInterface *)v4 synchronousRemoteObjectProxyWithErrorHandler:v15];
+  v14[0] = MEMORY[0x277D85DD0];
+  v14[1] = 3221225472;
+  v14[2] = sub_2372CCC88;
+  v14[3] = &unk_278A2A100;
+  v14[4] = &v16;
+  [v5 writeProtectNDEFTagWithCompletion:v14];
+
+  v6 = [NFCError errorWithNFCDError:v17[5] defaultNFCErrorCode:401];
+  v7 = v17[5];
+  v17[5] = v6;
+
+  v8 = v17;
+  v9 = v17[5];
+  if (v9)
+  {
+    v10 = [v9 code];
+    v8 = v17;
+    if (v10 == 203)
+    {
+      -[NFCReaderSession _invalidateSessionWithCode:](v2, "_invalidateSessionWithCode:", [v17[5] code]);
+      v8 = v17;
+    }
+  }
+
+  v11 = v8[5];
+  _Block_object_dispose(&v16, 8);
+
+LABEL_10:
+
+  return v11;
+}
+
+@end

@@ -1,0 +1,263 @@
+@interface SiriUIKeyline
++ (SiriUIKeyline)keylineWithDefaultInsets;
++ (SiriUIKeyline)keylineWithKeylineType:(int64_t)a3;
++ (SiriUIKeyline)keylineWithKeylineType:(int64_t)a3 platterStyling:(BOOL)a4;
++ (id)keyline;
++ (id)keylineForSelectableRow;
++ (id)verticalKeyline;
+- (CGSize)_sizeThatFits:(CGSize)a3 useAutolayout:(BOOL)a4;
+- (CGSize)intrinsicContentSize;
+- (CGSize)sizeThatFits:(CGSize)a3;
+- (SiriUIKeyline)initWithKeylineType:(int64_t)a3;
+- (SiriUIKeyline)initWithKeylineType:(int64_t)a3 platterStyling:(BOOL)a4;
+- (double)_keylineThicknessForType:(int64_t)a3;
+- (id)_keylineColorForType:(int64_t)a3 platterStyling:(BOOL)a4;
+- (void)layoutSubviews;
+- (void)setKeylineType:(int64_t)a3;
+@end
+
+@implementation SiriUIKeyline
+
++ (id)keyline
+{
+  v2 = [[a1 alloc] initWithKeylineType:2];
+
+  return v2;
+}
+
++ (SiriUIKeyline)keylineWithDefaultInsets
+{
+  v2 = [[a1 alloc] initWithKeylineType:1];
+
+  return v2;
+}
+
++ (id)keylineForSelectableRow
+{
+  v2 = [[a1 alloc] initWithKeylineType:3];
+
+  return v2;
+}
+
++ (id)verticalKeyline
+{
+  v2 = [[a1 alloc] initWithKeylineType:5];
+
+  return v2;
+}
+
++ (SiriUIKeyline)keylineWithKeylineType:(int64_t)a3
+{
+  v5 = SiriUIIsWhitePlatterSnippetBackgroundEnabledForAllSnippets();
+
+  return [a1 keylineWithKeylineType:a3 platterStyling:v5];
+}
+
++ (SiriUIKeyline)keylineWithKeylineType:(int64_t)a3 platterStyling:(BOOL)a4
+{
+  v4 = [[a1 alloc] initWithKeylineType:a3 platterStyling:a4];
+
+  return v4;
+}
+
+- (SiriUIKeyline)initWithKeylineType:(int64_t)a3
+{
+  v5 = SiriUIIsWhitePlatterSnippetBackgroundEnabledForAllSnippets();
+
+  return [(SiriUIKeyline *)self initWithKeylineType:a3 platterStyling:v5];
+}
+
+- (SiriUIKeyline)initWithKeylineType:(int64_t)a3 platterStyling:(BOOL)a4
+{
+  v4 = a4;
+  v17.receiver = self;
+  v17.super_class = SiriUIKeyline;
+  v6 = *MEMORY[0x277CBF3A0];
+  v7 = *(MEMORY[0x277CBF3A0] + 8);
+  v8 = *(MEMORY[0x277CBF3A0] + 16);
+  v9 = *(MEMORY[0x277CBF3A0] + 24);
+  v10 = [(SiriUIKeyline *)&v17 initWithFrame:*MEMORY[0x277CBF3A0], v7, v8, v9];
+  v11 = v10;
+  if (v10)
+  {
+    v10->_keylineType = a3;
+    v12 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v6, v7, v8, v9}];
+    keyLineView = v11->_keyLineView;
+    v11->_keyLineView = v12;
+
+    v14 = v11->_keyLineView;
+    v15 = [(SiriUIKeyline *)v11 _keylineColorForType:v11->_keylineType platterStyling:v4];
+    [(UIView *)v14 setBackgroundColor:v15];
+
+    [(SiriUIKeyline *)v11 addSubview:v11->_keyLineView];
+  }
+
+  return v11;
+}
+
+- (id)_keylineColorForType:(int64_t)a3 platterStyling:(BOOL)a4
+{
+  if (a4)
+  {
+    [MEMORY[0x277D75348] siriui_platterKeylineColor];
+  }
+
+  else
+  {
+    [MEMORY[0x277D75348] siriui_lightKeylineColor];
+  }
+  v4 = ;
+
+  return v4;
+}
+
+- (double)_keylineThicknessForType:(int64_t)a3
+{
+  v3 = [MEMORY[0x277D759A0] mainScreen];
+  [v3 scale];
+  v5 = v4;
+
+  return 1.0 / v5;
+}
+
+- (CGSize)sizeThatFits:(CGSize)a3
+{
+  [(SiriUIKeyline *)self _sizeThatFits:0 useAutolayout:a3.width, a3.height];
+  result.height = v4;
+  result.width = v3;
+  return result;
+}
+
+- (CGSize)intrinsicContentSize
+{
+  [(SiriUIKeyline *)self _sizeThatFits:1 useAutolayout:*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)];
+  result.height = v3;
+  result.width = v2;
+  return result;
+}
+
+- (CGSize)_sizeThatFits:(CGSize)a3 useAutolayout:(BOOL)a4
+{
+  v4 = a4;
+  height = a3.height;
+  width = a3.width;
+  v8 = [(SiriUIKeyline *)self keylineType];
+  v9 = *MEMORY[0x277D77260];
+  v10 = [MEMORY[0x277D759A0] mainScreen];
+  [v10 scale];
+  v12 = v11;
+  [(SiriUIKeyline *)self _keylineThicknessForType:self->_keylineType];
+  v14 = ceil(v13);
+  if (v12 < 2.0)
+  {
+    v13 = v14;
+  }
+
+  if (v4)
+  {
+    v15 = v9;
+  }
+
+  else
+  {
+    v15 = height;
+  }
+
+  if (v4)
+  {
+    v16 = v9;
+  }
+
+  else
+  {
+    v16 = width;
+  }
+
+  if (v8 == 5)
+  {
+    v17 = v13;
+  }
+
+  else
+  {
+    v17 = v16;
+  }
+
+  if (v8 == 5)
+  {
+    v18 = v15;
+  }
+
+  else
+  {
+    v18 = v13;
+  }
+
+  v19 = v17;
+  v20 = v18;
+  result.height = v20;
+  result.width = v19;
+  return result;
+}
+
+- (void)layoutSubviews
+{
+  v16.receiver = self;
+  v16.super_class = SiriUIKeyline;
+  [(SiriUIKeyline *)&v16 layoutSubviews];
+  [(SiriUIKeyline *)self bounds];
+  v4 = v3;
+  v6 = v5;
+  v8 = v7;
+  v10 = v9;
+  v11 = [(SiriUIKeyline *)self keylineType];
+  if (v11 == 4)
+  {
+    [(SiriUIKeyline *)self customLeftPadding];
+    v12 = v15;
+    [(SiriUIKeyline *)self customRightPadding];
+  }
+
+  else if (v11 == 3)
+  {
+    IsRTL = SiriLanguageIsRTL();
+    v13 = 16.0;
+    if (IsRTL)
+    {
+      v12 = 0.0;
+    }
+
+    else
+    {
+      v12 = 16.0;
+    }
+
+    if (!IsRTL)
+    {
+      v13 = 0.0;
+    }
+  }
+
+  else
+  {
+    v12 = 0.0;
+    v13 = 0.0;
+    if (v11 == 1)
+    {
+      v12 = 16.0;
+      v13 = 16.0;
+    }
+  }
+
+  [(UIView *)self->_keyLineView setFrame:v4 + v12, v6, v8 - (v12 + v13), v10];
+}
+
+- (void)setKeylineType:(int64_t)a3
+{
+  self->_keylineType = a3;
+  [(SiriUIKeyline *)self setHidden:a3 == 0];
+
+  [(SiriUIKeyline *)self setNeedsLayout];
+}
+
+@end

@@ -1,0 +1,57 @@
+@interface MTLFXSpatialScalerDescriptor
+- (id)copyWithZone:(_NSZone *)a3;
+- (id)newSpatialScalerWithDevice:(id)a3 compiler:(id)a4;
+- (id)newSpatialScalerWithDevice:(id)device;
+@end
+
+@implementation MTLFXSpatialScalerDescriptor
+
+- (id)copyWithZone:(_NSZone *)a3
+{
+  v4 = objc_alloc_init(objc_opt_class());
+  [v4 setVersion:{-[MTLFXSpatialScalerDescriptor version](self, "version")}];
+  [v4 setColorTextureFormat:-[MTLFXSpatialScalerDescriptor colorTextureFormat](self, "colorTextureFormat")];
+  [v4 setOutputTextureFormat:-[MTLFXSpatialScalerDescriptor outputTextureFormat](self, "outputTextureFormat")];
+  [v4 setInputWidth:{-[MTLFXSpatialScalerDescriptor inputWidth](self, "inputWidth")}];
+  [v4 setInputHeight:{-[MTLFXSpatialScalerDescriptor inputHeight](self, "inputHeight")}];
+  [v4 setOutputWidth:{-[MTLFXSpatialScalerDescriptor outputWidth](self, "outputWidth")}];
+  [v4 setOutputHeight:{-[MTLFXSpatialScalerDescriptor outputHeight](self, "outputHeight")}];
+  [v4 setColorProcessingMode:{-[MTLFXSpatialScalerDescriptor colorProcessingMode](self, "colorProcessingMode")}];
+  return v4;
+}
+
+- (id)newSpatialScalerWithDevice:(id)device
+{
+  v4 = device;
+  if ([MTLFXSpatialScalerDescriptor supportsDevice:v4])
+  {
+    [(MTLFXSpatialScalerDescriptor *)self version];
+    v5 = [[_MFXSpatialScalingEffectEFFECT_NAME_V1 alloc] initWithDevice:v4 descriptor:self];
+  }
+
+  else
+  {
+    v5 = 0;
+  }
+
+  return v5;
+}
+
+- (id)newSpatialScalerWithDevice:(id)a3 compiler:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  if ([MTLFXSpatialScalerDescriptor supportsMetal4FX:v6])
+  {
+    v8 = [[_MTL4FXSpatialScalingEffectEFFECT_NAME_V1 alloc] initWithDevice:v6 compiler:v7 descriptor:self];
+  }
+
+  else
+  {
+    v8 = 0;
+  }
+
+  return v8;
+}
+
+@end

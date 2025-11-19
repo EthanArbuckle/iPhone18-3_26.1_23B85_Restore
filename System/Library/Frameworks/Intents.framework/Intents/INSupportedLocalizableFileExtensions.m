@@ -1,0 +1,12 @@
+@interface INSupportedLocalizableFileExtensions
+@end
+
+@implementation INSupportedLocalizableFileExtensions
+
+void ___INSupportedLocalizableFileExtensions_block_invoke()
+{
+  v0 = _INSupportedLocalizableFileExtensions_supportedLocalizableFileExtensions;
+  _INSupportedLocalizableFileExtensions_supportedLocalizableFileExtensions = &unk_1F02DBDA8;
+}
+
+@end

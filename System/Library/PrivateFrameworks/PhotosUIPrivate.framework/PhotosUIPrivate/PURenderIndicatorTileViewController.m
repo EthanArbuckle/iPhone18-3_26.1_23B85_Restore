@@ -1,0 +1,805 @@
+@interface PURenderIndicatorTileViewController
++ (BOOL)wantsRenderViewForTypeOfProcessingNeeded:(unsigned __int16)a3;
++ (CGSize)progressIndicatorTileSizeForSizeClass:(int64_t)a3;
++ (CGSize)renderIndicatorTileSizeForSizeClass:(int64_t)a3;
++ (id)_loadErrorIconForSizeClass:(int64_t)a3;
+- (BOOL)_needsUpdate;
+- (CGRect)_expandedBackgroundViewFrame;
+- (CGSize)progressIndicatorSize;
+- (void)_handleAssetSharedViewModel:(id)a3 didChange:(id)a4;
+- (void)_invalidateSizeClass;
+- (void)_invalidateStatus;
+- (void)_invalidateStatusViews;
+- (void)_updateIfNeeded;
+- (void)_updateSizeClassIfNeeded;
+- (void)_updateStatusIfNeeded;
+- (void)_updateStatusViewsIfNeeded;
+- (void)_updateSubviewOrdering;
+- (void)_updateViewFramesForCollapseState:(BOOL)a3;
+- (void)applyLayoutInfo:(id)a3;
+- (void)becomeReusable;
+- (void)loadingStatusManager:(id)a3 didUpdateLoadingStatus:(id)a4 forItemIdentifier:(id)a5;
+- (void)setAssetSharedViewModel:(id)a3;
+- (void)setProgressViewVisible:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)setSizeClass:(int64_t)a3;
+- (void)setStatus:(id)a3;
+- (void)viewDidLoad;
+- (void)viewModel:(id)a3 didChange:(id)a4;
+@end
+
+@implementation PURenderIndicatorTileViewController
+
+- (CGSize)progressIndicatorSize
+{
+  width = self->_progressIndicatorSize.width;
+  height = self->_progressIndicatorSize.height;
+  result.height = height;
+  result.width = width;
+  return result;
+}
+
+- (void)loadingStatusManager:(id)a3 didUpdateLoadingStatus:(id)a4 forItemIdentifier:(id)a5
+{
+  v13 = a4;
+  assetSharedViewModel = self->_assetSharedViewModel;
+  v9 = a5;
+  v10 = [(PUAssetSharedViewModel *)assetSharedViewModel asset];
+  v11 = [v10 uuid];
+  v12 = [v9 isEqual:v11];
+
+  if (v12)
+  {
+    objc_storeStrong(&self->_editActionStatus, a4);
+    [(PURenderIndicatorTileViewController *)self _invalidateStatusViews];
+    [(PURenderIndicatorTileViewController *)self _updateIfNeeded];
+  }
+}
+
+- (void)_handleAssetSharedViewModel:(id)a3 didChange:(id)a4
+{
+  v5 = a4;
+  if (([v5 deferredProcessingNeededChanged] & 1) != 0 || objc_msgSend(v5, "needsDeferredProcessingChanged"))
+  {
+    [(PURenderIndicatorTileViewController *)self _invalidateStatusViews];
+    [(PURenderIndicatorTileViewController *)self _invalidateStatus];
+  }
+
+  if ([v5 loadingStatusChanged])
+  {
+    [(PURenderIndicatorTileViewController *)self _invalidateStatus];
+  }
+
+  [(PURenderIndicatorTileViewController *)self _updateIfNeeded];
+}
+
+- (void)viewModel:(id)a3 didChange:(id)a4
+{
+  v8 = a3;
+  v6 = a4;
+  v7 = [(PURenderIndicatorTileViewController *)self assetSharedViewModel];
+
+  if (v7 == v8)
+  {
+    [(PURenderIndicatorTileViewController *)self _handleAssetSharedViewModel:v8 didChange:v6];
+  }
+}
+
+- (void)_updateSubviewOrdering
+{
+  v5 = [(PUTileViewController *)self view];
+  v3 = [(PURenderIndicatorTileViewController *)self errorButton];
+  [v5 bringSubviewToFront:v3];
+
+  v4 = [(PURenderIndicatorTileViewController *)self progressView];
+  [v5 bringSubviewToFront:v4];
+}
+
+- (void)_updateStatusViewsIfNeeded
+{
+  v67[2] = *MEMORY[0x1E69E9840];
+  if (![(PURenderIndicatorTileViewController *)self needsUpdateStatusViews])
+  {
+    return;
+  }
+
+  [(PURenderIndicatorTileViewController *)self setNeedsUpdateStatusViews:0];
+  if (![(PUTileViewController *)self isViewLoaded])
+  {
+    return;
+  }
+
+  v3 = [(PURenderIndicatorTileViewController *)self progressView];
+  v4 = [(PURenderIndicatorTileViewController *)self roundedBackgroundView];
+  v5 = [(PURenderIndicatorTileViewController *)self status];
+  v6 = [(PURenderIndicatorTileViewController *)self assetSharedViewModel];
+  v7 = [v6 deferredProcessingNeeded];
+
+  v8 = [(PURenderIndicatorTileViewController *)self assetSharedViewModel];
+  if (!v8)
+  {
+    [v5 progress];
+    goto LABEL_7;
+  }
+
+  v9 = [PURenderIndicatorTileViewController wantsRenderViewForTypeOfProcessingNeeded:v7];
+
+  [v5 progress];
+  if (!v9)
+  {
+LABEL_7:
+    v13 = [(PURenderIndicatorTileViewController *)self editActionStatus];
+    v12 = [v13 state] == 1;
+    [v13 progress];
+    v11 = v14;
+
+    goto LABEL_8;
+  }
+
+  v11 = v10;
+  v12 = 1;
+LABEL_8:
+  v15 = +[PUOneUpSettings sharedInstance];
+  if ([v15 alwaysShowRenderIndicator])
+  {
+    [v15 simulatedRenderProgress];
+    v11 = v16;
+  }
+
+  v17 = [(PUTileViewController *)self view];
+  if (v12)
+  {
+    if (v4)
+    {
+      v18 = v3;
+    }
+
+    else
+    {
+      v59 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      v19 = objc_alloc(MEMORY[0x1E69DCC10]);
+      v20 = *(MEMORY[0x1E695F058] + 8);
+      v21 = *(MEMORY[0x1E695F058] + 16);
+      v22 = *(MEMORY[0x1E695F058] + 24);
+      v54 = *MEMORY[0x1E695F058];
+      v61 = [v19 initWithFrame:?];
+      v23 = [(PURenderIndicatorTileViewController *)self assetSharedViewModel];
+      v24 = [v23 asset];
+      v25 = [v24 mediaType];
+
+      if (v25 == 2)
+      {
+        v26 = @"RENDERING_PROGRESS_LABEL_VIDEO";
+      }
+
+      else
+      {
+        v26 = @"RENDERING_PROGRESS_LABEL_PHOTO";
+      }
+
+      v57 = PULocalizedString(v26);
+      v58 = [MEMORY[0x1E69DB878] systemFontOfSize:15.0 weight:*MEMORY[0x1E69DB980]];
+      v27 = *MEMORY[0x1E69DB650];
+      v66[0] = *MEMORY[0x1E69DB648];
+      v66[1] = v27;
+      v67[0] = v58;
+      v67[1] = v59;
+      v56 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v67 forKeys:v66 count:2];
+      v28 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v57 attributes:v56];
+      [v61 setAttributedText:v28];
+
+      [v61 setAlpha:0.0];
+      [v61 setAutoresizingMask:2];
+      [(PURenderIndicatorTileViewController *)self setRenderingLabel:v61];
+      [v61 intrinsicContentSize];
+      [(PURenderIndicatorTileViewController *)self setRenderLabelTextWidth:ceil(v29)];
+      [(PURenderIndicatorTileViewController *)self _expandedBackgroundViewFrame];
+      v31 = v30;
+      v33 = v32;
+      v35 = v34;
+      v37 = v36;
+      v60 = [objc_alloc(MEMORY[0x1E69DD298]) initWithFrame:{v30, v32, v34, v36}];
+      v38 = [MEMORY[0x1E69DC730] effectWithStyle:7];
+      [v60 setEffect:v38];
+
+      v4 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v31, v33, v35, v37}];
+      [v4 addSubview:v60];
+      [v4 setClipsToBounds:1];
+      [v4 bounds];
+      [v60 _setCornerRadius:1 continuous:15 maskedCorners:CGRectGetHeight(v68) * 0.5];
+      [v60 setAutoresizingMask:2];
+      v55 = [v4 layer];
+      v39 = [MEMORY[0x1E69DC888] clearColor];
+      v40 = v39;
+      [v55 setBackgroundColor:{objc_msgSend(v39, "CGColor")}];
+
+      [v4 setAlpha:0.0];
+      [v17 addSubview:v4];
+      [(PURenderIndicatorTileViewController *)self setRoundedBackgroundView:v4];
+      v18 = [objc_alloc(MEMORY[0x1E69BE1C8]) initWithFrame:0 style:{v54, v20, v21, v22}];
+
+      [v18 setAutoresizingMask:20];
+      [v18 setManualColor:v59];
+      [v18 setSkipResetOnRelayout:1];
+      [v18 setAllowFake25PercentProgress:0];
+      [(PURenderIndicatorTileViewController *)self setProgressView:v18];
+      [v4 addSubview:v18];
+      [v4 addSubview:v61];
+      [(PURenderIndicatorTileViewController *)self _updateViewFramesForCollapseState:1];
+      v41 = [(PUTileViewController *)self view];
+      [v41 frame];
+      v42 = [(PURenderIndicatorTileViewController *)self roundedBackgroundView];
+      [v42 frame];
+      PXRectWithOriginAndSize();
+      v44 = v43;
+      v46 = v45;
+      v48 = v47;
+      v50 = v49;
+      v51 = [(PUTileViewController *)self view];
+      [v51 setFrame:{v44, v46, v48, v50}];
+
+      [(PURenderIndicatorTileViewController *)self _updateSubviewOrdering];
+    }
+
+    [v18 progress];
+    if (v11 < v52)
+    {
+      [v18 resetProgress];
+    }
+
+    [v18 setProgress:v11];
+    if (![(PURenderIndicatorTileViewController *)self isProgressViewVisible]&& ![(PURenderIndicatorTileViewController *)self willShowProgressAfterDelay])
+    {
+      [(PURenderIndicatorTileViewController *)self setWillShowProgressAfterDelay:1];
+      v53 = dispatch_time(0, 1000000000);
+      block[0] = MEMORY[0x1E69E9820];
+      block[1] = 3221225472;
+      block[2] = __65__PURenderIndicatorTileViewController__updateStatusViewsIfNeeded__block_invoke;
+      block[3] = &unk_1E7B80DD0;
+      block[4] = self;
+      dispatch_after(v53, MEMORY[0x1E69E96A0], block);
+    }
+  }
+
+  else
+  {
+    [v3 setProgress:1.0];
+    objc_initWeak(&location, self);
+    v62[0] = MEMORY[0x1E69E9820];
+    v62[1] = 3221225472;
+    v62[2] = __65__PURenderIndicatorTileViewController__updateStatusViewsIfNeeded__block_invoke_2;
+    v62[3] = &unk_1E7B7F988;
+    objc_copyWeak(&v63, &location);
+    [(PURenderIndicatorTileViewController *)self setProgressViewVisible:0 animated:1 completion:v62];
+    objc_destroyWeak(&v63);
+    objc_destroyWeak(&location);
+    v18 = v3;
+  }
+
+  [v17 setUserInteractionEnabled:v12];
+}
+
+void __65__PURenderIndicatorTileViewController__updateStatusViewsIfNeeded__block_invoke_2(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  if (([WeakRetained isProgressViewVisible] & 1) == 0)
+  {
+    v1 = [WeakRetained roundedBackgroundView];
+
+    if (v1)
+    {
+      v2 = [WeakRetained roundedBackgroundView];
+      [v2 removeFromSuperview];
+
+      [WeakRetained setRoundedBackgroundView:0];
+    }
+
+    v3 = [WeakRetained progressView];
+
+    if (v3)
+    {
+      v4 = [WeakRetained progressView];
+      [v4 removeFromSuperview];
+
+      [WeakRetained setProgressView:0];
+    }
+
+    v5 = [WeakRetained renderingLabel];
+
+    if (v5)
+    {
+      v6 = [WeakRetained renderingLabel];
+      [v6 removeFromSuperview];
+
+      [WeakRetained setRenderingLabel:0];
+    }
+  }
+}
+
+- (void)_invalidateStatusViews
+{
+  [(PURenderIndicatorTileViewController *)self setNeedsUpdateStatusViews:1];
+
+  [(PURenderIndicatorTileViewController *)self _setNeedsUpdate];
+}
+
+- (void)_updateSizeClassIfNeeded
+{
+  if ([(PURenderIndicatorTileViewController *)self needsUpdateSizeClass])
+  {
+    [(PURenderIndicatorTileViewController *)self setNeedsUpdateSizeClass:0];
+    if ([(PUTileViewController *)self isViewLoaded])
+    {
+      v3 = [(PUTileViewController *)self view];
+      [v3 bounds];
+      v5 = v4;
+      v7 = v6;
+
+      if (v5 >= v7)
+      {
+        v5 = v7;
+      }
+
+      [objc_opt_class() renderIndicatorTileSizeForSizeClass:1];
+      if (v8 >= v9)
+      {
+        v8 = v9;
+      }
+
+      if (v5 <= v8)
+      {
+        v10 = 1;
+      }
+
+      else
+      {
+        v10 = 2;
+      }
+
+      [(PURenderIndicatorTileViewController *)self setSizeClass:v10];
+    }
+  }
+}
+
+- (void)_invalidateSizeClass
+{
+  [(PURenderIndicatorTileViewController *)self setNeedsUpdateSizeClass:1];
+
+  [(PURenderIndicatorTileViewController *)self _setNeedsUpdate];
+}
+
+- (void)_updateStatusIfNeeded
+{
+  if ([(PURenderIndicatorTileViewController *)self needsUpdateStatus])
+  {
+    [(PURenderIndicatorTileViewController *)self setNeedsUpdateStatus:0];
+    v3 = [(PURenderIndicatorTileViewController *)self assetSharedViewModel];
+    v4 = [v3 loadingStatus];
+
+    [(PURenderIndicatorTileViewController *)self setStatus:v4];
+  }
+}
+
+- (void)_invalidateStatus
+{
+  [(PURenderIndicatorTileViewController *)self setNeedsUpdateStatus:1];
+  v3 = +[PUOneUpSettings sharedInstance];
+  v4 = [v3 alwaysShowRenderIndicator];
+
+  if (v4)
+  {
+    [(PURenderIndicatorTileViewController *)self _invalidateStatusViews];
+  }
+
+  [(PURenderIndicatorTileViewController *)self _setNeedsUpdate];
+}
+
+- (BOOL)_needsUpdate
+{
+  if ([(PURenderIndicatorTileViewController *)self needsUpdateStatus]|| [(PURenderIndicatorTileViewController *)self needsUpdateSizeClass])
+  {
+    return 1;
+  }
+
+  return [(PURenderIndicatorTileViewController *)self needsUpdateStatusViews];
+}
+
+- (void)_updateIfNeeded
+{
+  if ([(PURenderIndicatorTileViewController *)self _needsUpdate])
+  {
+    if ([(PUTileViewController *)self isViewLoaded])
+    {
+      [(PURenderIndicatorTileViewController *)self _updateStatusIfNeeded];
+      [(PURenderIndicatorTileViewController *)self _updateSizeClassIfNeeded];
+      [(PURenderIndicatorTileViewController *)self _updateStatusViewsIfNeeded];
+      if ([(PURenderIndicatorTileViewController *)self _needsUpdate])
+      {
+        v4 = [MEMORY[0x1E696AAA8] currentHandler];
+        [v4 handleFailureInMethod:a2 object:self file:@"PURenderIndicatorTileViewController.m" lineNumber:299 description:@"updates still needed after an update cycle"];
+      }
+    }
+  }
+}
+
+- (void)setProgressViewVisible:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+{
+  v5 = a4;
+  v6 = a3;
+  v8 = a5;
+  if (!v6 || [(PURenderIndicatorTileViewController *)self willShowProgressAfterDelay])
+  {
+    [(PURenderIndicatorTileViewController *)self setWillShowProgressAfterDelay:0];
+    if (self->_isProgressViewVisible != v6)
+    {
+      self->_isProgressViewVisible = v6;
+      v9 = [(PURenderIndicatorTileViewController *)self roundedBackgroundView];
+      if (v6)
+      {
+        v10 = [(PURenderIndicatorTileViewController *)self progressView];
+        [v10 startProgressTimer];
+
+        [(PURenderIndicatorTileViewController *)self _updateViewFramesForCollapseState:1];
+        aBlock[0] = MEMORY[0x1E69E9820];
+        aBlock[1] = 3221225472;
+        aBlock[2] = __82__PURenderIndicatorTileViewController_setProgressViewVisible_animated_completion___block_invoke;
+        aBlock[3] = &unk_1E7B80DD0;
+        v11 = &v30;
+        v30 = v9;
+        v12 = _Block_copy(aBlock);
+        v28[0] = MEMORY[0x1E69E9820];
+        v28[1] = 3221225472;
+        v28[2] = __82__PURenderIndicatorTileViewController_setProgressViewVisible_animated_completion___block_invoke_2;
+        v28[3] = &unk_1E7B80DD0;
+        v28[4] = self;
+        v13 = _Block_copy(v28);
+        v26[0] = MEMORY[0x1E69E9820];
+        v26[1] = 3221225472;
+        v26[2] = __82__PURenderIndicatorTileViewController_setProgressViewVisible_animated_completion___block_invoke_3;
+        v26[3] = &unk_1E7B7FA80;
+        v27 = v8;
+        v14 = _Block_copy(v26);
+        if (v5)
+        {
+          [MEMORY[0x1E69DD250] animateWithDuration:4 delay:v12 options:0 animations:0.2 completion:0.0];
+          [MEMORY[0x1E69DD250] animateWithDuration:128 delay:v13 options:v14 animations:0.8 completion:0.0];
+        }
+
+        else
+        {
+          v12[2](v12);
+          v13[2](v13);
+          v14[2](v14, 1);
+        }
+      }
+
+      else
+      {
+        [(PURenderIndicatorTileViewController *)self _updateViewFramesForCollapseState:0];
+        v24[0] = MEMORY[0x1E69E9820];
+        v24[1] = 3221225472;
+        v24[2] = __82__PURenderIndicatorTileViewController_setProgressViewVisible_animated_completion___block_invoke_4;
+        v24[3] = &unk_1E7B80C38;
+        v11 = v25;
+        v15 = v9;
+        v25[0] = v15;
+        v25[1] = self;
+        v12 = _Block_copy(v24);
+        v17 = MEMORY[0x1E69E9820];
+        v18 = 3221225472;
+        v19 = __82__PURenderIndicatorTileViewController_setProgressViewVisible_animated_completion___block_invoke_5;
+        v20 = &unk_1E7B7D308;
+        v21 = v15;
+        v22 = self;
+        v23 = v8;
+        v16 = _Block_copy(&v17);
+        if (v5)
+        {
+          [MEMORY[0x1E69DD250] animateWithDuration:4 delay:v12 options:v16 animations:0.8 completion:{0.3, v17, v18, v19, v20, v21, v22}];
+        }
+
+        else
+        {
+          v12[2](v12);
+          v16[2](v16, 1);
+        }
+      }
+    }
+  }
+}
+
+void __82__PURenderIndicatorTileViewController_setProgressViewVisible_animated_completion___block_invoke_2(uint64_t a1)
+{
+  [*(a1 + 32) _updateViewFramesForCollapseState:0];
+  v2 = [*(a1 + 32) renderingLabel];
+  [v2 setAlpha:1.0];
+}
+
+uint64_t __82__PURenderIndicatorTileViewController_setProgressViewVisible_animated_completion___block_invoke_3(uint64_t a1)
+{
+  result = *(a1 + 32);
+  if (result)
+  {
+    return (*(result + 16))();
+  }
+
+  return result;
+}
+
+uint64_t __82__PURenderIndicatorTileViewController_setProgressViewVisible_animated_completion___block_invoke_4(uint64_t a1)
+{
+  [*(a1 + 32) setAlpha:0.0];
+  v2 = *(a1 + 40);
+
+  return [v2 _updateViewFramesForCollapseState:1];
+}
+
+uint64_t __82__PURenderIndicatorTileViewController_setProgressViewVisible_animated_completion___block_invoke_5(uint64_t a1)
+{
+  [*(a1 + 32) alpha];
+  if (v2 == 0.0)
+  {
+    v3 = [*(a1 + 40) progressView];
+    [v3 resetProgress];
+  }
+
+  result = *(a1 + 48);
+  if (result)
+  {
+    v5 = *(result + 16);
+
+    return v5();
+  }
+
+  return result;
+}
+
+- (void)_updateViewFramesForCollapseState:(BOOL)a3
+{
+  v3 = a3;
+  [(PURenderIndicatorTileViewController *)self progressIndicatorSize];
+  v6 = v5;
+  v8 = v7;
+  v9 = [(PURenderIndicatorTileViewController *)self renderingLabel];
+  [v9 intrinsicContentSize];
+  v11 = v10;
+  v13 = v12;
+
+  v14 = [(PUTileViewController *)self view];
+  v15 = [v14 traitCollection];
+  v16 = [v15 layoutDirection];
+
+  v17 = *MEMORY[0x1E695F058];
+  v27 = *(MEMORY[0x1E695F058] + 8);
+  v28 = v6;
+  v18 = v6 + 3.0 + 5.0;
+  if (v3)
+  {
+    if (v16 == 1)
+    {
+      [(PURenderIndicatorTileViewController *)self renderLabelTextWidth];
+      v17 = v19 + 6.0;
+      v20 = v11 + 5.0 + 6.0 - (v19 + 6.0);
+      v21 = 6.0 - (v19 + 6.0);
+      goto LABEL_7;
+    }
+  }
+
+  else
+  {
+    [(PURenderIndicatorTileViewController *)self renderLabelTextWidth];
+    v21 = 6.0;
+    v18 = v18 + v22 + 6.0;
+    if (v16 == 1)
+    {
+      v20 = v11 + 5.0 + 6.0;
+      goto LABEL_7;
+    }
+  }
+
+  [(PURenderIndicatorTileViewController *)self progressIndicatorSize];
+  v20 = 3.0;
+  v21 = v23 + 3.0 + 5.0;
+LABEL_7:
+  v24 = [(PURenderIndicatorTileViewController *)self roundedBackgroundView];
+  [v24 setFrame:{v17, v27, v18, v8 + 4.0}];
+
+  v25 = [(PURenderIndicatorTileViewController *)self progressView];
+  [v25 setFrame:{v20, 2.0, v28, v8}];
+
+  v26 = [(PURenderIndicatorTileViewController *)self errorButton];
+  [v26 setFrame:{v20, 2.0, v28, v8}];
+
+  v29 = [(PURenderIndicatorTileViewController *)self renderingLabel];
+  [v29 setFrame:{v21, (v8 + 4.0 - v13) * 0.5, v11, v13}];
+}
+
+- (CGRect)_expandedBackgroundViewFrame
+{
+  v3 = *MEMORY[0x1E695F058];
+  v4 = *(MEMORY[0x1E695F058] + 8);
+  [(PURenderIndicatorTileViewController *)self progressIndicatorSize];
+  v6 = v5 + 4.0;
+  v8 = v7 + 3.0 + 5.0;
+  [(PURenderIndicatorTileViewController *)self renderLabelTextWidth];
+  v10 = v9 + v8 + 6.0;
+  v11 = v3;
+  v12 = v4;
+  v13 = v6;
+  result.size.height = v13;
+  result.size.width = v10;
+  result.origin.y = v12;
+  result.origin.x = v11;
+  return result;
+}
+
+- (void)setSizeClass:(int64_t)a3
+{
+  if (self->_sizeClass != a3)
+  {
+    self->_sizeClass = a3;
+    p_progressIndicatorSize = &self->_progressIndicatorSize;
+    [objc_opt_class() progressIndicatorTileSizeForSizeClass:a3];
+    p_progressIndicatorSize->width = v6;
+    p_progressIndicatorSize->height = v7;
+
+    [(PURenderIndicatorTileViewController *)self _invalidateStatusViews];
+  }
+}
+
+- (void)setStatus:(id)a3
+{
+  v5 = a3;
+  v6 = v5;
+  if (self->_status != v5)
+  {
+    v7 = v5;
+    v5 = [v5 isEqual:?];
+    v6 = v7;
+    if ((v5 & 1) == 0)
+    {
+      objc_storeStrong(&self->_status, a3);
+      v5 = [(PURenderIndicatorTileViewController *)self _invalidateStatusViews];
+      v6 = v7;
+    }
+  }
+
+  MEMORY[0x1EEE66BB8](v5, v6);
+}
+
+- (void)applyLayoutInfo:(id)a3
+{
+  v4.receiver = self;
+  v4.super_class = PURenderIndicatorTileViewController;
+  [(PUTileViewController *)&v4 applyLayoutInfo:a3];
+  [(PURenderIndicatorTileViewController *)self _invalidateSizeClass];
+  [(PURenderIndicatorTileViewController *)self _updateIfNeeded];
+}
+
+- (void)setAssetSharedViewModel:(id)a3
+{
+  v5 = a3;
+  if (self->_assetSharedViewModel != v5)
+  {
+    v7 = v5;
+    v6 = [MEMORY[0x1E69C4558] defaultManager];
+    if (v7)
+    {
+      [v6 registerObserver:self];
+    }
+
+    else
+    {
+      [v6 unregisterObserver:self];
+    }
+
+    [(PUAssetSharedViewModel *)self->_assetSharedViewModel unregisterChangeObserver:self];
+    objc_storeStrong(&self->_assetSharedViewModel, a3);
+    [(PUAssetSharedViewModel *)self->_assetSharedViewModel registerChangeObserver:self];
+    [(PURenderIndicatorTileViewController *)self _invalidateStatus];
+    [(PURenderIndicatorTileViewController *)self _updateIfNeeded];
+
+    v5 = v7;
+  }
+}
+
+- (void)becomeReusable
+{
+  v4.receiver = self;
+  v4.super_class = PURenderIndicatorTileViewController;
+  [(PUTileViewController *)&v4 becomeReusable];
+  [(PURenderIndicatorTileViewController *)self setAssetSharedViewModel:0];
+  [(PURenderIndicatorTileViewController *)self setUndoManager:0];
+  v3 = [(PURenderIndicatorTileViewController *)self roundedBackgroundView];
+  [v3 removeFromSuperview];
+
+  [(PURenderIndicatorTileViewController *)self setRoundedBackgroundView:0];
+  [(PURenderIndicatorTileViewController *)self setProgressView:0];
+  [(PURenderIndicatorTileViewController *)self setRenderingLabel:0];
+}
+
+- (void)viewDidLoad
+{
+  v3.receiver = self;
+  v3.super_class = PURenderIndicatorTileViewController;
+  [(PUTileViewController *)&v3 viewDidLoad];
+  [(PURenderIndicatorTileViewController *)self _invalidateSizeClass];
+  [(PURenderIndicatorTileViewController *)self _invalidateStatusViews];
+  [(PURenderIndicatorTileViewController *)self _updateIfNeeded];
+}
+
++ (BOOL)wantsRenderViewForTypeOfProcessingNeeded:(unsigned __int16)a3
+{
+  v4 = a3;
+  if (a3 == 7 || a3 == 2)
+  {
+    v3 = +[PUPhotoEditProtoSettings sharedInstance];
+    v5 = [v3 enableLiveVideoRender] ^ 1;
+  }
+
+  else
+  {
+    v5 = 0;
+  }
+
+  if (v4 == 7 || v4 == 2)
+  {
+  }
+
+  if (v5)
+  {
+    return 1;
+  }
+
+  v7 = +[PUOneUpSettings sharedInstance];
+  v8 = [v7 alwaysShowRenderIndicator];
+
+  return v8;
+}
+
++ (id)_loadErrorIconForSizeClass:(int64_t)a3
+{
+  v6 = +[PUInterfaceManager currentTheme];
+  v7 = v6;
+  switch(a3)
+  {
+    case 2:
+      v10 = [v6 regularLoadErrorIcon];
+      goto LABEL_8;
+    case 1:
+      v10 = [v6 compactLoadErrorIcon];
+LABEL_8:
+      v9 = v10;
+      goto LABEL_9;
+    case 0:
+      v8 = [MEMORY[0x1E696AAA8] currentHandler];
+      [v8 handleFailureInMethod:a2 object:a1 file:@"PURenderIndicatorTileViewController.m" lineNumber:124 description:@"unspecified size class"];
+
+      break;
+  }
+
+  v9 = 0;
+LABEL_9:
+
+  return v9;
+}
+
++ (CGSize)renderIndicatorTileSizeForSizeClass:(int64_t)a3
+{
+  [a1 progressIndicatorTileSizeForSizeClass:a3];
+  v4 = v3 + 4.0;
+  v5 = 154.0;
+  result.height = v4;
+  result.width = v5;
+  return result;
+}
+
++ (CGSize)progressIndicatorTileSizeForSizeClass:(int64_t)a3
+{
+  v3 = 20.0;
+  v4 = 20.0;
+  result.height = v4;
+  result.width = v3;
+  return result;
+}
+
+@end

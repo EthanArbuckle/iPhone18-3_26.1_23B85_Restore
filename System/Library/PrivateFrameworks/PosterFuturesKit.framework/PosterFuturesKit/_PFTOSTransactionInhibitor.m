@@ -1,0 +1,51 @@
+@interface _PFTOSTransactionInhibitor
+- (_PFTOSTransactionInhibitor)initWithLabel:(id)a3;
+- (void)start;
+- (void)stop;
+@end
+
+@implementation _PFTOSTransactionInhibitor
+
+- (_PFTOSTransactionInhibitor)initWithLabel:(id)a3
+{
+  v4 = a3;
+  v11.receiver = self;
+  v11.super_class = _PFTOSTransactionInhibitor;
+  v5 = [(_PFTOSTransactionInhibitor *)&v11 init];
+  if (v5)
+  {
+    v6 = [v4 copy];
+    label = v5->_label;
+    v5->_label = v6;
+
+    transaction = v5->_transaction;
+    v5->_transaction = 0;
+
+    v9 = v5;
+  }
+
+  return v5;
+}
+
+- (void)start
+{
+  v6.receiver = self;
+  v6.super_class = _PFTOSTransactionInhibitor;
+  [(PFTInhibitor *)&v6 start];
+  v3 = [(_PFTOSTransactionInhibitor *)self label];
+  [v3 UTF8String];
+  v4 = os_transaction_create();
+  transaction = self->_transaction;
+  self->_transaction = v4;
+}
+
+- (void)stop
+{
+  v4.receiver = self;
+  v4.super_class = _PFTOSTransactionInhibitor;
+  [(PFTInhibitor *)&v4 stop];
+  transaction = self->_transaction;
+  self->_transaction = 0;
+}
+
+@end

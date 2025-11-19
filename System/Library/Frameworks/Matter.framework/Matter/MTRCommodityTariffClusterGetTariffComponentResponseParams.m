@@ -1,0 +1,473 @@
+@interface MTRCommodityTariffClusterGetTariffComponentResponseParams
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (MTRCommodityTariffClusterGetTariffComponentResponseParams)init;
+- (MTRCommodityTariffClusterGetTariffComponentResponseParams)initWithDecodableStruct:(const void *)a3;
+- (MTRCommodityTariffClusterGetTariffComponentResponseParams)initWithResponseValue:(id)a3 error:(id *)a4;
+- (id)copyWithZone:(_NSZone *)a3;
+- (id)description;
+@end
+
+@implementation MTRCommodityTariffClusterGetTariffComponentResponseParams
+
+- (MTRCommodityTariffClusterGetTariffComponentResponseParams)init
+{
+  v10.receiver = self;
+  v10.super_class = MTRCommodityTariffClusterGetTariffComponentResponseParams;
+  v2 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)&v10 init];
+  v3 = v2;
+  if (v2)
+  {
+    label = v2->_label;
+    v2->_label = 0;
+
+    v5 = [MEMORY[0x277CBEA60] array];
+    dayEntryIDs = v3->_dayEntryIDs;
+    v3->_dayEntryIDs = v5;
+
+    v7 = objc_opt_new();
+    tariffComponent = v3->_tariffComponent;
+    v3->_tariffComponent = v7;
+  }
+
+  return v3;
+}
+
+- (id)copyWithZone:(_NSZone *)a3
+{
+  v4 = objc_alloc_init(MTRCommodityTariffClusterGetTariffComponentResponseParams);
+  v5 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self label];
+  [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)v4 setLabel:v5];
+
+  v6 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self dayEntryIDs];
+  [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)v4 setDayEntryIDs:v6];
+
+  v7 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+  [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)v4 setTariffComponent:v7];
+
+  return v4;
+}
+
+- (id)description
+{
+  v3 = MEMORY[0x277CCACA8];
+  v4 = objc_opt_class();
+  v5 = NSStringFromClass(v4);
+  v6 = [v3 stringWithFormat:@"<%@: label:%@ dayEntryIDs:%@; tariffComponent:%@; >", v5, self->_label, self->_dayEntryIDs, self->_tariffComponent];;
+
+  return v6;
+}
+
+- (MTRCommodityTariffClusterGetTariffComponentResponseParams)initWithResponseValue:(id)a3 error:(id *)a4
+{
+  v6 = a3;
+  v26.receiver = self;
+  v26.super_class = MTRCommodityTariffClusterGetTariffComponentResponseParams;
+  v7 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)&v26 init];
+  if (!v7)
+  {
+    v11 = 0;
+    goto LABEL_10;
+  }
+
+  [MTRBaseDevice _responseDataForCommand:v6 clusterID:1792 commandID:0 error:a4];
+  if (v25)
+  {
+    sub_2393C5AAC(v24);
+    sub_2393C5ADC(v8, *(v25 + 1), *(v25 + 3));
+    v9 = sub_2393C6FD0(v24, 256);
+    if (!v9)
+    {
+      v13[0] = 0;
+      v13[16] = 0;
+      sub_2393C5AAC(v14);
+      sub_2393C5ADC(v14, 0, 0);
+      v14[18] = 0;
+      v15 = 0;
+      v16 = 0;
+      v17 = 0;
+      v18 = 0;
+      v19 = 0;
+      v20 = 0;
+      v21 = 0;
+      v22 = 0;
+      v23 = 0;
+      v9 = sub_238F0B984(v13, v24);
+      if (!v9)
+      {
+        v9 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)v7 _setFieldsFromDecodableStruct:v13];
+        if (!v9)
+        {
+          v11 = v7;
+          goto LABEL_8;
+        }
+      }
+    }
+
+    sub_238DD3F98(v9, v10, a4);
+  }
+
+  v11 = 0;
+LABEL_8:
+  sub_238EA1758(&v25);
+LABEL_10:
+
+  return v11;
+}
+
+- (MTRCommodityTariffClusterGetTariffComponentResponseParams)initWithDecodableStruct:(const void *)a3
+{
+  v10.receiver = self;
+  v10.super_class = MTRCommodityTariffClusterGetTariffComponentResponseParams;
+  v4 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)&v10 init];
+  v5 = v4;
+  if (v4)
+  {
+    v6 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    if (!v6)
+    {
+      v8 = v5;
+      goto LABEL_6;
+    }
+
+    sub_238DD3F98(v6, v7, 0);
+  }
+
+  v8 = 0;
+LABEL_6:
+
+  return v8;
+}
+
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+{
+  if ((*(a3 + 16) & 1) == 0)
+  {
+    [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self setLabel:0];
+    goto LABEL_5;
+  }
+
+  v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*a3 length:*(a3 + 1) encoding:4];
+  [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self setLabel:v5];
+
+  v6 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self label];
+
+  if (v6)
+  {
+LABEL_5:
+    v8 = objc_opt_new();
+    sub_2393C5AAC(v82);
+    v80 = 0;
+    v81 = 0;
+    sub_2393C5BDC(v82, a3 + 24);
+    while (sub_238E72E88(&v80))
+    {
+      v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v82[18]];
+      [v8 addObject:v9];
+    }
+
+    if (v80 != 33)
+    {
+      v10 = v80;
+      if (v80)
+      {
+        v11 = v81;
+        v7 = v80 & 0xFFFFFFFF00000000;
+LABEL_63:
+
+        goto LABEL_64;
+      }
+    }
+
+    [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self setDayEntryIDs:v8, v80];
+
+    v12 = objc_opt_new();
+    [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self setTariffComponent:v12];
+
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(a3 + 24)];
+    v14 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+    [v14 setTariffComponentID:v13];
+
+    if (*(a3 + 104) == 1 && (sub_238DE36B8(a3 + 104)[32] & 1) != 0)
+    {
+      v15 = objc_opt_new();
+      v16 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+      [v16 setPrice:v15];
+
+      v17 = MEMORY[0x277CCABB0];
+      v18 = sub_238DE36B8(a3 + 104);
+      if ((v18[32] & 1) == 0)
+      {
+        goto LABEL_65;
+      }
+
+      v19 = [v17 numberWithUnsignedChar:*v18];
+      v20 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+      v21 = [v20 price];
+      [v21 setPriceType:v19];
+
+      v22 = sub_238DE36B8(a3 + 104);
+      if ((v22[32] & 1) == 0)
+      {
+        goto LABEL_65;
+      }
+
+      if (v22[8] == 1)
+      {
+        v23 = MEMORY[0x277CCABB0];
+        v24 = sub_238DE36B8(a3 + 104);
+        if ((v24[32] & 1) == 0)
+        {
+          goto LABEL_65;
+        }
+
+        v25 = [v23 numberWithLongLong:*sub_238DE36B8(v24 + 8)];
+        v26 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+        v27 = [v26 price];
+        [v27 setPrice:v25];
+      }
+
+      else
+      {
+        v25 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+        v26 = [v25 price];
+        [v26 setPrice:0];
+      }
+
+      v29 = sub_238DE36B8(a3 + 104);
+      if ((v29[32] & 1) == 0)
+      {
+        goto LABEL_65;
+      }
+
+      if (v29[24] == 1)
+      {
+        v30 = MEMORY[0x277CCABB0];
+        v31 = sub_238DE36B8(a3 + 104);
+        if ((v31[32] & 1) == 0)
+        {
+          goto LABEL_65;
+        }
+
+        v28 = [v30 numberWithShort:*sub_238E0A934(v31 + 24)];
+        v32 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+        v33 = [v32 price];
+        [v33 setPriceLevel:v28];
+      }
+
+      else
+      {
+        v28 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+        v32 = [v28 price];
+        [v32 setPriceLevel:0];
+      }
+    }
+
+    else
+    {
+      v28 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+      [v28 setPrice:0];
+    }
+
+    if (*(a3 + 152) == 1)
+    {
+      v34 = [MEMORY[0x277CCABB0] numberWithBool:*sub_238DE36D8(a3 + 152)];
+      v35 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+      [v35 setFriendlyCredit:v34];
+    }
+
+    else
+    {
+      v34 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+      [v34 setFriendlyCredit:0];
+    }
+
+    if (*(a3 + 154) == 1)
+    {
+      v36 = objc_opt_new();
+      v37 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+      [v37 setAuxiliaryLoad:v36];
+
+      v38 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*sub_238DE36D8(a3 + 154)];
+      v39 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+      v40 = [v39 auxiliaryLoad];
+      [v40 setNumber:v38];
+
+      v41 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:sub_238DE36D8(a3 + 154)[1]];
+      v42 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+      v43 = [v42 auxiliaryLoad];
+      [v43 setRequiredState:v41];
+    }
+
+    else
+    {
+      v41 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+      [v41 setAuxiliaryLoad:0];
+    }
+
+    if (*(a3 + 158) == 1)
+    {
+      v44 = objc_opt_new();
+      v45 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+      [v45 setPeakPeriod:v44];
+
+      v46 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*sub_238E0A934(a3 + 158)];
+      v47 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+      v48 = [v47 peakPeriod];
+      [v48 setSeverity:v46];
+
+      v49 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(sub_238E0A934(a3 + 158) + 1)];
+      v50 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+      v51 = [v50 peakPeriod];
+      [v51 setPeakPeriod:v49];
+    }
+
+    else
+    {
+      v49 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+      [v49 setPeakPeriod:0];
+    }
+
+    if (*(a3 + 168) == 1)
+    {
+      v52 = objc_opt_new();
+      v53 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+      [v53 setPowerThreshold:v52];
+
+      if (*sub_238DE36B8(a3 + 168) == 1)
+      {
+        v54 = MEMORY[0x277CCABB0];
+        v55 = sub_238DE36B8(a3 + 168);
+        v56 = [v54 numberWithLongLong:*sub_238DE36B8(v55)];
+        v57 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+        v58 = [v57 powerThreshold];
+        [v58 setPowerThreshold:v56];
+      }
+
+      else
+      {
+        v56 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+        v57 = [v56 powerThreshold];
+        [v57 setPowerThreshold:0];
+      }
+
+      if (sub_238DE36B8(a3 + 168)[16] == 1)
+      {
+        v60 = MEMORY[0x277CCABB0];
+        v61 = sub_238DE36B8(a3 + 168);
+        v62 = [v60 numberWithLongLong:*sub_238DE36B8(v61 + 16)];
+        v63 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+        v64 = [v63 powerThreshold];
+        [v64 setApparentPowerThreshold:v62];
+      }
+
+      else
+      {
+        v62 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+        v63 = [v62 powerThreshold];
+        [v63 setApparentPowerThreshold:0];
+      }
+
+      if (sub_238DE36B8(a3 + 168)[33])
+      {
+        v65 = MEMORY[0x277CCABB0];
+        v66 = sub_238DE36B8(a3 + 168);
+        if ((v66[33] & 1) == 0)
+        {
+          goto LABEL_65;
+        }
+
+        v59 = [v65 numberWithUnsignedChar:v66[32]];
+        v67 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+        v68 = [v67 powerThreshold];
+        [v68 setPowerThresholdSource:v59];
+      }
+
+      else
+      {
+        v59 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+        v67 = [v59 powerThreshold];
+        [v67 setPowerThresholdSource:0];
+      }
+    }
+
+    else
+    {
+      v59 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+      [v59 setPowerThreshold:0];
+    }
+
+    if (*(a3 + 224))
+    {
+      v69 = [MEMORY[0x277CCABB0] numberWithLongLong:*(a3 + 27)];
+      v70 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+      [v70 setThreshold:v69];
+    }
+
+    else
+    {
+      v69 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+      [v69 setThreshold:0];
+    }
+
+    if (*(a3 + 232) != 1 || (sub_238DE36B8(a3 + 232)[16] & 1) == 0)
+    {
+      v76 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+      [v76 setLabel:0];
+
+LABEL_59:
+      if (*(a3 + 264) == 1)
+      {
+        v8 = [MEMORY[0x277CCABB0] numberWithBool:*sub_238DE36D8(a3 + 264)];
+        v77 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+        [v77 setPredicted:v8];
+      }
+
+      else
+      {
+        v8 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+        [v8 setPredicted:0];
+      }
+
+      v11 = 0;
+      v7 = 0;
+      v10 = 0;
+      goto LABEL_63;
+    }
+
+    v71 = sub_238DE36B8(a3 + 232);
+    if (v71[16])
+    {
+      v72 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v71 length:*(v71 + 1) encoding:4];
+      v73 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+      [v73 setLabel:v72];
+
+      v74 = [(MTRCommodityTariffClusterGetTariffComponentResponseParams *)self tariffComponent];
+      v75 = [v74 label];
+
+      if (!v75)
+      {
+        v7 = 0x97A500000000;
+        goto LABEL_57;
+      }
+
+      goto LABEL_59;
+    }
+
+LABEL_65:
+    sub_238EA195C();
+  }
+
+  v7 = 0x974600000000;
+LABEL_57:
+  v11 = "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm";
+  v10 = 47;
+LABEL_64:
+  v78 = v10 | v7;
+  v79 = v11;
+  result.mFile = v79;
+  result.mError = v78;
+  result.mLine = HIDWORD(v78);
+  return result;
+}
+
+@end

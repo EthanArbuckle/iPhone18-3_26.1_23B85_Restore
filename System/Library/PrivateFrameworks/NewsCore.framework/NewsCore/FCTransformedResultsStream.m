@@ -1,0 +1,147 @@
+@interface FCTransformedResultsStream
+- (BOOL)isFinished;
+- (FCTransformedResultsStream)initWithStream:(id)a3 asyncTransformBlock:(id)a4;
+- (id)fetchMoreResultsWithLimit:(unint64_t)a3 qualityOfService:(int64_t)a4 callbackQueue:(id)a5 completionHandler:(id)a6;
+@end
+
+@implementation FCTransformedResultsStream
+
+- (FCTransformedResultsStream)initWithStream:(id)a3 asyncTransformBlock:(id)a4
+{
+  v26 = *MEMORY[0x1E69E9840];
+  v7 = a3;
+  v8 = a4;
+  if (!v7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  {
+    v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "stream != nil"];
+    *buf = 136315906;
+    v19 = "[FCTransformedResultsStream initWithStream:asyncTransformBlock:]";
+    v20 = 2080;
+    v21 = "FCTransformedResultsStream.m";
+    v22 = 1024;
+    v23 = 23;
+    v24 = 2114;
+    v25 = v15;
+    _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
+
+    if (v8)
+    {
+      goto LABEL_6;
+    }
+  }
+
+  else if (v8)
+  {
+    goto LABEL_6;
+  }
+
+  if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  {
+    v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "asyncTransformBlock != nil"];
+    *buf = 136315906;
+    v19 = "[FCTransformedResultsStream initWithStream:asyncTransformBlock:]";
+    v20 = 2080;
+    v21 = "FCTransformedResultsStream.m";
+    v22 = 1024;
+    v23 = 24;
+    v24 = 2114;
+    v25 = v16;
+    _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
+  }
+
+LABEL_6:
+  v17.receiver = self;
+  v17.super_class = FCTransformedResultsStream;
+  v9 = [(FCTransformedResultsStream *)&v17 init];
+  v10 = v9;
+  if (v9)
+  {
+    if (v7 && v8)
+    {
+      objc_storeStrong(&v9->_stream, a3);
+      v11 = [v8 copy];
+      asyncTransformBlock = v10->_asyncTransformBlock;
+      v10->_asyncTransformBlock = v11;
+    }
+
+    else
+    {
+      asyncTransformBlock = v9;
+      v10 = 0;
+    }
+  }
+
+  v13 = *MEMORY[0x1E69E9840];
+  return v10;
+}
+
+- (id)fetchMoreResultsWithLimit:(unint64_t)a3 qualityOfService:(int64_t)a4 callbackQueue:(id)a5 completionHandler:(id)a6
+{
+  v10 = a5;
+  v11 = a6;
+  v12 = [(FCTransformedResultsStream *)self stream];
+  v17[0] = MEMORY[0x1E69E9820];
+  v17[1] = 3221225472;
+  v17[2] = __105__FCTransformedResultsStream_fetchMoreResultsWithLimit_qualityOfService_callbackQueue_completionHandler___block_invoke;
+  v17[3] = &unk_1E7C3F278;
+  v17[4] = self;
+  v18 = v10;
+  v19 = v11;
+  v20 = a4;
+  v13 = v11;
+  v14 = v10;
+  v15 = [v12 fetchMoreResultsWithLimit:a3 qualityOfService:a4 callbackQueue:v14 completionHandler:v17];
+
+  return v15;
+}
+
+void __105__FCTransformedResultsStream_fetchMoreResultsWithLimit_qualityOfService_callbackQueue_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
+{
+  v5 = a3;
+  v6 = *(a1 + 32);
+  v7 = a2;
+  v8 = [v6 asyncTransformBlock];
+  v9 = *(a1 + 56);
+  v13[0] = MEMORY[0x1E69E9820];
+  v13[1] = 3221225472;
+  v13[2] = __105__FCTransformedResultsStream_fetchMoreResultsWithLimit_qualityOfService_callbackQueue_completionHandler___block_invoke_2;
+  v13[3] = &unk_1E7C3F250;
+  v14 = *(a1 + 40);
+  v10 = *(a1 + 48);
+  v15 = v5;
+  v16 = v10;
+  v11 = v8[2];
+  v12 = v5;
+  v11(v8, v7, v9, v13);
+}
+
+void __105__FCTransformedResultsStream_fetchMoreResultsWithLimit_qualityOfService_callbackQueue_completionHandler___block_invoke_2(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  v4 = *(a1 + 32);
+  if (v4)
+  {
+    v5 = *(a1 + 48);
+    if (v5)
+    {
+      block[0] = MEMORY[0x1E69E9820];
+      block[1] = 3221225472;
+      block[2] = __105__FCTransformedResultsStream_fetchMoreResultsWithLimit_qualityOfService_callbackQueue_completionHandler___block_invoke_3;
+      block[3] = &unk_1E7C3A060;
+      v9 = v5;
+      v7 = v3;
+      v8 = *(a1 + 40);
+      dispatch_async(v4, block);
+    }
+  }
+}
+
+- (BOOL)isFinished
+{
+  v2 = [(FCTransformedResultsStream *)self stream];
+  v3 = [v2 isFinished];
+
+  return v3;
+}
+
+@end

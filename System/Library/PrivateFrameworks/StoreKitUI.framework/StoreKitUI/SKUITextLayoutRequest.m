@@ -1,0 +1,53 @@
+@interface SKUITextLayoutRequest
+- (SKUITextLayoutRequest)init;
+- (id)copyWithZone:(_NSZone *)a3;
+- (void)init;
+@end
+
+@implementation SKUITextLayoutRequest
+
+- (SKUITextLayoutRequest)init
+{
+  if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
+  {
+    [SKUITextLayoutRequest init];
+  }
+
+  v4.receiver = self;
+  v4.super_class = SKUITextLayoutRequest;
+  result = [(SKUITextLayoutRequest *)&v4 init];
+  if (result)
+  {
+    result->_fontSize = 12.0;
+  }
+
+  return result;
+}
+
+- (id)copyWithZone:(_NSZone *)a3
+{
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v6 = [(NSAttributedString *)self->_attributedText copyWithZone:a3];
+  v7 = *(v5 + 8);
+  *(v5 + 8) = v6;
+
+  *(v5 + 24) = self->_fontWeight;
+  *(v5 + 16) = self->_fontSize;
+  *(v5 + 32) = self->_numberOfLines;
+  v8 = [(NSString *)self->_text copyWithZone:a3];
+  v9 = *(v5 + 40);
+  *(v5 + 40) = v8;
+
+  *(v5 + 48) = self->_textAlignment;
+  *(v5 + 56) = self->_width;
+  return v5;
+}
+
+- (void)init
+{
+  v2 = *MEMORY[0x277D85DE8];
+  v0 = 136446210;
+  v1 = "[SKUITextLayoutRequest init]";
+}
+
+@end

@@ -1,0 +1,45 @@
+@interface EKCalendarIgnoreSharedCalendarResourceChangeNotificationsEditItem
+- (BOOL)configureWithCalendar:(id)a3;
+- (id)cellText;
+- (id)descriptionLabelText;
+- (id)headerTitle;
+@end
+
+@implementation EKCalendarIgnoreSharedCalendarResourceChangeNotificationsEditItem
+
+- (BOOL)configureWithCalendar:(id)a3
+{
+  v6.receiver = self;
+  v6.super_class = EKCalendarIgnoreSharedCalendarResourceChangeNotificationsEditItem;
+  v3 = a3;
+  [(EKCalendarEditItem *)&v6 configureWithCalendar:v3];
+  v4 = [v3 allowsIgnoringSharedEventChangeNotifications];
+
+  return v4;
+}
+
+- (id)cellText
+{
+  v2 = EventKitUIBundle();
+  v3 = [v2 localizedStringForKey:@"Show Changes" value:&stru_1F4EF6790 table:0];
+
+  return v3;
+}
+
+- (id)descriptionLabelText
+{
+  v2 = EventKitUIBundle();
+  v3 = [v2 localizedStringForKey:@"Display messages when shared events on this calendar are added value:modified table:{or deleted by other people.", &stru_1F4EF6790, 0}];
+
+  return v3;
+}
+
+- (id)headerTitle
+{
+  v2 = EventKitUIBundle();
+  v3 = [v2 localizedStringForKey:@"Shared Events" value:&stru_1F4EF6790 table:0];
+
+  return v3;
+}
+
+@end

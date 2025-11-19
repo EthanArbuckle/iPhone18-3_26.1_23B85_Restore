@@ -1,0 +1,262 @@
+@interface NEKChangeTracker
+- (id)initForSessionAction:(int)a3 withSessionIdentifier:(id)a4;
+- (void)logChanges;
+- (void)recordChange:(id)a3;
+@end
+
+@implementation NEKChangeTracker
+
+- (id)initForSessionAction:(int)a3 withSessionIdentifier:(id)a4
+{
+  v7 = a4;
+  v13.receiver = self;
+  v13.super_class = NEKChangeTracker;
+  v8 = [(NEKChangeTracker *)&v13 init];
+  v9 = v8;
+  if (v8)
+  {
+    v8->_sessionAction = a3;
+    objc_storeStrong(&v8->_sessionIdentifier, a4);
+    v10 = objc_alloc_init(NSMutableDictionary);
+    changeCounts = v9->_changeCounts;
+    v9->_changeCounts = v10;
+  }
+
+  return v9;
+}
+
+- (void)recordChange:(id)a3
+{
+  v4 = a3;
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    v5 = v4;
+    v6 = [v5 nekStoreType];
+    if (v6)
+    {
+      if (v6 == 1)
+      {
+        v7 = @"REMStore";
+      }
+
+      else
+      {
+        v7 = [NSString stringWithFormat:@"Unknown Store [%ld]", v6];
+      }
+    }
+
+    else
+    {
+      v7 = @"EKEventStore";
+    }
+
+    v9 = [v5 nekWrapperType];
+    if (v9 >= 5)
+    {
+      v10 = [NSString stringWithFormat:@"Unknown Wrapper [%ld]", v9];
+    }
+
+    else
+    {
+      v10 = *(&off_1000B6110 + v9);
+    }
+
+    v11 = [v5 nekChangeType];
+    if (v11 < 5 && ((0x17u >> v11) & 1) != 0)
+    {
+      v12 = *(&off_1000B6138 + v11);
+      if (!v7)
+      {
+        goto LABEL_22;
+      }
+    }
+
+    else
+    {
+      v12 = [NSString stringWithFormat:@"Unspecified [%ld]", v11];
+      if (!v7)
+      {
+        goto LABEL_22;
+      }
+    }
+
+    if (v10 && v12)
+    {
+      objc_opt_class();
+      if (objc_opt_isKindOfClass())
+      {
+        v13 = [v5 type];
+        if (v13 > 4)
+        {
+          v17 = [NSString stringWithFormat:@"Unknown Deletion Item [%ld]", v13];
+
+          v10 = v17;
+          if (!v17)
+          {
+            v21 = *(qword_1000D18A8 + 8);
+            if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+            {
+              sub_100075F0C(self, v21);
+            }
+
+            goto LABEL_27;
+          }
+        }
+
+        else
+        {
+          v14 = *(&off_1000B6160 + v13);
+
+          v10 = v14;
+        }
+      }
+
+      v18 = [NSString stringWithFormat:@"%@%@%@%@%@", v7, @"|", v10, @"|", v12];
+      v19 = [(NSMutableDictionary *)self->_changeCounts objectForKeyedSubscript:v18];
+      v20 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v19 integerValue] + 1);
+      [(NSMutableDictionary *)self->_changeCounts setObject:v20 forKeyedSubscript:v18];
+
+LABEL_26:
+LABEL_27:
+
+      goto LABEL_28;
+    }
+
+LABEL_22:
+    v15 = *(qword_1000D18A8 + 8);
+    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    {
+      sessionIdentifier = self->_sessionIdentifier;
+      *buf = 138544130;
+      v23 = sessionIdentifier;
+      v24 = 2112;
+      v25 = v7;
+      v26 = 2112;
+      v27 = v10;
+      v28 = 2112;
+      v29 = v12;
+      _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "[Session: %{public}@] Unable to record change, a description was nil [%@] [%@] [%@]", buf, 0x2Au);
+    }
+
+    goto LABEL_26;
+  }
+
+  v8 = *(qword_1000D18A8 + 8);
+  if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  {
+    sub_100075E4C(self, v8);
+  }
+
+LABEL_28:
+}
+
+- (void)logChanges
+{
+  v24 = objc_alloc_init(NSMutableDictionary);
+  v25 = self;
+  v3 = [(NSMutableDictionary *)self->_changeCounts allKeys];
+  v4 = [v3 sortedArrayUsingSelector:"compare:"];
+
+  v29 = 0u;
+  v30 = 0u;
+  v27 = 0u;
+  v28 = 0u;
+  obj = v4;
+  v5 = [obj countByEnumeratingWithState:&v27 objects:v39 count:16];
+  if (v5)
+  {
+    v6 = v5;
+    v26 = 0;
+    v7 = *v28;
+    do
+    {
+      for (i = 0; i != v6; i = i + 1)
+      {
+        if (*v28 != v7)
+        {
+          objc_enumerationMutation(obj);
+        }
+
+        v9 = *(*(&v27 + 1) + 8 * i);
+        v10 = [(NSMutableDictionary *)v25->_changeCounts objectForKeyedSubscript:v9];
+        v11 = [v10 integerValue];
+
+        if (v11)
+        {
+          v12 = [v9 componentsSeparatedByString:@"|"];
+          v13 = [v12 objectAtIndexedSubscript:0];
+          v14 = [v12 objectAtIndexedSubscript:1];
+          v15 = [v12 objectAtIndexedSubscript:2];
+          v16 = [v24 objectForKeyedSubscript:v13];
+          if (!v16)
+          {
+            v16 = objc_alloc_init(NSMutableDictionary);
+            [v24 setObject:v16 forKeyedSubscript:v13];
+          }
+
+          v17 = [v16 objectForKeyedSubscript:v14];
+          if (v17)
+          {
+            v18 = v17;
+            [v17 appendString:{@", "}];
+          }
+
+          else
+          {
+            v18 = objc_alloc_init(NSMutableString);
+            [v16 setObject:v18 forKeyedSubscript:v14];
+          }
+
+          v26 += v11;
+          [v18 appendFormat:@"(%ld) %@", v11, v15];
+        }
+      }
+
+      v6 = [obj countByEnumeratingWithState:&v27 objects:v39 count:16];
+    }
+
+    while (v6);
+  }
+
+  else
+  {
+    v26 = 0;
+  }
+
+  v19 = *(qword_1000D18A8 + 8);
+  if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+  {
+    sessionIdentifier = v25->_sessionIdentifier;
+    sessionAction = v25->_sessionAction;
+    if (sessionAction)
+    {
+      if (sessionAction == 1)
+      {
+        v22 = @"applyChanges";
+      }
+
+      else
+      {
+        v22 = [NSString stringWithFormat:@"unknownAction [%d]", v25->_sessionAction];
+      }
+    }
+
+    else
+    {
+      v22 = @"enqueueChanges";
+    }
+
+    *buf = 138544130;
+    v32 = sessionIdentifier;
+    v33 = 2114;
+    v34 = v22;
+    v35 = 2050;
+    v36 = v26;
+    v37 = 2112;
+    v38 = v24;
+    _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "[Session: %{public}@] %{public}@ [%{public}ld] %@", buf, 0x2Au);
+  }
+}
+
+@end

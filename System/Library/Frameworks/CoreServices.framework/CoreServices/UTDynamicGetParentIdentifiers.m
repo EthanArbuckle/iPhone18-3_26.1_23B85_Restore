@@ -1,0 +1,13 @@
+@interface UTDynamicGetParentIdentifiers
+@end
+
+@implementation UTDynamicGetParentIdentifiers
+
+void ___UTDynamicGetParentIdentifiers_block_invoke(uint64_t a1, void *a2)
+{
+  v2 = *(a1 + 32);
+  v3 = [a2 copy];
+  [v2 addObject:?];
+}
+
+@end

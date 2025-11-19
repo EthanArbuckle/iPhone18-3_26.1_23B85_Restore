@@ -1,0 +1,1962 @@
+@interface AVOutputDevice
++ (AVOutputDevice)outputDeviceWithFigEndpoint:(OpaqueFigEndpoint *)a3;
++ (AVOutputDevice)outputDeviceWithFigEndpoint:(OpaqueFigEndpoint *)a3 routingContextFactory:(id)a4;
++ (AVOutputDevice)outputDeviceWithFigEndpoint:(OpaqueFigEndpoint *)a3 volumeController:(OpaqueFigVolumeControllerState *)a4;
++ (AVOutputDevice)outputDeviceWithRouteDescriptor:(__CFDictionary *)a3 routeDiscoverer:(OpaqueFigRouteDiscoverer *)a4;
++ (AVOutputDevice)outputDeviceWithRouteDescriptor:(__CFDictionary *)a3 routingContextFactory:(id)a4;
++ (AVOutputDevice)outputDeviceWithRouteDescriptor:(__CFDictionary *)a3 volumeController:(OpaqueFigVolumeControllerState *)a4;
++ (AVOutputDevice)outputDeviceWithRouteDescriptor:(__CFDictionary *)a3 withRoutingContext:(OpaqueFigRoutingContext *)a4;
++ (BOOL)prefersRouteDescriptors;
++ (id)sharedLocalDevice;
++ (void)initialize;
++ (void)localDeviceDidChange;
+- (AVOutputDevice)init;
+- (AVOutputDevice)initWithOutputDeviceImpl:(id)a3 commChannelManager:(id)a4;
+- (BOOL)OEMIconVisible;
+- (BOOL)_shouldHideAirPlayInfoDuringDemo;
+- (BOOL)allowsHeadTrackedSpatialAudio;
+- (BOOL)automaticallyAllowsConnectionsFromPeersInHomeGroup;
+- (BOOL)canAccessAppleMusic;
+- (BOOL)canAccessRemoteAssets;
+- (BOOL)canAccessiCloudMusicLibrary;
+- (BOOL)canBeGroupLeader;
+- (BOOL)canBeGrouped;
+- (BOOL)canCommunicateWithAllLogicalDeviceMembers;
+- (BOOL)canFetchMediaDataFromSender;
+- (BOOL)canMute;
+- (BOOL)canPlayEncryptedProgressiveDownloadAssets;
+- (BOOL)canRelayCommunicationChannel;
+- (BOOL)canSetVolume;
+- (BOOL)carOwnsMainAudio;
+- (BOOL)carOwnsScreen;
+- (BOOL)groupContainsGroupLeader;
+- (BOOL)isActivated;
+- (BOOL)isActivatedForContinuityScreen;
+- (BOOL)isAppleAccessory;
+- (BOOL)isCached;
+- (BOOL)isCarPlayVideoActive;
+- (BOOL)isCarPlayVideoAllowed;
+- (BOOL)isClusterLeader;
+- (BOOL)isConversationDetectionEnabled;
+- (BOOL)isEligibleToBePredictedOutputDevice;
+- (BOOL)isEqual:(id)a3;
+- (BOOL)isGroupLeader;
+- (BOOL)isHeadTrackedSpatialAudioActive;
+- (BOOL)isInUseByPairedDevice;
+- (BOOL)isLogicalDeviceLeader;
+- (BOOL)isMuted;
+- (BOOL)isNightModeSupported;
+- (BOOL)limitedUI;
+- (BOOL)nightMode;
+- (BOOL)onlyAllowsConnectionsFromPeersInHomeGroup;
+- (BOOL)ownsTurnByTurnNavigation;
+- (BOOL)participatesInGroupPlayback;
+- (BOOL)presentsOptimizedUserInterfaceWhenPlayingFetchedAudioOnlyAssets;
+- (BOOL)producesLowFidelityAudio;
+- (BOOL)recognizingSpeech;
+- (BOOL)requiresAuthorization;
+- (BOOL)rightHandDrive;
+- (BOOL)setCurrentBluetoothListeningMode:(id)a3 error:(id *)a4;
+- (BOOL)setHeadTrackedSpatialAudioMode:(id)a3 error:(id *)a4;
+- (BOOL)siriForwardingEnabled;
+- (BOOL)supportsBluetoothSharing;
+- (BOOL)supportsBufferedAirPlay;
+- (BOOL)supportsConversationDetection;
+- (BOOL)supportsFitnessDataDestination;
+- (BOOL)supportsHeadTrackedSpatialAudio;
+- (BOOL)supportsScreenMirroringControls;
+- (double)frecencyScore;
+- (float)batteryLevel;
+- (float)volume;
+- (float)volumeForActivatedDeviceClusterMembersWithRoomID:(id)a3;
+- (id)MFiCertificateSerialNumber;
+- (id)OEMIconLabel;
+- (id)OEMIcons;
+- (id)airPlayProperties;
+- (id)alternateTransportType;
+- (id)availableBluetoothListeningModes;
+- (id)borrowScreenForClient:(id)a3 reason:(id)a4;
+- (id)clusterID;
+- (id)clusteredDeviceDescriptions;
+- (id)connectedPairedDevices;
+- (id)currentBluetoothListeningMode;
+- (id)currentScreenViewAreaForScreenID:(id)a3;
+- (id)delegate;
+- (id)displayCornerMasks;
+- (id)figEndpointOutputDeviceImpl;
+- (id)groupID;
+- (id)headTrackedSpatialAudioMode;
+- (id)limitedUIElements;
+- (id)logicalDeviceID;
+- (id)modelSpecificInformation;
+- (id)outputDeviceHIDs;
+- (id)outputDeviceInfo;
+- (id)proposedGroupID;
+- (id)requestTurnByTurnNavigationOwnership;
+- (id)screens;
+- (id)supportedFeatures;
+- (int64_t)HAPConformance;
+- (int64_t)authenticationType;
+- (int64_t)clusterType;
+- (int64_t)configuredClusterSize;
+- (int64_t)deviceSubType;
+- (int64_t)deviceType;
+- (int64_t)electronicTollCollection;
+- (int64_t)mediaSessionStatus;
+- (int64_t)navigationAidedDriving;
+- (int64_t)transportType;
+- (int64_t)voiceTriggerMode;
+- (int64_t)volumeControlType;
+- (unint64_t)hash;
+- (void)activatedDeviceClusterMembersDidChangeVolume:(id)a3 forRoomID:(__CFString *)a4;
+- (void)communicationChannelManager:(id)a3 didCloseCommunicationChannel:(id)a4;
+- (void)communicationChannelManager:(id)a3 didReceiveData:(id)a4 fromCommunicationChannel:(id)a5;
+- (void)configureUsingBlock:(id)a3 completionHandler:(id)a4;
+- (void)configureUsingBlock:(id)a3 options:(id)a4 completionHandler:(id)a5;
+- (void)dealloc;
+- (void)decreaseVolumeByCount:(int64_t)a3;
+- (void)increaseVolumeByCount:(int64_t)a3;
+- (void)openCommunicationChannelToDestination:(id)a3 options:(id)a4 completionHandler:(id)a5;
+- (void)outputDeviceImplCanMuteDidChange:(id)a3;
+- (void)outputDeviceImplDidChangeCanChangeVolume:(id)a3;
+- (void)outputDeviceImplDidChangeMute:(id)a3;
+- (void)outputDeviceImplDidChangeProposedGroupID:(id)a3;
+- (void)outputDeviceImplDidChangeVolume:(id)a3;
+- (void)outputDeviceImplDidChangeVolumeControlType:(id)a3;
+- (void)performHapticFeedbackForUUID:(id)a3 withHapticType:(id)a4 completionHandler:(id)a5;
+- (void)postNotification:(id)a3 fromImpl:(id)a4;
+- (void)postNotification:(id)a3 withPayload:(id)a4 fromImpl:(id)a5;
+- (void)requestCarUIForURL:(id)a3 withUUID:(id)a4;
+- (void)requestViewArea:(int64_t)a3 forScreenID:(id)a4;
+- (void)setActivatedDeviceClusterMembersVolume:(float)a3 withRoomID:(id)a4;
+- (void)setCommunicationChannelDelegate:(id)a3;
+- (void)setCurrentBluetoothListeningMode:(id)a3;
+- (void)setDelegate:(id)a3;
+- (void)setDisplayCornerMasks:(id)a3;
+- (void)setMediaRemoteData:(id)a3 completionHandler:(id)a4;
+- (void)setSecondDisplayMode:(id)a3 completionHandler:(id)a4;
+- (void)setVolume:(float)a3;
+- (void)suggestUIWithURLs:(id)a3 completionHandler:(id)a4;
+- (void)takeScreenForClient:(id)a3 reason:(id)a4;
+- (void)updateFrecencyScore;
+@end
+
+@implementation AVOutputDevice
+
++ (void)initialize
+{
+  if (objc_opt_class() == a1)
+  {
+    FigNote_AllowInternalDefaultLogs();
+    fig_note_initialize_category_with_default_work();
+
+    fig_note_initialize_category_with_default_work();
+  }
+}
+
++ (BOOL)prefersRouteDescriptors
+{
+  keyExistsAndHasValidFormat = 0;
+  AppBooleanValue = CFPreferencesGetAppBooleanValue(@"UseFigRouteDescriptor", @"com.apple.avfoundation", &keyExistsAndHasValidFormat);
+  if (!keyExistsAndHasValidFormat)
+  {
+    AppBooleanValue = [+[AVExecutionEnvironment sharedExecutionEnvironment](AVExecutionEnvironment "sharedExecutionEnvironment")] != @"AVPlatformIdentifierMacOS";
+  }
+
+  return AppBooleanValue != 0;
+}
+
+- (int64_t)deviceType
+{
+  if ([(AVOutputDevice *)self _shouldHideAirPlayInfoDuringDemo])
+  {
+    return 3;
+  }
+
+  else
+  {
+    return self->_outputDevice->deviceType;
+  }
+}
+
+- (BOOL)_shouldHideAirPlayInfoDuringDemo
+{
+  if (_shouldHideAirPlayInfoDuringDemo_onceToken != -1)
+  {
+    [AVOutputDevice _shouldHideAirPlayInfoDuringDemo];
+  }
+
+  outputDevice = self->_outputDevice;
+  if (outputDevice->deviceSubType == 18 && !outputDevice->deviceType)
+  {
+    IsInternalBuild = FigDebugIsInternalBuild();
+    if (IsInternalBuild)
+    {
+      LOBYTE(IsInternalBuild) = _shouldHideAirPlayInfoDuringDemo_sHideAirPlayRoutingInfoDemoMode != 0;
+    }
+  }
+
+  else
+  {
+    LOBYTE(IsInternalBuild) = 0;
+  }
+
+  return IsInternalBuild;
+}
+
+- (BOOL)isCarPlayVideoAllowed
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 isCarPlayVideoAllowed];
+}
+
+- (int64_t)deviceSubType
+{
+  if ([(AVOutputDevice *)self _shouldHideAirPlayInfoDuringDemo])
+  {
+    return 1;
+  }
+
+  else
+  {
+    return self->_outputDevice->deviceSubType;
+  }
+}
+
+uint64_t __50__AVOutputDevice__shouldHideAirPlayInfoDuringDemo__block_invoke()
+{
+  result = FigGetCFPreferenceBooleanWithDefault();
+  _shouldHideAirPlayInfoDuringDemo_sHideAirPlayRoutingInfoDemoMode = result;
+  return result;
+}
+
+- (id)airPlayProperties
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 airPlayProperties];
+}
+
+- (id)logicalDeviceID
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 logicalDeviceID];
+}
+
+- (BOOL)canAccessRemoteAssets
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 canAccessRemoteAssets];
+}
+
+- (BOOL)canAccessAppleMusic
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 canAccessAppleMusic];
+}
+
+- (BOOL)canAccessiCloudMusicLibrary
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 canAccessiCloudMusicLibrary];
+}
+
+- (BOOL)canPlayEncryptedProgressiveDownloadAssets
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 canPlayEncryptedProgressiveDownloadAssets];
+}
+
+- (BOOL)canFetchMediaDataFromSender
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 canFetchMediaDataFromSender];
+}
+
+- (BOOL)presentsOptimizedUserInterfaceWhenPlayingFetchedAudioOnlyAssets
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 presentsOptimizedUserInterfaceWhenPlayingFetchedAudioOnlyAssets];
+}
+
+- (BOOL)canBeGroupLeader
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 canBeGroupLeader];
+}
+
+- (BOOL)canRelayCommunicationChannel
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 canRelayCommunicationChannel];
+}
+
+- (BOOL)supportsBufferedAirPlay
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 supportsBufferedAirPlay];
+}
+
+- (BOOL)canBeGrouped
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 canBeGrouped];
+}
+
+- (BOOL)isGroupLeader
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 isGroupLeader];
+}
+
+- (int64_t)volumeControlType
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 volumeControlType];
+}
+
+- (int64_t)HAPConformance
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 HAPConformance];
+}
+
+- (id)modelSpecificInformation
+{
+  v3 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:0];
+  v4 = [-[AVOutputDevice impl](self "impl")];
+  if (v4)
+  {
+    [v3 setObject:v4 forKey:@"AVOutputDeviceBatteryLevelCaseKey"];
+  }
+
+  v5 = [-[AVOutputDevice impl](self "impl")];
+  if (v5)
+  {
+    [v3 setObject:v5 forKey:@"AVOutputDeviceBatteryLevelLeftKey"];
+  }
+
+  v6 = [-[AVOutputDevice impl](self "impl")];
+  if (v6)
+  {
+    [v3 setObject:v6 forKey:@"AVOutputDeviceBatteryLevelRightKey"];
+  }
+
+  v7 = [-[AVOutputDevice impl](self "impl")];
+  if (v7)
+  {
+    [v3 setObject:v7 forKey:@"AVOutputDeviceSupportsDataOverACLProtocolKey"];
+  }
+
+  v8 = [-[AVOutputDevice impl](self "impl")];
+  if (v8)
+  {
+    [v3 setObject:v8 forKey:@"AVOutputDeviceIsInEarKey"];
+  }
+
+  v9 = [v3 copy];
+
+  return v9;
+}
+
+- (BOOL)requiresAuthorization
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 requiresAuthorization];
+}
+
+- (id)clusteredDeviceDescriptions
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 clusteredDeviceDescriptions];
+}
+
+- (int64_t)clusterType
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 clusterType];
+}
+
+- (int64_t)configuredClusterSize
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 configuredClusterSize];
+}
+
+- (id)currentBluetoothListeningMode
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 currentBluetoothListeningMode];
+}
+
+- (id)availableBluetoothListeningModes
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 availableBluetoothListeningModes];
+}
+
+- (BOOL)producesLowFidelityAudio
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 producesLowFidelityAudio];
+}
+
+- (id)clusterID
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 clusterID];
+}
+
+- (BOOL)isClusterLeader
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 isClusterLeader];
+}
+
+- (BOOL)isAppleAccessory
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 isAppleAccessory];
+}
+
+- (BOOL)supportsBluetoothSharing
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 supportsBluetoothSharing];
+}
+
+- (id)connectedPairedDevices
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 connectedPairedDevices];
+}
+
+- (BOOL)isInUseByPairedDevice
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 isInUseByPairedDevice];
+}
+
+- (BOOL)supportsHeadTrackedSpatialAudio
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 supportsHeadTrackedSpatialAudio];
+}
+
+- (BOOL)isHeadTrackedSpatialAudioActive
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 isHeadTrackedSpatialAudioActive];
+}
+
+- (id)headTrackedSpatialAudioMode
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 headTrackedSpatialAudioMode];
+}
+
+- (BOOL)supportsConversationDetection
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 supportsConversationDetection];
+}
+
+- (BOOL)isConversationDetectionEnabled
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 isConversationDetectionEnabled];
+}
+
+- (id)alternateTransportType
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 alternateTransportType];
+}
+
+- (BOOL)isCached
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 isCached];
+}
+
+- (void)dealloc
+{
+  outputDevice = self->_outputDevice;
+  if (outputDevice)
+  {
+  }
+
+  v4.receiver = self;
+  v4.super_class = AVOutputDevice;
+  [(AVOutputDevice *)&v4 dealloc];
+}
+
++ (id)sharedLocalDevice
+{
+  v2 = objc_alloc_init(AVLocalOutputDeviceImpl);
+  v3 = [[AVOutputDevice alloc] initWithOutputDeviceImpl:v2 commChannelManager:0];
+
+  return v3;
+}
+
+- (double)frecencyScore
+{
+  v2 = [(AVOutputDevice *)self ID];
+
+  [AVOutputDeviceFrecencyManager frecencyScoreForDeviceID:v2];
+  return result;
+}
+
+- (id)groupID
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 groupID];
+}
+
+- (BOOL)groupContainsGroupLeader
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 groupContainsGroupLeader];
+}
+
+- (BOOL)isActivatedForContinuityScreen
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 isActivatedForContinuityScreen];
+}
+
+- (BOOL)participatesInGroupPlayback
+{
+  v3 = [(AVOutputDevice *)self groupID];
+  if (v3)
+  {
+    v4 = [(AVOutputDevice *)self impl];
+
+    LOBYTE(v3) = [v4 participatesInGroupPlayback];
+  }
+
+  return v3;
+}
+
++ (AVOutputDevice)outputDeviceWithFigEndpoint:(OpaqueFigEndpoint *)a3
+{
+  FigVolumeControllerCopySharedControllerRemote();
+  v5 = AVDefaultRoutingContextFactory();
+  if (a3)
+  {
+    v6 = [[AVFigEndpointOutputDeviceImpl alloc] initWithFigEndpoint:a3 volumeController:0 routingContextFactory:v5 useRouteConfigUpdatedNotification:AVOutputContextUsesRouteConfigUpdatedNotification()];
+    a3 = [[AVSystemRemotePoolOutputDeviceCommunicationChannelManager alloc] initWithDeviceID:[(AVFigEndpointOutputDeviceImpl *)v6 ID]];
+    v7 = [[a1 alloc] initWithOutputDeviceImpl:v6 commChannelManager:a3];
+  }
+
+  else
+  {
+    v7 = 0;
+  }
+
+  return v7;
+}
+
++ (AVOutputDevice)outputDeviceWithFigEndpoint:(OpaqueFigEndpoint *)a3 volumeController:(OpaqueFigVolumeControllerState *)a4
+{
+  v7 = AVDefaultRoutingContextFactory();
+  v8 = [[AVFigEndpointOutputDeviceImpl alloc] initWithFigEndpoint:a3 volumeController:a4 routingContextFactory:v7 useRouteConfigUpdatedNotification:AVOutputContextUsesRouteConfigUpdatedNotification()];
+  v9 = [[AVSystemRemotePoolOutputDeviceCommunicationChannelManager alloc] initWithDeviceID:[(AVFigEndpointOutputDeviceImpl *)v8 ID]];
+  v10 = [[a1 alloc] initWithOutputDeviceImpl:v8 commChannelManager:v9];
+
+  return v10;
+}
+
++ (AVOutputDevice)outputDeviceWithFigEndpoint:(OpaqueFigEndpoint *)a3 routingContextFactory:(id)a4
+{
+  FigVolumeControllerCopySharedControllerRemote();
+  v7 = [[AVFigEndpointOutputDeviceImpl alloc] initWithFigEndpoint:a3 volumeController:0 routingContextFactory:a4 useRouteConfigUpdatedNotification:AVOutputContextUsesRouteConfigUpdatedNotification()];
+  v8 = [[AVSystemRemotePoolOutputDeviceCommunicationChannelManager alloc] initWithDeviceID:[(AVFigEndpointOutputDeviceImpl *)v7 ID]];
+  v9 = [[a1 alloc] initWithOutputDeviceImpl:v7 commChannelManager:v8];
+
+  return v9;
+}
+
+- (id)figEndpointOutputDeviceImpl
+{
+  v2 = [(AVOutputDevice *)self impl];
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    return v2;
+  }
+
+  else
+  {
+    return 0;
+  }
+}
+
++ (AVOutputDevice)outputDeviceWithRouteDescriptor:(__CFDictionary *)a3 volumeController:(OpaqueFigVolumeControllerState *)a4
+{
+  v6 = AVOutputDeviceCopySharedRouteDiscovererForRouteDescriptor(a3);
+  v7 = AVDefaultRoutingContextFactory();
+  v8 = [[AVFigRouteDescriptorOutputDeviceImpl alloc] initWithRouteDescriptor:a3 routeDiscoverer:v6 volumeController:a4 routingContextFactory:v7 useRouteConfigUpdatedNotification:AVOutputContextUsesRouteConfigUpdatedNotification() routingContext:0];
+  v9 = [[AVSystemRemotePoolOutputDeviceCommunicationChannelManager alloc] initWithDeviceID:[(AVFigRouteDescriptorOutputDeviceImpl *)v8 ID]];
+  v10 = [[AVOutputDevice alloc] initWithOutputDeviceImpl:v8 commChannelManager:v9];
+  if (v6)
+  {
+    CFRelease(v6);
+  }
+
+  return v10;
+}
+
++ (AVOutputDevice)outputDeviceWithRouteDescriptor:(__CFDictionary *)a3 routeDiscoverer:(OpaqueFigRouteDiscoverer *)a4
+{
+  FigVolumeControllerCopySharedControllerRemote();
+  v6 = AVDefaultRoutingContextFactory();
+  v7 = [[AVFigRouteDescriptorOutputDeviceImpl alloc] initWithRouteDescriptor:a3 routeDiscoverer:a4 volumeController:0 routingContextFactory:v6 useRouteConfigUpdatedNotification:AVOutputContextUsesRouteConfigUpdatedNotification() routingContext:0];
+  v8 = [[AVSystemRemotePoolOutputDeviceCommunicationChannelManager alloc] initWithDeviceID:[(AVFigRouteDescriptorOutputDeviceImpl *)v7 ID]];
+  v9 = [[AVOutputDevice alloc] initWithOutputDeviceImpl:v7 commChannelManager:v8];
+
+  return v9;
+}
+
++ (AVOutputDevice)outputDeviceWithRouteDescriptor:(__CFDictionary *)a3 routingContextFactory:(id)a4
+{
+  v6 = AVOutputDeviceCopySharedRouteDiscovererForRouteDescriptor(a3);
+  FigVolumeControllerCopySharedControllerRemote();
+  v7 = [[AVFigRouteDescriptorOutputDeviceImpl alloc] initWithRouteDescriptor:a3 routeDiscoverer:v6 volumeController:0 routingContextFactory:a4 useRouteConfigUpdatedNotification:AVOutputContextUsesRouteConfigUpdatedNotification() routingContext:0];
+  v8 = [[AVSystemRemotePoolOutputDeviceCommunicationChannelManager alloc] initWithDeviceID:[(AVFigRouteDescriptorOutputDeviceImpl *)v7 ID]];
+  v9 = [[AVOutputDevice alloc] initWithOutputDeviceImpl:v7 commChannelManager:v8];
+  if (v6)
+  {
+    CFRelease(v6);
+  }
+
+  return v9;
+}
+
++ (AVOutputDevice)outputDeviceWithRouteDescriptor:(__CFDictionary *)a3 withRoutingContext:(OpaqueFigRoutingContext *)a4
+{
+  if (a3)
+  {
+    v6 = AVOutputDeviceCopySharedRouteDiscovererForRouteDescriptor(a3);
+    FigVolumeControllerCopySharedControllerRemote();
+    v7 = AVDefaultRoutingContextFactory();
+    v8 = [[AVFigRouteDescriptorOutputDeviceImpl alloc] initWithRouteDescriptor:a3 routeDiscoverer:v6 volumeController:0 routingContextFactory:v7 useRouteConfigUpdatedNotification:AVOutputContextUsesRouteConfigUpdatedNotification() routingContext:a4];
+    v9 = [[AVSystemRemotePoolOutputDeviceCommunicationChannelManager alloc] initWithDeviceID:[(AVFigRouteDescriptorOutputDeviceImpl *)v8 ID]];
+    v10 = [[AVOutputDevice alloc] initWithOutputDeviceImpl:v8 commChannelManager:v9];
+    if (v6)
+    {
+      CFRelease(v6);
+    }
+  }
+
+  else
+  {
+    v10 = 0;
+  }
+
+  return v10;
+}
+
+- (AVOutputDevice)init
+{
+  v4 = self;
+  v10 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"Not available", v5, v6, v7, v8, v9, v11), 0}];
+  objc_exception_throw(v10);
+}
+
+- (BOOL)isEqual:(id)a3
+{
+  objc_opt_class();
+  if ((objc_opt_isKindOfClass() & 1) == 0)
+  {
+    return 0;
+  }
+
+  v5 = [a3 impl];
+  v6 = [(AVOutputDevice *)self impl];
+
+  return [v6 isEqual:v5];
+}
+
+- (unint64_t)hash
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 hash];
+}
+
+- (BOOL)isEligibleToBePredictedOutputDevice
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 isEligibleToBePredictedOutputDevice];
+}
+
+- (BOOL)isCarPlayVideoActive
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 isCarPlayVideoActive];
+}
+
+- (int64_t)mediaSessionStatus
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 mediaSessionStatus];
+}
+
+uint64_t __58__AVOutputDevice_setCarPlayVideoActive_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
+{
+  v5 = *MEMORY[0x1E69E9840];
+  result = *(a1 + 32);
+  if (result)
+  {
+    result = (*(result + 16))(result, a2);
+  }
+
+  if (dword_1ED6F6B68)
+  {
+    os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+    os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
+    result = fig_log_call_emit_and_clean_up_after_send_and_compose();
+  }
+
+  v4 = *MEMORY[0x1E69E9840];
+  return result;
+}
+
+- (float)batteryLevel
+{
+  v2 = [-[AVOutputDevice impl](self "impl")];
+
+  [v2 floatValue];
+  return result;
+}
+
+- (BOOL)automaticallyAllowsConnectionsFromPeersInHomeGroup
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 automaticallyAllowsConnectionsFromPeersInHomeGroup];
+}
+
+- (BOOL)onlyAllowsConnectionsFromPeersInHomeGroup
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 onlyAllowsConnectionsFromPeersInHomeGroup];
+}
+
+- (void)setSecondDisplayMode:(id)a3 completionHandler:(id)a4
+{
+  v15 = *MEMORY[0x1E69E9840];
+  if (dword_1ED6F6B68)
+  {
+    v14 = 0;
+    type = OS_LOG_TYPE_DEFAULT;
+    os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+    os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
+    fig_log_call_emit_and_clean_up_after_send_and_compose();
+  }
+
+  v8 = [(AVOutputDevice *)self impl:v10];
+  v12[0] = MEMORY[0x1E69E9820];
+  v12[1] = 3221225472;
+  v12[2] = __57__AVOutputDevice_setSecondDisplayMode_completionHandler___block_invoke;
+  v12[3] = &unk_1E794F5B0;
+  v12[4] = a4;
+  [v8 setSecondDisplayMode:a3 completionHandler:v12];
+  v9 = *MEMORY[0x1E69E9840];
+}
+
+uint64_t __57__AVOutputDevice_setSecondDisplayMode_completionHandler___block_invoke(uint64_t a1)
+{
+  v4 = *MEMORY[0x1E69E9840];
+  result = (*(*(a1 + 32) + 16))();
+  if (dword_1ED6F6B68)
+  {
+    os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+    os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
+    result = fig_log_call_emit_and_clean_up_after_send_and_compose();
+  }
+
+  v3 = *MEMORY[0x1E69E9840];
+  return result;
+}
+
+- (float)volume
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  [v2 volume];
+  return result;
+}
+
+- (void)outputDeviceImplDidChangeVolume:(id)a3
+{
+  v8 = *MEMORY[0x1E69E9840];
+  if (dword_1ED6F6B68)
+  {
+    os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+    os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
+    fig_log_call_emit_and_clean_up_after_send_and_compose();
+  }
+
+  [objc_msgSend(MEMORY[0x1E696AD88] defaultCenter];
+  v5 = *MEMORY[0x1E69E9840];
+}
+
+- (BOOL)canSetVolume
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 canSetVolume];
+}
+
+- (void)outputDeviceImplDidChangeCanChangeVolume:(id)a3
+{
+  v8 = *MEMORY[0x1E69E9840];
+  if (dword_1ED6F6B68)
+  {
+    os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+    os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
+    fig_log_call_emit_and_clean_up_after_send_and_compose();
+  }
+
+  [objc_msgSend(MEMORY[0x1E696AD88] defaultCenter];
+  v5 = *MEMORY[0x1E69E9840];
+}
+
+- (void)outputDeviceImplDidChangeVolumeControlType:(id)a3
+{
+  v8 = *MEMORY[0x1E69E9840];
+  if (dword_1ED6F6B68)
+  {
+    os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+    os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
+    fig_log_call_emit_and_clean_up_after_send_and_compose();
+  }
+
+  [objc_msgSend(MEMORY[0x1E696AD88] defaultCenter];
+  v5 = *MEMORY[0x1E69E9840];
+}
+
+- (void)outputDeviceImplDidChangeMute:(id)a3
+{
+  v8 = *MEMORY[0x1E69E9840];
+  if (dword_1ED6F6B68)
+  {
+    os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+    os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
+    fig_log_call_emit_and_clean_up_after_send_and_compose();
+  }
+
+  [objc_msgSend(MEMORY[0x1E696AD88] defaultCenter];
+  v5 = *MEMORY[0x1E69E9840];
+}
+
+- (void)postNotification:(id)a3 fromImpl:(id)a4
+{
+  v10 = *MEMORY[0x1E69E9840];
+  if (dword_1ED6F6B68)
+  {
+    os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+    os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
+    fig_log_call_emit_and_clean_up_after_send_and_compose();
+  }
+
+  [objc_msgSend(MEMORY[0x1E696AD88] defaultCenter];
+  v7 = *MEMORY[0x1E69E9840];
+}
+
+- (void)postNotification:(id)a3 withPayload:(id)a4 fromImpl:(id)a5
+{
+  v12 = *MEMORY[0x1E69E9840];
+  if (dword_1ED6F6B68)
+  {
+    os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+    os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
+    fig_log_call_emit_and_clean_up_after_send_and_compose();
+  }
+
+  [objc_msgSend(MEMORY[0x1E696AD88] defaultCenter];
+  v9 = *MEMORY[0x1E69E9840];
+}
+
+- (void)outputDeviceImplCanMuteDidChange:(id)a3
+{
+  v8 = *MEMORY[0x1E69E9840];
+  if (dword_1ED6F6B68)
+  {
+    os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+    os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
+    fig_log_call_emit_and_clean_up_after_send_and_compose();
+  }
+
+  [objc_msgSend(MEMORY[0x1E696AD88] defaultCenter];
+  v5 = *MEMORY[0x1E69E9840];
+}
+
+- (void)activatedDeviceClusterMembersDidChangeVolume:(id)a3 forRoomID:(__CFString *)a4
+{
+  v12[20] = *MEMORY[0x1E69E9840];
+  if (dword_1ED6F6B68)
+  {
+    os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+    os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
+    fig_log_call_emit_and_clean_up_after_send_and_compose();
+  }
+
+  v11 = @"AVOutputDeviceActivatedClusterMembersRoomIDKey";
+  v12[0] = a4;
+  v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:{1, v9, v10}];
+  [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
+  v8 = *MEMORY[0x1E69E9840];
+}
+
++ (void)localDeviceDidChange
+{
+  v6 = *MEMORY[0x1E69E9840];
+  if (dword_1ED6F6B68)
+  {
+    os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+    os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
+    fig_log_call_emit_and_clean_up_after_send_and_compose();
+  }
+
+  [objc_msgSend(MEMORY[0x1E696AD88] defaultCenter];
+  v3 = *MEMORY[0x1E69E9840];
+}
+
+- (void)setVolume:(float)a3
+{
+  v11 = *MEMORY[0x1E69E9840];
+  if (dword_1ED6F6B68)
+  {
+    os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+    os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
+    fig_log_call_emit_and_clean_up_after_send_and_compose();
+  }
+
+  v6 = [(AVOutputDevice *)self impl:v9];
+  *&v7 = a3;
+  [v6 setVolume:v7];
+  v8 = *MEMORY[0x1E69E9840];
+}
+
+- (void)increaseVolumeByCount:(int64_t)a3
+{
+  v9 = *MEMORY[0x1E69E9840];
+  if (dword_1ED6F6B68)
+  {
+    os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+    os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
+    fig_log_call_emit_and_clean_up_after_send_and_compose();
+  }
+
+  [-[AVOutputDevice impl](self impl];
+  v6 = *MEMORY[0x1E69E9840];
+}
+
+- (void)decreaseVolumeByCount:(int64_t)a3
+{
+  v9 = *MEMORY[0x1E69E9840];
+  if (dword_1ED6F6B68)
+  {
+    os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+    os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
+    fig_log_call_emit_and_clean_up_after_send_and_compose();
+  }
+
+  [-[AVOutputDevice impl](self impl];
+  v6 = *MEMORY[0x1E69E9840];
+}
+
+- (void)setActivatedDeviceClusterMembersVolume:(float)a3 withRoomID:(id)a4
+{
+  v13 = *MEMORY[0x1E69E9840];
+  if (dword_1ED6F6B68)
+  {
+    os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+    os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
+    fig_log_call_emit_and_clean_up_after_send_and_compose();
+  }
+
+  v8 = [(AVOutputDevice *)self impl:v11];
+  *&v9 = a3;
+  [v8 setActivatedDeviceClusterMembersVolume:a4 withRoomID:v9];
+  v10 = *MEMORY[0x1E69E9840];
+}
+
+- (float)volumeForActivatedDeviceClusterMembersWithRoomID:(id)a3
+{
+  v4 = [(AVOutputDevice *)self impl];
+
+  [v4 volumeForActivatedDeviceClusterMembersWithRoomID:a3];
+  return result;
+}
+
+- (BOOL)canMute
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 canMute];
+}
+
+- (BOOL)isMuted
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 isMuted];
+}
+
+- (id)proposedGroupID
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 proposedGroupID];
+}
+
+- (void)outputDeviceImplDidChangeProposedGroupID:(id)a3
+{
+  v8 = *MEMORY[0x1E69E9840];
+  if (dword_1ED6F6B68)
+  {
+    os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+    os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
+    fig_log_call_emit_and_clean_up_after_send_and_compose();
+  }
+
+  [objc_msgSend(MEMORY[0x1E696AD88] defaultCenter];
+  v5 = *MEMORY[0x1E69E9840];
+}
+
+- (BOOL)isLogicalDeviceLeader
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 isLogicalDeviceLeader];
+}
+
+- (BOOL)canCommunicateWithAllLogicalDeviceMembers
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 canCommunicateWithAllLogicalDeviceMembers];
+}
+
+- (BOOL)allowsHeadTrackedSpatialAudio
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 allowsHeadTrackedSpatialAudio];
+}
+
+- (BOOL)setHeadTrackedSpatialAudioMode:(id)a3 error:(id *)a4
+{
+  v12 = *MEMORY[0x1E69E9840];
+  if (dword_1ED6F6B68)
+  {
+    os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+    os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
+    fig_log_call_emit_and_clean_up_after_send_and_compose();
+  }
+
+  result = [-[AVOutputDevice impl](self impl];
+  v9 = *MEMORY[0x1E69E9840];
+  return result;
+}
+
+- (void)setCurrentBluetoothListeningMode:(id)a3
+{
+  v9 = *MEMORY[0x1E69E9840];
+  if (dword_1ED6F6B68)
+  {
+    os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+    os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
+    fig_log_call_emit_and_clean_up_after_send_and_compose();
+  }
+
+  [(AVOutputDevice *)self setCurrentBluetoothListeningMode:a3 error:0, v7, v8];
+  v6 = *MEMORY[0x1E69E9840];
+}
+
+- (BOOL)setCurrentBluetoothListeningMode:(id)a3 error:(id *)a4
+{
+  v18[20] = *MEMORY[0x1E69E9840];
+  v18[0] = 0;
+  if (dword_1ED6F6B68)
+  {
+    os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+    os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
+    fig_log_call_emit_and_clean_up_after_send_and_compose();
+  }
+
+  v8 = [-[AVOutputDevice impl](self impl];
+  v9 = v8;
+  if (a4 && !v8 && v18[0])
+  {
+    v10 = [v18[0] code];
+    if (v10 == 1852797029)
+    {
+      v11 = AVLocalizedError(@"AVFoundationErrorDomain", -11910, [MEMORY[0x1E695DF20] dictionaryWithObject:v18[0] forKey:*MEMORY[0x1E696AA08]]);
+    }
+
+    else
+    {
+      v12 = v10;
+      v13 = [v18[0] domain];
+      if ([v13 isEqualToString:*MEMORY[0x1E696A768]])
+      {
+        v11 = AVLocalizedErrorWithUnderlyingOSStatus(v12, 0);
+      }
+
+      else
+      {
+        v11 = v18[0];
+      }
+    }
+
+    *a4 = v11;
+  }
+
+  v14 = *MEMORY[0x1E69E9840];
+  return v9;
+}
+
+- (BOOL)supportsFitnessDataDestination
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 supportsFitnessDataDestination];
+}
+
+- (BOOL)supportsScreenMirroringControls
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 supportsScreenMirroringControls];
+}
+
+- (void)openCommunicationChannelToDestination:(id)a3 options:(id)a4 completionHandler:(id)a5
+{
+  v30 = *MEMORY[0x1E69E9840];
+  v8 = [a4 objectForKeyedSubscript:@"AVOutputDeviceCommunicationChannelOptionCancelIfAuthRequired"];
+  v9 = [a4 objectForKeyedSubscript:@"AVOutputDeviceCommunicationChannelOptionCorrelationID"];
+  v10 = [a4 objectForKeyedSubscript:@"AVOutputDeviceCommunicationChannelOptionInitiator"];
+  v24 = [a4 objectForKeyedSubscript:@"AVOutputContextAddOutputDeviceOptionAuthorizationToken"];
+  v25 = [a4 objectForKeyedSubscript:@"AVOutputDeviceCommunicationChannelOptionControlType"];
+  v11 = [a4 objectForKeyedSubscript:@"AVOutputDeviceCommunicationChannelOptionClientUUID"];
+  v12 = [a4 objectForKeyedSubscript:@"AVOutputDeviceCommunicationChannelOptionQualityOfService"];
+  v23 = [a4 objectForKeyedSubscript:@"AVOutputDeviceCommunicationChannelOptionStreamPriority"];
+  v22 = [a4 objectForKeyedSubscript:@"AVOutputDeviceCommunicationChannelOptionAwaitReply"];
+  if (dword_1ED6F6B68)
+  {
+    v29 = 0;
+    type = OS_LOG_TYPE_DEFAULT;
+    os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+    os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
+    fig_log_call_emit_and_clean_up_after_send_and_compose();
+  }
+
+  if ([(AVOutputDevice *)self deviceType:v20]== 2)
+  {
+    v14 = +[AVOutputContext sharedSystemRemoteDisplayContext];
+  }
+
+  else
+  {
+    v14 = +[AVOutputContext sharedSystemRemotePoolContext];
+  }
+
+  v15 = v14;
+  if (v14)
+  {
+    v16 = [MEMORY[0x1E695DF90] dictionary];
+    v17 = v16;
+    if (v9)
+    {
+      [v16 setObject:v9 forKeyedSubscript:@"AVOutputContextAddOutputDeviceOptionCorrelationID"];
+    }
+
+    if (v10)
+    {
+      [v17 setObject:v10 forKeyedSubscript:@"AVOutputContextAddOutputDeviceOptionInitiator"];
+    }
+
+    if ([v8 BOOLValue])
+    {
+      [v17 setObject:v8 forKeyedSubscript:@"AVOutputContextAddOutputDeviceCancelIfAuthRequiredKey"];
+    }
+
+    if (v24)
+    {
+      [v17 setObject:v24 forKeyedSubscript:@"AVOutputContextAddOutputDeviceOptionAuthorizationToken"];
+    }
+
+    v27[0] = MEMORY[0x1E69E9820];
+    v27[1] = 3221225472;
+    v27[2] = __82__AVOutputDevice_openCommunicationChannelToDestination_options_completionHandler___block_invoke;
+    v27[3] = &unk_1E794F5D8;
+    v27[4] = v25;
+    v27[5] = a3;
+    v27[6] = v9;
+    v27[7] = v11;
+    v27[8] = v12;
+    v27[9] = v23;
+    v27[10] = v22;
+    v27[11] = v15;
+    v27[12] = self;
+    v27[13] = a5;
+    [v15 addOutputDevice:self options:v17 completionHandler:v27];
+  }
+
+  else
+  {
+    v18 = AVLocalizedError(@"AVFoundationErrorDomain", -11800, [MEMORY[0x1E695DF20] dictionaryWithObject:@"Error retrieving system remote pool context." forKey:*MEMORY[0x1E696A278]]);
+    (*(a5 + 2))(a5, 0, v18, 0);
+  }
+
+  v19 = *MEMORY[0x1E69E9840];
+}
+
+void __82__AVOutputDevice_openCommunicationChannelToDestination_options_completionHandler___block_invoke(uint64_t a1, void *a2)
+{
+  cf[16] = *MEMORY[0x1E69E9840];
+  v47 = 0;
+  theArray = 0;
+  v4 = AVInputDeviceInternal;
+  if ([a2 status] != 2)
+  {
+    [a2 cancellationReason];
+    Mutable = 0;
+    v10 = 0;
+    goto LABEL_56;
+  }
+
+  v5 = *MEMORY[0x1E695E480];
+  Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E528], MEMORY[0x1E695E9E8]);
+  v7 = *(a1 + 32);
+  if (v7)
+  {
+    if ([v7 isEqualToString:@"AVOutputDeviceCommunicationChannelControlTypeDirect"])
+    {
+      v8 = 0;
+      v9 = 2;
+    }
+
+    else
+    {
+      v11 = [*(a1 + 32) isEqualToString:@"AVOutputDeviceCommunicationChannelControlTypeRelayed"];
+      v8 = v11 ^ 1;
+      v9 = v11;
+    }
+  }
+
+  else
+  {
+    v9 = 0;
+    v8 = 1;
+  }
+
+  if ([*(a1 + 40) isEqualToString:@"AVOutputDeviceCommunicationChannelDataDestinationMediaRemote"])
+  {
+    v12 = MEMORY[0x1E6962398];
+    goto LABEL_20;
+  }
+
+  if ([*(a1 + 40) isEqualToString:@"AVOutputDeviceCommunicationChannelDataDestinationFitness"])
+  {
+    v12 = MEMORY[0x1E6962390];
+    goto LABEL_20;
+  }
+
+  if ([*(a1 + 40) isEqualToString:@"AVOutputDeviceCommunicationChannelDataDestinationCarPlayData"])
+  {
+    v12 = MEMORY[0x1E6962378];
+    goto LABEL_20;
+  }
+
+  if ([*(a1 + 40) isEqualToString:@"AVOutputDeviceCommunicationChannelDataDestinationCarPlayDataVersionTwo"])
+  {
+    v12 = MEMORY[0x1E6962380];
+    goto LABEL_20;
+  }
+
+  if ([*(a1 + 40) isEqualToString:@"AVOutputDeviceCommunicationChannelDataDestinationCarPlayDataUpdate"])
+  {
+    v12 = MEMORY[0x1E6962388];
+    goto LABEL_20;
+  }
+
+  if ([*(a1 + 40) isEqualToString:@"AVOutputDeviceCommunicationChannelDataDestinationCarPlayDataLogging"])
+  {
+    v12 = MEMORY[0x1E6962370];
+LABEL_20:
+    v13 = *v12;
+    if (v8)
+    {
+      goto LABEL_22;
+    }
+
+    goto LABEL_21;
+  }
+
+  if ([*(a1 + 40) isEqualToString:@"AVOutputDeviceCommunicationChannelDataDestinationCarPlayClusterControl"])
+  {
+    v40 = *MEMORY[0x1E6962368];
+  }
+
+  if ((v8 & 1) == 0)
+  {
+LABEL_21:
+    CFDictionarySetValue(Mutable, *MEMORY[0x1E69623B0], [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v9]);
+  }
+
+LABEL_22:
+  v14 = *MEMORY[0x1E6961768];
+  v15 = *(a1 + 48);
+  FigCFDictionarySetValue();
+  v16 = *MEMORY[0x1E69623A0];
+  FigCFDictionarySetValue();
+  v17 = *MEMORY[0x1E69623D0];
+  FigCFDictionarySetInt32();
+  v18 = *MEMORY[0x1E69623A8];
+  v19 = *(a1 + 56);
+  FigCFDictionarySetValue();
+  v20 = *MEMORY[0x1E69623B8];
+  v21 = *(a1 + 64);
+  FigCFDictionarySetValue();
+  v22 = *MEMORY[0x1E69623D8];
+  v23 = *(a1 + 72);
+  FigCFDictionarySetValue();
+  v24 = *(a1 + 80);
+  if (v24)
+  {
+    v25 = *MEMORY[0x1E69623C8];
+    v26 = [v24 BOOLValue];
+    v27 = MEMORY[0x1E695E4C0];
+    if (!v26)
+    {
+      v27 = MEMORY[0x1E695E4D0];
+    }
+
+    v28 = *v27;
+    FigCFDictionarySetValue();
+  }
+
+  v29 = [*(a1 + 88) figRoutingContext];
+  if (!v29)
+  {
+    AVLocalizedError(@"AVFoundationErrorDomain", -11800, 0);
+    goto LABEL_55;
+  }
+
+  v30 = *(*(CMBaseObjectGetVTable() + 16) + 56);
+  if (v30)
+  {
+    v31 = v30(v29, &theArray);
+    if (v31)
+    {
+      v42 = v31;
+      goto LABEL_54;
+    }
+
+    if (!theArray)
+    {
+      goto LABEL_45;
+    }
+
+    Count = CFArrayGetCount(theArray);
+    if (Count < 1)
+    {
+      goto LABEL_45;
+    }
+
+    v33 = Count;
+    v34 = 0;
+    v35 = *MEMORY[0x1E69620F8];
+    while (1)
+    {
+      ValueAtIndex = CFArrayGetValueAtIndex(theArray, v34);
+      cf[0] = 0;
+      CMBaseObject = FigEndpointGetCMBaseObject();
+      v38 = *(*(CMBaseObjectGetVTable() + 8) + 48);
+      if (v38)
+      {
+        v38(CMBaseObject, v35, v5, cf);
+      }
+
+      [*(a1 + 96) deviceID];
+      if (FigCFEqual())
+      {
+        break;
+      }
+
+      if (cf[0])
+      {
+        CFRelease(cf[0]);
+      }
+
+      if (v33 == ++v34)
+      {
+        goto LABEL_45;
+      }
+    }
+
+    if (cf[0])
+    {
+      CFRelease(cf[0]);
+    }
+
+    if (!ValueAtIndex || (FigEndpointExtendedGetClassID(), !CMBaseObjectIsMemberOfClass()))
+    {
+LABEL_45:
+      AVLocalizedError(@"AVFoundationErrorDomain", -11800, 0);
+      v10 = 0;
+      v4 = AVInputDeviceInternal;
+      goto LABEL_56;
+    }
+
+    v4 = AVInputDeviceInternal;
+    if (dword_1ED6F6B68)
+    {
+      os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+      os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
+      fig_log_call_emit_and_clean_up_after_send_and_compose();
+      v4 = AVInputDeviceInternal;
+    }
+
+    v41 = *(*(CMBaseObjectGetVTable() + 24) + 80);
+    if (v41)
+    {
+      v42 = v41(ValueAtIndex, Mutable, &v47);
+      if (!v42)
+      {
+        v43 = [AVFigEndpointRemoteControlSessionOutputDeviceCommunicationChannelImpl alloc];
+        v44 = [(AVFigEndpointRemoteControlSessionOutputDeviceCommunicationChannelImpl *)v43 initWithRemoteControlSession:v47];
+        v10 = [[AVOutputDeviceCommunicationChannel alloc] initWithOutputDeviceCommunicationChannelImpl:v44];
+
+        goto LABEL_56;
+      }
+
+      goto LABEL_54;
+    }
+  }
+
+  v42 = -12782;
+LABEL_54:
+  AVLocalizedErrorWithUnderlyingOSStatus(v42, 0);
+LABEL_55:
+  v10 = 0;
+LABEL_56:
+  (*(*(a1 + 104) + 16))(*(a1 + 104), v10);
+  if (LODWORD(v4[73].isa))
+  {
+    v45 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+    os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT);
+    fig_log_call_emit_and_clean_up_after_send_and_compose();
+  }
+
+  if (Mutable)
+  {
+    CFRelease(Mutable);
+  }
+
+  if (v47)
+  {
+    CFRelease(v47);
+  }
+
+  if (theArray)
+  {
+    CFRelease(theArray);
+  }
+
+  v46 = *MEMORY[0x1E69E9840];
+}
+
+- (void)setCommunicationChannelDelegate:(id)a3
+{
+  v7 = *MEMORY[0x1E69E9840];
+  if (dword_1ED6F6B68)
+  {
+    os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+    os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
+    fig_log_call_emit_and_clean_up_after_send_and_compose();
+  }
+
+  objc_storeWeak(&self->_outputDevice->communicationChannelDelegate, a3);
+  v6 = *MEMORY[0x1E69E9840];
+}
+
+- (void)communicationChannelManager:(id)a3 didReceiveData:(id)a4 fromCommunicationChannel:(id)a5
+{
+  v14 = *MEMORY[0x1E69E9840];
+  Weak = objc_loadWeak(&self->_outputDevice->communicationChannelDelegate);
+  if (objc_opt_respondsToSelector())
+  {
+    if (dword_1ED6F6B68)
+    {
+      os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+      os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
+      fig_log_call_emit_and_clean_up_after_send_and_compose();
+    }
+
+    [Weak outputDevice:self didReceiveData:a4 fromCommunicationChannel:{a5, v12, v13}];
+  }
+
+  else if (dword_1ED6F6B68)
+  {
+    v10 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+    os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
+    fig_log_call_emit_and_clean_up_after_send_and_compose();
+  }
+
+  v11 = *MEMORY[0x1E69E9840];
+}
+
+- (void)communicationChannelManager:(id)a3 didCloseCommunicationChannel:(id)a4
+{
+  v12 = *MEMORY[0x1E69E9840];
+  Weak = objc_loadWeak(&self->_outputDevice->communicationChannelDelegate);
+  if (objc_opt_respondsToSelector())
+  {
+    if (dword_1ED6F6B68)
+    {
+      os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+      os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
+      fig_log_call_emit_and_clean_up_after_send_and_compose();
+    }
+
+    [Weak outputDevice:self didCloseCommunicationChannel:{a4, v10, v11}];
+  }
+
+  else if (dword_1ED6F6B68)
+  {
+    v8 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+    os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
+    fig_log_call_emit_and_clean_up_after_send_and_compose();
+  }
+
+  v9 = *MEMORY[0x1E69E9840];
+}
+
+- (void)configureUsingBlock:(id)a3 options:(id)a4 completionHandler:(id)a5
+{
+  v17 = *MEMORY[0x1E69E9840];
+  [a4 objectForKeyedSubscript:@"AVOutputDeviceConfigurationOptionCancelConfigurationIfAuthRequired"];
+  if (dword_1ED6F6B68)
+  {
+    v16 = 0;
+    type = OS_LOG_TYPE_DEFAULT;
+    os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+    os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
+    fig_log_call_emit_and_clean_up_after_send_and_compose();
+  }
+
+  v10 = [(AVOutputDevice *)self impl:v12];
+  v14[0] = MEMORY[0x1E69E9820];
+  v14[1] = 3221225472;
+  v14[2] = __64__AVOutputDevice_configureUsingBlock_options_completionHandler___block_invoke;
+  v14[3] = &unk_1E794F600;
+  v14[4] = a5;
+  [v10 configureUsingBlock:a3 options:a4 completionHandler:v14];
+  v11 = *MEMORY[0x1E69E9840];
+}
+
+uint64_t __64__AVOutputDevice_configureUsingBlock_options_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
+{
+  v7 = *MEMORY[0x1E69E9840];
+  if (dword_1ED6F6B68)
+  {
+    os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+    os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
+    fig_log_call_emit_and_clean_up_after_send_and_compose();
+  }
+
+  result = (*(*(a1 + 32) + 16))(*(a1 + 32), a2);
+  v6 = *MEMORY[0x1E69E9840];
+  return result;
+}
+
+- (void)configureUsingBlock:(id)a3 completionHandler:(id)a4
+{
+  v14 = *MEMORY[0x1E69E9840];
+  if (dword_1ED6F6B68)
+  {
+    v13 = 0;
+    type = OS_LOG_TYPE_DEFAULT;
+    os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+    os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
+    fig_log_call_emit_and_clean_up_after_send_and_compose();
+  }
+
+  v11[0] = MEMORY[0x1E69E9820];
+  v11[1] = 3221225472;
+  v11[2] = __56__AVOutputDevice_configureUsingBlock_completionHandler___block_invoke;
+  v11[3] = &unk_1E794F600;
+  v11[4] = a4;
+  [(AVOutputDevice *)self configureUsingBlock:a3 options:0 completionHandler:v11, v9, v10];
+  v8 = *MEMORY[0x1E69E9840];
+}
+
+uint64_t __56__AVOutputDevice_configureUsingBlock_completionHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
+{
+  v8 = *MEMORY[0x1E69E9840];
+  if (dword_1ED6F6B68)
+  {
+    os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+    os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
+    fig_log_call_emit_and_clean_up_after_send_and_compose();
+  }
+
+  result = (*(*(a1 + 32) + 16))(*(a1 + 32), a3);
+  v7 = *MEMORY[0x1E69E9840];
+  return result;
+}
+
+- (void)setMediaRemoteData:(id)a3 completionHandler:(id)a4
+{
+  v6 = [(AVOutputDevice *)self impl];
+
+  [v6 setMediaRemoteData:a3 completionHandler:a4];
+}
+
+- (void)updateFrecencyScore
+{
+  v2 = [(AVOutputDevice *)self ID];
+
+  [AVOutputDeviceFrecencyManager updateFrecencyListForDeviceID:v2];
+}
+
+- (id)OEMIcons
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 OEMIcons];
+}
+
+- (id)OEMIconLabel
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 OEMIconLabel];
+}
+
+- (BOOL)OEMIconVisible
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 OEMIconVisible];
+}
+
+- (id)outputDeviceHIDs
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 outputDeviceHIDs];
+}
+
+- (BOOL)nightMode
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 nightMode];
+}
+
+- (BOOL)isNightModeSupported
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 isNightModeSupported];
+}
+
+- (BOOL)rightHandDrive
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 rightHandDrive];
+}
+
+- (id)limitedUIElements
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 limitedUIElements];
+}
+
+- (BOOL)limitedUI
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 limitedUI];
+}
+
+- (BOOL)carOwnsScreen
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 carOwnsScreen];
+}
+
+- (BOOL)ownsTurnByTurnNavigation
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 ownsTurnByTurnNavigation];
+}
+
+- (BOOL)recognizingSpeech
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 recognizingSpeech];
+}
+
+- (id)supportedFeatures
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 supportedFeatures];
+}
+
+- (int64_t)electronicTollCollection
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 electronicTollCollection];
+}
+
+- (int64_t)navigationAidedDriving
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 navigationAidedDriving];
+}
+
+- (int64_t)transportType
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 transportType];
+}
+
+- (id)MFiCertificateSerialNumber
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 MFiCertificateSerialNumber];
+}
+
+- (void)requestViewArea:(int64_t)a3 forScreenID:(id)a4
+{
+  v6 = [(AVOutputDevice *)self impl];
+
+  [v6 requestViewArea:a3 forScreenID:a4];
+}
+
+- (void)requestCarUIForURL:(id)a3 withUUID:(id)a4
+{
+  v6 = [(AVOutputDevice *)self impl];
+
+  [v6 requestCarUIForURL:a3 withUUID:a4];
+}
+
+- (id)requestTurnByTurnNavigationOwnership
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 requestTurnByTurnNavigationOwnership];
+}
+
+- (id)borrowScreenForClient:(id)a3 reason:(id)a4
+{
+  v6 = [(AVOutputDevice *)self impl];
+
+  return [v6 borrowScreenForClient:a3 reason:a4];
+}
+
+- (void)takeScreenForClient:(id)a3 reason:(id)a4
+{
+  v6 = [(AVOutputDevice *)self impl];
+
+  [v6 takeScreenForClient:a3 reason:a4];
+}
+
+- (BOOL)siriForwardingEnabled
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 siriForwardingEnabled];
+}
+
+- (BOOL)carOwnsMainAudio
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 carOwnsMainAudio];
+}
+
+- (id)displayCornerMasks
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 displayCornerMasks];
+}
+
+- (void)setDisplayCornerMasks:(id)a3
+{
+  v4 = [(AVOutputDevice *)self impl];
+
+  [v4 setDisplayCornerMasks:a3];
+}
+
+- (int64_t)voiceTriggerMode
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 voiceTriggerMode];
+}
+
+- (int64_t)authenticationType
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 authenticationType];
+}
+
+- (id)currentScreenViewAreaForScreenID:(id)a3
+{
+  v4 = [(AVOutputDevice *)self impl];
+
+  return [v4 currentScreenViewAreaForScreenID:a3];
+}
+
+- (BOOL)isActivated
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 isActivated];
+}
+
+- (id)screens
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 screens];
+}
+
+- (id)outputDeviceInfo
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 outputDeviceInfo];
+}
+
+- (void)suggestUIWithURLs:(id)a3 completionHandler:(id)a4
+{
+  v6 = [(AVOutputDevice *)self impl];
+
+  [v6 suggestUIWithURLs:a3 completionHandler:a4];
+}
+
+- (void)performHapticFeedbackForUUID:(id)a3 withHapticType:(id)a4 completionHandler:(id)a5
+{
+  v8 = [(AVOutputDevice *)self impl];
+
+  [v8 performHapticFeedbackForUUID:a3 withHapticType:a4 completionHandler:a5];
+}
+
+- (void)setDelegate:(id)a3
+{
+  v9 = *MEMORY[0x1E69E9840];
+  if (dword_1ED6F6B68)
+  {
+    os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
+    os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
+    fig_log_call_emit_and_clean_up_after_send_and_compose();
+  }
+
+  [-[AVOutputDevice impl](self impl];
+  v6 = *MEMORY[0x1E69E9840];
+}
+
+- (id)delegate
+{
+  v2 = [(AVOutputDevice *)self impl];
+
+  return [v2 delegate];
+}
+
+- (AVOutputDevice)initWithOutputDeviceImpl:(id)a3 commChannelManager:(id)a4
+{
+  v10.receiver = self;
+  v10.super_class = AVOutputDevice;
+  v6 = [(AVOutputDevice *)&v10 init];
+  if (v6 && (v6->_outputDevice = objc_alloc_init(AVOutputDeviceInternal), OUTLINED_FUNCTION_5_1(a3), v7))
+  {
+    v6->_outputDevice->name = [objc_msgSend(a3 "name")];
+    v6->_outputDevice->ID = [objc_msgSend(a3 "ID")];
+    v6->_outputDevice->deviceType = [a3 deviceType];
+    v6->_outputDevice->deviceSubType = [a3 deviceSubType];
+    v6->_outputDevice->manufacturer = [objc_msgSend(a3 "manufacturer")];
+    v6->_outputDevice->modelID = [objc_msgSend(a3 "modelID")];
+    v6->_outputDevice->serialNumber = [objc_msgSend(a3 "serialNumber")];
+    v6->_outputDevice->firmwareVersion = [objc_msgSend(a3 "firmwareVersion")];
+    v6->_outputDevice->MACAddress = [objc_msgSend(a3 "identifyingMACAddress")];
+    v6->_outputDevice->deviceFeatures = [a3 deviceFeatures];
+    [(AVOutputDeviceImpl *)v6->_outputDevice->impl setImplEventListener:v6];
+    v6->_outputDevice->commChannelManager = a4;
+    [(AVOutputDeviceCommunicationChannelManager *)v6->_outputDevice->commChannelManager setParentOutputDevice:v6];
+    v8 = v6;
+  }
+
+  else
+  {
+    v8 = 0;
+  }
+
+  return v8;
+}
+
+@end

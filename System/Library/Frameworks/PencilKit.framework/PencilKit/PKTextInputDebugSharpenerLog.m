@@ -1,0 +1,428 @@
+@interface PKTextInputDebugSharpenerLog
++ (BOOL)canLoadFromFileAtURL:(id)a3;
++ (id)_environmentMetadataDictionary;
++ (id)_recommendedFileNameForLogWithDate:(id)a3;
+- (BOOL)_loadFromFileURL:(id)a3 error:(id *)a4;
+- (BOOL)hasContent;
+- (BOOL)writeToURL:(id)a3 withContentLevel:(int64_t)a4 excludeEntyIndexes:(id)a5 error:(id *)a6;
+- (PKTextInputDebugSharpenerLog)initWithContentsOfURL:(id)a3 error:(id *)a4;
+- (PKTextInputDebugSharpenerLog)initWithLogEntries:(id)a3;
+- (id)_dictionaryRepresentationWithContentLevel:(int64_t)a3 excludeEntyIndexes:(id)a4;
+- (id)description;
+- (id)writeLogToTemporaryDirectoryWithContentLevel:(int64_t)a3 excludeEntyIndexes:(id)a4 error:(id *)a5;
+@end
+
+@implementation PKTextInputDebugSharpenerLog
+
+- (PKTextInputDebugSharpenerLog)initWithContentsOfURL:(id)a3 error:(id *)a4
+{
+  v6 = a3;
+  v10.receiver = self;
+  v10.super_class = PKTextInputDebugSharpenerLog;
+  v7 = [(PKTextInputDebugSharpenerLog *)&v10 init];
+  v8 = v7;
+  if (v7 && ![(PKTextInputDebugSharpenerLog *)v7 _loadFromFileURL:v6 error:a4])
+  {
+
+    v8 = 0;
+  }
+
+  return v8;
+}
+
+- (PKTextInputDebugSharpenerLog)initWithLogEntries:(id)a3
+{
+  v4 = a3;
+  v11.receiver = self;
+  v11.super_class = PKTextInputDebugSharpenerLog;
+  v5 = [(PKTextInputDebugSharpenerLog *)&v11 init];
+  if (v5)
+  {
+    v6 = [v4 copy];
+    logEntries = v5->_logEntries;
+    v5->_logEntries = v6;
+
+    v8 = [objc_opt_class() _environmentMetadataDictionary];
+    metadataDictionary = v5->_metadataDictionary;
+    v5->_metadataDictionary = v8;
+  }
+
+  return v5;
+}
+
+- (id)description
+{
+  v8.receiver = self;
+  v8.super_class = PKTextInputDebugSharpenerLog;
+  v3 = [(PKTextInputDebugSharpenerLog *)&v8 description];
+  v4 = [(PKTextInputDebugSharpenerLog *)self metadataDictionary];
+  v5 = [(PKTextInputDebugSharpenerLog *)self logEntries];
+  v6 = [v3 stringByAppendingFormat:@" metadata: %@, entries: %@", v4, v5];
+
+  return v6;
+}
+
+- (BOOL)hasContent
+{
+  v2 = [(PKTextInputDebugSharpenerLog *)self logEntries];
+  v3 = [v2 count] != 0;
+
+  return v3;
+}
+
+- (id)_dictionaryRepresentationWithContentLevel:(int64_t)a3 excludeEntyIndexes:(id)a4
+{
+  v28 = *MEMORY[0x1E69E9840];
+  v6 = a4;
+  v7 = MEMORY[0x1E695DF70];
+  v8 = [(PKTextInputDebugSharpenerLog *)self logEntries];
+  v9 = [v7 arrayWithCapacity:{objc_msgSend(v8, "count")}];
+
+  v23 = 0u;
+  v24 = 0u;
+  v21 = 0u;
+  v22 = 0u;
+  v10 = [(PKTextInputDebugSharpenerLog *)self logEntries];
+  v11 = [v10 countByEnumeratingWithState:&v21 objects:v27 count:16];
+  if (v11)
+  {
+    v12 = v11;
+    v13 = 0;
+    v14 = *v22;
+    do
+    {
+      for (i = 0; i != v12; ++i)
+      {
+        if (*v22 != v14)
+        {
+          objc_enumerationMutation(v10);
+        }
+
+        v16 = *(*(&v21 + 1) + 8 * i);
+        if (([v6 containsIndex:v13] & 1) == 0)
+        {
+          v17 = [v16 dictionaryRepresentationWithTargetContentLevel:a3];
+          [v9 addObject:v17];
+        }
+
+        ++v13;
+      }
+
+      v12 = [v10 countByEnumeratingWithState:&v21 objects:v27 count:16];
+    }
+
+    while (v12);
+  }
+
+  v25[0] = @"metadata";
+  v18 = [(PKTextInputDebugSharpenerLog *)self metadataDictionary];
+  v25[1] = @"entries";
+  v26[0] = v18;
+  v26[1] = v9;
+  v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:2];
+
+  return v19;
+}
+
++ (id)_environmentMetadataDictionary
+{
+  v12[4] = *MEMORY[0x1E69E9840];
+  v2 = [MEMORY[0x1E696AAE8] mainBundle];
+  v3 = [v2 bundleIdentifier];
+  v4 = v3;
+  v5 = &stru_1F476BD20;
+  if (v3)
+  {
+    v5 = v3;
+  }
+
+  v6 = v5;
+
+  v7 = MGCopyAnswer();
+  v8 = _CFCopySystemVersionDictionaryValue();
+  v11[0] = @"formatVersion";
+  v11[1] = @"build";
+  v12[0] = @"2.0";
+  v12[1] = v8;
+  v11[2] = @"device";
+  v11[3] = @"appIdentifier";
+  v12[2] = v7;
+  v12[3] = v6;
+  v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:4];
+
+  return v9;
+}
+
++ (BOOL)canLoadFromFileAtURL:(id)a3
+{
+  v3 = [a3 pathExtension];
+  v4 = [v3 caseInsensitiveCompare:@"plist"] == 0;
+
+  return v4;
+}
+
+- (id)writeLogToTemporaryDirectoryWithContentLevel:(int64_t)a3 excludeEntyIndexes:(id)a4 error:(id *)a5
+{
+  v8 = a4;
+  v9 = [(PKTextInputDebugSharpenerLog *)self logEntries];
+  v10 = [v9 lastObject];
+  v11 = [v10 entryDate];
+
+  if (!v11)
+  {
+    v11 = [MEMORY[0x1E695DF00] date];
+  }
+
+  v12 = [PKTextInputDebugSharpenerLog _recommendedFileNameForLogWithDate:v11];
+  v13 = MEMORY[0x1E695DFF8];
+  v14 = NSTemporaryDirectory();
+  v15 = [v14 stringByAppendingPathComponent:v12];
+  v16 = [v13 fileURLWithPath:v15 isDirectory:0];
+
+  v17 = [(PKTextInputDebugSharpenerLog *)self writeToURL:v16 withContentLevel:a3 excludeEntyIndexes:v8 error:a5];
+  if (!v17)
+  {
+
+    v16 = 0;
+  }
+
+  return v16;
+}
+
+- (BOOL)writeToURL:(id)a3 withContentLevel:(int64_t)a4 excludeEntyIndexes:(id)a5 error:(id *)a6
+{
+  v27 = *MEMORY[0x1E69E9840];
+  v10 = a3;
+  v11 = [(PKTextInputDebugSharpenerLog *)self _dictionaryRepresentationWithContentLevel:a4 excludeEntyIndexes:a5];
+  v22 = 0;
+  v12 = [MEMORY[0x1E696AE40] dataWithPropertyList:v11 format:100 options:0 error:&v22];
+  v13 = v22;
+  v14 = v13;
+  if (v12)
+  {
+    v21 = v13;
+    v15 = [v12 writeToURL:v10 options:0 error:&v21];
+    v16 = v21;
+
+    if (v15)
+    {
+      v17 = 1;
+      if (!a6)
+      {
+        goto LABEL_10;
+      }
+
+      goto LABEL_9;
+    }
+  }
+
+  else
+  {
+    v16 = v13;
+  }
+
+  v18 = os_log_create("com.apple.pencilkit", "PencilTextInput");
+  if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+  {
+    *buf = 138412546;
+    v24 = v10;
+    v25 = 2112;
+    v26 = v16;
+    _os_log_error_impl(&dword_1C7CCA000, v18, OS_LOG_TYPE_ERROR, "Couldn't write PencilSharpener log to %@; Error: %@", buf, 0x16u);
+  }
+
+  v17 = 0;
+  if (a6)
+  {
+LABEL_9:
+    v19 = v16;
+    *a6 = v16;
+  }
+
+LABEL_10:
+
+  return v17;
+}
+
+- (BOOL)_loadFromFileURL:(id)a3 error:(id *)a4
+{
+  v50 = *MEMORY[0x1E69E9840];
+  v6 = a3;
+  v44 = 0;
+  v7 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:v6 error:&v44];
+  v8 = v44;
+  if (!v7)
+  {
+    v14 = os_log_create("com.apple.pencilkit", "PencilTextInput");
+    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    {
+      *buf = 138412546;
+      v46 = v6;
+      v47 = 2112;
+      v48 = v8;
+      _os_log_error_impl(&dword_1C7CCA000, v14, OS_LOG_TYPE_ERROR, "Error reading PencilSharpener log from %@; error: %@", buf, 0x16u);
+    }
+
+    isKindOfClass = 0;
+    goto LABEL_31;
+  }
+
+  v9 = [v7 objectForKeyedSubscript:@"metadata"];
+  metadataDictionary = self->_metadataDictionary;
+  self->_metadataDictionary = v9;
+
+  objc_opt_class();
+  isKindOfClass = objc_opt_isKindOfClass();
+  if ((isKindOfClass & 1) == 0)
+  {
+    v12 = os_log_create("com.apple.pencilkit", "PencilTextInput");
+    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    {
+      v29 = objc_opt_class();
+      *buf = 138412290;
+      v46 = v29;
+      v30 = v29;
+      _os_log_error_impl(&dword_1C7CCA000, v12, OS_LOG_TYPE_ERROR, "Error loading metadata dictionary with object of class: %@", buf, 0xCu);
+    }
+
+    v13 = self->_metadataDictionary;
+    self->_metadataDictionary = MEMORY[0x1E695E0F8];
+  }
+
+  v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:10];
+  v15 = [v7 objectForKeyedSubscript:@"entries"];
+  objc_opt_class();
+  if ((objc_opt_isKindOfClass() & 1) == 0)
+  {
+    goto LABEL_30;
+  }
+
+  v37 = isKindOfClass;
+  v42 = 0u;
+  v43 = 0u;
+  v40 = 0u;
+  v41 = 0u;
+  obj = v15;
+  v16 = [obj countByEnumeratingWithState:&v40 objects:v49 count:16];
+  if (!v16)
+  {
+    goto LABEL_29;
+  }
+
+  v17 = v16;
+  v33 = v15;
+  v34 = v7;
+  v35 = a4;
+  v36 = v6;
+  v18 = *v41;
+  while (2)
+  {
+    v19 = 0;
+    v20 = v8;
+    do
+    {
+      if (*v41 != v18)
+      {
+        objc_enumerationMutation(obj);
+      }
+
+      v21 = *(*(&v40 + 1) + 8 * v19);
+      objc_opt_class();
+      if ((objc_opt_isKindOfClass() & 1) == 0)
+      {
+        v24 = os_log_create("com.apple.pencilkit", "PencilTextInput");
+        if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+        {
+          v31 = objc_opt_class();
+          *buf = 138412290;
+          v46 = v31;
+          v32 = v31;
+          _os_log_error_impl(&dword_1C7CCA000, v24, OS_LOG_TYPE_ERROR, "Error loading log entry with object of class: %@", buf, 0xCu);
+        }
+
+        goto LABEL_27;
+      }
+
+      v22 = [PKTextInputDebugArchivedLogEntry alloc];
+      v39 = v20;
+      v23 = [(PKTextInputDebugArchivedLogEntry *)v22 initWithDictionary:v21 error:&v39];
+      v8 = v39;
+
+      if (!v23)
+      {
+        v24 = os_log_create("com.apple.pencilkit", "PencilTextInput");
+        if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+        {
+          *buf = 138412290;
+          v46 = v8;
+          _os_log_error_impl(&dword_1C7CCA000, v24, OS_LOG_TYPE_ERROR, "Error loading log entry: %@", buf, 0xCu);
+        }
+
+        v20 = v8;
+LABEL_27:
+        a4 = v35;
+        v6 = v36;
+
+        isKindOfClass = 0;
+        v8 = v20;
+        v7 = v34;
+        goto LABEL_28;
+      }
+
+      [v14 addObject:v23];
+
+      ++v19;
+      v20 = v8;
+    }
+
+    while (v17 != v19);
+    v17 = [obj countByEnumeratingWithState:&v40 objects:v49 count:16];
+    if (v17)
+    {
+      continue;
+    }
+
+    break;
+  }
+
+  a4 = v35;
+  v6 = v36;
+  isKindOfClass = v37;
+LABEL_28:
+  v15 = v33;
+LABEL_29:
+
+LABEL_30:
+  v25 = [v14 copy];
+  logEntries = self->_logEntries;
+  self->_logEntries = v25;
+
+LABEL_31:
+  if (a4)
+  {
+    v27 = v8;
+    *a4 = v8;
+  }
+
+  return isKindOfClass & 1;
+}
+
++ (id)_recommendedFileNameForLogWithDate:(id)a3
+{
+  v3 = MEMORY[0x1E696AB78];
+  v4 = a3;
+  v5 = objc_alloc_init(v3);
+  v6 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:@"en_US_POSIX"];
+  [v5 setLocale:v6];
+
+  [v5 setDateFormat:@"yyyy-MM-dd-HHmmss"];
+  v7 = MEMORY[0x1E696AEC0];
+  v8 = [v5 stringFromDate:v4];
+
+  v9 = [v7 stringWithFormat:@"PencilSharpener-%@", v8];
+  v10 = [v9 stringByAppendingPathExtension:@"plist"];
+
+  return v10;
+}
+
+@end

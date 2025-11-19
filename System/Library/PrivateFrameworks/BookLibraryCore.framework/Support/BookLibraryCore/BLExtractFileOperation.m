@@ -1,0 +1,398 @@
+@interface BLExtractFileOperation
+- (BLBookInstallInfo)installInfo;
+- (BLExtractFileOperation)initWithSoucePath:(id)a3 destinationPath:(id)a4 fileAttributes:(id)a5 installInfo:(id)a6;
+- (BOOL)_applyFileAttributesToDirectory:(id)a3 error:(id *)a4;
+- (BOOL)_performExtraction:(id *)a3;
+- (NSString)description;
+- (void)_initializeProgress;
+- (void)_updateProgressWithByteCount:(int64_t)a3;
+- (void)main;
+@end
+
+@implementation BLExtractFileOperation
+
+- (BLExtractFileOperation)initWithSoucePath:(id)a3 destinationPath:(id)a4 fileAttributes:(id)a5 installInfo:(id)a6
+{
+  v11 = a3;
+  v12 = a4;
+  v13 = a5;
+  v14 = a6;
+  v20.receiver = self;
+  v20.super_class = BLExtractFileOperation;
+  v15 = [(BLExtractFileOperation *)&v20 init];
+  v16 = v15;
+  if (v15)
+  {
+    objc_storeStrong(&v15->_sourceFilePath, a3);
+    objc_storeStrong(&v16->_destinationFilePath, a4);
+    objc_storeStrong(&v16->_fileAttributes, a5);
+    objc_storeWeak(&v16->_installInfo, v14);
+    v17 = objc_alloc_init(BLOperationProgress);
+    progress = v16->_progress;
+    v16->_progress = v17;
+  }
+
+  return v16;
+}
+
+- (void)main
+{
+  [(BLExtractFileOperation *)self _initializeProgress];
+  v3 = [(BLExtractFileOperation *)self sourceFilePath];
+  if (![v3 length])
+  {
+
+    goto LABEL_6;
+  }
+
+  v4 = [(BLExtractFileOperation *)self destinationFilePath];
+  v5 = [v4 length];
+
+  if (!v5)
+  {
+LABEL_6:
+    v7 = sub_1000A8F44(7, @"Unable to extract", @"Missing either source or destination path.");
+    v6 = 0;
+    goto LABEL_7;
+  }
+
+  v9 = 0;
+  v6 = [(BLExtractFileOperation *)self _performExtraction:&v9];
+  v7 = v9;
+  if (v6)
+  {
+    v8 = [(BLExtractFileOperation *)self destinationFilePath];
+    [(BLExtractFileOperation *)self _applyFileAttributesToDirectory:v8 error:0];
+
+    v6 = 1;
+  }
+
+LABEL_7:
+  [(BLExtractFileOperation *)self setError:v7];
+  [(BLExtractFileOperation *)self setSuccess:v6];
+}
+
+- (BOOL)_applyFileAttributesToDirectory:(id)a3 error:(id *)a4
+{
+  v6 = a3;
+  v7 = BLBookInstallLog();
+  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+  {
+    buf.st_dev = 138412290;
+    *&buf.st_mode = v6;
+    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "[Install-ExtractFile-Op]: Fixing file permissions for %@", &buf, 0xCu);
+  }
+
+  v41 = 0;
+  v35 = objc_alloc_init(NSFileManager);
+  v8 = [v35 subpathsOfDirectoryAtPath:v6 error:&v41];
+  v9 = v41;
+  if (!v8)
+  {
+    v11 = BLBookInstallLog();
+    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    {
+      buf.st_dev = 138412546;
+      *&buf.st_mode = v6;
+      WORD2(buf.st_ino) = 2112;
+      *(&buf.st_ino + 6) = v9;
+      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "[Install-ExtractFile-Op]: Could not get sub-paths of %@:  %@", &buf, 0x16u);
+    }
+
+    v23 = 0;
+    goto LABEL_30;
+  }
+
+  v10 = [(BLExtractFileOperation *)self fileAttributes];
+  v11 = [v10 mutableCopy];
+
+  if (!v11)
+  {
+    v11 = objc_alloc_init(NSMutableDictionary);
+  }
+
+  v39 = 0u;
+  v40 = 0u;
+  v37 = 0u;
+  v38 = 0u;
+  obj = v8;
+  v12 = [obj countByEnumeratingWithState:&v37 objects:v47 count:16];
+  if (!v12)
+  {
+    v23 = 1;
+    goto LABEL_29;
+  }
+
+  v13 = v12;
+  v34 = v11;
+  v31 = v8;
+  v32 = a4;
+  v14 = *v38;
+  while (2)
+  {
+    for (i = 0; i != v13; i = i + 1)
+    {
+      if (*v38 != v14)
+      {
+        objc_enumerationMutation(obj);
+      }
+
+      v16 = *(*(&v37 + 1) + 8 * i);
+      v17 = objc_autoreleasePoolPush();
+      v18 = [v6 stringByAppendingPathComponent:v16];
+      v19 = [v18 fileSystemRepresentation];
+      if (v19)
+      {
+        memset(&buf, 0, sizeof(buf));
+        if (stat(v19, &buf))
+        {
+          v24 = BLBookInstallLog();
+          if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+          {
+            v25 = __error();
+            v26 = strerror(*v25);
+            *v42 = 138412546;
+            v43 = v18;
+            v44 = 2080;
+            v45 = v26;
+            _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "[Install-ExtractFile-Op]: Could not stat %@: %s", v42, 0x16u);
+          }
+
+          v27 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
+          v9 = v27;
+        }
+
+        else
+        {
+          v20 = [NSNumber alloc];
+          v21 = [v20 initWithShort:buf.st_mode | 0x1B0u];
+          [v34 setObject:v21 forKey:NSFilePosixPermissions];
+
+          v36 = 0;
+          v22 = [v35 setAttributes:v34 ofItemAtPath:v18 error:&v36];
+          v9 = v36;
+          if (v22)
+          {
+
+            goto LABEL_15;
+          }
+
+          v28 = BLBookInstallLog();
+          if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+          {
+            *v42 = 138412546;
+            v43 = v18;
+            v44 = 2112;
+            v45 = v9;
+            _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "[Install-ExtractFile-Op]: Could not set file attributes for file: %@, error:  %@", v42, 0x16u);
+          }
+        }
+
+        v8 = v31;
+        a4 = v32;
+        v11 = v34;
+
+        objc_autoreleasePoolPop(v17);
+        v23 = 0;
+        goto LABEL_29;
+      }
+
+LABEL_15:
+
+      objc_autoreleasePoolPop(v17);
+    }
+
+    v13 = [obj countByEnumeratingWithState:&v37 objects:v47 count:16];
+    if (v13)
+    {
+      continue;
+    }
+
+    break;
+  }
+
+  v23 = 1;
+  v8 = v31;
+  a4 = v32;
+  v11 = v34;
+LABEL_29:
+
+LABEL_30:
+  if (a4)
+  {
+    v29 = v9;
+    *a4 = v9;
+  }
+
+  return v23;
+}
+
+- (void)_initializeProgress
+{
+  v12 = 0;
+  v3 = [(BLExtractFileOperation *)self sourceFilePath];
+  v4 = [NSURL fileURLWithPath:v3];
+
+  v11 = 0;
+  v5 = [[BUUnarchivingFileCopier alloc] initWithURL:v4 options:4 error:&v11];
+  v6 = v11;
+  [(BLExtractFileOperation *)self setCopier:v5];
+
+  v7 = [(BLExtractFileOperation *)self copier];
+  [v7 setDelegate:self];
+
+  if (v6)
+  {
+    v8 = BLBookInstallLog();
+    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    {
+      *buf = 141558530;
+      v14 = 1752392040;
+      v15 = 2112;
+      v16 = v4;
+      v17 = 2112;
+      v18 = v6;
+      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Error initializing unarchiving copier. sourceURL: %{mask.hash}@, error:  %@", buf, 0x20u);
+    }
+  }
+
+  else
+  {
+    v9 = [(BLExtractFileOperation *)self copier];
+    [v9 countTotalFileSize:&v12 totalFileCount:0];
+
+    v10 = BLBookInstallLog();
+    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+    {
+      *buf = 134217984;
+      v14 = v12;
+      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "[Install-ExtractFile-Op]: Preparing to uncompress to total file size: %llu", buf, 0xCu);
+    }
+
+    [(BLOperationProgress *)self->_progress setUnits:1];
+    [(BLOperationProgress *)self->_progress setMaxValue:v12];
+    [(BLOperationProgress *)self->_progress resetSnapshots];
+    self->_lastSnapshotTime = -1.79769313e308;
+    [(BLExtractFileOperation *)self _updateProgressWithByteCount:0];
+  }
+}
+
+- (BOOL)_performExtraction:(id *)a3
+{
+  v5 = [(BLExtractFileOperation *)self sourceFilePath];
+  v6 = [NSURL fileURLWithPath:v5];
+
+  v7 = [(BLExtractFileOperation *)self destinationFilePath];
+  v8 = [NSURL fileURLWithPath:v7];
+
+  v9 = BLBookInstallLog();
+  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+  {
+    v10 = [v6 path];
+    v11 = [v8 path];
+    *buf = 141558786;
+    v22 = 1752392040;
+    v23 = 2112;
+    v24 = v10;
+    v25 = 2160;
+    v26 = 1752392040;
+    v27 = 2112;
+    v28 = v11;
+    _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "[Install-ExtractFile-Op]: Extracting %{mask.hash}@ to %{mask.hash}@", buf, 0x2Au);
+  }
+
+  v12 = [(BLExtractFileOperation *)self copier];
+  v13 = v12;
+  if (v12)
+  {
+    v20 = 0;
+    v14 = [v12 copyToURL:v8 error:&v20];
+    v15 = v20;
+    if (v14)
+    {
+      v16 = 1;
+      if (!a3)
+      {
+        goto LABEL_12;
+      }
+
+      goto LABEL_11;
+    }
+  }
+
+  else
+  {
+    v15 = 0;
+  }
+
+  v17 = BLBookInstallLog();
+  if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+  {
+    *buf = 138412290;
+    v22 = v15;
+    _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "[Install-ExtractFile-Op]: Extraction failed with error:  %@", buf, 0xCu);
+  }
+
+  v16 = 0;
+  if (a3)
+  {
+LABEL_11:
+    v18 = v15;
+    *a3 = v15;
+  }
+
+LABEL_12:
+
+  return v16;
+}
+
+- (void)_updateProgressWithByteCount:(int64_t)a3
+{
+  v5 = [(BLOperationProgress *)self->_progress currentValue];
+  v6 = v5 + a3;
+  v7 = [(BLOperationProgress *)self->_progress maxValue];
+  if (v6 >= v7)
+  {
+    v8 = v7;
+  }
+
+  else
+  {
+    v8 = v6;
+  }
+
+  if (v8 != v5)
+  {
+    [(BLOperationProgress *)self->_progress setCurrentValue:?];
+  }
+
+  Current = CFAbsoluteTimeGetCurrent();
+  v10 = *&qword_10013E0B0 + self->_lastSnapshotTime;
+  if (v10 < Current)
+  {
+    [(BLOperationProgress *)self->_progress snapshot];
+    v12 = [(BLExtractFileOperation *)self installInfo];
+    v11 = [v12 progressDelegate];
+    [v11 operation:self updatedProgress:self->_progress forInstall:v12];
+
+    self->_lastSnapshotTime = Current;
+  }
+}
+
+- (NSString)description
+{
+  v3 = objc_opt_class();
+  v4 = NSStringFromClass(v3);
+  v5 = [NSString stringWithFormat:@"<%@(%p)>\n_destinationFilePath = %@\n_sourceFilePath = %@;\n_fileAttributes = %@;", v4, self, self->_destinationFilePath, self->_sourceFilePath, self->_fileAttributes];;
+
+  return v5;
+}
+
+- (BLBookInstallInfo)installInfo
+{
+  WeakRetained = objc_loadWeakRetained(&self->_installInfo);
+
+  return WeakRetained;
+}
+
+@end

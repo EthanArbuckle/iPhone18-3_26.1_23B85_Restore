@@ -1,0 +1,125 @@
+@interface FCNewsTabiRecommendedTagsConfiguration
+- (FCNewsTabiRecommendedTagsConfiguration)initWithDictionary:(id)a3;
+- (id)description;
+@end
+
+@implementation FCNewsTabiRecommendedTagsConfiguration
+
+- (id)description
+{
+  v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
+  v4 = [(FCNewsTabiRecommendedTagsConfiguration *)self bundleInputOutputConfiguration];
+  v5 = [v4 indentedDescription];
+  [v3 appendFormat:@"\n\tbundleInputOutputConfiguration: %@;", v5];
+
+  v6 = [(FCNewsTabiRecommendedTagsConfiguration *)self nonBundleInputOutputConfiguration];
+  v7 = [v6 indentedDescription];
+  [v3 appendFormat:@"\n\tnonBundleInputOutputConfiguration: %@;", v7];
+
+  v8 = [(FCNewsTabiRecommendedTagsConfiguration *)self userContextConfiguration];
+  v9 = [v8 indentedDescription];
+  [v3 appendFormat:@"\n\tcontextConfiguration: %@;", v9];
+
+  [v3 appendString:@"\n>"];
+
+  return v3;
+}
+
+- (FCNewsTabiRecommendedTagsConfiguration)initWithDictionary:(id)a3
+{
+  v4 = a3;
+  v5 = [FCNewsTabiRecommendedTagsInputOutputConfiguration alloc];
+  v6 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"bundleInputOutputConfiguration", 0);
+  v7 = [(FCNewsTabiRecommendedTagsInputOutputConfiguration *)v5 initWithDictionary:v6];
+
+  if (v7)
+  {
+    v8 = v7;
+    v9 = [FCNewsTabiRecommendedTagsInputOutputConfiguration alloc];
+    v10 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"nonBundleInputOutputConfiguration", 0);
+    v11 = [(FCNewsTabiRecommendedTagsInputOutputConfiguration *)v9 initWithDictionary:v10];
+
+    if (v11)
+    {
+      v12 = v11;
+      v20.receiver = self;
+      v20.super_class = FCNewsTabiRecommendedTagsConfiguration;
+      v13 = [(FCNewsTabiRecommendedTagsConfiguration *)&v20 init];
+      v14 = v13;
+      if (v13)
+      {
+        objc_storeStrong(&v13->_bundleInputOutputConfiguration, v7);
+        objc_storeStrong(&v14->_nonBundleInputOutputConfiguration, v11);
+        v15 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"contextConfiguration", 0);
+        v16 = [[FCNewsTabiRecommendedTagsContextConfiguration alloc] initWithDictionary:v15];
+        contextConfiguration = v14->_contextConfiguration;
+        v14->_contextConfiguration = v16;
+      }
+
+      self = v14;
+      v18 = self;
+    }
+
+    else
+    {
+      v21[0] = MEMORY[0x1E69E9820];
+      v21[1] = 3221225472;
+      v21[2] = __61__FCNewsTabiRecommendedTagsConfiguration_initWithDictionary___block_invoke_58;
+      v21[3] = &unk_1E7C36F98;
+      v22 = v4;
+      v18 = __61__FCNewsTabiRecommendedTagsConfiguration_initWithDictionary___block_invoke_58(v21);
+      v12 = v22;
+    }
+  }
+
+  else
+  {
+    v23[0] = MEMORY[0x1E69E9820];
+    v23[1] = 3221225472;
+    v23[2] = __61__FCNewsTabiRecommendedTagsConfiguration_initWithDictionary___block_invoke;
+    v23[3] = &unk_1E7C36F98;
+    v24 = v4;
+    v18 = __61__FCNewsTabiRecommendedTagsConfiguration_initWithDictionary___block_invoke(v23);
+    v8 = v24;
+  }
+
+  return v18;
+}
+
+uint64_t __61__FCNewsTabiRecommendedTagsConfiguration_initWithDictionary___block_invoke(uint64_t a1)
+{
+  v10 = *MEMORY[0x1E69E9840];
+  v2 = FCTabiConfigurationLog;
+  if (os_log_type_enabled(FCTabiConfigurationLog, OS_LOG_TYPE_ERROR))
+  {
+    v5 = *(a1 + 32);
+    v6 = v2;
+    v7 = [v5 description];
+    v8 = 138543362;
+    v9 = v7;
+    _os_log_error_impl(&dword_1B63EF000, v6, OS_LOG_TYPE_ERROR, "Failed to initialize FCNewsTabiRecommendedTagsConfiguration due to failure to decode bundleInputOutputConfiguration from configuration %{public}@", &v8, 0xCu);
+  }
+
+  v3 = *MEMORY[0x1E69E9840];
+  return 0;
+}
+
+uint64_t __61__FCNewsTabiRecommendedTagsConfiguration_initWithDictionary___block_invoke_58(uint64_t a1)
+{
+  v10 = *MEMORY[0x1E69E9840];
+  v2 = FCTabiConfigurationLog;
+  if (os_log_type_enabled(FCTabiConfigurationLog, OS_LOG_TYPE_ERROR))
+  {
+    v5 = *(a1 + 32);
+    v6 = v2;
+    v7 = [v5 description];
+    v8 = 138543362;
+    v9 = v7;
+    _os_log_error_impl(&dword_1B63EF000, v6, OS_LOG_TYPE_ERROR, "Failed to initialize FCNewsTabiRecommendedTagsConfiguration due to failure to decode nonBundleInputOutputConfiguration from configuration %{public}@", &v8, 0xCu);
+  }
+
+  v3 = *MEMORY[0x1E69E9840];
+  return 0;
+}
+
+@end

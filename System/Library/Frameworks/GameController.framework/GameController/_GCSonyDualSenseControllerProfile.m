@@ -1,0 +1,681 @@
+@interface _GCSonyDualSenseControllerProfile
++ (BOOL)logicalDevice:(id)a3 getSystemButtonName:(id *)a4 sfSymbolName:(id *)a5 needsMFiCompatibility:(BOOL *)a6;
++ (_GCPhysicalDeviceManager)deviceManager;
++ (id)logicalDevice:(id)a3 makeControllerInputDescriptionWithIdentifier:(id)a4 bindings:(id)a5;
++ (id)logicalDevice:(id)a3 makeControllerMotionWithIdentifier:(id)a4;
++ (id)logicalDevice:(id)a3 makeControllerPhysicalInputProfileWithIdentifier:(id)a4;
++ (id)logicalDeviceControllerDetailedProductCategory:(id)a3;
++ (id)physicalDeviceGetHapticCapabilities:(id)a3;
++ (id)physicalDeviceGetHapticCapabilityGraph:(id)a3;
++ (int64_t)physicalDeviceGetIndicatedPlayerIndex:(id)a3;
++ (void)physicalDevice:(id)a3 getAdaptiveTriggersStatusesWithReply:(id)a4;
++ (void)physicalDevice:(id)a3 getBatteryWithReply:(id)a4;
++ (void)physicalDevice:(id)a3 getLightWithReply:(id)a4;
++ (void)physicalDevice:(id)a3 getSensorsEnabledWithReply:(id)a4;
++ (void)physicalDevice:(id)a3 setIndicatedPlayerIndex:(int64_t)a4;
++ (void)physicalDevice:(id)a3 setLight:(id)a4;
+@end
+
+@implementation _GCSonyDualSenseControllerProfile
+
++ (_GCPhysicalDeviceManager)deviceManager
+{
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __50___GCSonyDualSenseControllerProfile_deviceManager__block_invoke;
+  block[3] = &__block_descriptor_40_e5_v8__0l;
+  block[4] = a1;
+  if (deviceManager_onceToken_2 != -1)
+  {
+    dispatch_once(&deviceManager_onceToken_2, block);
+  }
+
+  v2 = deviceManager_deviceManager_2;
+
+  return v2;
+}
+
++ (id)logicalDeviceControllerDetailedProductCategory:(id)a3
+{
+  v3 = [a3 underlyingDevice];
+  v4 = [v3 serviceInfo];
+  v5 = [v4 numberPropertyForKey:@"ProductID"];
+  v6 = [v5 unsignedIntValue];
+
+  if (v6 == 3570)
+  {
+    v7 = @"DualSense Edge";
+  }
+
+  else
+  {
+    v7 = @"DualSense";
+  }
+
+  return v7;
+}
+
++ (BOOL)logicalDevice:(id)a3 getSystemButtonName:(id *)a4 sfSymbolName:(id *)a5 needsMFiCompatibility:(BOOL *)a6
+{
+  *a4 = *MEMORY[0x1E69A0400];
+  *a5 = @"logo.playstation";
+  return 1;
+}
+
++ (id)logicalDevice:(id)a3 makeControllerPhysicalInputProfileWithIdentifier:(id)a4
+{
+  v5 = a3;
+  v6 = a4;
+  v19 = 0u;
+  v20 = 0u;
+  v17 = 0u;
+  v18 = 0u;
+  v15 = 0u;
+  v16 = 0u;
+  v13 = 0u;
+  v14 = 0u;
+  v12 = 0u;
+  memset(v11, 0, sizeof(v11));
+  GCExtendedGamepadInitInfoMake(v11);
+  for (i = 0; i != 1152; i += 72)
+  {
+    *(v11 + i + 8) = 257;
+  }
+
+  BYTE1(v12) = 0;
+  BYTE9(v16) = 0;
+  v21 = 0;
+  v23 = 0;
+  v22 = 1;
+  v24 = 1;
+  v8 = [(GCExtendedGamepad *)[GCDualSenseGamepad alloc] initWithIdentifier:v6 info:v11];
+  for (j = 0; j != 1584; j += 72)
+  {
+    __destructor_8_s0_s48_s56_s64(v11 + j);
+  }
+
+  return v8;
+}
+
++ (id)logicalDevice:(id)a3 makeControllerInputDescriptionWithIdentifier:(id)a4 bindings:(id)a5
+{
+  v154[1] = *MEMORY[0x1E69E9840];
+  v6 = MEMORY[0x1E69A0690];
+  v132 = a5;
+  v131 = a4;
+  v139 = [v6 descriptionWithIdentifier:@"button.logo"];
+  v7 = [MEMORY[0x1E695DFD8] setWithObject:@"Button Home"];
+  [v139 setAliases:v7];
+
+  [v139 setLocalizedName:*MEMORY[0x1E69A0400]];
+  v8 = [MEMORY[0x1E69A06C0] symbolWithSFSymbolsName:@"logo.playstation"];
+  [v139 setSymbol:v8];
+
+  [v139 setEventPressedValueField:22];
+  v138 = [MEMORY[0x1E69A0690] descriptionWithIdentifier:@"button.options"];
+  v9 = [MEMORY[0x1E695DFD8] setWithObject:@"Button Menu"];
+  [v138 setAliases:v9];
+
+  [v138 setLocalizedName:*MEMORY[0x1E69A0470]];
+  v10 = [MEMORY[0x1E69A06C0] symbolWithSFSymbolsName:@"capsule.portrait"];
+  [v138 setSymbol:v10];
+
+  [v138 setEventPressedValueField:23];
+  v137 = [MEMORY[0x1E69A0690] descriptionWithIdentifier:@"button.create"];
+  v11 = [MEMORY[0x1E695DFD8] setWithObject:@"Button Options"];
+  [v137 setAliases:v11];
+
+  [v137 setLocalizedName:*MEMORY[0x1E69A0478]];
+  v12 = [MEMORY[0x1E69A06C0] symbolWithSFSymbolsName:@"capsule.portrait"];
+  [v137 setSymbol:v12];
+
+  [v137 setEventPressedValueField:24];
+  v136 = [MEMORY[0x1E69A0690] descriptionWithIdentifier:@"button.xmark"];
+  v13 = [MEMORY[0x1E695DFD8] setWithObject:@"Button A"];
+  [v136 setAliases:v13];
+
+  [v136 setLocalizedName:*MEMORY[0x1E69A03F0]];
+  v14 = [MEMORY[0x1E69A06C0] symbolWithSFSymbolsName:@"xmark.circle"];
+  [v136 setSymbol:v14];
+
+  [v136 setEventPressedValueField:4];
+  v135 = [MEMORY[0x1E69A0690] descriptionWithIdentifier:@"button.circle"];
+  v15 = [MEMORY[0x1E695DFD8] setWithObject:@"Button B"];
+  [v135 setAliases:v15];
+
+  [v135 setLocalizedName:*MEMORY[0x1E69A03F8]];
+  v16 = [MEMORY[0x1E69A06C0] symbolWithSFSymbolsName:@"circle.circle"];
+  [v135 setSymbol:v16];
+
+  [v135 setEventPressedValueField:5];
+  v134 = [MEMORY[0x1E69A0690] descriptionWithIdentifier:@"button.square"];
+  v17 = [MEMORY[0x1E695DFD8] setWithObject:@"Button X"];
+  [v134 setAliases:v17];
+
+  [v134 setLocalizedName:*MEMORY[0x1E69A0428]];
+  v18 = [MEMORY[0x1E69A06C0] symbolWithSFSymbolsName:@"square.circle"];
+  [v134 setSymbol:v18];
+
+  [v134 setEventPressedValueField:6];
+  v133 = [MEMORY[0x1E69A0690] descriptionWithIdentifier:@"button.triangle"];
+  v19 = [MEMORY[0x1E695DFD8] setWithObject:@"Button Y"];
+  [v133 setAliases:v19];
+
+  [v133 setLocalizedName:*MEMORY[0x1E69A0430]];
+  v20 = [MEMORY[0x1E69A06C0] symbolWithSFSymbolsName:@"triangle.circle"];
+  [v133 setSymbol:v20];
+
+  [v133 setEventPressedValueField:7];
+  v130 = [MEMORY[0x1E69A0690] descriptionWithIdentifier:@"button.l1"];
+  v21 = [MEMORY[0x1E695DFD8] setWithObject:@"Left Shoulder"];
+  [v130 setAliases:v21];
+
+  [v130 setLocalizedName:*MEMORY[0x1E69A0440]];
+  v22 = [MEMORY[0x1E69A06C0] symbolWithSFSymbolsName:@"l1.rectangle.roundedbottom"];
+  [v130 setSymbol:v22];
+
+  [v130 setEventPressedValueField:8];
+  v129 = [MEMORY[0x1E69A0690] descriptionWithIdentifier:@"button.r1"];
+  v23 = [MEMORY[0x1E695DFD8] setWithObject:@"Right Shoulder"];
+  [v129 setAliases:v23];
+
+  [v129 setLocalizedName:*MEMORY[0x1E69A0458]];
+  v24 = [MEMORY[0x1E69A06C0] symbolWithSFSymbolsName:@"r1.rectangle.roundedbottom"];
+  [v129 setSymbol:v24];
+
+  [v129 setEventPressedValueField:9];
+  v128 = [MEMORY[0x1E69A0690] descriptionWithIdentifier:@"button.l2"];
+  v25 = [MEMORY[0x1E695DFD8] setWithObject:@"Left Trigger"];
+  [v128 setAliases:v25];
+
+  [v128 setLocalizedName:*MEMORY[0x1E69A0450]];
+  v26 = [MEMORY[0x1E69A06C0] symbolWithSFSymbolsName:@"l2.rectangle.roundedtop"];
+  [v128 setSymbol:v26];
+
+  [v128 setAnalog:1];
+  [v128 setEventPressedValueField:18];
+  v127 = [MEMORY[0x1E69A0690] descriptionWithIdentifier:@"button.r2"];
+  v27 = [MEMORY[0x1E695DFD8] setWithObject:@"Right Trigger"];
+  [v127 setAliases:v27];
+
+  [v127 setLocalizedName:*MEMORY[0x1E69A0468]];
+  v28 = [MEMORY[0x1E69A06C0] symbolWithSFSymbolsName:@"r2.rectangle.roundedtop"];
+  [v127 setSymbol:v28];
+
+  [v127 setAnalog:1];
+  [v127 setEventPressedValueField:19];
+  v126 = [MEMORY[0x1E69A06A8] descriptionWithIdentifier:@"dpad"];
+  v29 = [MEMORY[0x1E695DFD8] setWithObject:@"Direction Pad"];
+  [v126 setAliases:v29];
+
+  [v126 setLocalizedName:*MEMORY[0x1E69A0438]];
+  v30 = [MEMORY[0x1E69A06C0] symbolWithSFSymbolsName:@"dpad"];
+  [v126 setSymbol:v30];
+
+  [v126 setAnalog:0];
+  [v126 setEventUpValueField:0];
+  [v126 setEventDownValueField:1];
+  [v126 setEventLeftValueField:2];
+  [v126 setEventRightValueField:3];
+  v31 = [MEMORY[0x1E69A06A0] descriptionWithIdentifier:@"stick.left"];
+  v32 = [MEMORY[0x1E695DFD8] setWithObjects:{@"Left Thumbstick", @"Left Thumbstick Button", 0}];
+  [v31 setAliases:v32];
+
+  [v31 setLocalizedName:*MEMORY[0x1E69A0448]];
+  v33 = [MEMORY[0x1E69A06C0] symbolWithSFSymbolsName:@"l.joystick"];
+  [v31 setSymbol:v33];
+
+  [v31 setAnalog:1];
+  [v31 setEventUpValueField:10];
+  [v31 setEventDownValueField:11];
+  [v31 setEventLeftValueField:12];
+  [v31 setEventRightValueField:13];
+  [v31 setEventPressedValueField:20];
+  v34 = MEMORY[0x1E69A06B8];
+  v35 = [MEMORY[0x1E695DFD8] setWithObject:@"Left Thumbstick"];
+  v36 = [v31 localizedName];
+  v37 = [v31 symbol];
+  v38 = [v34 sourceWithElementAliases:v35 localizedName:v36 symbol:v37 direction:10];
+  v154[0] = v38;
+  v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:v154 count:1];
+  [v31 setXSources:v39];
+
+  v40 = MEMORY[0x1E69A06B8];
+  v41 = [MEMORY[0x1E695DFD8] setWithObject:@"Left Thumbstick"];
+  v42 = [v31 localizedName];
+  v43 = [v31 symbol];
+  v44 = [v40 sourceWithElementAliases:v41 localizedName:v42 symbol:v43 direction:5];
+  v153 = v44;
+  v45 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v153 count:1];
+  [v31 setYSources:v45];
+
+  v46 = MEMORY[0x1E69A06B8];
+  v47 = [MEMORY[0x1E695DFD8] setWithObject:@"Left Thumbstick"];
+  v48 = [v31 localizedName];
+  v49 = [v31 symbol];
+  v50 = [v46 sourceWithElementAliases:v47 localizedName:v48 symbol:v49 direction:1];
+  v152 = v50;
+  v51 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v152 count:1];
+  [v31 setUpSources:v51];
+
+  v52 = MEMORY[0x1E69A06B8];
+  v53 = [MEMORY[0x1E695DFD8] setWithObject:@"Left Thumbstick"];
+  v54 = [v31 localizedName];
+  v55 = [v31 symbol];
+  v56 = [v52 sourceWithElementAliases:v53 localizedName:v54 symbol:v55 direction:2];
+  v151 = v56;
+  v57 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v151 count:1];
+  [v31 setRightSources:v57];
+
+  v58 = MEMORY[0x1E69A06B8];
+  v59 = [MEMORY[0x1E695DFD8] setWithObject:@"Left Thumbstick"];
+  v60 = [v31 localizedName];
+  v61 = [v31 symbol];
+  v62 = [v58 sourceWithElementAliases:v59 localizedName:v60 symbol:v61 direction:4];
+  v150 = v62;
+  v63 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v150 count:1];
+  [v31 setDownSources:v63];
+
+  v64 = MEMORY[0x1E69A06B8];
+  v65 = [MEMORY[0x1E695DFD8] setWithObject:@"Left Thumbstick"];
+  v66 = [v31 localizedName];
+  v67 = [v31 symbol];
+  v68 = [v64 sourceWithElementAliases:v65 localizedName:v66 symbol:v67 direction:8];
+  v149 = v68;
+  v69 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v149 count:1];
+  [v31 setLeftSources:v69];
+
+  v70 = MEMORY[0x1E69A06B8];
+  v71 = [MEMORY[0x1E695DFD8] setWithObject:@"Left Thumbstick Button"];
+  v72 = *MEMORY[0x1E69A0408];
+  v73 = [MEMORY[0x1E69A06C0] symbolWithSFSymbolsName:@"l.joystick.press.down"];
+  v74 = [v70 sourceWithElementAliases:v71 localizedName:v72 symbol:v73];
+  v148 = v74;
+  v75 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v148 count:1];
+  [v31 setPressedSources:v75];
+
+  v76 = [MEMORY[0x1E69A06A0] descriptionWithIdentifier:@"stick.right"];
+  v77 = [MEMORY[0x1E695DFD8] setWithObjects:{@"Right Thumbstick", @"Right Thumbstick Button", 0}];
+  [v76 setAliases:v77];
+
+  [v76 setLocalizedName:*MEMORY[0x1E69A0460]];
+  v78 = [MEMORY[0x1E69A06C0] symbolWithSFSymbolsName:@"r.joystick"];
+  [v76 setSymbol:v78];
+
+  [v76 setAnalog:1];
+  [v76 setEventUpValueField:14];
+  [v76 setEventDownValueField:15];
+  [v76 setEventLeftValueField:16];
+  [v76 setEventRightValueField:17];
+  [v76 setEventPressedValueField:21];
+  v79 = MEMORY[0x1E69A06B8];
+  v80 = [MEMORY[0x1E695DFD8] setWithObject:@"Right Thumbstick"];
+  v81 = [v76 localizedName];
+  v82 = [v76 symbol];
+  v83 = [v79 sourceWithElementAliases:v80 localizedName:v81 symbol:v82 direction:10];
+  v147 = v83;
+  v84 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v147 count:1];
+  [v76 setXSources:v84];
+
+  v85 = MEMORY[0x1E69A06B8];
+  v86 = [MEMORY[0x1E695DFD8] setWithObject:@"Right Thumbstick"];
+  v87 = [v76 localizedName];
+  v88 = [v76 symbol];
+  v89 = [v85 sourceWithElementAliases:v86 localizedName:v87 symbol:v88 direction:5];
+  v146 = v89;
+  v90 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v146 count:1];
+  [v76 setYSources:v90];
+
+  v91 = MEMORY[0x1E69A06B8];
+  v92 = [MEMORY[0x1E695DFD8] setWithObject:@"Right Thumbstick"];
+  v93 = [v76 localizedName];
+  v94 = [v76 symbol];
+  v95 = [v91 sourceWithElementAliases:v92 localizedName:v93 symbol:v94 direction:1];
+  v145 = v95;
+  v96 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v145 count:1];
+  [v76 setUpSources:v96];
+
+  v97 = MEMORY[0x1E69A06B8];
+  v98 = [MEMORY[0x1E695DFD8] setWithObject:@"Right Thumbstick"];
+  v99 = [v76 localizedName];
+  v100 = [v76 symbol];
+  v101 = [v97 sourceWithElementAliases:v98 localizedName:v99 symbol:v100 direction:2];
+  v144 = v101;
+  v102 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v144 count:1];
+  [v76 setRightSources:v102];
+
+  v103 = MEMORY[0x1E69A06B8];
+  v104 = [MEMORY[0x1E695DFD8] setWithObject:@"Right Thumbstick"];
+  v105 = [v76 localizedName];
+  v106 = [v76 symbol];
+  v107 = [v103 sourceWithElementAliases:v104 localizedName:v105 symbol:v106 direction:4];
+  v143 = v107;
+  v108 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v143 count:1];
+  [v76 setDownSources:v108];
+
+  v109 = MEMORY[0x1E69A06B8];
+  v110 = [MEMORY[0x1E695DFD8] setWithObject:@"Right Thumbstick"];
+  v111 = [v76 localizedName];
+  v112 = [v76 symbol];
+  v113 = [v109 sourceWithElementAliases:v110 localizedName:v111 symbol:v112 direction:8];
+  v142 = v113;
+  v114 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v142 count:1];
+  [v76 setLeftSources:v114];
+
+  v115 = MEMORY[0x1E69A06B8];
+  v116 = [MEMORY[0x1E695DFD8] setWithObject:@"Right Thumbstick Button"];
+  v117 = *MEMORY[0x1E69A0420];
+  v118 = [MEMORY[0x1E69A06C0] symbolWithSFSymbolsName:@"r.joystick.press.down"];
+  v119 = [v115 sourceWithElementAliases:v116 localizedName:v117 symbol:v118];
+  v141 = v119;
+  v120 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v141 count:1];
+  [v76 setPressedSources:v120];
+
+  v121 = objc_opt_new();
+  v140[0] = v139;
+  v140[1] = v138;
+  v140[2] = v137;
+  v140[3] = v136;
+  v140[4] = v135;
+  v140[5] = v134;
+  v140[6] = v133;
+  v140[7] = v130;
+  v140[8] = v129;
+  v140[9] = v128;
+  v140[10] = v127;
+  v140[11] = v126;
+  v140[12] = v31;
+  v140[13] = v76;
+  v122 = [MEMORY[0x1E695DEC8] arrayWithObjects:v140 count:14];
+  [v121 setElements:v122];
+
+  v125 = [[_GCControllerInputComponentDescription alloc] initWithIdentifier:v131 controllerInputs:v121 bindings:v132];
+  v123 = *MEMORY[0x1E69E9840];
+
+  return v125;
+}
+
++ (id)logicalDevice:(id)a3 makeControllerMotionWithIdentifier:(id)a4
+{
+  v4 = a4;
+  v5 = [[GCMotion alloc] initWithIdentifier:v4];
+
+  [(GCMotion *)v5 _setHasRotationRate:1];
+  [(GCMotion *)v5 _setHasAttitude:0];
+
+  return v5;
+}
+
++ (void)physicalDevice:(id)a3 getLightWithReply:(id)a4
+{
+  v5 = a3;
+  v6 = a4;
+  if (gc_isInternalBuild())
+  {
+    +[_GCSonyDualSenseControllerProfile physicalDevice:getLightWithReply:];
+  }
+
+  v7 = [v5 lightServiceServer];
+  v10[0] = MEMORY[0x1E69E9820];
+  v10[1] = 3221225472;
+  v10[2] = __70___GCSonyDualSenseControllerProfile_physicalDevice_getLightWithReply___block_invoke;
+  v10[3] = &unk_1E841A3C0;
+  v11 = v5;
+  v12 = v6;
+  v8 = v6;
+  v9 = v5;
+  [v7 readLightWithReply:v10];
+}
+
++ (void)physicalDevice:(id)a3 setLight:(id)a4
+{
+  v5 = a4;
+  v17 = [a3 lightServiceServer];
+  v6 = [v5 color];
+  [v6 red];
+  v8 = v7;
+  v9 = [v5 color];
+  [v9 green];
+  v11 = v10;
+  v12 = [v5 color];
+
+  [v12 blue];
+  LODWORD(v14) = v13;
+  LODWORD(v15) = v8;
+  LODWORD(v16) = v11;
+  [v17 updateLightWithRed:v15 green:v16 blue:v14];
+}
+
++ (void)physicalDevice:(id)a3 getSensorsEnabledWithReply:(id)a4
+{
+  v5 = a3;
+  v6 = a4;
+  if (gc_isInternalBuild())
+  {
+    +[_GCSonyDualSenseControllerProfile physicalDevice:getSensorsEnabledWithReply:];
+  }
+
+  v7 = [v5 motionServiceServer];
+  v10[0] = MEMORY[0x1E69E9820];
+  v10[1] = 3221225472;
+  v10[2] = __79___GCSonyDualSenseControllerProfile_physicalDevice_getSensorsEnabledWithReply___block_invoke;
+  v10[3] = &unk_1E841A3E8;
+  v11 = v5;
+  v12 = v6;
+  v8 = v6;
+  v9 = v5;
+  [v7 readSensorsActiveWithReply:v10];
+}
+
++ (void)physicalDevice:(id)a3 getBatteryWithReply:(id)a4
+{
+  v5 = a3;
+  v6 = a4;
+  if (gc_isInternalBuild())
+  {
+    +[_GCSonyDualSenseControllerProfile physicalDevice:getBatteryWithReply:];
+  }
+
+  v7 = [v5 batteryServiceServer];
+  v10[0] = MEMORY[0x1E69E9820];
+  v10[1] = 3221225472;
+  v10[2] = __72___GCSonyDualSenseControllerProfile_physicalDevice_getBatteryWithReply___block_invoke;
+  v10[3] = &unk_1E841A410;
+  v11 = v5;
+  v12 = v6;
+  v8 = v6;
+  v9 = v5;
+  [v7 readBatteryWithReply:v10];
+}
+
++ (void)physicalDevice:(id)a3 getAdaptiveTriggersStatusesWithReply:(id)a4
+{
+  v5 = a3;
+  v6 = a4;
+  if (gc_isInternalBuild())
+  {
+    +[_GCSonyDualSenseControllerProfile physicalDevice:getAdaptiveTriggersStatusesWithReply:];
+  }
+
+  v7 = [v5 adaptiveTriggersServiceServer];
+  v10[0] = MEMORY[0x1E69E9820];
+  v10[1] = 3221225472;
+  v10[2] = __89___GCSonyDualSenseControllerProfile_physicalDevice_getAdaptiveTriggersStatusesWithReply___block_invoke;
+  v10[3] = &unk_1E841A438;
+  v11 = v5;
+  v12 = v6;
+  v8 = v6;
+  v9 = v5;
+  [v7 readAdaptiveTriggerStatusWithReply:v10];
+}
+
++ (id)physicalDeviceGetHapticCapabilities:(id)a3
+{
+  v8[2] = *MEMORY[0x1E69E9840];
+  v3 = [[GCHapticActuator alloc] initWithLabel:@"Low Band" type:0 index:0];
+  v8[0] = v3;
+  v4 = [[GCHapticActuator alloc] initWithLabel:@"High Band" type:0 index:1];
+  v8[1] = v4;
+  v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:2];
+
+  v6 = *MEMORY[0x1E69E9840];
+
+  return v5;
+}
+
++ (id)physicalDeviceGetHapticCapabilityGraph:(id)a3
+{
+  v3 = objc_opt_class();
+  v4 = loadNSDictionaryFromJSON(v3, @"DualShockHapticCapabilityGraph");
+  v5 = [[GCHapticCapabilityGraph alloc] initWithJSONDictionaryRepresentation:v4];
+
+  return v5;
+}
+
++ (int64_t)physicalDeviceGetIndicatedPlayerIndex:(id)a3
+{
+  v3 = [a3 serviceInfo];
+  v4 = IOHIDServiceClientCopyProperty([v3 service], @"PlayerLights");
+
+  v14 = 0;
+  v13 = 0;
+  v5 = v4;
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    v6 = [v5 objectForKey:@"LED"];
+    objc_opt_class();
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 count] >= 5 && objc_msgSend(v6, "count"))
+    {
+      v7 = 0;
+      do
+      {
+        v8 = [v6 objectAtIndexedSubscript:v7];
+        *(&v13 + v7) = [v8 BOOLValue];
+
+        ++v7;
+      }
+
+      while ([v6 count] > v7);
+    }
+  }
+
+  v9 = 0;
+  v10 = &PlayerLightsConfig_0;
+  while (v13 != *v10 || v14 != *(v10 + 4))
+  {
+    ++v9;
+    v10 = (v10 + 5);
+    if (v9 == 9)
+    {
+      v9 = -1;
+      break;
+    }
+  }
+
+  return v9;
+}
+
++ (void)physicalDevice:(id)a3 setIndicatedPlayerIndex:(int64_t)a4
+{
+  v22[1] = *MEMORY[0x1E69E9840];
+  v4 = a4 + 1;
+  if ((a4 + 1) <= 8)
+  {
+    v5 = [a3 serviceInfo];
+    v6 = [v5 service];
+    v7 = (&PlayerLightsConfig_0 + 5 * v4);
+    v8 = *(v7 + 4);
+    v9 = *v7;
+    v10 = v9 | (v8 << 32);
+    v21 = @"LED";
+    v11 = [MEMORY[0x1E696AD98] numberWithBool:v9 & 1];
+    v12 = [MEMORY[0x1E696AD98] numberWithBool:{(v10 >> 8) & 1, v11}];
+    v20[1] = v12;
+    v13 = [MEMORY[0x1E696AD98] numberWithBool:(v10 >> 16) & 1];
+    v20[2] = v13;
+    v14 = [MEMORY[0x1E696AD98] numberWithBool:(v10 >> 24) & 1];
+    v20[3] = v14;
+    v15 = [MEMORY[0x1E696AD98] numberWithBool:v8 & 1];
+    v20[4] = v15;
+    v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:5];
+    v22[0] = v16;
+    v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
+
+    v18 = v17;
+    IOHIDServiceClientSetProperty(v6, @"PlayerLights", v17);
+  }
+
+  v19 = *MEMORY[0x1E69E9840];
+}
+
++ (void)physicalDevice:getLightWithReply:.cold.1()
+{
+  v8 = *MEMORY[0x1E69E9840];
+  v1 = getGCLogger();
+  if (OUTLINED_FUNCTION_11(v1))
+  {
+    OUTLINED_FUNCTION_8();
+    OUTLINED_FUNCTION_1();
+    _os_log_impl(v2, v3, v4, v5, v6, 0xCu);
+  }
+
+  v7 = *MEMORY[0x1E69E9840];
+}
+
++ (void)physicalDevice:getSensorsEnabledWithReply:.cold.1()
+{
+  v8 = *MEMORY[0x1E69E9840];
+  v1 = getGCLogger();
+  if (OUTLINED_FUNCTION_11(v1))
+  {
+    OUTLINED_FUNCTION_8();
+    OUTLINED_FUNCTION_1();
+    _os_log_impl(v2, v3, v4, v5, v6, 0xCu);
+  }
+
+  v7 = *MEMORY[0x1E69E9840];
+}
+
++ (void)physicalDevice:getBatteryWithReply:.cold.1()
+{
+  v8 = *MEMORY[0x1E69E9840];
+  v1 = getGCLogger();
+  if (OUTLINED_FUNCTION_11(v1))
+  {
+    OUTLINED_FUNCTION_8();
+    OUTLINED_FUNCTION_1();
+    _os_log_impl(v2, v3, v4, v5, v6, 0xCu);
+  }
+
+  v7 = *MEMORY[0x1E69E9840];
+}
+
++ (void)physicalDevice:setAdaptiveTriggersPayload:forIndex:.cold.1()
+{
+  v8 = *MEMORY[0x1E69E9840];
+  v1 = getGCLogger();
+  if (OUTLINED_FUNCTION_11(v1))
+  {
+    OUTLINED_FUNCTION_1();
+    _os_log_impl(v2, v3, v4, v5, v6, 0x1Cu);
+  }
+
+  v7 = *MEMORY[0x1E69E9840];
+}
+
++ (void)physicalDevice:getAdaptiveTriggersStatusesWithReply:.cold.1()
+{
+  v8 = *MEMORY[0x1E69E9840];
+  v1 = getGCLogger();
+  if (OUTLINED_FUNCTION_11(v1))
+  {
+    OUTLINED_FUNCTION_8();
+    OUTLINED_FUNCTION_1();
+    _os_log_impl(v2, v3, v4, v5, v6, 0xCu);
+  }
+
+  v7 = *MEMORY[0x1E69E9840];
+}
+
+@end

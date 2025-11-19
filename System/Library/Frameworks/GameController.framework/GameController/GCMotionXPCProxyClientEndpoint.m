@@ -1,0 +1,206 @@
+@interface GCMotionXPCProxyClientEndpoint
+- (GCMotionXPCProxyClientEndpoint)init;
+- (GCMotionXPCProxyClientEndpoint)initWithIdentifier:(id)a3 initialSensorsActive:(BOOL)a4;
+- (void)_remoteEndpointSetSensorsActive:(BOOL)a3;
+- (void)fetchObjectIdentifierWithReply:(id)a3;
+- (void)invalidateConnection;
+- (void)newSensorsActive:(BOOL)a3;
+- (void)refreshSensorsActive;
+- (void)setRemoteEndpoint:(id)a3 connection:(id)a4;
+@end
+
+@implementation GCMotionXPCProxyClientEndpoint
+
+- (GCMotionXPCProxyClientEndpoint)initWithIdentifier:(id)a3 initialSensorsActive:(BOOL)a4
+{
+  v6 = a3;
+  v11.receiver = self;
+  v11.super_class = GCMotionXPCProxyClientEndpoint;
+  v7 = [(GCMotionXPCProxyClientEndpoint *)&v11 init];
+  if (v7)
+  {
+    if (gc_isInternalBuild())
+    {
+      [GCMotionXPCProxyClientEndpoint initWithIdentifier:initialSensorsActive:];
+    }
+
+    v8 = [v6 copyWithZone:0];
+    identifier = v7->_identifier;
+    v7->_identifier = v8;
+
+    v7->_sensorsActive = a4;
+  }
+
+  return v7;
+}
+
+- (GCMotionXPCProxyClientEndpoint)init
+{
+  [(GCMotionXPCProxyClientEndpoint *)self doesNotRecognizeSelector:a2];
+
+  return 0;
+}
+
+- (void)setRemoteEndpoint:(id)a3 connection:(id)a4
+{
+  v7 = a3;
+  v8 = a4;
+  objc_initWeak(&location, self);
+  v15 = MEMORY[0x1E69E9820];
+  v16 = 3221225472;
+  v17 = __63__GCMotionXPCProxyClientEndpoint_setRemoteEndpoint_connection___block_invoke;
+  v18 = &unk_1E8418D18;
+  objc_copyWeak(&v19, &location);
+  v9 = _Block_copy(&v15);
+  v10 = [v8 addInterruptionHandler:{v9, v15, v16, v17, v18}];
+  connectionInterruptionRegistration = self->_connectionInterruptionRegistration;
+  self->_connectionInterruptionRegistration = v10;
+
+  v12 = [v8 addInvalidationHandler:v9];
+  connectionInvalidationRegistration = self->_connectionInvalidationRegistration;
+  self->_connectionInvalidationRegistration = v12;
+
+  objc_storeStrong(&self->_serverEndpoint, a3);
+  if (gc_isInternalBuild())
+  {
+    v14 = getGCLogger();
+    [GCMotionXPCProxyClientEndpoint setRemoteEndpoint:v14 connection:?];
+  }
+
+  [(GCMotionXPCProxyClientEndpoint *)self refreshSensorsActive];
+
+  objc_destroyWeak(&v19);
+  objc_destroyWeak(&location);
+}
+
+void __63__GCMotionXPCProxyClientEndpoint_setRemoteEndpoint_connection___block_invoke(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  if (WeakRetained)
+  {
+    if (gc_isInternalBuild())
+    {
+      __64__GCBatteryXPCProxyClientEndpoint_setRemoteEndpoint_connection___block_invoke_cold_1();
+    }
+
+    v2 = WeakRetained[4];
+    WeakRetained[4] = 0;
+
+    v3 = WeakRetained[3];
+    WeakRetained[3] = 0;
+
+    v4 = WeakRetained[2];
+    WeakRetained[2] = 0;
+  }
+}
+
+- (void)_remoteEndpointSetSensorsActive:(BOOL)a3
+{
+  WeakRetained = objc_loadWeakRetained(&self->_controller);
+  if (WeakRetained)
+  {
+    v8 = WeakRetained;
+    v6 = [WeakRetained motion];
+    [v6 willChangeValueForKey:@"sensorsActive"];
+
+    self->_sensorsActive = a3;
+    v7 = [v8 motion];
+    [v7 didChangeValueForKey:@"sensorsActive"];
+
+    WeakRetained = v8;
+  }
+}
+
+- (void)newSensorsActive:(BOOL)a3
+{
+  v3[0] = MEMORY[0x1E69E9820];
+  v3[1] = 3221225472;
+  v3[2] = __51__GCMotionXPCProxyClientEndpoint_newSensorsActive___block_invoke;
+  v3[3] = &unk_1E8419650;
+  v3[4] = self;
+  v4 = a3;
+  _os_activity_initiate(&dword_1D2CD5000, "(Motion XPC Proxy Client Endpoint) New Sensors Active", OS_ACTIVITY_FLAG_DEFAULT, v3);
+}
+
+- (void)refreshSensorsActive
+{
+  activity_block[0] = MEMORY[0x1E69E9820];
+  activity_block[1] = 3221225472;
+  activity_block[2] = __54__GCMotionXPCProxyClientEndpoint_refreshSensorsActive__block_invoke;
+  activity_block[3] = &unk_1E8418C28;
+  activity_block[4] = self;
+  _os_activity_initiate(&dword_1D2CD5000, "(Motion XPC Proxy Client Endpoint) Refresh Sensors Active", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
+}
+
+uint64_t __54__GCMotionXPCProxyClientEndpoint_refreshSensorsActive__block_invoke(uint64_t a1)
+{
+  v1 = *(a1 + 32);
+  v2 = *(v1 + 16);
+  v4[0] = MEMORY[0x1E69E9820];
+  v4[1] = 3221225472;
+  v4[2] = __54__GCMotionXPCProxyClientEndpoint_refreshSensorsActive__block_invoke_2;
+  v4[3] = &unk_1E8419678;
+  v4[4] = v1;
+  return [v2 fetchSensorsActiveWithReply:v4];
+}
+
+- (void)invalidateConnection
+{
+  activity_block[0] = MEMORY[0x1E69E9820];
+  activity_block[1] = 3221225472;
+  activity_block[2] = __54__GCMotionXPCProxyClientEndpoint_invalidateConnection__block_invoke;
+  activity_block[3] = &unk_1E8418C28;
+  activity_block[4] = self;
+  _os_activity_initiate(&dword_1D2CD5000, "(Motion XPC Proxy Client Endpoint) Invalidate Connection", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
+}
+
+void __54__GCMotionXPCProxyClientEndpoint_invalidateConnection__block_invoke(uint64_t a1)
+{
+  v2 = *(a1 + 32);
+  v3 = *(v2 + 24);
+  *(v2 + 24) = 0;
+
+  v4 = *(a1 + 32);
+  v5 = *(v4 + 32);
+  *(v4 + 32) = 0;
+
+  v6 = *(a1 + 32);
+  v7 = *(v6 + 16);
+  *(v6 + 16) = 0;
+}
+
+- (void)fetchObjectIdentifierWithReply:(id)a3
+{
+  v5 = a3;
+  v6 = [(GCMotionXPCProxyClientEndpoint *)self identifier];
+  (*(a3 + 2))(v5, v6);
+}
+
+- (void)initWithIdentifier:initialSensorsActive:.cold.1()
+{
+  v6 = *MEMORY[0x1E69E9840];
+  v0 = getGCLogger();
+  if (os_log_type_enabled(v0, OS_LOG_TYPE_INFO))
+  {
+    OUTLINED_FUNCTION_8();
+    v4 = 1024;
+    v5 = v1;
+    _os_log_impl(&dword_1D2CD5000, v0, OS_LOG_TYPE_INFO, "GCMotionXPCProxyClientEndpoint initWithIdentifier: %@ initialSensorsActive: %d", v3, 0x12u);
+  }
+
+  v2 = *MEMORY[0x1E69E9840];
+}
+
+- (void)setRemoteEndpoint:(NSObject *)a1 connection:.cold.1(NSObject *a1)
+{
+  v10 = *MEMORY[0x1E69E9840];
+  if (os_log_type_enabled(a1, OS_LOG_TYPE_DEBUG))
+  {
+    OUTLINED_FUNCTION_8();
+    OUTLINED_FUNCTION_0_0(&dword_1D2CD5000, v3, v4, "Server connection established for %@", v5, v6, v7, v8, v9);
+  }
+
+  v2 = *MEMORY[0x1E69E9840];
+}
+
+@end

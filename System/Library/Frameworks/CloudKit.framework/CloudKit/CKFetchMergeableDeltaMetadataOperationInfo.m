@@ -1,0 +1,46 @@
+@interface CKFetchMergeableDeltaMetadataOperationInfo
+- (CKFetchMergeableDeltaMetadataOperationInfo)initWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)a3;
+@end
+
+@implementation CKFetchMergeableDeltaMetadataOperationInfo
+
+- (void)encodeWithCoder:(id)a3
+{
+  v4 = a3;
+  v5 = objc_autoreleasePoolPush();
+  v11.receiver = self;
+  v11.super_class = CKFetchMergeableDeltaMetadataOperationInfo;
+  [(CKDatabaseOperationInfo *)&v11 encodeWithCoder:v4];
+  v8 = objc_msgSend_mergeableValueIDs(self, v6, v7);
+  v9 = NSStringFromSelector(sel_mergeableValueIDs);
+  objc_msgSend_encodeObject_forKey_(v4, v10, v8, v9);
+
+  objc_autoreleasePoolPop(v5);
+}
+
+- (CKFetchMergeableDeltaMetadataOperationInfo)initWithCoder:(id)a3
+{
+  v4 = a3;
+  v17.receiver = self;
+  v17.super_class = CKFetchMergeableDeltaMetadataOperationInfo;
+  v5 = [(CKDatabaseOperationInfo *)&v17 initWithCoder:v4];
+  if (v5)
+  {
+    v6 = objc_autoreleasePoolPush();
+    v7 = MEMORY[0x1E695DFD8];
+    v8 = objc_opt_class();
+    v9 = objc_opt_class();
+    v11 = objc_msgSend_setWithObjects_(v7, v10, v8, v9, 0);
+    v12 = NSStringFromSelector(sel_mergeableValueIDs);
+    v14 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v13, v11, v12);
+    mergeableValueIDs = v5->_mergeableValueIDs;
+    v5->_mergeableValueIDs = v14;
+
+    objc_autoreleasePoolPop(v6);
+  }
+
+  return v5;
+}
+
+@end

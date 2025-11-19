@@ -1,0 +1,274 @@
+@interface ICIndexRequestHandler
++ (BOOL)canIndexInExtension;
++ (void)initialize;
+- (BOOL)isValidItemIdentifier:(id)a3 typeIdentifier:(id)a4;
+- (id)dataForSearchableIndex:(id)a3 itemIdentifier:(id)a4 typeIdentifier:(id)a5 error:(id *)a6;
+- (id)fileURLForSearchableIndex:(id)a3 itemIdentifier:(id)a4 typeIdentifier:(id)a5 inPlace:(BOOL)a6 error:(id *)a7;
+- (void)searchableIndex:(id)a3 reindexAllSearchableItemsWithAcknowledgementHandler:(id)a4;
+- (void)searchableIndex:(id)a3 reindexSearchableItemsWithIdentifiers:(id)a4 acknowledgementHandler:(id)a5;
+@end
+
+@implementation ICIndexRequestHandler
+
++ (void)initialize
+{
+  if (objc_opt_class() == a1 && qword_10000C5E0 != -1)
+  {
+    sub_100004450();
+  }
+}
+
++ (BOOL)canIndexInExtension
+{
+  if (qword_10000C5F0[0] != -1)
+  {
+    sub_100004464();
+  }
+
+  return byte_10000C5E8;
+}
+
+- (void)searchableIndex:(id)a3 reindexAllSearchableItemsWithAcknowledgementHandler:(id)a4
+{
+  v4 = a4;
+  [ICIndexerStateHandler logMethodCall:1];
+  v5 = +[ICIndexRequestHandler canIndexInExtension];
+  v6 = os_log_create("com.apple.notes", "SearchIndexer");
+  v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
+  if (v5)
+  {
+    if (v7)
+    {
+      sub_1000044AC();
+    }
+
+    v8 = +[ICReindexer reindexer];
+    v14[0] = _NSConcreteStackBlock;
+    v14[1] = 3221225472;
+    v14[2] = sub_100001B0C;
+    v14[3] = &unk_100008400;
+    v9 = &v15;
+    v15 = v4;
+    v10 = v4;
+    [v8 reindexAllSearchableItemsWithCompletionHandler:v14];
+  }
+
+  else
+  {
+    if (v7)
+    {
+      sub_100004478();
+    }
+
+    [ICSettingsUtilities setObject:&__kCFBooleanTrue forKey:kICReindexOnLaunchKey];
+    [ICIndexerStateHandler logMethodCall:0];
+    v8 = +[ICReindexer reindexer];
+    v12[0] = _NSConcreteStackBlock;
+    v12[1] = 3221225472;
+    v12[2] = sub_100001BA4;
+    v12[3] = &unk_100008400;
+    v9 = &v13;
+    v13 = v4;
+    v11 = v4;
+    [v8 deleteAllSearchableItemsWithCompletionHandler:v12];
+  }
+}
+
+- (void)searchableIndex:(id)a3 reindexSearchableItemsWithIdentifiers:(id)a4 acknowledgementHandler:(id)a5
+{
+  v6 = a4;
+  v7 = a5;
+  [ICIndexerStateHandler logMethodCall:2];
+  v8 = os_log_create("com.apple.notes", "SearchIndexer");
+  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+  {
+    sub_100004630(v6, v8);
+  }
+
+  v9 = +[ICReindexer reindexer];
+  v12[0] = _NSConcreteStackBlock;
+  v12[1] = 3221225472;
+  v12[2] = sub_100001D8C;
+  v12[3] = &unk_100008428;
+  v13 = v6;
+  v14 = v7;
+  v10 = v7;
+  v11 = v6;
+  [v9 reindexSearchableItemsWithObjectIDURIs:v11 completionHandler:v12];
+}
+
+- (id)dataForSearchableIndex:(id)a3 itemIdentifier:(id)a4 typeIdentifier:(id)a5 error:(id *)a6
+{
+  v9 = a4;
+  v10 = a5;
+  v11 = os_log_create("com.apple.notes", "SearchIndexer");
+  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+  {
+    v18 = NSStringFromSelector(a2);
+    v20 = 138412802;
+    v21 = v9;
+    v22 = 2112;
+    v23 = v10;
+    v24 = 2112;
+    v25 = v18;
+    _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Asked for data for %@ with type %@ in %@", &v20, 0x20u);
+  }
+
+  if ([(ICIndexRequestHandler *)self isValidItemIdentifier:v9 typeIdentifier:v10])
+  {
+    v12 = +[ICSearchIndexer sharedIndexer];
+    v13 = [v12 newContextsForAllDataSources];
+    v14 = [v12 objectForManagedObjectIDURI:v9 inContexts:v13];
+    if (objc_opt_respondsToSelector())
+    {
+      v15 = [v14 dataForTypeIdentifier:v10];
+    }
+
+    else
+    {
+      v15 = 0;
+    }
+
+    v16 = os_log_create("com.apple.notes", "SearchIndexer");
+    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
+    {
+      v19 = [v15 length];
+      v20 = 134218498;
+      v21 = v19;
+      v22 = 2112;
+      v23 = v9;
+      v24 = 2112;
+      v25 = v10;
+      _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "Returning %ld bytes for %@ with type %@", &v20, 0x20u);
+    }
+  }
+
+  else
+  {
+    v15 = 0;
+  }
+
+  return v15;
+}
+
+- (id)fileURLForSearchableIndex:(id)a3 itemIdentifier:(id)a4 typeIdentifier:(id)a5 inPlace:(BOOL)a6 error:(id *)a7
+{
+  v10 = a4;
+  v11 = a5;
+  v12 = os_log_create("com.apple.notes", "SearchIndexer");
+  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+  {
+    v24 = NSStringFromSelector(a2);
+    *buf = 138412802;
+    v31 = v10;
+    v32 = 2112;
+    v33 = v11;
+    v34 = 2112;
+    v35 = v24;
+    _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Asked for file URL for %@ with type %@ in %@", buf, 0x20u);
+  }
+
+  if ([(ICIndexRequestHandler *)self isValidItemIdentifier:v10 typeIdentifier:v11])
+  {
+    v13 = +[ICSearchIndexer sharedIndexer];
+    v14 = [v13 newContextsForAllDataSources];
+    v15 = [v13 objectForManagedObjectIDURI:v10 inContexts:v14];
+    if (objc_opt_respondsToSelector())
+    {
+      v16 = [v15 fileURLForTypeIdentifier:v11];
+    }
+
+    else
+    {
+      v16 = 0;
+    }
+
+    v27 = 0u;
+    v28 = 0u;
+    v25 = 0u;
+    v26 = 0u;
+    v17 = v14;
+    v18 = [v17 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    if (v18)
+    {
+      v19 = v18;
+      v20 = *v26;
+      do
+      {
+        for (i = 0; i != v19; i = i + 1)
+        {
+          if (*v26 != v20)
+          {
+            objc_enumerationMutation(v17);
+          }
+
+          [*(*(&v25 + 1) + 8 * i) reset];
+        }
+
+        v19 = [v17 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      }
+
+      while (v19);
+    }
+
+    v22 = os_log_create("com.apple.notes", "SearchIndexer");
+    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
+    {
+      *buf = 138412802;
+      v31 = v16;
+      v32 = 2112;
+      v33 = v10;
+      v34 = 2112;
+      v35 = v11;
+      _os_log_debug_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEBUG, "Returning %@ for %@ with type %@", buf, 0x20u);
+    }
+  }
+
+  else
+  {
+    v16 = 0;
+  }
+
+  return v16;
+}
+
+- (BOOL)isValidItemIdentifier:(id)a3 typeIdentifier:(id)a4
+{
+  v5 = a3;
+  v6 = a4;
+  if (v5 && [v5 length])
+  {
+    v7 = 1;
+    if (v6)
+    {
+      goto LABEL_11;
+    }
+
+    goto LABEL_8;
+  }
+
+  v8 = os_log_create("com.apple.notes", "SearchIndexer");
+  if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  {
+    sub_1000047D8();
+  }
+
+  v7 = 0;
+  if (!v6)
+  {
+LABEL_8:
+    v9 = os_log_create("com.apple.notes", "SearchIndexer");
+    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    {
+      sub_100004814();
+    }
+
+    v7 = 0;
+  }
+
+LABEL_11:
+
+  return v7;
+}
+
+@end

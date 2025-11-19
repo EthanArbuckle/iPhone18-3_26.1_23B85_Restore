@@ -1,0 +1,342 @@
+@interface ATXSleepStream
+- (BOOL)hasAlreadyDetectedSleepEventOnGivenDay:(id)a3 sleepEvents:(id)a4 withCalendar:(id)a5;
+- (BOOL)isFirstBacklightOnAfterWakeup:(id)a3 sleepStartTime:(id)a4 existingSleepEventsToday:(id)a5 withCalendar:(id)a6;
+- (BOOL)isTimeInEligibleNotificationWindow:(id)a3 withCalendar:(id)a4;
+- (id)backlightPublisherWithStartDate:(id)a3 endDate:(id)a4;
+- (id)screenLockedPublisherWithStartDate:(id)a3 endDate:(id)a4;
+- (void)enumerateSleepEventsFromStartDate:(id)a3 endDate:(id)a4 limit:(unint64_t)a5 block:(id)a6;
+@end
+
+@implementation ATXSleepStream
+
+- (void)enumerateSleepEventsFromStartDate:(id)a3 endDate:(id)a4 limit:(unint64_t)a5 block:(id)a6
+{
+  v10 = a3;
+  v11 = a4;
+  v12 = a6;
+  v13 = __atxlog_handle_sleep_schedule();
+  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  {
+    *buf = 0;
+    _os_log_impl(&dword_226368000, v13, OS_LOG_TYPE_DEFAULT, "Started enumeration of Sleep events", buf, 2u);
+  }
+
+  v38[0] = 0;
+  v38[1] = v38;
+  v38[2] = 0x2020000000;
+  v38[3] = 0;
+  *buf = 0;
+  v33 = buf;
+  v34 = 0x3032000000;
+  v35 = __Block_byref_object_copy__3;
+  v36 = __Block_byref_object_dispose__3;
+  v37 = 0;
+  v30[0] = 0;
+  v30[1] = v30;
+  v30[2] = 0x3032000000;
+  v30[3] = __Block_byref_object_copy__3;
+  v30[4] = __Block_byref_object_dispose__3;
+  v31 = [MEMORY[0x277CBEB18] array];
+  v14 = [(ATXSleepStream *)self backlightPublisherWithStartDate:v10 endDate:v11];
+  v15 = [(ATXSleepStream *)self screenLockedPublisherWithStartDate:v10 endDate:v11];
+  v16 = [v14 orderedMergeWithOther:v15 comparator:&__block_literal_global_6];
+  v17 = [MEMORY[0x277CBEA80] currentCalendar];
+  v18 = [MEMORY[0x277CBEBB0] defaultTimeZone];
+  [v17 setTimeZone:v18];
+
+  v22[0] = MEMORY[0x277D85DD0];
+  v22[1] = 3221225472;
+  v22[2] = __72__ATXSleepStream_enumerateSleepEventsFromStartDate_endDate_limit_block___block_invoke_17;
+  v22[3] = &unk_278590438;
+  v29 = a5;
+  v26 = v38;
+  v27 = v30;
+  v19 = v17;
+  v28 = buf;
+  v23 = v19;
+  v24 = self;
+  v20 = v12;
+  v25 = v20;
+  v21 = [v16 sinkWithCompletion:&__block_literal_global_16 shouldContinue:v22];
+
+  _Block_object_dispose(v30, 8);
+  _Block_object_dispose(buf, 8);
+
+  _Block_object_dispose(v38, 8);
+}
+
+uint64_t __72__ATXSleepStream_enumerateSleepEventsFromStartDate_endDate_limit_block___block_invoke(uint64_t a1, void *a2, void *a3)
+{
+  v4 = MEMORY[0x277CCABB0];
+  v5 = a3;
+  [a2 timestamp];
+  v6 = [v4 numberWithDouble:?];
+  v7 = MEMORY[0x277CCABB0];
+  [v5 timestamp];
+  v9 = v8;
+
+  v10 = [v7 numberWithDouble:v9];
+  v11 = [v6 compare:v10];
+
+  return v11;
+}
+
+void __72__ATXSleepStream_enumerateSleepEventsFromStartDate_endDate_limit_block___block_invoke_2(uint64_t a1, void *a2)
+{
+  v2 = a2;
+  if ([v2 state])
+  {
+    v3 = __atxlog_handle_sleep_schedule();
+    if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+    {
+      __72__ATXSleepStream_enumerateSleepEventsFromStartDate_endDate_limit_block___block_invoke_2_cold_1(v2, v3);
+    }
+  }
+}
+
+uint64_t __72__ATXSleepStream_enumerateSleepEventsFromStartDate_endDate_limit_block___block_invoke_17(uint64_t a1, void *a2)
+{
+  v30 = *MEMORY[0x277D85DE8];
+  v3 = a2;
+  v4 = v3;
+  if (*(*(*(a1 + 56) + 8) + 24) < *(a1 + 80))
+  {
+    v5 = MEMORY[0x277CBEAA8];
+    [v3 timestamp];
+    v6 = [v5 dateWithTimeIntervalSinceReferenceDate:?];
+    if ([*(*(*(a1 + 64) + 8) + 40) count])
+    {
+      v7 = *(a1 + 32);
+      v8 = [*(*(*(a1 + 64) + 8) + 40) lastObject];
+      v9 = [v8 wakeUpTime];
+      LOBYTE(v7) = [v7 isDate:v6 inSameDayAsDate:v9];
+
+      if ((v7 & 1) == 0)
+      {
+        [*(*(*(a1 + 64) + 8) + 40) removeAllObjects];
+      }
+    }
+
+    v10 = [v4 eventBody];
+    objc_opt_class();
+    isKindOfClass = objc_opt_isKindOfClass();
+
+    v12 = [v4 eventBody];
+    v13 = v12;
+    if (isKindOfClass)
+    {
+      if (![v12 backlightLevel])
+      {
+        v22 = *(*(a1 + 72) + 8);
+        v24 = *(v22 + 40);
+        v23 = (v22 + 40);
+        if (!v24)
+        {
+          objc_storeStrong(v23, v6);
+        }
+
+        goto LABEL_23;
+      }
+
+      if ([v13 backlightLevel] == 1)
+      {
+        v14 = *(*(*(a1 + 72) + 8) + 40);
+        if (v14 && [*(a1 + 40) isFirstBacklightOnAfterWakeup:v6 sleepStartTime:v14 existingSleepEventsToday:*(*(*(a1 + 64) + 8) + 40) withCalendar:*(a1 + 32)])
+        {
+          v15 = [[ATXSleepEvent alloc] initWithSleepStart:*(*(*(a1 + 72) + 8) + 40) wakeUp:v6];
+          v27 = 0;
+          v16 = *(a1 + 48);
+          if (v16)
+          {
+            (*(v16 + 16))(v16, v15, &v27);
+          }
+
+          [*(*(*(a1 + 64) + 8) + 40) addObject:v15];
+          ++*(*(*(a1 + 56) + 8) + 24);
+          v17 = __atxlog_handle_sleep_schedule();
+          if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+          {
+            *buf = 138412290;
+            v29 = v15;
+            _os_log_impl(&dword_226368000, v17, OS_LOG_TYPE_DEFAULT, "Emitted Sleep event: %@", buf, 0xCu);
+          }
+
+          if ((v27 & 1) != 0 || *(*(*(a1 + 56) + 8) + 24) >= *(a1 + 80))
+          {
+
+            v18 = 0;
+            goto LABEL_25;
+          }
+        }
+
+LABEL_20:
+        v20 = *(*(a1 + 72) + 8);
+        v21 = *(v20 + 40);
+        *(v20 + 40) = 0;
+      }
+    }
+
+    else
+    {
+      objc_opt_class();
+      v19 = objc_opt_isKindOfClass();
+
+      if ((v19 & 1) == 0)
+      {
+LABEL_24:
+        v18 = 1;
+LABEL_25:
+
+        goto LABEL_26;
+      }
+
+      v13 = [v4 eventBody];
+      if (([v13 starting] & 1) == 0)
+      {
+        goto LABEL_20;
+      }
+    }
+
+LABEL_23:
+
+    goto LABEL_24;
+  }
+
+  v18 = 0;
+LABEL_26:
+
+  v25 = *MEMORY[0x277D85DE8];
+  return v18;
+}
+
+- (id)backlightPublisherWithStartDate:(id)a3 endDate:(id)a4
+{
+  v5 = a4;
+  v6 = a3;
+  v7 = BiomeLibrary();
+  v8 = [v7 Device];
+  v9 = [v8 Display];
+  v10 = [v9 Backlight];
+  v11 = [v10 atx_publisherWithStartDate:v6 endDate:v5 maxEvents:0 lastN:0 reversed:0];
+
+  return v11;
+}
+
+- (id)screenLockedPublisherWithStartDate:(id)a3 endDate:(id)a4
+{
+  v5 = a4;
+  v6 = a3;
+  v7 = BiomeLibrary();
+  v8 = [v7 Device];
+  v9 = [v8 ScreenLocked];
+  v10 = [v9 atx_publisherWithStartDate:v6 endDate:v5 maxEvents:0 lastN:0 reversed:0];
+
+  return v10;
+}
+
+- (BOOL)isFirstBacklightOnAfterWakeup:(id)a3 sleepStartTime:(id)a4 existingSleepEventsToday:(id)a5 withCalendar:(id)a6
+{
+  v10 = a3;
+  v11 = a4;
+  v12 = a5;
+  v13 = a6;
+  if (-[ATXSleepStream isTimeInEligibleNotificationWindow:withCalendar:](self, "isTimeInEligibleNotificationWindow:withCalendar:", v10, v13) && ([v10 timeIntervalSinceDate:v11], -[ATXSleepStream isIdlePeriodLongEnough:](self, "isIdlePeriodLongEnough:")))
+  {
+    v14 = ![(ATXSleepStream *)self hasAlreadyDetectedSleepEventOnGivenDay:v10 sleepEvents:v12 withCalendar:v13];
+  }
+
+  else
+  {
+    LOBYTE(v14) = 0;
+  }
+
+  return v14;
+}
+
+- (BOOL)isTimeInEligibleNotificationWindow:(id)a3 withCalendar:(id)a4
+{
+  v5 = a4;
+  v6 = a3;
+  v7 = [v5 dateBySettingHour:3 minute:0 second:0 ofDate:v6 options:0];
+  v8 = [v5 dateBySettingHour:13 minute:0 second:0 ofDate:v6 options:0];
+
+  v9 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v7 endDate:v8];
+  v10 = [v9 containsDate:v6];
+
+  return v10;
+}
+
+- (BOOL)hasAlreadyDetectedSleepEventOnGivenDay:(id)a3 sleepEvents:(id)a4 withCalendar:(id)a5
+{
+  v25 = *MEMORY[0x277D85DE8];
+  v7 = a3;
+  v8 = a4;
+  v9 = a5;
+  if ([v8 count])
+  {
+    v10 = [v9 dateBySettingHour:3 minute:0 second:0 ofDate:v7 options:0];
+    v11 = [v9 dateBySettingHour:13 minute:0 second:0 ofDate:v7 options:0];
+    v20 = 0u;
+    v21 = 0u;
+    v22 = 0u;
+    v23 = 0u;
+    v12 = v8;
+    v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    if (v13)
+    {
+      v14 = *v21;
+      while (2)
+      {
+        for (i = 0; i != v13; ++i)
+        {
+          if (*v21 != v14)
+          {
+            objc_enumerationMutation(v12);
+          }
+
+          v16 = [*(*(&v20 + 1) + 8 * i) wakeUpTime];
+          v17 = v16;
+          if (v16 && [v16 compare:v10] != -1 && objc_msgSend(v17, "compare:", v11) == -1)
+          {
+
+            LOBYTE(v13) = 1;
+            goto LABEL_15;
+          }
+        }
+
+        v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        if (v13)
+        {
+          continue;
+        }
+
+        break;
+      }
+    }
+
+LABEL_15:
+  }
+
+  else
+  {
+    LOBYTE(v13) = 0;
+  }
+
+  v18 = *MEMORY[0x277D85DE8];
+  return v13;
+}
+
+void __72__ATXSleepStream_enumerateSleepEventsFromStartDate_endDate_limit_block___block_invoke_2_cold_1(void *a1, NSObject *a2)
+{
+  v9 = *MEMORY[0x277D85DE8];
+  v3 = [a1 error];
+  v5 = 136315394;
+  v6 = "[ATXSleepStream enumerateSleepEventsFromStartDate:endDate:limit:block:]_block_invoke_2";
+  v7 = 2112;
+  v8 = v3;
+  _os_log_error_impl(&dword_226368000, a2, OS_LOG_TYPE_ERROR, "%s: error fetching biome events: %@", &v5, 0x16u);
+
+  v4 = *MEMORY[0x277D85DE8];
+}
+
+@end

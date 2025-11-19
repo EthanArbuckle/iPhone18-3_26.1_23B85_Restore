@@ -1,0 +1,119 @@
+@interface PHAMusicClearCatalogMusicJob
+- (PHAMusicClearCatalogMusicJob)init;
+- (void)runWithGraphManager:(id)a3 progressBlock:(id)a4 completionHandler:(id)a5;
+@end
+
+@implementation PHAMusicClearCatalogMusicJob
+
+- (void)runWithGraphManager:(id)a3 progressBlock:(id)a4 completionHandler:(id)a5
+{
+  v8 = a4;
+  v9 = a5;
+  objc_initWeak(&location, a3);
+  runQueue = self->_runQueue;
+  v13[0] = MEMORY[0x277D85DD0];
+  v13[1] = 3221225472;
+  v13[2] = __84__PHAMusicClearCatalogMusicJob_runWithGraphManager_progressBlock_completionHandler___block_invoke;
+  v13[3] = &unk_2788B2D20;
+  objc_copyWeak(&v16, &location);
+  v14 = v9;
+  v15 = v8;
+  v11 = v8;
+  v12 = v9;
+  dispatch_async(runQueue, v13);
+
+  objc_destroyWeak(&v16);
+  objc_destroyWeak(&location);
+}
+
+void __84__PHAMusicClearCatalogMusicJob_runWithGraphManager_progressBlock_completionHandler___block_invoke(uint64_t a1)
+{
+  if (__PXLog_genericOnceToken != -1)
+  {
+    dispatch_once(&__PXLog_genericOnceToken, &__block_literal_global_1950);
+  }
+
+  v2 = __PXLog_genericOSLog;
+  if (os_log_type_enabled(__PXLog_genericOSLog, OS_LOG_TYPE_INFO))
+  {
+    *buf = 0;
+    _os_log_impl(&dword_22FA28000, v2, OS_LOG_TYPE_INFO, "[MemoriesMusic] MusicClearCatalogMusicJob - beginning clear catalog music job", buf, 2u);
+  }
+
+  WeakRetained = objc_loadWeakRetained((a1 + 48));
+  if (WeakRetained)
+  {
+    v4 = [MEMORY[0x277D22C80] progressReporterWithProgressBlock:*(a1 + 40)];
+    v5 = [WeakRetained photoLibrary];
+    v6 = MEMORY[0x277D3BAB0];
+    v8[0] = MEMORY[0x277D85DD0];
+    v8[1] = 3221225472;
+    v8[2] = __84__PHAMusicClearCatalogMusicJob_runWithGraphManager_progressBlock_completionHandler___block_invoke_194;
+    v8[3] = &unk_2788B2CF8;
+    v9 = *(a1 + 32);
+    [v6 clearCatalogMusicFromCacheWithPhotoLibrary:v5 progressReporter:v4 completionHandler:v8];
+  }
+
+  else
+  {
+    v7 = *(a1 + 32);
+    v4 = [MEMORY[0x277D3B698] errorForCode:-8];
+    (*(v7 + 16))(v7, v4);
+  }
+}
+
+void __84__PHAMusicClearCatalogMusicJob_runWithGraphManager_progressBlock_completionHandler___block_invoke_194(uint64_t a1, int a2, void *a3)
+{
+  v10 = *MEMORY[0x277D85DE8];
+  v5 = a3;
+  if (__PXLog_genericOnceToken != -1)
+  {
+    dispatch_once(&__PXLog_genericOnceToken, &__block_literal_global_197_1955);
+  }
+
+  v6 = __PXLog_genericOSLog;
+  if (os_log_type_enabled(__PXLog_genericOSLog, OS_LOG_TYPE_INFO))
+  {
+    v7[0] = 67109378;
+    v7[1] = a2;
+    v8 = 2114;
+    v9 = v5;
+    _os_log_impl(&dword_22FA28000, v6, OS_LOG_TYPE_INFO, "[MemoriesMusic] MusicClearCatalogMusicJob - clear catalog music job completed, success=%d, error=%{public}@", v7, 0x12u);
+  }
+
+  (*(*(a1 + 32) + 16))();
+}
+
+uint64_t __84__PHAMusicClearCatalogMusicJob_runWithGraphManager_progressBlock_completionHandler___block_invoke_2_195()
+{
+  __PXLog_genericOSLog = os_log_create("com.apple.photoanalysisd", "generic");
+
+  return MEMORY[0x2821F96F8]();
+}
+
+uint64_t __84__PHAMusicClearCatalogMusicJob_runWithGraphManager_progressBlock_completionHandler___block_invoke_2()
+{
+  __PXLog_genericOSLog = os_log_create("com.apple.photoanalysisd", "generic");
+
+  return MEMORY[0x2821F96F8]();
+}
+
+- (PHAMusicClearCatalogMusicJob)init
+{
+  v8.receiver = self;
+  v8.super_class = PHAMusicClearCatalogMusicJob;
+  v2 = [(PHAMusicClearCatalogMusicJob *)&v8 init];
+  if (v2)
+  {
+    v3 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
+    v4 = dispatch_queue_attr_make_with_qos_class(v3, QOS_CLASS_UTILITY, 0);
+
+    v5 = dispatch_queue_create("com.apple.photoanalysisd.music.clearCatalogJob", v4);
+    runQueue = v2->_runQueue;
+    v2->_runQueue = v5;
+  }
+
+  return v2;
+}
+
+@end

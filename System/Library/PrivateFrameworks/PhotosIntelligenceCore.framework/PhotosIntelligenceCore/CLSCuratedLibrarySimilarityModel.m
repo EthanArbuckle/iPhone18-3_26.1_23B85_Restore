@@ -1,0 +1,84 @@
+@interface CLSCuratedLibrarySimilarityModel
+- (CLSCuratedLibrarySimilarityModel)initWithSceneAnalysisVersion:(unint64_t)a3;
+- (void)setupVersion33;
+- (void)setupVersion80;
+- (void)setupVersion84;
+@end
+
+@implementation CLSCuratedLibrarySimilarityModel
+
+- (void)setupVersion84
+{
+  *&self->_version = xmmword_25E63DA80;
+  *&self->_identicalSimilarityDistanceThreshold = xmmword_25E63DAE0;
+  *&self->_semanticalSimilarityDistanceThreshold = vdupq_n_s64(0x3FC3205E293205E3uLL);
+  self->_semanticalSimilarityWithPersonDistanceThreshold = 0.0810810811;
+}
+
+- (void)setupVersion80
+{
+  *&self->_version = xmmword_25E63DA90;
+  *&self->_identicalSimilarityDistanceThreshold = vdupq_n_s64(0x3FBBB51018A5B761uLL);
+  *&self->_semanticalSimilarityDistanceThreshold = vdupq_n_s64(0x3FCACB8920F04E57uLL);
+  self->_semanticalSimilarityWithPersonDistanceThreshold = 0.209336415;
+}
+
+- (void)setupVersion33
+{
+  *&self->_version = xmmword_25E63DAA0;
+  *&self->_identicalSimilarityDistanceThreshold = vdupq_n_s64(0x3FE4FDF3B645A1CBuLL);
+  *&self->_semanticalSimilarityDistanceThreshold = vdupq_n_s64(0x3FEE5E353F7CED91uLL);
+  self->_semanticalSimilarityWithPersonDistanceThreshold = 0.8;
+}
+
+- (CLSCuratedLibrarySimilarityModel)initWithSceneAnalysisVersion:(unint64_t)a3
+{
+  v14 = *MEMORY[0x277D85DE8];
+  v9.receiver = self;
+  v9.super_class = CLSCuratedLibrarySimilarityModel;
+  v4 = [(CLSCuratedLibrarySimilarityModel *)&v9 init];
+  v5 = v4;
+  if (v4)
+  {
+    if (a3 < 0x54)
+    {
+      if (a3 < 0x50)
+      {
+        if (a3 < 0x21)
+        {
+          if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
+          {
+            v6 = objc_opt_class();
+            *buf = 67109378;
+            v11 = a3;
+            v12 = 2112;
+            v13 = v6;
+            _os_log_impl(&dword_25E5F0000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Unsupported version %d in %@", buf, 0x12u);
+          }
+
+          v5 = 0;
+        }
+
+        else
+        {
+          [(CLSCuratedLibrarySimilarityModel *)v4 setupVersion33];
+        }
+      }
+
+      else
+      {
+        [(CLSCuratedLibrarySimilarityModel *)v4 setupVersion80];
+      }
+    }
+
+    else
+    {
+      [(CLSCuratedLibrarySimilarityModel *)v4 setupVersion84];
+    }
+  }
+
+  v7 = *MEMORY[0x277D85DE8];
+  return v5;
+}
+
+@end

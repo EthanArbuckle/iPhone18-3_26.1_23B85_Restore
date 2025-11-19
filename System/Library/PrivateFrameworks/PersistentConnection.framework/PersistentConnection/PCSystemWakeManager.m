@@ -1,0 +1,17 @@
+@interface PCSystemWakeManager
+@end
+
+@implementation PCSystemWakeManager
+
+void __108__PCSystemWakeManager_scheduleWake_wakeDate_acceptableDelay_userVisible_serviceIdentifier_uniqueIdentifier___block_invoke()
+{
+  v0 = objc_alloc_init(MEMORY[0x277CCABD8]);
+  v1 = scheduleWake_wakeDate_acceptableDelay_userVisible_serviceIdentifier_uniqueIdentifier__queue;
+  scheduleWake_wakeDate_acceptableDelay_userVisible_serviceIdentifier_uniqueIdentifier__queue = v0;
+
+  [scheduleWake_wakeDate_acceptableDelay_userVisible_serviceIdentifier_uniqueIdentifier__queue setMaxConcurrentOperationCount:1];
+  v2 = objc_alloc_init(PCCancelAllProcessWakesOperation);
+  [scheduleWake_wakeDate_acceptableDelay_userVisible_serviceIdentifier_uniqueIdentifier__queue addOperation:v2];
+}
+
+@end

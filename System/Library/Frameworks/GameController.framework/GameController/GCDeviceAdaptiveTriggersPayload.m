@@ -1,0 +1,483 @@
+@interface GCDeviceAdaptiveTriggersPayload
+- (BOOL)hasEqualAmplitudes:(id)a3;
+- (BOOL)hasEqualStrengths:(id)a3;
+- (BOOL)isEqual:(id)a3;
+- (GCDeviceAdaptiveTriggersPayload)initWithCoder:(id)a3;
+- (id)initFeedbackWithResistiveStrengths:(id *)a3;
+- (id)initFeedbackWithStartPosition:(float)a3 resistiveStrength:(float)a4;
+- (id)initOff;
+- (id)initSlopeFeedbackWithStartPosition:(float)a3 endPosition:(float)a4 startStrength:(float)a5 endStrength:(float)a6;
+- (id)initVibrationWithAmplitudes:(id *)a3 frequency:(float)a4;
+- (id)initVibrationWithStartPosition:(float)a3 amplitude:(float)a4 frequency:(float)a5;
+- (id)initWeaponWithStartPosition:(float)a3 endPosition:(float)a4 resistiveStrength:(float)a5;
+- (void)encodeWithCoder:(id)a3;
+@end
+
+@implementation GCDeviceAdaptiveTriggersPayload
+
+- (id)initSlopeFeedbackWithStartPosition:(float)a3 endPosition:(float)a4 startStrength:(float)a5 endStrength:(float)a6
+{
+  v28[2] = *MEMORY[0x1E69E9840];
+  v27.receiver = self;
+  v27.super_class = GCDeviceAdaptiveTriggersPayload;
+  v10 = [(GCDeviceAdaptiveTriggersPayload *)&v27 init];
+  v11 = v10;
+  if (v10)
+  {
+    mode = v10->_mode;
+    v10->_mode = &unk_1F4E8DF88;
+
+    *&v13 = a3;
+    v14 = [MEMORY[0x1E696AD98] numberWithFloat:v13];
+    startPosition = v11->_startPosition;
+    v11->_startPosition = v14;
+
+    *&v16 = a4;
+    v17 = [MEMORY[0x1E696AD98] numberWithFloat:v16];
+    endPosition = v11->_endPosition;
+    v11->_endPosition = v17;
+
+    *&v19 = a5;
+    v20 = [MEMORY[0x1E696AD98] numberWithFloat:v19];
+    v28[0] = v20;
+    *&v21 = a6;
+    v22 = [MEMORY[0x1E696AD98] numberWithFloat:v21];
+    v28[1] = v22;
+    v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:2];
+    strengths = v11->_strengths;
+    v11->_strengths = v23;
+  }
+
+  v25 = *MEMORY[0x1E69E9840];
+  return v11;
+}
+
+- (id)initFeedbackWithStartPosition:(float)a3 resistiveStrength:(float)a4
+{
+  v19[1] = *MEMORY[0x1E69E9840];
+  v18.receiver = self;
+  v18.super_class = GCDeviceAdaptiveTriggersPayload;
+  v6 = [(GCDeviceAdaptiveTriggersPayload *)&v18 init];
+  v7 = v6;
+  if (v6)
+  {
+    mode = v6->_mode;
+    v6->_mode = &unk_1F4E8DFA0;
+
+    *&v9 = a3;
+    v10 = [MEMORY[0x1E696AD98] numberWithFloat:v9];
+    startPosition = v7->_startPosition;
+    v7->_startPosition = v10;
+
+    *&v12 = a4;
+    v13 = [MEMORY[0x1E696AD98] numberWithFloat:v12];
+    v19[0] = v13;
+    v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
+    strengths = v7->_strengths;
+    v7->_strengths = v14;
+  }
+
+  v16 = *MEMORY[0x1E69E9840];
+  return v7;
+}
+
+- (id)initFeedbackWithResistiveStrengths:(id *)a3
+{
+  v13.receiver = self;
+  v13.super_class = GCDeviceAdaptiveTriggersPayload;
+  v4 = [(GCDeviceAdaptiveTriggersPayload *)&v13 init];
+  v5 = v4;
+  if (v4)
+  {
+    mode = v4->_mode;
+    v4->_mode = &unk_1F4E8DFA0;
+
+    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:10];
+    for (i = 0; i != 10; ++i)
+    {
+      *&v8 = a3->var0[i];
+      v10 = [MEMORY[0x1E696AD98] numberWithFloat:v8];
+      [(NSArray *)v7 addObject:v10];
+    }
+
+    strengths = v5->_strengths;
+    v5->_strengths = v7;
+  }
+
+  return v5;
+}
+
+- (id)initWeaponWithStartPosition:(float)a3 endPosition:(float)a4 resistiveStrength:(float)a5
+{
+  v24[1] = *MEMORY[0x1E69E9840];
+  v23.receiver = self;
+  v23.super_class = GCDeviceAdaptiveTriggersPayload;
+  v8 = [(GCDeviceAdaptiveTriggersPayload *)&v23 init];
+  v9 = v8;
+  if (v8)
+  {
+    mode = v8->_mode;
+    v8->_mode = &unk_1F4E8DFB8;
+
+    *&v11 = a3;
+    v12 = [MEMORY[0x1E696AD98] numberWithFloat:v11];
+    startPosition = v9->_startPosition;
+    v9->_startPosition = v12;
+
+    *&v14 = a4;
+    v15 = [MEMORY[0x1E696AD98] numberWithFloat:v14];
+    endPosition = v9->_endPosition;
+    v9->_endPosition = v15;
+
+    *&v17 = a5;
+    v18 = [MEMORY[0x1E696AD98] numberWithFloat:v17];
+    v24[0] = v18;
+    v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
+    strengths = v9->_strengths;
+    v9->_strengths = v19;
+  }
+
+  v21 = *MEMORY[0x1E69E9840];
+  return v9;
+}
+
+- (id)initVibrationWithStartPosition:(float)a3 amplitude:(float)a4 frequency:(float)a5
+{
+  v24[1] = *MEMORY[0x1E69E9840];
+  v23.receiver = self;
+  v23.super_class = GCDeviceAdaptiveTriggersPayload;
+  v8 = [(GCDeviceAdaptiveTriggersPayload *)&v23 init];
+  v9 = v8;
+  if (v8)
+  {
+    mode = v8->_mode;
+    v8->_mode = &unk_1F4E8DFD0;
+
+    *&v11 = a3;
+    v12 = [MEMORY[0x1E696AD98] numberWithFloat:v11];
+    startPosition = v9->_startPosition;
+    v9->_startPosition = v12;
+
+    *&v14 = a4;
+    v15 = [MEMORY[0x1E696AD98] numberWithFloat:v14];
+    v24[0] = v15;
+    v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
+    amplitudes = v9->_amplitudes;
+    v9->_amplitudes = v16;
+
+    *&v18 = a5;
+    v19 = [MEMORY[0x1E696AD98] numberWithFloat:v18];
+    frequency = v9->_frequency;
+    v9->_frequency = v19;
+  }
+
+  v21 = *MEMORY[0x1E69E9840];
+  return v9;
+}
+
+- (id)initVibrationWithAmplitudes:(id *)a3 frequency:(float)a4
+{
+  v18.receiver = self;
+  v18.super_class = GCDeviceAdaptiveTriggersPayload;
+  v6 = [(GCDeviceAdaptiveTriggersPayload *)&v18 init];
+  v7 = v6;
+  if (v6)
+  {
+    mode = v6->_mode;
+    v6->_mode = &unk_1F4E8DFD0;
+
+    *&v9 = a4;
+    v10 = [MEMORY[0x1E696AD98] numberWithFloat:v9];
+    frequency = v7->_frequency;
+    v7->_frequency = v10;
+
+    v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:10];
+    for (i = 0; i != 10; ++i)
+    {
+      *&v13 = a3->var0[i];
+      v15 = [MEMORY[0x1E696AD98] numberWithFloat:v13];
+      [(NSArray *)v12 addObject:v15];
+    }
+
+    amplitudes = v7->_amplitudes;
+    v7->_amplitudes = v12;
+  }
+
+  return v7;
+}
+
+- (id)initOff
+{
+  v6.receiver = self;
+  v6.super_class = GCDeviceAdaptiveTriggersPayload;
+  v2 = [(GCDeviceAdaptiveTriggersPayload *)&v6 init];
+  v3 = v2;
+  if (v2)
+  {
+    mode = v2->_mode;
+    v2->_mode = &unk_1F4E8DFE8;
+  }
+
+  return v3;
+}
+
+- (BOOL)hasEqualStrengths:(id)a3
+{
+  v4 = a3;
+  v5 = [v4 strengths];
+  v6 = [v5 count];
+  v7 = [(NSArray *)self->_strengths count];
+
+  if (v6 == v7)
+  {
+    v8 = [v4 strengths];
+    v9 = [v8 count];
+
+    if (v9)
+    {
+      v10 = 0;
+      v11 = 1;
+      do
+      {
+        v12 = [v4 strengths];
+        v13 = [v12 objectAtIndexedSubscript:v10];
+        [v13 floatValue];
+        v15 = v14;
+        v16 = [(NSArray *)self->_strengths objectAtIndexedSubscript:v10];
+        [v16 floatValue];
+        v11 &= vabds_f32(v15, v17) < 0.0001;
+
+        ++v10;
+        v18 = [v4 strengths];
+        v19 = [v18 count];
+      }
+
+      while (v19 > v10);
+    }
+
+    else
+    {
+      v11 = 1;
+    }
+  }
+
+  else
+  {
+    v11 = 0;
+  }
+
+  return v11;
+}
+
+- (BOOL)hasEqualAmplitudes:(id)a3
+{
+  v4 = a3;
+  v5 = [v4 amplitudes];
+  v6 = [v5 count];
+  v7 = [(NSArray *)self->_amplitudes count];
+
+  if (v6 == v7)
+  {
+    v8 = [v4 amplitudes];
+    v9 = [v8 count];
+
+    if (v9)
+    {
+      v10 = 0;
+      v11 = 1;
+      do
+      {
+        v12 = [v4 amplitudes];
+        v13 = [v12 objectAtIndexedSubscript:v10];
+        [v13 floatValue];
+        v15 = v14;
+        v16 = [(NSArray *)self->_amplitudes objectAtIndexedSubscript:v10];
+        [v16 floatValue];
+        v11 &= vabds_f32(v15, v17) < 0.0001;
+
+        ++v10;
+        v18 = [v4 amplitudes];
+        v19 = [v18 count];
+      }
+
+      while (v19 > v10);
+    }
+
+    else
+    {
+      v11 = 1;
+    }
+  }
+
+  else
+  {
+    v11 = 0;
+  }
+
+  return v11;
+}
+
+- (BOOL)isEqual:(id)a3
+{
+  v4 = a3;
+  if (v4 == self)
+  {
+    v8 = 1;
+    goto LABEL_8;
+  }
+
+  objc_opt_class();
+  if ((objc_opt_isKindOfClass() & 1) == 0)
+  {
+    v8 = 0;
+    goto LABEL_8;
+  }
+
+  v5 = v4;
+  v6 = [(GCDeviceAdaptiveTriggersPayload *)v5 mode];
+  mode = self->_mode;
+
+  if (v6 != mode)
+  {
+    goto LABEL_4;
+  }
+
+  v10 = [(NSNumber *)self->_mode integerValue];
+  v8 = 1;
+  if (v10 <= 2)
+  {
+    if (v10 == 1)
+    {
+      if ([(GCDeviceAdaptiveTriggersPayload *)self hasEqualStrengths:v5])
+      {
+        v11 = [(GCDeviceAdaptiveTriggersPayload *)v5 startPosition];
+        [v11 floatValue];
+        v20 = v19;
+        [(NSNumber *)self->_startPosition floatValue];
+        v8 = vabds_f32(v20, v21) < 0.0001;
+LABEL_25:
+
+        goto LABEL_5;
+      }
+
+      goto LABEL_4;
+    }
+
+    if (v10 != 2)
+    {
+      goto LABEL_5;
+    }
+
+    goto LABEL_15;
+  }
+
+  if (v10 != 3)
+  {
+    if (v10 != 4)
+    {
+      goto LABEL_5;
+    }
+
+LABEL_15:
+    if ([(GCDeviceAdaptiveTriggersPayload *)self hasEqualStrengths:v5])
+    {
+      v11 = [(GCDeviceAdaptiveTriggersPayload *)v5 startPosition];
+      [v11 floatValue];
+      v13 = v12;
+      [(NSNumber *)self->_startPosition floatValue];
+      if (vabds_f32(v13, v14) < 0.0001)
+      {
+        v15 = [(GCDeviceAdaptiveTriggersPayload *)v5 endPosition];
+        [v15 floatValue];
+        v17 = v16;
+        endPosition = self->_endPosition;
+LABEL_23:
+        [(NSNumber *)endPosition floatValue];
+        v8 = vabds_f32(v17, v26) < 0.0001;
+
+        goto LABEL_25;
+      }
+
+      goto LABEL_24;
+    }
+
+    goto LABEL_4;
+  }
+
+  if ([(GCDeviceAdaptiveTriggersPayload *)self hasEqualAmplitudes:v5])
+  {
+    v11 = [(GCDeviceAdaptiveTriggersPayload *)v5 frequency];
+    [v11 floatValue];
+    v23 = v22;
+    [(NSNumber *)self->_frequency floatValue];
+    if (vabds_f32(v23, v24) < 0.0001)
+    {
+      v15 = [(GCDeviceAdaptiveTriggersPayload *)v5 startPosition];
+      [v15 floatValue];
+      v17 = v25;
+      endPosition = self->_startPosition;
+      goto LABEL_23;
+    }
+
+LABEL_24:
+    v8 = 0;
+    goto LABEL_25;
+  }
+
+LABEL_4:
+  v8 = 0;
+LABEL_5:
+
+LABEL_8:
+  return v8;
+}
+
+- (GCDeviceAdaptiveTriggersPayload)initWithCoder:(id)a3
+{
+  v4 = a3;
+  v19.receiver = self;
+  v19.super_class = GCDeviceAdaptiveTriggersPayload;
+  v5 = [(GCDeviceAdaptiveTriggersPayload *)&v19 init];
+  if (v5)
+  {
+    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_mode"];
+    mode = v5->_mode;
+    v5->_mode = v6;
+
+    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_startPosition"];
+    startPosition = v5->_startPosition;
+    v5->_startPosition = v8;
+
+    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_endPosition"];
+    endPosition = v5->_endPosition;
+    v5->_endPosition = v10;
+
+    v12 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_strengths"];
+    strengths = v5->_strengths;
+    v5->_strengths = v12;
+
+    v14 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_amplitudes"];
+    amplitudes = v5->_amplitudes;
+    v5->_amplitudes = v14;
+
+    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_frequency"];
+    frequency = v5->_frequency;
+    v5->_frequency = v16;
+  }
+
+  return v5;
+}
+
+- (void)encodeWithCoder:(id)a3
+{
+  mode = self->_mode;
+  v5 = a3;
+  [v5 encodeObject:mode forKey:@"_mode"];
+  [v5 encodeObject:self->_startPosition forKey:@"_startPosition"];
+  [v5 encodeObject:self->_endPosition forKey:@"_endPosition"];
+  [v5 encodeObject:self->_strengths forKey:@"_strengths"];
+  [v5 encodeObject:self->_amplitudes forKey:@"_amplitudes"];
+  [v5 encodeObject:self->_frequency forKey:@"_frequency"];
+}
+
+@end

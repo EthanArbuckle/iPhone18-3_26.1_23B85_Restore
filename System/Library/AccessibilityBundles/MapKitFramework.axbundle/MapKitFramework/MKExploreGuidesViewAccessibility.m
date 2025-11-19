@@ -1,0 +1,42 @@
+@interface MKExploreGuidesViewAccessibility
++ (void)_accessibilityPerformValidations:(id)a3;
+- (id)accessibilityElements;
+- (void)_accessibilityLoadAccessibilityInformation;
+@end
+
+@implementation MKExploreGuidesViewAccessibility
+
++ (void)_accessibilityPerformValidations:(id)a3
+{
+  v3 = a3;
+  [v3 validateClass:@"MKExploreGuidesView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [v3 validateClass:@"MKExploreGuidesView" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
+  [v3 validateClass:@"MKExploreGuidesView" hasInstanceMethod:@"button" withFullSignature:{"@", 0}];
+}
+
+- (id)accessibilityElements
+{
+  v2 = MEMORY[0x29EDB8D80];
+  v3 = [(MKExploreGuidesViewAccessibility *)self safeValueForKey:@"button"];
+  v4 = [v2 axArrayByIgnoringNilElementsWithCount:{1, v3}];
+
+  return v4;
+}
+
+- (void)_accessibilityLoadAccessibilityInformation
+{
+  v9.receiver = self;
+  v9.super_class = MKExploreGuidesViewAccessibility;
+  [(MKExploreGuidesViewAccessibility *)&v9 _accessibilityLoadAccessibilityInformation];
+  v3 = [(MKExploreGuidesViewAccessibility *)self safeValueForKey:@"button"];
+  v4 = [(MKExploreGuidesViewAccessibility *)self safeValueForKey:@"titleLabel"];
+  v5 = [v4 accessibilityLabel];
+
+  v6 = [(MKExploreGuidesViewAccessibility *)self safeValueForKey:@"subtitleLabel"];
+  v7 = [v6 accessibilityLabel];
+
+  v8 = __AXStringForVariables();
+  [v3 setAccessibilityLabel:{v8, v7, @"__AXStringForVariablesSentinel"}];
+}
+
+@end

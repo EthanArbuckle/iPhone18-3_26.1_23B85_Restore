@@ -1,0 +1,121 @@
+@interface PDRRegistry_Stub
++ (id)sharedInstance;
+- (BOOL)removeDelegate:(id)a3;
+- (OS_dispatch_queue)callbackQueue;
+- (id)getDevicesExcluding:(unint64_t)a3;
+- (int64_t)migrationCountForPairingID:(id)a3;
+- (void)addDelegate:(id)a3;
+- (void)pairingClientSetAltAccountName:(id)a3 altDSID:(id)a4 forDevice:(id)a5 completion:(id)a6;
+- (void)setActivePairedDevice:(id)a3 resultsCallback:(id)a4;
+- (void)setCallbackQueue:(id)a3;
+- (void)start;
+@end
+
+@implementation PDRRegistry_Stub
+
+- (OS_dispatch_queue)callbackQueue
+{
+  v4.receiver = self;
+  v4.super_class = type metadata accessor for Registry_Stub();
+  v2 = [(PDRRegistry *)&v4 callbackQueue];
+
+  return v2;
+}
+
+- (void)setCallbackQueue:(id)a3
+{
+  if (*(&self->super.super.isa + OBJC_IVAR___PDRRegistry_Stub_amSingleton) == 1)
+  {
+    _assertionFailure(_:_:file:line:flags:)();
+    __break(1u);
+  }
+
+  else
+  {
+    v4.receiver = self;
+    v4.super_class = type metadata accessor for Registry_Stub();
+    [(PDRRegistry *)&v4 setCallbackQueue:a3];
+  }
+}
+
++ (id)sharedInstance
+{
+  if (one-time initialization token for sharedInstance_ != -1)
+  {
+    swift_once();
+  }
+
+  v3 = static Registry_Stub.sharedInstance_;
+
+  return v3;
+}
+
+- (void)start
+{
+  if (*(&self->super.super.isa + OBJC_IVAR___PDRRegistry_Stub_started_) == 1)
+  {
+    _assertionFailure(_:_:file:line:flags:)();
+    __break(1u);
+  }
+
+  else
+  {
+    *(&self->super.super.isa + OBJC_IVAR___PDRRegistry_Stub_started_) = 1;
+  }
+}
+
+- (id)getDevicesExcluding:(unint64_t)a3
+{
+  type metadata accessor for PDRDevice();
+  v3.super.isa = Array._bridgeToObjectiveC()().super.isa;
+
+  return v3.super.isa;
+}
+
+- (void)addDelegate:(id)a3
+{
+  swift_unknownObjectRetain();
+  v4 = self;
+  Registry_Stub.add(delegate:)();
+  swift_unknownObjectRelease();
+}
+
+- (BOOL)removeDelegate:(id)a3
+{
+  swift_unknownObjectRetain();
+  v5 = self;
+  v6 = Registry_Stub.remove(delegate:)(a3);
+  swift_unknownObjectRelease();
+
+  return v6 & 1;
+}
+
+- (void)setActivePairedDevice:(id)a3 resultsCallback:(id)a4
+{
+  v4 = _Block_copy(a4);
+  (*(v4 + 2))(v4, 0, 0);
+
+  _Block_release(v4);
+}
+
+- (int64_t)migrationCountForPairingID:(id)a3
+{
+  v3 = type metadata accessor for UUID();
+  v4 = *(v3 - 8);
+  v5 = *(v4 + 64);
+  MEMORY[0x28223BE20](v3);
+  v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
+  static UUID._unconditionallyBridgeFromObjectiveC(_:)();
+  (*(v4 + 8))(v7, v3);
+  return 0;
+}
+
+- (void)pairingClientSetAltAccountName:(id)a3 altDSID:(id)a4 forDevice:(id)a5 completion:(id)a6
+{
+  v6 = _Block_copy(a6);
+  v6[2](v6, 0);
+
+  _Block_release(v6);
+}
+
+@end

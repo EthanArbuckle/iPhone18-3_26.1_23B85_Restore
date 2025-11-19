@@ -1,0 +1,345 @@
+@interface SBCPlaybackPositionService
++ (id)serviceForSyncDomain:(id)a3;
++ (id)serviceForValueDomain:(id)a3;
+- (SBCPlaybackPositionService)initWithPlaybackPositionDomain:(id)a3;
+- (void)deletePlaybackPositionEntities;
+- (void)deletePlaybackPositionEntity:(id)a3;
+- (void)pullLocalPlaybackPositionForEntityIdentifiers:(id)a3 completionBlock:(id)a4;
+- (void)pullPlaybackPositionEntity:(id)a3 completionBlock:(id)a4;
+- (void)pushPlaybackPositionEntity:(id)a3 completionBlock:(id)a4;
+- (void)synchronizeImmediatelyWithCompletionHandler:(id)a3;
+- (void)updateForeignDatabaseWithValuesFromPlaybackPositionEntity:(id)a3;
+@end
+
+@implementation SBCPlaybackPositionService
+
+- (void)pushPlaybackPositionEntity:(id)a3 completionBlock:(id)a4
+{
+  v6 = a4;
+  v7 = MEMORY[0x277D7FBB0];
+  v8 = a3;
+  v9 = [v7 sharedService];
+  v10 = [v8 iTunesCloudEntity];
+
+  v12[0] = MEMORY[0x277D85DD0];
+  v12[1] = 3221225472;
+  v12[2] = __73__SBCPlaybackPositionService_pushPlaybackPositionEntity_completionBlock___block_invoke;
+  v12[3] = &unk_279D24DE0;
+  v12[4] = self;
+  v13 = v6;
+  v11 = v6;
+  [v9 pushPlaybackPositionEntity:v10 completionBlock:v12];
+}
+
+void __73__SBCPlaybackPositionService_pushPlaybackPositionEntity_completionBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
+{
+  v25 = *MEMORY[0x277D85DE8];
+  v7 = a3;
+  v8 = a4;
+  v9 = os_log_create("com.apple.amp.StoreBookkeeperClient", "Default");
+  v10 = v9;
+  if (v7)
+  {
+    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    {
+      v11 = *(a1 + 32);
+      v12 = [v7 msv_description];
+      v17 = 138544130;
+      v18 = v11;
+      v19 = 1024;
+      v20 = a2;
+      v21 = 2114;
+      v22 = v8;
+      v23 = 2114;
+      v24 = v12;
+      _os_log_impl(&dword_26BC4C000, v10, OS_LOG_TYPE_ERROR, "%{public}@ pushPlaybackPositionEntity completed. success=%{BOOL}u entity=%{public}@ error=%{public}@", &v17, 0x26u);
+    }
+  }
+
+  else if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  {
+    v13 = *(a1 + 32);
+    v17 = 138543874;
+    v18 = v13;
+    v19 = 1024;
+    v20 = a2;
+    v21 = 2114;
+    v22 = v8;
+    _os_log_impl(&dword_26BC4C000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ pushPlaybackPositionEntity completed. success=%{BOOL}u entity=%{public}@", &v17, 0x1Cu);
+  }
+
+  v14 = *(a1 + 40);
+  if (v14)
+  {
+    v15 = [v8 sbcEntity];
+    (*(v14 + 16))(v14, a2, v7, v15);
+  }
+
+  v16 = *MEMORY[0x277D85DE8];
+}
+
+- (void)pullPlaybackPositionEntity:(id)a3 completionBlock:(id)a4
+{
+  v6 = a4;
+  v7 = MEMORY[0x277D7FBB0];
+  v8 = a3;
+  v9 = [v7 sharedService];
+  v10 = [v8 iTunesCloudEntity];
+
+  v12[0] = MEMORY[0x277D85DD0];
+  v12[1] = 3221225472;
+  v12[2] = __73__SBCPlaybackPositionService_pullPlaybackPositionEntity_completionBlock___block_invoke;
+  v12[3] = &unk_279D24DE0;
+  v12[4] = self;
+  v13 = v6;
+  v11 = v6;
+  [v9 pullPlaybackPositionEntity:v10 completionBlock:v12];
+}
+
+void __73__SBCPlaybackPositionService_pullPlaybackPositionEntity_completionBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
+{
+  v25 = *MEMORY[0x277D85DE8];
+  v7 = a3;
+  v8 = a4;
+  v9 = os_log_create("com.apple.amp.StoreBookkeeperClient", "Default");
+  v10 = v9;
+  if (v7)
+  {
+    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    {
+      v11 = *(a1 + 32);
+      v12 = [v7 msv_description];
+      v17 = 138544130;
+      v18 = v11;
+      v19 = 1024;
+      v20 = a2;
+      v21 = 2114;
+      v22 = v8;
+      v23 = 2114;
+      v24 = v12;
+      _os_log_impl(&dword_26BC4C000, v10, OS_LOG_TYPE_ERROR, "%{public}@ pullPlaybackPositionEntity completed. success=%{BOOL}u entity=%{public}@ error=%{public}@", &v17, 0x26u);
+    }
+  }
+
+  else if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  {
+    v13 = *(a1 + 32);
+    v17 = 138543874;
+    v18 = v13;
+    v19 = 1024;
+    v20 = a2;
+    v21 = 2114;
+    v22 = v8;
+    _os_log_impl(&dword_26BC4C000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ pullPlaybackPositionEntity completed. success=%{BOOL}u entity=%{public}@", &v17, 0x1Cu);
+  }
+
+  v14 = *(a1 + 40);
+  if (v14)
+  {
+    v15 = [v8 sbcEntity];
+    (*(v14 + 16))(v14, a2, v7, v15);
+  }
+
+  v16 = *MEMORY[0x277D85DE8];
+}
+
+- (void)pullLocalPlaybackPositionForEntityIdentifiers:(id)a3 completionBlock:(id)a4
+{
+  v6 = a4;
+  v7 = MEMORY[0x277D7FBB0];
+  v8 = a3;
+  v9 = [v7 sharedService];
+  v10 = [(SBCPlaybackPositionDomain *)self->_playbackPositionDomain domainIdentifier];
+  v11 = [MEMORY[0x277D2B5F8] autoupdatingSharedLibrary];
+  v12 = [v11 libraryUID];
+  v14[0] = MEMORY[0x277D85DD0];
+  v14[1] = 3221225472;
+  v14[2] = __92__SBCPlaybackPositionService_pullLocalPlaybackPositionForEntityIdentifiers_completionBlock___block_invoke;
+  v14[3] = &unk_279D24DB8;
+  v14[4] = self;
+  v15 = v6;
+  v13 = v6;
+  [v9 getLocalPlaybackPositionForEntityIdentifiers:v8 forDomain:v10 fromLibraryWithIdentifier:v12 completionBlock:v14];
+}
+
+void __92__SBCPlaybackPositionService_pullLocalPlaybackPositionForEntityIdentifiers_completionBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
+{
+  v29 = *MEMORY[0x277D85DE8];
+  v7 = a3;
+  v8 = a4;
+  v9 = os_log_create("com.apple.amp.StoreBookkeeperClient", "Default");
+  v10 = v9;
+  if (v7)
+  {
+    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    {
+      v11 = *(a1 + 32);
+      v12 = [v8 count];
+      v13 = [v7 msv_description];
+      *buf = 138544130;
+      v22 = v11;
+      v23 = 2048;
+      v24 = v12;
+      v25 = 1024;
+      v26 = a2;
+      v27 = 2114;
+      v28 = v13;
+      _os_log_impl(&dword_26BC4C000, v10, OS_LOG_TYPE_ERROR, "%{public}@ pullLocalPlaybackPositionForEntityIdentifiers completed with %lu entities. success=%{BOOL}u error=%{public}@", buf, 0x26u);
+    }
+  }
+
+  else if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  {
+    v14 = *(a1 + 32);
+    *buf = 138543874;
+    v22 = v14;
+    v23 = 2048;
+    v24 = [v8 count];
+    v25 = 1024;
+    v26 = a2;
+    _os_log_impl(&dword_26BC4C000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ pullLocalPlaybackPositionForEntityIdentifiers completed with %lu entities. success=%{BOOL}u", buf, 0x1Cu);
+  }
+
+  v15 = [MEMORY[0x277CBEB18] array];
+  v19[0] = MEMORY[0x277D85DD0];
+  v19[1] = 3221225472;
+  v19[2] = __92__SBCPlaybackPositionService_pullLocalPlaybackPositionForEntityIdentifiers_completionBlock___block_invoke_7;
+  v19[3] = &unk_279D24D90;
+  v16 = v15;
+  v20 = v16;
+  [v8 enumerateObjectsUsingBlock:v19];
+  v17 = *(a1 + 40);
+  if (v17)
+  {
+    (*(v17 + 16))(v17, a2, v7, v16);
+  }
+
+  v18 = *MEMORY[0x277D85DE8];
+}
+
+void __92__SBCPlaybackPositionService_pullLocalPlaybackPositionForEntityIdentifiers_completionBlock___block_invoke_7(uint64_t a1, void *a2)
+{
+  v2 = *(a1 + 32);
+  v3 = [a2 sbcEntity];
+  [v2 addObject:v3];
+}
+
+- (void)synchronizeImmediatelyWithCompletionHandler:(id)a3
+{
+  v9 = a3;
+  v4 = [MEMORY[0x277D7FBB0] sharedService];
+  v5 = [MEMORY[0x277D2B5F8] autoupdatingSharedLibrary];
+  v6 = [v5 libraryUID];
+  v7 = [(SBCPlaybackPositionDomain *)self->_playbackPositionDomain domainIdentifier];
+  [v4 synchronizePlaybackPositionsForLibraryWithIdentifier:v6 forDomain:v7 isCheckpoint:0];
+
+  v8 = v9;
+  if (v9)
+  {
+    (*(v9 + 2))(v9, 1, 0);
+    v8 = v9;
+  }
+}
+
+- (void)updateForeignDatabaseWithValuesFromPlaybackPositionEntity:(id)a3
+{
+  v3 = MEMORY[0x277D7FBB0];
+  v4 = a3;
+  v6 = [v3 sharedService];
+  v5 = [v4 iTunesCloudEntity];
+
+  [v6 updateForeignDatabaseWithValuesFromPlaybackPositionEntity:v5];
+}
+
+- (void)deletePlaybackPositionEntities
+{
+  v4 = [MEMORY[0x277D7FBB0] sharedService];
+  v2 = [MEMORY[0x277D2B5F8] autoupdatingSharedLibrary];
+  v3 = [v2 libraryUID];
+  [v4 deletePlaybackPositionEntitiesFromLibraryWithIdentifier:v3];
+}
+
+- (void)deletePlaybackPositionEntity:(id)a3
+{
+  v3 = MEMORY[0x277D7FBB0];
+  v4 = a3;
+  v6 = [v3 sharedService];
+  v5 = [v4 iTunesCloudEntity];
+
+  [v6 deletePlaybackPositionEntity:v5];
+}
+
+void __89__SBCPlaybackPositionService_persistPlaybackPositionEntity_isCheckpoint_completionBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3)
+{
+  v19 = *MEMORY[0x277D85DE8];
+  v5 = a3;
+  v6 = os_log_create("com.apple.amp.StoreBookkeeperClient", "Default");
+  v7 = v6;
+  if (v5)
+  {
+    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    {
+      v8 = *(a1 + 32);
+      v9 = [v5 msv_description];
+      v13 = 138543874;
+      v14 = v8;
+      v15 = 1024;
+      v16 = a2;
+      v17 = 2114;
+      v18 = v9;
+      _os_log_impl(&dword_26BC4C000, v7, OS_LOG_TYPE_ERROR, "%{public}@ persistPlaybackPositionEntity completed. success=%{BOOL}u error=%{public}@", &v13, 0x1Cu);
+    }
+  }
+
+  else if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  {
+    v10 = *(a1 + 32);
+    v13 = 138543618;
+    v14 = v10;
+    v15 = 1024;
+    v16 = a2;
+    _os_log_impl(&dword_26BC4C000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ persistPlaybackPositionEntity completed. success=%{BOOL}u", &v13, 0x12u);
+  }
+
+  v11 = *(a1 + 40);
+  if (v11)
+  {
+    (*(v11 + 16))(v11, a2);
+  }
+
+  v12 = *MEMORY[0x277D85DE8];
+}
+
+- (SBCPlaybackPositionService)initWithPlaybackPositionDomain:(id)a3
+{
+  v5 = a3;
+  v6 = [[SBCClientConfiguration alloc] initWithPlaybackPositionDomain:v5];
+  v10.receiver = self;
+  v10.super_class = SBCPlaybackPositionService;
+  v7 = [(SBCXPCService *)&v10 initWithClientConfiguration:v6];
+  v8 = v7;
+  if (v7)
+  {
+    objc_storeStrong(&v7->_playbackPositionDomain, a3);
+  }
+
+  return v8;
+}
+
++ (id)serviceForValueDomain:(id)a3
+{
+  v3 = a3;
+  v4 = [(SBCPlaybackPositionService *)[SBCPlaybackPositionValueService alloc] initWithPlaybackPositionDomain:v3];
+
+  return v4;
+}
+
++ (id)serviceForSyncDomain:(id)a3
+{
+  v3 = a3;
+  v4 = [(SBCPlaybackPositionService *)[SBCPlaybackPositionSyncService alloc] initWithPlaybackPositionDomain:v3];
+
+  return v4;
+}
+
+@end

@@ -1,0 +1,190 @@
+@interface NTKGreenfieldCompanionActivityItemProvider
+- (NTKGreenfieldCompanionActivityItemProvider)initWithDraftRecipe:(id)a3 previewImage:(id)a4;
+- (NTKGreenfieldCompanionActivityItemProviderDelegate)delegate;
+- (id)activityViewController:(id)a3 itemsForActivityType:(id)a4;
+- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4;
+- (id)activityViewControllerLinkPresentationMetadata:(id)a3;
+- (id)item;
+- (id)writeImageToDisk:(id)a3 suffix:(id)a4;
+@end
+
+@implementation NTKGreenfieldCompanionActivityItemProvider
+
+- (NTKGreenfieldCompanionActivityItemProvider)initWithDraftRecipe:(id)a3 previewImage:(id)a4
+{
+  v7 = a3;
+  v8 = a4;
+  v9 = objc_alloc_init(MEMORY[0x277CCAA88]);
+  [v9 registerDataRepresentationForTypeIdentifier:@"com.apple.watchface" visibility:0 loadHandler:&__block_literal_global_16];
+  v13.receiver = self;
+  v13.super_class = NTKGreenfieldCompanionActivityItemProvider;
+  v10 = [(UIActivityItemProvider *)&v13 initWithPlaceholderItem:v9];
+  v11 = v10;
+  if (v10)
+  {
+    objc_storeStrong(&v10->_draftRecipe, a3);
+    objc_storeStrong(&v11->_previewImage, a4);
+  }
+
+  return v11;
+}
+
+- (id)activityViewControllerLinkPresentationMetadata:(id)a3
+{
+  v4 = MEMORY[0x277CD46C8];
+  v5 = self->_previewImage;
+  v6 = objc_alloc_init(v4);
+  v7 = [(NTKGreenfieldDraftRecipe *)self->_draftRecipe faceForSharing];
+  v8 = [v7 faceSharingName];
+  [v6 setTitle:v8];
+
+  v9 = objc_alloc_init(MEMORY[0x277CD46B8]);
+  [v9 setType:5];
+  v10 = [objc_alloc(MEMORY[0x277CD46B0]) initWithPlatformImage:v5 properties:v9];
+  [v6 setImage:v10];
+
+  v11 = [(NTKGreenfieldDraftRecipe *)self->_draftRecipe faceForSharingComplicationOptionsCount];
+  if (v11)
+  {
+    v12 = objc_alloc_init(MEMORY[0x277CD46F0]);
+    v13 = NTKClockFaceLocalizedString(@"GREENFIELD_COMPLICATION_COUNT_DESCRIPTION", @"%lu Complications");
+    v14 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v13, v11];
+    v15 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v14];
+    [v12 setStatus:v15];
+
+    [v6 setSpecialization:v12];
+  }
+
+  return v6;
+}
+
+- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4
+{
+  if (*MEMORY[0x277D54728] == a4)
+  {
+    v5 = [(NTKGreenfieldDraftRecipe *)self->_draftRecipe faceForSharing];
+    v6 = [v5 faceSharingName];
+
+    v7 = NTKClockFaceLocalizedString(@"GREENFIELD_SHARE_WATCH_FACE_SUBJECT", @"Apple Watch Face — %@");
+    v4 = [MEMORY[0x277CCACA8] stringWithFormat:v7, v6];
+  }
+
+  else
+  {
+    v4 = &stru_284110E98;
+  }
+
+  return v4;
+}
+
+- (id)item
+{
+  v3 = dispatch_semaphore_create(0);
+  draftRecipe = self->_draftRecipe;
+  v9 = MEMORY[0x277D85DD0];
+  v10 = 3221225472;
+  v11 = __50__NTKGreenfieldCompanionActivityItemProvider_item__block_invoke;
+  v12 = &unk_27877EEF0;
+  v13 = self;
+  v14 = v3;
+  v5 = v3;
+  [NTKGreenfieldUtilities encodeRecipeFromDraftRecipe:draftRecipe completionBlock:&v9];
+  v6 = dispatch_time(0, 10000000000);
+  dispatch_semaphore_wait(v5, v6);
+  v7 = [(NTKGreenfieldEncodedRecipe *)self->_encodedRecipe watchFaceDataUrl:v9];
+
+  return v7;
+}
+
+void __50__NTKGreenfieldCompanionActivityItemProvider_item__block_invoke(uint64_t a1, void *a2, void *a3)
+{
+  v6 = a2;
+  v7 = a3;
+  v8 = v7;
+  if (v7)
+  {
+    v14[0] = MEMORY[0x277D85DD0];
+    v14[1] = 3221225472;
+    v14[2] = __50__NTKGreenfieldCompanionActivityItemProvider_item__block_invoke_2;
+    v14[3] = &unk_27877E438;
+    v14[4] = *(a1 + 32);
+    v15 = v7;
+    dispatch_async(MEMORY[0x277D85CD0], v14);
+  }
+
+  else
+  {
+    objc_storeStrong((*(a1 + 32) + 280), a2);
+    v9 = [v6 watchFaceImage];
+    v10 = [NTKGreenfieldUtilities addBorder:3 toWatchFaceImage:v9];
+
+    v11 = [*(a1 + 32) writeImageToDisk:v10 suffix:@"email"];
+    v12 = *(a1 + 32);
+    v13 = *(v12 + 288);
+    *(v12 + 288) = v11;
+  }
+
+  dispatch_semaphore_signal(*(a1 + 40));
+}
+
+void __50__NTKGreenfieldCompanionActivityItemProvider_item__block_invoke_2(uint64_t a1)
+{
+  v2 = [*(a1 + 32) delegate];
+  [v2 companionActivityItemProvider:*(a1 + 32) handleError:*(a1 + 40)];
+}
+
+- (id)writeImageToDisk:(id)a3 suffix:(id)a4
+{
+  if (a3)
+  {
+    v6 = a4;
+    v7 = UIImagePNGRepresentation(a3);
+    v8 = MEMORY[0x277CCACA8];
+    v9 = [(NTKGreenfieldEncodedRecipe *)self->_encodedRecipe watchFaceName];
+    v10 = [v8 stringWithFormat:@"%@_%@@2x.png", v9, v6];
+
+    v11 = NSTemporaryDirectory();
+    v12 = [v11 stringByAppendingString:v10];
+
+    v13 = [MEMORY[0x277CBEBC0] fileURLWithPath:v12];
+    [v7 writeToURL:v13 atomically:1];
+  }
+
+  else
+  {
+    v13 = 0;
+  }
+
+  return v13;
+}
+
+- (id)activityViewController:(id)a3 itemsForActivityType:(id)a4
+{
+  v11.receiver = self;
+  v11.super_class = NTKGreenfieldCompanionActivityItemProvider;
+  v6 = a4;
+  v7 = [(UIActivityItemProvider *)&v11 activityViewController:a3 itemForActivityType:v6];
+  v8 = [MEMORY[0x277CBEB18] array];
+  v9 = [v6 isEqualToString:*MEMORY[0x277D54728]];
+
+  if (v9 && self->_emailImageUrl)
+  {
+    [v8 addObject:?];
+  }
+
+  if (v7)
+  {
+    [v8 addObject:v7];
+  }
+
+  return v8;
+}
+
+- (NTKGreenfieldCompanionActivityItemProviderDelegate)delegate
+{
+  WeakRetained = objc_loadWeakRetained(&self->_delegate);
+
+  return WeakRetained;
+}
+
+@end

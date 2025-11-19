@@ -1,0 +1,264 @@
+@interface MRAVDistantOutputDevice
+- (MRAVDistantOutputDevice)initWithCoder:(id)a3;
+- (MRAVDistantOutputDevice)initWithDescriptor:(id)a3;
+- (MRAVDistantOutputDevice)initWithSkeleton:(id)a3;
+- (_MRAVOutputDeviceDescriptorProtobuf)generateDescriptor;
+- (id)descriptor;
+- (id)groupSessionInfo;
+- (id)groupableOutputDevice;
+- (id)logicalDeviceID;
+- (id)primaryID;
+- (id)rooms;
+- (int64_t)hostDeviceClass;
+@end
+
+@implementation MRAVDistantOutputDevice
+
+- (id)descriptor
+{
+  v2 = [(_MRAVOutputDeviceDescriptorProtobuf *)self->_protobuf copy];
+
+  return v2;
+}
+
+- (id)logicalDeviceID
+{
+  v3 = +[MRUserSettings currentSettings];
+  v4 = [v3 useClusterDevices];
+
+  if (v4)
+  {
+    v5 = 0;
+  }
+
+  else
+  {
+    v5 = [(_MRAVOutputDeviceDescriptorProtobuf *)self->_protobuf logicalDeviceID];
+  }
+
+  return v5;
+}
+
+- (id)rooms
+{
+  v3 = [(MRAVOutputDevice *)self roomsLookupTable];
+  v6[0] = MEMORY[0x1E69E9820];
+  v6[1] = 3221225472;
+  v6[2] = __32__MRAVDistantOutputDevice_rooms__block_invoke;
+  v6[3] = &unk_1E769B7B0;
+  v6[4] = self;
+  v4 = [v3 msv_map:v6];
+
+  return v4;
+}
+
+- (id)primaryID
+{
+  if ([(_MRAVOutputDeviceDescriptorProtobuf *)self->_protobuf hasPrimaryUID])
+  {
+    [(_MRAVOutputDeviceDescriptorProtobuf *)self->_protobuf primaryUID];
+  }
+
+  else
+  {
+    [(MRAVDistantOutputDevice *)self uid];
+  }
+  v3 = ;
+
+  return v3;
+}
+
+- (id)groupSessionInfo
+{
+  if ([(_MRAVOutputDeviceDescriptorProtobuf *)self->_protobuf hasGroupSessionInfo])
+  {
+    v3 = [MRGroupSessionInfo alloc];
+    v4 = [(_MRAVOutputDeviceDescriptorProtobuf *)self->_protobuf groupSessionInfo];
+    v5 = [(MRGroupSessionInfo *)v3 initWithProtobuf:v4];
+  }
+
+  else
+  {
+    v5 = 0;
+  }
+
+  return v5;
+}
+
+- (_MRAVOutputDeviceDescriptorProtobuf)generateDescriptor
+{
+  v4.receiver = self;
+  v4.super_class = MRAVDistantOutputDevice;
+  v2 = [(MRAVOutputDevice *)&v4 descriptor];
+
+  return v2;
+}
+
+- (int64_t)hostDeviceClass
+{
+  v2 = [(_MRAVOutputDeviceDescriptorProtobuf *)self->_protobuf hostDeviceClass];
+
+  return MRDeviceClassFromProtobuf(v2);
+}
+
+- (MRAVDistantOutputDevice)initWithDescriptor:(id)a3
+{
+  v5 = a3;
+  if (v5)
+  {
+    v35.receiver = self;
+    v35.super_class = MRAVDistantOutputDevice;
+    v6 = [(MRAVDistantOutputDevice *)&v35 init];
+    v7 = v6;
+    if (v6)
+    {
+      objc_storeStrong(&v6->_protobuf, a3);
+      v8 = [(_MRAVOutputDeviceDescriptorProtobuf *)v7->_protobuf modelSpecificInfoData];
+      v9 = MEMORY[0x1E695DFD8];
+      v10 = objc_opt_class();
+      v11 = objc_opt_class();
+      v12 = [v9 setWithObjects:{v10, v11, objc_opt_class(), 0}];
+      v13 = MRCreateFromData(v8, v12);
+      modelSpecificInfo = v7->_modelSpecificInfo;
+      v7->_modelSpecificInfo = v13;
+
+      v15 = [v5 sourceInfo];
+      v16 = -[MRAVOutputDeviceSourceInfo initWithMultipleBuiltInDevices:sourceType:]([MRAVOutputDeviceSourceInfo alloc], "initWithMultipleBuiltInDevices:sourceType:", [v15 multipleBuiltInDevices], 0);
+      sourceInfo = v7->_sourceInfo;
+      v7->_sourceInfo = v16;
+
+      v18 = [v5 clusterCompositions];
+      v19 = [v18 mr_map:&__block_literal_global_13];
+      clusterComposition = v7->_clusterComposition;
+      v7->_clusterComposition = v19;
+
+      v21 = [v5 activatedClusterMembers];
+      v22 = [v21 msv_map:&__block_literal_global_8];
+      activatedClusterMemebers = v7->_activatedClusterMemebers;
+      v7->_activatedClusterMemebers = v22;
+
+      v24 = [v5 allClusterMembers];
+      v25 = [v24 msv_map:&__block_literal_global_11];
+      allClusterMembers = v7->_allClusterMembers;
+      v7->_allClusterMembers = v25;
+
+      v27 = [(MRAVOutputDevice *)v7 roomsLookupTable];
+      v33[0] = MEMORY[0x1E69E9820];
+      v33[1] = 3221225472;
+      v33[2] = __46__MRAVDistantOutputDevice_initWithDescriptor___block_invoke_4;
+      v33[3] = &unk_1E769B7B0;
+      v28 = v7;
+      v34 = v28;
+      v29 = [v27 msv_map:v33];
+      rooms = v28->_rooms;
+      v28->_rooms = v29;
+    }
+
+    self = v7;
+    v31 = self;
+  }
+
+  else
+  {
+    v31 = 0;
+  }
+
+  return v31;
+}
+
+MRAVOutputDeviceDescription *__46__MRAVDistantOutputDevice_initWithDescriptor___block_invoke(uint64_t a1, void *a2)
+{
+  v2 = a2;
+  v3 = [[MRAVOutputDeviceDescription alloc] initWithDescriptor:v2];
+
+  return v3;
+}
+
+MRAVDistantOutputDevice *__46__MRAVDistantOutputDevice_initWithDescriptor___block_invoke_2(uint64_t a1, void *a2)
+{
+  v2 = a2;
+  v3 = [[MRAVDistantOutputDevice alloc] initWithDescriptor:v2];
+
+  return v3;
+}
+
+MRAVOutputDeviceDescription *__46__MRAVDistantOutputDevice_initWithDescriptor___block_invoke_3(uint64_t a1, void *a2)
+{
+  v2 = a2;
+  v3 = [[MRAVOutputDeviceDescription alloc] initWithDescriptor:v2];
+
+  return v3;
+}
+
+MRAVRoomOutputDevice *__46__MRAVDistantOutputDevice_initWithDescriptor___block_invoke_4(uint64_t a1, uint64_t a2, void *a3)
+{
+  v4 = a3;
+  v5 = [[MRAVRoomOutputDevice alloc] initWithOutputDevice:*(a1 + 32) memberOutputDevices:v4];
+
+  return v5;
+}
+
+- (MRAVDistantOutputDevice)initWithSkeleton:(id)a3
+{
+  v4 = a3;
+  v5 = objc_alloc_init(_MRAVOutputDeviceDescriptorProtobuf);
+  v6 = [v4 uniqueIdentifier];
+  [(_MRAVOutputDeviceDescriptorProtobuf *)v5 setUniqueIdentifier:v6];
+
+  v7 = [v4 name];
+  [(_MRAVOutputDeviceDescriptorProtobuf *)v5 setName:v7];
+
+  -[_MRAVOutputDeviceDescriptorProtobuf setDeviceType:](v5, "setDeviceType:", [v4 deviceType]);
+  -[_MRAVOutputDeviceDescriptorProtobuf setDeviceSubType:](v5, "setDeviceSubType:", [v4 deviceSubType]);
+  v8 = [v4 modelID];
+  [(_MRAVOutputDeviceDescriptorProtobuf *)v5 setModelID:v8];
+
+  if ([v4 isVolumeControlAvailable])
+  {
+    -[_MRAVOutputDeviceDescriptorProtobuf setIsVolumeControlAvailable:](v5, "setIsVolumeControlAvailable:", [v4 isVolumeControlAvailable]);
+    [v4 volume];
+    [(_MRAVOutputDeviceDescriptorProtobuf *)v5 setVolume:?];
+  }
+
+  -[_MRAVOutputDeviceDescriptorProtobuf setVolumeCapabilities:](v5, "setVolumeCapabilities:", [v4 volumeCapabilities]);
+  -[_MRAVOutputDeviceDescriptorProtobuf setHostDeviceClass:](v5, "setHostDeviceClass:", [v4 hostDeviceClass]);
+  v9 = [(MRAVDistantOutputDevice *)self initWithDescriptor:v5];
+
+  return v9;
+}
+
+- (MRAVDistantOutputDevice)initWithCoder:(id)a3
+{
+  v4 = a3;
+  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobuf"];
+
+  v6 = [(MRAVDistantOutputDevice *)self initWithDescriptor:v5];
+  return v6;
+}
+
+MRAVRoomOutputDevice *__32__MRAVDistantOutputDevice_rooms__block_invoke(uint64_t a1, uint64_t a2, void *a3)
+{
+  v4 = a3;
+  v5 = [[MRAVRoomOutputDevice alloc] initWithOutputDevice:*(a1 + 32) memberOutputDevices:v4];
+
+  return v5;
+}
+
+- (id)groupableOutputDevice
+{
+  if ([(MRAVDistantOutputDevice *)self isGroupable])
+  {
+    v3 = self;
+  }
+
+  else
+  {
+    v4 = [(MRAVDistantOutputDevice *)self descriptor];
+    [v4 setIsGroupable:1];
+    v3 = [objc_alloc(objc_opt_class()) initWithDescriptor:v4];
+  }
+
+  return v3;
+}
+
+@end

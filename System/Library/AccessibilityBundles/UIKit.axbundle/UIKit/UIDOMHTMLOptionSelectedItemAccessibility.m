@@ -1,0 +1,26 @@
+@interface UIDOMHTMLOptionSelectedItemAccessibility
+- (id)accessibilityLabel;
+- (id)accessibilityLanguage;
+@end
+
+@implementation UIDOMHTMLOptionSelectedItemAccessibility
+
+- (id)accessibilityLanguage
+{
+  v5 = self;
+  v4 = a2;
+  v3.receiver = self;
+  v3.super_class = UIDOMHTMLOptionSelectedItemAccessibility;
+  return [(UIDOMHTMLOptionSelectedItemAccessibility *)&v3 accessibilityLanguage];
+}
+
+- (id)accessibilityLabel
+{
+  v5 = self;
+  v4 = a2;
+  v3.receiver = self;
+  v3.super_class = UIDOMHTMLOptionSelectedItemAccessibility;
+  return [(UIDOMHTMLOptionSelectedItemAccessibility *)&v3 accessibilityLabel];
+}
+
+@end

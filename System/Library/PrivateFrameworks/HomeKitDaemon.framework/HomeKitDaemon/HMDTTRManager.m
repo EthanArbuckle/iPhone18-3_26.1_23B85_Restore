@@ -1,0 +1,499 @@
+@interface HMDTTRManager
++ (HMMRadarRequestFilter)defaultFilter;
++ (id)namespaceUUID;
++ (id)queue;
++ (id)sharedManager;
+- (BOOL)isTTRServiceAuthorized;
+- (HMDTTRManager)initWithDialog:(id)a3 requestFilter:(id)a4;
+- (NSUUID)messageTargetUUID;
+- (OS_dispatch_queue)messageReceiveQueue;
+- (id)messageDestination;
+- (void)handlePresentTTRDialog:(id)a3;
+- (void)handleResetLastTTRTime:(id)a3;
+- (void)initiateRadarWithTitle:(id)a3 componentName:(id)a4 componentVersion:(id)a5 componentID:(int64_t)a6 displayReason:(id)a7 attachments:(id)a8 isUserInitiated:(BOOL)a9;
+- (void)requestRadarWithDisplayReason:(id)a3 radarTitle:(id)a4 componentName:(id)a5 componentVersion:(id)a6 componentID:(int64_t)a7 attachments:(id)a8 waitForResponse:(BOOL)a9;
+@end
+
+@implementation HMDTTRManager
+
++ (HMMRadarRequestFilter)defaultFilter
+{
+  v2 = [objc_opt_self() sharedPreferences];
+  v3 = sub_22A4DC1DC();
+  v4 = *(v3 + 48);
+  v5 = *(v3 + 52);
+  swift_allocObject();
+  v6 = sub_22A4DC1CC();
+  v7 = sub_2295A8970(v2, v6);
+
+  return v7;
+}
+
+- (void)handleResetLastTTRTime:(id)a3
+{
+  v5 = a3;
+  v4 = [(HMDTTRManager *)self requestFilter];
+  [v4 radarRequestedForDisplayReason:&stru_283CF9D50];
+
+  [v5 respondWithSuccess];
+}
+
+- (void)handlePresentTTRDialog:(id)a3
+{
+  v4 = a3;
+  v5 = [v4 messagePayload];
+  v6 = [v5 objectForKeyedSubscript:@"category"];
+
+  if (v6)
+  {
+    v7 = v6;
+  }
+
+  else
+  {
+    v7 = @"homeutil";
+  }
+
+  v8 = v7;
+  [(HMDTTRManager *)self requestRadarWithDisplayReason:v7 radarTitle:v7];
+  [v4 respondWithSuccess];
+}
+
+- (OS_dispatch_queue)messageReceiveQueue
+{
+  v2 = objc_opt_class();
+
+  return [v2 queue];
+}
+
+- (id)messageDestination
+{
+  v3 = objc_alloc(MEMORY[0x277D0F820]);
+  v4 = [(HMDTTRManager *)self messageTargetUUID];
+  v5 = [v3 initWithTarget:v4];
+
+  return v5;
+}
+
+- (NSUUID)messageTargetUUID
+{
+  v2 = objc_opt_class();
+
+  return [v2 namespaceUUID];
+}
+
+- (void)initiateRadarWithTitle:(id)a3 componentName:(id)a4 componentVersion:(id)a5 componentID:(int64_t)a6 displayReason:(id)a7 attachments:(id)a8 isUserInitiated:(BOOL)a9
+{
+  v15 = a3;
+  v16 = a4;
+  v17 = a5;
+  v18 = a7;
+  v19 = a8;
+  v20 = [(HMDTTRManager *)self ttrService];
+
+  if (!v20)
+  {
+    v34 = _HMFPreconditionFailure();
+    _Block_object_dispose(&v41, 8);
+    _Unwind_Resume(v34);
+  }
+
+  v41 = 0;
+  v42 = &v41;
+  v43 = 0x2050000000;
+  v21 = getRadarDraftClass_softClass;
+  v44 = getRadarDraftClass_softClass;
+  if (!getRadarDraftClass_softClass)
+  {
+    v36 = MEMORY[0x277D85DD0];
+    v37 = 3221225472;
+    v38 = __getRadarDraftClass_block_invoke;
+    v39 = &unk_278686CC0;
+    v40 = &v41;
+    __getRadarDraftClass_block_invoke(&v36);
+    v21 = v42[3];
+  }
+
+  v22 = v21;
+  _Block_object_dispose(&v41, 8);
+  v23 = objc_alloc_init(v21);
+  v24 = [v15 length];
+  if (v24 >= 0xF0)
+  {
+    v25 = 240;
+  }
+
+  else
+  {
+    v25 = v24;
+  }
+
+  v26 = [v15 substringToIndex:v25];
+  [v23 setTitle:v26];
+
+  v41 = 0;
+  v42 = &v41;
+  v43 = 0x2050000000;
+  v27 = getRadarComponentClass_softClass;
+  v44 = getRadarComponentClass_softClass;
+  if (!getRadarComponentClass_softClass)
+  {
+    v36 = MEMORY[0x277D85DD0];
+    v37 = 3221225472;
+    v38 = __getRadarComponentClass_block_invoke;
+    v39 = &unk_278686CC0;
+    v40 = &v41;
+    __getRadarComponentClass_block_invoke(&v36);
+    v27 = v42[3];
+  }
+
+  v28 = v27;
+  _Block_object_dispose(&v41, 8);
+  v29 = [[v27 alloc] initWithName:v16 version:v17 identifier:a6];
+  [v23 setComponent:v29];
+
+  [v23 setAttachments:v19];
+  [v23 setIsUserInitiated:a9];
+  [v23 setDiagnosticExtensionIDs:&unk_283E75CC8];
+  v30 = [v18 length];
+  if (v30 >= 0x4B)
+  {
+    v31 = 75;
+  }
+
+  else
+  {
+    v31 = v30;
+  }
+
+  v32 = [v18 substringToIndex:v31];
+  v33 = [(HMDTTRManager *)self ttrService];
+  v35[0] = MEMORY[0x277D85DD0];
+  v35[1] = 3221225472;
+  v35[2] = __125__HMDTTRManager_initiateRadarWithTitle_componentName_componentVersion_componentID_displayReason_attachments_isUserInitiated___block_invoke;
+  v35[3] = &unk_27868A250;
+  v35[4] = self;
+  [v33 createDraft:v23 forProcessNamed:@"HomeKit" withDisplayReason:v32 completionHandler:v35];
+}
+
+void __125__HMDTTRManager_initiateRadarWithTitle_componentName_componentVersion_componentID_displayReason_attachments_isUserInitiated___block_invoke(uint64_t a1, void *a2)
+{
+  v13 = *MEMORY[0x277D85DE8];
+  v3 = a2;
+  if (v3)
+  {
+    v4 = objc_autoreleasePoolPush();
+    v5 = *(a1 + 32);
+    v6 = HMFGetOSLogHandle();
+    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    {
+      v7 = HMFGetLogIdentifier();
+      v9 = 138543618;
+      v10 = v7;
+      v11 = 2112;
+      v12 = v3;
+      _os_log_impl(&dword_229538000, v6, OS_LOG_TYPE_ERROR, "%{public}@Error trying to create radar draft: %@", &v9, 0x16u);
+    }
+
+    objc_autoreleasePoolPop(v4);
+  }
+
+  v8 = *MEMORY[0x277D85DE8];
+}
+
+- (BOOL)isTTRServiceAuthorized
+{
+  v18 = *MEMORY[0x277D85DE8];
+  v3 = [(HMDTTRManager *)self ttrService];
+
+  if (!v3)
+  {
+    _HMFPreconditionFailure();
+  }
+
+  v4 = [(HMDTTRManager *)self ttrService];
+  v5 = [v4 serviceSettings];
+  v6 = [v5 authorizationStatus];
+
+  if (v6 == 2)
+  {
+    v7 = objc_autoreleasePoolPush();
+    v13 = self;
+    v9 = HMFGetOSLogHandle();
+    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    {
+      v10 = HMFGetLogIdentifier();
+      v16 = 138543362;
+      v17 = v10;
+      v11 = "%{public}@Failing to initiate a radar: TapToRadarService is rate-limiting us";
+      goto LABEL_11;
+    }
+  }
+
+  else if (v6 == 1)
+  {
+    v7 = objc_autoreleasePoolPush();
+    v12 = self;
+    v9 = HMFGetOSLogHandle();
+    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    {
+      v10 = HMFGetLogIdentifier();
+      v16 = 138543362;
+      v17 = v10;
+      v11 = "%{public}@Failing to initiate a radar: TapToRadarService has been disallowed by the user";
+      goto LABEL_11;
+    }
+  }
+
+  else
+  {
+    if (v6)
+    {
+      result = 1;
+      goto LABEL_14;
+    }
+
+    v7 = objc_autoreleasePoolPush();
+    v8 = self;
+    v9 = HMFGetOSLogHandle();
+    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    {
+      v10 = HMFGetLogIdentifier();
+      v16 = 138543362;
+      v17 = v10;
+      v11 = "%{public}@Failing to initiate a radar: TapToRadarService is not authorized";
+LABEL_11:
+      _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_DEFAULT, v11, &v16, 0xCu);
+    }
+  }
+
+  objc_autoreleasePoolPop(v7);
+  result = 0;
+LABEL_14:
+  v15 = *MEMORY[0x277D85DE8];
+  return result;
+}
+
+- (void)requestRadarWithDisplayReason:(id)a3 radarTitle:(id)a4 componentName:(id)a5 componentVersion:(id)a6 componentID:(int64_t)a7 attachments:(id)a8 waitForResponse:(BOOL)a9
+{
+  v14 = a3;
+  v15 = a4;
+  v16 = a5;
+  v17 = a6;
+  if (isInternalBuild() && [(HMDTTRManager *)self isTTRServiceAuthorized])
+  {
+    v18 = [objc_opt_class() queue];
+    block[0] = MEMORY[0x277D85DD0];
+    block[1] = 3221225472;
+    block[2] = __129__HMDTTRManager_requestRadarWithDisplayReason_radarTitle_componentName_componentVersion_componentID_attachments_waitForResponse___block_invoke;
+    block[3] = &unk_278686C98;
+    block[4] = self;
+    v20 = v14;
+    v25 = a9;
+    v21 = v15;
+    v22 = v16;
+    v23 = v17;
+    v24 = a7;
+    dispatch_async(v18, block);
+  }
+}
+
+void __129__HMDTTRManager_requestRadarWithDisplayReason_radarTitle_componentName_componentVersion_componentID_attachments_waitForResponse___block_invoke(uint64_t a1)
+{
+  v30 = *MEMORY[0x277D85DE8];
+  v2 = [*(a1 + 32) requestFilter];
+  if ([v2 shouldRequestRadarForDisplayReason:*(a1 + 40)])
+  {
+    [v2 radarRequestedForDisplayReason:*(a1 + 40)];
+    v3 = objc_autoreleasePoolPush();
+    v4 = *(a1 + 32);
+    v5 = HMFGetOSLogHandle();
+    if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+    {
+      v6 = HMFGetLogIdentifier();
+      v7 = *(a1 + 40);
+      *buf = 138543618;
+      v27 = v6;
+      v28 = 2114;
+      v29 = v7;
+      _os_log_impl(&dword_229538000, v5, OS_LOG_TYPE_INFO, "%{public}@Requesting radar because %{public}@", buf, 0x16u);
+    }
+
+    objc_autoreleasePoolPop(v3);
+    v8 = [*(a1 + 32) dialog];
+    v9 = *(a1 + 32);
+    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"HomeKit requests you file a radar because %@.", *(a1 + 40)];
+    v11 = *(a1 + 80);
+    v20[0] = MEMORY[0x277D85DD0];
+    v20[1] = 3221225472;
+    v20[2] = __129__HMDTTRManager_requestRadarWithDisplayReason_radarTitle_componentName_componentVersion_componentID_attachments_waitForResponse___block_invoke_22;
+    v20[3] = &unk_278686C70;
+    v20[4] = *(a1 + 32);
+    v21 = *(a1 + 48);
+    v22 = *(a1 + 56);
+    v12 = *(a1 + 64);
+    v13 = *(a1 + 72);
+    v23 = v12;
+    v25 = v13;
+    v24 = *(a1 + 40);
+    [v8 displayInternalTTRErrorWithContext:v9 message:v10 waitForResponse:v11 completionHandler:v20];
+  }
+
+  else
+  {
+    v14 = objc_autoreleasePoolPush();
+    v15 = *(a1 + 32);
+    v16 = HMFGetOSLogHandle();
+    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    {
+      v17 = HMFGetLogIdentifier();
+      v18 = *(a1 + 40);
+      *buf = 138543618;
+      v27 = v17;
+      v28 = 2112;
+      v29 = v18;
+      _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@Radar request filtered out: %@", buf, 0x16u);
+    }
+
+    objc_autoreleasePoolPop(v14);
+  }
+
+  v19 = *MEMORY[0x277D85DE8];
+}
+
+uint64_t __129__HMDTTRManager_requestRadarWithDisplayReason_radarTitle_componentName_componentVersion_componentID_attachments_waitForResponse___block_invoke_22(uint64_t result, int a2)
+{
+  if (a2)
+  {
+    LOBYTE(v2) = 1;
+    return [*(result + 32) initiateRadarWithTitle:*(result + 40) componentName:*(result + 48) componentVersion:*(result + 56) componentID:*(result + 72) displayReason:*(result + 64) attachments:0 isUserInitiated:v2];
+  }
+
+  return result;
+}
+
+- (HMDTTRManager)initWithDialog:(id)a3 requestFilter:(id)a4
+{
+  v7 = a3;
+  v8 = a4;
+  v15.receiver = self;
+  v15.super_class = HMDTTRManager;
+  v9 = [(HMDTTRManager *)&v15 init];
+  if (v9 && TapToRadarKitLibraryCore())
+  {
+    v17 = 0;
+    v18 = &v17;
+    v19 = 0x2050000000;
+    v10 = getTapToRadarServiceClass_softClass;
+    v20 = getTapToRadarServiceClass_softClass;
+    if (!getTapToRadarServiceClass_softClass)
+    {
+      v16[0] = MEMORY[0x277D85DD0];
+      v16[1] = 3221225472;
+      v16[2] = __getTapToRadarServiceClass_block_invoke;
+      v16[3] = &unk_278686CC0;
+      v16[4] = &v17;
+      __getTapToRadarServiceClass_block_invoke(v16);
+      v10 = v18[3];
+    }
+
+    v11 = v10;
+    _Block_object_dispose(&v17, 8);
+    v12 = [v10 shared];
+    ttrService = v9->_ttrService;
+    v9->_ttrService = v12;
+
+    objc_storeStrong(&v9->_dialog, a3);
+    objc_storeStrong(&v9->_requestFilter, a4);
+  }
+
+  return v9;
+}
+
++ (id)queue
+{
+  if (queue__hmf_once_t10 != -1)
+  {
+    dispatch_once(&queue__hmf_once_t10, &__block_literal_global_36_258302);
+  }
+
+  v3 = queue__hmf_once_v11;
+
+  return v3;
+}
+
+void __22__HMDTTRManager_queue__block_invoke()
+{
+  v3 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
+  v0 = dispatch_queue_attr_make_with_qos_class(v3, QOS_CLASS_BACKGROUND, 0);
+  v1 = dispatch_queue_create("com.apple.HomeKit.HMDTTRManager", v0);
+  v2 = queue__hmf_once_v11;
+  queue__hmf_once_v11 = v1;
+}
+
++ (id)namespaceUUID
+{
+  if (namespaceUUID__hmf_once_t8 != -1)
+  {
+    dispatch_once(&namespaceUUID__hmf_once_t8, &__block_literal_global_258305);
+  }
+
+  v3 = namespaceUUID__hmf_once_v9;
+
+  return v3;
+}
+
+void __30__HMDTTRManager_namespaceUUID__block_invoke()
+{
+  v0 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"B4FFBCEC-B0A2-4660-B1B2-4B484FE76D74"];
+  v1 = namespaceUUID__hmf_once_v9;
+  namespaceUUID__hmf_once_v9 = v0;
+}
+
++ (id)sharedManager
+{
+  block[0] = MEMORY[0x277D85DD0];
+  block[1] = 3221225472;
+  block[2] = __30__HMDTTRManager_sharedManager__block_invoke;
+  block[3] = &__block_descriptor_40_e5_v8__0l;
+  block[4] = a1;
+  if (sharedManager_onceToken_258308 != -1)
+  {
+    dispatch_once(&sharedManager_onceToken_258308, block);
+  }
+
+  v2 = sharedManager_defaultManager;
+
+  return v2;
+}
+
+void __30__HMDTTRManager_sharedManager__block_invoke(uint64_t a1)
+{
+  v16[1] = *MEMORY[0x277D85DE8];
+  if (isInternalBuild() && TapToRadarKitLibraryCore())
+  {
+    v2 = [HMDTTRManager alloc];
+    v3 = +[HMDUIDialogPresenter sharedUIDialogPresenter];
+    v4 = [*(a1 + 32) defaultFilter];
+    v5 = [(HMDTTRManager *)v2 initWithDialog:v3 requestFilter:v4];
+    v6 = sharedManager_defaultManager;
+    sharedManager_defaultManager = v5;
+
+    v7 = +[HMDMessageDispatcher defaultDispatcher];
+    v8 = sharedManager_defaultManager;
+    v9 = [HMDXPCMessagePolicy policyWithEntitlements:5];
+    v16[0] = v9;
+    v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
+    [v7 registerForMessage:@"presentTTRDialog" receiver:v8 policies:v10 selector:sel_handlePresentTTRDialog_];
+
+    v11 = sharedManager_defaultManager;
+    v12 = [HMDXPCMessagePolicy policyWithEntitlements:5];
+    v15 = v12;
+    v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v15 count:1];
+    [v7 registerForMessage:@"resetLastTTRTime" receiver:v11 policies:v13 selector:sel_handleResetLastTTRTime_];
+  }
+
+  v14 = *MEMORY[0x277D85DE8];
+}
+
+@end

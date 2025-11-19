@@ -1,0 +1,71 @@
+@interface GEOAPCurrentUploadTableViewCell
+- (_TtC4Maps31GEOAPCurrentUploadTableViewCell)initWithCoder:(id)a3;
+- (_TtC4Maps31GEOAPCurrentUploadTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
+@end
+
+@implementation GEOAPCurrentUploadTableViewCell
+
+- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+{
+  v4 = type metadata accessor for UICellConfigurationState();
+  v5 = *(v4 - 8);
+  __chkstk_darwin(v4);
+  v7 = v12 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
+  static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
+  v8 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC4Maps31GEOAPCurrentUploadTableViewCell_cellConfig);
+  if (v8)
+  {
+    v9 = type metadata accessor for GEOAPCurrentUploadTableViewCellConfiguration();
+    v10 = sub_100232140(&qword_101914918, type metadata accessor for GEOAPCurrentUploadTableViewCellConfiguration);
+  }
+
+  else
+  {
+    v9 = 0;
+    v10 = 0;
+    v12[2] = 0;
+    v12[3] = 0;
+  }
+
+  v12[1] = v8;
+  v12[4] = v9;
+  v12[5] = v10;
+  swift_retain_n();
+  v11 = self;
+  UITableViewCell.contentConfiguration.setter();
+
+  (*(v5 + 8))(v7, v4);
+}
+
+- (_TtC4Maps31GEOAPCurrentUploadTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+{
+  if (a4)
+  {
+    static String._unconditionallyBridgeFromObjectiveC(_:)();
+    *(&self->super.super.super.super.isa + OBJC_IVAR____TtC4Maps31GEOAPCurrentUploadTableViewCell_cellConfig) = 0;
+    v6 = String._bridgeToObjectiveC()();
+  }
+
+  else
+  {
+    v6 = 0;
+    *(&self->super.super.super.super.isa + OBJC_IVAR____TtC4Maps31GEOAPCurrentUploadTableViewCell_cellConfig) = 0;
+  }
+
+  v9.receiver = self;
+  v9.super_class = type metadata accessor for GEOAPCurrentUploadTableViewCell();
+  v7 = [(GEOAPCurrentUploadTableViewCell *)&v9 initWithStyle:a3 reuseIdentifier:v6];
+
+  return v7;
+}
+
+- (_TtC4Maps31GEOAPCurrentUploadTableViewCell)initWithCoder:(id)a3
+{
+  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC4Maps31GEOAPCurrentUploadTableViewCell_cellConfig) = 0;
+  result = _assertionFailure(_:_:file:line:flags:)();
+  __break(1u);
+  return result;
+}
+
+@end

@@ -1,0 +1,12 @@
+@interface AFInvocationFeedbackExperimentFeatureGroupsGetFromName
+@end
+
+@implementation AFInvocationFeedbackExperimentFeatureGroupsGetFromName
+
+void ___AFInvocationFeedbackExperimentFeatureGroupsGetFromName_block_invoke()
+{
+  v0 = _AFInvocationFeedbackExperimentFeatureGroupsGetFromName_map;
+  _AFInvocationFeedbackExperimentFeatureGroupsGetFromName_map = &unk_1F056F068;
+}
+
+@end

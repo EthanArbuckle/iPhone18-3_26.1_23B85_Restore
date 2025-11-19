@@ -1,0 +1,36 @@
+@interface NSUUID(AFSecurityDigestibleChunksProvider)
+- (void)af_enumerateDigestibleChunksWithOptions:()AFSecurityDigestibleChunksProvider usingBlock:;
+@end
+
+@implementation NSUUID(AFSecurityDigestibleChunksProvider)
+
+- (void)af_enumerateDigestibleChunksWithOptions:()AFSecurityDigestibleChunksProvider usingBlock:
+{
+  v10[2] = *MEMORY[0x1E69E9840];
+  v6 = a4;
+  v7 = v6;
+  if (v6)
+  {
+    if ((a3 & 1) == 0)
+    {
+      v8 = (v6 + 16);
+      (*(v6 + 2))(v6, &AFSecurityDigestibleChunksProviderType, 4);
+      strcpy(v10, "{NSUUID=#}");
+      (*v8)(v7, v10, 11);
+      (*v8)(v7, &AFSecurityDigestibleChunksProviderData, 4);
+    }
+
+    v10[0] = 0;
+    v10[1] = 0;
+    [a1 getUUIDBytes:v10];
+    (*(v7 + 2))(v7, v10, 16);
+    if ((a3 & 1) == 0)
+    {
+      (*(v7 + 2))(v7, &AFSecurityDigestibleChunksProviderEnd, 4);
+    }
+  }
+
+  v9 = *MEMORY[0x1E69E9840];
+}
+
+@end

@@ -1,0 +1,14 @@
+@interface WebAuthenticationOperation.PresentationContextProvider
+- (_TtCC31_AuthenticationServices_SwiftUI26WebAuthenticationOperationP33_8E8F7254784E6C7F9718057E730AB2A627PresentationContextProvider)init;
+@end
+
+@implementation WebAuthenticationOperation.PresentationContextProvider
+
+- (_TtCC31_AuthenticationServices_SwiftUI26WebAuthenticationOperationP33_8E8F7254784E6C7F9718057E730AB2A627PresentationContextProvider)init
+{
+  result = _swift_stdlib_reportUnimplementedInitializer();
+  __break(1u);
+  return result;
+}
+
+@end

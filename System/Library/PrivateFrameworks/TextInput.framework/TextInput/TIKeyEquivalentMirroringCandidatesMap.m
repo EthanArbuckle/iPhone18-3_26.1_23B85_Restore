@@ -1,0 +1,12 @@
+@interface TIKeyEquivalentMirroringCandidatesMap
+@end
+
+@implementation TIKeyEquivalentMirroringCandidatesMap
+
+void ____TIKeyEquivalentMirroringCandidatesMap_block_invoke()
+{
+  v0 = __TIKeyEquivalentMirroringCandidatesMap___keyEquivalentMirroringCandidatesMap;
+  __TIKeyEquivalentMirroringCandidatesMap___keyEquivalentMirroringCandidatesMap = &unk_1EF7CF550;
+}
+
+@end

@@ -1,0 +1,145 @@
+@interface ABPK2DDetectionPostprocessGPU
+- (ABPK2DDetectionPostprocessGPU)initWithNumberOfChannels:(unint64_t)a3;
+- (uint64_t)process:(double)a3 counter:(uint64_t)a4 shape:(__IOSurface *)a5;
+- (void)_copyToInputAsFloat16:(float *)a3 shape:(CGSize)a4;
+- (void)dealloc;
+@end
+
+@implementation ABPK2DDetectionPostprocessGPU
+
+- (ABPK2DDetectionPostprocessGPU)initWithNumberOfChannels:(unint64_t)a3
+{
+  v27.receiver = self;
+  v27.super_class = ABPK2DDetectionPostprocessGPU;
+  v4 = [(ABPK2DDetectionPostprocessGPU *)&v27 init];
+  v4->_nChannels = a3;
+  v5 = MTLCreateSystemDefaultDevice();
+  device = v4->_device;
+  v4->_device = v5;
+
+  v7 = [(MTLDevice *)v4->_device newCommandQueue];
+  commandQueue = v4->_commandQueue;
+  v4->_commandQueue = v7;
+
+  v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+  v10 = [v9 URLForResource:@"default" withExtension:@"metallib"];
+  v11 = v4->_device;
+  v26 = 0;
+  v12 = [(MTLDevice *)v11 newLibraryWithURL:v10 error:&v26];
+  v13 = v26;
+  library = v4->_library;
+  v4->_library = v12;
+
+  v15 = [(MTLLibrary *)v4->_library newFunctionWithName:@"interpolateBicubic"];
+  v16 = [(MTLDevice *)v4->_device newComputePipelineStateWithFunction:v15 error:0];
+  pipelineStateInterpolate = v4->_pipelineStateInterpolate;
+  v4->_pipelineStateInterpolate = v16;
+
+  v18 = [(MTLLibrary *)v4->_library newFunctionWithName:@"maxFilter"];
+  v19 = [(MTLDevice *)v4->_device newComputePipelineStateWithFunction:v18 error:0];
+  pipelineStateMaxFilter = v4->_pipelineStateMaxFilter;
+  v4->_pipelineStateMaxFilter = v19;
+
+  v21 = [(MTLDevice *)v4->_device newBufferWithLength:2 * width * height * scale * scale * v4->_nChannels + 16 options:32];
+  intermediate = v4->_intermediate;
+  v4->_intermediate = v21;
+
+  v23 = [(MTLDevice *)v4->_device newBufferWithLength:2 * width * height * scale * scale * v4->_nChannels + 16 options:0];
+  output = v4->_output;
+  v4->_output = v23;
+
+  return v4;
+}
+
+- (void)dealloc
+{
+  input = self->_input;
+  self->_input = 0;
+
+  intermediate = self->_intermediate;
+  self->_intermediate = 0;
+
+  output = self->_output;
+  self->_output = 0;
+
+  v6.receiver = self;
+  v6.super_class = ABPK2DDetectionPostprocessGPU;
+  [(ABPK2DDetectionPostprocessGPU *)&v6 dealloc];
+}
+
+- (void)_copyToInputAsFloat16:(float *)a3 shape:(CGSize)a4
+{
+  v5 = (a4.height * (a4.width * self->_nChannels * 0.125) * 0.125);
+  for (i = [(MTLBuffer *)self->_input contents]; v5; --v5)
+  {
+    v7 = *a3++;
+    _S0 = v7;
+    __asm { FCVT            H0, S0 }
+
+    *i++ = _S0;
+  }
+}
+
+- (uint64_t)process:(double)a3 counter:(uint64_t)a4 shape:(__IOSurface *)a5
+{
+  v11 = [*(a1 + 16) newBufferWithIOSurface:?];
+  v12 = *(a1 + 48);
+  *(a1 + 48) = v11;
+
+  bzero([*(a1 + 64) contents], objc_msgSend(*(a1 + 64), "length"));
+  v13 = [*(a1 + 24) commandBuffer];
+  [v13 setLabel:@"com.apple.abpk.2ddetectionpostprocessGPU.commandBuffer"];
+  v14 = (a2 * 0.125);
+  v15 = (a3 * 0.125);
+  v34[0] = (a3 * 0.125);
+  v34[1] = a3;
+  v34[2] = IOSurfaceGetBytesPerRow(a5) >> 1;
+  v34[3] = a2;
+  v16 = [v13 computeCommandEncoder];
+  [v16 setLabel:@"com.apple.abpk.2ddetectionpostprocessGPU.interpolation"];
+  [v16 setComputePipelineState:*(a1 + 32)];
+  [v16 setBuffer:*(a1 + 48) offset:0 atIndex:0];
+  [v16 setBuffer:*(a1 + 56) offset:0 atIndex:1];
+  [v16 setBytes:&precomputedInterpolateBicubic length:96 atIndex:2];
+  [v16 setBytes:v34 length:16 atIndex:3];
+  v17 = [*(a1 + 32) threadExecutionWidth];
+  v18 = [*(a1 + 32) maxTotalThreadsPerThreadgroup];
+  v19 = *(a1 + 8);
+  v31 = scale * v14;
+  v32 = scale * v15;
+  v33 = v19;
+  v28 = v17;
+  v29 = v18 / v17;
+  v30 = 1;
+  [v16 dispatchThreads:&v31 threadsPerThreadgroup:&v28];
+  [v16 endEncoding];
+
+  v20 = [v13 computeCommandEncoder];
+  [v20 setLabel:@"com.apple.abpk.2ddetectionpostprocessGPU.maxfilter"];
+  [v20 setComputePipelineState:*(a1 + 40)];
+  [v20 setBuffer:*(a1 + 56) offset:0 atIndex:0];
+  [v20 setBuffer:*(a1 + 64) offset:0 atIndex:1];
+  v21 = [*(a1 + 16) newBufferWithBytes:a6 length:4 options:0];
+  [v20 setBuffer:v21 offset:0 atIndex:2];
+  v22 = [*(a1 + 16) newBufferWithBytes:v34 length:16 options:0];
+  [v20 setBuffer:v22 offset:0 atIndex:3];
+  v23 = [*(a1 + 40) threadExecutionWidth];
+  v24 = [*(a1 + 40) maxTotalThreadsPerThreadgroup];
+  v25 = *(a1 + 8);
+  v31 = scale * v14;
+  v32 = scale * v15;
+  v33 = v25;
+  v28 = v23;
+  v29 = v24 / v23;
+  v30 = 1;
+  [v20 dispatchThreads:&v31 threadsPerThreadgroup:&v28];
+  [v20 endEncoding];
+  [v13 commit];
+  [v13 waitUntilCompleted];
+  memcpy(a6, [v21 contents], objc_msgSend(v21, "length"));
+  v26 = [*(a1 + 64) contents];
+
+  return v26;
+}
+
+@end

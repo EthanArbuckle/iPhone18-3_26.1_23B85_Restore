@@ -1,0 +1,885 @@
+@interface _SFPBWatchNowCardSection
+- (BOOL)isEqual:(id)a3;
+- (NSData)jsonData;
+- (_SFPBWatchNowCardSection)initWithDictionary:(id)a3;
+- (_SFPBWatchNowCardSection)initWithFacade:(id)a3;
+- (_SFPBWatchNowCardSection)initWithJSON:(id)a3;
+- (id)dictionaryRepresentation;
+- (unint64_t)hash;
+- (void)addPunchoutOptions:(id)a3;
+- (void)setPunchoutOptions:(id)a3;
+- (void)setPunchoutPickerDismissText:(id)a3;
+- (void)setPunchoutPickerTitle:(id)a3;
+- (void)setSectionTitle:(id)a3;
+- (void)setType:(id)a3;
+- (void)writeTo:(id)a3;
+@end
+
+@implementation _SFPBWatchNowCardSection
+
+- (_SFPBWatchNowCardSection)initWithFacade:(id)a3
+{
+  v38 = *MEMORY[0x1E69E9840];
+  v4 = a3;
+  v5 = [(_SFPBWatchNowCardSection *)self init];
+  if (v5)
+  {
+    v6 = [v4 punchoutOptions];
+    if (v6)
+    {
+      v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
+    }
+
+    else
+    {
+      v7 = 0;
+    }
+
+    v35 = 0u;
+    v36 = 0u;
+    v33 = 0u;
+    v34 = 0u;
+    v8 = [v4 punchoutOptions];
+    v9 = [v8 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    if (v9)
+    {
+      v10 = v9;
+      v11 = *v34;
+      do
+      {
+        for (i = 0; i != v10; ++i)
+        {
+          if (*v34 != v11)
+          {
+            objc_enumerationMutation(v8);
+          }
+
+          v13 = [[_SFPBPunchout alloc] initWithFacade:*(*(&v33 + 1) + 8 * i)];
+          if (v13)
+          {
+            [v7 addObject:v13];
+          }
+        }
+
+        v10 = [v8 countByEnumeratingWithState:&v33 objects:v37 count:16];
+      }
+
+      while (v10);
+    }
+
+    [(_SFPBWatchNowCardSection *)v5 setPunchoutOptions:v7];
+    v14 = [v4 punchoutPickerTitle];
+
+    if (v14)
+    {
+      v15 = [v4 punchoutPickerTitle];
+      [(_SFPBWatchNowCardSection *)v5 setPunchoutPickerTitle:v15];
+    }
+
+    v16 = [v4 punchoutPickerDismissText];
+
+    if (v16)
+    {
+      v17 = [v4 punchoutPickerDismissText];
+      [(_SFPBWatchNowCardSection *)v5 setPunchoutPickerDismissText:v17];
+    }
+
+    if ([v4 hasCanBeHidden])
+    {
+      -[_SFPBWatchNowCardSection setCanBeHidden:](v5, "setCanBeHidden:", [v4 canBeHidden]);
+    }
+
+    if ([v4 hasHasTopPadding])
+    {
+      -[_SFPBWatchNowCardSection setHasTopPadding:](v5, "setHasTopPadding:", [v4 hasTopPadding]);
+    }
+
+    if ([v4 hasHasBottomPadding])
+    {
+      -[_SFPBWatchNowCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [v4 hasBottomPadding]);
+    }
+
+    v18 = [v4 type];
+
+    if (v18)
+    {
+      v19 = [v4 type];
+      [(_SFPBWatchNowCardSection *)v5 setType:v19];
+    }
+
+    if ([v4 hasSeparatorStyle])
+    {
+      -[_SFPBWatchNowCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [v4 separatorStyle]);
+    }
+
+    v20 = [v4 backgroundColor];
+
+    if (v20)
+    {
+      v21 = [_SFPBColor alloc];
+      v22 = [v4 backgroundColor];
+      v23 = [(_SFPBColor *)v21 initWithFacade:v22];
+      [(_SFPBWatchNowCardSection *)v5 setBackgroundColor:v23];
+    }
+
+    v24 = [v4 sectionTitle];
+
+    if (v24)
+    {
+      v25 = [v4 sectionTitle];
+      [(_SFPBWatchNowCardSection *)v5 setSectionTitle:v25];
+    }
+
+    v26 = [v4 watchListItem];
+
+    if (v26)
+    {
+      v27 = [_SFPBWatchListItem alloc];
+      v28 = [v4 watchListItem];
+      v29 = [(_SFPBWatchListItem *)v27 initWithFacade:v28];
+      [(_SFPBWatchNowCardSection *)v5 setWatchListItem:v29];
+    }
+
+    v30 = v5;
+  }
+
+  v31 = *MEMORY[0x1E69E9840];
+  return v5;
+}
+
+- (_SFPBWatchNowCardSection)initWithDictionary:(id)a3
+{
+  v43 = *MEMORY[0x1E69E9840];
+  v4 = a3;
+  v41.receiver = self;
+  v41.super_class = _SFPBWatchNowCardSection;
+  v5 = [(_SFPBWatchNowCardSection *)&v41 init];
+  if (v5)
+  {
+    v6 = [v4 objectForKeyedSubscript:@"punchoutOptions"];
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      v39 = 0u;
+      v40 = 0u;
+      v37 = 0u;
+      v38 = 0u;
+      v7 = v6;
+      v8 = [v7 countByEnumeratingWithState:&v37 objects:v42 count:16];
+      if (v8)
+      {
+        v9 = v8;
+        v10 = *v38;
+        do
+        {
+          v11 = 0;
+          do
+          {
+            if (*v38 != v10)
+            {
+              objc_enumerationMutation(v7);
+            }
+
+            v12 = *(*(&v37 + 1) + 8 * v11);
+            objc_opt_class();
+            if (objc_opt_isKindOfClass())
+            {
+              v13 = [[_SFPBPunchout alloc] initWithDictionary:v12];
+              [(_SFPBWatchNowCardSection *)v5 addPunchoutOptions:v13];
+            }
+
+            ++v11;
+          }
+
+          while (v9 != v11);
+          v9 = [v7 countByEnumeratingWithState:&v37 objects:v42 count:16];
+        }
+
+        while (v9);
+      }
+    }
+
+    v14 = [v4 objectForKeyedSubscript:@"punchoutPickerTitle"];
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      v15 = [v14 copy];
+      [(_SFPBWatchNowCardSection *)v5 setPunchoutPickerTitle:v15];
+    }
+
+    v35 = v14;
+    v16 = [v4 objectForKeyedSubscript:@"punchoutPickerDismissText"];
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      v17 = [v16 copy];
+      [(_SFPBWatchNowCardSection *)v5 setPunchoutPickerDismissText:v17];
+    }
+
+    v34 = v16;
+    v18 = [v4 objectForKeyedSubscript:@"canBeHidden"];
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      -[_SFPBWatchNowCardSection setCanBeHidden:](v5, "setCanBeHidden:", [v18 BOOLValue]);
+    }
+
+    v19 = [v4 objectForKeyedSubscript:@"hasTopPadding"];
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      -[_SFPBWatchNowCardSection setHasTopPadding:](v5, "setHasTopPadding:", [v19 BOOLValue]);
+    }
+
+    v20 = [v4 objectForKeyedSubscript:@"hasBottomPadding"];
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      -[_SFPBWatchNowCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [v20 BOOLValue]);
+    }
+
+    v36 = v6;
+    v21 = [v4 objectForKeyedSubscript:{@"type", v18}];
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      v22 = [v21 copy];
+      [(_SFPBWatchNowCardSection *)v5 setType:v22];
+    }
+
+    v23 = [v4 objectForKeyedSubscript:@"separatorStyle"];
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      -[_SFPBWatchNowCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [v23 intValue]);
+    }
+
+    v24 = [v4 objectForKeyedSubscript:@"backgroundColor"];
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      v25 = [[_SFPBColor alloc] initWithDictionary:v24];
+      [(_SFPBWatchNowCardSection *)v5 setBackgroundColor:v25];
+    }
+
+    v26 = [v4 objectForKeyedSubscript:@"sectionTitle"];
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      v27 = [v26 copy];
+      [(_SFPBWatchNowCardSection *)v5 setSectionTitle:v27];
+    }
+
+    v28 = [v4 objectForKeyedSubscript:@"watchListItem"];
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      v29 = [[_SFPBWatchListItem alloc] initWithDictionary:v28];
+      [(_SFPBWatchNowCardSection *)v5 setWatchListItem:v29];
+    }
+
+    v30 = v5;
+  }
+
+  v31 = *MEMORY[0x1E69E9840];
+  return v5;
+}
+
+- (_SFPBWatchNowCardSection)initWithJSON:(id)a3
+{
+  v7 = 0;
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  {
+    v5 = 0;
+  }
+
+  else
+  {
+    self = [(_SFPBWatchNowCardSection *)self initWithDictionary:v4];
+    v5 = self;
+  }
+
+  return v5;
+}
+
+- (NSData)jsonData
+{
+  v2 = [(_SFPBWatchNowCardSection *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  {
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  return v3;
+}
+
+- (id)dictionaryRepresentation
+{
+  v38 = *MEMORY[0x1E69E9840];
+  v3 = [MEMORY[0x1E695DF90] dictionary];
+  if (self->_backgroundColor)
+  {
+    v4 = [(_SFPBWatchNowCardSection *)self backgroundColor];
+    v5 = [v4 dictionaryRepresentation];
+    if (v5)
+    {
+      [v3 setObject:v5 forKeyedSubscript:@"backgroundColor"];
+    }
+
+    else
+    {
+      v6 = [MEMORY[0x1E695DFB0] null];
+      [v3 setObject:v6 forKeyedSubscript:@"backgroundColor"];
+    }
+  }
+
+  if (self->_canBeHidden)
+  {
+    v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBWatchNowCardSection canBeHidden](self, "canBeHidden")}];
+    [v3 setObject:v7 forKeyedSubscript:@"canBeHidden"];
+  }
+
+  if (self->_hasBottomPadding)
+  {
+    v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBWatchNowCardSection hasBottomPadding](self, "hasBottomPadding")}];
+    [v3 setObject:v8 forKeyedSubscript:@"hasBottomPadding"];
+  }
+
+  if (self->_hasTopPadding)
+  {
+    v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBWatchNowCardSection hasTopPadding](self, "hasTopPadding")}];
+    [v3 setObject:v9 forKeyedSubscript:@"hasTopPadding"];
+  }
+
+  if ([(NSArray *)self->_punchoutOptions count])
+  {
+    v10 = [MEMORY[0x1E695DF70] array];
+    v33 = 0u;
+    v34 = 0u;
+    v35 = 0u;
+    v36 = 0u;
+    v11 = self->_punchoutOptions;
+    v12 = [(NSArray *)v11 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    if (v12)
+    {
+      v13 = v12;
+      v14 = *v34;
+      do
+      {
+        for (i = 0; i != v13; ++i)
+        {
+          if (*v34 != v14)
+          {
+            objc_enumerationMutation(v11);
+          }
+
+          v16 = [*(*(&v33 + 1) + 8 * i) dictionaryRepresentation];
+          if (v16)
+          {
+            [v10 addObject:v16];
+          }
+
+          else
+          {
+            v17 = [MEMORY[0x1E695DFB0] null];
+            [v10 addObject:v17];
+          }
+        }
+
+        v13 = [(NSArray *)v11 countByEnumeratingWithState:&v33 objects:v37 count:16];
+      }
+
+      while (v13);
+    }
+
+    [v3 setObject:v10 forKeyedSubscript:@"punchoutOptions"];
+  }
+
+  if (self->_punchoutPickerDismissText)
+  {
+    v18 = [(_SFPBWatchNowCardSection *)self punchoutPickerDismissText];
+    v19 = [v18 copy];
+    [v3 setObject:v19 forKeyedSubscript:@"punchoutPickerDismissText"];
+  }
+
+  if (self->_punchoutPickerTitle)
+  {
+    v20 = [(_SFPBWatchNowCardSection *)self punchoutPickerTitle];
+    v21 = [v20 copy];
+    [v3 setObject:v21 forKeyedSubscript:@"punchoutPickerTitle"];
+  }
+
+  if (self->_sectionTitle)
+  {
+    v22 = [(_SFPBWatchNowCardSection *)self sectionTitle];
+    v23 = [v22 copy];
+    [v3 setObject:v23 forKeyedSubscript:@"sectionTitle"];
+  }
+
+  if (self->_separatorStyle)
+  {
+    v24 = [(_SFPBWatchNowCardSection *)self separatorStyle];
+    if (v24 >= 6)
+    {
+      v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v24];
+    }
+
+    else
+    {
+      v25 = off_1E7ACE580[v24];
+    }
+
+    [v3 setObject:v25 forKeyedSubscript:@"separatorStyle"];
+  }
+
+  if (self->_type)
+  {
+    v26 = [(_SFPBWatchNowCardSection *)self type];
+    v27 = [v26 copy];
+    [v3 setObject:v27 forKeyedSubscript:@"type"];
+  }
+
+  if (self->_watchListItem)
+  {
+    v28 = [(_SFPBWatchNowCardSection *)self watchListItem];
+    v29 = [v28 dictionaryRepresentation];
+    if (v29)
+    {
+      [v3 setObject:v29 forKeyedSubscript:@"watchListItem"];
+    }
+
+    else
+    {
+      v30 = [MEMORY[0x1E695DFB0] null];
+      [v3 setObject:v30 forKeyedSubscript:@"watchListItem"];
+    }
+  }
+
+  v31 = *MEMORY[0x1E69E9840];
+
+  return v3;
+}
+
+- (unint64_t)hash
+{
+  v3 = [(NSArray *)self->_punchoutOptions hash];
+  v4 = [(NSString *)self->_punchoutPickerTitle hash];
+  v5 = [(NSString *)self->_punchoutPickerDismissText hash];
+  if (self->_canBeHidden)
+  {
+    v6 = 2654435761;
+  }
+
+  else
+  {
+    v6 = 0;
+  }
+
+  if (self->_hasTopPadding)
+  {
+    v7 = 2654435761;
+  }
+
+  else
+  {
+    v7 = 0;
+  }
+
+  if (self->_hasBottomPadding)
+  {
+    v8 = 2654435761;
+  }
+
+  else
+  {
+    v8 = 0;
+  }
+
+  v9 = v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ [(NSString *)self->_type hash]^ (2654435761 * self->_separatorStyle);
+  v10 = [(_SFPBColor *)self->_backgroundColor hash];
+  v11 = v10 ^ [(NSString *)self->_sectionTitle hash];
+  return v9 ^ v11 ^ [(_SFPBWatchListItem *)self->_watchListItem hash];
+}
+
+- (BOOL)isEqual:(id)a3
+{
+  v4 = a3;
+  if (![v4 isMemberOfClass:objc_opt_class()])
+  {
+    goto LABEL_41;
+  }
+
+  v5 = [(_SFPBWatchNowCardSection *)self punchoutOptions];
+  v6 = [v4 punchoutOptions];
+  if ((v5 != 0) == (v6 == 0))
+  {
+    goto LABEL_40;
+  }
+
+  v7 = [(_SFPBWatchNowCardSection *)self punchoutOptions];
+  if (v7)
+  {
+    v8 = v7;
+    v9 = [(_SFPBWatchNowCardSection *)self punchoutOptions];
+    v10 = [v4 punchoutOptions];
+    v11 = [v9 isEqual:v10];
+
+    if (!v11)
+    {
+      goto LABEL_41;
+    }
+  }
+
+  else
+  {
+  }
+
+  v5 = [(_SFPBWatchNowCardSection *)self punchoutPickerTitle];
+  v6 = [v4 punchoutPickerTitle];
+  if ((v5 != 0) == (v6 == 0))
+  {
+    goto LABEL_40;
+  }
+
+  v12 = [(_SFPBWatchNowCardSection *)self punchoutPickerTitle];
+  if (v12)
+  {
+    v13 = v12;
+    v14 = [(_SFPBWatchNowCardSection *)self punchoutPickerTitle];
+    v15 = [v4 punchoutPickerTitle];
+    v16 = [v14 isEqual:v15];
+
+    if (!v16)
+    {
+      goto LABEL_41;
+    }
+  }
+
+  else
+  {
+  }
+
+  v5 = [(_SFPBWatchNowCardSection *)self punchoutPickerDismissText];
+  v6 = [v4 punchoutPickerDismissText];
+  if ((v5 != 0) == (v6 == 0))
+  {
+    goto LABEL_40;
+  }
+
+  v17 = [(_SFPBWatchNowCardSection *)self punchoutPickerDismissText];
+  if (v17)
+  {
+    v18 = v17;
+    v19 = [(_SFPBWatchNowCardSection *)self punchoutPickerDismissText];
+    v20 = [v4 punchoutPickerDismissText];
+    v21 = [v19 isEqual:v20];
+
+    if (!v21)
+    {
+      goto LABEL_41;
+    }
+  }
+
+  else
+  {
+  }
+
+  canBeHidden = self->_canBeHidden;
+  if (canBeHidden != [v4 canBeHidden])
+  {
+    goto LABEL_41;
+  }
+
+  hasTopPadding = self->_hasTopPadding;
+  if (hasTopPadding != [v4 hasTopPadding])
+  {
+    goto LABEL_41;
+  }
+
+  hasBottomPadding = self->_hasBottomPadding;
+  if (hasBottomPadding != [v4 hasBottomPadding])
+  {
+    goto LABEL_41;
+  }
+
+  v5 = [(_SFPBWatchNowCardSection *)self type];
+  v6 = [v4 type];
+  if ((v5 != 0) == (v6 == 0))
+  {
+    goto LABEL_40;
+  }
+
+  v25 = [(_SFPBWatchNowCardSection *)self type];
+  if (v25)
+  {
+    v26 = v25;
+    v27 = [(_SFPBWatchNowCardSection *)self type];
+    v28 = [v4 type];
+    v29 = [v27 isEqual:v28];
+
+    if (!v29)
+    {
+      goto LABEL_41;
+    }
+  }
+
+  else
+  {
+  }
+
+  separatorStyle = self->_separatorStyle;
+  if (separatorStyle != [v4 separatorStyle])
+  {
+    goto LABEL_41;
+  }
+
+  v5 = [(_SFPBWatchNowCardSection *)self backgroundColor];
+  v6 = [v4 backgroundColor];
+  if ((v5 != 0) == (v6 == 0))
+  {
+    goto LABEL_40;
+  }
+
+  v31 = [(_SFPBWatchNowCardSection *)self backgroundColor];
+  if (v31)
+  {
+    v32 = v31;
+    v33 = [(_SFPBWatchNowCardSection *)self backgroundColor];
+    v34 = [v4 backgroundColor];
+    v35 = [v33 isEqual:v34];
+
+    if (!v35)
+    {
+      goto LABEL_41;
+    }
+  }
+
+  else
+  {
+  }
+
+  v5 = [(_SFPBWatchNowCardSection *)self sectionTitle];
+  v6 = [v4 sectionTitle];
+  if ((v5 != 0) == (v6 == 0))
+  {
+    goto LABEL_40;
+  }
+
+  v36 = [(_SFPBWatchNowCardSection *)self sectionTitle];
+  if (v36)
+  {
+    v37 = v36;
+    v38 = [(_SFPBWatchNowCardSection *)self sectionTitle];
+    v39 = [v4 sectionTitle];
+    v40 = [v38 isEqual:v39];
+
+    if (!v40)
+    {
+      goto LABEL_41;
+    }
+  }
+
+  else
+  {
+  }
+
+  v5 = [(_SFPBWatchNowCardSection *)self watchListItem];
+  v6 = [v4 watchListItem];
+  if ((v5 != 0) == (v6 == 0))
+  {
+LABEL_40:
+
+    goto LABEL_41;
+  }
+
+  v41 = [(_SFPBWatchNowCardSection *)self watchListItem];
+  if (!v41)
+  {
+
+LABEL_44:
+    v46 = 1;
+    goto LABEL_42;
+  }
+
+  v42 = v41;
+  v43 = [(_SFPBWatchNowCardSection *)self watchListItem];
+  v44 = [v4 watchListItem];
+  v45 = [v43 isEqual:v44];
+
+  if (v45)
+  {
+    goto LABEL_44;
+  }
+
+LABEL_41:
+  v46 = 0;
+LABEL_42:
+
+  return v46;
+}
+
+- (void)writeTo:(id)a3
+{
+  v23 = *MEMORY[0x1E69E9840];
+  v4 = a3;
+  v5 = [(_SFPBWatchNowCardSection *)self punchoutOptions];
+  v18 = 0u;
+  v19 = 0u;
+  v20 = 0u;
+  v21 = 0u;
+  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  if (v6)
+  {
+    v7 = v6;
+    v8 = *v19;
+    do
+    {
+      v9 = 0;
+      do
+      {
+        if (*v19 != v8)
+        {
+          objc_enumerationMutation(v5);
+        }
+
+        v10 = *(*(&v18 + 1) + 8 * v9);
+        PBDataWriterWriteSubmessage();
+        ++v9;
+      }
+
+      while (v7 != v9);
+      v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    }
+
+    while (v7);
+  }
+
+  v11 = [(_SFPBWatchNowCardSection *)self punchoutPickerTitle];
+  if (v11)
+  {
+    PBDataWriterWriteStringField();
+  }
+
+  v12 = [(_SFPBWatchNowCardSection *)self punchoutPickerDismissText];
+  if (v12)
+  {
+    PBDataWriterWriteStringField();
+  }
+
+  if ([(_SFPBWatchNowCardSection *)self canBeHidden])
+  {
+    PBDataWriterWriteBOOLField();
+  }
+
+  if ([(_SFPBWatchNowCardSection *)self hasTopPadding])
+  {
+    PBDataWriterWriteBOOLField();
+  }
+
+  if ([(_SFPBWatchNowCardSection *)self hasBottomPadding])
+  {
+    PBDataWriterWriteBOOLField();
+  }
+
+  v13 = [(_SFPBWatchNowCardSection *)self type];
+  if (v13)
+  {
+    PBDataWriterWriteStringField();
+  }
+
+  if ([(_SFPBWatchNowCardSection *)self separatorStyle])
+  {
+    PBDataWriterWriteInt32Field();
+  }
+
+  v14 = [(_SFPBWatchNowCardSection *)self backgroundColor];
+  if (v14)
+  {
+    PBDataWriterWriteSubmessage();
+  }
+
+  v15 = [(_SFPBWatchNowCardSection *)self sectionTitle];
+  if (v15)
+  {
+    PBDataWriterWriteStringField();
+  }
+
+  v16 = [(_SFPBWatchNowCardSection *)self watchListItem];
+  if (v16)
+  {
+    PBDataWriterWriteSubmessage();
+  }
+
+  v17 = *MEMORY[0x1E69E9840];
+}
+
+- (void)setSectionTitle:(id)a3
+{
+  v4 = [a3 copy];
+  sectionTitle = self->_sectionTitle;
+  self->_sectionTitle = v4;
+
+  MEMORY[0x1EEE66BB8]();
+}
+
+- (void)setType:(id)a3
+{
+  v4 = [a3 copy];
+  type = self->_type;
+  self->_type = v4;
+
+  MEMORY[0x1EEE66BB8]();
+}
+
+- (void)setPunchoutPickerDismissText:(id)a3
+{
+  v4 = [a3 copy];
+  punchoutPickerDismissText = self->_punchoutPickerDismissText;
+  self->_punchoutPickerDismissText = v4;
+
+  MEMORY[0x1EEE66BB8]();
+}
+
+- (void)setPunchoutPickerTitle:(id)a3
+{
+  v4 = [a3 copy];
+  punchoutPickerTitle = self->_punchoutPickerTitle;
+  self->_punchoutPickerTitle = v4;
+
+  MEMORY[0x1EEE66BB8]();
+}
+
+- (void)addPunchoutOptions:(id)a3
+{
+  v4 = a3;
+  punchoutOptions = self->_punchoutOptions;
+  v8 = v4;
+  if (!punchoutOptions)
+  {
+    v6 = [MEMORY[0x1E695DF70] array];
+    v7 = self->_punchoutOptions;
+    self->_punchoutOptions = v6;
+
+    v4 = v8;
+    punchoutOptions = self->_punchoutOptions;
+  }
+
+  [(NSArray *)punchoutOptions addObject:v4];
+}
+
+- (void)setPunchoutOptions:(id)a3
+{
+  v4 = [a3 copy];
+  punchoutOptions = self->_punchoutOptions;
+  self->_punchoutOptions = v4;
+
+  MEMORY[0x1EEE66BB8]();
+}
+
+@end

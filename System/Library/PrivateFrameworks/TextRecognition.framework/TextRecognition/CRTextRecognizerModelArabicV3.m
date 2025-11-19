@@ -1,0 +1,75 @@
+@interface CRTextRecognizerModelArabicV3
++ (id)defaultURLOfModelInThisBundle;
+- (TextBoxesOffsets)wordBoxesOffsets;
+- (_TtC15TextRecognition29CRTextRecognizerModelArabicV3)init;
+- (_TtC15TextRecognition29CRTextRecognizerModelArabicV3)initWithConfiguration:(id)a3 owner:(id)a4 error:(id *)a5;
+@end
+
+@implementation CRTextRecognizerModelArabicV3
+
++ (id)defaultURLOfModelInThisBundle
+{
+  v2 = sub_1B429F658();
+  v3 = *(v2 - 8);
+  MEMORY[0x1EEE9AC00](v2, v4);
+  v6 = &v9 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
+  swift_getObjCClassMetadata();
+  sub_1B4131628();
+  v7 = sub_1B429F5F8();
+  (*(v3 + 8))(v6, v2);
+
+  return v7;
+}
+
+- (TextBoxesOffsets)wordBoxesOffsets
+{
+  v11.receiver = self;
+  v11.super_class = type metadata accessor for CRTextRecognizerModelArabicV3();
+  [(CRTextSequenceRecognizerModel *)&v11 wordBoxesOffsets];
+  v3 = v2;
+  v5 = v4;
+  v7 = -v6;
+  v9 = -v8;
+  v10 = v3;
+  result.var3 = v10;
+  result.var2 = v5;
+  result.var1 = v9;
+  result.var0 = v7;
+  return result;
+}
+
+- (_TtC15TextRecognition29CRTextRecognizerModelArabicV3)init
+{
+  v3.receiver = self;
+  v3.super_class = type metadata accessor for CRTextRecognizerModelArabicV3();
+  return [(CRTextRecognizerModelArabicV3 *)&v3 init];
+}
+
+- (_TtC15TextRecognition29CRTextRecognizerModelArabicV3)initWithConfiguration:(id)a3 owner:(id)a4 error:(id *)a5
+{
+  v7 = sub_1B429F6D8();
+  v8 = *(v7 - 8);
+  MEMORY[0x1EEE9AC00](v7, v9);
+  v11 = &v19[-((v10 + 15) & 0xFFFFFFFFFFFFFFF0)];
+  v12 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB884870);
+  MEMORY[0x1EEE9AC00](v12 - 8, v13);
+  v15 = &v19[-v14];
+  if (a4)
+  {
+    sub_1B429F6B8();
+    (*(v8 + 32))(v15, v11, v7);
+    (*(v8 + 56))(v15, 0, 1, v7);
+  }
+
+  else
+  {
+    (*(v8 + 56))(v15, 1, 1, v7);
+  }
+
+  v16 = a3;
+  v17 = sub_1B4131D08(v16, v15);
+
+  return v17;
+}
+
+@end

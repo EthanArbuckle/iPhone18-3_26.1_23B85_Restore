@@ -1,0 +1,53 @@
+@interface HSEntitlementContext
+- (HSEntitlementContext)init;
+- (HSEntitlementContext)initWithSetupAccessoryDescription:(id)a3;
+- (id)description;
+@end
+
+@implementation HSEntitlementContext
+
+- (HSEntitlementContext)initWithSetupAccessoryDescription:(id)a3
+{
+  v4 = a3;
+  v9.receiver = self;
+  v9.super_class = HSEntitlementContext;
+  v5 = [(HSEntitlementContext *)&v9 init];
+  if (v5)
+  {
+    v6 = [v4 appIdentifier];
+    bundleIdentifier = v5->_bundleIdentifier;
+    v5->_bundleIdentifier = v6;
+
+    v5->_isEntitledForHomeKitSPI = [v4 isEntitledForHomeKitSPI];
+    v5->_isEntitledForThirdPartySetupAccessoryPayload = [v4 isEntitledForThirdPartySetupAccessoryPayload];
+    v5->_isEntitledForThirdPartyMatterSetupPayload = [v4 isEntitledForThirdPartyMatterSetupPayload];
+    v5->_isEntitledForAll3rdPartyAccessoryTypes = _os_feature_enabled_impl();
+  }
+
+  return v5;
+}
+
+- (HSEntitlementContext)init
+{
+  v4 = +[NSAssertionHandler currentHandler];
+  v5 = NSStringFromSelector("initWithSetupAccessoryDescription:");
+  [v4 handleFailureInMethod:a2 object:self file:@"HSEntitlementContext.m" lineNumber:39 description:{@"%s is unavailable; use %@ instead", "-[HSEntitlementContext init]", v5}];
+
+  return 0;
+}
+
+- (id)description
+{
+  v3 = [NADescriptionBuilder builderWithObject:self];
+  v4 = [(HSEntitlementContext *)self bundleIdentifier];
+  [v3 appendString:v4 withName:@"bundleIdentifier"];
+
+  v5 = [v3 appendBool:-[HSEntitlementContext isEntitledForHomeKitSPI](self withName:{"isEntitledForHomeKitSPI"), @"com.apple.homekit.private-spi-access"}];
+  v6 = [v3 appendBool:-[HSEntitlementContext isEntitledForThirdPartySetupAccessoryPayload](self withName:{"isEntitledForThirdPartySetupAccessoryPayload"), @"com.apple.developer.homekit.allow-setup-payload"}];
+  v7 = [v3 appendBool:-[HSEntitlementContext isEntitledForThirdPartyMatterSetupPayload](self withName:{"isEntitledForThirdPartyMatterSetupPayload"), @"com.apple.developer.matter.allow-setup-payload"}];
+  v8 = [v3 build];
+
+  return v8;
+}
+
+@end

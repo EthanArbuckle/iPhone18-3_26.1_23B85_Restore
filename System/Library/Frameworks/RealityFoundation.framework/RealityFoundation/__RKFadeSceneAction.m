@@ -1,0 +1,14 @@
+@interface __RKFadeSceneAction
+- (id)copyWithZone:(void *)a3;
+@end
+
+@implementation __RKFadeSceneAction
+
+- (id)copyWithZone:(void *)a3
+{
+  type metadata accessor for __RKFadeSceneAction();
+  *(swift_allocObject() + 108) = *self->duration;
+  return __RKEntityAction.init(targetEntity:)(0);
+}
+
+@end

@@ -1,0 +1,46 @@
+@interface PUActivityItemSourceOperation
+- (PUActivityItemSourceOperation)initWithDelegate:(id)a3 activityType:(id)a4;
+- (PUActivityItemSourceOperationDelegate)delegate;
+- (void)main;
+@end
+
+@implementation PUActivityItemSourceOperation
+
+- (PUActivityItemSourceOperationDelegate)delegate
+{
+  WeakRetained = objc_loadWeakRetained(&self->_delegate);
+
+  return WeakRetained;
+}
+
+- (void)main
+{
+  v4 = [(PUActivityItemSourceOperation *)self delegate];
+  v3 = [(PUActivityItemSourceOperation *)self activityType];
+  [v4 activityItemSourceOperation:self prepareItemForActivityType:v3];
+}
+
+- (PUActivityItemSourceOperation)initWithDelegate:(id)a3 activityType:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  v15.receiver = self;
+  v15.super_class = PUActivityItemSourceOperation;
+  v8 = [(PUActivityItemSourceOperation *)&v15 init];
+  v9 = v8;
+  if (v8)
+  {
+    objc_storeWeak(&v8->_delegate, v6);
+    v10 = [v7 copy];
+    activityType = v9->_activityType;
+    v9->_activityType = v10;
+
+    v12 = dispatch_semaphore_create(0);
+    semaphore = v9->_semaphore;
+    v9->_semaphore = v12;
+  }
+
+  return v9;
+}
+
+@end

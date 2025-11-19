@@ -1,0 +1,1694 @@
+void sub_100002544(_Unwind_Exception *a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8, uint64_t a9, id a10)
+{
+  v15 = v12;
+
+  _Unwind_Resume(a1);
+}
+
+UIFont *__cdecl sub_1000045D4(id a1)
+{
+  v1 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleTitle2 addingSymbolicTraits:32770 options:0];
+  v2 = [UIFont fontWithDescriptor:v1 size:0.0];
+
+  return v2;
+}
+
+UIFont *__cdecl sub_10000465C(id a1)
+{
+  v1 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleTitle2 addingSymbolicTraits:2 options:0];
+  v2 = [UIFont fontWithDescriptor:v1 size:0.0];
+
+  return v2;
+}
+
+void *sub_100004D24(void *result, uint64_t a2)
+{
+  v2 = result[4];
+  if ((*(v2 + 8) & a2) != 0)
+  {
+    v3 = *(result[5] + 8);
+    v4 = *(v3 + 24);
+    if (v4 >= result[6])
+    {
+      *(v2 + 24) |= a2;
+    }
+
+    else
+    {
+      *(v3 + 24) = v4 + 1;
+    }
+  }
+
+  return result;
+}
+
+void sub_1000054DC(uint64_t a1)
+{
+  v3 = NSStringFromClass(*(a1 + 32));
+  v1 = os_log_create("com.apple.email", [v3 UTF8String]);
+  v2 = qword_10003DF50;
+  qword_10003DF50 = v1;
+}
+
+id sub_1000057B8(uint64_t a1, uint64_t a2)
+{
+  v2 = [*(a1 + 32) contactForContext:*(a1 + 40) handler:a2];
+
+  return v2;
+}
+
+void sub_100005994(_Unwind_Exception *a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8, uint64_t a9, uint64_t a10, uint64_t a11, uint64_t a12, uint64_t a13, void *a14, uint64_t a15, id location)
+{
+  objc_destroyWeak((v19 + 40));
+  objc_destroyWeak(&location);
+
+  _Unwind_Resume(a1);
+}
+
+void sub_1000059E4(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  v6[0] = _NSConcreteStackBlock;
+  v6[1] = 3221225472;
+  v6[2] = sub_100005AF8;
+  v6[3] = &unk_100034918;
+  objc_copyWeak(&v9, (a1 + 40));
+  v7 = *(a1 + 32);
+  v4 = v3;
+  v8 = v4;
+  v5 = +[EFScheduler mainThreadScheduler];
+  [v5 performBlock:v6];
+
+  objc_destroyWeak(&v9);
+}
+
+void sub_100005AC0(_Unwind_Exception *a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t a8, uint64_t a9, uint64_t a10, uint64_t a11, uint64_t a12, uint64_t a13, void *a14, void *a15)
+{
+  v18 = v16;
+
+  objc_destroyWeak((v17 + 48));
+  _Unwind_Resume(a1);
+}
+
+void sub_100005AF8(id *a1)
+{
+  WeakRetained = objc_loadWeakRetained(a1 + 6);
+  v3 = +[MFAvatarView log];
+  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  {
+    v4 = [a1[4] emailAddress];
+    v5 = [v4 emailAddressValue];
+    v6 = v5;
+    if (v5)
+    {
+      v7 = [v5 ef_publicDescription];
+    }
+
+    else
+    {
+      v8 = [v4 stringValue];
+      v7 = [EFPrivacy fullyOrPartiallyRedactedStringForString:v8];
+    }
+
+    v17 = 138543362;
+    v18 = v7;
+    _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Updating avatar for %{public}@", &v17, 0xCu);
+  }
+
+  v9 = [a1[5] image];
+  v10 = [WeakRetained avatarView];
+  [v10 setImage:v9];
+
+  v11 = a1[5];
+  v12 = [WeakRetained avatarView];
+  v13 = [v12 traitCollection];
+  v14 = [v11 needsBorderFor:{objc_msgSend(v13, "userInterfaceStyle")}];
+
+  v15 = [WeakRetained avatarView];
+  [WeakRetained frame];
+  [MUIAvatarImageGenerator roundAvatarView:v15 withBorder:v14 size:v16];
+}
+
+void sub_100006140(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  v7 = v3;
+  v5 = [NSArray arrayWithObjects:&v7 count:1];
+  v6 = [WeakRetained contactAvatarView];
+  [v6 setContacts:v5];
+
+  [WeakRetained setHidden:0];
+}
+
+void sub_100006204(_Unwind_Exception *a1)
+{
+  v5 = v4;
+
+  _Unwind_Resume(a1);
+}
+
+void sub_10000623C(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  [WeakRetained setHidden:1];
+}
+
+void sub_10000647C(_Unwind_Exception *a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t a8, objc_super a9)
+{
+  v10 = v9;
+
+  a9.super_class = MFAvatarView;
+  [(_Unwind_Exception *)&a9 dealloc];
+  _Unwind_Resume(a1);
+}
+
+void sub_100006FC0(uint64_t a1)
+{
+  v3 = NSStringFromClass(*(a1 + 32));
+  v1 = os_log_create("com.apple.email", [v3 UTF8String]);
+  v2 = qword_10003DF60;
+  qword_10003DF60 = v1;
+}
+
+void sub_100007184(_Unwind_Exception *a1)
+{
+  v4 = v3;
+
+  _Unwind_Resume(a1);
+}
+
+void sub_100009F84(_Unwind_Exception *a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8, uint64_t a9, id a10)
+{
+  v13 = v11;
+
+  _Unwind_Resume(a1);
+}
+
+void sub_10000A340(_Unwind_Exception *a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8, uint64_t a9, id a10)
+{
+  v15 = v10;
+
+  _Unwind_Resume(a1);
+}
+
+void sub_10000A64C(id a1, UIAction *a2)
+{
+  v5 = +[UIApplication sharedApplication];
+  v2 = +[NSBundle mainBundle];
+  v3 = [v2 localizedStringForKey:@"BIMI_KB_LINK" value:&stru_100035108 table:@"Main"];
+  v4 = [NSURL URLWithString:v3];
+  [v5 openURL:v4 options:&__NSDictionary0__struct completionHandler:0];
+}
+
+void sub_10000A718(_Unwind_Exception *a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8, uint64_t a9, id a10)
+{
+  v13 = v12;
+
+  _Unwind_Resume(a1);
+}
+
+void sub_10000AEAC(_Unwind_Exception *a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8, uint64_t a9, uint64_t a10, void *a11, void *a12, uint64_t a13, uint64_t a14, uint64_t a15, uint64_t a16, uint64_t a17, id location)
+{
+  objc_destroyWeak((v21 + 32));
+
+  objc_destroyWeak(&location);
+  _Unwind_Resume(a1);
+}
+
+void sub_10000AFBC(uint64_t a1, void *a2)
+{
+  v4 = a2;
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  [WeakRetained _updateStatusIndicators:v4];
+  [WeakRetained _updateHorizontalStatusIndicators:v4];
+}
+
+void sub_10000B2F0(_Unwind_Exception *a1, void *a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t a8, uint64_t a9, uint64_t a10, uint64_t a11, void *a12, void *a13, ...)
+{
+  va_start(va, a13);
+
+  objc_destroyWeak(va);
+  objc_destroyWeak((v20 - 88));
+
+  _Unwind_Resume(a1);
+}
+
+id sub_10000B3B0(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  v4 = *(a1 + 32);
+  v5 = *(a1 + 40);
+  v9[0] = _NSConcreteStackBlock;
+  v9[1] = 3221225472;
+  v9[2] = sub_10000B4C8;
+  v9[3] = &unk_100034A70;
+  objc_copyWeak(&v12, (a1 + 48));
+  v10 = *(a1 + 40);
+  v11 = v3;
+  v6 = v3;
+  v7 = [v4 contactForContext:v5 handler:v9];
+
+  objc_destroyWeak(&v12);
+
+  return v7;
+}
+
+void sub_10000B4C8(uint64_t a1, void *a2, void *a3)
+{
+  v5 = a2;
+  v6 = a3;
+  WeakRetained = objc_loadWeakRetained((a1 + 48));
+  if (v5 && [v5 avatarType] == 3)
+  {
+    v10 = [WeakRetained delegate];
+    v11 = [v10 actualSenderFutureForConversationItemHeader:WeakRetained];
+    v12 = +[EFScheduler mainThreadScheduler];
+    v13[0] = _NSConcreteStackBlock;
+    v13[1] = 3221225472;
+    v13[2] = sub_10000B650;
+    v13[3] = &unk_100034A48;
+    v13[4] = WeakRetained;
+    v14 = *(a1 + 32);
+    [v11 onScheduler:v12 addSuccessBlock:v13];
+  }
+
+  (*(*(a1 + 40) + 16))(*(a1 + 40), v5, v6, v7, v8);
+}
+
+void sub_10000B650(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  v4 = [v3 emailAddressValue];
+  v5 = [v4 domain];
+
+  if ([*(a1 + 32) showsBIMILearnMoreButton])
+  {
+    v6 = [*(a1 + 32) bimiLearnMoreButton];
+
+    if (!v6)
+    {
+      if (v5)
+      {
+        v7 = +[MFConversationItemHeaderBlock log];
+        if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+        {
+          v8 = [EFPrivacy fullyOrPartiallyRedactedStringForString:v5];
+          v9 = *(a1 + 40);
+          v10 = 138543618;
+          v11 = v8;
+          v12 = 2114;
+          v13 = v9;
+          _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Adding BIMI learn more button with domain %{public}@ for context: %{public}@", &v10, 0x16u);
+        }
+
+        [*(a1 + 32) _addBIMILearnMoreButtonWithSenderDomain:v5];
+      }
+    }
+  }
+}
+
+void sub_10000B7D8(uint64_t a1, void *a2)
+{
+  v6 = a2;
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  [v6 setAddressAtomTarget:WeakRetained action:"_primaryAddressAtomWasTapped:"];
+  v4 = [WeakRetained primaryAtomList];
+  v5 = [v4 addressAtoms];
+  [v6 setAddressAtomSeparatorStyle:{2 * (objc_msgSend(v5, "count") < 2)}];
+
+  [v6 setAddressAtomsArePrimary:1];
+}
+
+void sub_10000BEC8(_Unwind_Exception *a1)
+{
+  v3 = v1;
+
+  _Unwind_Resume(a1);
+}
+
+void sub_10000BF38(uint64_t a1, void *a2)
+{
+  v9 = a2;
+  [v9 setTranslatesAutoresizingMaskIntoConstraints:1];
+  [v9 frame];
+  y = v11.origin.y;
+  width = v11.size.width;
+  height = v11.size.height;
+  CGRectGetWidth(v11);
+  UIRoundToViewScale();
+  x = v12.origin.x;
+  v12.origin.y = y;
+  v12.size.width = width;
+  v12.size.height = height;
+  CGRectGetHeight(v12);
+  UIRoundToViewScale();
+  [v9 setFrame:{x, v7, width, height}];
+  v8 = [v9 superview];
+
+  if (!v8)
+  {
+    [*(a1 + 32) addSubview:v9];
+  }
+}
+
+void sub_10000C244(uint64_t a1, void *a2, _BYTE *a3)
+{
+  v18 = a2;
+  v5 = [v18 superview];
+
+  if (!v5)
+  {
+    [*(a1 + 32) addSubview:v18];
+  }
+
+  [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
+  LODWORD(v6) = 1148846080;
+  [v18 setContentHuggingPriority:0 forAxis:v6];
+  v7 = objc_opt_new();
+  if (a3)
+  {
+    v8 = [*(a1 + 40) objectAtIndexedSubscript:a3 - 1];
+    v9 = [v18 centerXAnchor];
+    v10 = [v8 centerXAnchor];
+    v11 = [v9 constraintEqualToAnchor:v10 constant:*(a1 + 48)];
+    [v7 addObject:v11];
+  }
+
+  else
+  {
+    v8 = [v18 leadingAnchor];
+    v9 = [*(a1 + 32) leadingAnchor];
+    v10 = [v8 constraintEqualToAnchor:v9];
+    [v7 addObject:v10];
+  }
+
+  if ([*(a1 + 40) count] - 1 == a3)
+  {
+    v12 = [v18 trailingAnchor];
+    v13 = [*(a1 + 32) trailingAnchor];
+    v14 = [v12 constraintEqualToAnchor:v13];
+    [v7 addObject:v14];
+  }
+
+  v15 = [v18 firstBaselineAnchor];
+  v16 = [*(a1 + 32) firstBaselineAnchor];
+  v17 = [v15 constraintEqualToAnchor:v16];
+  [v7 addObject:v17];
+
+  [NSLayoutConstraint activateConstraints:v7];
+}
+
+void sub_10000CBD4(_Unwind_Exception *a1)
+{
+  _Block_object_dispose((v2 - 144), 8);
+
+  _Unwind_Resume(a1);
+}
+
+uint64_t sub_10000CCAC(uint64_t result, uint64_t a2)
+{
+  *(result + 40) = *(a2 + 40);
+  *(a2 + 40) = 0;
+  return result;
+}
+
+void sub_10000CCC4(uint64_t a1, void *a2)
+{
+  objc_storeStrong((*(*(a1 + 40) + 8) + 40), a2);
+  v4 = a2;
+  dispatch_group_leave(*(a1 + 32));
+}
+
+void sub_10000CD24(uint64_t a1, void *a2)
+{
+  v3 = [a2 localizedDescription];
+  NSLog(@"Retrieving future attachment data failed with error: %@", v3);
+
+  v4 = *(*(a1 + 40) + 8);
+  v5 = *(v4 + 40);
+  *(v4 + 40) = 0;
+
+  v6 = *(a1 + 32);
+
+  dispatch_group_leave(v6);
+}
+
+void sub_10000CDA8(uint64_t a1, void *a2)
+{
+  objc_storeStrong((*(*(a1 + 40) + 8) + 40), a2);
+  v4 = a2;
+  dispatch_group_leave(*(a1 + 32));
+}
+
+void sub_10000CE08(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  v4 = +[MFConversationItemHeaderBlock log];
+  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  {
+    v5 = [v3 localizedDescription];
+    v8 = 138412290;
+    v9 = v5;
+    _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Retrieving future rich link data failed with error: %@", &v8, 0xCu);
+  }
+
+  v6 = *(*(a1 + 40) + 8);
+  v7 = *(v6 + 40);
+  *(v6 + 40) = 0;
+
+  dispatch_group_leave(*(a1 + 32));
+}
+
+void sub_10000CF1C(uint64_t a1)
+{
+  v2 = [*(a1 + 32) numberOfMessagesInConversationForConversationItemHeaderBlock:*(a1 + 40)];
+  v3 = [MFMessageInfoViewController alloc];
+  v9 = [*(a1 + 40) viewModel];
+  v4 = [*(a1 + 40) contactStore];
+  v5 = [(MFMessageInfoViewController *)v3 initWithViewModel:v9 contactsStore:v4 attachmentURLs:*(*(*(a1 + 56) + 8) + 40) richLinkURLs:*(*(*(a1 + 64) + 8) + 40) numberOfMessagesInConversation:v2];
+  v6 = *(*(a1 + 48) + 8);
+  v7 = *(v6 + 40);
+  *(v6 + 40) = v5;
+
+  v10 = [*(*(*(a1 + 48) + 8) + 40) view];
+  [v10 frame];
+  [*(*(*(a1 + 48) + 8) + 40) setPreferredContentSize:{320.0, v8}];
+
+  v11 = [*(a1 + 40) delegate];
+  [v11 conversationItemHeader:*(a1 + 40) presentViewController:*(*(*(a1 + 48) + 8) + 40)];
+}
+
+void sub_10000D658(uint64_t a1)
+{
+  if ([*(a1 + 32) _hasConversationLayout])
+  {
+    v2 = [*(a1 + 32) usingLargeTextLayout];
+    v3 = *(a1 + 40);
+    if (v2)
+    {
+      v8 = [*(a1 + 32) primaryStackView];
+      v4 = *(a1 + 32);
+      if (v3)
+      {
+        v5 = [v4 timestampLabel];
+        [v8 removeArrangedSubview:v5];
+
+        v9 = [*(a1 + 32) timestampLabel];
+        [v9 removeFromSuperview];
+      }
+
+      else
+      {
+        v7 = [v4 timestampLabel];
+        [v8 insertArrangedSubview:v7 atIndex:2];
+      }
+    }
+
+    else
+    {
+      if (*(a1 + 40))
+      {
+        v6 = 0.0;
+      }
+
+      else
+      {
+        v6 = 1.0;
+      }
+
+      v10 = [*(a1 + 32) timestampLabel];
+      [v10 setAlpha:v6];
+    }
+  }
+
+  [*(a1 + 32) setNeedsUpdateConstraints];
+  [*(a1 + 32) updateConstraintsIfNeeded];
+  [*(a1 + 32) _updateStackViewSpacing];
+  v11 = [*(a1 + 32) superview];
+  [v11 layoutIfNeeded];
+}
+
+NSString *__cdecl sub_10000DBFC(id a1, NSString *a2)
+{
+  v2 = a2;
+  v3 = [(NSString *)v2 emailAddressValue];
+  v4 = v3;
+  if (v3)
+  {
+    v5 = [v3 displayName];
+    v6 = [v5 emailAddressValue];
+
+    if (v6 && ([v6 stringValue], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "simpleAddress"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "isEqualToString:", v8), v8, v7, (v9 & 1) == 0))
+    {
+      v10 = [v4 simpleAddress];
+    }
+
+    else
+    {
+      v10 = [v4 stringValue];
+    }
+
+    v11 = v10;
+  }
+
+  else
+  {
+    v11 = [(NSString *)v2 stringValue];
+  }
+
+  return v11;
+}
+
+void sub_10000EA44(_Unwind_Exception *a1)
+{
+  v3 = v2;
+
+  _Unwind_Resume(a1);
+}
+
+void sub_10000EAD4(_Unwind_Exception *a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t a8, objc_super a9)
+{
+  v10 = v9;
+
+  a9.super_class = MFExpandableCaptionView;
+  [(_Unwind_Exception *)&a9 dealloc];
+  _Unwind_Resume(a1);
+}
+
+void sub_10000F4C8(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  [*(a1 + 32) _atomListLineSpacing];
+  [v3 setLineSpacing:?];
+}
+
+id sub_10000FCEC(uint64_t a1)
+{
+  [*(a1 + 32) _reattachBottomConstraint];
+  [*(a1 + 32) updateConstraintsIfNeeded];
+  if (*(a1 + 48))
+  {
+    v2 = 0.0;
+  }
+
+  else
+  {
+    v2 = 1.0;
+  }
+
+  v3 = [*(a1 + 32) captionLabel];
+  [v3 setAlpha:v2];
+
+  if (*(a1 + 48))
+  {
+    v4 = 1.0;
+  }
+
+  else
+  {
+    v4 = 0.0;
+  }
+
+  v5 = [*(a1 + 32) atomListStackView];
+  [v5 setAlpha:v4];
+
+  v6 = *(a1 + 40);
+
+  return [v6 playAnimations];
+}
+
+id sub_10000FDAC(uint64_t a1, uint64_t a2)
+{
+  if ((*(a1 + 48) & 1) == 0)
+  {
+    [*(a1 + 32) _setRecipientDetailsVisible:0];
+  }
+
+  v4 = *(a1 + 40);
+
+  return [v4 playCompletions:a2];
+}
+
+void sub_100010FF8(uint64_t a1, void *a2)
+{
+  v11 = a2;
+  v3 = [*(a1 + 32) isEqualToString:@"FromAtomsKey"];
+  v4 = [*(a1 + 32) isEqualToString:@"ReplyToAtomsKey"];
+  v5 = "_recipientAtomPressed:";
+  if (v3)
+  {
+    v5 = "_senderAtomPressed:";
+  }
+
+  if (v4)
+  {
+    v6 = "_replyToAtomPressed:";
+  }
+
+  else
+  {
+    v6 = v5;
+  }
+
+  [v11 setAddressAtomTarget:*(a1 + 40) action:v6];
+  v7 = [*(a1 + 40) font];
+
+  if (v7)
+  {
+    v8 = [*(a1 + 40) font];
+    [v11 setOverrideFont:v8];
+  }
+
+  if (+[UIDevice mf_isPadIdiom])
+  {
+    v9 = [*(a1 + 40) delegate];
+    v10 = [v9 popoverManagerForExpandableCaptionView:*(a1 + 40)];
+
+    [v10 addPassthroughViewProvider:v11];
+  }
+}
+
+void sub_100011118(_Unwind_Exception *a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8, uint64_t a9, id a10)
+{
+  v11 = v10;
+
+  _Unwind_Resume(a1);
+}
+
+void sub_100011F8C(_Unwind_Exception *a1)
+{
+  v3 = v2;
+
+  _Unwind_Resume(a1);
+}
+
+void sub_100012054(uint64_t a1)
+{
+  v3 = NSStringFromClass(*(a1 + 32));
+  v1 = os_log_create("com.apple.email", [v3 UTF8String]);
+  v2 = qword_10003DF78;
+  qword_10003DF78 = v1;
+}
+
+void sub_100012C24(_Unwind_Exception *a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8, uint64_t a9, uint64_t a10, uint64_t a11, uint64_t a12, uint64_t a13, uint64_t a14, void *a15, void *a16, void *a17, void *a18, void *a19, void *a20, void *a21, void *a22, uint64_t a23, uint64_t a24, uint64_t a25, uint64_t a26, uint64_t a27, void *a28, void *a29, void *a30, char a31, uint64_t a32, uint64_t a33, uint64_t a34, uint64_t a35, char a36, uint64_t a37, uint64_t a38, uint64_t a39, uint64_t a40, id location, uint64_t a42, uint64_t a43, uint64_t a44, uint64_t a45, void *a46, void *a47, void *a48, void *a49, void *a50)
+{
+  objc_destroyWeak(&a35);
+
+  objc_destroyWeak(&a40);
+  objc_destroyWeak(&location);
+
+  _Unwind_Resume(a1);
+}
+
+void sub_100012E58(uint64_t a1, void *a2, uint64_t a3, void *a4)
+{
+  v18 = a2;
+  v6 = a4;
+  v7 = [v18 avatarView];
+  v8 = [v6 emailAddress];
+  v9 = [*(a1 + 32) contactStore];
+  v10 = [v7 displayPersonForEmailAddress:v8 usingContactStore:v9];
+
+  v11 = [v6 emailAddress];
+  v12 = [v11 emailAddressValue];
+  v13 = [v12 displayName];
+
+  v14 = [v18 contactLabel];
+  v15 = [v6 emailAddress];
+  v16 = [v15 emailAddressValue];
+  if (v13)
+  {
+    [v16 displayName];
+  }
+
+  else
+  {
+    [v16 stringValue];
+  }
+  v17 = ;
+  [v14 setText:v17];
+}
+
+void sub_100012FE4(_Unwind_Exception *a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8, uint64_t a9, id a10)
+{
+  v15 = v13;
+
+  _Unwind_Resume(a1);
+}
+
+void sub_100013054(uint64_t a1, void *a2)
+{
+  v4 = [a2 subjectLabel];
+  v3 = [*(a1 + 32) _subjectToDisplay];
+  [v4 setText:v3];
+}
+
+void sub_1000130E0(uint64_t a1, void *a2, void *a3, void *a4)
+{
+  v32 = a2;
+  v7 = a3;
+  v8 = a4;
+  v9 = [v32 nameLabel];
+  v10 = [v8 attachment];
+  v11 = [v10 displayName];
+  [v9 setText:v11];
+
+  v12 = [v32 dateLabel];
+  v13 = [*(a1 + 32) dateFormatter];
+  v14 = *(a1 + 32);
+  v15 = [v8 attachment];
+  v16 = [v15 url];
+  v17 = [v14 _dateToDisplayForURL:v16];
+  v18 = [v13 stringFromDate:v17];
+  [v12 setText:v18];
+
+  v19 = [*(a1 + 32) imageCache];
+  v20 = [v8 attachment];
+  v21 = [v20 url];
+  v22 = [v19 objectForKey:v21];
+  v23 = [v22 first];
+
+  if (v23)
+  {
+    v24 = [v32 imageView];
+    [v24 setImage:v23];
+  }
+
+  else
+  {
+    [*(a1 + 32) _generateQuickLookThumbnail:v32 indexPath:v7 item:v8];
+  }
+
+  if ([*(a1 + 32) _shouldDisplayContact])
+  {
+    v25 = [v32 avatarView];
+    v26 = *(a1 + 32);
+    v27 = [v8 attachment];
+    v28 = [v27 url];
+    v29 = [v26 _contactToDisplayForURL:v28];
+    v30 = [*(a1 + 32) contactStore];
+    v31 = [v25 displayPersonForEmailAddress:v29 usingContactStore:v30];
+  }
+
+  else
+  {
+    v25 = [v32 avatarView];
+    [v25 setHidden:1];
+  }
+}
+
+void sub_100013374(_Unwind_Exception *a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8, uint64_t a9, id a10)
+{
+  v18 = v12;
+
+  _Unwind_Resume(a1);
+}
+
+void sub_100013444(uint64_t a1, void *a2, uint64_t a3, void *a4)
+{
+  v19 = a2;
+  v6 = a4;
+  v7 = [v6 attachment];
+  v8 = [v7 url];
+  v9 = [NSData dataWithContentsOfURL:v8];
+  v10 = [UIImage imageWithData:v9];
+
+  v11 = [v19 imageView];
+  [v11 setImage:v10];
+
+  if ([*(a1 + 32) _shouldDisplayContact])
+  {
+    v12 = [v19 avatarView];
+    v13 = *(a1 + 32);
+    v14 = [v6 attachment];
+    v15 = [v14 url];
+    v16 = [v13 _contactToDisplayForURL:v15];
+    v17 = [*(a1 + 32) contactStore];
+    v18 = [v12 displayPersonForEmailAddress:v16 usingContactStore:v17];
+  }
+
+  else
+  {
+    v12 = [v19 avatarView];
+    [v12 setHidden:1];
+  }
+}
+
+void sub_1000135D4(_Unwind_Exception *a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8, uint64_t a9, id a10)
+{
+  v17 = v13;
+
+  _Unwind_Resume(a1);
+}
+
+void sub_100013664(uint64_t a1, void *a2, uint64_t a3, void *a4)
+{
+  v9 = a2;
+  v6 = a4;
+  v7 = +[UIColor tableCellGroupedBackgroundColor];
+  v8 = [v9 contentView];
+  [v8 setBackgroundColor:v7];
+
+  [*(a1 + 32) _generateRichLink:v9 item:v6];
+}
+
+id sub_100013734(uint64_t a1, void *a2, void *a3, void *a4)
+{
+  v7 = a2;
+  v8 = a3;
+  v9 = a4;
+  v10 = [v9 subject];
+  if (v10)
+  {
+    v11 = _os_feature_enabled_impl();
+
+    if (v11)
+    {
+      v12 = 32;
+LABEL_31:
+      v28 = [v7 dequeueConfiguredReusableCellWithRegistration:*(a1 + v12) forIndexPath:v8 item:v9];
+      goto LABEL_32;
+    }
+  }
+
+  v13 = [v9 attachment];
+
+  if (!v13)
+  {
+    v29 = [v9 richLink];
+
+    v12 = 56;
+    if (!v29)
+    {
+      v12 = 64;
+    }
+
+    goto LABEL_31;
+  }
+
+  v14 = [v9 attachment];
+  v15 = [v14 url];
+  v16 = [v15 lastPathComponent];
+  v17 = [v9 attachment];
+  v18 = [v17 url];
+  v19 = [UTType em_contentTypeForFilename:v16 fileURL:v18];
+
+  v20 = v19 == UTTypeJPEG || v19 == UTTypePNG;
+  v26 = v20 || v19 == UTTypeImage || v19 == UTTypeLivePhoto || v19 == UTTypeMP3 || v19 == UTTypeMPEG4Movie || v19 == UTTypeMovie;
+  v20 = (v26 & 1) == 0;
+  v27 = 48;
+  if (!v20)
+  {
+    v27 = 40;
+  }
+
+  v28 = [v7 dequeueConfiguredReusableCellWithRegistration:*(a1 + v27) forIndexPath:v8 item:v9];
+
+LABEL_32:
+
+  return v28;
+}
+
+void sub_1000139CC(uint64_t a1, void *a2, uint64_t a3, void *a4)
+{
+  v14 = a2;
+  v6 = a4;
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  if (WeakRetained)
+  {
+    v8 = v14;
+    v9 = [WeakRetained sections];
+    v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v6, "section")}];
+    v11 = [v10 sectionName];
+
+    v12 = [v8 contentConfiguration];
+    [v12 setText:v11];
+    [v8 setContentConfiguration:v12];
+    v13 = [v8 seeAllButton];
+    [v13 setHidden:1];
+  }
+}
+
+void sub_100013ADC(_Unwind_Exception *a1)
+{
+  v7 = v5;
+
+  _Unwind_Resume(a1);
+}
+
+void sub_100013B3C(uint64_t a1, void *a2, uint64_t a3, void *a4)
+{
+  v15 = a2;
+  v6 = a4;
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  if (WeakRetained)
+  {
+    v8 = v15;
+    v9 = [WeakRetained sections];
+    v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v6, "section")}];
+    v11 = [v10 sectionName];
+
+    v12 = [v8 contentConfiguration];
+    [v12 setText:v11];
+    v13 = [v12 textProperties];
+    [v13 setAlignment:0];
+
+    [v8 setContentConfiguration:v12];
+    v14 = [v8 seeAllButton];
+    [v14 setHidden:1];
+  }
+}
+
+void sub_100013C68(_Unwind_Exception *a1)
+{
+  v7 = v6;
+
+  _Unwind_Resume(a1);
+}
+
+id sub_100013CCC(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)
+{
+  v5 = a4;
+  v6 = [*(a1 + 32) sections];
+  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
+  v8 = [v7 identifier];
+  if ([v8 isEqual:@"Documents"])
+  {
+    goto LABEL_4;
+  }
+
+  v18 = [*(a1 + 32) sections];
+  v9 = [v18 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
+  v10 = [v9 identifier];
+  if ([v10 isEqual:@"Photos"])
+  {
+
+LABEL_4:
+    v11 = 48;
+    goto LABEL_7;
+  }
+
+  v17 = [*(a1 + 32) sections];
+  v12 = [v17 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
+  v13 = [v12 identifier];
+  v14 = [v13 isEqual:@"Links"];
+
+  v11 = 56;
+  if (v14)
+  {
+    v11 = 48;
+  }
+
+LABEL_7:
+  v15 = [*(a1 + 40) dequeueConfiguredReusableSupplementaryViewWithRegistration:*(a1 + v11) forIndexPath:v5];
+
+  return v15;
+}
+
+void sub_100013F08(void *a1)
+{
+  if (a1)
+  {
+    v80 = objc_alloc_init(NSMutableArray);
+    v1 = objc_alloc_init(NSMutableArray);
+    v94[0] = _NSConcreteStackBlock;
+    v94[1] = 3221225472;
+    v94[2] = sub_1000178F0;
+    v94[3] = &unk_100034F00;
+    v81 = v80;
+    v95 = v81;
+    v82 = v1;
+    v96 = v82;
+    v83 = objc_retainBlock(v94);
+    if (_os_feature_enabled_impl())
+    {
+      v2 = [a1 viewModel];
+      v3 = [v2 subject];
+      v4 = [v3 subjectString];
+      v5 = [v4 isEqualToString:&stru_100035108];
+
+      if ((v5 & 1) == 0)
+      {
+        v6 = [MFMessageInfoHeaderItem alloc];
+        v7 = +[NSBundle mainBundle];
+        v8 = [v7 localizedStringForKey:@"Subject" value:&stru_100035108 table:0];
+        v9 = [(MFMessageInfoHeaderItem *)v6 initWithName:v8 identifier:@"Subject"];
+        [v81 addObject:v9];
+
+        v10 = [MFMessageInfoItem alloc];
+        v11 = [a1 viewModel];
+        v12 = [v11 subject];
+        v13 = [(MFMessageInfoItem *)v10 initWithSubject:v12];
+        v98 = v13;
+        v14 = [NSArray arrayWithObjects:&v98 count:1];
+        [v82 addObject:v14];
+      }
+    }
+
+    if (_os_feature_enabled_impl() && ([a1 _isConversation] & 1) != 0)
+    {
+      v15 = objc_alloc_init(NSMutableArray);
+      v16 = [a1 viewModel];
+      v17 = [v16 senderList];
+      [v15 addObjectsFromArray:v17];
+
+      v18 = [a1 viewModel];
+      v19 = [v18 toList];
+      [v15 addObjectsFromArray:v19];
+
+      v20 = [a1 viewModel];
+      v21 = [v20 replyToList];
+      [v15 addObjectsFromArray:v21];
+
+      v22 = [a1 viewModel];
+      v23 = [v22 ccList];
+      [v15 addObjectsFromArray:v23];
+
+      v24 = [a1 viewModel];
+      v25 = [v24 bccList];
+      [v15 addObjectsFromArray:v25];
+
+      v26 = [NSSet setWithArray:v15];
+      v27 = [v26 allObjects];
+      [a1 setParticipants:v27];
+
+      v28 = [a1 participants];
+      v29 = +[NSBundle mainBundle];
+      v30 = [v29 localizedStringForKey:@"Participants" value:&stru_100035108 table:0];
+      (v83[2])(v83, v28, v30);
+    }
+
+    else
+    {
+      v31 = [a1 viewModel];
+      v32 = [v31 senderList];
+      (v83[2])(v83, v32, @"From");
+
+      v33 = [a1 viewModel];
+      v34 = [v33 toList];
+      (v83[2])(v83, v34, @"To");
+
+      v35 = [a1 viewModel];
+      v36 = [v35 replyToList];
+      (v83[2])(v83, v36, @"Reply To");
+
+      v37 = [a1 viewModel];
+      v38 = [v37 ccList];
+      (v83[2])(v83, v38, @"CC");
+
+      v15 = [a1 viewModel];
+      v28 = [v15 bccList];
+      (v83[2])(v83, v28, @"BCC");
+    }
+
+    if (_os_feature_enabled_impl())
+    {
+      v39 = [a1 conversationAttachmentURLs];
+      v40 = v39 == 0;
+
+      if (!v40)
+      {
+        v87 = objc_alloc_init(NSMutableArray);
+        v88 = objc_alloc_init(NSMutableArray);
+        v41 = [a1 conversationAttachmentURLs];
+        v93[0] = _NSConcreteStackBlock;
+        v93[1] = 3221225472;
+        v93[2] = sub_100017AA0;
+        v93[3] = &unk_100034F28;
+        v93[4] = a1;
+        v42 = [v41 ef_map:v93];
+        [a1 setConversationAttachmentURLs:v42];
+
+        v91 = 0u;
+        v92 = 0u;
+        v89 = 0u;
+        v90 = 0u;
+        obj = [a1 conversationAttachmentURLs];
+        v43 = [obj countByEnumeratingWithState:&v89 objects:v97 count:16];
+        if (v43)
+        {
+          v86 = *v90;
+          do
+          {
+            for (i = 0; i != v43; i = i + 1)
+            {
+              if (*v90 != v86)
+              {
+                objc_enumerationMutation(obj);
+              }
+
+              v45 = *(*(&v89 + 1) + 8 * i);
+              v46 = [v45 url];
+              v47 = [v46 lastPathComponent];
+              v48 = [v45 url];
+              v49 = [UTType em_contentTypeForFilename:v47 fileURL:v48];
+
+              if (v49 == UTTypeJPEG || v49 == UTTypePNG || v49 == UTTypeImage || v49 == UTTypeLivePhoto || v49 == UTTypeMP3 || v49 == UTTypeMPEG4Movie || v49 == UTTypeMovie)
+              {
+                v57 = v87;
+              }
+
+              else
+              {
+                v57 = v88;
+              }
+
+              [v57 addObject:v45];
+            }
+
+            v43 = [obj countByEnumeratingWithState:&v89 objects:v97 count:16];
+          }
+
+          while (v43);
+        }
+
+        if ([v88 count])
+        {
+          v58 = [MFMessageInfoHeaderItem alloc];
+          v59 = +[NSBundle mainBundle];
+          v60 = [v59 localizedStringForKey:@"Documents" value:&stru_100035108 table:0];
+          v61 = [(MFMessageInfoHeaderItem *)v58 initWithName:v60 identifier:@"Documents"];
+          [v81 addObject:v61];
+
+          v62 = [v88 ef_map:&stru_100034F68];
+          [v82 addObject:v62];
+        }
+
+        if ([v87 count])
+        {
+          v63 = [MFMessageInfoHeaderItem alloc];
+          v64 = +[NSBundle mainBundle];
+          v65 = [v64 localizedStringForKey:@"Photos" value:&stru_100035108 table:0];
+          v66 = [(MFMessageInfoHeaderItem *)v63 initWithName:v65 identifier:@"Photos"];
+          [v81 addObject:v66];
+
+          v67 = [v87 ef_map:&stru_100034F88];
+          [v82 addObject:v67];
+        }
+      }
+    }
+
+    if (_os_feature_enabled_impl())
+    {
+      v68 = [a1 richLinkURLs];
+      v69 = [v68 count] == 0;
+
+      if (!v69)
+      {
+        v70 = [MFMessageInfoHeaderItem alloc];
+        v71 = +[NSBundle mainBundle];
+        v72 = [v71 localizedStringForKey:@"Links" value:&stru_100035108 table:0];
+        v73 = [(MFMessageInfoHeaderItem *)v70 initWithName:v72 identifier:@"Links"];
+        [v81 addObject:v73];
+
+        v74 = [NSSet alloc];
+        v75 = [a1 richLinkURLs];
+        v76 = [v74 initWithArray:v75];
+        v77 = [v76 allObjects];
+        [a1 setRichLinkURLs:v77];
+
+        v78 = [a1 richLinkURLs];
+        v79 = [v78 ef_map:&stru_100034FC8];
+
+        [v82 addObject:v79];
+      }
+    }
+
+    [a1 setItems:v82];
+    [a1 setSections:v81];
+  }
+}
+
+id sub_100014EA4(uint64_t a1, uint64_t a2, void *a3)
+{
+  v5 = a3;
+  if (!_os_feature_enabled_impl())
+  {
+    v11 = [NSCollectionLayoutSection sectionWithListConfiguration:*(a1 + 40) layoutEnvironment:v5];
+    goto LABEL_5;
+  }
+
+  v6 = [*(a1 + 32) sections];
+  v7 = [v6 objectAtIndexedSubscript:a2];
+  v8 = [v7 identifier];
+  v9 = [v8 isEqual:@"Documents"];
+
+  v10 = *(a1 + 32);
+  if (v9)
+  {
+    v11 = [v10 _attachmentSectionLayout];
+LABEL_5:
+    v12 = v11;
+    goto LABEL_6;
+  }
+
+  v14 = [v10 sections];
+  v15 = [v14 objectAtIndexedSubscript:a2];
+  v16 = [v15 identifier];
+  v17 = [v16 isEqual:@"Photos"];
+
+  v18 = *(a1 + 32);
+  if (v17)
+  {
+    v11 = [v18 _photoSectionLayout];
+    goto LABEL_5;
+  }
+
+  v19 = [v18 sections];
+  v20 = [v19 objectAtIndexedSubscript:a2];
+  v21 = [v20 identifier];
+  v22 = [v21 isEqual:@"Links"];
+
+  if (v22)
+  {
+    v11 = [*(a1 + 32) _linkSectionLayout];
+    goto LABEL_5;
+  }
+
+  v12 = [NSCollectionLayoutSection sectionWithListConfiguration:*(a1 + 40) layoutEnvironment:v5];
+  [v12 setContentInsets:{0.0, 20.0, 0.0, 20.0}];
+  [v12 _setPostBoundaryPadding:20.0];
+  v23 = [NSCollectionLayoutDecorationItem backgroundDecorationItemWithElementKind:@"section-background-element-kind"];
+  [v23 setContentInsets:{0.0, 20.0, 0.0, 20.0}];
+  v25 = v23;
+  v24 = [NSArray arrayWithObjects:&v25 count:1];
+  [v12 setDecorationItems:v24];
+
+LABEL_6:
+
+  return v12;
+}
+
+void sub_10001549C(_Unwind_Exception *a1)
+{
+  v10 = v7;
+
+  _Unwind_Resume(a1);
+}
+
+void sub_1000158D4(_Unwind_Exception *a1)
+{
+  v10 = v7;
+
+  _Unwind_Resume(a1);
+}
+
+void sub_100015D1C(_Unwind_Exception *a1)
+{
+  v10 = v7;
+
+  _Unwind_Resume(a1);
+}
+
+void sub_1000164BC(id *a1, void *a2, void *a3)
+{
+  v5 = a2;
+  v6 = a3;
+  if (v5 && ([a1[4] imageCache], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(a1[5], "attachment"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "url"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "objectForKey:", v9), v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v8, v7, !v10))
+  {
+    v12 = [v5 UIImage];
+    v13 = [v12 imageByPreparingForDisplay];
+
+    block[0] = _NSConcreteStackBlock;
+    block[1] = 3221225472;
+    block[2] = sub_10001669C;
+    block[3] = &unk_100034E48;
+    v16 = a1[6];
+    v17 = a1[5];
+    v18 = v13;
+    v19 = a1[4];
+    v14 = v13;
+    dispatch_async(&_dispatch_main_q, block);
+  }
+
+  else
+  {
+    v11 = [v6 localizedDescription];
+    NSLog(@"Thumbnail generation failed with error: %@", v11);
+  }
+}
+
+void sub_10001669C(uint64_t a1)
+{
+  v14 = [*(a1 + 32) nameLabel];
+  v2 = [v14 text];
+  v3 = [*(a1 + 40) attachment];
+  v4 = [v3 displayName];
+
+  if (v2 == v4)
+  {
+    [*(a1 + 48) size];
+    v6 = v5;
+    [*(a1 + 48) size];
+    v8 = v6 / v7;
+    [*(a1 + 32) setImage:*(a1 + 48) withAspectRatio:v8];
+    v9 = *(a1 + 48);
+    v10 = *(*(a1 + 56) + 144);
+    v15 = [NSNumber numberWithDouble:v8];
+    v11 = [EFPair pairWithFirst:v9 second:?];
+    v12 = [*(a1 + 40) attachment];
+    v13 = [v12 url];
+    [v10 setObject:v11 forKey:v13];
+  }
+}
+
+void sub_1000167FC(_Unwind_Exception *a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8, uint64_t a9, id a10)
+{
+  v13 = v10;
+
+  _Unwind_Resume(a1);
+}
+
+void sub_100016E04(_Unwind_Exception *a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t a8, uint64_t a9, uint64_t a10, uint64_t a11, uint64_t a12, uint64_t a13, void *a14)
+{
+  v21 = v19;
+
+  _Unwind_Resume(a1);
+}
+
+BOOL sub_100016EC4(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  v4 = [v3 value];
+  v5 = [v4 emailAddressValue];
+
+  if (v5)
+  {
+    v6 = [v3 value];
+    v7 = [v6 emailAddressValue];
+    v8 = [v7 compare:*(a1 + 32)] == 0;
+  }
+
+  else
+  {
+    v8 = 0;
+  }
+
+  return v8;
+}
+
+void sub_1000178F0(uint64_t a1, void *a2, void *a3)
+{
+  v12 = a2;
+  v5 = a3;
+  if ([v12 count])
+  {
+    v6 = *(a1 + 32);
+    v7 = [MFMessageInfoHeaderItem alloc];
+    v8 = +[NSBundle mainBundle];
+    v9 = [v8 localizedStringForKey:v5 value:&stru_100035108 table:0];
+    v10 = [(MFMessageInfoHeaderItem *)v7 initWithName:v9 identifier:v5];
+    [v6 addObject:v10];
+
+    v11 = [v12 ef_map:&stru_100034ED8];
+    [*(a1 + 40) addObject:v11];
+  }
+}
+
+id sub_100017A3C(id a1, ECEmailAddressConvertible *a2)
+{
+  v2 = a2;
+  v3 = [[MFMessageInfoItem alloc] initWithEmail:v2];
+
+  return v3;
+}
+
+id sub_100017AA0(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  v4 = *(a1 + 32);
+  v5 = [v3 url];
+  v6 = [v4 _URLForAttachmentURL:v5];
+  v7 = [v3 displayName];
+  v8 = [EMAttachmentData attachmentWithURL:v6 displayName:v7];
+
+  return v8;
+}
+
+id sub_100017B84(id a1, EMAttachmentData *a2)
+{
+  v2 = a2;
+  v3 = [[MFMessageInfoItem alloc] initWithAttachment:v2];
+
+  return v3;
+}
+
+id sub_100017BE8(id a1, EMAttachmentData *a2)
+{
+  v2 = a2;
+  v3 = [[MFMessageInfoItem alloc] initWithAttachment:v2];
+
+  return v3;
+}
+
+id sub_100017C4C(id a1, NSURL *a2)
+{
+  v2 = a2;
+  v3 = [[MFMessageInfoItem alloc] initWithRichLink:v2];
+
+  return v3;
+}
+
+void sub_10001862C(id a1)
+{
+  v1 = os_log_create("com.apple.mobilemail", "QuickLookExtension");
+  v2 = qword_10003DF88;
+  qword_10003DF88 = v1;
+}
+
+void sub_1000188B8(_Unwind_Exception *a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8, uint64_t a9, uint64_t a10, uint64_t a11, uint64_t a12, uint64_t a13, id location)
+{
+  objc_destroyWeak((v17 + 32));
+  objc_destroyWeak(&location);
+
+  _Unwind_Resume(a1);
+}
+
+id sub_100018964(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  if (WeakRetained)
+  {
+    v2 = [MUIContactStoreProvider alloc];
+    v3 = [WeakRetained contactStore];
+    v4 = [v2 initWithContactStore:v3];
+  }
+
+  else
+  {
+    v4 = 0;
+  }
+
+  return v4;
+}
+
+void sub_100018D24(_Unwind_Exception *a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t a8, uint64_t a9, uint64_t a10, uint64_t a11, uint64_t a12, uint64_t a13, void *a14, void *a15, uint64_t a16, uint64_t a17, uint64_t a18, uint64_t a19, void *a20)
+{
+  objc_destroyWeak((v24 + 40));
+  objc_destroyWeak((v25 - 88));
+
+  _Unwind_Resume(a1);
+}
+
+void sub_100018D80(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  WeakRetained = objc_loadWeakRetained((a1 + 40));
+  (*(*(a1 + 32) + 16))();
+  v5 = objc_alloc_init(CNContactStore);
+  v6 = [MFConversationItemHeaderBlock alloc];
+  y = CGRectZero.origin.y;
+  width = CGRectZero.size.width;
+  height = CGRectZero.size.height;
+  v10 = [(MFConversationItemHeaderBlock *)v6 initWithFrame:v5 contactStore:CGRectZero.origin.x, y, width, height];
+  [(MFConversationItemHeaderBlock *)v10 setDisplayOptions:12];
+  v11 = [[MessageHeaderSubjectBlock alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  v12 = [[MFMessageSashHeaderBlock alloc] initWithFrame:0 accountsProvider:{CGRectZero.origin.x, y, width, height}];
+  [v12 setShouldShowMailbox:1];
+  v13 = [[MFMessageContentView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
+  [v13 setDelegate:WeakRetained];
+  v14 = [WeakRetained daemonInterface];
+  [v13 setDaemonInterface:v14];
+
+  v15 = [WeakRetained avatarGenerator];
+  [v13 setAvatarGenerator:v15];
+
+  v43[0] = v12;
+  v43[1] = v10;
+  v43[2] = v11;
+  v16 = [NSArray arrayWithObjects:v43 count:3];
+  v17 = [v13 headerView];
+  [v17 setHeaderBlocks:v16];
+
+  [v13 setShowsBanners:0];
+  v18 = [[MessageContentRepresentationRequest alloc] initWithMessage:v3];
+  [v13 setContentRequest:v18];
+  v19 = [v13 contentRequest];
+  v20 = [v19 waitForResult];
+
+  v21 = [WeakRetained view];
+  [v21 layoutMargins];
+  v23 = v22;
+  v25 = v24;
+  v27 = v26;
+  v29 = v28;
+
+  v30 = [WeakRetained view];
+  [v30 safeAreaInsets];
+  v32 = v31;
+  v34 = v33;
+  v36 = v35;
+  v38 = v37;
+
+  [v13 setLayoutMargins:{v23, v25, v27, v29}];
+  v39 = [WeakRetained view];
+  [v39 bounds];
+  [v13 setFrame:?];
+
+  [v13 setAutoresizingMask:18];
+  v40 = [WeakRetained traitCollection];
+  v41 = [MFMessageDisplayMetrics displayMetricsWithTraitCollection:v40 layoutMargins:0 safeAreaInsets:v23 interfaceOrientation:v25, v27, v29, v32, v34, v36, v38];
+
+  [v13 setDisplayMetrics:v41];
+  v42 = [WeakRetained view];
+  [v42 addSubview:v13];
+}
+
+void sub_100019210(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  (*(*(a1 + 48) + 16))();
+  v4 = [*(a1 + 32) view];
+  v5 = [*(a1 + 32) _errorLabel];
+  [v4 addSubview:v5];
+
+  v6 = +[MFPreviewViewController log];
+  if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  {
+    v7 = *(a1 + 40);
+    v8 = [v3 userInfo];
+    sub_10001AE70(v7, v8, v9, v6);
+  }
+}
+
+void sub_100019678(_Unwind_Exception *a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8, uint64_t a9, id a10)
+{
+  v12 = v11;
+
+  _Unwind_Resume(a1);
+}
+
+id MFConversationReferenceFromHash(uint64_t a1)
+{
+  if (a1)
+  {
+    v1 = [NSString stringWithFormat:@"%@://conversation/%lld", EMAppleMailURLScheme, a1];
+    v2 = [NSURL URLWithString:v1];
+  }
+
+  else
+  {
+    v2 = 0;
+  }
+
+  return v2;
+}
+
+id MFDocumentReferenceFromDocumentID(void *a1)
+{
+  v1 = a1;
+  v2 = objc_alloc_init(NSURLComponents);
+  [v2 setScheme:EMAppleMailURLScheme];
+  [v2 setHost:@"document"];
+  v3 = [NSString stringWithFormat:@"/%@", v1];
+  [v2 setPath:v3];
+
+  v4 = [v2 URL];
+
+  return v4;
+}
+
+void sub_100019EB4(_Unwind_Exception *a1)
+{
+  v4 = v3;
+
+  _Unwind_Resume(a1);
+}
+
+void sub_10001A03C(_Unwind_Exception *a1)
+{
+  v6 = v4;
+
+  _Unwind_Resume(a1);
+}
+
+void sub_10001A35C(id a1)
+{
+  v3 = +[NSBundle mainBundle];
+  v1 = [v3 bundleIdentifier];
+  v2 = qword_10003DF98;
+  qword_10003DF98 = v1;
+}
+
+id sub_10001A8E4(uint64_t a1)
+{
+  result = [*(a1 + 32) effectiveUserInterfaceLayoutDirection];
+  byte_10003DFA8 = result == 1;
+  return result;
+}
+
+void sub_10001AC20(uint64_t a1, uint64_t a2, os_log_t log)
+{
+  v3 = 134218240;
+  v4 = a1;
+  v5 = 2048;
+  v6 = a2;
+  _os_log_fault_impl(&_mh_execute_header, log, OS_LOG_TYPE_FAULT, "Unable to generate avatar image for missing context %p avatarGenerator %p", &v3, 0x16u);
+}
+
+void sub_10001ACA8(uint64_t a1, id a2, NSObject *a3)
+{
+  v5 = objc_retainBlock(a2);
+  v6 = 134218240;
+  v7 = a1;
+  v8 = 2048;
+  v9 = v5;
+  _os_log_fault_impl(&_mh_execute_header, a3, OS_LOG_TYPE_FAULT, "Unable to generate avatar image for missing context %p avatarGenerationBlock %p", &v6, 0x16u);
+}
+
+id sub_10001AD5C(void *a1)
+{
+  result = _os_feature_enabled_impl();
+  if (result)
+  {
+    return [a1 _addMessageInfoButton];
+  }
+
+  return result;
+}
+
+void sub_10001AD9C(void *a1, uint64_t a2, uint8_t *buf, os_log_t log)
+{
+  *buf = 138412546;
+  *(buf + 4) = a1;
+  *(buf + 6) = 2112;
+  *(buf + 14) = a2;
+  _os_log_error_impl(&_mh_execute_header, log, OS_LOG_TYPE_ERROR, "Failed to find contact: %@, using key descriptors: %@", buf, 0x16u);
+}
+
+void sub_10001AE18(void *a1, uint8_t *buf, os_log_t log)
+{
+  *buf = 138412290;
+  *(buf + 4) = a1;
+  _os_log_debug_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEBUG, "self.systemMinimumLayoutMargins is not correct. what we got is %@", buf, 0xCu);
+}
+
+void sub_10001AE70(uint64_t a1, void *a2, uint8_t *buf, os_log_t log)
+{
+  *buf = 138543618;
+  *(buf + 4) = a1;
+  *(buf + 6) = 2112;
+  *(buf + 14) = a2;
+  _os_log_error_impl(&_mh_execute_header, log, OS_LOG_TYPE_ERROR, "error displaying %{public}@ %@", buf, 0x16u);
+}

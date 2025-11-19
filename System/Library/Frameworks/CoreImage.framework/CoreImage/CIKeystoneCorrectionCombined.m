@@ -1,0 +1,114 @@
+@interface CIKeystoneCorrectionCombined
+- (void)computeRotation;
+@end
+
+@implementation CIKeystoneCorrectionCombined
+
+- (void)computeRotation
+{
+  v3 = [(CIKeystoneCorrection *)self inputBottomLeft];
+  [(CIVector *)v3 X];
+  *&v4 = v4;
+  v80 = *&v4;
+  [(CIVector *)v3 Y];
+  *&v5 = v5;
+  v77 = *&v5;
+  v6 = [(CIKeystoneCorrection *)self inputTopLeft];
+  [(CIVector *)v6 X];
+  *&v7 = v7;
+  v74 = *&v7;
+  [(CIVector *)v6 Y];
+  *&v8 = v8;
+  v71 = *&v8;
+  v9 = [(CIKeystoneCorrection *)self inputBottomRight];
+  [(CIVector *)v9 X];
+  *&v10 = v10;
+  v68 = *&v10;
+  [(CIVector *)v9 Y];
+  *&v11 = v11;
+  v65 = *&v11;
+  v12 = [(CIKeystoneCorrection *)self inputTopRight];
+  [(CIVector *)v12 X];
+  *&v13 = v13;
+  v62 = *&v13;
+  [(CIVector *)v12 Y];
+  v15 = v14;
+  v16 = *self->super._anon_80;
+  v17 = *&self->super._anon_80[16];
+  v18 = *&self->super._anon_80[32];
+  v19 = vaddq_f32(v18, vmlaq_n_f32(vmulq_n_f32(v16, v80), v17, v77));
+  v20 = vaddq_f32(v18, vmlaq_n_f32(vmulq_n_f32(v16, v74), v17, v71));
+  v21 = vaddq_f32(v18, vmlaq_n_f32(vmulq_n_f32(v16, v68), v17, v65));
+  v22 = vaddq_f32(v18, vmlaq_n_f32(vmulq_n_f32(v16, v62), v17, v15));
+  self->super.pitch = CI::Perspective::keystoneV(COERCE_DOUBLE(vdiv_f32(*v19.i8, *&vdupq_laneq_s32(v19, 2))), COERCE_DOUBLE(vdiv_f32(*v20.i8, *&vdupq_laneq_s32(v20, 2))), COERCE_DOUBLE(vdiv_f32(*v21.i8, *&vdupq_laneq_s32(v21, 2))), COERCE_DOUBLE(vdiv_f32(*v22.i8, *&vdupq_laneq_s32(v22, 2))));
+  v23 = [(CIKeystoneCorrection *)self inputTopLeft];
+  [(CIVector *)v23 X];
+  *&v24 = v24;
+  v81 = *&v24;
+  [(CIVector *)v23 Y];
+  *&v25 = v25;
+  v78 = *&v25;
+  v26 = [(CIKeystoneCorrection *)self inputTopRight];
+  [(CIVector *)v26 X];
+  *&v27 = v27;
+  v75 = *&v27;
+  [(CIVector *)v26 Y];
+  *&v28 = v28;
+  v72 = *&v28;
+  v29 = [(CIKeystoneCorrection *)self inputBottomLeft];
+  [(CIVector *)v29 X];
+  *&v30 = v30;
+  v69 = *&v30;
+  [(CIVector *)v29 Y];
+  *&v31 = v31;
+  v66 = *&v31;
+  v32 = [(CIKeystoneCorrection *)self inputBottomRight];
+  [(CIVector *)v32 X];
+  *&v33 = v33;
+  v63 = *&v33;
+  [(CIVector *)v32 Y];
+  v35 = v34;
+  v36 = *&self->super._anon_80[16];
+  v37 = *&self->super._anon_80[32];
+  v38 = vaddq_f32(v37, vmlaq_n_f32(vmulq_n_f32(*self->super._anon_80, v81), v36, v78));
+  v39 = vaddq_f32(v37, vmlaq_n_f32(vmulq_n_f32(*self->super._anon_80, v75), v36, v72));
+  v40 = vaddq_f32(v37, vmlaq_n_f32(vmulq_n_f32(*self->super._anon_80, v69), v36, v66));
+  v41 = vaddq_f32(v37, vmlaq_n_f32(vmulq_n_f32(*self->super._anon_80, v63), v36, v35));
+  self->super.yaw = CI::Perspective::keystoneH(COERCE_DOUBLE(vdiv_f32(*v38.i8, *&vdupq_laneq_s32(v38, 2))), COERCE_DOUBLE(vdiv_f32(*v39.i8, *&vdupq_laneq_s32(v39, 2))), COERCE_DOUBLE(vdiv_f32(*v40.i8, *&vdupq_laneq_s32(v40, 2))), COERCE_DOUBLE(vdiv_f32(*v41.i8, *&vdupq_laneq_s32(v41, 2))));
+  v42 = [(CIKeystoneCorrection *)self inputBottomLeft];
+  [(CIVector *)v42 X];
+  *&v43 = v43;
+  v82 = *&v43;
+  [(CIVector *)v42 Y];
+  *&v44 = v44;
+  v79 = *&v44;
+  v45 = [(CIKeystoneCorrection *)self inputTopLeft];
+  [(CIVector *)v45 X];
+  *&v46 = v46;
+  v76 = *&v46;
+  [(CIVector *)v45 Y];
+  *&v47 = v47;
+  v73 = *&v47;
+  v48 = [(CIKeystoneCorrection *)self inputBottomRight];
+  [(CIVector *)v48 X];
+  *&v49 = v49;
+  v70 = *&v49;
+  [(CIVector *)v48 Y];
+  *&v50 = v50;
+  v67 = *&v50;
+  v51 = [(CIKeystoneCorrection *)self inputTopRight];
+  [(CIVector *)v51 X];
+  *&v52 = v52;
+  v64 = *&v52;
+  v53 = [(CIVector *)v51 Y];
+  v54 = *&self->super._anon_80[16];
+  v55 = *&self->super._anon_80[32];
+  v56 = vaddq_f32(v55, vmlaq_n_f32(vmulq_n_f32(*self->super._anon_80, v82), v54, v79));
+  v58 = v57;
+  v59 = vaddq_f32(v55, vmlaq_n_f32(vmulq_n_f32(*self->super._anon_80, v76), v54, v73));
+  v60 = vaddq_f32(v55, vmlaq_n_f32(vmulq_n_f32(*self->super._anon_80, v70), v54, v67));
+  v61 = vaddq_f32(v55, vmlaq_n_f32(vmulq_n_f32(*self->super._anon_80, v64), v54, v58));
+  self->super.roll = CI::Perspective::horizonV(v53, COERCE_DOUBLE(vdiv_f32(*v56.i8, *&vdupq_laneq_s32(v56, 2))), COERCE_DOUBLE(vdiv_f32(*v59.i8, *&vdupq_laneq_s32(v59, 2))), COERCE_DOUBLE(vdiv_f32(*v60.i8, *&vdupq_laneq_s32(v60, 2))), COERCE_DOUBLE(vdiv_f32(*v61.i8, *&vdupq_laneq_s32(v61, 2))), self->super.pitch, self->super.yaw);
+}
+
+@end

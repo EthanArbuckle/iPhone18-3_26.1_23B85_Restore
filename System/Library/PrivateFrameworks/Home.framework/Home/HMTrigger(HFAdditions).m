@@ -1,0 +1,419 @@
+@interface HMTrigger(HFAdditions)
++ (__CFString)hf_localizedStringForSignficantEvent:()HFAdditions offset:;
++ (id)hf_sanitizeTriggerName:()HFAdditions home:;
+- (id)hf_anonymousActions;
+- (id)hf_forceDisableReasons;
+- (id)hf_naturalLanguageNameWithHome:()HFAdditions type:;
+- (uint64_t)hf_affectsCharacteristics:()HFAdditions;
+- (uint64_t)hf_affectsHomeKitObject:()HFAdditions;
+- (uint64_t)hf_affectsMatterAccessory:()HFAdditions;
+- (uint64_t)hf_affectsProfiles:()HFAdditions;
+- (uint64_t)hf_isShortcutOwned;
+- (uint64_t)hf_shouldDisplayTrigger;
+@end
+
+@implementation HMTrigger(HFAdditions)
+
+- (id)hf_naturalLanguageNameWithHome:()HFAdditions type:
+{
+  v6 = a3;
+  v7 = [[HFTriggerNaturalLanguageOptions alloc] initWithHome:v6 nameType:a4];
+
+  v8 = [a1 hf_naturalLanguageNameWithOptions:v7];
+
+  return v8;
+}
+
+- (uint64_t)hf_isShortcutOwned
+{
+  v1 = [a1 actionSets];
+  v2 = [v1 na_any:&__block_literal_global_144];
+
+  return v2;
+}
+
+- (id)hf_anonymousActions
+{
+  v2 = [a1 actionSets];
+  v3 = [v2 count];
+
+  if (!v3)
+  {
+    if (_MergedGlobals_277 != -1)
+    {
+      dispatch_once(&_MergedGlobals_277, &__block_literal_global_8_6);
+    }
+  }
+
+  v4 = MEMORY[0x277CBEB98];
+  v5 = [a1 actionSets];
+  v6 = [v4 setWithArray:v5];
+  v7 = [v6 na_flatMap:&__block_literal_global_12_5];
+
+  return v7;
+}
+
+- (uint64_t)hf_shouldDisplayTrigger
+{
+  objc_opt_class();
+  v2 = a1;
+  if (objc_opt_isKindOfClass())
+  {
+    v3 = v2;
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  v4 = v3;
+
+  if (v4)
+  {
+    v5 = [v4 creator];
+    if (v5)
+    {
+
+LABEL_10:
+      v9 = [v4 events];
+      v6 = [v9 na_any:&__block_literal_global_19_5];
+
+      goto LABEL_11;
+    }
+
+    v7 = [v4 events];
+    v8 = [v7 na_all:&__block_literal_global_16_5];
+
+    if ((v8 & 1) == 0)
+    {
+      goto LABEL_10;
+    }
+
+    v6 = 0;
+  }
+
+  else
+  {
+    v6 = 1;
+  }
+
+LABEL_11:
+
+  return v6;
+}
+
+- (id)hf_forceDisableReasons
+{
+  if (![a1 hf_requiresConfirmationToRun] || +[HFUtilities isAMac](HFUtilities, "isAMac") || +[HFUtilities isAVisionPro](HFUtilities, "isAVisionPro"))
+  {
+    v1 = [MEMORY[0x277D2C900] futureWithResult:&unk_282524408];
+  }
+
+  else
+  {
+    v3 = +[HFUserNotificationCenter sharedInstance];
+    v4 = [v3 notificationSettings];
+    v1 = [v4 flatMap:&__block_literal_global_25_10];
+  }
+
+  return v1;
+}
+
++ (__CFString)hf_localizedStringForSignficantEvent:()HFAdditions offset:
+{
+  v7 = a3;
+  v8 = a4;
+  if (v8)
+  {
+    v9 = objc_alloc_init(MEMORY[0x277CCA958]);
+    v10 = [MEMORY[0x277CCA8D8] mainBundle];
+    v11 = [v10 preferredLocalizations];
+    v12 = [v11 firstObject];
+    if ([v12 isEqualToString:@"en"])
+    {
+      v13 = 3;
+    }
+
+    else
+    {
+      v13 = 2;
+    }
+
+    [v9 setUnitsStyle:v13];
+
+    [v9 setAllowedUnits:96];
+    v14 = [v8 hf_absoluteValue];
+    v15 = [v9 stringFromDateComponents:v14];
+
+    v16 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:0.0];
+    v17 = [MEMORY[0x277CBEA80] currentCalendar];
+    v18 = [v17 dateByAddingComponents:v8 toDate:v16 options:0];
+
+    v19 = [v16 isEqual:v18];
+    v20 = [v16 earlierDate:v18];
+
+    if ([v7 isEqualToString:*MEMORY[0x277CD0FA8]])
+    {
+      if (!v19)
+      {
+        if (v20 == v16)
+        {
+          HFLocalizedStringWithFormat(@"HFTimerTriggerTimeStringSunriseWithPositiveOffset", @"%@", v21, v22, v23, v24, v25, v26, v15);
+        }
+
+        else
+        {
+          HFLocalizedStringWithFormat(@"HFTimerTriggerTimeStringSunriseWithNegativeOffset", @"%@", v21, v22, v23, v24, v25, v26, v15);
+        }
+
+        v34 = LABEL_22:;
+        goto LABEL_23;
+      }
+
+      goto LABEL_11;
+    }
+
+    if ([v7 isEqualToString:*MEMORY[0x277CD0FB0]])
+    {
+      if (!v19)
+      {
+        if (v20 == v16)
+        {
+          HFLocalizedStringWithFormat(@"HFTimerTriggerTimeStringSunseteWithPositiveOffset", @"%@", v28, v29, v30, v31, v32, v33, v15);
+        }
+
+        else
+        {
+          HFLocalizedStringWithFormat(@"HFTimerTriggerTimeStringSunsetWithNegativeOffset", @"%@", v28, v29, v30, v31, v32, v33, v15);
+        }
+
+        goto LABEL_22;
+      }
+
+      goto LABEL_17;
+    }
+
+    goto LABEL_19;
+  }
+
+  if (([v7 isEqualToString:*MEMORY[0x277CD0FA8]] & 1) == 0)
+  {
+    v15 = 0;
+    if ([v7 isEqualToString:*MEMORY[0x277CD0FB0]])
+    {
+LABEL_17:
+      v27 = @"HFTimerTriggerTimeStringSunset";
+      goto LABEL_18;
+    }
+
+LABEL_19:
+    v35 = [MEMORY[0x277CCA890] currentHandler];
+    [v35 handleFailureInMethod:a2 object:a1 file:@"HMTrigger+HFAdditions.m" lineNumber:170 description:{@"Unsupport significant event type: %@", v7}];
+
+    v36 = &stru_2824B1A78;
+    goto LABEL_24;
+  }
+
+  v15 = 0;
+LABEL_11:
+  v27 = @"HFTimerTriggerTimeStringSunrise";
+LABEL_18:
+  v34 = _HFLocalizedStringWithDefaultValue(v27, v27, 1);
+LABEL_23:
+  v36 = v34;
+LABEL_24:
+
+  return v36;
+}
+
++ (id)hf_sanitizeTriggerName:()HFAdditions home:
+{
+  v5 = MEMORY[0x277CBEB98];
+  v6 = a3;
+  v7 = [a4 triggers];
+  v8 = [v5 setWithArray:v7];
+  v9 = [v8 na_map:&__block_literal_global_70_5];
+
+  v10 = [HFUtilities sanitizeAutoGeneratedHomeKitName:v6];
+
+  v11 = [HFUtilities uniqueHomeKitNameForName:v10 allNames:v9];
+
+  return v11;
+}
+
+- (uint64_t)hf_affectsHomeKitObject:()HFAdditions
+{
+  v4 = a3;
+  v5 = objc_opt_new();
+  v6 = objc_opt_new();
+  objc_opt_class();
+  v7 = v4;
+  if (objc_opt_isKindOfClass())
+  {
+    v8 = v7;
+  }
+
+  else
+  {
+    v8 = 0;
+  }
+
+  v9 = v8;
+
+  if (v9)
+  {
+    v10 = [v9 characteristics];
+    [v5 addObjectsFromArray:v10];
+  }
+
+  objc_opt_class();
+  v11 = v7;
+  if (objc_opt_isKindOfClass())
+  {
+    v12 = v11;
+  }
+
+  else
+  {
+    v12 = 0;
+  }
+
+  v13 = v12;
+
+  if (v13)
+  {
+    v14 = [v13 services];
+    v15 = [v14 na_flatMap:&__block_literal_global_76_0];
+    [v5 addObjectsFromArray:v15];
+
+    v16 = [v13 profiles];
+    [v6 addObjectsFromArray:v16];
+  }
+
+  objc_opt_class();
+  v17 = v11;
+  if (objc_opt_isKindOfClass())
+  {
+    v18 = v17;
+  }
+
+  else
+  {
+    v18 = 0;
+  }
+
+  v19 = v18;
+
+  if (v19)
+  {
+    v20 = [v19 services];
+    v21 = [v20 na_flatMap:&__block_literal_global_79_0];
+    [v5 addObjectsFromArray:v21];
+  }
+
+  objc_opt_class();
+  v22 = v17;
+  if (objc_opt_isKindOfClass())
+  {
+    v23 = v22;
+  }
+
+  else
+  {
+    v23 = 0;
+  }
+
+  v24 = v23;
+
+  if (v24)
+  {
+    [v6 addObject:v24];
+  }
+
+  v25 = v22;
+  if ([v25 conformsToProtocol:&unk_282584A38])
+  {
+    v26 = v25;
+  }
+
+  else
+  {
+    v26 = 0;
+  }
+
+  v27 = v26;
+
+  if (v27)
+  {
+    v28 = [v27 mediaProfiles];
+    [v6 unionSet:v28];
+  }
+
+  if ([a1 hf_affectsCharacteristics:v5] & 1) != 0 || (objc_msgSend(a1, "hf_affectsProfiles:", v6))
+  {
+    v29 = 1;
+  }
+
+  else
+  {
+    v29 = [a1 hf_affectsMatterAccessory:v13];
+  }
+
+  return v29;
+}
+
+- (uint64_t)hf_affectsMatterAccessory:()HFAdditions
+{
+  v4 = a3;
+  v5 = [v4 matterNodeID];
+  if (v5 && (v6 = v5, [v4 matterNodeID], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
+  {
+    v8 = [a1 actionSets];
+    v11[0] = MEMORY[0x277D85DD0];
+    v11[1] = 3221225472;
+    v11[2] = __52__HMTrigger_HFAdditions__hf_affectsMatterAccessory___block_invoke;
+    v11[3] = &unk_277DF4280;
+    v12 = v4;
+    v9 = [v8 na_any:v11];
+  }
+
+  else
+  {
+    v9 = 0;
+  }
+
+  return v9;
+}
+
+- (uint64_t)hf_affectsCharacteristics:()HFAdditions
+{
+  v4 = a3;
+  v5 = [a1 actionSets];
+  v9[0] = MEMORY[0x277D85DD0];
+  v9[1] = 3221225472;
+  v9[2] = __52__HMTrigger_HFAdditions__hf_affectsCharacteristics___block_invoke;
+  v9[3] = &unk_277DF4280;
+  v10 = v4;
+  v6 = v4;
+  v7 = [v5 na_any:v9];
+
+  return v7;
+}
+
+- (uint64_t)hf_affectsProfiles:()HFAdditions
+{
+  v4 = a3;
+  v5 = [a1 actionSets];
+  v9[0] = MEMORY[0x277D85DD0];
+  v9[1] = 3221225472;
+  v9[2] = __45__HMTrigger_HFAdditions__hf_affectsProfiles___block_invoke;
+  v9[3] = &unk_277DF4280;
+  v10 = v4;
+  v6 = v4;
+  v7 = [v5 na_any:v9];
+
+  return v7;
+}
+
+@end

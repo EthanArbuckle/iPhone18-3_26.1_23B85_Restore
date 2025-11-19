@@ -1,0 +1,651 @@
+@interface INFERENCESchemaINFERENCEContactQueryMetadata
+- (BOOL)isEqual:(id)a3;
+- (INFERENCESchemaINFERENCEContactQueryMetadata)initWithDictionary:(id)a3;
+- (INFERENCESchemaINFERENCEContactQueryMetadata)initWithJSON:(id)a3;
+- (NSData)jsonData;
+- (id)dictionaryRepresentation;
+- (id)suppressMessageUnderConditions;
+- (unint64_t)hash;
+- (void)setHasHasContactId:(BOOL)a3;
+- (void)setHasHasHandleLabel:(BOOL)a3;
+- (void)setHasHasHandleValue:(BOOL)a3;
+- (void)setHasHasMeReference:(BOOL)a3;
+- (void)setHasHasRelationship:(BOOL)a3;
+- (void)setHasIsEmergencyQuery:(BOOL)a3;
+- (void)writeTo:(id)a3;
+@end
+
+@implementation INFERENCESchemaINFERENCEContactQueryMetadata
+
+- (INFERENCESchemaINFERENCEContactQueryMetadata)initWithDictionary:(id)a3
+{
+  v4 = a3;
+  v15.receiver = self;
+  v15.super_class = INFERENCESchemaINFERENCEContactQueryMetadata;
+  v5 = [(INFERENCESchemaINFERENCEContactQueryMetadata *)&v15 init];
+  if (v5)
+  {
+    v6 = [v4 objectForKeyedSubscript:@"hasName"];
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      -[INFERENCESchemaINFERENCEContactQueryMetadata setHasName:](v5, "setHasName:", [v6 BOOLValue]);
+    }
+
+    v7 = [v4 objectForKeyedSubscript:@"hasRelationship"];
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      -[INFERENCESchemaINFERENCEContactQueryMetadata setHasRelationship:](v5, "setHasRelationship:", [v7 BOOLValue]);
+    }
+
+    v8 = [v4 objectForKeyedSubscript:@"hasHandleLabel"];
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      -[INFERENCESchemaINFERENCEContactQueryMetadata setHasHandleLabel:](v5, "setHasHandleLabel:", [v8 BOOLValue]);
+    }
+
+    v9 = [v4 objectForKeyedSubscript:@"hasHandleValue"];
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      -[INFERENCESchemaINFERENCEContactQueryMetadata setHasHandleValue:](v5, "setHasHandleValue:", [v9 BOOLValue]);
+    }
+
+    v10 = [v4 objectForKeyedSubscript:@"hasMeReference"];
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      -[INFERENCESchemaINFERENCEContactQueryMetadata setHasMeReference:](v5, "setHasMeReference:", [v10 BOOLValue]);
+    }
+
+    v11 = [v4 objectForKeyedSubscript:@"hasContactId"];
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      -[INFERENCESchemaINFERENCEContactQueryMetadata setHasContactId:](v5, "setHasContactId:", [v11 BOOLValue]);
+    }
+
+    v12 = [v4 objectForKeyedSubscript:@"isEmergencyQuery"];
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      -[INFERENCESchemaINFERENCEContactQueryMetadata setIsEmergencyQuery:](v5, "setIsEmergencyQuery:", [v12 BOOLValue]);
+    }
+
+    v13 = v5;
+  }
+
+  return v5;
+}
+
+- (INFERENCESchemaINFERENCEContactQueryMetadata)initWithJSON:(id)a3
+{
+  v7 = 0;
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  {
+    v5 = 0;
+  }
+
+  else
+  {
+    self = [(INFERENCESchemaINFERENCEContactQueryMetadata *)self initWithDictionary:v4];
+    v5 = self;
+  }
+
+  return v5;
+}
+
+- (NSData)jsonData
+{
+  v2 = [(INFERENCESchemaINFERENCEContactQueryMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  {
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  return v3;
+}
+
+- (id)dictionaryRepresentation
+{
+  v3 = [MEMORY[0x1E695DF90] dictionary];
+  v4 = *(&self->_isEmergencyQuery + 1);
+  if ((v4 & 0x20) != 0)
+  {
+    v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactQueryMetadata hasContactId](self, "hasContactId")}];
+    [v3 setObject:v7 forKeyedSubscript:@"hasContactId"];
+
+    v4 = *(&self->_isEmergencyQuery + 1);
+    if ((v4 & 4) == 0)
+    {
+LABEL_3:
+      if ((v4 & 8) == 0)
+      {
+        goto LABEL_4;
+      }
+
+      goto LABEL_14;
+    }
+  }
+
+  else if ((*(&self->_isEmergencyQuery + 1) & 4) == 0)
+  {
+    goto LABEL_3;
+  }
+
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactQueryMetadata hasHandleLabel](self, "hasHandleLabel")}];
+  [v3 setObject:v8 forKeyedSubscript:@"hasHandleLabel"];
+
+  v4 = *(&self->_isEmergencyQuery + 1);
+  if ((v4 & 8) == 0)
+  {
+LABEL_4:
+    if ((v4 & 0x10) == 0)
+    {
+      goto LABEL_5;
+    }
+
+    goto LABEL_15;
+  }
+
+LABEL_14:
+  v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactQueryMetadata hasHandleValue](self, "hasHandleValue")}];
+  [v3 setObject:v9 forKeyedSubscript:@"hasHandleValue"];
+
+  v4 = *(&self->_isEmergencyQuery + 1);
+  if ((v4 & 0x10) == 0)
+  {
+LABEL_5:
+    if ((v4 & 1) == 0)
+    {
+      goto LABEL_6;
+    }
+
+    goto LABEL_16;
+  }
+
+LABEL_15:
+  v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactQueryMetadata hasMeReference](self, "hasMeReference")}];
+  [v3 setObject:v10 forKeyedSubscript:@"hasMeReference"];
+
+  v4 = *(&self->_isEmergencyQuery + 1);
+  if ((v4 & 1) == 0)
+  {
+LABEL_6:
+    if ((v4 & 2) == 0)
+    {
+      goto LABEL_7;
+    }
+
+    goto LABEL_17;
+  }
+
+LABEL_16:
+  v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactQueryMetadata hasName](self, "hasName")}];
+  [v3 setObject:v11 forKeyedSubscript:@"hasName"];
+
+  v4 = *(&self->_isEmergencyQuery + 1);
+  if ((v4 & 2) == 0)
+  {
+LABEL_7:
+    if ((v4 & 0x40) == 0)
+    {
+      goto LABEL_9;
+    }
+
+    goto LABEL_8;
+  }
+
+LABEL_17:
+  v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactQueryMetadata hasRelationship](self, "hasRelationship")}];
+  [v3 setObject:v12 forKeyedSubscript:@"hasRelationship"];
+
+  if ((*(&self->_isEmergencyQuery + 1) & 0x40) != 0)
+  {
+LABEL_8:
+    v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactQueryMetadata isEmergencyQuery](self, "isEmergencyQuery")}];
+    [v3 setObject:v5 forKeyedSubscript:@"isEmergencyQuery"];
+  }
+
+LABEL_9:
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+
+  return v3;
+}
+
+- (unint64_t)hash
+{
+  if (*(&self->_isEmergencyQuery + 1))
+  {
+    v2 = 2654435761 * self->_hasName;
+    if ((*(&self->_isEmergencyQuery + 1) & 2) != 0)
+    {
+LABEL_3:
+      v3 = 2654435761 * self->_hasRelationship;
+      if ((*(&self->_isEmergencyQuery + 1) & 4) != 0)
+      {
+        goto LABEL_4;
+      }
+
+      goto LABEL_11;
+    }
+  }
+
+  else
+  {
+    v2 = 0;
+    if ((*(&self->_isEmergencyQuery + 1) & 2) != 0)
+    {
+      goto LABEL_3;
+    }
+  }
+
+  v3 = 0;
+  if ((*(&self->_isEmergencyQuery + 1) & 4) != 0)
+  {
+LABEL_4:
+    v4 = 2654435761 * self->_hasHandleLabel;
+    if ((*(&self->_isEmergencyQuery + 1) & 8) != 0)
+    {
+      goto LABEL_5;
+    }
+
+    goto LABEL_12;
+  }
+
+LABEL_11:
+  v4 = 0;
+  if ((*(&self->_isEmergencyQuery + 1) & 8) != 0)
+  {
+LABEL_5:
+    v5 = 2654435761 * self->_hasHandleValue;
+    if ((*(&self->_isEmergencyQuery + 1) & 0x10) != 0)
+    {
+      goto LABEL_6;
+    }
+
+    goto LABEL_13;
+  }
+
+LABEL_12:
+  v5 = 0;
+  if ((*(&self->_isEmergencyQuery + 1) & 0x10) != 0)
+  {
+LABEL_6:
+    v6 = 2654435761 * self->_hasMeReference;
+    if ((*(&self->_isEmergencyQuery + 1) & 0x20) != 0)
+    {
+      goto LABEL_7;
+    }
+
+LABEL_14:
+    v7 = 0;
+    if ((*(&self->_isEmergencyQuery + 1) & 0x40) != 0)
+    {
+      goto LABEL_8;
+    }
+
+LABEL_15:
+    v8 = 0;
+    return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8;
+  }
+
+LABEL_13:
+  v6 = 0;
+  if ((*(&self->_isEmergencyQuery + 1) & 0x20) == 0)
+  {
+    goto LABEL_14;
+  }
+
+LABEL_7:
+  v7 = 2654435761 * self->_hasContactId;
+  if ((*(&self->_isEmergencyQuery + 1) & 0x40) == 0)
+  {
+    goto LABEL_15;
+  }
+
+LABEL_8:
+  v8 = 2654435761 * self->_isEmergencyQuery;
+  return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8;
+}
+
+- (BOOL)isEqual:(id)a3
+{
+  v4 = a3;
+  if (![v4 isMemberOfClass:objc_opt_class()])
+  {
+    goto LABEL_30;
+  }
+
+  v5 = *(&self->_isEmergencyQuery + 1);
+  v6 = v4[15];
+  if ((v5 & 1) != (v6 & 1))
+  {
+    goto LABEL_30;
+  }
+
+  if (v5)
+  {
+    hasName = self->_hasName;
+    if (hasName != [v4 hasName])
+    {
+      goto LABEL_30;
+    }
+
+    v5 = *(&self->_isEmergencyQuery + 1);
+    v6 = v4[15];
+  }
+
+  v8 = (v5 >> 1) & 1;
+  if (v8 != ((v6 >> 1) & 1))
+  {
+    goto LABEL_30;
+  }
+
+  if (v8)
+  {
+    hasRelationship = self->_hasRelationship;
+    if (hasRelationship != [v4 hasRelationship])
+    {
+      goto LABEL_30;
+    }
+
+    v5 = *(&self->_isEmergencyQuery + 1);
+    v6 = v4[15];
+  }
+
+  v10 = (v5 >> 2) & 1;
+  if (v10 != ((v6 >> 2) & 1))
+  {
+    goto LABEL_30;
+  }
+
+  if (v10)
+  {
+    hasHandleLabel = self->_hasHandleLabel;
+    if (hasHandleLabel != [v4 hasHandleLabel])
+    {
+      goto LABEL_30;
+    }
+
+    v5 = *(&self->_isEmergencyQuery + 1);
+    v6 = v4[15];
+  }
+
+  v12 = (v5 >> 3) & 1;
+  if (v12 != ((v6 >> 3) & 1))
+  {
+    goto LABEL_30;
+  }
+
+  if (v12)
+  {
+    hasHandleValue = self->_hasHandleValue;
+    if (hasHandleValue != [v4 hasHandleValue])
+    {
+      goto LABEL_30;
+    }
+
+    v5 = *(&self->_isEmergencyQuery + 1);
+    v6 = v4[15];
+  }
+
+  v14 = (v5 >> 4) & 1;
+  if (v14 != ((v6 >> 4) & 1))
+  {
+    goto LABEL_30;
+  }
+
+  if (v14)
+  {
+    hasMeReference = self->_hasMeReference;
+    if (hasMeReference != [v4 hasMeReference])
+    {
+      goto LABEL_30;
+    }
+
+    v5 = *(&self->_isEmergencyQuery + 1);
+    v6 = v4[15];
+  }
+
+  v16 = (v5 >> 5) & 1;
+  if (v16 != ((v6 >> 5) & 1))
+  {
+    goto LABEL_30;
+  }
+
+  if (v16)
+  {
+    hasContactId = self->_hasContactId;
+    if (hasContactId == [v4 hasContactId])
+    {
+      v5 = *(&self->_isEmergencyQuery + 1);
+      v6 = v4[15];
+      goto LABEL_26;
+    }
+
+LABEL_30:
+    v20 = 0;
+    goto LABEL_31;
+  }
+
+LABEL_26:
+  v18 = (v5 >> 6) & 1;
+  if (v18 != ((v6 >> 6) & 1))
+  {
+    goto LABEL_30;
+  }
+
+  if (v18)
+  {
+    isEmergencyQuery = self->_isEmergencyQuery;
+    if (isEmergencyQuery != [v4 isEmergencyQuery])
+    {
+      goto LABEL_30;
+    }
+  }
+
+  v20 = 1;
+LABEL_31:
+
+  return v20;
+}
+
+- (void)writeTo:(id)a3
+{
+  v5 = a3;
+  v4 = *(&self->_isEmergencyQuery + 1);
+  if (v4)
+  {
+    PBDataWriterWriteBOOLField();
+    v4 = *(&self->_isEmergencyQuery + 1);
+    if ((v4 & 2) == 0)
+    {
+LABEL_3:
+      if ((v4 & 4) == 0)
+      {
+        goto LABEL_4;
+      }
+
+      goto LABEL_14;
+    }
+  }
+
+  else if ((*(&self->_isEmergencyQuery + 1) & 2) == 0)
+  {
+    goto LABEL_3;
+  }
+
+  PBDataWriterWriteBOOLField();
+  v4 = *(&self->_isEmergencyQuery + 1);
+  if ((v4 & 4) == 0)
+  {
+LABEL_4:
+    if ((v4 & 8) == 0)
+    {
+      goto LABEL_5;
+    }
+
+    goto LABEL_15;
+  }
+
+LABEL_14:
+  PBDataWriterWriteBOOLField();
+  v4 = *(&self->_isEmergencyQuery + 1);
+  if ((v4 & 8) == 0)
+  {
+LABEL_5:
+    if ((v4 & 0x10) == 0)
+    {
+      goto LABEL_6;
+    }
+
+    goto LABEL_16;
+  }
+
+LABEL_15:
+  PBDataWriterWriteBOOLField();
+  v4 = *(&self->_isEmergencyQuery + 1);
+  if ((v4 & 0x10) == 0)
+  {
+LABEL_6:
+    if ((v4 & 0x20) == 0)
+    {
+      goto LABEL_7;
+    }
+
+    goto LABEL_17;
+  }
+
+LABEL_16:
+  PBDataWriterWriteBOOLField();
+  v4 = *(&self->_isEmergencyQuery + 1);
+  if ((v4 & 0x20) == 0)
+  {
+LABEL_7:
+    if ((v4 & 0x40) == 0)
+    {
+      goto LABEL_9;
+    }
+
+    goto LABEL_8;
+  }
+
+LABEL_17:
+  PBDataWriterWriteBOOLField();
+  if ((*(&self->_isEmergencyQuery + 1) & 0x40) != 0)
+  {
+LABEL_8:
+    PBDataWriterWriteBOOLField();
+  }
+
+LABEL_9:
+}
+
+- (void)setHasIsEmergencyQuery:(BOOL)a3
+{
+  if (a3)
+  {
+    v3 = 64;
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  *(&self->_isEmergencyQuery + 1) = *(&self->_isEmergencyQuery + 1) & 0xBF | v3;
+}
+
+- (void)setHasHasContactId:(BOOL)a3
+{
+  if (a3)
+  {
+    v3 = 32;
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  *(&self->_isEmergencyQuery + 1) = *(&self->_isEmergencyQuery + 1) & 0xDF | v3;
+}
+
+- (void)setHasHasMeReference:(BOOL)a3
+{
+  if (a3)
+  {
+    v3 = 16;
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  *(&self->_isEmergencyQuery + 1) = *(&self->_isEmergencyQuery + 1) & 0xEF | v3;
+}
+
+- (void)setHasHasHandleValue:(BOOL)a3
+{
+  if (a3)
+  {
+    v3 = 8;
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  *(&self->_isEmergencyQuery + 1) = *(&self->_isEmergencyQuery + 1) & 0xF7 | v3;
+}
+
+- (void)setHasHasHandleLabel:(BOOL)a3
+{
+  if (a3)
+  {
+    v3 = 4;
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  *(&self->_isEmergencyQuery + 1) = *(&self->_isEmergencyQuery + 1) & 0xFB | v3;
+}
+
+- (void)setHasHasRelationship:(BOOL)a3
+{
+  if (a3)
+  {
+    v3 = 2;
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  *(&self->_isEmergencyQuery + 1) = *(&self->_isEmergencyQuery + 1) & 0xFD | v3;
+}
+
+- (id)suppressMessageUnderConditions
+{
+  v2 = objc_alloc_init(SISensitiveConditionsSet);
+  [(SISensitiveConditionsSet *)v2 addCondition:1];
+
+  return v2;
+}
+
+@end

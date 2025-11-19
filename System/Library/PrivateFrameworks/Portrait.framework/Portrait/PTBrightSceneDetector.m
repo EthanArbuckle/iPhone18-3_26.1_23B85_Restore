@@ -1,0 +1,72 @@
+@interface PTBrightSceneDetector
+- (PTBrightSceneDetector)initWithLuxLevelThreshold:(float)a3 emaFilterCoefficient:(float)a4 transitionTime:;
+- (__n64)debugState;
+- (void)updateWithLuxLevel:(float)a3 deltaTime:(float)a4;
+@end
+
+@implementation PTBrightSceneDetector
+
+- (PTBrightSceneDetector)initWithLuxLevelThreshold:(float)a3 emaFilterCoefficient:(float)a4 transitionTime:
+{
+  v5 = v4;
+  v12 = *&a3;
+  v13.receiver = self;
+  v13.super_class = PTBrightSceneDetector;
+  v7 = [(PTBrightSceneDetector *)&v13 init];
+  v8 = v7;
+  if (v7)
+  {
+    if ((vcgt_f32(v12, vdup_lane_s32(v12, 1)).u8[0] & 1) == 0)
+    {
+      *v7->_luxLevelThreshold = v12;
+      v7->_emaFilterCoefficient = a4;
+      v7->_transitionTime = v5;
+      [(PTBrightSceneDetector *)v7 reset];
+      v10 = v8;
+      goto LABEL_8;
+    }
+
+    v9 = _PTLogSystem();
+    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    {
+      [PTBrightSceneDetector initWithLuxLevelThreshold:v9 emaFilterCoefficient:? transitionTime:?];
+    }
+  }
+
+  v10 = 0;
+LABEL_8:
+
+  return v10;
+}
+
+- (void)updateWithLuxLevel:(float)a3 deltaTime:(float)a4
+{
+  v4 = self->_filteredLuxLevel + (self->_emaFilterCoefficient * (a3 - self->_filteredLuxLevel));
+  self->_filteredLuxLevel = v4;
+  v5 = *&self->_luxLevelThreshold[4 * !self->_brightSceneState] < v4;
+  self->_brightSceneState = v5;
+  v6 = -a4;
+  if (v5)
+  {
+    v6 = a4;
+  }
+
+  v7 = (self->_brightScene + (v6 / self->_transitionTime));
+  if (v7 > 1.0)
+  {
+    v7 = 1.0;
+  }
+
+  v8 = fmax(v7, 0.0);
+  self->_brightScene = v8;
+}
+
+- (__n64)debugState
+{
+  result.n64_u32[0] = *(a1 + 12);
+  LOBYTE(a3) = *(a1 + 16);
+  result.n64_f32[1] = LODWORD(a3);
+  return result;
+}
+
+@end

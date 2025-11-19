@@ -1,0 +1,13105 @@
+@interface PKPassGroupsViewController
++ (void)_beginSuppressingFooter;
++ (void)beginSuppressingFooter;
++ (void)endSuppressingFooter;
++ (void)endTrackingAction;
+- ($85E40A55691FE2F31975A98F57E3065D)pkui_navigationStatusBarStyleDescriptor;
+- (BOOL)_canPerformExternalModalPresentation;
+- (BOOL)_showNavigationBar;
+- (BOOL)doesContainActivatedPaymentPasses;
+- (BOOL)groupStackView:(id)a3 requiresSectionForPassType:(unint64_t)a4 withState:(id *)a5;
+- (BOOL)groupStackView:(id)a3 willHaveHeaderViewForPassType:(unint64_t)a4 withState:(id *)a5;
+- (BOOL)groupStackView:(id)a3 willHaveSubheaderViewsWithState:(id *)a4;
+- (BOOL)hasDiscoveryCardWithItemIdentifier:(id)a3;
+- (BOOL)hasDiscoveryContent;
+- (BOOL)prefersExternalPresentation;
+- (BOOL)presentSubcredentialPairingFlowIfPossibleWithConfig:(id)a3 animated:(BOOL)a4;
+- (BOOL)supportsExternalPresentation;
+- (BOOL)willActivateNavigationItemHandleWithVoucher:(id)a3;
+- (PKDashboardPassGroupViewController)dashboardPassGroupViewController;
+- (PKDashboardPassGroupViewController)visibleDashboardPassGroupViewController;
+- (PKNavigationItemConfiguration)_navigationItemConfiguration;
+- (PKPassGroupStackView)groupStackView;
+- (PKPassGroupsViewController)initWithCoder:(id)a3;
+- (PKPassGroupsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (id)_appleCardUpsellAlertWithAccount:(id)a3;
+- (id)_application_createTrailingItemGroups;
+- (id)_barcodePassDetailsViewControllerForBarcodePass:(id)a3;
+- (id)_createLeadingItemGroups;
+- (id)_createTrailingItemGroups;
+- (id)_dashboardPassGroupViewControllerWithRequirements:(unsigned __int8)a3;
+- (id)_initWithGroupsController:(char)a3 kind:(void *)a4 style:;
+- (id)_init_application;
+- (id)_leadingItemGroups;
+- (id)_makeDiscoveryGalleryViewWithState:(id *)a3;
+- (id)_passFromGroupsControllerWithUniqueIdentifier:(id)a3;
+- (id)_passGroupsViewNavigationController;
+- (id)_passPendingActivationToPresent;
+- (id)_passToPresent;
+- (id)_passWithDeviceAssessmentEducationToPresent;
+- (id)_paymentPassDetailsViewControllerForPaymentPass:(id)a3;
+- (id)_paymentSetupNavigationControllerForProvisioningController:(id)a3;
+- (id)_peerPaymentAccountResolutionController;
+- (id)_trailingItemGroups;
+- (id)acquireNavigationItemVoucherForGroupStackView:(id)a3;
+- (id)configurationForNavigationItemHandle:(id)a3;
+- (id)featuredGroup;
+- (id)footerForGroupStackView:(id)a3;
+- (id)groupAtIndex:(unint64_t)a3;
+- (id)groupStackView:(id)a3 headerForPassType:(unint64_t)a4 withState:(id *)a5;
+- (id)groupStackView:(id)a3 subheadersWithState:(id *)a4;
+- (id)groupStackView:(id)a3 touchesShouldCancelInContentView:(id)a4;
+- (id)itemIdentifierForFrontmostDiscoveryCard;
+- (id)passForSectionHeaderView:(id)a3;
+- (id)presentationContextForFieldProperties:(id)a3 fieldPassUniqueIdentifiers:(id)a4 passUniqueIdentifierToPresent:(id *)a5;
+- (id)presentedPass;
+- (id)providerForNavigationItemController:(id)a3;
+- (int64_t)_cardSizeTypeForArticleLayouts:(id)a3;
+- (int64_t)visibilityBackdropView:(id)a3 preferredStyleForTraitCollection:(id)a4;
+- (void)_applyNavigationItemConfiguration:(id)a3;
+- (void)_applyPresentationState;
+- (void)_beginSuppressingInstanceFooter;
+- (void)_clearPassViewedNotificationTimer;
+- (void)_createNavigationGroups;
+- (void)_endSuppressingInstanceFooterWithContext:(id)a3;
+- (void)_fetchAutoFillCards:(id)a3;
+- (void)_handleChildViewControllerRequestingServiceMode:(id)a3;
+- (void)_handleExpressNotification;
+- (void)_handlePeerPaymentAccountDidChangeNotification:(id)a3;
+- (void)_handleProvisioningError:(id)a3;
+- (void)_handleStatusBarChange:(id)a3;
+- (void)_invalidateForType:(int64_t)a3;
+- (void)_passViewedNotificationTimerFired;
+- (void)_presentAccountTransactionDetailsForTransaction:(id)a3;
+- (void)_presentAddPassesControllerWithPasses:(id)a3;
+- (void)_presentExpiredPasses;
+- (void)_presentFPANConsentFlowWithEligibleCredentials:(id)a3 ineligibleCredentials:(id)a4 selectedCredentials:(id)a5 referralSource:(unint64_t)a6 showProvisioningSection:(BOOL)a7 animated:(BOOL)a8 completion:(id)a9;
+- (void)_presentGroupWithIndex:(unint64_t)a3 context:(id)a4 animated:(BOOL)a5 completionHandler:(id)a6;
+- (void)_presentHowToUseWalletWithModel:(id)a3 destinationCard:(id)a4;
+- (void)_presentShareRedemptionFlowWithInvitation:(id)a3 handle:(id)a4 referralSource:(id)a5 originalShareURL:(id)a6;
+- (void)_presentSubcredentialPairingFlowWithConfig:(id)a3 animated:(BOOL)a4;
+- (void)_presentTransactionDetailsForTransaction:(id)a3 forPaymentPass:(id)a4 confirmPaymentOfferPlan:(BOOL)a5;
+- (void)_presentTransactionDetailsForTransaction:(id)a3 transactionSourceType:(unint64_t)a4 confirmPaymentOfferPlan:(BOOL)a5;
+- (void)_regionConfigurationDidChangeNotification;
+- (void)_registerForExpressTransactionNotifications:(BOOL)a3;
+- (void)_setExternalNavigationController:(void *)a1;
+- (void)_setupItemForExpressUpgradeWithAsset:(id)a3 hideDisableAction:(unint64_t)a4 pass:(id)a5 reportingMetadata:(id)a6 completionHandler:(id)a7;
+- (void)_startPassViewedNotificationTimer;
+- (void)_updateFooterSuppressionAnimated:(BOOL)a3;
+- (void)_updateFooterSuppressionWithContext:(id)a3;
+- (void)_updateNavigationItemAnimated:(BOOL)a3;
+- (void)_warnFailForward;
+- (void)accountServiceAccountResolutionController:(id)a3 requestsPresentViewController:(id)a4 animated:(BOOL)a5;
+- (void)addVASPassWithIdentifier:(id)a3;
+- (void)allowIdleTimer;
+- (void)applicationMessageView:(id)a3 requestsContentDismissal:(id)a4;
+- (void)applicationMessageView:(id)a3 tappedApplicationMessageWithKey:(id)a4;
+- (void)applicationMessageViewNeedsRemoval:(id)a3;
+- (void)applicationMessageViewNeedsSizeUpdate:(id)a3;
+- (void)beginProvidingForNavigationItemHandle:(id)a3 withConsumedVoucher:(id)a4;
+- (void)dealloc;
+- (void)decodeRestorableStateWithCoder:(id)a3;
+- (void)didDeactivateNavigationItemController:(id)a3 dirty:(BOOL)a4;
+- (void)didReceivePendingProvisioningUpdate:(id)a3;
+- (void)didUpdateApplicationMessages:(id)a3;
+- (void)discoveryDataSource:(id)a3 didUpdateArticleLayouts:(id)a4;
+- (void)dismissDiscoveryArticleViewController:(id)a3 afterActionCompleted:(BOOL)a4 withRelevantPassUniqueIdenitifer:(id)a5;
+- (void)dismissPresentedVCsWithRequirements:(unint64_t)a3 animated:(BOOL)a4 performAction:(id)a5;
+- (void)dismissVerificationPageForPassWithDeviceAccountID:(id)a3;
+- (void)encodeRestorableStateWithCoder:(id)a3;
+- (void)endProvidingForNavigationItemHandle:(id)a3;
+- (void)finishedEditingExpiredPass;
+- (void)forceModalPresentationFromButton:(BOOL)a3;
+- (void)foregroundActiveArbiter:(id)a3 didUpdateForegroundActiveState:(id)a4;
+- (void)groupStackView:(id)a3 deleteConfirmedForPass:(id)a4;
+- (void)groupStackView:(id)a3 didTransitionToState:(int64_t)a4 animated:(BOOL)a5;
+- (void)groupStackView:(id)a3 wantsBottomContentSeparatorWithVisibility:(double)a4 animated:(BOOL)a5;
+- (void)groupStackView:(id)a3 wantsTopContentSeparatorWithVisibility:(double)a4 animated:(BOOL)a5;
+- (void)groupStackViewDidChangeCoachingState:(id)a3;
+- (void)groupStackViewDidChangeContentScrollView:(id)a3;
+- (void)groupsController:(id)a3 didInsertGroup:(id)a4 atIndex:(unint64_t)a5;
+- (void)groupsController:(id)a3 didMoveGroup:(id)a4 fromIndex:(unint64_t)a5 toIndex:(unint64_t)a6;
+- (void)groupsController:(id)a3 didRemoveGroup:(id)a4 atIndex:(unint64_t)a5;
+- (void)inboxDataSourceDidUpdateInboxMessages:(id)a3;
+- (void)loadView;
+- (void)navigationItemController:(id)a3 updateItemWithConfiguration:(id)a4;
+- (void)passPersonalizationViewController:(id)a3 didFinishPersonalizingPass:(id)a4 success:(BOOL)a5;
+- (void)paymentDeviceDidEnterFieldWithProperties:(id)a3;
+- (void)paymentDeviceDidExitField;
+- (void)paymentServiceReceivedInterruption;
+- (void)paymentSetupDidFinish:(id)a3;
+- (void)peerPaymentAccountResolutionController:(id)a3 requestsDismissCurrentViewControllerAnimated:(BOOL)a4;
+- (void)peerPaymentAccountResolutionController:(id)a3 requestsPresentViewController:(id)a4 animated:(BOOL)a5;
+- (void)performActionViewControllerDidCancel:(id)a3;
+- (void)performActionViewControllerDidPerformAction:(id)a3;
+- (void)presentAccountFeature:(unint64_t)a3 animated:(BOOL)a4 destination:(unint64_t)a5 fundingSourceIdentifier:(id)a6 completion:(id)a7;
+- (void)presentAccountPromotionForPassUniqueIdentifier:(id)a3 programIdentifier:(id)a4 animated:(BOOL)a5 completion:(id)a6;
+- (void)presentAccountServiceSchedulePayment:(id)a3 billPayAmountType:(int64_t)a4 billPayAmount:(id)a5 completion:(id)a6;
+- (void)presentActionViewControllerWithUniqueID:(id)a3 actionType:(unint64_t)a4;
+- (void)presentAddShareablePassConfiguration:(id)a3 animated:(BOOL)a4;
+- (void)presentAppStorePageForItemWithIdentifier:(id)a3;
+- (void)presentAppleBalanceAddMoneyAnimated:(BOOL)a3 completion:(id)a4;
+- (void)presentAppleBalanceAddMoneyDirectTopUpAnimated:(BOOL)a3 completion:(id)a4;
+- (void)presentAppleBalanceAddMoneyInStoreTopUpAnimated:(BOOL)a3 completion:(id)a4;
+- (void)presentApplePayUserEducationDemoFromSource:(unint64_t)a3;
+- (void)presentApplicationWithIdentifier:(id)a3;
+- (void)presentAuthorizationFlowAnimated:(BOOL)a3 completion:(id)a4;
+- (void)presentAuthorizationViewControllerWithSession:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)presentAutoFillCards;
+- (void)presentAuxiliaryPassInformationItemDetailForItemIdentifier:(id)a3 informationIdentifier:(id)a4 forPassUniqueID:(id)a5 completion:(id)a6;
+- (void)presentBackgroundRefreshConfirmationAnimated:(BOOL)a3;
+- (void)presentBalanceDetailsForPassUniqueIdentifier:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)presentCreateAccountUserInvitationWithCompletion:(id)a3;
+- (void)presentDailyCashForPassUniqueIdentifier:(id)a3 dateComponents:(id)a4 redemptionType:(unint64_t)a5 animated:(BOOL)a6 completion:(id)a7;
+- (void)presentDefaultPaymentPassInPaymentPresentationFromButton:(BOOL)a3 withAnimated:(BOOL)a4 completionHandler:(id)a5;
+- (void)presentDiscoveryArticleForItemWithIdentifier:(id)a3 referrerIdentifier:(id)a4 animated:(BOOL)a5 completion:(id)a6;
+- (void)presentEntitlementDetailsForPassUniqueIdentifier:(id)a3;
+- (void)presentExpiredPassWithUniqueID:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5;
+- (void)presentExpiredPassesAnimated:(BOOL)a3 completionHandler:(id)a4;
+- (void)presentExpressUpgradeDetailForPassUniqueID:(id)a3 assetIdentifier:(id)a4 hideDisableAction:(unint64_t)a5 reportingMetadata:(id)a6 animated:(BOOL)a7 completionHandler:(id)a8;
+- (void)presentFeatureSetupOrFeaturePass:(unint64_t)a3 referrerIdentifier:(id)a4 presentationContext:(id)a5 completion:(id)a6;
+- (void)presentGroupTableAnimated:(BOOL)a3;
+- (void)presentHowToUseWallet;
+- (void)presentHowToUseWalletWithCardLotIdentifier:(id)a3;
+- (void)presentInitialState:(BOOL *)a3;
+- (void)presentInstallmentPlanWithIdentifier:(id)a3 forAccountIdentifier:(id)a4 completion:(id)a5;
+- (void)presentInstallmentPlansForFeature:(unint64_t)a3 completion:(id)a4;
+- (void)presentInvitationWithIdentifier:(id)a3 forAccountWithIdentifier:(id)a4 completion:(id)a5;
+- (void)presentInvitationsForHeaderView:(id)a3;
+- (void)presentInvitationsInboxAnimated:(BOOL)a3 completion:(id)a4;
+- (void)presentMerchantTokenWithIdentifier:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)presentNotificationSettings;
+- (void)presentOffscreenAnimated:(BOOL)a3 split:(BOOL)a4 withCompletionHandler:(id)a5;
+- (void)presentOnscreen:(BOOL)a3 context:(id)a4 withCompletionHandler:(id)a5;
+- (void)presentOrderManagementAnimated:(BOOL)a3 completion:(id)a4;
+- (void)presentPassDetailsAssociatedWithVirtualCardID:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)presentPassDetailsForHeaderView:(id)a3;
+- (void)presentPassDetailsWithUniqueID:(id)a3 animated:(BOOL)a4 action:(unint64_t)a5 completionHandler:(id)a6;
+- (void)presentPassForFeatureIdentifier:(unint64_t)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)presentPassWithAssociatedAccountIdentifier:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)presentPassWithFieldProperties:(id)a3 fieldMetadata:(id)a4 animated:(BOOL)a5;
+- (void)presentPassWithUniqueID:(id)a3 animated:(BOOL)a4 campaignAttributionReferrerIdentifier:(id)a5 completionHandler:(id)a6;
+- (void)presentPassWithUniqueID:(id)a3 context:(id)a4 animated:(BOOL)a5 completionHandler:(id)a6;
+- (void)presentPassWithUpdateUserNotificationIdentifier:(id)a3;
+- (void)presentPaymentOfferCriteriaIdentifier:(id)a3 productIdentifier:(id)a4;
+- (void)presentPaymentSetupController;
+- (void)presentPaymentSetupForHeaderView:(id)a3;
+- (void)presentPaymentSetupInMode:(int64_t)a3 referrerIdentifier:(id)a4 referralSource:(id)a5 campaignIdentifier:(id)a6 paymentNetwork:(id)a7 transitNetworkIdentifier:(id)a8 allowedFeatureIdentifiers:(id)a9 productIdentifiers:(id)a10 sectionIdentifier:(id)a11;
+- (void)presentPeerPaymentDeviceTapWithInitialAmount:(id)a3 initialMemo:(id)a4;
+- (void)presentPeerPaymentPassAnimated:(BOOL)a3 campaignAttributionReferrerIdentifier:(id)a4 completion:(id)a5;
+- (void)presentPeerPaymentRecurringPaymentWithIdentifier:(id)a3;
+- (void)presentPeerPaymentSendOrRequest;
+- (void)presentPeerPaymentSetupWithConfiguration:(id)a3;
+- (void)presentPeerPaymentTermsAcceptance;
+- (void)presentPeerPaymentTopUp;
+- (void)presentPeerPaymentTransferToBank;
+- (void)presentPeerPaymentVerifyIdentity;
+- (void)presentPileOffscreen;
+- (void)presentPrecursorPassUpdateForPassUniqueIdentifier:(id)a3;
+- (void)presentProvisioningForPendingProvisioningOfType:(id)a3 identifier:(id)a4;
+- (void)presentRewardsHubForPassUniqueIdentifier:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)presentRewardsHubMerchantsForPassUniqueIdentifier:(id)a3 privateIdentifier:(id)a4 animated:(BOOL)a5 completion:(id)a6;
+- (void)presentSearchWithCompletion:(id)a3;
+- (void)presentSearchWithQuery:(id)a3 completion:(id)a4;
+- (void)presentSecurePassSessionWithIssuerData:(id)a3 withSignature:(id)a4 animated:(BOOL)a5;
+- (void)presentSetupVirtualCardNumberForPassUniqueIdentifier:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)presentShareActivationWithShareIdentifier:(id)a3;
+- (void)presentShareDetailsForPassUniqueIdentifier:(id)a3 shareIdentifier:(id)a4;
+- (void)presentShareInvitationWithMailboxAddress:(id)a3 referralSource:(id)a4 animated:(BOOL)a5;
+- (void)presentShareableCredentialWithEncryptedProvisioningTargetsHexEncodedString:(id)a3 passThumbnailImageData:(id)a4 animated:(BOOL)a5;
+- (void)presentSpendingSummaryForPassUniqueIdentifier:(id)a3 type:(unint64_t)a4 categorization:(unint64_t)a5 unit:(unint64_t)a6 animated:(BOOL)a7 completion:(id)a8;
+- (void)presentTransactionDetailsForBankConnectTransaction:(id)a3 applePayPrimaryAccountIdentifier:(id)a4;
+- (void)presentTransactionDetailsForTransactionWithIdentifier:(id)a3 confirmPaymentOfferPlan:(BOOL)a4;
+- (void)presentTransactionDetailsForTransactionWithServiceIdentifier:(id)a3 transactionSourceIdentifier:(id)a4 confirmPaymentOfferPlan:(BOOL)a5;
+- (void)reloadPasses;
+- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
+- (void)scrollViewDidEndScrollingAnimation:(id)a3;
+- (void)scrollViewDidScroll:(id)a3;
+- (void)showStatementForIdentifier:(id)a3 passUniqueIdentifier:(id)a4 animated:(BOOL)a5 completion:(id)a6;
+- (void)startPaymentPreflight:(id)a3 withPaymentSetupMode:(int64_t)a4 referrerIdentifier:(id)a5 referralSource:(id)a6 campaignIdentifier:(id)a7 paymentNetworks:(id)a8 transitNetworkIdentifiers:(id)a9 allowedFeatureIdentifiers:(id)a10 productIdentifiers:(id)a11 sectionIdentifier:(id)a12;
+- (void)updateLockscreenIdleTimer;
+- (void)updatePassesIfNecessaryWithCompletion:(id)a3;
+- (void)updateRegionSupportIfNecessary;
+- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewSafeAreaInsetsDidChange;
+- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillLayoutSubviews;
+- (void)virtualCardEnrollmentViewController:(id)a3 didCompleteWithSuccess:(BOOL)a4;
+- (void)willActivateNavigationItemController:(id)a3;
+@end
+
+@implementation PKPassGroupsViewController
+
+- (id)itemIdentifierForFrontmostDiscoveryCard
+{
+  if ([(PKPassGroupsViewController *)self hasDiscoveryContent]&& (v3 = objc_loadWeakRetained(&self->_discoveryGalleryView), v3, v3))
+  {
+    WeakRetained = objc_loadWeakRetained(&self->_discoveryGalleryView);
+    v5 = [WeakRetained frontmostItemIdentifier];
+  }
+
+  else
+  {
+    v5 = 0;
+  }
+
+  return v5;
+}
+
+- (BOOL)hasDiscoveryContent
+{
+  v2 = [(PKDiscoveryDataSource *)self->_discoveryDataSource articleLayouts];
+  v3 = [v2 count] != 0;
+
+  return v3;
+}
+
+- (void)loadView
+{
+  v37 = *MEMORY[0x1E69E9840];
+  v32.receiver = self;
+  v32.super_class = PKPassGroupsViewController;
+  [(PKPassGroupsViewController *)&v32 loadView];
+  if (self->_invalidationStatus)
+  {
+    return;
+  }
+
+  v3 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [v3 bounds];
+  v5 = v4;
+  v7 = v6;
+  v9 = v8;
+  v11 = v10;
+
+  v12 = [[PKPassGroupStackView alloc] initWithFrame:v5, v7, v9, v11];
+  groupStackView = self->_groupStackView;
+  self->_groupStackView = v12;
+
+  [(PKPassGroupStackView *)self->_groupStackView setScrollEnabled:0];
+  v14 = self->_groupStackView;
+  if (v14)
+  {
+    v14->_externalNavigationController = self->_externalNavigationController;
+    v15 = self->_groupStackView;
+    p_kind = &self->_kind;
+    v17 = self->_kind == 1;
+    if (v15 && v15->_parentViewControllerWantsNavigationBar != v17)
+    {
+      v15->_parentViewControllerWantsNavigationBar = v17;
+      [(PKPassGroupStackView *)v15 _updateNeedsNavigationBar];
+      v15 = self->_groupStackView;
+    }
+  }
+
+  else
+  {
+    v15 = 0;
+    p_kind = &self->_kind;
+  }
+
+  v18 = [(PKPassGroupStackView *)v15 contentScrollView];
+  contentScrollView = self->_contentScrollView;
+  self->_contentScrollView = v18;
+
+  [(PKPassGroupsViewController *)self setContentScrollView:self->_contentScrollView forEdge:15];
+  [(PKPassGroupStackView *)self->_groupStackView setDiscoveryDatasource:self->_discoveryDataSource];
+  [(PKPassGroupStackView *)self->_groupStackView setGroupsController:self->_groupsController];
+  [(PKPassGroupStackView *)self->_groupStackView setDatasource:self];
+  [(PKPassGroupStackView *)self->_groupStackView setDelegate:self];
+  v20 = PKLogFacilityTypeGetObject();
+  if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+  {
+    v21 = self->_groupStackView;
+    *buf = 134349312;
+    v34 = self;
+    v35 = 2050;
+    v36 = v21;
+    _os_log_impl(&dword_1BD026000, v20, OS_LOG_TYPE_DEFAULT, "PKPassGroupsViewController (%{public}p): created PKPassGroupStackView %{public}p.", buf, 0x16u);
+  }
+
+  [(PKPassGroupsViewController *)self _updatePeerPaymentAccount];
+  v22 = [(PKPassGroupsViewController *)self view];
+  [v22 setAutoresizingMask:0];
+  [v22 addSubview:self->_groupStackView];
+  [v22 addSubview:self->_headerBackground];
+  if ((_UISolariumFeatureFlagEnabled() & 1) == 0)
+  {
+    [v22 addSubview:self->_footerBackground];
+  }
+
+  style = self->_style;
+  if (style == 1)
+  {
+    [v22 setOpaque:0];
+    [v22 setClipsToBounds:1];
+    v24 = [MEMORY[0x1E69DC888] clearColor];
+    goto LABEL_14;
+  }
+
+  if (!style)
+  {
+    [v22 setOpaque:1];
+    v24 = +[PKPassGroupStackView backgroundColor];
+LABEL_14:
+    v25 = v24;
+    [v22 setBackgroundColor:v24];
+  }
+
+  if (!self->_invalidationStatus)
+  {
+    v26 = [MEMORY[0x1E69B8DB8] paymentService];
+    paymentService = self->_paymentService;
+    self->_paymentService = v26;
+
+    [(PKPaymentService *)self->_paymentService registerObserver:self];
+    objc_initWeak(buf, self);
+    v28 = self->_paymentService;
+    v30[0] = MEMORY[0x1E69E9820];
+    v30[1] = 3221225472;
+    v30[2] = __38__PKPassGroupsViewController_loadView__block_invoke;
+    v30[3] = &unk_1E8011158;
+    objc_copyWeak(&v31, buf);
+    [(PKPaymentService *)v28 applicationMessagesWithCompletion:v30];
+    objc_destroyWeak(&v31);
+    objc_destroyWeak(buf);
+  }
+
+  if (*p_kind == 1)
+  {
+    v29 = [MEMORY[0x1E696AD88] defaultCenter];
+    [v29 addObserver:self selector:sel__localeDidChangeNotification_ name:*MEMORY[0x1E695D8F0] object:0];
+    [v29 addObserver:self selector:sel__regionConfigurationDidChangeNotification name:*MEMORY[0x1E69BC4F8] object:0];
+  }
+
+  [(PKPassGroupsViewController *)self _updateNavigationItemAnimated:0];
+}
+
+void __38__PKPassGroupsViewController_loadView__block_invoke(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  v5[0] = MEMORY[0x1E69E9820];
+  v5[1] = 3221225472;
+  v5[2] = __38__PKPassGroupsViewController_loadView__block_invoke_2;
+  v5[3] = &unk_1E80110E0;
+  objc_copyWeak(&v7, (a1 + 32));
+  v6 = v3;
+  v4 = v3;
+  dispatch_async(MEMORY[0x1E69E96A0], v5);
+
+  objc_destroyWeak(&v7);
+}
+
+- (BOOL)prefersExternalPresentation
+{
+  kind = self->_kind;
+  if (kind >= 3)
+  {
+    __break(1u);
+  }
+
+  else
+  {
+    LOBYTE(self) = kind == 1;
+  }
+
+  return self;
+}
+
+- (BOOL)supportsExternalPresentation
+{
+  kind = self->_kind;
+  if (kind >= 3)
+  {
+    __break(1u);
+  }
+
+  else
+  {
+    LODWORD(self) = (6u >> (kind & 7)) & 1;
+  }
+
+  return self;
+}
+
+- (void)_applyPresentationState
+{
+  [(PKPassGroupStackView *)self->_groupStackView setPresentationState:self->_presentationState animated:0];
+  v3 = dispatch_time(0, 100000000);
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __53__PKPassGroupsViewController__applyPresentationState__block_invoke;
+  block[3] = &unk_1E8010970;
+  block[4] = self;
+  dispatch_after(v3, MEMORY[0x1E69E96A0], block);
+}
+
+- (void)viewSafeAreaInsetsDidChange
+{
+  v5.receiver = self;
+  v5.super_class = PKPassGroupsViewController;
+  [(PKPassGroupsViewController *)&v5 viewSafeAreaInsetsDidChange];
+  v3 = [(PKPassGroupsViewController *)self viewIfLoaded];
+  v4 = v3;
+  if (v3)
+  {
+    [v3 setNeedsLayout];
+  }
+}
+
+- (void)viewWillLayoutSubviews
+{
+  v21.receiver = self;
+  v21.super_class = PKPassGroupsViewController;
+  [(PKPassGroupsViewController *)&v21 viewWillLayoutSubviews];
+  v3 = [(PKPassGroupsViewController *)self view];
+  [v3 bounds];
+  v5 = v4;
+  v7 = v6;
+  v9 = v8;
+  v11 = v10;
+  [v3 safeAreaInsets];
+  v13 = v12;
+  v15 = v14;
+  memset(&slice, 0, sizeof(slice));
+  memset(&remainder, 0, sizeof(remainder));
+  if (self->_headerBackground)
+  {
+    remainder.origin.x = v5;
+    remainder.origin.y = v7;
+    remainder.size.width = v9;
+    remainder.size.height = v11;
+    v22.origin.x = v5;
+    v22.origin.y = v7;
+    v22.size.width = v9;
+    v22.size.height = v11;
+    CGRectDivide(v22, &slice, &remainder, v13, CGRectMinYEdge);
+    [(_PKVisibilityBackdropView *)self->_headerBackground frame];
+    if (!CGRectEqualToRect(v23, slice))
+    {
+      [(_PKVisibilityBackdropView *)self->_headerBackground setFrame:slice.origin.x, slice.origin.y, slice.size.width, slice.size.height];
+    }
+  }
+
+  groupStackView = self->_groupStackView;
+  v18[0] = MEMORY[0x1E69E9820];
+  v18[1] = 3221225472;
+  v18[2] = __52__PKPassGroupsViewController_viewWillLayoutSubviews__block_invoke;
+  v18[3] = &unk_1E8012160;
+  v18[4] = self;
+  *&v18[5] = v5;
+  *&v18[6] = v7;
+  *&v18[7] = v9;
+  *&v18[8] = v11;
+  IsAnimated = PKCATrackedLayoutIsAnimated();
+  [(PKPassGroupStackView *)groupStackView _performGeometryUpdates:v18 animated:IsAnimated];
+  if (self->_footerBackground)
+  {
+    remainder.origin.x = v5;
+    remainder.origin.y = v7;
+    remainder.size.width = v9;
+    remainder.size.height = v11;
+    v24.origin.x = v5;
+    v24.origin.y = v7;
+    v24.size.width = v9;
+    v24.size.height = v11;
+    CGRectDivide(v24, &slice, &remainder, v15, CGRectMaxYEdge);
+    [(_PKVisibilityBackdropView *)self->_footerBackground setHidden:slice.size.height <= 0.0, slice.size.height];
+    [(_PKVisibilityBackdropView *)self->_footerBackground frame];
+    if (!CGRectEqualToRect(v25, slice))
+    {
+      [(_PKVisibilityBackdropView *)self->_footerBackground setFrame:slice.origin.x, slice.origin.y, slice.size.width, slice.size.height];
+    }
+  }
+}
+
+uint64_t __52__PKPassGroupsViewController_viewWillLayoutSubviews__block_invoke(uint64_t a1)
+{
+  [*(*(a1 + 32) + 1152) frame];
+  result = CGRectEqualToRect(v9, *(a1 + 40));
+  if ((result & 1) == 0)
+  {
+    v3 = *(*(a1 + 32) + 1152);
+    v4 = *(a1 + 40);
+    v5 = *(a1 + 48);
+    v6 = *(a1 + 56);
+    v7 = *(a1 + 64);
+
+    return [v3 setFrame:{v4, v5, v6, v7}];
+  }
+
+  return result;
+}
+
+void __38__PKPassGroupsViewController_loadView__block_invoke_2(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 40));
+  if (WeakRetained && !WeakRetained[126])
+  {
+    v4 = WeakRetained;
+    v3 = [*(a1 + 32) count] ? *(a1 + 32) : 0;
+    objc_storeStrong(v4 + 174, v3);
+    WeakRetained = v4;
+    if (v4[174])
+    {
+      [v4[144] updateHeaderAndSubheaderViewsIfNecessary];
+      WeakRetained = v4;
+    }
+  }
+}
+
+- (id)_passToPresent
+{
+  v3 = [(PKPassGroupsViewController *)self _passPendingActivationToPresent];
+  v4 = v3;
+  if (v3)
+  {
+    v5 = v3;
+  }
+
+  else
+  {
+    v6 = [(PKPassGroupsViewController *)self _passWithDeviceAssessmentEducationToPresent];
+    v5 = v6;
+    if (v6)
+    {
+      v7 = v6;
+    }
+  }
+
+  return v5;
+}
+
+- (id)_passPendingActivationToPresent
+{
+  if (PKSharedCacheGetBoolForKey())
+  {
+    v2 = 0;
+  }
+
+  else
+  {
+    v3 = [MEMORY[0x1E69B8A58] sharedInstance];
+    v4 = [v3 passesPendingActivation];
+    if ([v4 count])
+    {
+      v2 = [v4 firstObject];
+      PKSharedCacheSetBoolForKey();
+    }
+
+    else
+    {
+      v2 = 0;
+    }
+  }
+
+  return v2;
+}
+
+- (id)_passWithDeviceAssessmentEducationToPresent
+{
+  if (PKHasSeenDeviceAssessmentEducation())
+  {
+    v2 = 0;
+  }
+
+  else
+  {
+    v3 = [MEMORY[0x1E69B8A58] sharedInstance];
+    v4 = [v3 passesOfType:1];
+
+    v2 = [v4 pk_firstObjectPassingTest:&__block_literal_global_388];
+  }
+
+  return v2;
+}
+
+uint64_t __73__PKPassGroupsViewController__passWithDeviceAssessmentEducationToPresent__block_invoke(uint64_t a1, void *a2)
+{
+  v2 = MEMORY[0x1E69B8EF8];
+  v3 = a2;
+  v4 = [v2 sharedService];
+  v5 = [v3 supportsDeviceAssessmentAccordingToService:v4];
+
+  return v5;
+}
+
+- (void)updateRegionSupportIfNecessary
+{
+  v2 = PKLogFacilityTypeGetObject();
+  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  {
+    *buf = 0;
+    _os_log_impl(&dword_1BD026000, v2, OS_LOG_TYPE_DEFAULT, "Updating region support", buf, 2u);
+  }
+
+  v3 = [MEMORY[0x1E69B8EF8] sharedService];
+  v4 = MEMORY[0x1E69B8D58];
+  v6[0] = MEMORY[0x1E69E9820];
+  v6[1] = 3221225472;
+  v6[2] = __60__PKPassGroupsViewController_updateRegionSupportIfNecessary__block_invoke;
+  v6[3] = &unk_1E8013908;
+  v7 = v3;
+  v5 = v3;
+  [v4 configureWebServiceIfNecessary:v5 completion:v6];
+}
+
++ (void)endTrackingAction
+{
+  if (!atomic_fetch_add(&ActionCounter, 0xFFFFFFFFFFFFFFFFLL))
+  {
+    v2 = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+    {
+      *v3 = 0;
+      _os_log_impl(&dword_1BD026000, v2, OS_LOG_TYPE_DEFAULT, "INVARIANT VIOLATION: attempting to stop tracking a non-existent action.", v3, 2u);
+    }
+
+    atomic_fetch_add(&ActionCounter, 1uLL);
+  }
+}
+
++ (void)beginSuppressingFooter
+{
+  if (!atomic_fetch_add(&FooterSuppressionCounter, 1uLL))
+  {
+    dispatch_async(MEMORY[0x1E69E96A0], &__block_literal_global_242);
+  }
+}
+
+void __52__PKPassGroupsViewController_beginSuppressingFooter__block_invoke()
+{
+  v0 = [MEMORY[0x1E696AD88] defaultCenter];
+  [v0 postNotificationName:@"PKPassGroupsViewControllerFooterSupressionDidChange" object:0];
+}
+
++ (void)_beginSuppressingFooter
+{
+  if (!atomic_fetch_add(&FooterSuppressionCounter, 1uLL))
+  {
+    v3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [v3 postNotificationName:@"PKPassGroupsViewControllerFooterSupressionDidChange" object:0];
+  }
+}
+
++ (void)endSuppressingFooter
+{
+  add = atomic_fetch_add(&FooterSuppressionCounter, 0xFFFFFFFFFFFFFFFFLL);
+  if (add == 1)
+  {
+    v4 = MEMORY[0x1E69E96A0];
+
+    dispatch_async(v4, &__block_literal_global_69);
+  }
+
+  else if (!add)
+  {
+    v3 = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    {
+      *v5 = 0;
+      _os_log_impl(&dword_1BD026000, v3, OS_LOG_TYPE_DEFAULT, "INVARIANT VIOLATION: attempting to end footer suppression when already stopped.", v5, 2u);
+    }
+
+    atomic_fetch_add(&FooterSuppressionCounter, 1uLL);
+  }
+}
+
+void __50__PKPassGroupsViewController_endSuppressingFooter__block_invoke()
+{
+  v0 = [MEMORY[0x1E696AD88] defaultCenter];
+  [v0 postNotificationName:@"PKPassGroupsViewControllerFooterSupressionDidChange" object:0];
+}
+
+- (PKPassGroupsViewController)initWithNibName:(id)a3 bundle:(id)a4
+{
+  v5 = a3;
+  result = a4;
+  __break(1u);
+  return result;
+}
+
+- (PKPassGroupsViewController)initWithCoder:(id)a3
+{
+  result = a3;
+  __break(1u);
+  return result;
+}
+
+- (id)_init_application
+{
+  v3 = objc_alloc_init(MEMORY[0x1E69B88E0]);
+  v4 = [(PKPassGroupsViewController *)&self->super.super.super.isa _initWithGroupsController:v3 kind:1 style:1];
+
+  return v4;
+}
+
+- (id)_initWithGroupsController:(char)a3 kind:(void *)a4 style:
+{
+  v8 = a2;
+  if (a1)
+  {
+    v38.receiver = a1;
+    v38.super_class = PKPassGroupsViewController;
+    v9 = objc_msgSendSuper2(&v38, sel_initWithNibName_bundle_, 0, 0);
+    a1 = v9;
+    if (v9)
+    {
+      *(v9 + 992) = a3;
+      v9[125] = a4;
+      *(v9 + 1293) = [MEMORY[0x1E69B91E0] isInFailForward];
+      if (PKSecureElementIsAvailable())
+      {
+        v10 = *(a1 + 1293) ^ 1;
+      }
+
+      else
+      {
+        v10 = 0;
+      }
+
+      *(a1 + 1294) = v10 & 1;
+      if (*(a1 + 1294))
+      {
+        v11 = MEMORY[0x1E69B8D58];
+        v12 = [MEMORY[0x1E69B8EF8] sharedService];
+        *(a1 + 1295) = [v11 _isPaymentSetupSupportedForWebService:v12];
+      }
+
+      else
+      {
+        *(a1 + 1295) = 0;
+      }
+
+      objc_storeStrong(a1 + 178, a2);
+      [v8 setShouldSeparatePaymentPasses:*(a1 + 992) == 1];
+      [a1[178] setDelegate:a1];
+      [a1[178] loadGroupsSynchronously];
+      a1[156] = 1;
+      v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
+      v14 = a1[159];
+      a1[159] = v13;
+
+      *(a1 + 1416) = 0;
+      *(a1 + 1417) = 1;
+      v15 = PKIsLowEndDevice();
+      v16 = 512;
+      if (!v15)
+      {
+        v16 = 0;
+      }
+
+      a1[179] = v16;
+      v17 = objc_alloc_init(MEMORY[0x1E69B8A60]);
+      v18 = a1[164];
+      a1[164] = v17;
+
+      v19 = [MEMORY[0x1E69B9000] sharedInstance];
+      v20 = a1[165];
+      a1[165] = v19;
+
+      v21 = objc_alloc_init(MEMORY[0x1E69B8680]);
+      v22 = a1[170];
+      a1[170] = v21;
+
+      v23 = [objc_alloc(MEMORY[0x1E69B87E0]) initWithDelegate:a1];
+      v24 = a1[172];
+      a1[172] = v23;
+
+      v25 = [PKContactAvatarManager alloc];
+      v26 = [MEMORY[0x1E69B8740] defaultContactResolver];
+      v27 = [MEMORY[0x1E69B8BD8] defaultDataProvider];
+      v28 = [(PKContactAvatarManager *)v25 initWithContactResolver:v26 paymentDataProvider:v27];
+      v29 = a1[173];
+      a1[173] = v28;
+
+      v30 = [PKInboxDataSource alloc];
+      if (*(a1 + 992) == 1)
+      {
+        v31 = a1;
+      }
+
+      else
+      {
+        v31 = 0;
+      }
+
+      v32 = [(PKInboxDataSource *)v30 initWithDelegate:v31];
+      v33 = a1[168];
+      a1[168] = v32;
+
+      [a1 setRestorationIdentifier:@"PKPassGroupsViewController"];
+      v34 = [MEMORY[0x1E696AD88] defaultCenter];
+      [v34 addObserver:a1 selector:sel__handleStatusBarChange_ name:*MEMORY[0x1E69DDAB8] object:0];
+      [v34 addObserver:a1 selector:sel__handleFooterSupressionChange_ name:@"PKPassGroupsViewControllerFooterSupressionDidChange" object:0];
+      [v34 addObserver:a1 selector:sel__handlePeerPaymentAccountDidChangeNotification_ name:*MEMORY[0x1E69BC360] object:a1[165]];
+      if ((PKRunningInRemoteContext() & 1) == 0)
+      {
+        [v34 addObserver:a1 selector:sel__handleChildViewControllerRequestingServiceMode_ name:@"PKPDVCRequestedServiceMode" object:0];
+      }
+
+      v35 = +[PKUIForegroundActiveArbiter sharedInstance];
+      v36 = v35;
+      if (v35)
+      {
+        *(a1 + 508) = [v35 registerObserver:a1];
+      }
+
+      else
+      {
+        *(a1 + 508) = 257;
+      }
+
+      *(a1 + 326) = -1;
+      [a1 _registerForExpressTransactionNotifications:*(a1 + 1017)];
+      [a1 _createNavigationGroups];
+    }
+  }
+
+  return a1;
+}
+
+- (void)dealloc
+{
+  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [v3 removeObserver:self];
+
+  v4 = +[PKUIForegroundActiveArbiter sharedInstance];
+  [v4 unregisterObserver:self];
+
+  [(PKPassGroupsViewController *)self _registerForExpressTransactionNotifications:0];
+  [(PKGroupsController *)self->_groupsController setDelegate:0];
+  [(PKPassGroupStackView *)self->_groupStackView setDatasource:0];
+  [(PKPassGroupStackView *)self->_groupStackView setDelegate:0];
+  [(PKPaymentService *)self->_paymentService unregisterObserver:self];
+  [(NSTimer *)self->_allowDimmingTimer invalidate];
+  [(NSTimer *)self->_passViewedNotificationTimer invalidate];
+  [self->_LAContext invalidate];
+  LAContext = self->_LAContext;
+  self->_LAContext = 0;
+
+  [(PKPassGroupsViewController *)self invalidate];
+  v6.receiver = self;
+  v6.super_class = PKPassGroupsViewController;
+  [(PKPassGroupsViewController *)&v6 dealloc];
+}
+
+- ($85E40A55691FE2F31975A98F57E3065D)pkui_navigationStatusBarStyleDescriptor
+{
+  needsDefaultStatusBar = self->_needsDefaultStatusBar;
+  v3 = 0;
+  result.var1 = v3;
+  result.var0 = needsDefaultStatusBar;
+  return result;
+}
+
+- (void)viewWillAppear:(BOOL)a3
+{
+  v3 = a3;
+  v6.receiver = self;
+  v6.super_class = PKPassGroupsViewController;
+  [(PKPassGroupsViewController *)&v6 viewWillAppear:?];
+  self->_viewAppeared = 1;
+  [(PKPassGroupsViewController *)self _updateFooterSuppressionAnimated:v3];
+  [(PKPassGroupStackView *)self->_groupStackView updateHeaderAndSubheaderViewsIfNecessary];
+  if (!self->_viewWillAppearedBefore)
+  {
+    self->_viewWillAppearedBefore = 1;
+    v5 = [(PKGroupsController *)self->_groupsController groupCount];
+    [(PKPassGroupStackView *)self->_groupStackView tilePassesEagerly:1];
+    if (!v5)
+    {
+      [(PKPassGroupStackView *)self->_groupStackView setModalGroupIndex:0x7FFFFFFFFFFFFFFFLL];
+      self->_presentationState = 4;
+    }
+
+    [(PKPassGroupsViewController *)self _applyPresentationState];
+  }
+
+  [(PKPassGroupStackView *)self->_groupStackView setPaused:0];
+}
+
+- (void)viewDidAppear:(BOOL)a3
+{
+  v12[1] = *MEMORY[0x1E69E9840];
+  v9.receiver = self;
+  v9.super_class = PKPassGroupsViewController;
+  [(PKPassGroupsViewController *)&v9 viewDidAppear:a3];
+  v4 = MEMORY[0x1E69B8540];
+  v12[0] = *MEMORY[0x1E69BB718];
+  v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
+  v6 = *MEMORY[0x1E69BABE8];
+  v10[0] = *MEMORY[0x1E69BA680];
+  v10[1] = v6;
+  v7 = *MEMORY[0x1E69BAC60];
+  v11[0] = *MEMORY[0x1E69BA818];
+  v11[1] = v7;
+  v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
+  [v4 subjects:v5 sendEvent:v8];
+
+  if (!self->_viewDidAppearedBefore)
+  {
+    self->_viewDidAppearedBefore = 1;
+    [(_PKVisibilityBackdropView *)self->_headerBackground pkui_setVisibility:1 animated:self->_headerBackgroundVisibility];
+    [(_PKVisibilityBackdropView *)self->_footerBackground pkui_setVisibility:1 animated:self->_footerBackgroundVisibility];
+  }
+}
+
+- (void)viewDidDisappear:(BOOL)a3
+{
+  v3 = a3;
+  v13[1] = *MEMORY[0x1E69E9840];
+  v5 = MEMORY[0x1E69B8540];
+  v13[0] = *MEMORY[0x1E69BB718];
+  v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
+  v7 = *MEMORY[0x1E69BABE8];
+  v11[0] = *MEMORY[0x1E69BA680];
+  v11[1] = v7;
+  v8 = *MEMORY[0x1E69BAC60];
+  v12[0] = *MEMORY[0x1E69BA820];
+  v12[1] = v8;
+  v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
+  [v5 subjects:v6 sendEvent:v9];
+
+  self->_viewAppeared = 0;
+  [(PKPassGroupsViewController *)self _updateFooterSuppressionAnimated:v3];
+  [(PKPassGroupStackView *)self->_groupStackView setPaused:1];
+  v10.receiver = self;
+  v10.super_class = PKPassGroupsViewController;
+  [(PKPassGroupsViewController *)&v10 viewDidDisappear:v3];
+}
+
+- (void)decodeRestorableStateWithCoder:(id)a3
+{
+  v6.receiver = self;
+  v6.super_class = PKPassGroupsViewController;
+  v4 = a3;
+  [(PKPassGroupsViewController *)&v6 decodeRestorableStateWithCoder:v4];
+  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:{@"modalUniqueID", v6.receiver, v6.super_class}];
+
+  if (v5)
+  {
+    [(PKPassGroupsViewController *)self presentPassWithUniqueID:v5 animated:0 completionHandler:0];
+  }
+}
+
+- (void)encodeRestorableStateWithCoder:(id)a3
+{
+  v4 = a3;
+  v8.receiver = self;
+  v8.super_class = PKPassGroupsViewController;
+  [(PKPassGroupsViewController *)&v8 encodeRestorableStateWithCoder:v4];
+  v5 = [(PKPassGroupStackView *)self->_groupStackView modalGroupFrontmostPass];
+  v6 = v5;
+  if (v5)
+  {
+    v7 = [v5 uniqueID];
+    if (v7)
+    {
+      [v4 encodeObject:v7 forKey:@"modalUniqueID"];
+    }
+  }
+}
+
+- (void)finishedEditingExpiredPass
+{
+  moreMenuFactory = self->_moreMenuFactory;
+  if (moreMenuFactory)
+  {
+    [(PKPassGroupsMoreMenuFactory *)moreMenuFactory setExpiredPassesCount:[(PKGroupsController *)self->_groupsController expiredSectionPassesCount]];
+    more = self->_navigationItem.trailing.more.items.more;
+    if (more)
+    {
+      v5 = [(PKPassGroupsMoreMenuFactory *)self->_moreMenuFactory moreMenu];
+      [(UIBarButtonItem *)more setMenu:v5];
+    }
+  }
+}
+
+- (id)groupAtIndex:(unint64_t)a3
+{
+  if ([(PKPassGroupsViewController *)self numberOfGroups]<= a3)
+  {
+    v5 = 0;
+  }
+
+  else
+  {
+    v5 = [(PKGroupsController *)self->_groupsController groupAtIndex:a3];
+  }
+
+  return v5;
+}
+
+- (BOOL)hasDiscoveryCardWithItemIdentifier:(id)a3
+{
+  v4 = a3;
+  WeakRetained = objc_loadWeakRetained(&self->_discoveryGalleryView);
+  v6 = [WeakRetained cardViewForCardWithItemIdentifier:v4];
+
+  return v6 != 0;
+}
+
+- (id)featuredGroup
+{
+  if (PKRunningInViewService())
+  {
+    v3 = [(PKPeerPaymentService *)self->_peerPaymentService account];
+    if ([v3 supportsCardBalancePromotion] && (objc_msgSend(v3, "cardBalancePromotionFeatureDescriptor"), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "minimumAmount"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "currentBalance"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "amount"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v5, "compare:", v7), v7, v6, v5, v4, v8 != 1))
+    {
+      groupsController = self->_groupsController;
+      v11 = [v3 associatedPassUniqueID];
+      v12 = [(PKGroupsController *)groupsController groupIndexForPassUniqueID:v11];
+
+      v9 = [(PKGroupsController *)self->_groupsController groupAtIndex:v12];
+    }
+
+    else
+    {
+      v9 = 0;
+    }
+  }
+
+  else
+  {
+    v9 = 0;
+  }
+
+  return v9;
+}
+
+- (BOOL)groupStackView:(id)a3 requiresSectionForPassType:(unint64_t)a4 withState:(id *)a5
+{
+  v8 = a3;
+  if (!a4)
+  {
+    if ((*(a5 + 16) & 2) == 0)
+    {
+      v11 = *&a5->var0;
+      v12 = *(a5 + 2);
+      canAddSecureElementCards = ![(PKPassGroupsViewController *)self groupStackView:v8 requiresSectionForPassType:1 withState:&v11];
+      goto LABEL_7;
+    }
+
+LABEL_6:
+    canAddSecureElementCards = 0;
+    goto LABEL_7;
+  }
+
+  if (a4 != 1)
+  {
+    goto LABEL_6;
+  }
+
+  canAddSecureElementCards = self->_canAddSecureElementCards;
+LABEL_7:
+
+  return canAddSecureElementCards & 1;
+}
+
+- (BOOL)groupStackView:(id)a3 willHaveHeaderViewForPassType:(unint64_t)a4 withState:(id *)a5
+{
+  v8 = a3;
+  if (!a4)
+  {
+    if ((*(a5 + 24) & 2) == 0)
+    {
+      v12 = *(&a5->var0 + 1);
+      v14[0] = *&a5->var0.var0;
+      v14[1] = v12;
+      v11 = [(PKPassGroupsViewController *)self groupStackView:v8 willHaveHeaderViewForPassType:1 withState:v14];
+      goto LABEL_7;
+    }
+
+LABEL_6:
+    v11 = 0;
+    goto LABEL_7;
+  }
+
+  if (a4 != 1)
+  {
+    goto LABEL_6;
+  }
+
+  paymentService = self->_paymentService;
+  v10 = PKPendingProvisioningBackgroundProvisioningInBuddyTypes();
+  v11 = [(PKPaymentService *)paymentService hasPendingProvisioningsOfTypes:v10];
+
+LABEL_7:
+  return v11;
+}
+
+- (BOOL)groupStackView:(id)a3 willHaveSubheaderViewsWithState:(id *)a4
+{
+  WeakRetained = objc_loadWeakRetained(&self->_applicationMessageView);
+  v7 = WeakRetained;
+  if (self->_messages || WeakRetained && ![WeakRetained needsRemoval])
+  {
+    v8 = 1;
+  }
+
+  else
+  {
+
+    objc_storeWeak(&self->_applicationMessageView, 0);
+    discoveryDataSource = self->_discoveryDataSource;
+    v10 = *(&a4->var0 + 1);
+    v12[0] = *&a4->var0.var0;
+    v12[1] = v10;
+    v8 = [PKDiscoveryGalleryView isVisibleForSectionsState:v12 dataSource:discoveryDataSource];
+    v7 = 0;
+  }
+
+  return v8;
+}
+
+- (id)groupStackView:(id)a3 headerForPassType:(unint64_t)a4 withState:(id *)a5
+{
+  if (a4 == 1)
+  {
+    v8 = &OBJC_IVAR___PKPassGroupsViewController__paymentHeaderView;
+    goto LABEL_5;
+  }
+
+  if (!a4)
+  {
+    v8 = &OBJC_IVAR___PKPassGroupsViewController__barcodeHeaderView;
+LABEL_5:
+    v9 = (&self->super.super.super.isa + *v8);
+    goto LABEL_7;
+  }
+
+  v9 = 0;
+LABEL_7:
+  paymentService = self->_paymentService;
+  v11 = PKPendingProvisioningBackgroundProvisioningInBuddyTypes();
+  v12 = [(PKPaymentService *)paymentService hasPendingProvisioningsOfTypes:v11];
+
+  if (v9)
+  {
+    WeakRetained = objc_loadWeakRetained(v9);
+    if (WeakRetained)
+    {
+      v14 = WeakRetained;
+      if (![(PKGSVWalletHeaderView *)WeakRetained needsRemoval])
+      {
+LABEL_12:
+        v17 = v14;
+
+        goto LABEL_14;
+      }
+    }
+
+    v15 = [PKGSVWalletHeaderView alloc];
+    v16 = *(&a5->var0 + 1);
+    v19[0] = *&a5->var0.var0;
+    v19[1] = v16;
+    v14 = [(PKGSVWalletHeaderView *)v15 initWithPassType:a4 state:v19 delegate:self];
+    objc_storeWeak(v9, v14);
+    [(PKGSVWalletHeaderView *)v14 setHeaderDelegate:self];
+    [(PKGSVWalletHeaderView *)v14 setShowBackgroundProvisioningHint:v12 animated:0];
+    goto LABEL_12;
+  }
+
+  v17 = 0;
+LABEL_14:
+
+  return v17;
+}
+
+- (id)groupStackView:(id)a3 subheadersWithState:(id *)a4
+{
+  WeakRetained = objc_loadWeakRetained(&self->_applicationMessageView);
+  messages = self->_messages;
+  if (!(messages | WeakRetained))
+  {
+    v8 = 0;
+    goto LABEL_10;
+  }
+
+  v8 = WeakRetained;
+  if (!WeakRetained)
+  {
+    goto LABEL_5;
+  }
+
+  if ([WeakRetained needsRemoval])
+  {
+
+    objc_storeWeak(&self->_applicationMessageView, 0);
+    messages = self->_messages;
+LABEL_5:
+    if (messages)
+    {
+      v9 = [PKApplicationMessageViewConfiguration alloc];
+      +[PKDiscoveryCardView compressedWidth];
+      v11 = [(PKApplicationMessageViewConfiguration *)v9 initWithWidth:v10 + -8.0];
+      v8 = [[PKApplicationMessageView alloc] initWithConfiguration:v11];
+      objc_storeWeak(&self->_applicationMessageView, v8);
+
+      v12 = *(&a4->var0 + 1);
+      v36 = *&a4->var0.var0;
+      v37 = v12;
+      [(PKApplicationMessageView *)v8 setSectionsState:&v36];
+      v13 = [MEMORY[0x1E69B85C0] createForMessages:self->_messages];
+      [(PKApplicationMessageView *)v8 setContent:v13 animated:0];
+      [(PKApplicationMessageView *)v8 bounds];
+      v15 = v14;
+      v17 = v16;
+      v18 = [(PKApplicationMessageView *)v8 configuration];
+      [v18 width];
+      v20 = v19;
+
+      [(PKApplicationMessageView *)v8 sizeThatFits:v20, 1.79769313e308];
+      [(PKApplicationMessageView *)v8 setBounds:v15, v17, v21, v22];
+      [(PKApplicationMessageView *)v8 layoutIfNeededAnimated:0];
+      [(PKApplicationMessageView *)v8 setSubheaderDelegate:self];
+      [(PKApplicationMessageView *)v8 setDelegate:self];
+
+      goto LABEL_10;
+    }
+
+    v8 = 0;
+  }
+
+  v23 = *(&a4->var0 + 1);
+  v36 = *&a4->var0.var0;
+  v37 = v23;
+  [(PKApplicationMessageView *)v8 setSectionsState:&v36];
+LABEL_10:
+  discoveryDataSource = self->_discoveryDataSource;
+  v25 = *(&a4->var0 + 1);
+  v36 = *&a4->var0.var0;
+  v37 = v25;
+  if ([PKDiscoveryGalleryView isVisibleForSectionsState:&v36 dataSource:discoveryDataSource])
+  {
+    v26 = objc_loadWeakRetained(&self->_discoveryGalleryView);
+    if (v26)
+    {
+      v27 = v26;
+      if (![v26 needsRemoval])
+      {
+        v33 = *(&a4->var0 + 1);
+        v36 = *&a4->var0.var0;
+        v37 = v33;
+        [v27 setSectionsState:&v36];
+        v34 = objc_alloc_init(MEMORY[0x1E695DF70]);
+        v31 = v34;
+        if (v8)
+        {
+          [v34 addObject:v8];
+        }
+
+LABEL_24:
+        [v31 addObject:v27];
+
+        goto LABEL_25;
+      }
+
+      objc_storeWeak(&self->_discoveryGalleryView, 0);
+    }
+
+    v28 = *(&a4->var0 + 1);
+    v36 = *&a4->var0.var0;
+    v37 = v28;
+    v27 = [(PKPassGroupsViewController *)self _makeDiscoveryGalleryViewWithState:&v36];
+    objc_storeWeak(&self->_discoveryGalleryView, v27);
+    v29 = [v27 layer];
+    [v29 setAnchorPoint:{0.5, 0.0}];
+
+    [v27 setSubheaderDelegate:self];
+  }
+
+  else
+  {
+    v27 = 0;
+  }
+
+  if (!(v8 | v27))
+  {
+    v32 = 0;
+    goto LABEL_26;
+  }
+
+  v30 = objc_alloc_init(MEMORY[0x1E695DF70]);
+  v31 = v30;
+  if (v8)
+  {
+    [v30 addObject:v8];
+  }
+
+  if (v27)
+  {
+    goto LABEL_24;
+  }
+
+LABEL_25:
+  v32 = [v31 copy];
+
+LABEL_26:
+
+  return v32;
+}
+
+- (id)_makeDiscoveryGalleryViewWithState:(id *)a3
+{
+  v5 = [(PKDiscoveryDataSource *)self->_discoveryDataSource articleLayouts];
+  v6 = [[PKDiscoveryGalleryView alloc] initWithCardSizeType:[(PKPassGroupsViewController *)self _cardSizeTypeForArticleLayouts:v5]];
+  [(PKDiscoveryGalleryView *)v6 setDataSource:self->_discoveryDataSource];
+  [(PKDiscoveryGalleryView *)v6 updateArticleLayouts:v5];
+  v7 = *(&a3->var0 + 1);
+  v9[0] = *&a3->var0.var0;
+  v9[1] = v7;
+  [(PKDiscoveryGalleryView *)v6 setSectionsState:v9];
+  [(PKDiscoveryGalleryView *)v6 sizeToFit];
+
+  return v6;
+}
+
+- (id)footerForGroupStackView:(id)a3
+{
+  if (_UISolariumFeatureFlagEnabled())
+  {
+    v4 = 0;
+  }
+
+  else
+  {
+    refreshed = PKExpiredPassesRefreshEnabled();
+    v6 = [PKPGSVFooterView alloc];
+    v4 = [(PKPGSVFooterView *)v6 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+    if (refreshed)
+    {
+      [(PKPGSVFooterView *)v4 setExpiredSectionCount:[(PKGroupsController *)self->_groupsController expiredSectionPassesCount]];
+    }
+
+    [(PKPGSVFooterView *)v4 setDelegate:self];
+    [(PKPGSVFooterView *)v4 sizeToFit];
+    v7 = [(PKPassGroupsViewController *)self view];
+    -[PKPGSVFooterView setOpaque:](v4, "setOpaque:", [v7 isOpaque]);
+    v8 = [v7 backgroundColor];
+    [(PKPGSVFooterView *)v4 setBackgroundColor:v8];
+  }
+
+  return v4;
+}
+
+- (void)groupStackViewDidChangeContentScrollView:(id)a3
+{
+  v4 = [(PKPassGroupStackView *)self->_groupStackView contentScrollView];
+  if (self->_contentScrollView != v4)
+  {
+    v5 = v4;
+    objc_storeStrong(&self->_contentScrollView, v4);
+    [(PKPassGroupsViewController *)self setContentScrollView:self->_contentScrollView forEdge:15];
+    v4 = v5;
+  }
+}
+
+- (id)acquireNavigationItemVoucherForGroupStackView:(id)a3
+{
+  v4 = a3;
+  p_navigationItem = &self->_navigationItem;
+  v6 = self->_navigationItem.active.handle;
+  v7 = v6;
+  if (v6)
+  {
+    v8 = [(PKNavigationItemHandle *)v6 consume];
+LABEL_5:
+    v10 = v8;
+
+    return v10;
+  }
+
+  result = p_navigationItem->controller;
+  if (p_navigationItem->controller)
+  {
+    [(PKNavigationItemController *)result _ensure];
+    goto LABEL_5;
+  }
+
+  __break(1u);
+  return result;
+}
+
+- (void)groupStackView:(id)a3 deleteConfirmedForPass:(id)a4
+{
+  groupsController = self->_groupsController;
+  v5 = [a4 uniqueID];
+  [(PKGroupsController *)groupsController handleUserPassDelete:v5];
+}
+
+- (id)groupStackView:(id)a3 touchesShouldCancelInContentView:(id)a4
+{
+  v5 = a4;
+  WeakRetained = objc_loadWeakRetained(&self->_applicationMessageView);
+  if (WeakRetained)
+  {
+    v7 = objc_loadWeakRetained(&self->_applicationMessageView);
+    v8 = [v5 isDescendantOfView:v7];
+
+    if (v8)
+    {
+      WeakRetained = [MEMORY[0x1E696AD98] numberWithBool:1];
+    }
+
+    else
+    {
+      WeakRetained = 0;
+    }
+  }
+
+  return WeakRetained;
+}
+
+- (void)allowIdleTimer
+{
+  v3 = [MEMORY[0x1E69DC668] sharedApplication];
+  [v3 setIdleTimerDisabled:0];
+
+  [(NSTimer *)self->_allowDimmingTimer invalidate];
+  allowDimmingTimer = self->_allowDimmingTimer;
+  self->_allowDimmingTimer = 0;
+}
+
+- (void)updateLockscreenIdleTimer
+{
+  if ((PKRunningInRemoteContext() & 1) == 0)
+  {
+    if ([(PKPassGroupStackView *)self->_groupStackView isPresentingPassViewFront]&& ([(PKPassGroupStackView *)self->_groupStackView modalGroupFrontmostPass], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    {
+      v4 = v3;
+      v5 = [v3 passType] != 1;
+    }
+
+    else
+    {
+      v5 = 0;
+    }
+
+    v6 = [MEMORY[0x1E69DC668] sharedApplication];
+    [v6 setIdleTimerDisabled:v5];
+
+    [(NSTimer *)self->_allowDimmingTimer invalidate];
+    allowDimmingTimer = self->_allowDimmingTimer;
+    self->_allowDimmingTimer = 0;
+
+    if (v5)
+    {
+      v8 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel_allowIdleTimer selector:0 userInfo:0 repeats:120.0];
+      v9 = self->_allowDimmingTimer;
+      self->_allowDimmingTimer = v8;
+    }
+  }
+}
+
+- (void)_handleStatusBarChange:(id)a3
+{
+  if (self->_viewAppeared)
+  {
+    v4 = [MEMORY[0x1E69DC668] sharedApplication];
+    v5 = [v4 applicationState] == 0;
+  }
+
+  else
+  {
+    v5 = 0;
+  }
+
+  v6 = [(PKPassGroupsViewController *)self view];
+  [v6 layoutIfNeeded];
+  [(PKPassGroupStackView *)self->_groupStackView layoutContentForCurrentPresentationState:v5];
+}
+
+- (void)_startPassViewedNotificationTimer
+{
+  v3 = [(PKPassGroupStackView *)self->_groupStackView modalGroupFrontmostPass];
+  if (v3)
+  {
+    v6 = v3;
+    v4 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel__passViewedNotificationTimerFired selector:0 userInfo:0 repeats:5.0];
+    passViewedNotificationTimer = self->_passViewedNotificationTimer;
+    self->_passViewedNotificationTimer = v4;
+
+    v3 = v6;
+  }
+}
+
+- (void)_clearPassViewedNotificationTimer
+{
+  [(NSTimer *)self->_passViewedNotificationTimer invalidate];
+  passViewedNotificationTimer = self->_passViewedNotificationTimer;
+  self->_passViewedNotificationTimer = 0;
+}
+
+- (void)_passViewedNotificationTimerFired
+{
+  v6 = [(PKPassGroupStackView *)self->_groupStackView modalGroupFrontmostPass];
+  if (v6)
+  {
+    v3 = [MEMORY[0x1E69B8A58] sharedInstance];
+    v4 = [v6 uniqueID];
+    [v3 notifyPassUsedWithIdentifier:v4 fromSource:1];
+  }
+
+  passViewedNotificationTimer = self->_passViewedNotificationTimer;
+  self->_passViewedNotificationTimer = 0;
+}
+
+- (void)foregroundActiveArbiter:(id)a3 didUpdateForegroundActiveState:(id)a4
+{
+  v4 = *&a4.var0;
+  v6 = a3;
+  foregroundActive = self->_foregroundActiveState.foregroundActive;
+  self->_foregroundActiveState = v4;
+  if (foregroundActive != BYTE1(v4))
+  {
+    [(PKPassGroupsViewController *)self _registerForExpressTransactionNotifications:(v4 >> 8) & 1];
+    if (self->_foregroundActiveState.foregroundActive)
+    {
+      self->_inField = 0;
+      v8 = [(PKPassGroupsViewController *)self _passToPresent];
+      v9 = v8;
+      if (v8)
+      {
+        v10 = [v8 uniqueID];
+        [(PKPassGroupsViewController *)self presentPassWithUniqueID:v10 animated:1 completionHandler:0];
+      }
+
+      if (([(PKPassGroupStackView *)self->_groupStackView presentationState]& 0xFFFFFFFFFFFFFFFDLL) == 5)
+      {
+        [(PKPassGroupsViewController *)self _clearPassViewedNotificationTimer];
+        [(PKPassGroupsViewController *)self _startPassViewedNotificationTimer];
+      }
+
+      objc_initWeak(&location, self);
+      paymentService = self->_paymentService;
+      if (paymentService)
+      {
+        v12 = MEMORY[0x1E69E9820];
+        v13 = 3221225472;
+        v14 = __85__PKPassGroupsViewController_foregroundActiveArbiter_didUpdateForegroundActiveState___block_invoke;
+        v15 = &unk_1E8011158;
+        objc_copyWeak(&v16, &location);
+        [(PKPaymentService *)paymentService applicationMessagesWithCompletion:&v12];
+        objc_destroyWeak(&v16);
+      }
+
+      else
+      {
+        [(PKPassGroupStackView *)self->_groupStackView updateHeaderAndSubheaderViewsIfNecessary];
+      }
+
+      [(PKDiscoveryDataSource *)self->_discoveryDataSource updateArticleLayouts:v12];
+      objc_destroyWeak(&location);
+    }
+
+    else
+    {
+      self->_passesAreOutdated = 1;
+      [(PKPassGroupsViewController *)self _clearPassViewedNotificationTimer];
+      [(PKPassGroupsViewController *)self allowIdleTimer];
+    }
+  }
+}
+
+void __85__PKPassGroupsViewController_foregroundActiveArbiter_didUpdateForegroundActiveState___block_invoke(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  v5[0] = MEMORY[0x1E69E9820];
+  v5[1] = 3221225472;
+  v5[2] = __85__PKPassGroupsViewController_foregroundActiveArbiter_didUpdateForegroundActiveState___block_invoke_2;
+  v5[3] = &unk_1E80110E0;
+  objc_copyWeak(&v7, (a1 + 32));
+  v6 = v3;
+  v4 = v3;
+  dispatch_async(MEMORY[0x1E69E96A0], v5);
+
+  objc_destroyWeak(&v7);
+}
+
+void __85__PKPassGroupsViewController_foregroundActiveArbiter_didUpdateForegroundActiveState___block_invoke_2(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 40));
+  if (WeakRetained && !WeakRetained[126])
+  {
+    v7 = WeakRetained;
+    if ([*(a1 + 32) count])
+    {
+      v3 = *(a1 + 32);
+    }
+
+    else
+    {
+      v3 = 0;
+    }
+
+    objc_storeStrong(v7 + 174, v3);
+    v4 = objc_loadWeakRetained(v7 + 153);
+
+    if (v4)
+    {
+      v5 = [MEMORY[0x1E69B85C0] createForMessages:*(a1 + 32)];
+      v6 = objc_loadWeakRetained(v7 + 153);
+      [v6 setContent:v5 animated:1];
+    }
+
+    [v7[144] updateHeaderAndSubheaderViewsIfNecessary];
+    WeakRetained = v7;
+  }
+}
+
+- (void)groupStackView:(id)a3 wantsTopContentSeparatorWithVisibility:(double)a4 animated:(BOOL)a5
+{
+  self->_headerBackgroundVisibility = a4;
+  if (self->_viewDidAppearedBefore)
+  {
+    [(_PKVisibilityBackdropView *)self->_headerBackground pkui_setVisibility:a5 animated:?];
+  }
+}
+
+- (void)groupStackView:(id)a3 wantsBottomContentSeparatorWithVisibility:(double)a4 animated:(BOOL)a5
+{
+  self->_footerBackgroundVisibility = a4;
+  if (self->_viewDidAppearedBefore)
+  {
+    [(_PKVisibilityBackdropView *)self->_footerBackground pkui_setVisibility:a5 animated:?];
+  }
+}
+
+- (void)groupStackView:(id)a3 didTransitionToState:(int64_t)a4 animated:(BOOL)a5
+{
+  v5 = a5;
+  v14 = a3;
+  if (v5)
+  {
+    [(PKPassGroupsViewController *)self _clearPassViewedNotificationTimer];
+    if (a4 != 7)
+    {
+      if (a4 != 5)
+      {
+        if (a4 == 4 && ![(PKPassGroupStackView *)self->_groupStackView isReordering]&& ([(PKPassGroupStackView *)self->_groupStackView isDragging]& 1) == 0 && ([(PKPassGroupStackView *)self->_groupStackView isDecelerating]& 1) == 0)
+        {
+          [(PKPassGroupStackView *)self->_groupStackView tilePassesEagerly:1];
+        }
+
+        goto LABEL_12;
+      }
+
+      v8 = [v14 modalGroupFrontmostPass];
+      v9 = [v8 paymentPass];
+      v10 = [v9 isIdentityPass];
+
+      if (v10)
+      {
+        v11 = [MEMORY[0x1E69B89C0] sharedInstance];
+        [v11 fetchRPIdentifierMappingDiscretionary:0 localOnly:0 completionHandler:0];
+      }
+    }
+
+    [(PKPassGroupsViewController *)self _startPassViewedNotificationTimer];
+LABEL_12:
+    [(PKPassGroupsViewController *)self updateLockscreenIdleTimer];
+  }
+
+  WeakRetained = objc_loadWeakRetained(&self->_applicationMessageView);
+  if (WeakRetained)
+  {
+
+    if ((a4 & 0xFFFFFFFFFFFFFFFDLL) == 5)
+    {
+      v13 = objc_loadWeakRetained(&self->_applicationMessageView);
+      [v13 collapse];
+    }
+  }
+}
+
+- (void)groupStackViewDidChangeCoachingState:(id)a3
+{
+  v7 = *MEMORY[0x1E69E9840];
+  v4 = PKLogFacilityTypeGetObject();
+  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  {
+    v5 = 134349056;
+    v6 = [a3 coachingState];
+    _os_log_impl(&dword_1BD026000, v4, OS_LOG_TYPE_DEFAULT, "Ignoring coaching feedback: %{public}ld", &v5, 0xCu);
+  }
+}
+
+- (void)willActivateNavigationItemController:(id)a3
+{
+  v3 = a3;
+  if (v3)
+  {
+  }
+
+  else
+  {
+    __break(1u);
+  }
+}
+
+- (void)navigationItemController:(id)a3 updateItemWithConfiguration:(id)a4
+{
+  v7 = a3;
+  v6 = a4;
+  if (v7 && v6)
+  {
+    [(PKPassGroupsViewController *)self _applyNavigationItemConfiguration:v6];
+  }
+
+  else
+  {
+    __break(1u);
+  }
+}
+
+- (void)didDeactivateNavigationItemController:(id)a3 dirty:(BOOL)a4
+{
+  v4 = a4;
+  v6 = a3;
+  if (!v6)
+  {
+    __break(1u);
+    return;
+  }
+
+  if (!self->_navigationItem.connecting.pendingVoucher)
+  {
+    if (!v4)
+    {
+      goto LABEL_6;
+    }
+
+    goto LABEL_5;
+  }
+
+  if (v4 && !self->_navigationItem.connecting.external)
+  {
+LABEL_5:
+    v7 = v6;
+    [(PKPassGroupsViewController *)self _updateNavigationItemAnimated:1];
+    v6 = v7;
+  }
+
+LABEL_6:
+}
+
+- (id)providerForNavigationItemController:(id)a3
+{
+  result = a3;
+  if (result)
+  {
+    v5 = result;
+    v6 = self;
+
+    return v6;
+  }
+
+  else
+  {
+    __break(1u);
+  }
+
+  return result;
+}
+
+- (BOOL)willActivateNavigationItemHandleWithVoucher:(id)a3
+{
+  v6 = a3;
+  if (!v6 || (p_navigationItem = &self->_navigationItem, p_navigationItem->active.handle) || (v3 = v6, p_navigationItem->connecting.pendingVoucher))
+  {
+    __break(1u);
+LABEL_13:
+    v10 = 0;
+    goto LABEL_10;
+  }
+
+  objc_storeStrong(&p_navigationItem->connecting.pendingVoucher, a3);
+  if (!p_navigationItem->controller)
+  {
+    v10 = 0;
+    p_navigationItem->connecting.external = 1;
+LABEL_10:
+
+    goto LABEL_11;
+  }
+
+  v8 = [(PKNavigationItemController *)p_navigationItem->controller isActiveVoucher:v3];
+  p_navigationItem->connecting.external = v8 ^ 1;
+  if ((v8 & 1) == 0)
+  {
+    if (p_navigationItem->controller)
+    {
+      [(PKNavigationItemController *)p_navigationItem->controller _interrupt];
+      v10 = v9;
+      if (v9)
+      {
+        [(PKNavigationItemVoucher *)v9 _invalidateFromDisconnect:?];
+      }
+
+      goto LABEL_10;
+    }
+
+    goto LABEL_13;
+  }
+
+LABEL_11:
+
+  return 1;
+}
+
+- (void)beginProvidingForNavigationItemHandle:(id)a3 withConsumedVoucher:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  if (!v6 || !v7 || (pendingVoucher = self->_navigationItem.connecting.pendingVoucher, pendingVoucher != v7) || self->_navigationItem.active.handle || (v14 = v7, !self->_navigationItem.active.external) && !self->_navigationItem.controller)
+  {
+    __break(1u);
+LABEL_15:
+    v12 = 0;
+    goto LABEL_10;
+  }
+
+  self->_navigationItem.connecting.pendingVoucher = 0;
+
+  handle = self->_navigationItem.active.handle;
+  self->_navigationItem.active.handle = v6;
+
+  external = self->_navigationItem.connecting.external;
+  self->_navigationItem.active.external = external;
+  if (!external)
+  {
+    goto LABEL_11;
+  }
+
+  v11 = [(PKPassGroupsViewController *)self _navigationItemConfiguration];
+  v6 = v11;
+  if (!v11)
+  {
+    goto LABEL_15;
+  }
+
+  v12 = [(PKNavigationItemConfiguration *)v11 copy];
+  *(v12 + 8) = 1;
+  v13 = *(v12 + 40);
+  *(v12 + 40) = 0;
+
+LABEL_10:
+  [(PKPassGroupsViewController *)self _applyNavigationItemConfiguration:v12];
+
+LABEL_11:
+}
+
+- (PKNavigationItemConfiguration)_navigationItemConfiguration
+{
+  if (!a1)
+  {
+    return 0;
+  }
+
+  v1 = a1;
+  v2 = objc_alloc_init(PKNavigationItemConfiguration);
+  v3 = [v1 _showNavigationBar];
+  if (v2)
+  {
+    v2->_visible = v3;
+    v2->_backButtonDisplayMode = 2;
+  }
+
+  v4 = [v1 _leadingItemGroups];
+  [(PKNavigationItemConfiguration *)v2 setLeadingItemGroups:v4];
+
+  v5 = [v1 _trailingItemGroups];
+  [(PKNavigationItemConfiguration *)v2 setTrailingItemGroups:v5];
+
+  v6 = v1[992];
+  if (v6 == 2)
+  {
+    goto LABEL_7;
+  }
+
+  if (v6 == 1)
+  {
+    v1 = PKLocalizedString(&cfstr_Wallet_1.isa);
+    if (v2)
+    {
+      objc_setProperty_nonatomic_copy(v2, v7, v1, 32);
+
+      v2->_largeTitleDisplayMode = 3;
+      v2->_automaticallyHideTitle = 1;
+      return v2;
+    }
+
+LABEL_14:
+
+    return v2;
+  }
+
+  if (v1[992])
+  {
+    __break(1u);
+    goto LABEL_14;
+  }
+
+LABEL_7:
+  if (v2)
+  {
+    v2->_largeTitleDisplayMode = 2;
+  }
+
+  return v2;
+}
+
+- (id)configurationForNavigationItemHandle:(id)a3
+{
+  result = a3;
+  if (result)
+  {
+    v5 = result;
+    v6 = [(PKPassGroupsViewController *)self _navigationItemConfiguration];
+
+    return v6;
+  }
+
+  else
+  {
+    __break(1u);
+  }
+
+  return result;
+}
+
+- (void)endProvidingForNavigationItemHandle:(id)a3
+{
+  v4 = a3;
+  if (v4 && (handle = self->_navigationItem.active.handle, handle == v4))
+  {
+    v6 = v4;
+    self->_navigationItem.active.handle = 0;
+
+    if (self->_navigationItem.active.external)
+    {
+      [(PKPassGroupsViewController *)self _updateNavigationItemAnimated:1];
+    }
+  }
+
+  else
+  {
+    __break(1u);
+  }
+}
+
+- (void)passPersonalizationViewController:(id)a3 didFinishPersonalizingPass:(id)a4 success:(BOOL)a5
+{
+  v6 = [a4 uniqueID];
+  v7[0] = MEMORY[0x1E69E9820];
+  v7[1] = 3221225472;
+  v7[2] = __99__PKPassGroupsViewController_passPersonalizationViewController_didFinishPersonalizingPass_success___block_invoke;
+  v7[3] = &unk_1E8011D28;
+  v7[4] = self;
+  [(PKPassGroupsViewController *)self presentPassWithUniqueID:v6 animated:1 completionHandler:v7];
+}
+
+- (void)scrollViewDidScroll:(id)a3
+{
+  [(PKPassGroupStackView *)self->_groupStackView tilePassesEagerly:0];
+  WeakRetained = objc_loadWeakRetained(&self->_applicationMessageView);
+  [WeakRetained dropSwipe];
+}
+
+- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+{
+  v11 = a3;
+  if (!a4)
+  {
+    [(PKPassGroupStackView *)self->_groupStackView tilePassesEagerly:1];
+  }
+
+  [v11 contentOffset];
+  v7 = v6;
+  [v11 adjustedContentInset];
+  v9 = -v8;
+  if (v7 < v9 && v9 - v7 >= 66.0)
+  {
+    WeakRetained = objc_loadWeakRetained(&self->_applicationMessageView);
+    [WeakRetained collapse];
+  }
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(id)a3
+{
+  [(PKPassGroupStackView *)self->_groupStackView tilePassesEagerly:1];
+  groupStackView = self->_groupStackView;
+
+  [(PKPassGroupStackView *)groupStackView noteDidEndScrollingForTesting];
+}
+
+- (void)groupsController:(id)a3 didInsertGroup:(id)a4 atIndex:(unint64_t)a5
+{
+  if (-[PKPassGroupStackView presentationState](self->_groupStackView, "presentationState", a3, a4) != 6 && ([objc_opt_class() isPerformingAction] & 1) == 0)
+  {
+    [(PKPassGroupStackView *)self->_groupStackView updateHeaderAndSubheaderViewsIfNecessary];
+    [(PKPassGroupStackView *)self->_groupStackView stageGroupInPresentationState:2 atIndex:a5];
+    groupStackView = self->_groupStackView;
+    v8 = [(PKPassGroupStackView *)groupStackView presentationState];
+    foregroundActive = self->_foregroundActiveState.foregroundActive;
+
+    [(PKPassGroupStackView *)groupStackView setPresentationState:v8 animated:foregroundActive];
+  }
+}
+
+- (void)groupsController:(id)a3 didRemoveGroup:(id)a4 atIndex:(unint64_t)a5
+{
+  v7 = a4;
+  if ([(PKPassGroupStackView *)self->_groupStackView presentationState]!= 6)
+  {
+    if ([(PKPassGroupStackView *)self->_groupStackView presentationState]== 7 && [(PKPassGroupStackView *)self->_groupStackView modalGroupIndex]== a5)
+    {
+      [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:0 animated:1 performAction:0];
+    }
+
+    [(PKPassGroupStackView *)self->_groupStackView deleteGroup:v7 atIndex:a5];
+  }
+}
+
+- (void)groupsController:(id)a3 didMoveGroup:(id)a4 fromIndex:(unint64_t)a5 toIndex:(unint64_t)a6
+{
+  v9 = a4;
+  if ([(PKPassGroupStackView *)self->_groupStackView presentationState]== 4 && self->_foregroundActiveState.foregroundActive)
+  {
+    if (a5 != a6)
+    {
+      [(PKPassGroupStackView *)self->_groupStackView moveGroup:v9 fromIndex:a5 toIndex:a6];
+    }
+  }
+
+  else if ([(PKPassGroupStackView *)self->_groupStackView presentationState]== 5 || [(PKPassGroupStackView *)self->_groupStackView presentationState]== 7)
+  {
+    [(PKPassGroupStackView *)self->_groupStackView reloadData];
+    if ([(PKPassGroupStackView *)self->_groupStackView modalGroupIndex]== a5)
+    {
+      [(PKPassGroupStackView *)self->_groupStackView setModalGroupIndex:a6];
+    }
+
+    [(PKPassGroupStackView *)self->_groupStackView setPresentationState:[(PKPassGroupStackView *)self->_groupStackView presentationState] animated:self->_foregroundActiveState.foregroundActive];
+  }
+}
+
+- (void)didUpdateApplicationMessages:(id)a3
+{
+  v4 = a3;
+  v6[0] = MEMORY[0x1E69E9820];
+  v6[1] = 3221225472;
+  v6[2] = __59__PKPassGroupsViewController_didUpdateApplicationMessages___block_invoke;
+  v6[3] = &unk_1E8010A10;
+  v6[4] = self;
+  v7 = v4;
+  v5 = v4;
+  dispatch_async(MEMORY[0x1E69E96A0], v6);
+}
+
+void __59__PKPassGroupsViewController_didUpdateApplicationMessages___block_invoke(uint64_t a1)
+{
+  if ([*(a1 + 40) count])
+  {
+    v2 = *(a1 + 40);
+  }
+
+  else
+  {
+    v2 = 0;
+  }
+
+  objc_storeStrong((*(a1 + 32) + 1392), v2);
+  v4 = [MEMORY[0x1E69B85C0] createForMessages:*(*(a1 + 32) + 1392)];
+  WeakRetained = objc_loadWeakRetained((*(a1 + 32) + 1224));
+  [WeakRetained setContent:v4 animated:1];
+
+  [*(*(a1 + 32) + 1152) updateHeaderAndSubheaderViewsIfNecessary];
+}
+
+- (void)paymentDeviceDidEnterFieldWithProperties:(id)a3
+{
+  v4 = a3;
+  v6[0] = MEMORY[0x1E69E9820];
+  v6[1] = 3221225472;
+  v6[2] = __71__PKPassGroupsViewController_paymentDeviceDidEnterFieldWithProperties___block_invoke;
+  v6[3] = &unk_1E8010A10;
+  v6[4] = self;
+  v7 = v4;
+  v5 = v4;
+  dispatch_async(MEMORY[0x1E69E96A0], v6);
+}
+
+void __71__PKPassGroupsViewController_paymentDeviceDidEnterFieldWithProperties___block_invoke(uint64_t a1)
+{
+  v28 = *MEMORY[0x1E69E9840];
+  v1 = *(a1 + 32);
+  if (!*(v1 + 1008))
+  {
+    *(v1 + 1400) = 1;
+    if (*(*(a1 + 32) + 1417) == 1)
+    {
+      v3 = *(a1 + 40);
+      if (!v3 || ![v3 secondaryPropertiesRequired] || objc_msgSend(*(a1 + 40), "secondaryPropertiesAcquired"))
+      {
+        v4 = [*(a1 + 32) pkui_frontMostViewController];
+        v5 = objc_autoreleasePoolPush();
+        if (__71__PKPassGroupsViewController_paymentDeviceDidEnterFieldWithProperties___block_invoke_2(v4))
+        {
+          v6 = v4;
+          goto LABEL_16;
+        }
+
+        objc_opt_class();
+        if ((objc_opt_isKindOfClass() & 1) == 0)
+        {
+          objc_autoreleasePoolPop(v5);
+          goto LABEL_21;
+        }
+
+        v7 = v4;
+        v8 = [v7 topViewController];
+        v9 = [v7 viewControllers];
+
+        v10 = [v9 firstObject];
+
+        if (v8)
+        {
+          v11 = __71__PKPassGroupsViewController_paymentDeviceDidEnterFieldWithProperties___block_invoke_2(v8);
+          v12 = v8;
+          if (v11)
+          {
+            goto LABEL_14;
+          }
+        }
+
+        v6 = 0;
+        if (!v10 || v10 == v8)
+        {
+          goto LABEL_15;
+        }
+
+        v13 = __71__PKPassGroupsViewController_paymentDeviceDidEnterFieldWithProperties___block_invoke_2(v10);
+        v12 = v10;
+        if (v13)
+        {
+LABEL_14:
+          v6 = v12;
+        }
+
+        else
+        {
+          v6 = 0;
+        }
+
+LABEL_15:
+
+LABEL_16:
+        objc_autoreleasePoolPop(v5);
+        if (v6)
+        {
+          v14 = PKLogFacilityTypeGetObject();
+          if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+          {
+            v15 = *(a1 + 32);
+            *buf = 134218498;
+            v23 = v15;
+            v24 = 2114;
+            v25 = objc_opt_class();
+            v26 = 2048;
+            v27 = v6;
+            v16 = v25;
+            _os_log_impl(&dword_1BD026000, v14, OS_LOG_TYPE_DEFAULT, "PKPassGroupsViewController (%p): presented view controller (%{public}@:%p) supressed field detect.", buf, 0x20u);
+          }
+
+          goto LABEL_22;
+        }
+
+LABEL_21:
+        objc_initWeak(buf, *(a1 + 32));
+        v17 = [MEMORY[0x1E69B8A58] sharedInstance];
+        v18 = *(a1 + 40);
+        v19[0] = MEMORY[0x1E69E9820];
+        v19[1] = 3221225472;
+        v19[2] = __71__PKPassGroupsViewController_paymentDeviceDidEnterFieldWithProperties___block_invoke_194;
+        v19[3] = &unk_1E8024368;
+        objc_copyWeak(&v21, buf);
+        v20 = *(a1 + 40);
+        [v17 getMetadataForFieldWithProperties:v18 withHandler:v19];
+
+        objc_destroyWeak(&v21);
+        objc_destroyWeak(buf);
+        v6 = 0;
+LABEL_22:
+      }
+    }
+  }
+}
+
+id __71__PKPassGroupsViewController_paymentDeviceDidEnterFieldWithProperties___block_invoke_2(void *a1)
+{
+  result = a1;
+  if (result)
+  {
+    v2 = result;
+    if ([result conformsToProtocol:&unk_1F3D0FD48])
+    {
+      v3 = [v2 suppressFieldDetect];
+    }
+
+    else
+    {
+      v3 = 0;
+    }
+
+    return v3;
+  }
+
+  else
+  {
+    __break(1u);
+  }
+
+  return result;
+}
+
+void __71__PKPassGroupsViewController_paymentDeviceDidEnterFieldWithProperties___block_invoke_194(uint64_t a1, void *a2)
+{
+  v16 = *MEMORY[0x1E69E9840];
+  v3 = a2;
+  v4 = v3;
+  if (v3 && ![v3 shouldIgnoreField])
+  {
+    block[0] = MEMORY[0x1E69E9820];
+    block[1] = 3221225472;
+    block[2] = __71__PKPassGroupsViewController_paymentDeviceDidEnterFieldWithProperties___block_invoke_195;
+    block[3] = &unk_1E8011828;
+    objc_copyWeak(&v11, (a1 + 40));
+    v9 = *(a1 + 32);
+    v10 = v4;
+    dispatch_async(MEMORY[0x1E69E96A0], block);
+
+    objc_destroyWeak(&v11);
+  }
+
+  else
+  {
+    v5 = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    {
+      WeakRetained = objc_loadWeakRetained((a1 + 40));
+      v7 = *(a1 + 32);
+      *buf = 134218242;
+      v13 = WeakRetained;
+      v14 = 2112;
+      v15 = v7;
+      _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "PKPassGroupsViewController (%p): ignoring entered field: %@.", buf, 0x16u);
+    }
+  }
+}
+
+void __71__PKPassGroupsViewController_paymentDeviceDidEnterFieldWithProperties___block_invoke_195(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 48));
+  if (WeakRetained)
+  {
+    v3 = WeakRetained;
+    [WeakRetained presentPassWithFieldProperties:*(a1 + 32) fieldMetadata:*(a1 + 40) animated:1];
+    WeakRetained = v3;
+  }
+}
+
+- (void)paymentDeviceDidExitField
+{
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __55__PKPassGroupsViewController_paymentDeviceDidExitField__block_invoke;
+  block[3] = &unk_1E8010970;
+  block[4] = self;
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+}
+
+void __55__PKPassGroupsViewController_paymentDeviceDidExitField__block_invoke(uint64_t a1)
+{
+  v4[1] = *MEMORY[0x1E69E9840];
+  *(*(a1 + 32) + 1400) = 0;
+  v1 = objc_alloc_init(MEMORY[0x1E695DF90]);
+  [v1 setObject:*MEMORY[0x1E69BA748] forKeyedSubscript:*MEMORY[0x1E69BA680]];
+  [v1 setObject:*MEMORY[0x1E69BAC60] forKeyedSubscript:*MEMORY[0x1E69BABE8]];
+  v2 = MEMORY[0x1E69B8540];
+  v4[0] = *MEMORY[0x1E69BB718];
+  v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v4 count:1];
+  [v2 subjects:v3 sendEvent:v1];
+}
+
+- (void)paymentServiceReceivedInterruption
+{
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __64__PKPassGroupsViewController_paymentServiceReceivedInterruption__block_invoke;
+  block[3] = &unk_1E8010970;
+  block[4] = self;
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+}
+
+- (void)didReceivePendingProvisioningUpdate:(id)a3
+{
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __66__PKPassGroupsViewController_didReceivePendingProvisioningUpdate___block_invoke;
+  block[3] = &unk_1E8010970;
+  block[4] = self;
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+}
+
+void __66__PKPassGroupsViewController_didReceivePendingProvisioningUpdate___block_invoke(uint64_t a1)
+{
+  v2 = *(*(a1 + 32) + 1232);
+  v3 = PKPendingProvisioningBackgroundProvisioningInBuddyTypes();
+  v4 = [v2 hasPendingProvisioningsOfTypes:v3];
+
+  v5 = 1200;
+  WeakRetained = objc_loadWeakRetained((*(a1 + 32) + 1200));
+
+  v7 = *(a1 + 32);
+  if (!v4)
+  {
+    if (!WeakRetained)
+    {
+      v5 = 1208;
+      v11 = objc_loadWeakRetained((v7 + 1208));
+
+      if (!v11)
+      {
+        return;
+      }
+
+      v7 = *(a1 + 32);
+    }
+
+    v9 = objc_loadWeakRetained((v7 + v5));
+    v13 = v9;
+    v10 = 0;
+    goto LABEL_9;
+  }
+
+  if (WeakRetained || (v5 = 1208, v8 = objc_loadWeakRetained((v7 + 1208)), v8, v7 = *(a1 + 32), v8))
+  {
+    v9 = objc_loadWeakRetained((v7 + v5));
+    v13 = v9;
+    v10 = 1;
+LABEL_9:
+    [v9 setShowBackgroundProvisioningHint:v10 animated:1];
+
+    return;
+  }
+
+  v12 = *(v7 + 1152);
+
+  [v12 updateHeaderAndSubheaderViewsIfNecessary];
+}
+
+- (PKPassGroupStackView)groupStackView
+{
+  [(PKPassGroupsViewController *)self loadViewIfNeeded];
+  groupStackView = self->_groupStackView;
+
+  return groupStackView;
+}
+
+- (id)presentedPass
+{
+  if ([(PKPassGroupsViewController *)self presentingPass])
+  {
+    v3 = [(PKPassGroupStackView *)self->_groupStackView modalGroupFrontmostPass];
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  return v3;
+}
+
+- (PKDashboardPassGroupViewController)dashboardPassGroupViewController
+{
+  v2 = [(PKPassGroupsViewController *)self _dashboardPassGroupViewController];
+
+  return v2;
+}
+
+- (PKDashboardPassGroupViewController)visibleDashboardPassGroupViewController
+{
+  v2 = [(PKPassGroupsViewController *)self _dashboardPassGroupViewControllerWithRequirements:3];
+
+  return v2;
+}
+
+- (void)_presentGroupWithIndex:(unint64_t)a3 context:(id)a4 animated:(BOOL)a5 completionHandler:(id)a6
+{
+  v7 = a5;
+  v10 = a4;
+  v11 = a6;
+  v12 = v11;
+  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  {
+    if (v11)
+    {
+      v13 = *(v11 + 2);
+LABEL_4:
+      v13();
+    }
+  }
+
+  else
+  {
+    [(PKPassGroupsViewController *)self loadViewIfNeeded];
+    v28 = 0;
+    v14 = [(PKPassGroupStackView *)self->_groupStackView stageForModalPresentationOfGroupAtIndex:a3 withPassPresentationContext:v10 requireUpdate:&v28];
+    if ([(PKPassGroupStackView *)self->_groupStackView modalGroupIndex]== a3 && [(PKPassGroupStackView *)self->_groupStackView presentationState]== v14 && (v28 & 1) == 0)
+    {
+      if (!v12)
+      {
+        goto LABEL_14;
+      }
+
+      v13 = v12[2];
+      goto LABEL_4;
+    }
+
+    [(PKPassGroupStackView *)self->_groupStackView presentDiff:0 completion:0];
+    objc_initWeak(&location, self);
+    aBlock[0] = MEMORY[0x1E69E9820];
+    aBlock[1] = 3221225472;
+    aBlock[2] = __88__PKPassGroupsViewController__presentGroupWithIndex_context_animated_completionHandler___block_invoke;
+    aBlock[3] = &unk_1E8024390;
+    objc_copyWeak(v25, &location);
+    v25[1] = a3;
+    v25[2] = v14;
+    v24 = v10;
+    v26 = v7;
+    v15 = _Block_copy(aBlock);
+    v16 = [(PKPassGroupsViewController *)self _passGroupsViewNavigationController];
+    if (([v16 VCsState] | 2) == 3 && (-[PKPassGroupsViewController presentGroupTableAnimated:](self, "presentGroupTableAnimated:", 0), objc_msgSend(v16, "popToPassGroupsVCAnimated:", v7), v7) && (objc_msgSend(v16, "transitionCoordinator"), (v17 = objc_claimAutoreleasedReturnValue()) != 0))
+    {
+      v20[0] = MEMORY[0x1E69E9820];
+      v20[1] = 3221225472;
+      v20[2] = __88__PKPassGroupsViewController__presentGroupWithIndex_context_animated_completionHandler___block_invoke_3;
+      v20[3] = &unk_1E80243E0;
+      v21 = v15;
+      v22 = v12;
+      [v17 animateAlongsideTransition:0 completion:v20];
+    }
+
+    else
+    {
+      v18[0] = MEMORY[0x1E69E9820];
+      v18[1] = 3221225472;
+      v18[2] = __88__PKPassGroupsViewController__presentGroupWithIndex_context_animated_completionHandler___block_invoke_6;
+      v18[3] = &unk_1E8010AD8;
+      v19 = v12;
+      (*(v15 + 2))(v15, v18);
+      v17 = v19;
+    }
+
+    objc_destroyWeak(v25);
+    objc_destroyWeak(&location);
+  }
+
+LABEL_14:
+}
+
+void __88__PKPassGroupsViewController__presentGroupWithIndex_context_animated_completionHandler___block_invoke(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  WeakRetained = objc_loadWeakRetained((a1 + 40));
+  v5 = WeakRetained;
+  if (WeakRetained)
+  {
+    [*(WeakRetained + 144) setModalGroupIndex:*(a1 + 48)];
+    v6 = v5[144];
+    v7 = *(a1 + 56);
+    v8 = *(a1 + 32);
+    v9 = *(a1 + 64);
+    v10[0] = MEMORY[0x1E69E9820];
+    v10[1] = 3221225472;
+    v10[2] = __88__PKPassGroupsViewController__presentGroupWithIndex_context_animated_completionHandler___block_invoke_2;
+    v10[3] = &unk_1E80110B8;
+    objc_copyWeak(&v12, (a1 + 40));
+    v11 = v3;
+    [v6 setPresentationState:v7 withContext:v8 animated:v9 completion:v10];
+
+    objc_destroyWeak(&v12);
+  }
+
+  else if (v3)
+  {
+    (*(v3 + 2))(v3, 1);
+  }
+}
+
+void __88__PKPassGroupsViewController__presentGroupWithIndex_context_animated_completionHandler___block_invoke_2(uint64_t a1, char a2)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 40));
+  v5 = WeakRetained;
+  if (!WeakRetained)
+  {
+    v9 = *(a1 + 32);
+    if (!v9)
+    {
+      goto LABEL_9;
+    }
+
+    v8 = *(v9 + 16);
+    v10 = 0;
+    goto LABEL_8;
+  }
+
+  v10 = WeakRetained;
+  if ((a2 & 1) == 0)
+  {
+    v6 = [WeakRetained[144] presentationState];
+    v5 = v10;
+    v10[156] = v6;
+  }
+
+  v7 = *(a1 + 32);
+  if (v7)
+  {
+    v8 = *(v7 + 16);
+LABEL_8:
+    v8();
+    v5 = v10;
+  }
+
+LABEL_9:
+}
+
+void __88__PKPassGroupsViewController__presentGroupWithIndex_context_animated_completionHandler___block_invoke_3(uint64_t a1)
+{
+  v2[0] = MEMORY[0x1E69E9820];
+  v2[1] = 3221225472;
+  v2[2] = __88__PKPassGroupsViewController__presentGroupWithIndex_context_animated_completionHandler___block_invoke_4;
+  v2[3] = &unk_1E80243B8;
+  v3 = *(a1 + 32);
+  v4 = *(a1 + 40);
+  dispatch_async(MEMORY[0x1E69E96A0], v2);
+}
+
+void __88__PKPassGroupsViewController__presentGroupWithIndex_context_animated_completionHandler___block_invoke_4(uint64_t a1)
+{
+  v2[0] = MEMORY[0x1E69E9820];
+  v2[1] = 3221225472;
+  v2[2] = __88__PKPassGroupsViewController__presentGroupWithIndex_context_animated_completionHandler___block_invoke_5;
+  v2[3] = &unk_1E8010AD8;
+  v1 = *(a1 + 32);
+  v3 = *(a1 + 40);
+  (*(v1 + 16))(v1, v2);
+}
+
+uint64_t __88__PKPassGroupsViewController__presentGroupWithIndex_context_animated_completionHandler___block_invoke_5(uint64_t a1)
+{
+  result = *(a1 + 32);
+  if (result)
+  {
+    return (*(result + 16))();
+  }
+
+  return result;
+}
+
+uint64_t __88__PKPassGroupsViewController__presentGroupWithIndex_context_animated_completionHandler___block_invoke_6(uint64_t a1)
+{
+  result = *(a1 + 32);
+  if (result)
+  {
+    return (*(result + 16))();
+  }
+
+  return result;
+}
+
+- (void)forceModalPresentationFromButton:(BOOL)a3
+{
+  v3 = a3;
+  if ([(PKPassGroupsViewController *)self presentingPass])
+  {
+    v5 = [(PKPassGroupsViewController *)self _dashboardPassGroupViewController];
+    v6 = v5;
+    if (v5)
+    {
+      v7 = [(PKDashboardPassGroupViewController *)v5 _passGroupsViewNavigationController];
+      if (v7)
+      {
+        v8 = v7;
+        v9 = [v7 VCsState] & 0xFFFFFFFFFFFFFFFDLL;
+        v10 = [(PKPassGroupStackView *)self->_groupStackView modalGroupFrontmostPass];
+        v11 = [v10 uniqueID];
+
+        v12 = objc_alloc_init(PKPassPresentationContext);
+        [(PKPassPresentationContext *)v12 setForceModalPresentation:1];
+        [(PKPassPresentationContext *)v12 setForcedFromButton:v3];
+        v13 = [v6 frontmostPassPaymentOffersController];
+        v14 = [v13 selectedOfferDetails];
+        v15 = [v14 selectedPaymentOffer];
+
+        [(PKPassPresentationContext *)v12 setSelectedPaymentOffer:v15];
+        if (v9)
+        {
+          [(PKPassGroupsViewController *)self _beginSuppressingInstanceFooter];
+          objc_initWeak(&location, self);
+          v16 = objc_alloc_init(PKPassPresentationContext);
+          [(PKPassPresentationContext *)v16 setForceModalPresentation:1];
+          v18[0] = MEMORY[0x1E69E9820];
+          v18[1] = 3221225472;
+          v18[2] = __63__PKPassGroupsViewController_forceModalPresentationFromButton___block_invoke;
+          v18[3] = &unk_1E80113B0;
+          objc_copyWeak(&v20, &location);
+          v19 = v12;
+          [(PKPassGroupsViewController *)self presentPassWithUniqueID:v11 context:v16 animated:1 completionHandler:v18];
+
+          objc_destroyWeak(&v20);
+          objc_destroyWeak(&location);
+        }
+
+        else
+        {
+          [(PKPassGroupsViewController *)self presentPassWithUniqueID:v11 context:v12 animated:1 completionHandler:0];
+        }
+      }
+    }
+  }
+
+  else
+  {
+    v17 = [(PKPassGroupsViewController *)self presentedViewController];
+    if (v17)
+    {
+    }
+
+    else
+    {
+      [(PKPassGroupsViewController *)self presentDefaultPaymentPassInPaymentPresentationFromButton:v3 withAnimated:1 completionHandler:0];
+    }
+
+    v6 = 0;
+  }
+}
+
+void __63__PKPassGroupsViewController_forceModalPresentationFromButton___block_invoke(uint64_t a1, char a2)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 40));
+  if (WeakRetained)
+  {
+    if (a2)
+    {
+      v5 = 0;
+    }
+
+    else
+    {
+      v5 = *(a1 + 32);
+    }
+
+    v6 = WeakRetained;
+    [WeakRetained _endSuppressingInstanceFooterWithContext:v5];
+    WeakRetained = v6;
+  }
+}
+
+- (void)presentDefaultPaymentPassInPaymentPresentationFromButton:(BOOL)a3 withAnimated:(BOOL)a4 completionHandler:(id)a5
+{
+  v5 = a3;
+  v7 = a5;
+  v8 = [(PKPassGroupsViewController *)self _dashboardPassGroupViewController];
+  v9 = [v8 frontmostPassPaymentOffersController];
+  v10 = [v9 selectedOfferDetails];
+  v13 = [v10 selectedPaymentOffer];
+
+  v11 = objc_alloc_init(PKPassPresentationContext);
+  [(PKPassPresentationContext *)v11 setForceModalPresentation:1];
+  [(PKPassPresentationContext *)v11 setForcedFromButton:v5];
+  [(PKPassPresentationContext *)v11 setSelectedPaymentOffer:v13];
+  v12 = [(PKPaymentService *)self->_paymentService defaultPaymentPassUniqueIdentifier];
+  [(PKPassGroupsViewController *)self presentPassWithUniqueID:v12 context:v11 animated:1 completionHandler:v7];
+}
+
+- (void)presentPassWithUpdateUserNotificationIdentifier:(id)a3
+{
+  v4 = a3;
+  v6[0] = MEMORY[0x1E69E9820];
+  v6[1] = 3221225472;
+  v6[2] = __78__PKPassGroupsViewController_presentPassWithUpdateUserNotificationIdentifier___block_invoke;
+  v6[3] = &unk_1E8010A10;
+  v7 = v4;
+  v8 = self;
+  v5 = v4;
+  [(PKPassGroupsViewController *)self _presentWithUpdatedPasses:v6];
+}
+
+void __78__PKPassGroupsViewController_presentPassWithUpdateUserNotificationIdentifier___block_invoke(uint64_t a1)
+{
+  v2 = [MEMORY[0x1E69B8A58] sharedInstance];
+  v3 = [v2 diffForPassUpdateUserNotificationWithIdentifier:*(a1 + 32)];
+  v4 = [v3 passUniqueID];
+  if (v4)
+  {
+    v5 = *(a1 + 40);
+    v8[0] = MEMORY[0x1E69E9820];
+    v8[1] = 3221225472;
+    v8[2] = __78__PKPassGroupsViewController_presentPassWithUpdateUserNotificationIdentifier___block_invoke_2;
+    v8[3] = &unk_1E8012FD0;
+    v8[4] = v5;
+    v9 = v3;
+    [v5 presentPassWithUniqueID:v4 animated:1 completionHandler:v8];
+  }
+
+  else
+  {
+    v6 = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    {
+      *v7 = 0;
+      _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "Invalid bulletin URL specified. Ignoring.", v7, 2u);
+    }
+  }
+}
+
+uint64_t __78__PKPassGroupsViewController_presentPassWithUpdateUserNotificationIdentifier___block_invoke_2(uint64_t result, char a2)
+{
+  if ((a2 & 1) == 0)
+  {
+    return [*(*(result + 32) + 1152) presentDiff:*(result + 40) completion:0];
+  }
+
+  return result;
+}
+
+- (void)presentPassWithFieldProperties:(id)a3 fieldMetadata:(id)a4 animated:(BOOL)a5
+{
+  v5 = a5;
+  v8 = a3;
+  v9 = a4;
+  if (!self->_invalidationStatus && self->_foregroundActiveState.foregroundActive)
+  {
+    v10 = [(PKPassGroupStackView *)self->_groupStackView modalGroupFrontmostPass];
+    v11 = [(PKPassGroupsViewController *)self _dashboardPassGroupViewController];
+    v12 = v10 && [v10 passType] != 1 && PKValueAddedServicesEnabledForPass() == 0;
+    if (-[PKPassGroupStackView isModallyPresentedPassAuthorized](self->_groupStackView, "isModallyPresentedPassAuthorized") || (([v11 isFrontmostPassAuthorized] | v12) & 1) != 0)
+    {
+      [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:6 animated:1 performAction:0];
+    }
+
+    else
+    {
+      v13 = [v9 associatedPassIdentifiers];
+      v19 = 0;
+      v14 = [(PKPassGroupsViewController *)self presentationContextForFieldProperties:v8 fieldPassUniqueIdentifiers:v13 passUniqueIdentifierToPresent:&v19];
+      if (v14)
+      {
+        [(PKPassGroupsViewController *)self presentPassWithUniqueID:v19 context:v14 animated:v5 completionHandler:0];
+      }
+
+      else
+      {
+        objc_initWeak(&location, self);
+        v15[0] = MEMORY[0x1E69E9820];
+        v15[1] = 3221225472;
+        v15[2] = __84__PKPassGroupsViewController_presentPassWithFieldProperties_fieldMetadata_animated___block_invoke;
+        v15[3] = &unk_1E80111A8;
+        objc_copyWeak(&v16, &location);
+        v17 = v5;
+        [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:0 animated:v5 performAction:v15];
+        objc_destroyWeak(&v16);
+        objc_destroyWeak(&location);
+      }
+    }
+  }
+}
+
+void __84__PKPassGroupsViewController_presentPassWithFieldProperties_fieldMetadata_animated___block_invoke(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  [WeakRetained presentOnscreen:*(a1 + 40) context:0 withCompletionHandler:0];
+}
+
+- (id)presentationContextForFieldProperties:(id)a3 fieldPassUniqueIdentifiers:(id)a4 passUniqueIdentifierToPresent:(id *)a5
+{
+  v79 = *MEMORY[0x1E69E9840];
+  v8 = a3;
+  v9 = a4;
+  v10 = [(PKPassGroupStackView *)self->_groupStackView modalGroupFrontmostPass];
+  v11 = [v10 uniqueID];
+  v12 = [(PKPassGroupsViewController *)self _dashboardPassGroupViewController];
+  v13 = [v12 frontmostPassPaymentOffersController];
+  v14 = [v13 selectedOfferDetails];
+  v15 = [v14 selectedPaymentOffer];
+
+  if (!v10 || [v10 style] == 8)
+  {
+    goto LABEL_78;
+  }
+
+  v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
+  [v16 setObject:*MEMORY[0x1E69BA740] forKeyedSubscript:*MEMORY[0x1E69BA680]];
+  [v16 setObject:*MEMORY[0x1E69BAC60] forKeyedSubscript:*MEMORY[0x1E69BABE8]];
+  v17 = v16;
+  v18 = v10;
+  v19 = v18;
+  if (v17)
+  {
+    v20 = [v18 passType];
+    v72 = v8;
+    if ((v20 + 1) >= 3)
+    {
+      v21 = *MEMORY[0x1E69BB3A8];
+    }
+
+    else
+    {
+      v21 = off_1E8025210[v20 + 1];
+    }
+
+    [v17 setObject:v21 forKeyedSubscript:*MEMORY[0x1E69BACA8]];
+
+    v22 = [v19 style];
+    v23 = [v19 secureElementPass];
+    v24 = [v23 isIdentityPass];
+
+    v71 = a5;
+    if (v24)
+    {
+      v25 = @"identity";
+    }
+
+    else if (v22 < 0xE && ((0x27FFu >> v22) & 1) != 0)
+    {
+      v25 = off_1E8025228[v22];
+    }
+
+    else
+    {
+      v25 = *MEMORY[0x1E69BB3A8];
+    }
+
+    [v17 setObject:v25 forKeyedSubscript:*MEMORY[0x1E69BACA0]];
+
+    v26 = [v19 nfcPayload];
+    v27 = PKAnalyticsReportSwitchToggleResultValue();
+    [v17 setObject:v27 forKeyedSubscript:*MEMORY[0x1E69BAC68]];
+
+    v28 = v19;
+    v70 = v15;
+    if ([v28 passType] == 1)
+    {
+      v29 = [v28 secureElementPass];
+      v30 = [v29 cardType];
+      if (v30 <= 4)
+      {
+        v26 = **(&unk_1E8025298 + v30);
+      }
+    }
+
+    else
+    {
+      v26 = @"other";
+    }
+
+    [v17 setObject:v26 forKeyedSubscript:*MEMORY[0x1E69BAC90]];
+    v31 = [v28 secureElementPass];
+    if ([v31 isIdentityPass])
+    {
+      v32 = [v31 identityType];
+      if (v32 <= 2)
+      {
+        if (v32 == 1)
+        {
+          v33 = MEMORY[0x1E69BA648];
+          goto LABEL_39;
+        }
+
+        if (v32 == 2)
+        {
+          v33 = MEMORY[0x1E69BB2C8];
+          goto LABEL_39;
+        }
+      }
+
+      else
+      {
+        switch(v32)
+        {
+          case 3:
+            goto LABEL_23;
+          case 4:
+            v33 = MEMORY[0x1E69BA8E0];
+            goto LABEL_39;
+          case 5:
+LABEL_23:
+            v33 = MEMORY[0x1E69BACB0];
+LABEL_39:
+            v37 = *v33;
+            goto LABEL_52;
+        }
+      }
+
+LABEL_32:
+      v33 = MEMORY[0x1E69BB3A8];
+      goto LABEL_39;
+    }
+
+    if (![v31 isAccessPass])
+    {
+      goto LABEL_32;
+    }
+
+    v34 = [v31 accessType];
+    v35 = [v31 accessReportingType];
+    v36 = v35;
+    if (v34 <= 2)
+    {
+      switch(v34)
+      {
+        case 0:
+          v38 = @"general";
+          if (v35)
+          {
+            v38 = v35;
+          }
+
+          goto LABEL_47;
+        case 1:
+          v37 = @"hospitality";
+          goto LABEL_51;
+        case 2:
+          v37 = @"corporate";
+LABEL_51:
+
+LABEL_52:
+          [v17 setObject:v37 forKeyedSubscript:*MEMORY[0x1E69BAC88]];
+
+          v39 = [v28 secureElementPass];
+          v40 = [v39 devicePaymentApplications];
+          [v40 count];
+
+          v41 = PKAnalyticsReportSwitchToggleResultValue();
+
+          [v17 setObject:v41 forKeyedSubscript:*MEMORY[0x1E69BA4E0]];
+          v42 = [v28 secureElementPass];
+          v43 = *MEMORY[0x1E69BB3A8];
+          v44 = [v42 organizationName];
+          if ([v44 length])
+          {
+            v45 = [v42 cardType];
+            if (v45 <= 4 && ((1 << v45) & 0x16) != 0)
+            {
+              v46 = v44;
+
+              v43 = v46;
+            }
+          }
+
+          [v17 setObject:v43 forKeyedSubscript:*MEMORY[0x1E69BAA28]];
+          v47 = [v28 secureElementPass];
+          v48 = v47;
+          if (v47)
+          {
+            v68 = v19;
+            v69 = v17;
+            [v47 devicePaymentApplications];
+            v73 = 0u;
+            v74 = 0u;
+            v75 = 0u;
+            v49 = v76 = 0u;
+            v50 = [v49 countByEnumeratingWithState:&v73 objects:v78 count:16];
+            if (v50)
+            {
+              v51 = v50;
+              v52 = 0;
+              v53 = *v74;
+              while (2)
+              {
+                for (i = 0; i != v51; ++i)
+                {
+                  if (*v74 != v53)
+                  {
+                    objc_enumerationMutation(v49);
+                  }
+
+                  v55 = *(*(&v73 + 1) + 8 * i);
+                  if (v52 && v52 != [*(*(&v73 + 1) + 8 * i) paymentType])
+                  {
+
+                    v56 = @"multiple";
+                    goto LABEL_69;
+                  }
+
+                  v52 = [v55 paymentType];
+                }
+
+                v51 = [v49 countByEnumeratingWithState:&v73 objects:v78 count:16];
+                if (v51)
+                {
+                  continue;
+                }
+
+                break;
+              }
+            }
+
+            v56 = PKPaymentMethodTypeToString();
+LABEL_69:
+
+            v17 = v69;
+            [v69 setObject:v56 forKeyedSubscript:*MEMORY[0x1E69BAD40]];
+
+            v57 = [v48 issuerCountryCode];
+            [v69 setObject:v57 forKeyedSubscript:*MEMORY[0x1E69BAC78]];
+
+            v19 = v68;
+          }
+
+          a5 = v71;
+          v8 = v72;
+          v15 = v70;
+          goto LABEL_71;
+      }
+    }
+
+    else
+    {
+      if (v34 <= 4)
+      {
+        if (v34 == 3)
+        {
+          v37 = @"singlefamily";
+        }
+
+        else
+        {
+          v37 = @"cars";
+        }
+
+        goto LABEL_51;
+      }
+
+      if (v34 == 5)
+      {
+        v37 = @"multifamily";
+        goto LABEL_51;
+      }
+
+      if (v34 == 6)
+      {
+        v37 = @"urbanmobility";
+        goto LABEL_51;
+      }
+    }
+
+    v38 = *MEMORY[0x1E69BB3A8];
+LABEL_47:
+    v37 = v38;
+    goto LABEL_51;
+  }
+
+LABEL_71:
+
+  v58 = v17;
+  v59 = [v8 terminalType];
+  if (v59 <= 5)
+  {
+    v60 = MEMORY[0x1E69BB0C0];
+    if (((1 << v59) & 0x2D) == 0)
+    {
+      v61 = *MEMORY[0x1E69BB0C0];
+      if (v59 != 1)
+      {
+        [v58 setObject:@"identity" forKeyedSubscript:*MEMORY[0x1E69BB0C0]];
+      }
+
+      [v58 setObject:@"payment" forKeyedSubscript:v61];
+    }
+
+    [v58 setObject:*MEMORY[0x1E69BABC0] forKeyedSubscript:*v60];
+  }
+
+  v62 = MEMORY[0x1E69B8540];
+  v77 = *MEMORY[0x1E69BB718];
+  v63 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v77 count:1];
+  [v62 subjects:v63 sendEvent:v58];
+
+LABEL_78:
+  if (v11 && ([v9 containsObject:v11] & 1) != 0 || (objc_msgSend(v9, "firstObject"), v64 = objc_claimAutoreleasedReturnValue(), v11, (v11 = v64) != 0))
+  {
+    v65 = [v8 valueAddedServiceMode];
+    v66 = [v9 pk_arrayByRemovingObject:v11];
+    v64 = +[PKPassPresentationContext contextWithWasAutomaticallySelected:additionalPassUniqueIdentifiers:userInfo:terminalType:](PKPassPresentationContext, "contextWithWasAutomaticallySelected:additionalPassUniqueIdentifiers:userInfo:terminalType:", (v65 - 2) < 3, v66, 0, [v8 terminalType]);
+    [v64 setFieldDetect:1];
+    [v64 setSelectedPaymentOffer:v15];
+    if (a5)
+    {
+      objc_storeStrong(a5, v11);
+    }
+  }
+
+  return v64;
+}
+
+- (void)reloadPasses
+{
+  v17 = *MEMORY[0x1E69E9840];
+  if (!self->_reloadingPasses)
+  {
+    groupsController = self->_groupsController;
+    self->_reloadingPasses = groupsController != 0;
+    if (groupsController)
+    {
+      v4 = self->_groupsController;
+      v15[0] = MEMORY[0x1E69E9820];
+      v15[1] = 3221225472;
+      v15[2] = __42__PKPassGroupsViewController_reloadPasses__block_invoke;
+      v15[3] = &unk_1E8010970;
+      v15[4] = self;
+      [(PKGroupsController *)v4 reloadGroupsWithCompletion:v15];
+    }
+
+    else
+    {
+      v5 = [(NSMutableArray *)self->_blocksQueuedForUpdateCompletion copy];
+      [(NSMutableArray *)self->_blocksQueuedForUpdateCompletion removeAllObjects];
+      v13 = 0u;
+      v14 = 0u;
+      v11 = 0u;
+      v12 = 0u;
+      v6 = v5;
+      v7 = [v6 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      if (v7)
+      {
+        v8 = v7;
+        v9 = *v12;
+        do
+        {
+          v10 = 0;
+          do
+          {
+            if (*v12 != v9)
+            {
+              objc_enumerationMutation(v6);
+            }
+
+            (*(*(*(&v11 + 1) + 8 * v10) + 16))(*(*(&v11 + 1) + 8 * v10));
+            ++v10;
+          }
+
+          while (v8 != v10);
+          v8 = [v6 countByEnumeratingWithState:&v11 objects:v16 count:16];
+        }
+
+        while (v8);
+      }
+    }
+  }
+}
+
+void __42__PKPassGroupsViewController_reloadPasses__block_invoke(uint64_t a1)
+{
+  v13 = *MEMORY[0x1E69E9840];
+  *(*(a1 + 32) + 1416) = 0;
+  *(*(a1 + 32) + 1292) = 0;
+  v2 = [*(*(a1 + 32) + 1272) copy];
+  [*(*(a1 + 32) + 1272) removeAllObjects];
+  v10 = 0u;
+  v11 = 0u;
+  v8 = 0u;
+  v9 = 0u;
+  v3 = v2;
+  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  if (v4)
+  {
+    v5 = v4;
+    v6 = *v9;
+    do
+    {
+      v7 = 0;
+      do
+      {
+        if (*v9 != v6)
+        {
+          objc_enumerationMutation(v3);
+        }
+
+        (*(*(*(&v8 + 1) + 8 * v7) + 16))(*(*(&v8 + 1) + 8 * v7));
+        ++v7;
+      }
+
+      while (v5 != v7);
+      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+    }
+
+    while (v5);
+  }
+}
+
+- (void)updatePassesIfNecessaryWithCompletion:(id)a3
+{
+  v4 = a3;
+  v7 = v4;
+  if (self->_passesAreOutdated || self->_reloadingPasses)
+  {
+    if (v4)
+    {
+      blocksQueuedForUpdateCompletion = self->_blocksQueuedForUpdateCompletion;
+      v6 = [v4 copy];
+      [(NSMutableArray *)blocksQueuedForUpdateCompletion addObject:v6];
+    }
+
+    [(PKPassGroupsViewController *)self reloadPasses];
+    goto LABEL_6;
+  }
+
+  if (v4)
+  {
+    v4[2](v4);
+LABEL_6:
+    v4 = v7;
+  }
+}
+
+- (void)presentInitialState:(BOOL *)a3
+{
+  if (self->_inFailForward)
+  {
+    [(PKPassGroupsViewController *)self _warnFailForward];
+  }
+
+  if (([(PKPassGroupStackView *)self->_groupStackView presentationState]- 1) > 2)
+  {
+    v6 = 0;
+    if (a3)
+    {
+LABEL_10:
+      *a3 = v6;
+    }
+  }
+
+  else
+  {
+    v5 = [(PKPassGroupsViewController *)self _passToPresent];
+    v6 = v5 != 0;
+    if (v5)
+    {
+      [(PKPassGroupsViewController *)self presentOffscreenAnimated:0 split:1 withCompletionHandler:0];
+      v7 = [v5 uniqueID];
+      [(PKPassGroupsViewController *)self presentPassWithUniqueID:v7 animated:1 completionHandler:0];
+    }
+
+    else
+    {
+      [(PKPassGroupsViewController *)self presentOnscreen:1 context:0 withCompletionHandler:0];
+    }
+
+    if (a3)
+    {
+      goto LABEL_10;
+    }
+  }
+}
+
+- (void)presentPaymentOfferCriteriaIdentifier:(id)a3 productIdentifier:(id)a4
+{
+  v21 = *MEMORY[0x1E69E9840];
+  v6 = a3;
+  v7 = a4;
+  v8 = [(PKPaymentService *)self->_paymentService paymentOffersCatalog];
+  v9 = [v8 criteriaWithIdentifier:v6];
+  v10 = v9;
+  if (v9)
+  {
+    v11 = [v9 associatedPassUniqueID];
+    v12 = [MEMORY[0x1E69B8A58] sharedInstance];
+    if ([v12 hasPassWithUniqueID:v11])
+    {
+      v13 = PKLogFacilityTypeGetObject();
+      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      {
+        *buf = 138412546;
+        v18 = v6;
+        v19 = 2112;
+        v20 = v11;
+        _os_log_impl(&dword_1BD026000, v13, OS_LOG_TYPE_DEFAULT, "Opening payment offer pass with criteriaIdentifier %@ and passUniqueID %@", buf, 0x16u);
+      }
+
+      [(PKPassGroupsViewController *)self presentPassWithUniqueID:v11 animated:1 completionHandler:0];
+    }
+
+    else if (v7 && !v11 && [v10 type] == 1)
+    {
+      v14 = PKLogFacilityTypeGetObject();
+      if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      {
+        *buf = 138412290;
+        v18 = v7;
+        _os_log_impl(&dword_1BD026000, v14, OS_LOG_TYPE_DEFAULT, "Opening payment offer installment setup with productIdentifier %@", buf, 0xCu);
+      }
+
+      v15 = [MEMORY[0x1E695DFD8] set];
+      v16 = [MEMORY[0x1E695DFD8] setWithObject:v7];
+      [(PKPassGroupsViewController *)self presentPaymentSetupInMode:3 referrerIdentifier:0 referralSource:0 campaignIdentifier:0 paymentNetwork:0 transitNetworkIdentifier:0 allowedFeatureIdentifiers:v15 productIdentifiers:v16 sectionIdentifier:0];
+    }
+  }
+
+  else
+  {
+    v11 = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    {
+      *buf = 138412290;
+      v18 = v6;
+      _os_log_impl(&dword_1BD026000, v11, OS_LOG_TYPE_DEFAULT, "Cannot open payment offer pass with criteriaIdentifier %@ since no criteria exists in the catalog", buf, 0xCu);
+    }
+  }
+}
+
+- (void)presentPaymentSetupInMode:(int64_t)a3 referrerIdentifier:(id)a4 referralSource:(id)a5 campaignIdentifier:(id)a6 paymentNetwork:(id)a7 transitNetworkIdentifier:(id)a8 allowedFeatureIdentifiers:(id)a9 productIdentifiers:(id)a10 sectionIdentifier:(id)a11
+{
+  v17 = a4;
+  v18 = a5;
+  v19 = a6;
+  v20 = a7;
+  v21 = a8;
+  v22 = a9;
+  v23 = a10;
+  v24 = a11;
+  if (self->_kind == 1 && !self->_inFailForward)
+  {
+    aBlock[0] = MEMORY[0x1E69E9820];
+    aBlock[1] = 3221225472;
+    aBlock[2] = __212__PKPassGroupsViewController_presentPaymentSetupInMode_referrerIdentifier_referralSource_campaignIdentifier_paymentNetwork_transitNetworkIdentifier_allowedFeatureIdentifiers_productIdentifiers_sectionIdentifier___block_invoke;
+    aBlock[3] = &unk_1E8024408;
+    aBlock[4] = self;
+    v34 = v21;
+    v35 = v20;
+    v42 = a3;
+    v28 = v17;
+    v36 = v17;
+    v37 = v18;
+    v38 = v19;
+    v39 = v22;
+    v40 = v23;
+    v41 = v24;
+    v25 = _Block_copy(aBlock);
+    v26 = [(PKPassGroupsViewController *)self presentedViewController];
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      if (![v26 isBeingDismissed])
+      {
+LABEL_9:
+
+        v17 = v28;
+        goto LABEL_10;
+      }
+
+      v27 = [(PKPassGroupsViewController *)self transitionCoordinator];
+      if (v27)
+      {
+        v29[0] = MEMORY[0x1E69E9820];
+        v29[1] = 3221225472;
+        v29[2] = __212__PKPassGroupsViewController_presentPaymentSetupInMode_referrerIdentifier_referralSource_campaignIdentifier_paymentNetwork_transitNetworkIdentifier_allowedFeatureIdentifiers_productIdentifiers_sectionIdentifier___block_invoke_3;
+        v29[3] = &unk_1E8015D28;
+        v30 = v25;
+        [v27 animateAlongsideTransition:0 completion:v29];
+      }
+
+      else
+      {
+        v25[2]();
+      }
+    }
+
+    else
+    {
+      v31[0] = MEMORY[0x1E69E9820];
+      v31[1] = 3221225472;
+      v31[2] = __212__PKPassGroupsViewController_presentPaymentSetupInMode_referrerIdentifier_referralSource_campaignIdentifier_paymentNetwork_transitNetworkIdentifier_allowedFeatureIdentifiers_productIdentifiers_sectionIdentifier___block_invoke_2;
+      v31[3] = &unk_1E8010B50;
+      v32 = v25;
+      [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:0 animated:1 performAction:v31];
+      v27 = v32;
+    }
+
+    goto LABEL_9;
+  }
+
+LABEL_10:
+}
+
+void __212__PKPassGroupsViewController_presentPaymentSetupInMode_referrerIdentifier_referralSource_campaignIdentifier_paymentNetwork_transitNetworkIdentifier_allowedFeatureIdentifiers_productIdentifiers_sectionIdentifier___block_invoke(uint64_t a1)
+{
+  v4 = [*(*(a1 + 32) + 1152) headerForPassType:1];
+  if (*(a1 + 40))
+  {
+    v2 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{*(a1 + 40), 0}];
+  }
+
+  else
+  {
+    v2 = 0;
+  }
+
+  if (*(a1 + 48))
+  {
+    v3 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{*(a1 + 48), 0}];
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  [*(a1 + 32) startPaymentPreflight:v4 withPaymentSetupMode:*(a1 + 104) referrerIdentifier:*(a1 + 56) referralSource:*(a1 + 64) campaignIdentifier:*(a1 + 72) paymentNetworks:v3 transitNetworkIdentifiers:v2 allowedFeatureIdentifiers:*(a1 + 80) productIdentifiers:*(a1 + 88) sectionIdentifier:*(a1 + 96)];
+}
+
+- (void)presentOnscreen:(BOOL)a3 context:(id)a4 withCompletionHandler:(id)a5
+{
+  v8 = a4;
+  v9 = a5;
+  v10 = [(PKPassGroupStackView *)self->_groupStackView modalGroupIndex];
+  v14[0] = MEMORY[0x1E69E9820];
+  v14[1] = 3221225472;
+  v14[2] = __76__PKPassGroupsViewController_presentOnscreen_context_withCompletionHandler___block_invoke;
+  v14[3] = &unk_1E801FA78;
+  v11 = 4;
+  v14[4] = self;
+  v15 = v8;
+  if (v10 != 0x7FFFFFFFFFFFFFFFLL)
+  {
+    v11 = 5;
+  }
+
+  v18 = a3;
+  v16 = v9;
+  v17 = v11;
+  v12 = v9;
+  v13 = v8;
+  [(PKPassGroupsViewController *)self _presentWithUpdatedPasses:v14];
+}
+
+- (void)presentOffscreenAnimated:(BOOL)a3 split:(BOOL)a4 withCompletionHandler:(id)a5
+{
+  v8 = a5;
+  v10[0] = MEMORY[0x1E69E9820];
+  v10[1] = 3221225472;
+  v10[2] = __83__PKPassGroupsViewController_presentOffscreenAnimated_split_withCompletionHandler___block_invoke;
+  v10[3] = &unk_1E8013FA8;
+  v12 = a4;
+  v13 = a3;
+  v10[4] = self;
+  v11 = v8;
+  v9 = v8;
+  [(PKPassGroupsViewController *)self _presentWithUpdatedPasses:v10];
+}
+
+uint64_t __83__PKPassGroupsViewController_presentOffscreenAnimated_split_withCompletionHandler___block_invoke(uint64_t a1)
+{
+  v1 = 2;
+  if (*(a1 + 48))
+  {
+    v1 = 3;
+  }
+
+  *(*(a1 + 32) + 1248) = v1;
+  return [*(*(a1 + 32) + 1152) setPresentationState:*(*(a1 + 32) + 1248) withContext:0 animated:*(a1 + 49) completion:*(a1 + 40)];
+}
+
+- (void)presentPileOffscreen
+{
+  if (![(PKPassGroupStackView *)self->_groupStackView pilingMode])
+  {
+    groupStackView = self->_groupStackView;
+
+    [(PKPassGroupStackView *)groupStackView setPilingMode:1];
+  }
+}
+
+- (void)presentGroupTableAnimated:(BOOL)a3
+{
+  [(PKPassGroupStackView *)self->_groupStackView setModalGroupIndex:0x7FFFFFFFFFFFFFFFLL];
+  v5[0] = MEMORY[0x1E69E9820];
+  v5[1] = 3221225472;
+  v5[2] = __56__PKPassGroupsViewController_presentGroupTableAnimated___block_invoke;
+  v5[3] = &unk_1E8013F80;
+  v5[4] = self;
+  v6 = a3;
+  [(PKPassGroupsViewController *)self _presentWithUpdatedPasses:v5];
+}
+
+uint64_t __56__PKPassGroupsViewController_presentGroupTableAnimated___block_invoke(uint64_t result)
+{
+  *(*(result + 32) + 1248) = 4;
+  v1 = *(result + 32);
+  if (*(v1 + 1289) == 1)
+  {
+    return [*(v1 + 1152) setPresentationState:*(v1 + 1248) animated:*(result + 40)];
+  }
+
+  return result;
+}
+
+- (void)presentPassWithUniqueID:(id)a3 animated:(BOOL)a4 campaignAttributionReferrerIdentifier:(id)a5 completionHandler:(id)a6
+{
+  v7 = a4;
+  v10 = a6;
+  v11 = a5;
+  v12 = a3;
+  v13 = objc_alloc_init(PKPassPresentationContext);
+  [(PKPassPresentationContext *)v13 setCampaignAttributionReferrerIdentifier:v11];
+
+  [(PKPassGroupsViewController *)self presentPassWithUniqueID:v12 context:v13 animated:v7 completionHandler:v10];
+}
+
+- (void)presentPassDetailsWithUniqueID:(id)a3 animated:(BOOL)a4 action:(unint64_t)a5 completionHandler:(id)a6
+{
+  v8 = a4;
+  v10 = a3;
+  v11 = a6;
+  v12 = [(PKPassGroupsViewController *)self _passFromGroupsControllerWithUniqueIdentifier:v10];
+  v13 = [v12 passType];
+  v14 = v13 == 1;
+  if (v12 && (v13 != 1 || !self->_inFailForward))
+  {
+    v16[0] = MEMORY[0x1E69E9820];
+    v16[1] = 3221225472;
+    v16[2] = __95__PKPassGroupsViewController_presentPassDetailsWithUniqueID_animated_action_completionHandler___block_invoke_2;
+    v16[3] = &unk_1E8024430;
+    v20 = v8;
+    v16[4] = self;
+    v19 = a5;
+    v18 = v11;
+    v21 = v14;
+    v17 = v12;
+    [(PKPassGroupsViewController *)self presentPassWithUniqueID:v10 animated:v8 completionHandler:v16];
+
+    v15 = v18;
+    goto LABEL_7;
+  }
+
+  if ([(PKGroupsController *)self->_groupsController containsExpiredPassWithUniqueID:v10])
+  {
+    v22[0] = MEMORY[0x1E69E9820];
+    v22[1] = 3221225472;
+    v22[2] = __95__PKPassGroupsViewController_presentPassDetailsWithUniqueID_animated_action_completionHandler___block_invoke;
+    v22[3] = &unk_1E8010AD8;
+    v23 = v11;
+    [(PKPassGroupsViewController *)self presentExpiredPassWithUniqueID:v10 animated:v8 completionHandler:v22];
+    v15 = v23;
+LABEL_7:
+
+    goto LABEL_8;
+  }
+
+  if (v11)
+  {
+    (*(v11 + 2))(v11, 1);
+  }
+
+LABEL_8:
+}
+
+uint64_t __95__PKPassGroupsViewController_presentPassDetailsWithUniqueID_animated_action_completionHandler___block_invoke(uint64_t a1)
+{
+  result = *(a1 + 32);
+  if (result)
+  {
+    return (*(result + 16))();
+  }
+
+  return result;
+}
+
+void __95__PKPassGroupsViewController_presentPassDetailsWithUniqueID_animated_action_completionHandler___block_invoke_2(uint64_t a1, char a2)
+{
+  if (a2)
+  {
+    v3 = *(a1 + 48);
+    if (v3)
+    {
+      v4 = *(v3 + 16);
+
+      v4();
+    }
+  }
+
+  else
+  {
+    v5 = [*(a1 + 32) _dashboardPassGroupViewController];
+    v6 = v5;
+    if (v5)
+    {
+      [(PKDashboardPassGroupViewController *)v5 _presentPassDetailsAnimated:*(a1 + 56) action:?];
+      v7 = *(a1 + 48);
+      if (v7)
+      {
+        (*(v7 + 16))(v7, 0);
+      }
+    }
+
+    else
+    {
+      v8 = *(a1 + 32);
+      v9 = *(a1 + 40);
+      if (*(a1 + 65) == 1)
+      {
+        [v8 _paymentPassDetailsViewControllerForPaymentPass:v9];
+      }
+
+      else
+      {
+        [v8 _barcodePassDetailsViewControllerForBarcodePass:v9];
+      }
+      v10 = ;
+      if (v10)
+      {
+        v11 = [*(a1 + 32) presentedViewController];
+        if (v11)
+        {
+          [*(a1 + 32) dismissViewControllerAnimated:0 completion:0];
+        }
+
+        v12 = *(a1 + 32);
+        v13 = [[PKNavigationController alloc] initWithRootViewController:v10];
+        v14 = *(a1 + 64);
+        v16[0] = MEMORY[0x1E69E9820];
+        v16[1] = 3221225472;
+        v16[2] = __95__PKPassGroupsViewController_presentPassDetailsWithUniqueID_animated_action_completionHandler___block_invoke_3;
+        v16[3] = &unk_1E8010B50;
+        v17 = *(a1 + 48);
+        [v12 presentViewController:v13 animated:v14 completion:v16];
+      }
+
+      else
+      {
+        v15 = *(a1 + 48);
+        if (v15)
+        {
+          (*(v15 + 16))(v15, 1);
+        }
+      }
+    }
+  }
+}
+
+uint64_t __95__PKPassGroupsViewController_presentPassDetailsWithUniqueID_animated_action_completionHandler___block_invoke_3(uint64_t a1)
+{
+  result = *(a1 + 32);
+  if (result)
+  {
+    return (*(result + 16))(result, 0);
+  }
+
+  return result;
+}
+
+- (void)_presentFPANConsentFlowWithEligibleCredentials:(id)a3 ineligibleCredentials:(id)a4 selectedCredentials:(id)a5 referralSource:(unint64_t)a6 showProvisioningSection:(BOOL)a7 animated:(BOOL)a8 completion:(id)a9
+{
+  v14 = a3;
+  v15 = a4;
+  v16 = a5;
+  v17 = a9;
+  objc_initWeak(&location, self);
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __178__PKPassGroupsViewController__presentFPANConsentFlowWithEligibleCredentials_ineligibleCredentials_selectedCredentials_referralSource_showProvisioningSection_animated_completion___block_invoke;
+  block[3] = &unk_1E8024458;
+  objc_copyWeak(v28, &location);
+  v23 = v14;
+  v24 = v15;
+  v29 = a7;
+  v25 = v16;
+  v26 = self;
+  v28[1] = a6;
+  v27 = v17;
+  v18 = v17;
+  v19 = v16;
+  v20 = v15;
+  v21 = v14;
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+
+  objc_destroyWeak(v28);
+  objc_destroyWeak(&location);
+}
+
+void __178__PKPassGroupsViewController__presentFPANConsentFlowWithEligibleCredentials_ineligibleCredentials_selectedCredentials_referralSource_showProvisioningSection_animated_completion___block_invoke(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 72));
+  if (WeakRetained)
+  {
+    v3 = [[PKPaymentSetupDismissibleNavigationController alloc] initWithContext:0];
+    v12 = [MEMORY[0x1E69B8EF8] sharedService];
+    v11 = [objc_alloc(MEMORY[0x1E69B8D48]) initWithWebService:v12];
+    v4 = [objc_alloc(MEMORY[0x1E69B90E0]) initWithEnvironment:0 provisioningController:v11 groupsController:0];
+    v5 = *(a1 + 32);
+    v6 = *(a1 + 40);
+    v10 = *(a1 + 80);
+    v9 = *(a1 + 88);
+    v16[0] = MEMORY[0x1E69E9820];
+    v16[1] = 3221225472;
+    v16[2] = __178__PKPassGroupsViewController__presentFPANConsentFlowWithEligibleCredentials_ineligibleCredentials_selectedCredentials_referralSource_showProvisioningSection_animated_completion___block_invoke_2;
+    v16[3] = &unk_1E8010A10;
+    v7 = *(a1 + 48);
+    v16[4] = *(a1 + 56);
+    v17 = v3;
+    v13[0] = MEMORY[0x1E69E9820];
+    v13[1] = 3221225472;
+    v13[2] = __178__PKPassGroupsViewController__presentFPANConsentFlowWithEligibleCredentials_ineligibleCredentials_selectedCredentials_referralSource_showProvisioningSection_animated_completion___block_invoke_3;
+    v13[3] = &unk_1E80158C0;
+    v14 = v17;
+    v15 = *(a1 + 64);
+    v8 = v17;
+    [PKProvisioningFlowBridge startAutoFillCredentialProvisioningFlowWithNavController:v8 eligibleCredentials:v5 ineligibleCredentials:v6 context:v4 referralSource:v10 showProvisioningSection:v9 selectedCredentials:v7 presentNavController:v16 completion:v13];
+  }
+}
+
+void __178__PKPassGroupsViewController__presentFPANConsentFlowWithEligibleCredentials_ineligibleCredentials_selectedCredentials_referralSource_showProvisioningSection_animated_completion___block_invoke_2(uint64_t a1)
+{
+  v2 = [*(a1 + 32) pkui_frontMostViewController];
+  [v2 presentViewController:*(a1 + 40) animated:1 completion:0];
+}
+
+uint64_t __178__PKPassGroupsViewController__presentFPANConsentFlowWithEligibleCredentials_ineligibleCredentials_selectedCredentials_referralSource_showProvisioningSection_animated_completion___block_invoke_3(uint64_t a1)
+{
+  [*(a1 + 32) dismissViewControllerAnimated:1 completion:0];
+  result = *(a1 + 40);
+  if (result)
+  {
+    v3 = *(result + 16);
+
+    return v3();
+  }
+
+  return result;
+}
+
+- (void)presentSetupVirtualCardNumberForPassUniqueIdentifier:(id)a3 animated:(BOOL)a4 completion:(id)a5
+{
+  v6 = a4;
+  v8 = a3;
+  v9 = a5;
+  objc_initWeak(&location, self);
+  v10 = [(PKPassGroupsViewController *)self _passFromGroupsControllerWithUniqueIdentifier:v8];
+  v11 = [v10 paymentPass];
+
+  if (v11)
+  {
+    if (self->_inFailForward)
+    {
+      if (v9)
+      {
+        v9[2](v9, 1);
+      }
+    }
+
+    else
+    {
+      if ([v11 supportsVirtualCardNumber])
+      {
+        v12 = [v11 hasActiveVirtualCard] ^ 1;
+      }
+
+      else
+      {
+        v12 = 0;
+      }
+
+      v13[0] = MEMORY[0x1E69E9820];
+      v13[1] = 3221225472;
+      v13[2] = __103__PKPassGroupsViewController_presentSetupVirtualCardNumberForPassUniqueIdentifier_animated_completion___block_invoke;
+      v13[3] = &unk_1E8024480;
+      objc_copyWeak(&v17, &location);
+      v18 = v12;
+      v14 = v11;
+      v15 = self;
+      v16 = v9;
+      [(PKPassGroupsViewController *)self presentPassWithUniqueID:v8 animated:v6 completionHandler:v13];
+
+      objc_destroyWeak(&v17);
+    }
+  }
+
+  objc_destroyWeak(&location);
+}
+
+void __103__PKPassGroupsViewController_presentSetupVirtualCardNumberForPassUniqueIdentifier_animated_completion___block_invoke(uint64_t a1, char a2)
+{
+  if (a2)
+  {
+    v3 = *(a1 + 48);
+    if (v3)
+    {
+      v4 = *(v3 + 16);
+
+      v4();
+    }
+  }
+
+  else
+  {
+    block[0] = MEMORY[0x1E69E9820];
+    block[1] = 3221225472;
+    block[2] = __103__PKPassGroupsViewController_presentSetupVirtualCardNumberForPassUniqueIdentifier_animated_completion___block_invoke_2;
+    block[3] = &unk_1E8023940;
+    objc_copyWeak(&v12, (a1 + 56));
+    v13 = *(a1 + 64);
+    v5 = *(a1 + 32);
+    v6 = *(a1 + 40);
+    v7 = *(a1 + 48);
+    v9 = v5;
+    v10 = v6;
+    v11 = v7;
+    dispatch_async(MEMORY[0x1E69E96A0], block);
+
+    objc_destroyWeak(&v12);
+  }
+}
+
+void __103__PKPassGroupsViewController_presentSetupVirtualCardNumberForPassUniqueIdentifier_animated_completion___block_invoke_2(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 56));
+  if (*(a1 + 64) == 1)
+  {
+    v3 = PKDismissedKeyForPass();
+    PKSharedCacheSetBoolForKey();
+
+    v4 = [[PKVirtualCardEnrollmentViewController alloc] initWithPaymentPass:*(a1 + 32) context:0 delegate:WeakRetained];
+    v5 = [[PKNavigationController alloc] initWithRootViewController:v4];
+    [(PKNavigationController *)v5 setModalPresentationStyle:2];
+    v6 = [*(a1 + 40) pkui_frontMostViewController];
+    v8[0] = MEMORY[0x1E69E9820];
+    v8[1] = 3221225472;
+    v8[2] = __103__PKPassGroupsViewController_presentSetupVirtualCardNumberForPassUniqueIdentifier_animated_completion___block_invoke_3;
+    v8[3] = &unk_1E8010B50;
+    v9 = *(a1 + 48);
+    [v6 presentViewController:v5 animated:1 completion:v8];
+  }
+
+  else
+  {
+    v7 = *(a1 + 48);
+    if (v7)
+    {
+      (*(v7 + 16))(v7, 0);
+    }
+  }
+}
+
+uint64_t __103__PKPassGroupsViewController_presentSetupVirtualCardNumberForPassUniqueIdentifier_animated_completion___block_invoke_3(uint64_t a1)
+{
+  result = *(a1 + 32);
+  if (result)
+  {
+    return (*(result + 16))(result, 0);
+  }
+
+  return result;
+}
+
+- (void)presentExpressUpgradeDetailForPassUniqueID:(id)a3 assetIdentifier:(id)a4 hideDisableAction:(unint64_t)a5 reportingMetadata:(id)a6 animated:(BOOL)a7 completionHandler:(id)a8
+{
+  v9 = a7;
+  v48 = *MEMORY[0x1E69E9840];
+  v14 = a3;
+  v15 = a4;
+  v16 = a6;
+  v17 = a8;
+  v18 = [(PKPassGroupsViewController *)self _passFromGroupsControllerWithUniqueIdentifier:v14];
+  v19 = [v18 paymentPass];
+
+  if (v19)
+  {
+    v29 = a5;
+    v30 = v9;
+    v45 = 0u;
+    v46 = 0u;
+    v43 = 0u;
+    v44 = 0u;
+    v20 = [v19 devicePaymentApplications];
+    v21 = [v20 countByEnumeratingWithState:&v43 objects:v47 count:16];
+    if (v21)
+    {
+      v22 = v21;
+      v23 = *v44;
+LABEL_4:
+      v24 = 0;
+      while (1)
+      {
+        if (*v44 != v23)
+        {
+          objc_enumerationMutation(v20);
+        }
+
+        if ([*(*(&v43 + 1) + 8 * v24) supportsExpress])
+        {
+          break;
+        }
+
+        if (v22 == ++v24)
+        {
+          v22 = [v20 countByEnumeratingWithState:&v43 objects:v47 count:16];
+          if (v22)
+          {
+            goto LABEL_4;
+          }
+
+          goto LABEL_10;
+        }
+      }
+
+      if (self->_inFailForward)
+      {
+        goto LABEL_12;
+      }
+
+      aBlock[0] = MEMORY[0x1E69E9820];
+      aBlock[1] = 3221225472;
+      aBlock[2] = __152__PKPassGroupsViewController_presentExpressUpgradeDetailForPassUniqueID_assetIdentifier_hideDisableAction_reportingMetadata_animated_completionHandler___block_invoke;
+      aBlock[3] = &unk_1E80244A8;
+      v25 = v19;
+      v39 = v25;
+      v40 = self;
+      v42 = v30;
+      v26 = v17;
+      v41 = v26;
+      v27 = _Block_copy(aBlock);
+      v31[0] = MEMORY[0x1E69E9820];
+      v31[1] = 3221225472;
+      v31[2] = __152__PKPassGroupsViewController_presentExpressUpgradeDetailForPassUniqueID_assetIdentifier_hideDisableAction_reportingMetadata_animated_completionHandler___block_invoke_3;
+      v31[3] = &unk_1E80244F8;
+      v31[4] = self;
+      v32 = v15;
+      v37 = v29;
+      v33 = v25;
+      v34 = v16;
+      v35 = v27;
+      v36 = v26;
+      v28 = v27;
+      [(PKPassGroupsViewController *)self presentPassWithUniqueID:v14 animated:v30 completionHandler:v31];
+    }
+
+    else
+    {
+LABEL_10:
+
+LABEL_12:
+      if (v17)
+      {
+        (*(v17 + 2))(v17, 1);
+      }
+    }
+  }
+}
+
+void __152__PKPassGroupsViewController_presentExpressUpgradeDetailForPassUniqueID_assetIdentifier_hideDisableAction_reportingMetadata_animated_completionHandler___block_invoke(uint64_t a1, void *a2)
+{
+  v14[1] = *MEMORY[0x1E69E9840];
+  v3 = a2;
+  v4 = objc_alloc_init(PKNavigationController);
+  v5 = [MEMORY[0x1E69B8EF8] sharedService];
+  v6 = [v5 targetDevice];
+
+  v7 = [PKPaymentSetupMoreInfoViewController alloc];
+  v14[0] = v3;
+  v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
+  v9 = [(PKPaymentSetupMoreInfoViewController *)v7 initWithMoreInfoItems:v8 paymentPass:*(a1 + 32) targetDevice:v6 context:0 dismissalHandler:0 reportingSource:1];
+
+  [(PKNavigationController *)v4 pushViewController:v9 animated:0];
+  v10 = [*(a1 + 40) pkui_frontMostViewController];
+  v11 = *(a1 + 56);
+  v12[0] = MEMORY[0x1E69E9820];
+  v12[1] = 3221225472;
+  v12[2] = __152__PKPassGroupsViewController_presentExpressUpgradeDetailForPassUniqueID_assetIdentifier_hideDisableAction_reportingMetadata_animated_completionHandler___block_invoke_2;
+  v12[3] = &unk_1E8010B50;
+  v13 = *(a1 + 48);
+  [v10 presentViewController:v4 animated:v11 completion:v12];
+}
+
+uint64_t __152__PKPassGroupsViewController_presentExpressUpgradeDetailForPassUniqueID_assetIdentifier_hideDisableAction_reportingMetadata_animated_completionHandler___block_invoke_2(uint64_t a1)
+{
+  result = *(a1 + 32);
+  if (result)
+  {
+    return (*(result + 16))(result, 0);
+  }
+
+  return result;
+}
+
+void __152__PKPassGroupsViewController_presentExpressUpgradeDetailForPassUniqueID_assetIdentifier_hideDisableAction_reportingMetadata_animated_completionHandler___block_invoke_3(uint64_t a1, char a2)
+{
+  if (a2)
+  {
+    v4 = *(a1 + 72);
+    if (v4)
+    {
+      v5 = *(v4 + 16);
+
+      v5();
+    }
+  }
+
+  else
+  {
+    v13 = v2;
+    v14 = v3;
+    v6 = *(a1 + 32);
+    v7 = *(a1 + 40);
+    v8 = *(a1 + 80);
+    v9 = *(a1 + 48);
+    v10 = *(a1 + 56);
+    v11[0] = MEMORY[0x1E69E9820];
+    v11[1] = 3221225472;
+    v11[2] = __152__PKPassGroupsViewController_presentExpressUpgradeDetailForPassUniqueID_assetIdentifier_hideDisableAction_reportingMetadata_animated_completionHandler___block_invoke_4;
+    v11[3] = &unk_1E80244D0;
+    v12 = *(a1 + 64);
+    [v6 _setupItemForExpressUpgradeWithAsset:v7 hideDisableAction:v8 pass:v9 reportingMetadata:v10 completionHandler:v11];
+  }
+}
+
+void __152__PKPassGroupsViewController_presentExpressUpgradeDetailForPassUniqueID_assetIdentifier_hideDisableAction_reportingMetadata_animated_completionHandler___block_invoke_4(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  v6[0] = MEMORY[0x1E69E9820];
+  v6[1] = 3221225472;
+  v6[2] = __152__PKPassGroupsViewController_presentExpressUpgradeDetailForPassUniqueID_assetIdentifier_hideDisableAction_reportingMetadata_animated_completionHandler___block_invoke_5;
+  v6[3] = &unk_1E8010E20;
+  v4 = *(a1 + 32);
+  v7 = v3;
+  v8 = v4;
+  v5 = v3;
+  dispatch_async(MEMORY[0x1E69E96A0], v6);
+}
+
+- (void)_setupItemForExpressUpgradeWithAsset:(id)a3 hideDisableAction:(unint64_t)a4 pass:(id)a5 reportingMetadata:(id)a6 completionHandler:(id)a7
+{
+  v30 = *MEMORY[0x1E69E9840];
+  v11 = a3;
+  v12 = a5;
+  v13 = a6;
+  v14 = a7;
+  v15 = PKLogFacilityTypeGetObject();
+  if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+  {
+    *buf = 138412290;
+    v29 = v11;
+    _os_log_impl(&dword_1BD026000, v15, OS_LOG_TYPE_DEFAULT, "PKPassGroupsViewController: _setupItemForExpressUpgradeMarket: %@", buf, 0xCu);
+  }
+
+  aBlock[0] = MEMORY[0x1E69E9820];
+  aBlock[1] = 3221225472;
+  aBlock[2] = __126__PKPassGroupsViewController__setupItemForExpressUpgradeWithAsset_hideDisableAction_pass_reportingMetadata_completionHandler___block_invoke;
+  aBlock[3] = &unk_1E8012A48;
+  v16 = v14;
+  v27 = v16;
+  v17 = _Block_copy(aBlock);
+  if (v11)
+  {
+    v18 = a4 == 1;
+    v19 = [MEMORY[0x1E69B89C0] sharedInstance];
+    v21[0] = MEMORY[0x1E69E9820];
+    v21[1] = 3221225472;
+    v21[2] = __126__PKPassGroupsViewController__setupItemForExpressUpgradeWithAsset_hideDisableAction_pass_reportingMetadata_completionHandler___block_invoke_2;
+    v21[3] = &unk_1E8024520;
+    v24 = v17;
+    v25 = v18;
+    v22 = v12;
+    v23 = v13;
+    [v19 fetchMarketNotificationAssetsForIdentifier:v11 isDiscretionary:0 completionHandler:v21];
+
+    v20 = v24;
+  }
+
+  else
+  {
+    v20 = PKPaymentSetupMoreInfoItemDictionaryForExpressUpgradeMarket();
+    (*(v17 + 2))(v17, v20);
+  }
+}
+
+void __126__PKPassGroupsViewController__setupItemForExpressUpgradeWithAsset_hideDisableAction_pass_reportingMetadata_completionHandler___block_invoke(uint64_t a1, void *a2)
+{
+  v2 = *(a1 + 32);
+  if (v2)
+  {
+    v3 = MEMORY[0x1E69B8E40];
+    v4 = a2;
+    v5 = [[v3 alloc] initWithMoreInfoDictionary:v4];
+
+    (*(v2 + 16))(v2, v5);
+  }
+}
+
+void __126__PKPassGroupsViewController__setupItemForExpressUpgradeWithAsset_hideDisableAction_pass_reportingMetadata_completionHandler___block_invoke_2(uint64_t a1)
+{
+  v1 = *(a1 + 48);
+  v2 = PKPaymentSetupMoreInfoItemDictionaryForExpressUpgradeMarket();
+  (*(v1 + 16))(v1, v2);
+}
+
+- (void)presentExpiredPassWithUniqueID:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5
+{
+  v8 = a3;
+  v9 = a5;
+  v10 = [[PKExpiredPassesNavigationController alloc] initWithExistingGroupsController:self->_groupsController];
+  v11 = v10;
+  if (v8 && v10)
+  {
+    v12[0] = MEMORY[0x1E69E9820];
+    v12[1] = 3221225472;
+    v12[2] = __88__PKPassGroupsViewController_presentExpiredPassWithUniqueID_animated_completionHandler___block_invoke;
+    v12[3] = &unk_1E8021110;
+    v12[4] = self;
+    v13 = v10;
+    v16 = a4;
+    v14 = v8;
+    v15 = v9;
+    [(PKPassGroupsViewController *)self _presentWithUpdatedPasses:v12];
+  }
+
+  else if (v9)
+  {
+    (*(v9 + 2))(v9, 1);
+  }
+}
+
+void __88__PKPassGroupsViewController_presentExpiredPassWithUniqueID_animated_completionHandler___block_invoke(uint64_t a1)
+{
+  v2 = [*(a1 + 32) presentedViewController];
+
+  if (v2)
+  {
+    [*(a1 + 32) dismissViewControllerAnimated:0 completion:0];
+  }
+
+  objc_initWeak(&location, *(a1 + 40));
+  v3 = *(a1 + 32);
+  v4 = *(a1 + 40);
+  v5 = *(a1 + 64);
+  v6[0] = MEMORY[0x1E69E9820];
+  v6[1] = 3221225472;
+  v6[2] = __88__PKPassGroupsViewController_presentExpiredPassWithUniqueID_animated_completionHandler___block_invoke_2;
+  v6[3] = &unk_1E80111F8;
+  objc_copyWeak(&v9, &location);
+  v7 = *(a1 + 48);
+  v8 = *(a1 + 56);
+  [v3 presentViewController:v4 animated:v5 completion:v6];
+
+  objc_destroyWeak(&v9);
+  objc_destroyWeak(&location);
+}
+
+void __88__PKPassGroupsViewController_presentExpiredPassWithUniqueID_animated_completionHandler___block_invoke_2(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 48));
+  v3 = WeakRetained;
+  v9 = WeakRetained;
+  if (WeakRetained)
+  {
+    v4 = [WeakRetained expiredPassesViewController];
+    v5 = [v4 indexPathOfExpiredPassWithUniqueID:*(a1 + 32)];
+    if (v5)
+    {
+      v6 = v5;
+      v7 = [v4 tableView];
+      [v4 tableView:v7 didSelectRowAtIndexPath:v6];
+
+      (*(*(a1 + 40) + 16))();
+      goto LABEL_7;
+    }
+
+    v3 = v9;
+  }
+
+  v8 = *(a1 + 40);
+  if (!v8)
+  {
+    goto LABEL_8;
+  }
+
+  (*(v8 + 16))(v8, 1);
+LABEL_7:
+  v3 = v9;
+LABEL_8:
+}
+
+- (void)presentExpiredPassesAnimated:(BOOL)a3 completionHandler:(id)a4
+{
+  v6 = a4;
+  v7 = [[PKExpiredPassesNavigationController alloc] initWithExistingGroupsController:self->_groupsController];
+  v8 = v7;
+  if (v7)
+  {
+    v9[0] = MEMORY[0x1E69E9820];
+    v9[1] = 3221225472;
+    v9[2] = __77__PKPassGroupsViewController_presentExpiredPassesAnimated_completionHandler___block_invoke;
+    v9[3] = &unk_1E8024548;
+    v9[4] = self;
+    v10 = v7;
+    v12 = a3;
+    v11 = v6;
+    [(PKPassGroupsViewController *)self _presentWithUpdatedPasses:v9];
+  }
+
+  else if (v6)
+  {
+    (*(v6 + 2))(v6, 1);
+  }
+}
+
+void __77__PKPassGroupsViewController_presentExpiredPassesAnimated_completionHandler___block_invoke(uint64_t a1)
+{
+  v2 = [*(a1 + 32) presentedViewController];
+
+  if (v2)
+  {
+    [*(a1 + 32) dismissViewControllerAnimated:0 completion:0];
+  }
+
+  v3 = *(a1 + 32);
+  v4 = *(a1 + 40);
+  v5 = *(a1 + 56);
+  v6[0] = MEMORY[0x1E69E9820];
+  v6[1] = 3221225472;
+  v6[2] = __77__PKPassGroupsViewController_presentExpiredPassesAnimated_completionHandler___block_invoke_2;
+  v6[3] = &unk_1E8010B50;
+  v7 = *(a1 + 48);
+  [v3 presentViewController:v4 animated:v5 completion:v6];
+}
+
+uint64_t __77__PKPassGroupsViewController_presentExpiredPassesAnimated_completionHandler___block_invoke_2(uint64_t a1)
+{
+  result = *(a1 + 32);
+  if (result)
+  {
+    return (*(result + 16))(result, 0);
+  }
+
+  return result;
+}
+
+- (void)presentPassWithUniqueID:(id)a3 context:(id)a4 animated:(BOOL)a5 completionHandler:(id)a6
+{
+  v35[1] = *MEMORY[0x1E69E9840];
+  v10 = a3;
+  v11 = a4;
+  v12 = a6;
+  v13 = v12;
+  if (!self->_invalidationStatus)
+  {
+    if (v12)
+    {
+      v14 = objc_alloc(MEMORY[0x1E69B8798]);
+      v33[0] = MEMORY[0x1E69E9820];
+      v33[1] = 3221225472;
+      v33[2] = __89__PKPassGroupsViewController_presentPassWithUniqueID_context_animated_completionHandler___block_invoke;
+      v33[3] = &unk_1E8010B50;
+      v15 = v13;
+      v34 = v15;
+      v16 = [v14 initWithBlock:v33];
+      aBlock[0] = MEMORY[0x1E69E9820];
+      aBlock[1] = 3221225472;
+      aBlock[2] = __89__PKPassGroupsViewController_presentPassWithUniqueID_context_animated_completionHandler___block_invoke_3;
+      aBlock[3] = &unk_1E80158C0;
+      v31 = v16;
+      v32 = v15;
+      v17 = v16;
+      v18 = _Block_copy(aBlock);
+
+      if (!v10)
+      {
+        if (!v18)
+        {
+          goto LABEL_15;
+        }
+
+        v18[2](v18, 1);
+LABEL_14:
+
+        goto LABEL_15;
+      }
+    }
+
+    else
+    {
+      if (!v10)
+      {
+        goto LABEL_15;
+      }
+
+      v18 = 0;
+    }
+
+    if ([(PKGroupsController *)self->_groupsController filteringEnabled])
+    {
+      v19 = [(PKGroupsController *)self->_groupsController filteredPassUniqueIDs];
+      v20 = [v19 containsObject:v10];
+
+      if (v20)
+      {
+        v35[0] = v10;
+        v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:1];
+        passUniqueIDsToExcludeFromFiltering = self->_passUniqueIDsToExcludeFromFiltering;
+        self->_passUniqueIDsToExcludeFromFiltering = v21;
+
+        self->_passesAreOutdated = 1;
+      }
+    }
+
+    objc_initWeak(&location, self);
+    v23[0] = MEMORY[0x1E69E9820];
+    v23[1] = 3221225472;
+    v23[2] = __89__PKPassGroupsViewController_presentPassWithUniqueID_context_animated_completionHandler___block_invoke_4;
+    v23[3] = &unk_1E801E330;
+    objc_copyWeak(&v27, &location);
+    v18 = v18;
+    v26 = v18;
+    v24 = v10;
+    v28 = a5;
+    v25 = v11;
+    [(PKPassGroupsViewController *)self _presentWithUpdatedPasses:v23];
+
+    objc_destroyWeak(&v27);
+    objc_destroyWeak(&location);
+    goto LABEL_14;
+  }
+
+  if (v12)
+  {
+    (*(v12 + 2))(v12, 1);
+  }
+
+LABEL_15:
+}
+
+void __89__PKPassGroupsViewController_presentPassWithUniqueID_context_animated_completionHandler___block_invoke(uint64_t a1)
+{
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __89__PKPassGroupsViewController_presentPassWithUniqueID_context_animated_completionHandler___block_invoke_2;
+  block[3] = &unk_1E8010B50;
+  v2 = *(a1 + 32);
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+}
+
+uint64_t __89__PKPassGroupsViewController_presentPassWithUniqueID_context_animated_completionHandler___block_invoke_3(uint64_t a1)
+{
+  result = [*(a1 + 32) invalidate];
+  if (result)
+  {
+    __break(1u);
+  }
+
+  else
+  {
+    v3 = *(*(a1 + 40) + 16);
+
+    return v3();
+  }
+
+  return result;
+}
+
+void __89__PKPassGroupsViewController_presentPassWithUniqueID_context_animated_completionHandler___block_invoke_4(uint64_t a1)
+{
+  v30 = *MEMORY[0x1E69E9840];
+  WeakRetained = objc_loadWeakRetained((a1 + 56));
+  v3 = WeakRetained;
+  if (WeakRetained)
+  {
+    v4 = [*(WeakRetained + 178) groupIndexForPassUniqueID:*(a1 + 32)];
+    v5 = v3[178];
+    if (v4 == 0x7FFFFFFFFFFFFFFFLL)
+    {
+      if ([v5 containsExpiredPassWithUniqueID:*(a1 + 32)])
+      {
+        v6 = *(a1 + 32);
+        v7 = *(a1 + 64);
+        v16[0] = MEMORY[0x1E69E9820];
+        v16[1] = 3221225472;
+        v16[2] = __89__PKPassGroupsViewController_presentPassWithUniqueID_context_animated_completionHandler___block_invoke_7;
+        v16[3] = &unk_1E80110B8;
+        objc_copyWeak(&v18, (a1 + 56));
+        v17 = *(a1 + 48);
+        [v3 presentExpiredPassWithUniqueID:v6 animated:v7 & 1 completionHandler:v16];
+
+        objc_destroyWeak(&v18);
+      }
+
+      else
+      {
+        v13 = PKLogFacilityTypeGetObject();
+        if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+        {
+          v14 = *(a1 + 32);
+          *buf = 134218242;
+          v27 = v3;
+          v28 = 2112;
+          v29 = v14;
+          _os_log_impl(&dword_1BD026000, v13, OS_LOG_TYPE_DEFAULT, "PKPassGroupsViewController (%p): could not present pass %@ - does not exist.", buf, 0x16u);
+        }
+
+        v15 = *(a1 + 48);
+        if (v15)
+        {
+          (*(v15 + 16))(v15, 1);
+        }
+      }
+    }
+
+    else
+    {
+      v9 = [v5 groupAtIndex:?];
+      v10 = [v9 passCount];
+      v11 = v10 > 1;
+      if (v10 >= 2)
+      {
+        [v3 _beginSuppressingInstanceFooter];
+      }
+
+      v12 = *(a1 + 64);
+      v19[0] = MEMORY[0x1E69E9820];
+      v19[1] = 3221225472;
+      v19[2] = __89__PKPassGroupsViewController_presentPassWithUniqueID_context_animated_completionHandler___block_invoke_5;
+      v19[3] = &unk_1E8024598;
+      objc_copyWeak(&v23, (a1 + 56));
+      v22 = *(a1 + 48);
+      v20 = *(a1 + 32);
+      v21 = *(a1 + 40);
+      v24 = *(a1 + 64);
+      v25 = v11;
+      [v3 dismissPresentedVCsWithRequirements:4 animated:v12 & 1 performAction:v19];
+
+      objc_destroyWeak(&v23);
+    }
+  }
+
+  else
+  {
+    v8 = *(a1 + 48);
+    if (v8)
+    {
+      (*(v8 + 16))(v8, 1);
+    }
+  }
+}
+
+void __89__PKPassGroupsViewController_presentPassWithUniqueID_context_animated_completionHandler___block_invoke_5(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 56));
+  v3 = WeakRetained;
+  if (WeakRetained)
+  {
+    v4 = [WeakRetained[178] groupIndexForPassUniqueID:*(a1 + 32)];
+    v5 = *(a1 + 40);
+    v6 = *(a1 + 64);
+    v8[0] = MEMORY[0x1E69E9820];
+    v8[1] = 3221225472;
+    v8[2] = __89__PKPassGroupsViewController_presentPassWithUniqueID_context_animated_completionHandler___block_invoke_6;
+    v8[3] = &unk_1E8024570;
+    objc_copyWeak(v12, (a1 + 56));
+    v11 = *(a1 + 48);
+    v12[1] = v4;
+    v9 = *(a1 + 32);
+    v10 = *(a1 + 40);
+    v13 = *(a1 + 64);
+    [v3 _presentGroupWithIndex:v4 context:v5 animated:v6 completionHandler:v8];
+
+    objc_destroyWeak(v12);
+  }
+
+  else
+  {
+    v7 = *(a1 + 48);
+    if (v7)
+    {
+      (*(v7 + 16))(v7, 1);
+    }
+  }
+}
+
+void __89__PKPassGroupsViewController_presentPassWithUniqueID_context_animated_completionHandler___block_invoke_6(uint64_t a1, char a2)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 56));
+  if (!WeakRetained)
+  {
+    v5 = *(a1 + 48);
+    if (!v5)
+    {
+      goto LABEL_20;
+    }
+
+    v6 = *(v5 + 16);
+    goto LABEL_19;
+  }
+
+  if ((a2 & 1) == 0)
+  {
+    v7 = [WeakRetained[144] modalGroupIndex];
+    v8 = [WeakRetained[178] groupCount];
+    if (v7 == *(a1 + 64) || (v7 == 0x7FFFFFFFFFFFFFFFLL ? (v9 = v8 == 1) : (v9 = 0), v9))
+    {
+      [WeakRetained[144] presentPassWithUniqueID:*(a1 + 32) withContext:*(a1 + 40) animated:*(a1 + 72)];
+    }
+
+    if ((*(a1 + 73) & 1) == 0)
+    {
+      goto LABEL_17;
+    }
+
+    v4 = *(a1 + 40);
+    goto LABEL_16;
+  }
+
+  if (*(a1 + 73))
+  {
+    v4 = 0;
+LABEL_16:
+    [WeakRetained _endSuppressingInstanceFooterWithContext:v4];
+  }
+
+LABEL_17:
+  v10 = *(a1 + 48);
+  if (!v10)
+  {
+    goto LABEL_20;
+  }
+
+  v6 = *(v10 + 16);
+LABEL_19:
+  v6();
+LABEL_20:
+}
+
+void __89__PKPassGroupsViewController_presentPassWithUniqueID_context_animated_completionHandler___block_invoke_7(uint64_t a1, unsigned int a2)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 40));
+  v5 = *(a1 + 32);
+  if (v5)
+  {
+    v7 = WeakRetained;
+    if (WeakRetained)
+    {
+      v6 = a2;
+    }
+
+    else
+    {
+      v6 = 1;
+    }
+
+    (*(v5 + 16))(v5, v6);
+    WeakRetained = v7;
+  }
+}
+
+- (void)presentSearchWithCompletion:(id)a3
+{
+  v6 = a3;
+  v4 = [(PKPassGroupsViewController *)self _dashboardPassGroupViewController];
+  v5 = v4;
+  if (v4)
+  {
+    [(PKDashboardPassGroupViewController *)v4 presentSearchWithCompletion:v6];
+  }
+
+  else if (v6)
+  {
+    v6[2]();
+  }
+}
+
+- (void)presentSearchWithQuery:(id)a3 completion:(id)a4
+{
+  v9 = a3;
+  v6 = a4;
+  v7 = [(PKPassGroupsViewController *)self _dashboardPassGroupViewController];
+  v8 = v7;
+  if (v7)
+  {
+    [(PKDashboardPassGroupViewController *)v7 presentSearchWithQuery:v9 completion:v6];
+  }
+
+  else if (v6)
+  {
+    (*(v6 + 2))(v6, 0);
+  }
+}
+
+- (void)presentFeatureSetupOrFeaturePass:(unint64_t)a3 referrerIdentifier:(id)a4 presentationContext:(id)a5 completion:(id)a6
+{
+  v10 = a4;
+  v11 = a5;
+  v12 = a6;
+  objc_initWeak(&location, self);
+  v13 = MEMORY[0x1E695DFD8];
+  v14 = PKFeatureIdentifierToString();
+  v15 = [v13 setWithObject:v14];
+
+  if (a3 <= 3)
+  {
+    if (a3 >= 2)
+    {
+      if (a3 == 2)
+      {
+        v16 = [MEMORY[0x1E69B8400] sharedInstance];
+        v17 = v21;
+        v21[0] = MEMORY[0x1E69E9820];
+        v21[1] = 3221225472;
+        v21[2] = __113__PKPassGroupsViewController_presentFeatureSetupOrFeaturePass_referrerIdentifier_presentationContext_completion___block_invoke;
+        v21[3] = &unk_1E80245E8;
+        v18 = &v22;
+        objc_copyWeak(&v22, &location);
+        v21[6] = v12;
+        v21[4] = v10;
+        v21[5] = v15;
+        [v16 defaultAccountForFeature:2 completion:v21];
+LABEL_8:
+
+        objc_destroyWeak(v18);
+        goto LABEL_11;
+      }
+
+      goto LABEL_11;
+    }
+
+LABEL_9:
+    if (v12)
+    {
+      v12[2](v12);
+    }
+
+    goto LABEL_11;
+  }
+
+  if (a3 == 4)
+  {
+    goto LABEL_9;
+  }
+
+  if (a3 == 5)
+  {
+    v16 = [MEMORY[0x1E69B8400] sharedInstance];
+    v17 = v19;
+    v19[0] = MEMORY[0x1E69E9820];
+    v19[1] = 3221225472;
+    v19[2] = __113__PKPassGroupsViewController_presentFeatureSetupOrFeaturePass_referrerIdentifier_presentationContext_completion___block_invoke_4;
+    v19[3] = &unk_1E8024660;
+    v18 = v20;
+    objc_copyWeak(v20, &location);
+    v19[6] = v12;
+    v19[4] = v11;
+    v20[1] = 5;
+    v19[5] = v10;
+    [v16 defaultAccountForFeature:5 completion:v19];
+    goto LABEL_8;
+  }
+
+LABEL_11:
+
+  objc_destroyWeak(&location);
+}
+
+void __113__PKPassGroupsViewController_presentFeatureSetupOrFeaturePass_referrerIdentifier_presentationContext_completion___block_invoke(id *a1, void *a2)
+{
+  v3 = a2;
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __113__PKPassGroupsViewController_presentFeatureSetupOrFeaturePass_referrerIdentifier_presentationContext_completion___block_invoke_2;
+  block[3] = &unk_1E801EF10;
+  objc_copyWeak(&v10, a1 + 7);
+  v9 = a1[6];
+  v6 = v3;
+  v7 = a1[4];
+  v8 = a1[5];
+  v4 = v3;
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+
+  objc_destroyWeak(&v10);
+}
+
+void __113__PKPassGroupsViewController_presentFeatureSetupOrFeaturePass_referrerIdentifier_presentationContext_completion___block_invoke_2(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 64));
+  v3 = WeakRetained;
+  if (WeakRetained)
+  {
+    if (*(a1 + 32))
+    {
+      v5[0] = MEMORY[0x1E69E9820];
+      v5[1] = 3221225472;
+      v5[2] = __113__PKPassGroupsViewController_presentFeatureSetupOrFeaturePass_referrerIdentifier_presentationContext_completion___block_invoke_3;
+      v5[3] = &unk_1E80245C0;
+      objc_copyWeak(&v9, (a1 + 64));
+      v8 = *(a1 + 56);
+      v6 = *(a1 + 40);
+      v7 = *(a1 + 48);
+      [v3 presentCreditPassAnimated:1 completion:v5];
+
+      objc_destroyWeak(&v9);
+      goto LABEL_7;
+    }
+
+    [WeakRetained presentPaymentSetupInMode:4 referrerIdentifier:*(a1 + 40) referralSource:0 campaignIdentifier:0 paymentNetwork:0 transitNetworkIdentifier:0 allowedFeatureIdentifiers:*(a1 + 48) productIdentifiers:0 sectionIdentifier:0];
+  }
+
+  v4 = *(a1 + 56);
+  if (v4)
+  {
+    (*(v4 + 16))();
+  }
+
+LABEL_7:
+}
+
+void __113__PKPassGroupsViewController_presentFeatureSetupOrFeaturePass_referrerIdentifier_presentationContext_completion___block_invoke_3(uint64_t a1, int a2)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 56));
+  v5 = WeakRetained;
+  v7 = WeakRetained;
+  if (WeakRetained && a2)
+  {
+    [WeakRetained presentPaymentSetupInMode:0 referrerIdentifier:*(a1 + 32) referralSource:0 campaignIdentifier:0 paymentNetwork:0 transitNetworkIdentifier:0 allowedFeatureIdentifiers:*(a1 + 40) productIdentifiers:0 sectionIdentifier:0];
+    v5 = v7;
+  }
+
+  v6 = *(a1 + 48);
+  if (v6)
+  {
+    (*(v6 + 16))(v6, v5);
+    v5 = v7;
+  }
+}
+
+void __113__PKPassGroupsViewController_presentFeatureSetupOrFeaturePass_referrerIdentifier_presentationContext_completion___block_invoke_4(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  v7[0] = MEMORY[0x1E69E9820];
+  v7[1] = 3221225472;
+  v7[2] = __113__PKPassGroupsViewController_presentFeatureSetupOrFeaturePass_referrerIdentifier_presentationContext_completion___block_invoke_5;
+  v7[3] = &unk_1E8024610;
+  objc_copyWeak(v12, (a1 + 56));
+  v11 = *(a1 + 48);
+  v8 = v3;
+  v4 = *(a1 + 32);
+  v5 = *(a1 + 64);
+  v9 = v4;
+  v12[1] = v5;
+  v10 = *(a1 + 40);
+  v6 = v3;
+  dispatch_async(MEMORY[0x1E69E96A0], v7);
+
+  objc_destroyWeak(v12);
+}
+
+void __113__PKPassGroupsViewController_presentFeatureSetupOrFeaturePass_referrerIdentifier_presentationContext_completion___block_invoke_5(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 64));
+  if (WeakRetained)
+  {
+    v3 = *(a1 + 32);
+    if (v3 && [v3 state] != 4)
+    {
+      v14[0] = MEMORY[0x1E69E9820];
+      v14[1] = 3221225472;
+      v14[2] = __113__PKPassGroupsViewController_presentFeatureSetupOrFeaturePass_referrerIdentifier_presentationContext_completion___block_invoke_6;
+      v14[3] = &unk_1E80245C0;
+      v5 = &v18;
+      objc_copyWeak(&v18, (a1 + 64));
+      v17 = *(a1 + 56);
+      v15 = *(a1 + 32);
+      v16 = *(a1 + 40);
+      [WeakRetained presentCreditPassAnimated:1 completion:v14];
+
+      v8 = v17;
+    }
+
+    else
+    {
+      v4 = [MEMORY[0x1E69B8400] sharedInstance];
+      v10[0] = MEMORY[0x1E69E9820];
+      v10[1] = 3221225472;
+      v10[2] = __113__PKPassGroupsViewController_presentFeatureSetupOrFeaturePass_referrerIdentifier_presentationContext_completion___block_invoke_8;
+      v10[3] = &unk_1E8024638;
+      v5 = v13;
+      objc_copyWeak(v13, (a1 + 64));
+      v6 = *(a1 + 56);
+      v7 = *(a1 + 72);
+      v12 = v6;
+      v13[1] = v7;
+      v11 = *(a1 + 48);
+      [v4 defaultAccountForFeature:2 completion:v10];
+
+      v8 = v12;
+    }
+
+    objc_destroyWeak(v5);
+  }
+
+  else
+  {
+    v9 = *(a1 + 56);
+    if (v9)
+    {
+      (*(v9 + 16))();
+    }
+  }
+}
+
+void __113__PKPassGroupsViewController_presentFeatureSetupOrFeaturePass_referrerIdentifier_presentationContext_completion___block_invoke_6(uint64_t a1, char a2, uint64_t a3)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 56));
+  if (WeakRetained && a3 && (a2 & 1) == 0)
+  {
+    v7 = objc_alloc_init(PKAccountViewInterfaceConfiguration);
+    [(PKAccountViewInterfaceConfiguration *)v7 setAccount:*(a1 + 32)];
+    [(PKAccountViewInterfaceConfiguration *)v7 setDestination:0];
+    [(PKAccountViewInterfaceConfiguration *)v7 setViewStyle:0];
+    v8 = [WeakRetained _dashboardPassGroupViewController];
+    if (v8)
+    {
+      v12[0] = MEMORY[0x1E69E9820];
+      v12[1] = 3221225472;
+      v12[2] = __113__PKPassGroupsViewController_presentFeatureSetupOrFeaturePass_referrerIdentifier_presentationContext_completion___block_invoke_7;
+      v12[3] = &unk_1E8010AD8;
+      v9 = *(a1 + 40);
+      v13 = *(a1 + 48);
+      [(PKDashboardPassGroupViewController *)v8 presentAccountWithConfiguration:v7 presentationContext:v9 animated:1 completion:v12];
+    }
+
+    else
+    {
+      v11 = *(a1 + 48);
+      if (v11)
+      {
+        (*(v11 + 16))();
+      }
+    }
+  }
+
+  else
+  {
+    v10 = *(a1 + 48);
+    if (v10)
+    {
+      (*(v10 + 16))();
+    }
+  }
+}
+
+uint64_t __113__PKPassGroupsViewController_presentFeatureSetupOrFeaturePass_referrerIdentifier_presentationContext_completion___block_invoke_7(uint64_t a1)
+{
+  result = *(a1 + 32);
+  if (result)
+  {
+    return (*(result + 16))();
+  }
+
+  return result;
+}
+
+void __113__PKPassGroupsViewController_presentFeatureSetupOrFeaturePass_referrerIdentifier_presentationContext_completion___block_invoke_8(uint64_t a1, void *a2, void *a3)
+{
+  v5 = a2;
+  v6 = a3;
+  v11[0] = MEMORY[0x1E69E9820];
+  v11[1] = 3221225472;
+  v11[2] = __113__PKPassGroupsViewController_presentFeatureSetupOrFeaturePass_referrerIdentifier_presentationContext_completion___block_invoke_9;
+  v11[3] = &unk_1E8024610;
+  objc_copyWeak(v16, (a1 + 48));
+  v7 = *(a1 + 40);
+  v12 = v5;
+  v13 = v6;
+  v8 = *(a1 + 56);
+  v15 = v7;
+  v16[1] = v8;
+  v14 = *(a1 + 32);
+  v9 = v6;
+  v10 = v5;
+  dispatch_async(MEMORY[0x1E69E96A0], v11);
+
+  objc_destroyWeak(v16);
+}
+
+void __113__PKPassGroupsViewController_presentFeatureSetupOrFeaturePass_referrerIdentifier_presentationContext_completion___block_invoke_9(uint64_t a1)
+{
+  v25 = *MEMORY[0x1E69E9840];
+  WeakRetained = objc_loadWeakRetained((a1 + 64));
+  if (!WeakRetained)
+  {
+LABEL_7:
+    v6 = *(a1 + 56);
+    if (v6)
+    {
+      (*(v6 + 16))();
+    }
+
+    goto LABEL_16;
+  }
+
+  v3 = *(a1 + 32);
+  if (!v3 || *(a1 + 40))
+  {
+    v4 = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    {
+      v5 = *(a1 + 40);
+      *buf = 138412290;
+      v24 = v5;
+      _os_log_impl(&dword_1BD026000, v4, OS_LOG_TYPE_DEFAULT, "Cannot present feature apply, card account not here with error %@", buf, 0xCu);
+    }
+
+    goto LABEL_7;
+  }
+
+  v7 = [v3 redeemRewardsFeatureDescriptor];
+  v8 = [v7 productForFeature:*(a1 + 72)];
+
+  if (v8)
+  {
+    v9 = objc_alloc(MEMORY[0x1E69B8D48]);
+    v10 = [MEMORY[0x1E69B8EF8] sharedService];
+    v11 = [v9 initWithWebService:v10];
+
+    [v11 setReferrerIdentifier:*(a1 + 48)];
+    v12 = [PKFeatureOnBoardingViewController alloc];
+    v13 = [v8 onboardingItems];
+    v14 = [v13 firstObject];
+    v15 = [(PKFeatureOnBoardingViewController *)v12 initWithParentFlowController:0 setupDelegate:0 setupContext:0 onboardingContext:0 featureIdentifier:5 provisioningController:v11 paymentSetupProduct:v8 currentPage:v14];
+
+    v19[0] = MEMORY[0x1E69E9820];
+    v19[1] = 3221225472;
+    v19[2] = __113__PKPassGroupsViewController_presentFeatureSetupOrFeaturePass_referrerIdentifier_presentationContext_completion___block_invoke_221;
+    v19[3] = &unk_1E8012300;
+    v20 = v15;
+    v21 = WeakRetained;
+    v22 = *(a1 + 56);
+    v16 = v15;
+    [WeakRetained dismissPresentedVCsWithRequirements:4 animated:1 performAction:v19];
+  }
+
+  else
+  {
+    v17 = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    {
+      *buf = 0;
+      _os_log_impl(&dword_1BD026000, v17, OS_LOG_TYPE_DEFAULT, "Cannot retrieve feature product to present apply flow", buf, 2u);
+    }
+
+    v18 = *(a1 + 56);
+    if (v18)
+    {
+      (*(v18 + 16))();
+    }
+  }
+
+LABEL_16:
+}
+
+void __113__PKPassGroupsViewController_presentFeatureSetupOrFeaturePass_referrerIdentifier_presentationContext_completion___block_invoke_221(uint64_t a1)
+{
+  v3 = [[PKNavigationController alloc] initWithRootViewController:*(a1 + 32)];
+  [(PKNavigationController *)v3 setModalInPresentation:1];
+  v2 = [*(a1 + 40) pkui_frontMostViewController];
+  [v2 presentViewController:v3 animated:1 completion:*(a1 + 48)];
+}
+
+- (void)presentInstallmentPlansForFeature:(unint64_t)a3 completion:(id)a4
+{
+  v6 = a4;
+  v7 = v6;
+  if (a3)
+  {
+    v8 = objc_alloc_init(MEMORY[0x1E69B8658]);
+    v30[0] = 0;
+    v30[1] = v30;
+    v30[2] = 0x3032000000;
+    v30[3] = __Block_byref_object_copy__65;
+    v30[4] = __Block_byref_object_dispose__65;
+    v31 = 0;
+    v28[0] = 0;
+    v28[1] = v28;
+    v28[2] = 0x3032000000;
+    v28[3] = __Block_byref_object_copy__65;
+    v28[4] = __Block_byref_object_dispose__65;
+    v29 = 0;
+    v26[0] = 0;
+    v26[1] = v26;
+    v26[2] = 0x3032000000;
+    v26[3] = __Block_byref_object_copy__65;
+    v26[4] = __Block_byref_object_dispose__65;
+    v27 = 0;
+    v24[0] = 0;
+    v24[1] = v24;
+    v24[2] = 0x3032000000;
+    v24[3] = __Block_byref_object_copy__65;
+    v24[4] = __Block_byref_object_dispose__65;
+    v25 = 0;
+    objc_initWeak(&location, self);
+    v22[0] = MEMORY[0x1E69E9820];
+    v22[1] = 3221225472;
+    v22[2] = __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_completion___block_invoke;
+    v22[3] = &unk_1E8024688;
+    v22[4] = v30;
+    v22[5] = a3;
+    [v8 addOperation:v22];
+    v21[0] = MEMORY[0x1E69E9820];
+    v21[1] = 3221225472;
+    v21[2] = __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_completion___block_invoke_4;
+    v21[3] = &unk_1E8015E88;
+    v21[4] = v30;
+    v21[5] = v28;
+    [v8 addOperation:v21];
+    v20[0] = MEMORY[0x1E69E9820];
+    v20[1] = 3221225472;
+    v20[2] = __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_completion___block_invoke_7;
+    v20[3] = &unk_1E8015E88;
+    v20[4] = v30;
+    v20[5] = v26;
+    [v8 addOperation:v20];
+    v18[0] = MEMORY[0x1E69E9820];
+    v18[1] = 3221225472;
+    v18[2] = __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_completion___block_invoke_10;
+    v18[3] = &unk_1E801B6D0;
+    objc_copyWeak(&v19, &location);
+    v18[4] = v24;
+    [v8 addOperation:v18];
+    v9 = [MEMORY[0x1E695DFB0] null];
+    v11[0] = MEMORY[0x1E69E9820];
+    v11[1] = 3221225472;
+    v11[2] = __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_completion___block_invoke_13;
+    v11[3] = &unk_1E8024700;
+    objc_copyWeak(&v17, &location);
+    v13 = v30;
+    v12 = v7;
+    v14 = v28;
+    v15 = v26;
+    v16 = v24;
+    v10 = [v8 evaluateWithInput:v9 completion:v11];
+
+    objc_destroyWeak(&v17);
+    objc_destroyWeak(&v19);
+    objc_destroyWeak(&location);
+    _Block_object_dispose(v24, 8);
+
+    _Block_object_dispose(v26, 8);
+    _Block_object_dispose(v28, 8);
+
+    _Block_object_dispose(v30, 8);
+  }
+
+  else if (v6)
+  {
+    (*(v6 + 2))(v6);
+  }
+}
+
+void __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
+{
+  v6 = a3;
+  v7 = a4;
+  v8 = [MEMORY[0x1E69B8400] sharedInstance];
+  v13[0] = MEMORY[0x1E69E9820];
+  v13[1] = 3221225472;
+  v13[2] = __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_completion___block_invoke_2;
+  v13[3] = &unk_1E8012D30;
+  v9 = *(a1 + 32);
+  v10 = *(a1 + 40);
+  v15 = v7;
+  v16 = v9;
+  v14 = v6;
+  v11 = v6;
+  v12 = v7;
+  [v8 defaultAccountForFeature:v10 completion:v13];
+}
+
+void __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_completion___block_invoke_2(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_completion___block_invoke_3;
+  block[3] = &unk_1E801B6A8;
+  v8 = v3;
+  v6 = *(a1 + 40);
+  v4 = v6;
+  v10 = v6;
+  v9 = *(a1 + 32);
+  v5 = v3;
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+}
+
+uint64_t __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_completion___block_invoke_3(uint64_t a1)
+{
+  objc_storeStrong((*(*(a1 + 56) + 8) + 40), *(a1 + 32));
+  v2 = *(*(a1 + 48) + 16);
+
+  return v2();
+}
+
+void __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_completion___block_invoke_4(uint64_t a1, uint64_t a2, void *a3, void *a4)
+{
+  v6 = a3;
+  v7 = a4;
+  v8 = v7;
+  if (*(*(*(a1 + 32) + 8) + 40))
+  {
+    v9 = [MEMORY[0x1E69B8400] sharedInstance];
+    v10 = [*(*(*(a1 + 32) + 8) + 40) accountIdentifier];
+    v11[0] = MEMORY[0x1E69E9820];
+    v11[1] = 3221225472;
+    v11[2] = __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_completion___block_invoke_5;
+    v11[3] = &unk_1E8012DA8;
+    v14 = *(a1 + 40);
+    v13 = v8;
+    v12 = v6;
+    [v9 accountUsersForAccountWithIdentifier:v10 completion:v11];
+  }
+
+  else
+  {
+    (*(v7 + 2))(v7, v6, 0);
+  }
+}
+
+void __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_completion___block_invoke_5(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_completion___block_invoke_6;
+  block[3] = &unk_1E80114A8;
+  v8 = v3;
+  v6 = *(a1 + 40);
+  v4 = v6;
+  v10 = v6;
+  v9 = *(a1 + 32);
+  v5 = v3;
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+}
+
+uint64_t __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_completion___block_invoke_6(uint64_t a1)
+{
+  if ([*(a1 + 32) count])
+  {
+    v2 = [objc_alloc(MEMORY[0x1E69B8450]) initWithAccountUsers:*(a1 + 32)];
+    v3 = *(*(a1 + 56) + 8);
+    v4 = *(v3 + 40);
+    *(v3 + 40) = v2;
+  }
+
+  v5 = *(*(a1 + 48) + 16);
+
+  return v5();
+}
+
+void __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_completion___block_invoke_7(uint64_t a1, uint64_t a2, void *a3, void *a4)
+{
+  v6 = a3;
+  v7 = a4;
+  v8 = v7;
+  if (*(*(*(a1 + 32) + 8) + 40))
+  {
+    v9 = [MEMORY[0x1E69B8400] sharedInstance];
+    v10 = [*(*(*(a1 + 32) + 8) + 40) accountIdentifier];
+    v11[0] = MEMORY[0x1E69E9820];
+    v11[1] = 3221225472;
+    v11[2] = __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_completion___block_invoke_8;
+    v11[3] = &unk_1E8012DA8;
+    v14 = *(a1 + 40);
+    v13 = v8;
+    v12 = v6;
+    [v9 physicalCardsForAccountWithIdentifier:v10 completion:v11];
+  }
+
+  else
+  {
+    (*(v7 + 2))(v7, v6, 0);
+  }
+}
+
+void __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_completion___block_invoke_8(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_completion___block_invoke_9;
+  block[3] = &unk_1E80114A8;
+  v8 = v3;
+  v6 = *(a1 + 40);
+  v4 = v6;
+  v10 = v6;
+  v9 = *(a1 + 32);
+  v5 = v3;
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+}
+
+uint64_t __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_completion___block_invoke_9(uint64_t a1)
+{
+  if ([*(a1 + 32) count])
+  {
+    v2 = [*(a1 + 32) copy];
+    v3 = *(*(a1 + 56) + 8);
+    v4 = *(v3 + 40);
+    *(v3 + 40) = v2;
+  }
+
+  v5 = *(*(a1 + 48) + 16);
+
+  return v5();
+}
+
+void __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_completion___block_invoke_10(uint64_t a1, uint64_t a2, void *a3, void *a4)
+{
+  v6 = a3;
+  v7 = a4;
+  WeakRetained = objc_loadWeakRetained((a1 + 40));
+  v9 = WeakRetained;
+  if (WeakRetained)
+  {
+    v10 = *(WeakRetained + 154);
+    v11[0] = MEMORY[0x1E69E9820];
+    v11[1] = 3221225472;
+    v11[2] = __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_completion___block_invoke_11;
+    v11[3] = &unk_1E8012DD0;
+    v14 = *(a1 + 32);
+    v13 = v7;
+    v12 = v6;
+    [v10 familyMembersWithCompletion:v11];
+  }
+
+  else
+  {
+    (*(v7 + 2))(v7, v6, 0);
+  }
+}
+
+void __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_completion___block_invoke_11(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_completion___block_invoke_12;
+  block[3] = &unk_1E801B6A8;
+  v8 = v3;
+  v6 = *(a1 + 40);
+  v4 = v6;
+  v10 = v6;
+  v9 = *(a1 + 32);
+  v5 = v3;
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+}
+
+uint64_t __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_completion___block_invoke_12(void *a1)
+{
+  v2 = [objc_alloc(MEMORY[0x1E69B88A0]) initWithFamilyMembers:a1[4]];
+  v3 = *(a1[7] + 8);
+  v4 = *(v3 + 40);
+  *(v3 + 40) = v2;
+
+  v5 = *(a1[6] + 16);
+
+  return v5();
+}
+
+void __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_completion___block_invoke_13(uint64_t a1)
+{
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_completion___block_invoke_14;
+  block[3] = &unk_1E80246D8;
+  objc_copyWeak(&v9, (a1 + 72));
+  v4 = *(a1 + 32);
+  v2 = v4;
+  v3 = *(a1 + 48);
+  v6 = v4;
+  v7 = v3;
+  v8 = *(a1 + 64);
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+
+  objc_destroyWeak(&v9);
+}
+
+void __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_completion___block_invoke_14(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 72));
+  if (WeakRetained)
+  {
+    v3 = *(*(*(a1 + 40) + 8) + 40);
+    if (v3)
+    {
+      v4 = [v3 creditDetails];
+      v5 = [v4 installmentPlans];
+      v6 = [v5 count];
+
+      v7 = *(*(*(a1 + 40) + 8) + 40);
+      if (v6 == 1)
+      {
+        v8 = [v7 creditDetails];
+        v9 = [v8 installmentPlans];
+        v10 = [v9 allObjects];
+        v11 = [v10 firstObject];
+
+        if (v11)
+        {
+          v12 = [v11 identifier];
+          v13 = [*(*(*(a1 + 40) + 8) + 40) accountIdentifier];
+          [WeakRetained presentInstallmentPlanWithIdentifier:v12 forAccountIdentifier:v13 completion:*(a1 + 32)];
+        }
+      }
+
+      else
+      {
+        v15 = [v7 associatedPassUniqueID];
+        v19[0] = MEMORY[0x1E69E9820];
+        v19[1] = 3221225472;
+        v18 = *(a1 + 32);
+        v22 = *(a1 + 48);
+        v19[2] = __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_completion___block_invoke_15;
+        v19[3] = &unk_1E80246B0;
+        v19[4] = WeakRetained;
+        v20 = v15;
+        v23 = *(a1 + 64);
+        v16 = v18;
+        v21 = v18;
+        v17 = v15;
+        [WeakRetained presentPassDetailsWithUniqueID:v17 animated:1 completionHandler:v19];
+      }
+    }
+
+    else
+    {
+      v14 = *(a1 + 32);
+      if (v14)
+      {
+        (*(v14 + 16))();
+      }
+    }
+  }
+}
+
+uint64_t __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_completion___block_invoke_15(uint64_t a1, char a2)
+{
+  if ((a2 & 1) == 0)
+  {
+    v3 = [*(a1 + 32) presentedViewController];
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      v4 = [*(*(a1 + 32) + 1424) passWithUniqueID:*(a1 + 40)];
+      v16 = [v4 paymentPass];
+
+      v5 = [objc_alloc(MEMORY[0x1E69B92F8]) initWithPaymentPass:v16];
+      v6 = [objc_alloc(MEMORY[0x1E69B9300]) initWithTransactionSource:v5];
+      v7 = [MEMORY[0x1E69B8BD8] defaultDataProvider];
+      v8 = [PKInstallmentPlansViewController alloc];
+      v9 = *(*(*(a1 + 56) + 8) + 40);
+      v10 = *(*(*(a1 + 64) + 8) + 40);
+      v11 = *(*(*(a1 + 72) + 8) + 40);
+      v12 = [MEMORY[0x1E69B8400] sharedInstance];
+      v13 = [(PKInstallmentPlansViewController *)v8 initWithAccount:v9 accountUserCollection:v10 physicalCards:v11 accountService:v12 transactionSourceCollection:v6 familyCollection:*(*(*(a1 + 80) + 8) + 40) dataProvider:v7];
+
+      [v3 pushViewController:v13 animated:1];
+    }
+  }
+
+  result = *(a1 + 48);
+  if (result)
+  {
+    v15 = *(result + 16);
+
+    return v15();
+  }
+
+  return result;
+}
+
+- (void)presentInstallmentPlanWithIdentifier:(id)a3 forAccountIdentifier:(id)a4 completion:(id)a5
+{
+  v8 = a3;
+  v9 = a4;
+  v10 = a5;
+  v11 = v10;
+  if (v8 && v9)
+  {
+    objc_initWeak(&location, self);
+    v12 = [MEMORY[0x1E69B8400] sharedInstance];
+    v13[0] = MEMORY[0x1E69E9820];
+    v13[1] = 3221225472;
+    v13[2] = __99__PKPassGroupsViewController_presentInstallmentPlanWithIdentifier_forAccountIdentifier_completion___block_invoke;
+    v13[3] = &unk_1E8024728;
+    objc_copyWeak(&v16, &location);
+    v14 = v8;
+    v15 = v11;
+    [v12 accountWithIdentifier:v9 completion:v13];
+
+    objc_destroyWeak(&v16);
+    objc_destroyWeak(&location);
+  }
+
+  else if (v10)
+  {
+    (*(v10 + 2))(v10);
+  }
+}
+
+void __99__PKPassGroupsViewController_presentInstallmentPlanWithIdentifier_forAccountIdentifier_completion___block_invoke(id *a1, void *a2)
+{
+  v3 = a2;
+  v5[0] = MEMORY[0x1E69E9820];
+  v5[1] = 3221225472;
+  v5[2] = __99__PKPassGroupsViewController_presentInstallmentPlanWithIdentifier_forAccountIdentifier_completion___block_invoke_2;
+  v5[3] = &unk_1E8019A28;
+  objc_copyWeak(&v9, a1 + 6);
+  v6 = v3;
+  v7 = a1[4];
+  v8 = a1[5];
+  v4 = v3;
+  dispatch_async(MEMORY[0x1E69E96A0], v5);
+
+  objc_destroyWeak(&v9);
+}
+
+void __99__PKPassGroupsViewController_presentInstallmentPlanWithIdentifier_forAccountIdentifier_completion___block_invoke_2(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 56));
+  if (WeakRetained)
+  {
+    v3 = [*(a1 + 32) creditDetails];
+    v4 = [v3 installmentPlanWithIdentifier:*(a1 + 40)];
+
+    if (v4)
+    {
+      v5 = [*(a1 + 32) associatedPassUniqueID];
+      v7[0] = MEMORY[0x1E69E9820];
+      v7[1] = 3221225472;
+      v7[2] = __99__PKPassGroupsViewController_presentInstallmentPlanWithIdentifier_forAccountIdentifier_completion___block_invoke_3;
+      v7[3] = &unk_1E8019A98;
+      v7[4] = WeakRetained;
+      v8 = v4;
+      v9 = *(a1 + 48);
+      [WeakRetained presentPassWithUniqueID:v5 animated:1 completionHandler:v7];
+    }
+
+    else
+    {
+      v6 = *(a1 + 48);
+      if (v6)
+      {
+        (*(v6 + 16))();
+      }
+    }
+  }
+}
+
+uint64_t __99__PKPassGroupsViewController_presentInstallmentPlanWithIdentifier_forAccountIdentifier_completion___block_invoke_3(uint64_t a1, char a2)
+{
+  if ((a2 & 1) == 0)
+  {
+    v3 = [*(a1 + 32) _dashboardPassGroupViewController];
+    v4 = v3;
+    if (v3)
+    {
+      [(PKDashboardPassGroupViewController *)v3 presentInstallmentPlan:?];
+    }
+  }
+
+  result = *(a1 + 48);
+  if (result)
+  {
+    v6 = *(result + 16);
+
+    return v6();
+  }
+
+  return result;
+}
+
+- (void)presentInvitationsInboxAnimated:(BOOL)a3 completion:(id)a4
+{
+  v4 = a3;
+  v6 = a4;
+  v7 = v6;
+  if (self->_inboxDataSource)
+  {
+    v8[0] = MEMORY[0x1E69E9820];
+    v8[1] = 3221225472;
+    v8[2] = __73__PKPassGroupsViewController_presentInvitationsInboxAnimated_completion___block_invoke;
+    v8[3] = &unk_1E80150A8;
+    v8[4] = self;
+    v10 = v4;
+    v9 = v6;
+    [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:0 animated:v4 performAction:v8];
+  }
+
+  else if (v6)
+  {
+    (*(v6 + 2))(v6, 0);
+  }
+}
+
+void __73__PKPassGroupsViewController_presentInvitationsInboxAnimated_completion___block_invoke(uint64_t a1)
+{
+  v1 = *(a1 + 32);
+  v2 = *(v1 + 1344);
+  v3[0] = MEMORY[0x1E69E9820];
+  v3[1] = 3221225472;
+  v3[2] = __73__PKPassGroupsViewController_presentInvitationsInboxAnimated_completion___block_invoke_2;
+  v3[3] = &unk_1E80150A8;
+  v3[4] = v1;
+  v5 = *(a1 + 48);
+  v4 = *(a1 + 40);
+  [v2 updateInboxWithCompletion:v3];
+}
+
+void __73__PKPassGroupsViewController_presentInvitationsInboxAnimated_completion___block_invoke_2(uint64_t a1)
+{
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __73__PKPassGroupsViewController_presentInvitationsInboxAnimated_completion___block_invoke_3;
+  block[3] = &unk_1E80150A8;
+  v1 = *(a1 + 40);
+  block[4] = *(a1 + 32);
+  v4 = *(a1 + 48);
+  v3 = v1;
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+}
+
+void __73__PKPassGroupsViewController_presentInvitationsInboxAnimated_completion___block_invoke_3(uint64_t a1)
+{
+  if ([*(*(a1 + 32) + 1344) hasInboxMessages])
+  {
+    v2 = [[PKInboxViewController alloc] initWithInboxDataSource:*(*(a1 + 32) + 1344) contactAvatarManager:*(*(a1 + 32) + 1384) context:0];
+    v3 = [[PKNavigationController alloc] initWithRootViewController:v2];
+    v4 = *(a1 + 48);
+    v10[0] = MEMORY[0x1E69E9820];
+    v10[1] = 3221225472;
+    v10[2] = __73__PKPassGroupsViewController_presentInvitationsInboxAnimated_completion___block_invoke_4;
+    v10[3] = &unk_1E8010E20;
+    v5 = *(a1 + 32);
+    v6 = *(a1 + 40);
+    v11 = v2;
+    v12 = v6;
+    v7 = v2;
+    [v5 presentViewController:v3 animated:v4 completion:v10];
+  }
+
+  else
+  {
+    v8 = *(a1 + 40);
+    if (v8)
+    {
+      v9 = *(v8 + 16);
+
+      v9();
+    }
+  }
+}
+
+uint64_t __73__PKPassGroupsViewController_presentInvitationsInboxAnimated_completion___block_invoke_4(uint64_t a1)
+{
+  result = *(a1 + 40);
+  if (result)
+  {
+    return (*(result + 16))(result, *(a1 + 32));
+  }
+
+  return result;
+}
+
+- (void)presentCreateAccountUserInvitationWithCompletion:(id)a3
+{
+  v4 = a3;
+  v5 = [(UIViewController *)self pkui_frontMostViewController];
+  [PKAccountInvitationController presentCreateAccountUserInvitationWithViewController:v5 account:0 accountUserCollection:0 familyMemberCollection:0 context:0 completion:v4];
+}
+
+- (void)presentInvitationWithIdentifier:(id)a3 forAccountWithIdentifier:(id)a4 completion:(id)a5
+{
+  v8 = a3;
+  v9 = a4;
+  v10 = a5;
+  v11 = v10;
+  if (v8 && v9)
+  {
+    objc_initWeak(&location, self);
+    v12[0] = MEMORY[0x1E69E9820];
+    v12[1] = 3221225472;
+    v12[2] = __98__PKPassGroupsViewController_presentInvitationWithIdentifier_forAccountWithIdentifier_completion___block_invoke;
+    v12[3] = &unk_1E8024750;
+    objc_copyWeak(&v15, &location);
+    v13 = v8;
+    v14 = v11;
+    [(PKPassGroupsViewController *)self presentPassWithAssociatedAccountIdentifier:v9 animated:1 completion:v12];
+
+    objc_destroyWeak(&v15);
+    objc_destroyWeak(&location);
+  }
+
+  else if (v10)
+  {
+    (*(v10 + 2))(v10);
+  }
+}
+
+void __98__PKPassGroupsViewController_presentInvitationWithIdentifier_forAccountWithIdentifier_completion___block_invoke(uint64_t a1, char a2, void *a3)
+{
+  v5 = a3;
+  if (!v5 || (a2 & 1) != 0)
+  {
+    v10 = *(a1 + 40);
+    if (v10)
+    {
+      (*(v10 + 16))();
+    }
+  }
+
+  else
+  {
+    WeakRetained = objc_loadWeakRetained((a1 + 48));
+    if (WeakRetained)
+    {
+      v7 = WeakRetained;
+      v8 = [WeakRetained _dashboardPassGroupViewController];
+      if (v8)
+      {
+        v11[0] = MEMORY[0x1E69E9820];
+        v11[1] = 3221225472;
+        v11[2] = __98__PKPassGroupsViewController_presentInvitationWithIdentifier_forAccountWithIdentifier_completion___block_invoke_2;
+        v11[3] = &unk_1E8010B50;
+        v9 = *(a1 + 32);
+        v12 = *(a1 + 40);
+        [(PKDashboardPassGroupViewController *)v8 presentInvitationWithIdentifier:v9 completion:v11];
+      }
+    }
+  }
+}
+
+uint64_t __98__PKPassGroupsViewController_presentInvitationWithIdentifier_forAccountWithIdentifier_completion___block_invoke_2(uint64_t a1)
+{
+  result = *(a1 + 32);
+  if (result)
+  {
+    return (*(result + 16))();
+  }
+
+  return result;
+}
+
+- (void)presentAppStorePageForItemWithIdentifier:(id)a3
+{
+  v4 = a3;
+  v5 = [[PKStoreProductViewPresenter alloc] initWithProductDelegate:0];
+  [(PKStoreProductViewPresenter *)v5 loadProductForItemIdentifier:v4 customProductPageIdentifier:0];
+
+  v6[0] = MEMORY[0x1E69E9820];
+  v6[1] = 3221225472;
+  v6[2] = __71__PKPassGroupsViewController_presentAppStorePageForItemWithIdentifier___block_invoke;
+  v6[3] = &unk_1E8024778;
+  v6[4] = self;
+  [(PKStoreProductViewPresenter *)v5 presentStoreViewWithBlock:v6];
+}
+
+void __71__PKPassGroupsViewController_presentAppStorePageForItemWithIdentifier___block_invoke(uint64_t a1, void *a2, void *a3)
+{
+  v4 = *(a1 + 32);
+  v5 = a3;
+  v6 = a2;
+  v7 = [v4 pkui_frontMostViewController];
+  [v7 presentViewController:v6 animated:1 completion:v5];
+}
+
+- (void)presentTransactionDetailsForTransactionWithIdentifier:(id)a3 confirmPaymentOfferPlan:(BOOL)a4
+{
+  v4 = a4;
+  v17 = *MEMORY[0x1E69E9840];
+  v6 = a3;
+  if (v6 && !self->_inFailForward)
+  {
+    v7 = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    {
+      v8 = @"NO";
+      if (v4)
+      {
+        v8 = @"YES";
+      }
+
+      *buf = 138412546;
+      v14 = v6;
+      v15 = 2112;
+      v16 = v8;
+      _os_log_impl(&dword_1BD026000, v7, OS_LOG_TYPE_DEFAULT, "Presenting transaction details for transactionID %@, confirmPaymentOfferPlan %@", buf, 0x16u);
+    }
+
+    objc_initWeak(buf, self);
+    paymentService = self->_paymentService;
+    v10[0] = MEMORY[0x1E69E9820];
+    v10[1] = 3221225472;
+    v10[2] = __108__PKPassGroupsViewController_presentTransactionDetailsForTransactionWithIdentifier_confirmPaymentOfferPlan___block_invoke;
+    v10[3] = &unk_1E80247F0;
+    objc_copyWeak(&v11, buf);
+    v10[4] = self;
+    v12 = v4;
+    [(PKPaymentService *)paymentService transactionWithTransactionIdentifier:v6 completion:v10];
+    objc_destroyWeak(&v11);
+    objc_destroyWeak(buf);
+  }
+}
+
+void __108__PKPassGroupsViewController_presentTransactionDetailsForTransactionWithIdentifier_confirmPaymentOfferPlan___block_invoke(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  WeakRetained = objc_loadWeakRetained((a1 + 40));
+  v5 = WeakRetained;
+  if (WeakRetained)
+  {
+    v6 = *(WeakRetained + 154);
+    v7 = [v3 transactionSourceIdentifier];
+    v8[0] = MEMORY[0x1E69E9820];
+    v8[1] = 3221225472;
+    v8[2] = __108__PKPassGroupsViewController_presentTransactionDetailsForTransactionWithIdentifier_confirmPaymentOfferPlan___block_invoke_2;
+    v8[3] = &unk_1E80247C8;
+    v8[4] = *(a1 + 32);
+    v9 = v3;
+    v10 = *(a1 + 48);
+    [v6 transactionSourceTypeForTransactionSourceIdentifier:v7 completion:v8];
+  }
+}
+
+void __108__PKPassGroupsViewController_presentTransactionDetailsForTransactionWithIdentifier_confirmPaymentOfferPlan___block_invoke_2(uint64_t a1, uint64_t a2)
+{
+  v5[0] = MEMORY[0x1E69E9820];
+  v5[1] = 3221225472;
+  v5[2] = __108__PKPassGroupsViewController_presentTransactionDetailsForTransactionWithIdentifier_confirmPaymentOfferPlan___block_invoke_3;
+  v5[3] = &unk_1E80247A0;
+  v4 = *(a1 + 40);
+  v5[4] = *(a1 + 32);
+  v6 = v4;
+  v7 = a2;
+  v8 = *(a1 + 48);
+  dispatch_async(MEMORY[0x1E69E96A0], v5);
+}
+
+- (void)presentTransactionDetailsForTransactionWithServiceIdentifier:(id)a3 transactionSourceIdentifier:(id)a4 confirmPaymentOfferPlan:(BOOL)a5
+{
+  v5 = a5;
+  v40 = *MEMORY[0x1E69E9840];
+  v8 = a3;
+  v9 = a4;
+  if (v8 && !self->_inFailForward)
+  {
+    v10 = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    {
+      v11 = @"NO";
+      *buf = 138412802;
+      *&buf[4] = v8;
+      *&buf[12] = 2112;
+      if (v5)
+      {
+        v11 = @"YES";
+      }
+
+      *&buf[14] = v9;
+      *&buf[22] = 2112;
+      v37 = v11;
+      _os_log_impl(&dword_1BD026000, v10, OS_LOG_TYPE_DEFAULT, "Presenting transaction details for serviceIdentifier %@, transactionSourceIdentifier %@, confirmPaymentOfferPlan %@", buf, 0x20u);
+    }
+
+    objc_initWeak(&location, self);
+    v34[0] = 0;
+    v34[1] = v34;
+    v34[2] = 0x2020000000;
+    v34[3] = 0;
+    *buf = 0;
+    *&buf[8] = buf;
+    *&buf[16] = 0x3032000000;
+    v37 = __Block_byref_object_copy__65;
+    v38 = __Block_byref_object_dispose__65;
+    v39 = 0;
+    v12 = dispatch_group_create();
+    dispatch_group_enter(v12);
+    paymentService = self->_paymentService;
+    if (v9)
+    {
+      v30[0] = MEMORY[0x1E69E9820];
+      v30[1] = 3221225472;
+      v30[2] = __143__PKPassGroupsViewController_presentTransactionDetailsForTransactionWithServiceIdentifier_transactionSourceIdentifier_confirmPaymentOfferPlan___block_invoke;
+      v30[3] = &unk_1E8024818;
+      v14 = &v33;
+      objc_copyWeak(&v33, &location);
+      v32 = v34;
+      v15 = v12;
+      v31 = v15;
+      [(PKPaymentService *)paymentService transactionSourceTypeForTransactionSourceIdentifier:v9 completion:v30];
+      dispatch_group_enter(v15);
+      v16 = self->_paymentService;
+      v26[0] = MEMORY[0x1E69E9820];
+      v26[1] = 3221225472;
+      v26[2] = __143__PKPassGroupsViewController_presentTransactionDetailsForTransactionWithServiceIdentifier_transactionSourceIdentifier_confirmPaymentOfferPlan___block_invoke_2;
+      v26[3] = &unk_1E8024840;
+      objc_copyWeak(&v29, &location);
+      v28 = buf;
+      v27 = v15;
+      [(PKPaymentService *)v16 transactionWithServiceIdentifier:v8 transactionSourceIdentifier:v9 completion:v26];
+
+      objc_destroyWeak(&v29);
+    }
+
+    else
+    {
+      v20[0] = MEMORY[0x1E69E9820];
+      v20[1] = 3221225472;
+      v20[2] = __143__PKPassGroupsViewController_presentTransactionDetailsForTransactionWithServiceIdentifier_transactionSourceIdentifier_confirmPaymentOfferPlan___block_invoke_3;
+      v20[3] = &unk_1E8024868;
+      v14 = &v25;
+      objc_copyWeak(&v25, &location);
+      v20[4] = self;
+      v21 = 0;
+      v23 = buf;
+      v24 = v34;
+      v22 = v12;
+      [(PKPaymentService *)paymentService ambiguousTransactionWithServiceIdentifier:v8 completion:v20];
+    }
+
+    objc_destroyWeak(v14);
+    block[0] = MEMORY[0x1E69E9820];
+    block[1] = 3221225472;
+    block[2] = __143__PKPassGroupsViewController_presentTransactionDetailsForTransactionWithServiceIdentifier_transactionSourceIdentifier_confirmPaymentOfferPlan___block_invoke_5;
+    block[3] = &unk_1E8024890;
+    objc_copyWeak(&v18, &location);
+    block[4] = buf;
+    block[5] = v34;
+    v19 = v5;
+    dispatch_group_notify(v12, MEMORY[0x1E69E96A0], block);
+    objc_destroyWeak(&v18);
+
+    _Block_object_dispose(buf, 8);
+    _Block_object_dispose(v34, 8);
+    objc_destroyWeak(&location);
+  }
+}
+
+void __143__PKPassGroupsViewController_presentTransactionDetailsForTransactionWithServiceIdentifier_transactionSourceIdentifier_confirmPaymentOfferPlan___block_invoke(uint64_t a1, uint64_t a2)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 48));
+  if (WeakRetained)
+  {
+    *(*(*(a1 + 40) + 8) + 24) = a2;
+  }
+
+  dispatch_group_leave(*(a1 + 32));
+}
+
+void __143__PKPassGroupsViewController_presentTransactionDetailsForTransactionWithServiceIdentifier_transactionSourceIdentifier_confirmPaymentOfferPlan___block_invoke_2(uint64_t a1, void *a2)
+{
+  v5 = a2;
+  WeakRetained = objc_loadWeakRetained((a1 + 48));
+  if (WeakRetained)
+  {
+    objc_storeStrong((*(*(a1 + 40) + 8) + 40), a2);
+  }
+
+  dispatch_group_leave(*(a1 + 32));
+}
+
+void __143__PKPassGroupsViewController_presentTransactionDetailsForTransactionWithServiceIdentifier_transactionSourceIdentifier_confirmPaymentOfferPlan___block_invoke_3(uint64_t a1, void *a2)
+{
+  v4 = a2;
+  WeakRetained = objc_loadWeakRetained((a1 + 72));
+  if (WeakRetained)
+  {
+    objc_storeStrong((*(*(a1 + 56) + 8) + 40), a2);
+  }
+
+  v6 = *(a1 + 40);
+  v7 = *(*(a1 + 32) + 1232);
+  v8[0] = MEMORY[0x1E69E9820];
+  v8[1] = 3221225472;
+  v8[2] = __143__PKPassGroupsViewController_presentTransactionDetailsForTransactionWithServiceIdentifier_transactionSourceIdentifier_confirmPaymentOfferPlan___block_invoke_4;
+  v8[3] = &unk_1E8024818;
+  objc_copyWeak(&v11, (a1 + 72));
+  v10 = *(a1 + 64);
+  v9 = *(a1 + 48);
+  [v7 transactionSourceTypeForTransactionSourceIdentifier:v6 completion:v8];
+
+  objc_destroyWeak(&v11);
+}
+
+void __143__PKPassGroupsViewController_presentTransactionDetailsForTransactionWithServiceIdentifier_transactionSourceIdentifier_confirmPaymentOfferPlan___block_invoke_4(uint64_t a1, uint64_t a2)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 48));
+  if (WeakRetained)
+  {
+    *(*(*(a1 + 40) + 8) + 24) = a2;
+  }
+
+  dispatch_group_leave(*(a1 + 32));
+}
+
+void __143__PKPassGroupsViewController_presentTransactionDetailsForTransactionWithServiceIdentifier_transactionSourceIdentifier_confirmPaymentOfferPlan___block_invoke_5(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 48));
+  [WeakRetained _presentTransactionDetailsForTransaction:*(*(*(a1 + 32) + 8) + 40) transactionSourceType:*(*(*(a1 + 40) + 8) + 24) confirmPaymentOfferPlan:*(a1 + 56)];
+}
+
+- (void)presentTransactionDetailsForBankConnectTransaction:(id)a3 applePayPrimaryAccountIdentifier:(id)a4
+{
+  if (a3 && a4)
+  {
+    v6 = MEMORY[0x1E69B8EA8];
+    v7 = a4;
+    v8 = [v6 transactionFromFKPaymentTransaction:a3];
+    v9 = [MEMORY[0x1E69B8A58] sharedInstance];
+    v10 = [v9 passWithFPANIdentifier:v7];
+
+    if (v10)
+    {
+      v11 = [v10 paymentPass];
+      v12 = [v11 uniqueID];
+      v14[0] = MEMORY[0x1E69E9820];
+      v14[1] = 3221225472;
+      v14[2] = __114__PKPassGroupsViewController_presentTransactionDetailsForBankConnectTransaction_applePayPrimaryAccountIdentifier___block_invoke;
+      v14[3] = &unk_1E8012798;
+      v14[4] = self;
+      v15 = v8;
+      v16 = v11;
+      v13 = v11;
+      [(PKPassGroupsViewController *)self presentPassWithUniqueID:v12 context:0 animated:1 completionHandler:v14];
+    }
+  }
+}
+
+void __114__PKPassGroupsViewController_presentTransactionDetailsForBankConnectTransaction_applePayPrimaryAccountIdentifier___block_invoke(id *a1, char a2)
+{
+  if ((a2 & 1) == 0)
+  {
+    v4 = [a1[4] _dashboardPassGroupViewController];
+    if (v4)
+    {
+      v5 = v4;
+      [(PKDashboardPassGroupViewController *)v4 presentTransaction:a1[6] forPaymentPass:0 presentingView:?];
+      v4 = v5;
+    }
+  }
+}
+
+- (void)_presentTransactionDetailsForTransaction:(id)a3 transactionSourceType:(unint64_t)a4 confirmPaymentOfferPlan:(BOOL)a5
+{
+  v36 = *MEMORY[0x1E69E9840];
+  v8 = a3;
+  v9 = v8;
+  if (v8)
+  {
+    if (a4 > 1)
+    {
+      if (a4 == 2)
+      {
+        goto LABEL_10;
+      }
+
+      if (a4 == 3)
+      {
+        [(PKPassGroupsViewController *)self _presentAccountTransactionDetailsForTransaction:v8];
+      }
+    }
+
+    else if (a4)
+    {
+      if (a4 == 1)
+      {
+        v10 = [v8 accountIdentifier];
+        v11 = [MEMORY[0x1E69B9000] sharedInstance];
+        v12 = [v11 account];
+
+        v13 = [v12 peerPaymentAccountWithIdentifier:v10];
+        if (!v13)
+        {
+          v21 = PKLogFacilityTypeGetObject();
+          if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+          {
+            *buf = 138412290;
+            v35 = v9;
+            v22 = "Cannot find a peer payment account for transaction %@";
+            goto LABEL_17;
+          }
+
+LABEL_18:
+
+          goto LABEL_19;
+        }
+
+        v14 = v13;
+        paymentService = self->_paymentService;
+        v26[0] = MEMORY[0x1E69E9820];
+        v26[1] = 3221225472;
+        v26[2] = __117__PKPassGroupsViewController__presentTransactionDetailsForTransaction_transactionSourceType_confirmPaymentOfferPlan___block_invoke_246;
+        v26[3] = &unk_1E8022F00;
+        v27 = v13;
+        v28 = self;
+        v29 = v12;
+        v30 = v9;
+        v16 = v12;
+        v17 = v14;
+        [(PKPaymentService *)paymentService familyMembersWithCompletion:v26];
+
+LABEL_10:
+        v10 = [v9 accountIdentifier];
+        v12 = [v9 altDSID];
+        if (v12)
+        {
+          v18 = [MEMORY[0x1E69B8400] sharedInstance];
+          v23[0] = MEMORY[0x1E69E9820];
+          v23[1] = 3221225472;
+          v23[2] = __117__PKPassGroupsViewController__presentTransactionDetailsForTransaction_transactionSourceType_confirmPaymentOfferPlan___block_invoke_251;
+          v23[3] = &unk_1E8024908;
+          v23[4] = self;
+          v24 = v9;
+          v25 = a5;
+          [v18 accountWithIdentifier:v10 completion:v23];
+
+LABEL_19:
+          goto LABEL_20;
+        }
+
+        v21 = PKLogFacilityTypeGetObject();
+        if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+        {
+          *buf = 138412290;
+          v35 = v9;
+          v22 = "There is no altDSID defined for account user on tranasction %@";
+LABEL_17:
+          _os_log_impl(&dword_1BD026000, v21, OS_LOG_TYPE_DEFAULT, v22, buf, 0xCu);
+          goto LABEL_18;
+        }
+
+        goto LABEL_18;
+      }
+    }
+
+    else
+    {
+      v19 = self->_paymentService;
+      v20 = [v8 identifier];
+      v31[0] = MEMORY[0x1E69E9820];
+      v31[1] = 3221225472;
+      v31[2] = __117__PKPassGroupsViewController__presentTransactionDetailsForTransaction_transactionSourceType_confirmPaymentOfferPlan___block_invoke;
+      v31[3] = &unk_1E80248B8;
+      v31[4] = self;
+      v32 = v9;
+      v33 = a5;
+      [(PKPaymentService *)v19 passUniqueIdentifierForTransactionWithIdentifier:v20 completion:v31];
+    }
+  }
+
+LABEL_20:
+}
+
+void __117__PKPassGroupsViewController__presentTransactionDetailsForTransaction_transactionSourceType_confirmPaymentOfferPlan___block_invoke(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  v6[0] = MEMORY[0x1E69E9820];
+  v6[1] = 3221225472;
+  v6[2] = __117__PKPassGroupsViewController__presentTransactionDetailsForTransaction_transactionSourceType_confirmPaymentOfferPlan___block_invoke_2;
+  v6[3] = &unk_1E80170D8;
+  v4 = *(a1 + 40);
+  v6[4] = *(a1 + 32);
+  v7 = v3;
+  v8 = v4;
+  v9 = *(a1 + 48);
+  v5 = v3;
+  dispatch_async(MEMORY[0x1E69E96A0], v6);
+}
+
+void __117__PKPassGroupsViewController__presentTransactionDetailsForTransaction_transactionSourceType_confirmPaymentOfferPlan___block_invoke_2(uint64_t a1)
+{
+  v2 = [*(a1 + 32) _passFromGroupsControllerWithUniqueIdentifier:*(a1 + 40)];
+  v3 = [v2 paymentPass];
+
+  [*(a1 + 32) _presentTransactionDetailsForTransaction:*(a1 + 48) forPaymentPass:v3 confirmPaymentOfferPlan:*(a1 + 56)];
+}
+
+void __117__PKPassGroupsViewController__presentTransactionDetailsForTransaction_transactionSourceType_confirmPaymentOfferPlan___block_invoke_246(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __117__PKPassGroupsViewController__presentTransactionDetailsForTransaction_transactionSourceType_confirmPaymentOfferPlan___block_invoke_2_247;
+  block[3] = &unk_1E8011E38;
+  v7 = *(a1 + 32);
+  v8 = v3;
+  v4 = *(a1 + 48);
+  v9 = *(a1 + 40);
+  v10 = v4;
+  v11 = *(a1 + 56);
+  v5 = v3;
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+}
+
+void __117__PKPassGroupsViewController__presentTransactionDetailsForTransaction_transactionSourceType_confirmPaymentOfferPlan___block_invoke_2_247(id *a1)
+{
+  location[3] = *MEMORY[0x1E69E9840];
+  v2 = [a1[4] altDSID];
+  if (!v2)
+  {
+    v12 = PKLogFacilityTypeGetObject();
+    if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    {
+      goto LABEL_23;
+    }
+
+    v13 = a1[4];
+    LODWORD(location[0]) = 138412290;
+    *(location + 4) = v13;
+    v14 = "There is no altDSID defined for associated account %@";
+    goto LABEL_22;
+  }
+
+  v28 = 0u;
+  v29 = 0u;
+  v26 = 0u;
+  v27 = 0u;
+  v3 = a1[5];
+  v4 = [v3 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  if (!v4)
+  {
+LABEL_14:
+
+LABEL_20:
+    v12 = PKLogFacilityTypeGetObject();
+    if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    {
+      goto LABEL_23;
+    }
+
+    LODWORD(location[0]) = 138412290;
+    *(location + 4) = v2;
+    v14 = "Cannot find a family member with altDSID %@";
+LABEL_22:
+    _os_log_impl(&dword_1BD026000, v12, OS_LOG_TYPE_DEFAULT, v14, location, 0xCu);
+    goto LABEL_23;
+  }
+
+  v5 = *v27;
+LABEL_4:
+  v6 = 0;
+  while (1)
+  {
+    if (*v27 != v5)
+    {
+      objc_enumerationMutation(v3);
+    }
+
+    v7 = *(*(&v26 + 1) + 8 * v6);
+    v8 = [v7 altDSID];
+    v9 = v2;
+    v10 = v9;
+    if (v8 == v9)
+    {
+      break;
+    }
+
+    if (v8)
+    {
+      v11 = [v8 isEqualToString:v9];
+
+      if (v11)
+      {
+        goto LABEL_18;
+      }
+    }
+
+    else
+    {
+    }
+
+    if (v4 == ++v6)
+    {
+      v4 = [v3 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      if (v4)
+      {
+        goto LABEL_4;
+      }
+
+      goto LABEL_14;
+    }
+  }
+
+LABEL_18:
+  v15 = v7;
+
+  if (!v15)
+  {
+    goto LABEL_20;
+  }
+
+  objc_initWeak(location, a1[6]);
+  v16 = a1[6];
+  v17 = [a1[7] associatedPassUniqueID];
+  v20[0] = MEMORY[0x1E69E9820];
+  v20[1] = 3221225472;
+  v20[2] = __117__PKPassGroupsViewController__presentTransactionDetailsForTransaction_transactionSourceType_confirmPaymentOfferPlan___block_invoke_248;
+  v20[3] = &unk_1E80248E0;
+  objc_copyWeak(&v25, location);
+  v18 = a1[5];
+  v19 = a1[6];
+  v21 = v18;
+  v22 = v19;
+  v12 = v15;
+  v23 = v12;
+  v24 = a1[8];
+  [v16 presentPassWithUniqueID:v17 context:0 animated:1 completionHandler:v20];
+
+  objc_destroyWeak(&v25);
+  objc_destroyWeak(location);
+LABEL_23:
+}
+
+void __117__PKPassGroupsViewController__presentTransactionDetailsForTransaction_transactionSourceType_confirmPaymentOfferPlan___block_invoke_248(uint64_t a1, char a2)
+{
+  if ((a2 & 1) == 0)
+  {
+    WeakRetained = objc_loadWeakRetained((a1 + 64));
+    if (WeakRetained)
+    {
+      v13 = WeakRetained;
+      v5 = [WeakRetained _dashboardPassGroupViewController];
+      v6 = [objc_alloc(MEMORY[0x1E69B88A0]) initWithFamilyMembers:*(a1 + 32)];
+      v7 = [[PKPeerPaymentAssociatedAccountsController alloc] initWithFamilyCollection:v6 avatarManager:*(*(a1 + 40) + 1384) passLibraryDataProvider:*(*(a1 + 40) + 1312) context:0];
+      v8 = *(a1 + 40);
+      v9 = *(v8 + 1336);
+      *(v8 + 1336) = v7;
+
+      v10 = [[PKPeerPaymentAssociatedAccountPresentationContext alloc] initWithPKFamilyMember:*(a1 + 48) transaction:*(a1 + 56)];
+      v11 = *(*(a1 + 40) + 1336);
+      v12 = [v5 navigationController];
+      [v11 presentAssociatedAccountsFlowWithPresentationContext:v10 fromNavigationController:v12];
+
+      WeakRetained = v13;
+    }
+  }
+}
+
+void __117__PKPassGroupsViewController__presentTransactionDetailsForTransaction_transactionSourceType_confirmPaymentOfferPlan___block_invoke_251(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  v6[0] = MEMORY[0x1E69E9820];
+  v6[1] = 3221225472;
+  v6[2] = __117__PKPassGroupsViewController__presentTransactionDetailsForTransaction_transactionSourceType_confirmPaymentOfferPlan___block_invoke_2_252;
+  v6[3] = &unk_1E80170D8;
+  v4 = *(a1 + 40);
+  v6[4] = *(a1 + 32);
+  v7 = v3;
+  v8 = v4;
+  v9 = *(a1 + 48);
+  v5 = v3;
+  dispatch_async(MEMORY[0x1E69E96A0], v6);
+}
+
+void __117__PKPassGroupsViewController__presentTransactionDetailsForTransaction_transactionSourceType_confirmPaymentOfferPlan___block_invoke_2_252(uint64_t a1)
+{
+  v2 = *(a1 + 32);
+  v3 = [*(a1 + 40) associatedPassUniqueID];
+  v4 = [v2 _passFromGroupsControllerWithUniqueIdentifier:v3];
+  v6 = [v4 paymentPass];
+
+  v5 = v6;
+  if (v6)
+  {
+    [*(a1 + 32) _presentTransactionDetailsForTransaction:*(a1 + 48) forPaymentPass:v6 confirmPaymentOfferPlan:*(a1 + 56)];
+    v5 = v6;
+  }
+}
+
+- (void)_presentAccountTransactionDetailsForTransaction:(id)a3
+{
+  v4 = a3;
+  v5 = [v4 accountIdentifier];
+  objc_initWeak(&location, self);
+  v6 = [MEMORY[0x1E69B8400] sharedInstance];
+  v8[0] = MEMORY[0x1E69E9820];
+  v8[1] = 3221225472;
+  v8[2] = __78__PKPassGroupsViewController__presentAccountTransactionDetailsForTransaction___block_invoke;
+  v8[3] = &unk_1E8024958;
+  v8[4] = self;
+  objc_copyWeak(&v10, &location);
+  v7 = v4;
+  v9 = v7;
+  [v6 accountWithIdentifier:v5 completion:v8];
+
+  objc_destroyWeak(&v10);
+  objc_destroyWeak(&location);
+}
+
+void __78__PKPassGroupsViewController__presentAccountTransactionDetailsForTransaction___block_invoke(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  if ([v3 feature] == 5)
+  {
+    v4[0] = MEMORY[0x1E69E9820];
+    v4[1] = 3221225472;
+    v4[2] = __78__PKPassGroupsViewController__presentAccountTransactionDetailsForTransaction___block_invoke_2;
+    v4[3] = &unk_1E8022A60;
+    v4[4] = *(a1 + 32);
+    objc_copyWeak(&v7, (a1 + 48));
+    v5 = *(a1 + 40);
+    v6 = v3;
+    dispatch_async(MEMORY[0x1E69E96A0], v4);
+
+    objc_destroyWeak(&v7);
+  }
+}
+
+void __78__PKPassGroupsViewController__presentAccountTransactionDetailsForTransaction___block_invoke_2(uint64_t a1)
+{
+  v2 = *(a1 + 32);
+  v3[0] = MEMORY[0x1E69E9820];
+  v3[1] = 3221225472;
+  v3[2] = __78__PKPassGroupsViewController__presentAccountTransactionDetailsForTransaction___block_invoke_3;
+  v3[3] = &unk_1E8024930;
+  objc_copyWeak(&v6, (a1 + 56));
+  v4 = *(a1 + 40);
+  v5 = *(a1 + 48);
+  [v2 presentCreditPassAnimated:1 completion:v3];
+
+  objc_destroyWeak(&v6);
+}
+
+void __78__PKPassGroupsViewController__presentAccountTransactionDetailsForTransaction___block_invoke_3(void **a1, char a2)
+{
+  if ((a2 & 1) == 0)
+  {
+    WeakRetained = objc_loadWeakRetained(a1 + 6);
+    if (WeakRetained)
+    {
+      v7 = WeakRetained;
+      v5 = [WeakRetained _dashboardPassGroupViewController];
+      v6 = v5;
+      if (v5)
+      {
+        [(PKDashboardPassGroupViewController *)v5 presentTransaction:a1[5] forAccount:?];
+      }
+
+      WeakRetained = v7;
+    }
+  }
+}
+
+- (void)_presentTransactionDetailsForTransaction:(id)a3 forPaymentPass:(id)a4 confirmPaymentOfferPlan:(BOOL)a5
+{
+  v8 = a3;
+  v9 = a4;
+  v10 = v9;
+  if (v8 && v9)
+  {
+    v11 = [objc_alloc(MEMORY[0x1E69B92F8]) initWithPaymentPass:v9];
+    v12 = [v10 uniqueID];
+    v14[0] = MEMORY[0x1E69E9820];
+    v14[1] = 3221225472;
+    v14[2] = __110__PKPassGroupsViewController__presentTransactionDetailsForTransaction_forPaymentPass_confirmPaymentOfferPlan___block_invoke;
+    v14[3] = &unk_1E8024980;
+    v15 = v10;
+    v16 = v8;
+    v17 = self;
+    v19 = a5;
+    v18 = v11;
+    v13 = v11;
+    [(PKPassGroupsViewController *)self presentPassWithUniqueID:v12 context:0 animated:1 completionHandler:v14];
+  }
+}
+
+void __110__PKPassGroupsViewController__presentTransactionDetailsForTransaction_forPaymentPass_confirmPaymentOfferPlan___block_invoke(uint64_t a1, char a2)
+{
+  v4 = [*(a1 + 32) isTransitPass];
+  if ((a2 & 1) == 0 && (v4 & 1) == 0 && [*(a1 + 40) hasBackingData])
+  {
+    objc_initWeak(&location, *(a1 + 48));
+    aBlock[0] = MEMORY[0x1E69E9820];
+    aBlock[1] = 3221225472;
+    aBlock[2] = __110__PKPassGroupsViewController__presentTransactionDetailsForTransaction_forPaymentPass_confirmPaymentOfferPlan___block_invoke_2;
+    aBlock[3] = &unk_1E8013AD8;
+    objc_copyWeak(&v15, &location);
+    v16 = *(a1 + 64);
+    v13 = *(a1 + 40);
+    v14 = *(a1 + 32);
+    v5 = _Block_copy(aBlock);
+    v6 = [*(a1 + 32) associatedAccountServiceAccountIdentifier];
+
+    if (v6)
+    {
+      v7 = [MEMORY[0x1E69B8400] sharedInstance];
+      v8 = [*(a1 + 32) associatedAccountServiceAccountIdentifier];
+      v9[0] = MEMORY[0x1E69E9820];
+      v9[1] = 3221225472;
+      v9[2] = __110__PKPassGroupsViewController__presentTransactionDetailsForTransaction_forPaymentPass_confirmPaymentOfferPlan___block_invoke_3;
+      v9[3] = &unk_1E8017178;
+      v10 = *(a1 + 56);
+      v11 = v5;
+      [v7 accountWithIdentifier:v8 completion:v9];
+    }
+
+    else
+    {
+      v5[2](v5);
+    }
+
+    objc_destroyWeak(&v15);
+    objc_destroyWeak(&location);
+  }
+}
+
+void __110__PKPassGroupsViewController__presentTransactionDetailsForTransaction_forPaymentPass_confirmPaymentOfferPlan___block_invoke_2(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 48));
+  if (WeakRetained)
+  {
+    v3 = *(a1 + 56);
+    v6 = WeakRetained;
+    v4 = [WeakRetained _dashboardPassGroupViewController];
+    v5 = v4;
+    if (v4)
+    {
+      [(PKDashboardPassGroupViewController *)v4 presentTransaction:*(a1 + 40) forPaymentPass:v3 presentingView:?];
+    }
+
+    WeakRetained = v6;
+  }
+}
+
+void __110__PKPassGroupsViewController__presentTransactionDetailsForTransaction_forPaymentPass_confirmPaymentOfferPlan___block_invoke_3(uint64_t a1, void *a2, void *a3)
+{
+  v5 = a2;
+  v6 = a3;
+  if (v5)
+  {
+    v7 = MEMORY[0x1E69B8770];
+    v8 = [objc_alloc(MEMORY[0x1E69B9300]) initWithTransactionSource:*(a1 + 32)];
+    LODWORD(v7) = [v7 shouldDisplayTransactionsForTransactionSourceCollection:v8 withAccount:v5];
+
+    if (v7)
+    {
+      block[0] = MEMORY[0x1E69E9820];
+      block[1] = 3221225472;
+      block[2] = __110__PKPassGroupsViewController__presentTransactionDetailsForTransaction_forPaymentPass_confirmPaymentOfferPlan___block_invoke_4;
+      block[3] = &unk_1E8010B50;
+      v10 = *(a1 + 40);
+      dispatch_async(MEMORY[0x1E69E96A0], block);
+    }
+  }
+}
+
+- (void)presentPeerPaymentTermsAcceptance
+{
+  v3 = [(PKPassLibraryDataProvider *)self->_passLibraryDataProvider peerPaymentPassUniqueID];
+  if (v3 && !self->_inFailForward)
+  {
+    objc_initWeak(&location, self);
+    v4[0] = MEMORY[0x1E69E9820];
+    v4[1] = 3221225472;
+    v4[2] = __63__PKPassGroupsViewController_presentPeerPaymentTermsAcceptance__block_invoke;
+    v4[3] = &unk_1E80113B0;
+    objc_copyWeak(&v6, &location);
+    v5 = v3;
+    [(PKPassGroupsViewController *)self presentPassWithUniqueID:v5 animated:1 completionHandler:v4];
+
+    objc_destroyWeak(&v6);
+    objc_destroyWeak(&location);
+  }
+}
+
+void __63__PKPassGroupsViewController_presentPeerPaymentTermsAcceptance__block_invoke(uint64_t a1, char a2)
+{
+  if ((a2 & 1) == 0)
+  {
+    WeakRetained = objc_loadWeakRetained((a1 + 40));
+    v4 = [WeakRetained _passFromGroupsControllerWithUniqueIdentifier:*(a1 + 32)];
+    v5 = [v4 paymentPass];
+
+    if (v5)
+    {
+      v6 = [WeakRetained[165] account];
+      v7 = [v6 termsURL];
+      v8 = [v6 termsIdentifier];
+      v9 = [v6 associatedPassUniqueID];
+      if (v7)
+      {
+        v10 = v8 == 0;
+      }
+
+      else
+      {
+        v10 = 1;
+      }
+
+      if (!v10)
+      {
+        v11 = [PKPeerPaymentTermsController alloc];
+        v12 = [MEMORY[0x1E69B9020] sharedService];
+        v13 = [(PKPeerPaymentTermsController *)v11 initWithTermsURL:v7 termsIdentifier:v8 passUniqueID:v9 webService:v12];
+
+        v14 = [WeakRetained pkui_frontMostViewController];
+        v15 = v14;
+        if (v14)
+        {
+          v16[0] = MEMORY[0x1E69E9820];
+          v16[1] = 3221225472;
+          v16[2] = __63__PKPassGroupsViewController_presentPeerPaymentTermsAcceptance__block_invoke_2;
+          v16[3] = &unk_1E80249A8;
+          v17 = v14;
+          [(PKPeerPaymentTermsController *)v13 presentTermsOverController:v17 showInterstitialViewController:0 withCompletionHandler:v16];
+        }
+      }
+    }
+  }
+}
+
+uint64_t __63__PKPassGroupsViewController_presentPeerPaymentTermsAcceptance__block_invoke_2(uint64_t result, uint64_t a2)
+{
+  if ((a2 - 1) <= 1)
+  {
+    return [*(result + 32) dismissViewControllerAnimated:1 completion:0];
+  }
+
+  return result;
+}
+
+- (void)presentPeerPaymentVerifyIdentity
+{
+  if (!self->_inFailForward)
+  {
+    if (PKDeviceSupportsPeerPaymentIdentityVerification())
+    {
+      objc_initWeak(&location, self);
+      v3[0] = MEMORY[0x1E69E9820];
+      v3[1] = 3221225472;
+      v3[2] = __62__PKPassGroupsViewController_presentPeerPaymentVerifyIdentity__block_invoke;
+      v3[3] = &unk_1E80249D0;
+      objc_copyWeak(&v4, &location);
+      [(PKPassGroupsViewController *)self presentPeerPaymentPassAnimated:1 completion:v3];
+      objc_destroyWeak(&v4);
+      objc_destroyWeak(&location);
+    }
+  }
+}
+
+void __62__PKPassGroupsViewController_presentPeerPaymentVerifyIdentity__block_invoke(uint64_t a1, char a2, void *a3)
+{
+  if (a3 && (a2 & 1) == 0)
+  {
+    v4 = a3;
+    WeakRetained = objc_loadWeakRetained((a1 + 32));
+    v5 = [WeakRetained _passFromGroupsControllerWithUniqueIdentifier:v4];
+
+    v6 = [v5 paymentPass];
+
+    if (v6)
+    {
+      v7 = objc_alloc_init(MEMORY[0x1E69B8F08]);
+      [v7 setVerificationContext:1];
+      v8 = [WeakRetained _peerPaymentAccountResolutionController];
+      [v8 presentFlowForAccountResolution:2 configuration:v7 completion:0];
+    }
+  }
+}
+
+- (void)presentPeerPaymentTopUp
+{
+  v3 = [(PKPassLibraryDataProvider *)self->_passLibraryDataProvider peerPaymentPassUniqueID];
+  if (v3 && !self->_inFailForward)
+  {
+    objc_initWeak(&location, self);
+    v4[0] = MEMORY[0x1E69E9820];
+    v4[1] = 3221225472;
+    v4[2] = __53__PKPassGroupsViewController_presentPeerPaymentTopUp__block_invoke;
+    v4[3] = &unk_1E8013220;
+    objc_copyWeak(&v7, &location);
+    v5 = v3;
+    v6 = self;
+    [(PKPassGroupsViewController *)self presentPassWithUniqueID:v5 animated:1 completionHandler:v4];
+
+    objc_destroyWeak(&v7);
+    objc_destroyWeak(&location);
+  }
+}
+
+void __53__PKPassGroupsViewController_presentPeerPaymentTopUp__block_invoke(uint64_t a1, char a2)
+{
+  if ((a2 & 1) == 0)
+  {
+    WeakRetained = objc_loadWeakRetained((a1 + 48));
+    v4 = [WeakRetained _passFromGroupsControllerWithUniqueIdentifier:*(a1 + 32)];
+    v5 = [v4 paymentPass];
+
+    if (v5)
+    {
+      v6 = [*(a1 + 40) _peerPaymentAccountResolutionController];
+      [v6 presentFlowForAccountResolution:5 configuration:0 completion:0];
+    }
+  }
+}
+
+- (void)presentPeerPaymentSetupWithConfiguration:(id)a3
+{
+  v4 = a3;
+  v5 = [(PKPassLibraryDataProvider *)self->_passLibraryDataProvider peerPaymentPassUniqueID];
+  if (v5)
+  {
+    objc_initWeak(&location, self);
+    v6[0] = MEMORY[0x1E69E9820];
+    v6[1] = 3221225472;
+    v6[2] = __71__PKPassGroupsViewController_presentPeerPaymentSetupWithConfiguration___block_invoke;
+    v6[3] = &unk_1E8013220;
+    objc_copyWeak(&v9, &location);
+    v7 = v5;
+    v8 = v4;
+    [(PKPassGroupsViewController *)self presentPassWithUniqueID:v7 animated:1 completionHandler:v6];
+
+    objc_destroyWeak(&v9);
+    objc_destroyWeak(&location);
+  }
+}
+
+void __71__PKPassGroupsViewController_presentPeerPaymentSetupWithConfiguration___block_invoke(uint64_t a1, char a2)
+{
+  if ((a2 & 1) == 0)
+  {
+    WeakRetained = objc_loadWeakRetained((a1 + 48));
+    v4 = [WeakRetained _passFromGroupsControllerWithUniqueIdentifier:*(a1 + 32)];
+    v5 = [v4 paymentPass];
+
+    if (v5)
+    {
+      v6 = [WeakRetained _peerPaymentAccountResolutionController];
+      v7 = [v6 peerPaymentPassIsProvisionedOnDevice];
+
+      if ((v7 & 1) == 0)
+      {
+        v8 = [WeakRetained _peerPaymentAccountResolutionController];
+        [v8 presentFlowForAccountResolution:1 configuration:*(a1 + 40) completion:0];
+      }
+    }
+  }
+}
+
+- (void)presentPeerPaymentRecurringPaymentWithIdentifier:(id)a3
+{
+  v4 = a3;
+  v5 = [(PKPassLibraryDataProvider *)self->_passLibraryDataProvider peerPaymentPassUniqueID];
+  if (v5 && !self->_inFailForward)
+  {
+    objc_initWeak(&location, self);
+    v6[0] = MEMORY[0x1E69E9820];
+    v6[1] = 3221225472;
+    v6[2] = __79__PKPassGroupsViewController_presentPeerPaymentRecurringPaymentWithIdentifier___block_invoke;
+    v6[3] = &unk_1E8013220;
+    objc_copyWeak(&v9, &location);
+    v7 = v5;
+    v8 = v4;
+    [(PKPassGroupsViewController *)self presentPassWithUniqueID:v7 animated:1 completionHandler:v6];
+
+    objc_destroyWeak(&v9);
+    objc_destroyWeak(&location);
+  }
+}
+
+void __79__PKPassGroupsViewController_presentPeerPaymentRecurringPaymentWithIdentifier___block_invoke(uint64_t a1, char a2)
+{
+  if ((a2 & 1) == 0)
+  {
+    WeakRetained = objc_loadWeakRetained((a1 + 48));
+    v4 = [WeakRetained _passFromGroupsControllerWithUniqueIdentifier:*(a1 + 32)];
+    v5 = [v4 paymentPass];
+
+    if (v5)
+    {
+      v6 = [WeakRetained _dashboardPassGroupViewController];
+      v7 = v6;
+      if (v6)
+      {
+        [(PKDashboardPassGroupViewController *)v6 presentPeerPaymentRecurringPaymentsWithIdentifier:0 completion:?];
+      }
+    }
+  }
+}
+
+- (void)presentPeerPaymentTransferToBank
+{
+  v3 = [(PKPassLibraryDataProvider *)self->_passLibraryDataProvider peerPaymentPassUniqueID];
+  if (v3 && !self->_inFailForward)
+  {
+    objc_initWeak(&location, self);
+    v4[0] = MEMORY[0x1E69E9820];
+    v4[1] = 3221225472;
+    v4[2] = __62__PKPassGroupsViewController_presentPeerPaymentTransferToBank__block_invoke;
+    v4[3] = &unk_1E80113B0;
+    objc_copyWeak(&v6, &location);
+    v5 = v3;
+    [(PKPassGroupsViewController *)self presentPassWithUniqueID:v5 animated:1 completionHandler:v4];
+
+    objc_destroyWeak(&v6);
+    objc_destroyWeak(&location);
+  }
+}
+
+void __62__PKPassGroupsViewController_presentPeerPaymentTransferToBank__block_invoke(uint64_t a1, char a2)
+{
+  if ((a2 & 1) == 0)
+  {
+    WeakRetained = objc_loadWeakRetained((a1 + 40));
+    v4 = [WeakRetained _passFromGroupsControllerWithUniqueIdentifier:*(a1 + 32)];
+    v5 = [v4 paymentPass];
+
+    if (v5)
+    {
+      v6 = [WeakRetained _dashboardPassGroupViewController];
+      if (v6)
+      {
+        v7 = objc_alloc_init(MEMORY[0x1E69B8A60]);
+        [(PKDashboardPassGroupViewController *)v6 presentPeerPaymentActionViewControllerForAction:v7 passLibraryDataProvider:?];
+      }
+    }
+  }
+}
+
+- (void)presentPeerPaymentSendOrRequest
+{
+  v3 = [(PKPassLibraryDataProvider *)self->_passLibraryDataProvider peerPaymentPassUniqueID];
+  if (v3 && !self->_inFailForward)
+  {
+    objc_initWeak(&location, self);
+    v4[0] = MEMORY[0x1E69E9820];
+    v4[1] = 3221225472;
+    v4[2] = __61__PKPassGroupsViewController_presentPeerPaymentSendOrRequest__block_invoke;
+    v4[3] = &unk_1E80113B0;
+    objc_copyWeak(&v6, &location);
+    v5 = v3;
+    [(PKPassGroupsViewController *)self presentPassWithUniqueID:v5 animated:1 completionHandler:v4];
+
+    objc_destroyWeak(&v6);
+    objc_destroyWeak(&location);
+  }
+}
+
+void __61__PKPassGroupsViewController_presentPeerPaymentSendOrRequest__block_invoke(uint64_t a1, char a2)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 40));
+  if ((a2 & 1) == 0 && WeakRetained)
+  {
+    v14 = WeakRetained;
+    v5 = [WeakRetained _passFromGroupsControllerWithUniqueIdentifier:*(a1 + 32)];
+    v6 = [v5 paymentPass];
+
+    if (v6)
+    {
+      v7 = [v14 _dashboardPassGroupViewController];
+      if (v7)
+      {
+        v8 = [objc_alloc(MEMORY[0x1E69B92F8]) initWithPaymentPass:v6];
+        v9 = [objc_alloc(MEMORY[0x1E69B9300]) initWithTransactionSource:v8];
+        v10 = [[PKRecipientPickerViewController alloc] initWithTransactionSourceCollection:v9 familyCollection:0 peerPaymentSendFlowType:1];
+        v11 = objc_alloc_init(PKNearbyPeerPaymentViewProvider);
+        [(PKRecipientPickerViewController *)v10 setNearbyViewProvider:v11];
+
+        v12 = [[PKNavigationController alloc] initWithRootViewController:v10];
+        [(PKNavigationController *)v12 setModalPresentationStyle:1];
+        v13 = [v14 pkui_frontMostViewController];
+        [v13 presentViewController:v12 animated:1 completion:0];
+      }
+    }
+
+    WeakRetained = v14;
+  }
+}
+
+- (void)presentPeerPaymentDeviceTapWithInitialAmount:(id)a3 initialMemo:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  v8 = [(PKPassLibraryDataProvider *)self->_passLibraryDataProvider peerPaymentPassUniqueID];
+  if (v8 && !self->_inFailForward)
+  {
+    objc_initWeak(&location, self);
+    v9[0] = MEMORY[0x1E69E9820];
+    v9[1] = 3221225472;
+    v9[2] = __87__PKPassGroupsViewController_presentPeerPaymentDeviceTapWithInitialAmount_initialMemo___block_invoke;
+    v9[3] = &unk_1E8020030;
+    objc_copyWeak(&v13, &location);
+    v10 = v8;
+    v11 = v6;
+    v12 = v7;
+    [(PKPassGroupsViewController *)self presentPassWithUniqueID:v10 animated:1 completionHandler:v9];
+
+    objc_destroyWeak(&v13);
+    objc_destroyWeak(&location);
+  }
+}
+
+void __87__PKPassGroupsViewController_presentPeerPaymentDeviceTapWithInitialAmount_initialMemo___block_invoke(uint64_t a1, char a2)
+{
+  if ((a2 & 1) == 0)
+  {
+    WeakRetained = objc_loadWeakRetained((a1 + 56));
+    v4 = [WeakRetained _passFromGroupsControllerWithUniqueIdentifier:*(a1 + 32)];
+    v5 = [v4 paymentPass];
+
+    if (v5)
+    {
+      v6 = [v5 devicePrimaryPaymentApplication];
+      v7 = v6;
+      if (v6 && [v6 state] == 1)
+      {
+        v8 = [WeakRetained _peerPaymentAccountResolutionController];
+        v9 = [v8 currentPeerPaymentAccountResolution];
+
+        if (v9)
+        {
+          v10 = [WeakRetained _peerPaymentAccountResolutionController];
+          [v10 presentResolutionForCurrentAccountStateWithCompletion:0];
+        }
+
+        else
+        {
+          v11 = [WeakRetained _dashboardPassGroupViewController];
+          v10 = v11;
+          if (v11)
+          {
+            [(PKDashboardPassGroupViewController *)v11 presentPeerPaymentDeviceTapWithInitialAmount:*(a1 + 48) initialMemo:?];
+          }
+        }
+      }
+    }
+  }
+}
+
+- (void)presentAccountServiceSchedulePayment:(id)a3 billPayAmountType:(int64_t)a4 billPayAmount:(id)a5 completion:(id)a6
+{
+  v10 = a3;
+  v11 = a5;
+  v12 = a6;
+  if (v10)
+  {
+    objc_initWeak(&location, self);
+    v13 = objc_alloc_init(PKPassPresentationContext);
+    [(PKPassPresentationContext *)v13 setLimitServerLoad:1];
+    v14[0] = MEMORY[0x1E69E9820];
+    v14[1] = 3221225472;
+    v14[2] = __110__PKPassGroupsViewController_presentAccountServiceSchedulePayment_billPayAmountType_billPayAmount_completion___block_invoke;
+    v14[3] = &unk_1E8024A20;
+    objc_copyWeak(v19, &location);
+    v15 = v10;
+    v16 = self;
+    v19[1] = a4;
+    v17 = v11;
+    v18 = v12;
+    [(PKPassGroupsViewController *)self presentPassWithUniqueID:v15 context:v13 animated:1 completionHandler:v14];
+
+    objc_destroyWeak(v19);
+    objc_destroyWeak(&location);
+  }
+}
+
+void __110__PKPassGroupsViewController_presentAccountServiceSchedulePayment_billPayAmountType_billPayAmount_completion___block_invoke(uint64_t a1, char a2)
+{
+  if ((a2 & 1) == 0)
+  {
+    WeakRetained = objc_loadWeakRetained((a1 + 64));
+    v4 = [WeakRetained _passFromGroupsControllerWithUniqueIdentifier:*(a1 + 32)];
+    v5 = [v4 paymentPass];
+
+    v6 = [objc_alloc(MEMORY[0x1E69B92F8]) initWithPaymentPass:v5];
+    v7 = [objc_alloc(MEMORY[0x1E69B9300]) initWithTransactionSource:v6];
+    v8 = [v5 associatedAccountServiceAccountIdentifier];
+    v9 = v8;
+    if (v5)
+    {
+      if (v8)
+      {
+        v31[0] = 0;
+        v31[1] = v31;
+        v31[2] = 0x3032000000;
+        v31[3] = __Block_byref_object_copy__65;
+        v31[4] = __Block_byref_object_dispose__65;
+        v32 = 0;
+        v29[0] = 0;
+        v29[1] = v29;
+        v29[2] = 0x3032000000;
+        v29[3] = __Block_byref_object_copy__65;
+        v29[4] = __Block_byref_object_dispose__65;
+        v30 = 0;
+        v10 = objc_alloc_init(MEMORY[0x1E69B8658]);
+        v26[0] = MEMORY[0x1E69E9820];
+        v26[1] = 3221225472;
+        v26[2] = __110__PKPassGroupsViewController_presentAccountServiceSchedulePayment_billPayAmountType_billPayAmount_completion___block_invoke_2;
+        v26[3] = &unk_1E8016750;
+        v11 = v9;
+        v27 = v11;
+        v28 = v31;
+        [v10 addOperation:v26];
+        v23[0] = MEMORY[0x1E69E9820];
+        v23[1] = 3221225472;
+        v23[2] = __110__PKPassGroupsViewController_presentAccountServiceSchedulePayment_billPayAmountType_billPayAmount_completion___block_invoke_5;
+        v23[3] = &unk_1E8016750;
+        v24 = v11;
+        v25 = v29;
+        [v10 addOperation:v23];
+        v12 = [MEMORY[0x1E695DFB0] null];
+        v16[0] = MEMORY[0x1E69E9820];
+        v16[1] = 3221225472;
+        v16[2] = __110__PKPassGroupsViewController_presentAccountServiceSchedulePayment_billPayAmountType_billPayAmount_completion___block_invoke_8;
+        v16[3] = &unk_1E80249F8;
+        v16[4] = *(a1 + 40);
+        v20 = v31;
+        v21 = v29;
+        v13 = v7;
+        v14 = *(a1 + 72);
+        v17 = v13;
+        v22 = v14;
+        v18 = *(a1 + 48);
+        v19 = *(a1 + 56);
+        v15 = [v10 evaluateWithInput:v12 completion:v16];
+
+        _Block_object_dispose(v29, 8);
+        _Block_object_dispose(v31, 8);
+      }
+    }
+  }
+}
+
+void __110__PKPassGroupsViewController_presentAccountServiceSchedulePayment_billPayAmountType_billPayAmount_completion___block_invoke_2(uint64_t a1, uint64_t a2, void *a3, void *a4)
+{
+  v6 = a3;
+  v7 = a4;
+  v8 = [MEMORY[0x1E69B8400] sharedInstance];
+  v13[0] = MEMORY[0x1E69E9820];
+  v13[1] = 3221225472;
+  v13[2] = __110__PKPassGroupsViewController_presentAccountServiceSchedulePayment_billPayAmountType_billPayAmount_completion___block_invoke_3;
+  v13[3] = &unk_1E8012D30;
+  v10 = *(a1 + 32);
+  v9 = *(a1 + 40);
+  v15 = v7;
+  v16 = v9;
+  v14 = v6;
+  v11 = v6;
+  v12 = v7;
+  [v8 accountWithIdentifier:v10 completion:v13];
+}
+
+void __110__PKPassGroupsViewController_presentAccountServiceSchedulePayment_billPayAmountType_billPayAmount_completion___block_invoke_3(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __110__PKPassGroupsViewController_presentAccountServiceSchedulePayment_billPayAmountType_billPayAmount_completion___block_invoke_4;
+  block[3] = &unk_1E801B6A8;
+  v8 = v3;
+  v6 = *(a1 + 40);
+  v4 = v6;
+  v10 = v6;
+  v9 = *(a1 + 32);
+  v5 = v3;
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+}
+
+uint64_t __110__PKPassGroupsViewController_presentAccountServiceSchedulePayment_billPayAmountType_billPayAmount_completion___block_invoke_4(uint64_t a1)
+{
+  objc_storeStrong((*(*(a1 + 56) + 8) + 40), *(a1 + 32));
+  v2 = *(*(a1 + 48) + 16);
+
+  return v2();
+}
+
+void __110__PKPassGroupsViewController_presentAccountServiceSchedulePayment_billPayAmountType_billPayAmount_completion___block_invoke_5(uint64_t a1, uint64_t a2, void *a3, void *a4)
+{
+  v6 = a3;
+  v7 = a4;
+  v8 = [MEMORY[0x1E69B8400] sharedInstance];
+  v13[0] = MEMORY[0x1E69E9820];
+  v13[1] = 3221225472;
+  v13[2] = __110__PKPassGroupsViewController_presentAccountServiceSchedulePayment_billPayAmountType_billPayAmount_completion___block_invoke_6;
+  v13[3] = &unk_1E8012DA8;
+  v10 = *(a1 + 32);
+  v9 = *(a1 + 40);
+  v15 = v7;
+  v16 = v9;
+  v14 = v6;
+  v11 = v6;
+  v12 = v7;
+  [v8 accountUsersForAccountWithIdentifier:v10 completion:v13];
+}
+
+void __110__PKPassGroupsViewController_presentAccountServiceSchedulePayment_billPayAmountType_billPayAmount_completion___block_invoke_6(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __110__PKPassGroupsViewController_presentAccountServiceSchedulePayment_billPayAmountType_billPayAmount_completion___block_invoke_7;
+  block[3] = &unk_1E80114A8;
+  v8 = v3;
+  v6 = *(a1 + 40);
+  v4 = v6;
+  v10 = v6;
+  v9 = *(a1 + 32);
+  v5 = v3;
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+}
+
+uint64_t __110__PKPassGroupsViewController_presentAccountServiceSchedulePayment_billPayAmountType_billPayAmount_completion___block_invoke_7(uint64_t a1)
+{
+  if ([*(a1 + 32) count])
+  {
+    v2 = [objc_alloc(MEMORY[0x1E69B8450]) initWithAccountUsers:*(a1 + 32)];
+    v3 = *(*(a1 + 56) + 8);
+    v4 = *(v3 + 40);
+    *(v3 + 40) = v2;
+  }
+
+  v5 = *(*(a1 + 48) + 16);
+
+  return v5();
+}
+
+void __110__PKPassGroupsViewController_presentAccountServiceSchedulePayment_billPayAmountType_billPayAmount_completion___block_invoke_8(void *a1)
+{
+  if (!*(a1[4] + 1368))
+  {
+    v2 = [[PKAccountServiceAccountResolutionController alloc] initWithAccount:*(*(a1[8] + 8) + 40) accountUserCollection:*(*(a1[9] + 8) + 40) transactionSourceCollection:a1[5]];
+    v3 = a1[4];
+    v4 = *(v3 + 1368);
+    *(v3 + 1368) = v2;
+
+    [*(a1[4] + 1368) setDelegate:?];
+  }
+
+  v5 = objc_alloc_init(MEMORY[0x1E69B8408]);
+  [v5 setBillPayAmountType:a1[10]];
+  [v5 setBillPayAmount:a1[6]];
+  [*(a1[4] + 1368) presentFlowForAccountResolution:1 configuration:v5 completion:a1[7]];
+}
+
+- (void)presentActionViewControllerWithUniqueID:(id)a3 actionType:(unint64_t)a4
+{
+  v6 = a3;
+  v7 = v6;
+  if (v6)
+  {
+    v8[0] = MEMORY[0x1E69E9820];
+    v8[1] = 3221225472;
+    v8[2] = __81__PKPassGroupsViewController_presentActionViewControllerWithUniqueID_actionType___block_invoke;
+    v8[3] = &unk_1E8024A48;
+    v10 = self;
+    v11 = a4;
+    v9 = v6;
+    [(PKPassGroupsViewController *)self presentPassWithUniqueID:v9 animated:1 completionHandler:v8];
+  }
+}
+
+void __81__PKPassGroupsViewController_presentActionViewControllerWithUniqueID_actionType___block_invoke(uint64_t a1, char a2)
+{
+  v37 = *MEMORY[0x1E69E9840];
+  if (a2)
+  {
+    return;
+  }
+
+  v3 = [MEMORY[0x1E69B8A58] sharedInstance];
+  v4 = [v3 passWithUniqueID:*(a1 + 32)];
+  v5 = [v4 paymentPass];
+  v6 = v5;
+  if (!v5)
+  {
+    v7 = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    {
+      v18 = *(a1 + 32);
+      *buf = 138412290;
+      v33 = v18;
+      _os_log_impl(&dword_1BD026000, v7, OS_LOG_TYPE_DEFAULT, "Cannot present payment pass action for non-payment pass %@", buf, 0xCu);
+    }
+
+    goto LABEL_26;
+  }
+
+  [v5 availableActions];
+  v28 = 0u;
+  v29 = 0u;
+  v30 = 0u;
+  v7 = v31 = 0u;
+  v8 = [v7 countByEnumeratingWithState:&v28 objects:v36 count:16];
+  if (!v8)
+  {
+    goto LABEL_25;
+  }
+
+  v9 = v8;
+  v10 = *v29;
+  while (2)
+  {
+    for (i = 0; i != v9; ++i)
+    {
+      if (*v29 != v10)
+      {
+        objc_enumerationMutation(v7);
+      }
+
+      v12 = *(*(&v28 + 1) + 8 * i);
+      if ([v12 type] == *(a1 + 48))
+      {
+        v26 = 0;
+        v27 = 0;
+        v13 = [v6 canPerformAction:v12 unableReason:&v27 displayableError:&v26];
+        v14 = v26;
+        if ((v13 & 1) != 0 || v27 == 2)
+        {
+          if ([v12 hasExternalActionContent])
+          {
+            v19 = [v12 externalActionContent];
+            v20 = [v12 title];
+            v25[0] = MEMORY[0x1E69E9820];
+            v25[1] = 3221225472;
+            v25[2] = __81__PKPassGroupsViewController_presentActionViewControllerWithUniqueID_actionType___block_invoke_2;
+            v25[3] = &unk_1E8014560;
+            v25[4] = *(a1 + 40);
+            PKPaymentPassActionPerformExternalActionContent(v6, v19, v20, v25);
+
+LABEL_24:
+            goto LABEL_25;
+          }
+
+          v15 = [[PKPerformActionViewController alloc] initWithPass:v6 action:v12];
+          [(PKPerformActionViewController *)v15 setDelegate:*(a1 + 40)];
+          v16 = [[PKNavigationController alloc] initWithRootViewController:v15];
+          [(PKNavigationController *)v16 setSupportedInterfaceOrientations:2];
+          v21 = [*(a1 + 40) pkui_frontMostViewController];
+          [v21 presentViewController:v16 animated:1 completion:0];
+
+          v22 = PKLogFacilityTypeGetObject();
+          if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+          {
+            v23 = PKPaymentPassActionTypeToString();
+            *buf = 138412290;
+            v33 = v23;
+            _os_log_impl(&dword_1BD026000, v22, OS_LOG_TYPE_DEFAULT, "Presented PKPerformActionViewController for actionType %@", buf, 0xCu);
+          }
+        }
+
+        else
+        {
+          v24[0] = MEMORY[0x1E69E9820];
+          v24[1] = 3221225472;
+          v24[2] = __81__PKPassGroupsViewController_presentActionViewControllerWithUniqueID_actionType___block_invoke_264;
+          v24[3] = &unk_1E8010970;
+          v24[4] = *(a1 + 40);
+          v15 = [PKPerformActionViewController alertControllerForUnableReason:v27 action:v12 displayableError:v14 addCardActionHandler:v24 unavailableActionHandler:0 cancelActionHandler:0];
+          [*(a1 + 40) presentViewController:v15 animated:1 completion:0];
+          v16 = PKLogFacilityTypeGetObject();
+          if (os_log_type_enabled(&v16->super.super.super.super, OS_LOG_TYPE_DEFAULT))
+          {
+            v17 = PKPaymentPassActionTypeToString();
+            *buf = 138412546;
+            v33 = v17;
+            v34 = 2112;
+            v35 = v14;
+            _os_log_impl(&dword_1BD026000, &v16->super.super.super.super, OS_LOG_TYPE_DEFAULT, "PKPerformActionViewController unavailable for actionType %@, error: %@", buf, 0x16u);
+          }
+        }
+
+        goto LABEL_24;
+      }
+    }
+
+    v9 = [v7 countByEnumeratingWithState:&v28 objects:v36 count:16];
+    if (v9)
+    {
+      continue;
+    }
+
+    break;
+  }
+
+LABEL_25:
+
+LABEL_26:
+}
+
+void __81__PKPassGroupsViewController_presentActionViewControllerWithUniqueID_actionType___block_invoke_2(uint64_t a1, uint64_t a2, void *a3)
+{
+  v4 = a3;
+  v5 = PKLogFacilityTypeGetObject();
+  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  {
+    *v6 = 0;
+    _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "Presented PKPerformActionViewController for externalActionContent", v6, 2u);
+  }
+
+  if (v4)
+  {
+    [*(a1 + 32) presentViewController:v4 animated:1 completion:0];
+  }
+}
+
+- (void)presentAuxiliaryPassInformationItemDetailForItemIdentifier:(id)a3 informationIdentifier:(id)a4 forPassUniqueID:(id)a5 completion:(id)a6
+{
+  v25 = *MEMORY[0x1E69E9840];
+  v10 = a3;
+  v11 = a4;
+  v12 = a5;
+  v13 = a6;
+  if (v10 && v12)
+  {
+    v14 = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    {
+      *buf = 138478339;
+      v20 = v10;
+      v21 = 2113;
+      v22 = v11;
+      v23 = 2114;
+      v24 = v12;
+      _os_log_impl(&dword_1BD026000, v14, OS_LOG_TYPE_DEFAULT, "PKPassGroupsViewController: Presenting auxiliaryPassInformationItem with identifier %{private}@ in info %{private}@ for pass %{public}@", buf, 0x20u);
+    }
+
+    v15[0] = MEMORY[0x1E69E9820];
+    v15[1] = 3221225472;
+    v15[2] = __138__PKPassGroupsViewController_presentAuxiliaryPassInformationItemDetailForItemIdentifier_informationIdentifier_forPassUniqueID_completion___block_invoke;
+    v15[3] = &unk_1E801D980;
+    v18 = v13;
+    v15[4] = self;
+    v16 = v10;
+    v17 = v11;
+    [(PKPassGroupsViewController *)self presentPassWithUniqueID:v12 animated:1 completionHandler:v15];
+  }
+}
+
+void __138__PKPassGroupsViewController_presentAuxiliaryPassInformationItemDetailForItemIdentifier_informationIdentifier_forPassUniqueID_completion___block_invoke(uint64_t a1, int a2)
+{
+  if (a2)
+  {
+    v3 = *(a1 + 56);
+    if (v3)
+    {
+      v4 = *(v3 + 16);
+
+      v4();
+    }
+  }
+
+  else
+  {
+    v5 = [*(a1 + 32) _dashboardPassGroupViewController];
+    if (v5)
+    {
+      v6 = *(a1 + 40);
+      v7 = *(a1 + 48);
+      v11[0] = MEMORY[0x1E69E9820];
+      v11[1] = 3221225472;
+      v11[2] = __138__PKPassGroupsViewController_presentAuxiliaryPassInformationItemDetailForItemIdentifier_informationIdentifier_forPassUniqueID_completion___block_invoke_2;
+      v11[3] = &unk_1E8010AD8;
+      v12 = *(a1 + 56);
+      [(PKDashboardPassGroupViewController *)v5 presentAuxiliaryPassInformationItemWithIdentifier:v6 informationIdentifier:v7 completion:v11];
+    }
+
+    else
+    {
+      v8 = PKLogFacilityTypeGetObject();
+      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      {
+        *v10 = 0;
+        _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "Unable to present aux pass information item detail", v10, 2u);
+      }
+
+      v9 = *(a1 + 56);
+      if (v9)
+      {
+        (*(v9 + 16))(v9, 1);
+      }
+    }
+  }
+}
+
+uint64_t __138__PKPassGroupsViewController_presentAuxiliaryPassInformationItemDetailForItemIdentifier_informationIdentifier_forPassUniqueID_completion___block_invoke_2(uint64_t a1, int a2)
+{
+  result = *(a1 + 32);
+  if (result)
+  {
+    return (*(result + 16))(result, a2 ^ 1u);
+  }
+
+  return result;
+}
+
+- (void)presentPassForFeatureIdentifier:(unint64_t)a3 animated:(BOOL)a4 completion:(id)a5
+{
+  v8 = a5;
+  v9 = [MEMORY[0x1E69B8400] sharedInstance];
+  v11[0] = MEMORY[0x1E69E9820];
+  v11[1] = 3221225472;
+  v11[2] = __82__PKPassGroupsViewController_presentPassForFeatureIdentifier_animated_completion___block_invoke;
+  v11[3] = &unk_1E8024A70;
+  v13 = a4;
+  v11[4] = self;
+  v12 = v8;
+  v10 = v8;
+  [v9 defaultAccountForFeature:a3 completion:v11];
+}
+
+void __82__PKPassGroupsViewController_presentPassForFeatureIdentifier_animated_completion___block_invoke(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  v7[0] = MEMORY[0x1E69E9820];
+  v7[1] = 3221225472;
+  v7[2] = __82__PKPassGroupsViewController_presentPassForFeatureIdentifier_animated_completion___block_invoke_2;
+  v7[3] = &unk_1E8024548;
+  v4 = *(a1 + 32);
+  v5 = *(a1 + 40);
+  v8 = v3;
+  v9 = v4;
+  v11 = *(a1 + 48);
+  v10 = v5;
+  v6 = v3;
+  dispatch_async(MEMORY[0x1E69E96A0], v7);
+}
+
+void __82__PKPassGroupsViewController_presentPassForFeatureIdentifier_animated_completion___block_invoke_2(uint64_t a1)
+{
+  v2 = *(a1 + 32);
+  if (v2)
+  {
+    v3 = [v2 associatedPassUniqueID];
+    if (v3)
+    {
+      v4 = *(a1 + 56);
+      v9[0] = MEMORY[0x1E69E9820];
+      v9[1] = 3221225472;
+      v9[2] = __82__PKPassGroupsViewController_presentPassForFeatureIdentifier_animated_completion___block_invoke_3;
+      v9[3] = &unk_1E80109C0;
+      v5 = *(a1 + 40);
+      v11 = *(a1 + 48);
+      v10 = v3;
+      [v5 presentPassWithUniqueID:v10 animated:v4 completionHandler:v9];
+    }
+
+    else
+    {
+      v8 = *(a1 + 48);
+      if (v8)
+      {
+        (*(v8 + 16))(v8, 1, 0);
+      }
+    }
+  }
+
+  else
+  {
+    v6 = *(a1 + 48);
+    if (v6)
+    {
+      v7 = *(v6 + 16);
+
+      v7();
+    }
+  }
+}
+
+uint64_t __82__PKPassGroupsViewController_presentPassForFeatureIdentifier_animated_completion___block_invoke_3(uint64_t a1, uint64_t a2)
+{
+  result = *(a1 + 40);
+  if (result)
+  {
+    return (*(result + 16))(result, a2, *(a1 + 32));
+  }
+
+  return result;
+}
+
+- (void)presentAccountFeature:(unint64_t)a3 animated:(BOOL)a4 destination:(unint64_t)a5 fundingSourceIdentifier:(id)a6 completion:(id)a7
+{
+  v12 = a6;
+  v13 = a7;
+  v14 = objc_alloc_init(PKPassPresentationContext);
+  [(PKPassPresentationContext *)v14 setPresentationSource:5];
+  v15 = objc_alloc_init(PKAccountViewInterfaceConfiguration);
+  [(PKAccountViewInterfaceConfiguration *)v15 setDestination:a5];
+  [(PKAccountViewInterfaceConfiguration *)v15 setViewStyle:0];
+  objc_initWeak(location, self);
+  v16 = objc_alloc_init(MEMORY[0x1E69B8658]);
+  v35[0] = MEMORY[0x1E69E9820];
+  v35[1] = 3221225472;
+  v35[2] = __108__PKPassGroupsViewController_presentAccountFeature_animated_destination_fundingSourceIdentifier_completion___block_invoke;
+  v35[3] = &unk_1E8024AE8;
+  v35[4] = self;
+  v38 = a4;
+  objc_copyWeak(&v37, location);
+  v17 = v13;
+  v36 = v17;
+  [v16 addOperation:v35];
+  v32[0] = MEMORY[0x1E69E9820];
+  v32[1] = 3221225472;
+  v32[2] = __108__PKPassGroupsViewController_presentAccountFeature_animated_destination_fundingSourceIdentifier_completion___block_invoke_4;
+  v32[3] = &unk_1E8024B10;
+  v34 = a3;
+  v18 = v15;
+  v33 = v18;
+  [v16 addOperation:v32];
+  if (a5 == 12)
+  {
+    v29[0] = MEMORY[0x1E69E9820];
+    v29[1] = 3221225472;
+    v29[2] = __108__PKPassGroupsViewController_presentAccountFeature_animated_destination_fundingSourceIdentifier_completion___block_invoke_6;
+    v29[3] = &unk_1E80145B0;
+    v30 = v12;
+    v31 = v18;
+    [v16 addOperation:v29];
+  }
+
+  v19 = [MEMORY[0x1E695DFB0] null];
+  v24[0] = MEMORY[0x1E69E9820];
+  v24[1] = 3221225472;
+  v24[2] = __108__PKPassGroupsViewController_presentAccountFeature_animated_destination_fundingSourceIdentifier_completion___block_invoke_8;
+  v24[3] = &unk_1E8024B60;
+  v20 = v17;
+  v27 = v20;
+  objc_copyWeak(&v28, location);
+  v21 = v18;
+  v25 = v21;
+  v22 = v14;
+  v26 = v22;
+  v23 = [v16 evaluateWithInput:v19 completion:v24];
+
+  objc_destroyWeak(&v28);
+  objc_destroyWeak(&v37);
+
+  objc_destroyWeak(location);
+}
+
+void __108__PKPassGroupsViewController_presentAccountFeature_animated_destination_fundingSourceIdentifier_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
+{
+  v7 = a2;
+  v8 = a3;
+  v9 = a4;
+  v10 = *(a1 + 32);
+  v11 = *(a1 + 56);
+  v14[0] = MEMORY[0x1E69E9820];
+  v14[1] = 3221225472;
+  v14[2] = __108__PKPassGroupsViewController_presentAccountFeature_animated_destination_fundingSourceIdentifier_completion___block_invoke_2;
+  v14[3] = &unk_1E8024AC0;
+  objc_copyWeak(&v18, (a1 + 48));
+  v12 = v9;
+  v16 = v12;
+  v13 = v8;
+  v15 = v13;
+  v17 = *(a1 + 40);
+  [v10 presentCreditPassAnimated:v11 completion:v14];
+
+  objc_destroyWeak(&v18);
+}
+
+void __108__PKPassGroupsViewController_presentAccountFeature_animated_destination_fundingSourceIdentifier_completion___block_invoke_2(id *a1, char a2)
+{
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __108__PKPassGroupsViewController_presentAccountFeature_animated_destination_fundingSourceIdentifier_completion___block_invoke_3;
+  block[3] = &unk_1E8024A98;
+  objc_copyWeak(&v8, a1 + 7);
+  v6 = a1[5];
+  v5 = a1[4];
+  v7 = a1[6];
+  v9 = a2;
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+
+  objc_destroyWeak(&v8);
+}
+
+void __108__PKPassGroupsViewController_presentAccountFeature_animated_destination_fundingSourceIdentifier_completion___block_invoke_3(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 56));
+  v3 = WeakRetained;
+  if (WeakRetained)
+  {
+    if ((*(a1 + 64) & 1) == 0)
+    {
+    }
+
+    (*(*(a1 + 40) + 16))();
+  }
+
+  else
+  {
+    (*(*(a1 + 40) + 16))();
+    (*(*(a1 + 48) + 16))();
+  }
+}
+
+void __108__PKPassGroupsViewController_presentAccountFeature_animated_destination_fundingSourceIdentifier_completion___block_invoke_4(uint64_t a1, uint64_t a2, void *a3, void *a4)
+{
+  v6 = a3;
+  v7 = a4;
+  v8 = [MEMORY[0x1E69B8400] sharedInstance];
+  v13[0] = MEMORY[0x1E69E9820];
+  v13[1] = 3221225472;
+  v13[2] = __108__PKPassGroupsViewController_presentAccountFeature_animated_destination_fundingSourceIdentifier_completion___block_invoke_5;
+  v13[3] = &unk_1E8014990;
+  v9 = *(a1 + 40);
+  v10 = *(a1 + 32);
+  v15 = v6;
+  v16 = v7;
+  v14 = v10;
+  v11 = v6;
+  v12 = v7;
+  [v8 defaultAccountForFeature:v9 completion:v13];
+}
+
+void __108__PKPassGroupsViewController_presentAccountFeature_animated_destination_fundingSourceIdentifier_completion___block_invoke_5(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  [*(a1 + 32) setAccount:v3];
+  if (v3)
+  {
+    [v3 state];
+  }
+
+  (*(*(a1 + 48) + 16))();
+}
+
+void __108__PKPassGroupsViewController_presentAccountFeature_animated_destination_fundingSourceIdentifier_completion___block_invoke_6(uint64_t a1, uint64_t a2, void *a3, void *a4)
+{
+  v6 = a3;
+  v7 = a4;
+  v8 = [MEMORY[0x1E69B8400] sharedInstance];
+  v9 = *(a1 + 32);
+  v10 = [*(a1 + 40) account];
+  v11 = [v10 accountIdentifier];
+  v15[0] = MEMORY[0x1E69E9820];
+  v15[1] = 3221225472;
+  v15[2] = __108__PKPassGroupsViewController_presentAccountFeature_animated_destination_fundingSourceIdentifier_completion___block_invoke_7;
+  v15[3] = &unk_1E8024B38;
+  v12 = *(a1 + 40);
+  v17 = v6;
+  v18 = v7;
+  v16 = v12;
+  v13 = v6;
+  v14 = v7;
+  [v8 paymentFundingSourceForIdentifier:v9 accountIdentifier:v11 completion:v15];
+}
+
+uint64_t __108__PKPassGroupsViewController_presentAccountFeature_animated_destination_fundingSourceIdentifier_completion___block_invoke_7(uint64_t a1, uint64_t a2)
+{
+  [*(a1 + 32) setFundingSource:a2];
+  if (!a2)
+  {
+    [*(a1 + 32) setDestination:4];
+  }
+
+  v4 = *(*(a1 + 48) + 16);
+
+  return v4();
+}
+
+void __108__PKPassGroupsViewController_presentAccountFeature_animated_destination_fundingSourceIdentifier_completion___block_invoke_8(id *a1, uint64_t a2, uint64_t a3, void *a4)
+{
+  if ([a4 isCanceled])
+  {
+    v5 = a1[6];
+    if (v5)
+    {
+      v6 = *(v5 + 2);
+
+      v6();
+    }
+  }
+
+  else
+  {
+    v7[0] = MEMORY[0x1E69E9820];
+    v7[1] = 3221225472;
+    v7[2] = __108__PKPassGroupsViewController_presentAccountFeature_animated_destination_fundingSourceIdentifier_completion___block_invoke_9;
+    v7[3] = &unk_1E8011220;
+    objc_copyWeak(&v11, a1 + 7);
+    v10 = a1[6];
+    v8 = a1[4];
+    v9 = a1[5];
+    dispatch_async(MEMORY[0x1E69E96A0], v7);
+
+    objc_destroyWeak(&v11);
+  }
+}
+
+void __108__PKPassGroupsViewController_presentAccountFeature_animated_destination_fundingSourceIdentifier_completion___block_invoke_9(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 56));
+  v3 = WeakRetained;
+  if (WeakRetained)
+  {
+    v4 = [WeakRetained _dashboardPassGroupViewController];
+    if (v4)
+    {
+      v5 = *(a1 + 32);
+      v6 = *(a1 + 40);
+      v7[0] = MEMORY[0x1E69E9820];
+      v7[1] = 3221225472;
+      v7[2] = __108__PKPassGroupsViewController_presentAccountFeature_animated_destination_fundingSourceIdentifier_completion___block_invoke_10;
+      v7[3] = &unk_1E8010AD8;
+      v8 = *(a1 + 48);
+      [(PKDashboardPassGroupViewController *)v4 presentAccountWithConfiguration:v5 presentationContext:v6 animated:1 completion:v7];
+    }
+
+    else
+    {
+      (*(*(a1 + 48) + 16))();
+    }
+  }
+
+  else
+  {
+    (*(*(a1 + 48) + 16))();
+  }
+}
+
+uint64_t __108__PKPassGroupsViewController_presentAccountFeature_animated_destination_fundingSourceIdentifier_completion___block_invoke_10(uint64_t a1, int a2)
+{
+  result = *(a1 + 32);
+  if (result)
+  {
+    return (*(result + 16))(result, a2 ^ 1u, 0);
+  }
+
+  return result;
+}
+
+- (void)presentAppleBalanceAddMoneyAnimated:(BOOL)a3 completion:(id)a4
+{
+  v4 = a3;
+  v6 = a4;
+  objc_initWeak(&location, self);
+  v8[0] = MEMORY[0x1E69E9820];
+  v8[1] = 3221225472;
+  v8[2] = __77__PKPassGroupsViewController_presentAppleBalanceAddMoneyAnimated_completion___block_invoke;
+  v8[3] = &unk_1E8024B88;
+  objc_copyWeak(&v10, &location);
+  v7 = v6;
+  v9 = v7;
+  [(PKPassGroupsViewController *)self presentPassForFeatureIdentifier:4 animated:v4 completion:v8];
+
+  objc_destroyWeak(&v10);
+  objc_destroyWeak(&location);
+}
+
+void __77__PKPassGroupsViewController_presentAppleBalanceAddMoneyAnimated_completion___block_invoke(uint64_t a1, char a2, void *a3)
+{
+  v5 = a3;
+  v6 = v5;
+  if ((a2 & 1) == 0)
+  {
+    v14 = v5;
+    WeakRetained = objc_loadWeakRetained((a1 + 40));
+    v9 = [WeakRetained _dashboardPassGroupViewController];
+    v10 = v9;
+    if (v9)
+    {
+      [(PKDashboardPassGroupViewController *)v9 presentAddMoneyAppleBalance];
+      v11 = *(a1 + 32);
+      if (v11)
+      {
+        v12 = *(v11 + 16);
+LABEL_9:
+        v12();
+      }
+    }
+
+    else
+    {
+      v13 = *(a1 + 32);
+      if (v13)
+      {
+        v12 = *(v13 + 16);
+        goto LABEL_9;
+      }
+    }
+
+    goto LABEL_11;
+  }
+
+  v7 = *(a1 + 32);
+  if (!v7)
+  {
+    goto LABEL_12;
+  }
+
+  v14 = v6;
+  (*(v7 + 16))(v7, 1);
+LABEL_11:
+  v6 = v14;
+LABEL_12:
+}
+
+- (void)presentAppleBalanceAddMoneyInStoreTopUpAnimated:(BOOL)a3 completion:(id)a4
+{
+  v4 = a3;
+  v6 = a4;
+  objc_initWeak(&location, self);
+  v8[0] = MEMORY[0x1E69E9820];
+  v8[1] = 3221225472;
+  v8[2] = __89__PKPassGroupsViewController_presentAppleBalanceAddMoneyInStoreTopUpAnimated_completion___block_invoke;
+  v8[3] = &unk_1E8024B88;
+  objc_copyWeak(&v10, &location);
+  v7 = v6;
+  v9 = v7;
+  [(PKPassGroupsViewController *)self presentPassForFeatureIdentifier:4 animated:v4 completion:v8];
+
+  objc_destroyWeak(&v10);
+  objc_destroyWeak(&location);
+}
+
+void __89__PKPassGroupsViewController_presentAppleBalanceAddMoneyInStoreTopUpAnimated_completion___block_invoke(uint64_t a1, char a2, void *a3)
+{
+  v5 = a3;
+  v6 = v5;
+  if ((a2 & 1) == 0)
+  {
+    v14 = v5;
+    WeakRetained = objc_loadWeakRetained((a1 + 40));
+    v9 = [WeakRetained _dashboardPassGroupViewController];
+    v10 = v9;
+    if (v9)
+    {
+      [(PKDashboardPassGroupViewController *)v9 presentAddMoneyAppleBalanceInStoreTopUp];
+      v11 = *(a1 + 32);
+      if (v11)
+      {
+        v12 = *(v11 + 16);
+LABEL_9:
+        v12();
+      }
+    }
+
+    else
+    {
+      v13 = *(a1 + 32);
+      if (v13)
+      {
+        v12 = *(v13 + 16);
+        goto LABEL_9;
+      }
+    }
+
+    goto LABEL_11;
+  }
+
+  v7 = *(a1 + 32);
+  if (!v7)
+  {
+    goto LABEL_12;
+  }
+
+  v14 = v6;
+  (*(v7 + 16))(v7, 1);
+LABEL_11:
+  v6 = v14;
+LABEL_12:
+}
+
+- (void)presentAppleBalanceAddMoneyDirectTopUpAnimated:(BOOL)a3 completion:(id)a4
+{
+  v4 = a3;
+  v6 = a4;
+  objc_initWeak(&location, self);
+  v8[0] = MEMORY[0x1E69E9820];
+  v8[1] = 3221225472;
+  v8[2] = __88__PKPassGroupsViewController_presentAppleBalanceAddMoneyDirectTopUpAnimated_completion___block_invoke;
+  v8[3] = &unk_1E8024B88;
+  objc_copyWeak(&v10, &location);
+  v7 = v6;
+  v9 = v7;
+  [(PKPassGroupsViewController *)self presentPassForFeatureIdentifier:4 animated:v4 completion:v8];
+
+  objc_destroyWeak(&v10);
+  objc_destroyWeak(&location);
+}
+
+void __88__PKPassGroupsViewController_presentAppleBalanceAddMoneyDirectTopUpAnimated_completion___block_invoke(uint64_t a1, char a2, void *a3)
+{
+  v5 = a3;
+  v6 = v5;
+  if ((a2 & 1) == 0)
+  {
+    v14 = v5;
+    WeakRetained = objc_loadWeakRetained((a1 + 40));
+    v9 = [WeakRetained _dashboardPassGroupViewController];
+    v10 = v9;
+    if (v9)
+    {
+      [(PKDashboardPassGroupViewController *)v9 presentAddMoneyAppleBalanceDirectTopUp];
+      v11 = *(a1 + 32);
+      if (v11)
+      {
+        v12 = *(v11 + 16);
+LABEL_9:
+        v12();
+      }
+    }
+
+    else
+    {
+      v13 = *(a1 + 32);
+      if (v13)
+      {
+        v12 = *(v13 + 16);
+        goto LABEL_9;
+      }
+    }
+
+    goto LABEL_11;
+  }
+
+  v7 = *(a1 + 32);
+  if (!v7)
+  {
+    goto LABEL_12;
+  }
+
+  v14 = v6;
+  (*(v7 + 16))(v7, 1);
+LABEL_11:
+  v6 = v14;
+LABEL_12:
+}
+
+- (void)presentPassWithAssociatedAccountIdentifier:(id)a3 animated:(BOOL)a4 completion:(id)a5
+{
+  v8 = a3;
+  v9 = a5;
+  v10 = v9;
+  if (v8)
+  {
+    v11 = [MEMORY[0x1E69B8400] sharedInstance];
+    v12[0] = MEMORY[0x1E69E9820];
+    v12[1] = 3221225472;
+    v12[2] = __93__PKPassGroupsViewController_presentPassWithAssociatedAccountIdentifier_animated_completion___block_invoke;
+    v12[3] = &unk_1E8024A70;
+    v12[4] = self;
+    v14 = a4;
+    v13 = v10;
+    [v11 accountWithIdentifier:v8 completion:v12];
+  }
+
+  else if (v9)
+  {
+    (*(v9 + 2))(v9, 1, 0);
+  }
+}
+
+void __93__PKPassGroupsViewController_presentPassWithAssociatedAccountIdentifier_animated_completion___block_invoke(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  v7[0] = MEMORY[0x1E69E9820];
+  v7[1] = 3221225472;
+  v7[2] = __93__PKPassGroupsViewController_presentPassWithAssociatedAccountIdentifier_animated_completion___block_invoke_2;
+  v7[3] = &unk_1E8024548;
+  v4 = *(a1 + 32);
+  v5 = *(a1 + 40);
+  v8 = v3;
+  v9 = v4;
+  v11 = *(a1 + 48);
+  v10 = v5;
+  v6 = v3;
+  dispatch_async(MEMORY[0x1E69E96A0], v7);
+}
+
+void __93__PKPassGroupsViewController_presentPassWithAssociatedAccountIdentifier_animated_completion___block_invoke_2(uint64_t a1)
+{
+  v2 = *(a1 + 32);
+  if (v2)
+  {
+    v3 = [v2 associatedPassUniqueID];
+    if (v3)
+    {
+      v4 = *(a1 + 56);
+      v9[0] = MEMORY[0x1E69E9820];
+      v9[1] = 3221225472;
+      v9[2] = __93__PKPassGroupsViewController_presentPassWithAssociatedAccountIdentifier_animated_completion___block_invoke_3;
+      v9[3] = &unk_1E80109C0;
+      v5 = *(a1 + 40);
+      v11 = *(a1 + 48);
+      v10 = v3;
+      [v5 presentPassWithUniqueID:v10 animated:v4 completionHandler:v9];
+    }
+
+    else
+    {
+      v8 = *(a1 + 48);
+      if (v8)
+      {
+        (*(v8 + 16))(v8, 1, 0);
+      }
+    }
+  }
+
+  else
+  {
+    v6 = *(a1 + 48);
+    if (v6)
+    {
+      v7 = *(v6 + 16);
+
+      v7();
+    }
+  }
+}
+
+uint64_t __93__PKPassGroupsViewController_presentPassWithAssociatedAccountIdentifier_animated_completion___block_invoke_3(uint64_t a1, uint64_t a2)
+{
+  result = *(a1 + 40);
+  if (result)
+  {
+    return (*(result + 16))(result, a2, *(a1 + 32));
+  }
+
+  return result;
+}
+
+- (void)presentPassDetailsAssociatedWithVirtualCardID:(id)a3 animated:(BOOL)a4 completion:(id)a5
+{
+  v8 = a5;
+  v9 = MEMORY[0x1E69B8400];
+  v10 = a3;
+  v11 = [v9 sharedInstance];
+  v13[0] = MEMORY[0x1E69E9820];
+  v13[1] = 3221225472;
+  v13[2] = __96__PKPassGroupsViewController_presentPassDetailsAssociatedWithVirtualCardID_animated_completion___block_invoke;
+  v13[3] = &unk_1E8024A70;
+  v15 = a4;
+  v13[4] = self;
+  v14 = v8;
+  v12 = v8;
+  [v11 accountWithVirtualCardIdentifier:v10 completion:v13];
+}
+
+void __96__PKPassGroupsViewController_presentPassDetailsAssociatedWithVirtualCardID_animated_completion___block_invoke(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  v7[0] = MEMORY[0x1E69E9820];
+  v7[1] = 3221225472;
+  v7[2] = __96__PKPassGroupsViewController_presentPassDetailsAssociatedWithVirtualCardID_animated_completion___block_invoke_2;
+  v7[3] = &unk_1E8024548;
+  v4 = *(a1 + 32);
+  v5 = *(a1 + 40);
+  v8 = v3;
+  v9 = v4;
+  v11 = *(a1 + 48);
+  v10 = v5;
+  v6 = v3;
+  dispatch_async(MEMORY[0x1E69E96A0], v7);
+}
+
+void __96__PKPassGroupsViewController_presentPassDetailsAssociatedWithVirtualCardID_animated_completion___block_invoke_2(uint64_t a1)
+{
+  v2 = *(a1 + 32);
+  if (v2)
+  {
+    v3 = [v2 associatedPassUniqueID];
+    if (v3)
+    {
+      v4 = *(a1 + 40);
+      v5 = *(a1 + 56);
+      v9[0] = MEMORY[0x1E69E9820];
+      v9[1] = 3221225472;
+      v9[2] = __96__PKPassGroupsViewController_presentPassDetailsAssociatedWithVirtualCardID_animated_completion___block_invoke_3;
+      v9[3] = &unk_1E8016CF8;
+      v9[4] = v4;
+      v10 = *(a1 + 32);
+      v12 = *(a1 + 56);
+      v11 = *(a1 + 48);
+      [v4 presentPassDetailsWithUniqueID:v3 animated:v5 completionHandler:v9];
+    }
+
+    else
+    {
+      v8 = *(a1 + 48);
+      if (v8)
+      {
+        (*(v8 + 16))(v8, 1);
+      }
+    }
+  }
+
+  else
+  {
+    v6 = *(a1 + 48);
+    if (v6)
+    {
+      v7 = *(v6 + 16);
+
+      v7();
+    }
+  }
+}
+
+uint64_t __96__PKPassGroupsViewController_presentPassDetailsAssociatedWithVirtualCardID_animated_completion___block_invoke_3(uint64_t a1, int a2)
+{
+  if (a2 && PKSecureElementIsAvailable())
+  {
+    v3 = *(a1 + 32);
+    v4 = [v3 _appleCardUpsellAlertWithAccount:*(a1 + 40)];
+    [v3 presentViewController:v4 animated:*(a1 + 56) completion:0];
+  }
+
+  result = *(a1 + 48);
+  if (result)
+  {
+    v6 = *(result + 16);
+
+    return v6();
+  }
+
+  return result;
+}
+
+- (void)presentSpendingSummaryForPassUniqueIdentifier:(id)a3 type:(unint64_t)a4 categorization:(unint64_t)a5 unit:(unint64_t)a6 animated:(BOOL)a7 completion:(id)a8
+{
+  v8 = a7;
+  v14 = a8;
+  v15 = a3;
+  v16 = objc_alloc_init(PKPassPresentationContext);
+  [(PKPassPresentationContext *)v16 setLimitServerLoad:1];
+  v18[0] = MEMORY[0x1E69E9820];
+  v18[1] = 3221225472;
+  v18[2] = __121__PKPassGroupsViewController_presentSpendingSummaryForPassUniqueIdentifier_type_categorization_unit_animated_completion___block_invoke;
+  v18[3] = &unk_1E8024BB0;
+  v20 = a4;
+  v21 = a5;
+  v22 = a6;
+  v18[4] = self;
+  v19 = v14;
+  v17 = v14;
+  [(PKPassGroupsViewController *)self presentPassWithUniqueID:v15 context:v16 animated:v8 completionHandler:v18];
+}
+
+void __121__PKPassGroupsViewController_presentSpendingSummaryForPassUniqueIdentifier_type_categorization_unit_animated_completion___block_invoke(uint64_t a1, char a2)
+{
+  if (a2)
+  {
+    v3 = *(a1 + 40);
+    if (v3)
+    {
+      v4 = *(v3 + 16);
+
+      v4();
+    }
+  }
+
+  else
+  {
+    v5 = [*(a1 + 32) _dashboardPassGroupViewController];
+    v6 = v5;
+    if (v5 && ([v5 navigationController], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isBeingDismissed"), v7, (v8 & 1) == 0))
+    {
+      v10 = *(a1 + 48);
+      v11 = *(a1 + 56);
+      v12 = *(a1 + 64);
+      v13[0] = MEMORY[0x1E69E9820];
+      v13[1] = 3221225472;
+      v13[2] = __121__PKPassGroupsViewController_presentSpendingSummaryForPassUniqueIdentifier_type_categorization_unit_animated_completion___block_invoke_2;
+      v13[3] = &unk_1E8010B50;
+      v14 = *(a1 + 40);
+      [(PKDashboardPassGroupViewController *)v6 presentSpendingSummaryWithType:v10 categorization:v11 unit:v12 completion:v13];
+    }
+
+    else
+    {
+      v9 = *(a1 + 40);
+      if (v9)
+      {
+        (*(v9 + 16))(v9, 1);
+      }
+    }
+  }
+}
+
+uint64_t __121__PKPassGroupsViewController_presentSpendingSummaryForPassUniqueIdentifier_type_categorization_unit_animated_completion___block_invoke_2(uint64_t a1)
+{
+  result = *(a1 + 32);
+  if (result)
+  {
+    return (*(result + 16))(result, 0);
+  }
+
+  return result;
+}
+
+- (void)presentBalanceDetailsForPassUniqueIdentifier:(id)a3 animated:(BOOL)a4 completion:(id)a5
+{
+  v5 = a4;
+  v8 = a5;
+  v9 = a3;
+  v10 = objc_alloc_init(PKPassPresentationContext);
+  [(PKPassPresentationContext *)v10 setLimitServerLoad:1];
+  v12[0] = MEMORY[0x1E69E9820];
+  v12[1] = 3221225472;
+  v12[2] = __95__PKPassGroupsViewController_presentBalanceDetailsForPassUniqueIdentifier_animated_completion___block_invoke;
+  v12[3] = &unk_1E80158C0;
+  v12[4] = self;
+  v13 = v8;
+  v11 = v8;
+  [(PKPassGroupsViewController *)self presentPassWithUniqueID:v9 context:v10 animated:v5 completionHandler:v12];
+}
+
+void __95__PKPassGroupsViewController_presentBalanceDetailsForPassUniqueIdentifier_animated_completion___block_invoke(uint64_t a1, char a2)
+{
+  if (a2)
+  {
+    v3 = *(a1 + 40);
+    if (v3)
+    {
+      v4 = *(v3 + 16);
+
+      v4();
+    }
+  }
+
+  else
+  {
+    v5 = [*(a1 + 32) _dashboardPassGroupViewController];
+    v6 = v5;
+    if (v5 && ([v5 navigationController], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isBeingDismissed"), v7, (v8 & 1) == 0))
+    {
+      v10[0] = MEMORY[0x1E69E9820];
+      v10[1] = 3221225472;
+      v10[2] = __95__PKPassGroupsViewController_presentBalanceDetailsForPassUniqueIdentifier_animated_completion___block_invoke_2;
+      v10[3] = &unk_1E8010B50;
+      v11 = *(a1 + 40);
+      [(PKDashboardPassGroupViewController *)v6 presentBalanceDetailsWithCompletion:v10];
+    }
+
+    else
+    {
+      v9 = *(a1 + 40);
+      if (v9)
+      {
+        (*(v9 + 16))(v9, 1);
+      }
+    }
+  }
+}
+
+uint64_t __95__PKPassGroupsViewController_presentBalanceDetailsForPassUniqueIdentifier_animated_completion___block_invoke_2(uint64_t a1)
+{
+  result = *(a1 + 32);
+  if (result)
+  {
+    return (*(result + 16))(result, 0);
+  }
+
+  return result;
+}
+
+- (void)showStatementForIdentifier:(id)a3 passUniqueIdentifier:(id)a4 animated:(BOOL)a5 completion:(id)a6
+{
+  v10 = a3;
+  v11 = a4;
+  v12 = a6;
+  v13 = objc_alloc_init(PKPassPresentationContext);
+  [(PKPassPresentationContext *)v13 setLimitServerLoad:1];
+  objc_initWeak(&location, self);
+  v14 = [MEMORY[0x1E69B8400] sharedInstance];
+  v19[0] = MEMORY[0x1E69E9820];
+  v19[1] = 3221225472;
+  v19[2] = __98__PKPassGroupsViewController_showStatementForIdentifier_passUniqueIdentifier_animated_completion___block_invoke;
+  v19[3] = &unk_1E8024C78;
+  v15 = v12;
+  v23 = v15;
+  v16 = v10;
+  v20 = v16;
+  objc_copyWeak(&v24, &location);
+  v17 = v11;
+  v21 = v17;
+  v18 = v13;
+  v22 = v18;
+  v25 = a5;
+  [v14 accountForPassWithUniqueID:v17 completion:v19];
+
+  objc_destroyWeak(&v24);
+  objc_destroyWeak(&location);
+}
+
+void __98__PKPassGroupsViewController_showStatementForIdentifier_passUniqueIdentifier_animated_completion___block_invoke(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  if (v3)
+  {
+    v4 = [MEMORY[0x1E69B8400] sharedInstance];
+    v5 = [v3 accountIdentifier];
+    v7[0] = MEMORY[0x1E69E9820];
+    v7[1] = 3221225472;
+    v7[2] = __98__PKPassGroupsViewController_showStatementForIdentifier_passUniqueIdentifier_animated_completion___block_invoke_2;
+    v7[3] = &unk_1E8024C50;
+    v8 = *(a1 + 32);
+    objc_copyWeak(&v12, (a1 + 64));
+    v11 = *(a1 + 56);
+    v9 = *(a1 + 40);
+    v10 = *(a1 + 48);
+    v13 = *(a1 + 72);
+    [v4 creditStatementsForAccountIdentifier:v5 completion:v7];
+
+    objc_destroyWeak(&v12);
+  }
+
+  else
+  {
+    v6 = *(a1 + 56);
+    if (v6)
+    {
+      (*(v6 + 16))(v6, 1);
+    }
+  }
+}
+
+void __98__PKPassGroupsViewController_showStatementForIdentifier_passUniqueIdentifier_animated_completion___block_invoke_2(uint64_t a1, void *a2, void *a3)
+{
+  v5 = a2;
+  v6 = a3;
+  v19 = 0;
+  v20 = &v19;
+  v21 = 0x3032000000;
+  v22 = __Block_byref_object_copy__65;
+  v23 = __Block_byref_object_dispose__65;
+  v24 = 0;
+  v16[0] = MEMORY[0x1E69E9820];
+  v16[1] = 3221225472;
+  v16[2] = __98__PKPassGroupsViewController_showStatementForIdentifier_passUniqueIdentifier_animated_completion___block_invoke_3;
+  v16[3] = &unk_1E8024BD8;
+  v17 = *(a1 + 32);
+  v18 = &v19;
+  [v5 enumerateObjectsUsingBlock:v16];
+  if (v20[5])
+  {
+    v9[0] = MEMORY[0x1E69E9820];
+    v9[1] = 3221225472;
+    v9[2] = __98__PKPassGroupsViewController_showStatementForIdentifier_passUniqueIdentifier_animated_completion___block_invoke_4;
+    v9[3] = &unk_1E8024C28;
+    objc_copyWeak(&v14, (a1 + 64));
+    v12 = *(a1 + 56);
+    v10 = *(a1 + 40);
+    v7 = *(a1 + 48);
+    v15 = *(a1 + 72);
+    v11 = v7;
+    v13 = &v19;
+    dispatch_async(MEMORY[0x1E69E96A0], v9);
+
+    objc_destroyWeak(&v14);
+  }
+
+  else
+  {
+    v8 = *(a1 + 56);
+    if (v8)
+    {
+      (*(v8 + 16))(v8, 1);
+    }
+  }
+
+  _Block_object_dispose(&v19, 8);
+}
+
+void __98__PKPassGroupsViewController_showStatementForIdentifier_passUniqueIdentifier_animated_completion___block_invoke_3(uint64_t a1, void *a2)
+{
+  v11 = a2;
+  v3 = [v11 identifier];
+  v4 = *(a1 + 32);
+  v5 = v3;
+  v6 = v4;
+  v7 = v6;
+  if (v5 == v6)
+  {
+
+    goto LABEL_7;
+  }
+
+  if (!v5 || !v6)
+  {
+
+    goto LABEL_9;
+  }
+
+  v8 = [v5 isEqualToString:v6];
+
+  if (v8)
+  {
+LABEL_7:
+    v9 = *(*(a1 + 40) + 8);
+    v10 = v11;
+    v5 = *(v9 + 40);
+    *(v9 + 40) = v10;
+LABEL_9:
+  }
+}
+
+void __98__PKPassGroupsViewController_showStatementForIdentifier_passUniqueIdentifier_animated_completion___block_invoke_4(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 64));
+  if (WeakRetained)
+  {
+    v3 = *(a1 + 32);
+    v4 = *(a1 + 40);
+    v5 = *(a1 + 72);
+    v9[0] = MEMORY[0x1E69E9820];
+    v9[1] = 3221225472;
+    v9[2] = __98__PKPassGroupsViewController_showStatementForIdentifier_passUniqueIdentifier_animated_completion___block_invoke_5;
+    v9[3] = &unk_1E8024C00;
+    objc_copyWeak(&v12, (a1 + 64));
+    v6 = *(a1 + 48);
+    v7 = *(a1 + 56);
+    v10 = v6;
+    v11 = v7;
+    [WeakRetained presentPassWithUniqueID:v3 context:v4 animated:v5 completionHandler:v9];
+
+    objc_destroyWeak(&v12);
+  }
+
+  else
+  {
+    v8 = *(a1 + 48);
+    if (v8)
+    {
+      (*(v8 + 16))(v8, 1);
+    }
+  }
+}
+
+void __98__PKPassGroupsViewController_showStatementForIdentifier_passUniqueIdentifier_animated_completion___block_invoke_5(uint64_t a1, char a2)
+{
+  if (a2)
+  {
+    v3 = *(a1 + 32);
+    if (v3)
+    {
+      v4 = *(v3 + 16);
+
+      v4();
+    }
+  }
+
+  else
+  {
+    WeakRetained = objc_loadWeakRetained((a1 + 48));
+    v6 = WeakRetained;
+    if (WeakRetained)
+    {
+      v7 = [WeakRetained _dashboardPassGroupViewController];
+      v8 = v7;
+      if (v7 && ([v7 navigationController], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isBeingDismissed"), v9, (v10 & 1) == 0))
+      {
+        v13 = *(*(*(a1 + 40) + 8) + 40);
+        v14[0] = MEMORY[0x1E69E9820];
+        v14[1] = 3221225472;
+        v14[2] = __98__PKPassGroupsViewController_showStatementForIdentifier_passUniqueIdentifier_animated_completion___block_invoke_6;
+        v14[3] = &unk_1E8010B50;
+        v15 = *(a1 + 32);
+        [(PKDashboardPassGroupViewController *)v8 showStatement:v13 completion:v14];
+      }
+
+      else
+      {
+        v11 = *(a1 + 32);
+        if (v11)
+        {
+          (*(v11 + 16))(v11, 1);
+        }
+      }
+    }
+
+    else
+    {
+      v12 = *(a1 + 32);
+      if (v12)
+      {
+        (*(v12 + 16))(v12, 1);
+      }
+    }
+  }
+}
+
+uint64_t __98__PKPassGroupsViewController_showStatementForIdentifier_passUniqueIdentifier_animated_completion___block_invoke_6(uint64_t a1)
+{
+  result = *(a1 + 32);
+  if (result)
+  {
+    return (*(result + 16))(result, 0);
+  }
+
+  return result;
+}
+
+- (void)presentDailyCashForPassUniqueIdentifier:(id)a3 dateComponents:(id)a4 redemptionType:(unint64_t)a5 animated:(BOOL)a6 completion:(id)a7
+{
+  v8 = a6;
+  v12 = a3;
+  v13 = a4;
+  v14 = a7;
+  if (a5 >= 3)
+  {
+    if (a5 == 3)
+    {
+      objc_initWeak(&location, self);
+      v16[0] = MEMORY[0x1E69E9820];
+      v16[1] = 3221225472;
+      v16[2] = __120__PKPassGroupsViewController_presentDailyCashForPassUniqueIdentifier_dateComponents_redemptionType_animated_completion___block_invoke_3;
+      v16[3] = &unk_1E8024CF0;
+      v16[4] = self;
+      objc_copyWeak(v19, &location);
+      v18 = v14;
+      v17 = v13;
+      v19[1] = 3;
+      dispatch_async(MEMORY[0x1E69E96A0], v16);
+
+      objc_destroyWeak(v19);
+      objc_destroyWeak(&location);
+    }
+  }
+
+  else
+  {
+    v15 = objc_alloc_init(PKPassPresentationContext);
+    [(PKPassPresentationContext *)v15 setLimitServerLoad:1];
+    v21[0] = MEMORY[0x1E69E9820];
+    v21[1] = 3221225472;
+    v21[2] = __120__PKPassGroupsViewController_presentDailyCashForPassUniqueIdentifier_dateComponents_redemptionType_animated_completion___block_invoke;
+    v21[3] = &unk_1E8024CA0;
+    v21[4] = self;
+    v22 = v13;
+    v24 = a5;
+    v23 = v14;
+    [(PKPassGroupsViewController *)self presentPassWithUniqueID:v12 context:v15 animated:v8 completionHandler:v21];
+  }
+}
+
+void __120__PKPassGroupsViewController_presentDailyCashForPassUniqueIdentifier_dateComponents_redemptionType_animated_completion___block_invoke(uint64_t a1, char a2)
+{
+  if (a2)
+  {
+    v3 = *(a1 + 48);
+    if (v3)
+    {
+      v4 = *(v3 + 16);
+
+      v4();
+    }
+  }
+
+  else
+  {
+    v5 = [*(a1 + 32) _dashboardPassGroupViewController];
+    v6 = v5;
+    if (v5 && ([v5 navigationController], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isBeingDismissed"), v7, (v8 & 1) == 0))
+    {
+      v10 = *(a1 + 56);
+      v12[0] = MEMORY[0x1E69E9820];
+      v12[1] = 3221225472;
+      v12[2] = __120__PKPassGroupsViewController_presentDailyCashForPassUniqueIdentifier_dateComponents_redemptionType_animated_completion___block_invoke_2;
+      v12[3] = &unk_1E8010B50;
+      v11 = *(a1 + 40);
+      v13 = *(a1 + 48);
+      [(PKDashboardPassGroupViewController *)v6 presentDailyCashForDateComponents:v11 redemptionType:v10 completion:v12];
+    }
+
+    else
+    {
+      v9 = *(a1 + 48);
+      if (v9)
+      {
+        (*(v9 + 16))(v9, 1);
+      }
+    }
+  }
+}
+
+uint64_t __120__PKPassGroupsViewController_presentDailyCashForPassUniqueIdentifier_dateComponents_redemptionType_animated_completion___block_invoke_2(uint64_t a1)
+{
+  result = *(a1 + 32);
+  if (result)
+  {
+    return (*(result + 16))(result, 0);
+  }
+
+  return result;
+}
+
+void __120__PKPassGroupsViewController_presentDailyCashForPassUniqueIdentifier_dateComponents_redemptionType_animated_completion___block_invoke_3(uint64_t a1)
+{
+  v2 = *(a1 + 32);
+  v5[0] = MEMORY[0x1E69E9820];
+  v5[1] = 3221225472;
+  v5[2] = __120__PKPassGroupsViewController_presentDailyCashForPassUniqueIdentifier_dateComponents_redemptionType_animated_completion___block_invoke_4;
+  v5[3] = &unk_1E8024CC8;
+  objc_copyWeak(v8, (a1 + 56));
+  v7 = *(a1 + 48);
+  v3 = *(a1 + 40);
+  v4 = *(a1 + 64);
+  v6 = v3;
+  v8[1] = v4;
+  [v2 presentCreditPassAnimated:1 completion:v5];
+
+  objc_destroyWeak(v8);
+}
+
+void __120__PKPassGroupsViewController_presentDailyCashForPassUniqueIdentifier_dateComponents_redemptionType_animated_completion___block_invoke_4(uint64_t a1, uint64_t a2)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 48));
+  v5 = WeakRetained;
+  if ((a2 & 1) != 0 || !WeakRetained)
+  {
+    v9 = *(a1 + 40);
+    if (v9)
+    {
+      (*(v9 + 16))(v9, a2);
+    }
+  }
+
+  else
+  {
+    v6 = [WeakRetained _dashboardPassGroupViewController];
+    if (v6)
+    {
+      v7 = *(a1 + 56);
+      v11[0] = MEMORY[0x1E69E9820];
+      v11[1] = 3221225472;
+      v11[2] = __120__PKPassGroupsViewController_presentDailyCashForPassUniqueIdentifier_dateComponents_redemptionType_animated_completion___block_invoke_5;
+      v11[3] = &unk_1E8010B50;
+      v8 = *(a1 + 32);
+      v12 = *(a1 + 40);
+      [(PKDashboardPassGroupViewController *)v6 presentDailyCashForDateComponents:v8 redemptionType:v7 completion:v11];
+    }
+
+    else
+    {
+      v10 = *(a1 + 40);
+      if (v10)
+      {
+        (*(v10 + 16))(v10, 1);
+      }
+    }
+  }
+}
+
+uint64_t __120__PKPassGroupsViewController_presentDailyCashForPassUniqueIdentifier_dateComponents_redemptionType_animated_completion___block_invoke_5(uint64_t a1)
+{
+  result = *(a1 + 32);
+  if (result)
+  {
+    return (*(result + 16))(result, 0);
+  }
+
+  return result;
+}
+
+- (void)presentRewardsHubForPassUniqueIdentifier:(id)a3 animated:(BOOL)a4 completion:(id)a5
+{
+  v5 = a4;
+  v8 = a5;
+  v9 = a3;
+  v10 = objc_alloc_init(PKPassPresentationContext);
+  [(PKPassPresentationContext *)v10 setLimitServerLoad:1];
+  v12[0] = MEMORY[0x1E69E9820];
+  v12[1] = 3221225472;
+  v12[2] = __91__PKPassGroupsViewController_presentRewardsHubForPassUniqueIdentifier_animated_completion___block_invoke;
+  v12[3] = &unk_1E80158C0;
+  v12[4] = self;
+  v13 = v8;
+  v11 = v8;
+  [(PKPassGroupsViewController *)self presentPassWithUniqueID:v9 context:v10 animated:v5 completionHandler:v12];
+}
+
+void __91__PKPassGroupsViewController_presentRewardsHubForPassUniqueIdentifier_animated_completion___block_invoke(uint64_t a1, char a2)
+{
+  if (a2)
+  {
+    v3 = *(a1 + 40);
+    if (v3)
+    {
+      v4 = *(v3 + 16);
+
+      v4();
+    }
+  }
+
+  else
+  {
+    v5 = [*(a1 + 32) _dashboardPassGroupViewController];
+    v6 = v5;
+    if (v5 && ([v5 navigationController], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isBeingDismissed"), v7, (v8 & 1) == 0))
+    {
+      v10[0] = MEMORY[0x1E69E9820];
+      v10[1] = 3221225472;
+      v10[2] = __91__PKPassGroupsViewController_presentRewardsHubForPassUniqueIdentifier_animated_completion___block_invoke_2;
+      v10[3] = &unk_1E8010B50;
+      v11 = *(a1 + 40);
+      [(PKDashboardPassGroupViewController *)v6 presentRewardsHubWithCompletion:v10];
+    }
+
+    else
+    {
+      v9 = *(a1 + 40);
+      if (v9)
+      {
+        (*(v9 + 16))(v9, 1);
+      }
+    }
+  }
+}
+
+uint64_t __91__PKPassGroupsViewController_presentRewardsHubForPassUniqueIdentifier_animated_completion___block_invoke_2(uint64_t a1)
+{
+  result = *(a1 + 32);
+  if (result)
+  {
+    return (*(result + 16))(result, 0);
+  }
+
+  return result;
+}
+
+- (void)presentAccountPromotionForPassUniqueIdentifier:(id)a3 programIdentifier:(id)a4 animated:(BOOL)a5 completion:(id)a6
+{
+  v7 = a5;
+  v10 = a4;
+  v11 = a6;
+  v12 = a3;
+  v13 = objc_alloc_init(PKPassPresentationContext);
+  [(PKPassPresentationContext *)v13 setLimitServerLoad:1];
+  v16[0] = MEMORY[0x1E69E9820];
+  v16[1] = 3221225472;
+  v16[2] = __115__PKPassGroupsViewController_presentAccountPromotionForPassUniqueIdentifier_programIdentifier_animated_completion___block_invoke;
+  v16[3] = &unk_1E8019A98;
+  v16[4] = self;
+  v17 = v10;
+  v18 = v11;
+  v14 = v11;
+  v15 = v10;
+  [(PKPassGroupsViewController *)self presentPassWithUniqueID:v12 context:v13 animated:v7 completionHandler:v16];
+}
+
+void __115__PKPassGroupsViewController_presentAccountPromotionForPassUniqueIdentifier_programIdentifier_animated_completion___block_invoke(uint64_t a1, char a2)
+{
+  if (a2)
+  {
+    v3 = *(a1 + 48);
+    if (v3)
+    {
+      v4 = *(v3 + 16);
+
+      v4();
+    }
+  }
+
+  else
+  {
+    v5 = [*(a1 + 32) _dashboardPassGroupViewController];
+    v6 = v5;
+    if (v5 && ([v5 navigationController], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isBeingDismissed"), v7, (v8 & 1) == 0))
+    {
+      v11[0] = MEMORY[0x1E69E9820];
+      v11[1] = 3221225472;
+      v11[2] = __115__PKPassGroupsViewController_presentAccountPromotionForPassUniqueIdentifier_programIdentifier_animated_completion___block_invoke_2;
+      v11[3] = &unk_1E8010B50;
+      v10 = *(a1 + 40);
+      v12 = *(a1 + 48);
+      [(PKDashboardPassGroupViewController *)v6 presentAccountPromotionWithProgramIdentifier:v10 completion:v11];
+    }
+
+    else
+    {
+      v9 = *(a1 + 48);
+      if (v9)
+      {
+        (*(v9 + 16))(v9, 1);
+      }
+    }
+  }
+}
+
+uint64_t __115__PKPassGroupsViewController_presentAccountPromotionForPassUniqueIdentifier_programIdentifier_animated_completion___block_invoke_2(uint64_t a1)
+{
+  result = *(a1 + 32);
+  if (result)
+  {
+    return (*(result + 16))(result, 0);
+  }
+
+  return result;
+}
+
+- (void)presentRewardsHubMerchantsForPassUniqueIdentifier:(id)a3 privateIdentifier:(id)a4 animated:(BOOL)a5 completion:(id)a6
+{
+  v7 = a5;
+  v10 = a4;
+  v11 = a6;
+  v12 = a3;
+  v13 = objc_alloc_init(PKPassPresentationContext);
+  [(PKPassPresentationContext *)v13 setLimitServerLoad:1];
+  v16[0] = MEMORY[0x1E69E9820];
+  v16[1] = 3221225472;
+  v16[2] = __118__PKPassGroupsViewController_presentRewardsHubMerchantsForPassUniqueIdentifier_privateIdentifier_animated_completion___block_invoke;
+  v16[3] = &unk_1E8019A98;
+  v16[4] = self;
+  v17 = v10;
+  v18 = v11;
+  v14 = v11;
+  v15 = v10;
+  [(PKPassGroupsViewController *)self presentPassWithUniqueID:v12 context:v13 animated:v7 completionHandler:v16];
+}
+
+void __118__PKPassGroupsViewController_presentRewardsHubMerchantsForPassUniqueIdentifier_privateIdentifier_animated_completion___block_invoke(uint64_t a1, char a2)
+{
+  if (a2)
+  {
+    v3 = *(a1 + 48);
+    if (v3)
+    {
+      v4 = *(v3 + 16);
+
+      v4();
+    }
+  }
+
+  else
+  {
+    v5 = [*(a1 + 32) _dashboardPassGroupViewController];
+    v6 = v5;
+    if (v5 && ([v5 navigationController], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isBeingDismissed"), v7, (v8 & 1) == 0))
+    {
+      v11[0] = MEMORY[0x1E69E9820];
+      v11[1] = 3221225472;
+      v11[2] = __118__PKPassGroupsViewController_presentRewardsHubMerchantsForPassUniqueIdentifier_privateIdentifier_animated_completion___block_invoke_2;
+      v11[3] = &unk_1E8010B50;
+      v10 = *(a1 + 40);
+      v12 = *(a1 + 48);
+      [(PKDashboardPassGroupViewController *)v6 presentRewardsHubMerchantsWithPrivateIdentifier:v10 completion:v11];
+    }
+
+    else
+    {
+      v9 = *(a1 + 48);
+      if (v9)
+      {
+        (*(v9 + 16))(v9, 1);
+      }
+    }
+  }
+}
+
+uint64_t __118__PKPassGroupsViewController_presentRewardsHubMerchantsForPassUniqueIdentifier_privateIdentifier_animated_completion___block_invoke_2(uint64_t a1)
+{
+  result = *(a1 + 32);
+  if (result)
+  {
+    return (*(result + 16))(result, 0);
+  }
+
+  return result;
+}
+
+- (int64_t)_cardSizeTypeForArticleLayouts:(id)a3
+{
+  v4 = a3;
+  if ([(PKDiscoveryDataSource *)self->_discoveryDataSource isMiniCardsAllowed])
+  {
+    if (v4)
+    {
+      v5 = v4;
+    }
+
+    else
+    {
+      v5 = [(PKDiscoveryDataSource *)self->_discoveryDataSource articleLayouts];
+    }
+
+    v7 = v5;
+    v8 = [v5 pk_containsObjectPassingTest:&__block_literal_global_271_0];
+    v6 = (PKDiscoveryForceIgnoreCEOCards() & 1) != 0 || (v8 & 1) == 0 && ![(PKPassGroupStackView *)self->_groupStackView discoveryGalleryHasWelcomeCards];
+  }
+
+  else
+  {
+    v6 = 0;
+  }
+
+  return v6;
+}
+
+uint64_t __61__PKPassGroupsViewController__cardSizeTypeForArticleLayouts___block_invoke(uint64_t a1, void *a2)
+{
+  v2 = a2;
+  if ([v2 entitledToForceLargeCard])
+  {
+    v3 = [v2 hasHitMaxLargeViewCount] ^ 1;
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  return v3;
+}
+
+- (void)presentDiscoveryArticleForItemWithIdentifier:(id)a3 referrerIdentifier:(id)a4 animated:(BOOL)a5 completion:(id)a6
+{
+  v7 = a5;
+  v36[1] = *MEMORY[0x1E69E9840];
+  v10 = a3;
+  v11 = a6;
+  discoveryDataSource = self->_discoveryDataSource;
+  v13 = a4;
+  v14 = [(PKDiscoveryDataSource *)discoveryDataSource cachedDiscoveryArticleLayoutForItemWithIdentifier:v10];
+  v15 = v14;
+  v16 = v14 == 0;
+  if (v14)
+  {
+    v36[0] = v14;
+    v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:1];
+    v18 = [(PKPassGroupsViewController *)self _cardSizeTypeForArticleLayouts:v17];
+  }
+
+  else
+  {
+    v18 = 2;
+  }
+
+  v19 = [[PKDiscoveryArticleViewController alloc] initWithArticleLayout:v15 referrerIdentifier:v13 cardSize:v18];
+
+  v20 = [(PKDiscoveryArticleViewController *)v19 defaultZoomTransitionForDiscoveryCardView:0];
+  v21 = [[PKNavigationController alloc] initWithRootViewController:v19];
+  [(PKNavigationController *)v21 setModalPresentationStyle:0];
+  [(PKNavigationController *)v21 setPreferredTransition:v20];
+  v31[0] = MEMORY[0x1E69E9820];
+  v31[1] = 3221225472;
+  v31[2] = __114__PKPassGroupsViewController_presentDiscoveryArticleForItemWithIdentifier_referrerIdentifier_animated_completion___block_invoke;
+  v31[3] = &unk_1E8024D38;
+  v31[4] = self;
+  v22 = v21;
+  v32 = v22;
+  v34 = v7;
+  v35 = v16;
+  v23 = v11;
+  v33 = v23;
+  [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:4 animated:v7 performAction:v31];
+  if (!v15)
+  {
+    v24 = self->_discoveryDataSource;
+    v25[0] = MEMORY[0x1E69E9820];
+    v25[1] = 3221225472;
+    v25[2] = __114__PKPassGroupsViewController_presentDiscoveryArticleForItemWithIdentifier_referrerIdentifier_animated_completion___block_invoke_3;
+    v25[3] = &unk_1E8024D88;
+    v25[4] = self;
+    v26 = v19;
+    v30 = v7;
+    v27 = v10;
+    v28 = v22;
+    v29 = v23;
+    [(PKDiscoveryDataSource *)v24 discoveryArticleLayoutForItemWithIdentifier:v27 completion:v25];
+  }
+}
+
+void __114__PKPassGroupsViewController_presentDiscoveryArticleForItemWithIdentifier_referrerIdentifier_animated_completion___block_invoke(uint64_t a1)
+{
+  v2 = [*(a1 + 32) pkui_frontMostViewController];
+  v3 = *(a1 + 56);
+  v5[0] = MEMORY[0x1E69E9820];
+  v5[1] = 3221225472;
+  v5[2] = __114__PKPassGroupsViewController_presentDiscoveryArticleForItemWithIdentifier_referrerIdentifier_animated_completion___block_invoke_2;
+  v5[3] = &unk_1E8010FA8;
+  v7 = *(a1 + 57);
+  v4 = *(a1 + 40);
+  v6 = *(a1 + 48);
+  [v2 presentViewController:v4 animated:v3 completion:v5];
+}
+
+uint64_t __114__PKPassGroupsViewController_presentDiscoveryArticleForItemWithIdentifier_referrerIdentifier_animated_completion___block_invoke_2(uint64_t result)
+{
+  if ((*(result + 40) & 1) == 0)
+  {
+    result = *(result + 32);
+    if (result)
+    {
+      return (*(result + 16))();
+    }
+  }
+
+  return result;
+}
+
+void __114__PKPassGroupsViewController_presentDiscoveryArticleForItemWithIdentifier_referrerIdentifier_animated_completion___block_invoke_3(uint64_t a1, void *a2, void *a3)
+{
+  v5 = a2;
+  v6 = a3;
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __114__PKPassGroupsViewController_presentDiscoveryArticleForItemWithIdentifier_referrerIdentifier_animated_completion___block_invoke_4;
+  block[3] = &unk_1E8024D60;
+  v15 = v6;
+  v16 = v5;
+  v13 = *(a1 + 32);
+  v7 = *(&v13 + 1);
+  v20 = *(a1 + 72);
+  v8 = *(a1 + 48);
+  v9 = *(a1 + 56);
+  *&v10 = v8;
+  *(&v10 + 1) = v9;
+  v17 = v13;
+  v18 = v10;
+  v19 = *(a1 + 64);
+  v11 = v5;
+  v12 = v6;
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+}
+
+uint64_t __114__PKPassGroupsViewController_presentDiscoveryArticleForItemWithIdentifier_referrerIdentifier_animated_completion___block_invoke_4(uint64_t a1)
+{
+  v24[1] = *MEMORY[0x1E69E9840];
+  v2 = *(a1 + 32);
+  if (v2 || !*(a1 + 40))
+  {
+    v3 = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    {
+      v4 = *(a1 + 64);
+      *buf = 138412546;
+      v21 = v4;
+      v22 = 2112;
+      v23 = v2;
+      _os_log_impl(&dword_1BD026000, v3, OS_LOG_TYPE_DEFAULT, "Error presenting Discovery Article for itemIdentifier: %@ error: %@", buf, 0x16u);
+    }
+
+    v5 = PKLocalizedDiscoveryString(&cfstr_DiscoveryArtic_0.isa);
+    v6 = PKLocalizedPaymentString(&cfstr_GenericErrorMe.isa);
+    v7 = [*(a1 + 32) domain];
+    if ([v7 isEqualToString:*MEMORY[0x1E696A978]])
+    {
+      v8 = [*(a1 + 32) code];
+
+      if (v8 != -1009)
+      {
+LABEL_8:
+        v10 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v5 message:v6 preferredStyle:1];
+        v11 = MEMORY[0x1E69DC648];
+        v12 = PKLocalizedString(&cfstr_OkButtonTitle.isa);
+        v18[0] = MEMORY[0x1E69E9820];
+        v18[1] = 3221225472;
+        v18[2] = __114__PKPassGroupsViewController_presentDiscoveryArticleForItemWithIdentifier_referrerIdentifier_animated_completion___block_invoke_290;
+        v18[3] = &unk_1E80112E8;
+        v19 = *(a1 + 72);
+        v13 = [v11 actionWithTitle:v12 style:1 handler:v18];
+        [v10 addAction:v13];
+
+        [*(a1 + 56) setIsDownloading:0];
+        [*(a1 + 72) presentViewController:v10 animated:1 completion:0];
+
+        goto LABEL_11;
+      }
+
+      v9 = PKLocalizedDiscoveryString(&cfstr_DiscoveryArtic_1.isa);
+
+      PKLocalizedPaymentString(&cfstr_CouldNotConnec_0.isa);
+      v6 = v7 = v6;
+      v5 = v9;
+    }
+
+    goto LABEL_8;
+  }
+
+  v14 = *(a1 + 48);
+  v24[0] = *(a1 + 40);
+  v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
+  v16 = [v14 _cardSizeTypeForArticleLayouts:v15];
+
+  [*(a1 + 56) setArticleLayout:*(a1 + 40) cardSize:v16 animated:*(a1 + 88)];
+LABEL_11:
+  result = *(a1 + 80);
+  if (result)
+  {
+    return (*(result + 16))();
+  }
+
+  return result;
+}
+
+- (BOOL)presentSubcredentialPairingFlowIfPossibleWithConfig:(id)a3 animated:(BOOL)a4
+{
+  v4 = a4;
+  v33 = *MEMORY[0x1E69E9840];
+  v6 = a3;
+  v7 = [MEMORY[0x1E69B8EF8] sharedService];
+  v8 = [v7 targetDevice];
+  v9 = [v8 paymentWebService:v7 supportedRegionFeatureOfType:2];
+
+  if (v9)
+  {
+    v24 = self;
+    v25 = v6;
+    v23 = v4;
+    v10 = [v6 issuerIdentifier];
+    v26 = 0u;
+    v27 = 0u;
+    v28 = 0u;
+    v29 = 0u;
+    v11 = [v9 supportedTerminals];
+    v12 = [v11 countByEnumeratingWithState:&v26 objects:v32 count:16];
+    if (v12)
+    {
+      v13 = v12;
+      v14 = *v27;
+LABEL_4:
+      v15 = 0;
+      while (1)
+      {
+        if (*v27 != v14)
+        {
+          objc_enumerationMutation(v11);
+        }
+
+        v16 = *(*(&v26 + 1) + 8 * v15);
+        v17 = [v16 partnerIdentifier];
+        v18 = [v17 isEqualToString:v10];
+
+        if (v18)
+        {
+          break;
+        }
+
+        if (v13 == ++v15)
+        {
+          v13 = [v11 countByEnumeratingWithState:&v26 objects:v32 count:16];
+          if (v13)
+          {
+            goto LABEL_4;
+          }
+
+          goto LABEL_10;
+        }
+      }
+
+      v19 = v16;
+
+      if (!v19)
+      {
+        goto LABEL_14;
+      }
+
+      v6 = v25;
+      if ([(PKPassLibraryDataProvider *)v24->_passLibraryDataProvider canAddSecureElementPassWithConfiguration:v25])
+      {
+        [(PKPassGroupsViewController *)v24 _presentSubcredentialPairingFlowWithConfig:v25 animated:v23];
+        v20 = 1;
+        goto LABEL_23;
+      }
+
+      v21 = PKLogFacilityTypeGetObject();
+      if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+      {
+        *buf = 138412290;
+        v31 = v25;
+        _os_log_impl(&dword_1BD026000, v21, OS_LOG_TYPE_DEFAULT, "Unable to start provisioning flow with config: %@", buf, 0xCu);
+      }
+    }
+
+    else
+    {
+LABEL_10:
+
+LABEL_14:
+      v19 = PKLogFacilityTypeGetObject();
+      v6 = v25;
+      if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+      {
+        *buf = 138412290;
+        v31 = v10;
+        _os_log_impl(&dword_1BD026000, v19, OS_LOG_TYPE_DEFAULT, "Subcredential pairing flow not supported with issuer: %@", buf, 0xCu);
+      }
+    }
+
+    v20 = 0;
+LABEL_23:
+  }
+
+  else
+  {
+    v10 = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    {
+      *buf = 0;
+      _os_log_impl(&dword_1BD026000, v10, OS_LOG_TYPE_DEFAULT, "Subcredential pairing flow not supported in region!", buf, 2u);
+    }
+
+    v20 = 0;
+  }
+
+  return v20;
+}
+
+- (void)_presentSubcredentialPairingFlowWithConfig:(id)a3 animated:(BOOL)a4
+{
+  v6 = a3;
+  v8[0] = MEMORY[0x1E69E9820];
+  v8[1] = 3221225472;
+  v8[2] = __82__PKPassGroupsViewController__presentSubcredentialPairingFlowWithConfig_animated___block_invoke;
+  v8[3] = &unk_1E8013D60;
+  v8[4] = self;
+  v9 = v6;
+  v10 = a4;
+  v7 = v6;
+  [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:0 animated:1 performAction:v8];
+}
+
+void __82__PKPassGroupsViewController__presentSubcredentialPairingFlowWithConfig_animated___block_invoke(uint64_t a1)
+{
+  v2 = objc_alloc(MEMORY[0x1E69B8D48]);
+  v3 = [MEMORY[0x1E69B8EF8] sharedService];
+  v4 = [v2 initWithWebService:v3];
+
+  v5 = [objc_alloc(MEMORY[0x1E69B90E0]) initWithEnvironment:0 provisioningController:v4 groupsController:*(*(a1 + 32) + 1424)];
+  v6 = [[PKPaymentSetupDismissibleNavigationController alloc] initWithContext:0];
+  v11 = MEMORY[0x1E69E9820];
+  v12 = 3221225472;
+  v13 = __82__PKPassGroupsViewController__presentSubcredentialPairingFlowWithConfig_animated___block_invoke_2;
+  v14 = &unk_1E801ABD0;
+  v7 = *(a1 + 32);
+  v8 = *(a1 + 40);
+  v15 = v6;
+  v16 = v7;
+  v9 = v6;
+  [PKProvisioningFlowBridge startInAppFlowWithNavController:v9 context:v5 addCarKeyConfiguration:v8 completion:&v11];
+  v10 = [*(a1 + 32) pkui_frontMostViewController];
+  [v10 presentViewController:v9 animated:*(a1 + 48) completion:0];
+}
+
+void __82__PKPassGroupsViewController__presentSubcredentialPairingFlowWithConfig_animated___block_invoke_2(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  v7[0] = MEMORY[0x1E69E9820];
+  v7[1] = 3221225472;
+  v7[2] = __82__PKPassGroupsViewController__presentSubcredentialPairingFlowWithConfig_animated___block_invoke_3;
+  v7[3] = &unk_1E8010A10;
+  v5 = *(a1 + 32);
+  v4 = *(a1 + 40);
+  v8 = v3;
+  v9 = v4;
+  v6 = v3;
+  [v5 dismissViewControllerAnimated:1 completion:v7];
+}
+
+void __82__PKPassGroupsViewController__presentSubcredentialPairingFlowWithConfig_animated___block_invoke_3(uint64_t a1)
+{
+  v2 = [*(a1 + 32) firstObject];
+  if (v2)
+  {
+    v3 = *(a1 + 40);
+    v5 = v2;
+    v4 = [v2 uniqueID];
+    [v3 presentPassWithUniqueID:v4 animated:1 completionHandler:0];
+
+    v2 = v5;
+  }
+}
+
+- (void)presentShareableCredentialWithEncryptedProvisioningTargetsHexEncodedString:(id)a3 passThumbnailImageData:(id)a4 animated:(BOOL)a5
+{
+  v42 = *MEMORY[0x1E69E9840];
+  v8 = a4;
+  v9 = MEMORY[0x1E69B8EF8];
+  v10 = a3;
+  v11 = [v9 sharedService];
+  v12 = [objc_alloc(MEMORY[0x1E69B8D48]) initWithWebService:v11];
+  v13 = [v10 pk_decodeHexadecimal];
+
+  v39 = 0;
+  v14 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v13 error:&v39];
+  v15 = v39;
+  if (v14)
+  {
+    v16 = v15 == 0;
+  }
+
+  else
+  {
+    v16 = 0;
+  }
+
+  if (!v16)
+  {
+    v17 = v15;
+    [v14 finishDecoding];
+    v18 = 0;
+LABEL_12:
+    v27 = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+    {
+      v28 = [v17 description];
+      *buf = 138412290;
+      v41 = v28;
+      _os_log_impl(&dword_1BD026000, v27, OS_LOG_TYPE_DEFAULT, "Unable to decode encrypted provisioning target: %@", buf, 0xCu);
+    }
+
+    v26 = PKDisplayableErrorForCommonType();
+    v29 = PKAlertForDisplayableErrorWithHandlers(v26, 0, 0, 0);
+    if (v29)
+    {
+      [(PKPassGroupsViewController *)self presentViewController:v29 animated:1 completion:0];
+    }
+
+    goto LABEL_17;
+  }
+
+  v30 = a5;
+  v19 = MEMORY[0x1E695DFD8];
+  v20 = objc_opt_class();
+  v21 = [v19 setWithObjects:{v20, objc_opt_class(), 0}];
+  v22 = *MEMORY[0x1E696A508];
+  v38 = 0;
+  v18 = [v14 decodeTopLevelObjectOfClasses:v21 forKey:v22 error:&v38];
+  v17 = v38;
+
+  [v14 finishDecoding];
+  if (!v18)
+  {
+    goto LABEL_12;
+  }
+
+  if (![v18 count])
+  {
+    goto LABEL_12;
+  }
+
+  objc_opt_class();
+  if ((objc_opt_isKindOfClass() & 1) == 0)
+  {
+    goto LABEL_12;
+  }
+
+  v23 = PKLogFacilityTypeGetObject();
+  if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+  {
+    *buf = 138412290;
+    v41 = v18;
+    _os_log_impl(&dword_1BD026000, v23, OS_LOG_TYPE_DEFAULT, "Presenting shareable credentials with encrypted provisioning targets: %@", buf, 0xCu);
+  }
+
+  v36[0] = MEMORY[0x1E69E9820];
+  v36[1] = 3221225472;
+  v36[2] = __137__PKPassGroupsViewController_presentShareableCredentialWithEncryptedProvisioningTargetsHexEncodedString_passThumbnailImageData_animated___block_invoke;
+  v36[3] = &unk_1E8024DB0;
+  v37 = v8;
+  v24 = [v18 pk_arrayByApplyingBlock:v36];
+  v31[0] = MEMORY[0x1E69E9820];
+  v31[1] = 3221225472;
+  v31[2] = __137__PKPassGroupsViewController_presentShareableCredentialWithEncryptedProvisioningTargetsHexEncodedString_passThumbnailImageData_animated___block_invoke_2;
+  v31[3] = &unk_1E8024DD8;
+  v32 = v12;
+  v33 = self;
+  v34 = v24;
+  v35 = v30;
+  v25 = v24;
+  [v32 validatePreconditions:v31];
+
+  v26 = v37;
+LABEL_17:
+}
+
+id __137__PKPassGroupsViewController_presentShareableCredentialWithEncryptedProvisioningTargetsHexEncodedString_passThumbnailImageData_animated___block_invoke(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    v4 = [objc_alloc(MEMORY[0x1E69B8E78]) initWithEncryptedProvisioningTarget:v3 provisioningSharingIdentifier:0 passThumbnailImageData:*(a1 + 32)];
+  }
+
+  else
+  {
+    v4 = 0;
+  }
+
+  return v4;
+}
+
+void __137__PKPassGroupsViewController_presentShareableCredentialWithEncryptedProvisioningTargetsHexEncodedString_passThumbnailImageData_animated___block_invoke_2(uint64_t a1, char a2, void *a3)
+{
+  v21 = *MEMORY[0x1E69E9840];
+  v5 = a3;
+  if (v5 || (a2 & 1) == 0)
+  {
+    v13 = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    {
+      LODWORD(buf) = 138412290;
+      *(&buf + 4) = v5;
+      _os_log_impl(&dword_1BD026000, v13, OS_LOG_TYPE_DEFAULT, "Present navigation controller for shareable credential failed: %@", &buf, 0xCu);
+    }
+
+    v6 = [*(a1 + 32) alertForDisplayableError:v5];
+    if (v6)
+    {
+      [*(a1 + 40) presentViewController:v6 animated:1 completion:0];
+    }
+  }
+
+  else
+  {
+    v6 = [objc_alloc(MEMORY[0x1E69B90E0]) initWithEnvironment:0 provisioningController:*(a1 + 32) groupsController:*(*(a1 + 40) + 1424)];
+    v7 = [[PKPaymentSetupDismissibleNavigationController alloc] initWithContext:0];
+    [(PKPaymentSetupDismissibleNavigationController *)v7 useStandardPlatformPresentationStyle];
+    *&buf = 0;
+    *(&buf + 1) = &buf;
+    v19 = 0x2020000000;
+    v20 = 0;
+    v8 = *(a1 + 48);
+    v15[0] = MEMORY[0x1E69E9820];
+    v15[1] = 3221225472;
+    v15[2] = __137__PKPassGroupsViewController_presentShareableCredentialWithEncryptedProvisioningTargetsHexEncodedString_passThumbnailImageData_animated___block_invoke_298;
+    v15[3] = &unk_1E8014BD0;
+    p_buf = &buf;
+    v9 = v7;
+    v16 = v9;
+    [PKProvisioningFlowBridge startShareableCredentialFlowWithNavController:v9 context:v6 credentials:v8 completion:v15];
+    if (*(*(&buf + 1) + 24) == 1)
+    {
+      v10 = PKLogFacilityTypeGetObject();
+      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      {
+        v14[0] = 0;
+        _os_log_impl(&dword_1BD026000, v10, OS_LOG_TYPE_DEFAULT, "Failed to present shareable provisioning flow", v14, 2u);
+      }
+
+      v11 = PKDisplayableErrorForCommonType();
+      v12 = PKAlertForDisplayableErrorWithHandlers(v11, 0, 0, 0);
+      [*(a1 + 40) presentViewController:v12 animated:1 completion:0];
+    }
+
+    else
+    {
+      v11 = [*(a1 + 40) pkui_frontMostViewController];
+      [v11 presentViewController:v9 animated:*(a1 + 56) completion:0];
+    }
+
+    _Block_object_dispose(&buf, 8);
+  }
+}
+
+- (void)presentAddShareablePassConfiguration:(id)a3 animated:(BOOL)a4
+{
+  v6 = a3;
+  v7 = [MEMORY[0x1E69B8EF8] sharedService];
+  v8 = [objc_alloc(MEMORY[0x1E69B8D48]) initWithWebService:v7];
+  objc_initWeak(&location, self);
+  v11[0] = MEMORY[0x1E69E9820];
+  v11[1] = 3221225472;
+  v11[2] = __76__PKPassGroupsViewController_presentAddShareablePassConfiguration_animated___block_invoke;
+  v11[3] = &unk_1E8024E00;
+  objc_copyWeak(&v15, &location);
+  v9 = v8;
+  v12 = v9;
+  v13 = self;
+  v10 = v6;
+  v14 = v10;
+  v16 = a4;
+  [v9 validatePreconditionsAndRegister:v11];
+
+  objc_destroyWeak(&v15);
+  objc_destroyWeak(&location);
+}
+
+void __76__PKPassGroupsViewController_presentAddShareablePassConfiguration_animated___block_invoke(uint64_t a1, char a2, void *a3)
+{
+  v17 = *MEMORY[0x1E69E9840];
+  v5 = a3;
+  WeakRetained = objc_loadWeakRetained((a1 + 56));
+  if (WeakRetained)
+  {
+    if (v5 || (a2 & 1) == 0)
+    {
+      v12 = PKLogFacilityTypeGetObject();
+      if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+      {
+        *buf = 138412290;
+        v16 = v5;
+        _os_log_impl(&dword_1BD026000, v12, OS_LOG_TYPE_DEFAULT, "Present navigation controller for shareable configuration failed: %@", buf, 0xCu);
+      }
+
+      v7 = [*(a1 + 32) alertForDisplayableError:v5];
+      if (v7)
+      {
+        [WeakRetained presentViewController:v7 animated:1 completion:0];
+      }
+    }
+
+    else
+    {
+      v7 = [objc_alloc(MEMORY[0x1E69B90E0]) initWithEnvironment:7 provisioningController:*(a1 + 32) groupsController:*(*(a1 + 40) + 1424)];
+      v8 = [[PKPaymentSetupDismissibleNavigationController alloc] initWithContext:0];
+      [(PKPaymentSetupDismissibleNavigationController *)v8 useStandardPlatformPresentationStyle];
+      v9 = *(a1 + 48);
+      v13[0] = MEMORY[0x1E69E9820];
+      v13[1] = 3221225472;
+      v13[2] = __76__PKPassGroupsViewController_presentAddShareablePassConfiguration_animated___block_invoke_300;
+      v13[3] = &unk_1E80197A0;
+      v14 = v8;
+      v10 = v8;
+      [PKProvisioningFlowBridge startInAppFlowWithNavController:v10 context:v7 addPassConfiguration:v9 completion:v13];
+      v11 = [WeakRetained pkui_frontMostViewController];
+      [v11 presentViewController:v10 animated:*(a1 + 64) completion:0];
+    }
+  }
+}
+
+- (void)presentShareInvitationWithMailboxAddress:(id)a3 referralSource:(id)a4 animated:(BOOL)a5
+{
+  v6 = a3;
+  v9 = a4;
+  v7 = v6;
+  v8 = v9;
+  PKSharingFetchInvitationFromMailboxAddress();
+}
+
+void __95__PKPassGroupsViewController_presentShareInvitationWithMailboxAddress_referralSource_animated___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)
+{
+  if (a4)
+  {
+    v9 = PKAlertForDisplayableErrorWithHandlers(a4, 0, 0, 0);
+    v5 = [*(a1 + 32) pkui_frontMostViewController];
+    [v5 presentViewController:v9 animated:1 completion:0];
+  }
+
+  else
+  {
+    v6 = *(a1 + 32);
+    v7 = *(a1 + 40);
+    v8 = *(a1 + 48);
+
+    [v6 _presentShareRedemptionFlowWithInvitation:a2 handle:a3 referralSource:v7 originalShareURL:v8];
+  }
+}
+
+- (void)_presentShareRedemptionFlowWithInvitation:(id)a3 handle:(id)a4 referralSource:(id)a5 originalShareURL:(id)a6
+{
+  v10 = a3;
+  v11 = a4;
+  v12 = a5;
+  v13 = a6;
+  v18[0] = MEMORY[0x1E69E9820];
+  v18[1] = 3221225472;
+  v18[2] = __111__PKPassGroupsViewController__presentShareRedemptionFlowWithInvitation_handle_referralSource_originalShareURL___block_invoke;
+  v18[3] = &unk_1E8011E38;
+  v18[4] = self;
+  v19 = v11;
+  v20 = v10;
+  v21 = v12;
+  v22 = v13;
+  v14 = v13;
+  v15 = v12;
+  v16 = v10;
+  v17 = v11;
+  [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:0 animated:1 performAction:v18];
+}
+
+void __111__PKPassGroupsViewController__presentShareRedemptionFlowWithInvitation_handle_referralSource_originalShareURL___block_invoke(uint64_t a1)
+{
+  v2 = objc_alloc(MEMORY[0x1E69B8D48]);
+  v3 = [MEMORY[0x1E69B8EF8] sharedService];
+  v4 = [v2 initWithWebService:v3];
+
+  v5 = [objc_alloc(MEMORY[0x1E69B90E0]) initWithEnvironment:0 provisioningController:v4 groupsController:*(*(a1 + 32) + 1424)];
+  v6 = [[PKPaymentSetupDismissibleNavigationController alloc] initWithContext:0];
+  aBlock[0] = MEMORY[0x1E69E9820];
+  aBlock[1] = 3221225472;
+  aBlock[2] = __111__PKPassGroupsViewController__presentShareRedemptionFlowWithInvitation_handle_referralSource_originalShareURL___block_invoke_2;
+  aBlock[3] = &unk_1E8024E50;
+  v11 = *(a1 + 40);
+  v7 = v6;
+  v8 = *(a1 + 32);
+  v12 = v7;
+  v13 = v8;
+  v9 = _Block_copy(aBlock);
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    [*(a1 + 40) invalidate];
+    [PKProvisioningFlowBridge startShareRedemptionFlowWithNavController:v7 context:v5 invitation:*(a1 + 48) referralSource:*(a1 + 56) completion:v9];
+  }
+
+  else
+  {
+    [PKProvisioningFlowBridge startCarKeyShareRedemptionFlowWithNavController:v7 context:v5 invitation:*(a1 + 48) handle:*(a1 + 40) originalShareURL:*(a1 + 64) completion:v9];
+  }
+
+  [*(a1 + 32) presentViewController:v7 animated:1 completion:0];
+}
+
+void __111__PKPassGroupsViewController__presentShareRedemptionFlowWithInvitation_handle_referralSource_originalShareURL___block_invoke_2(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  [*(a1 + 32) invalidate];
+  v7[0] = MEMORY[0x1E69E9820];
+  v7[1] = 3221225472;
+  v7[2] = __111__PKPassGroupsViewController__presentShareRedemptionFlowWithInvitation_handle_referralSource_originalShareURL___block_invoke_3;
+  v7[3] = &unk_1E8010A10;
+  v5 = *(a1 + 40);
+  v4 = *(a1 + 48);
+  v8 = v3;
+  v9 = v4;
+  v6 = v3;
+  [v5 dismissViewControllerAnimated:1 completion:v7];
+}
+
+void __111__PKPassGroupsViewController__presentShareRedemptionFlowWithInvitation_handle_referralSource_originalShareURL___block_invoke_3(uint64_t a1)
+{
+  v2 = [*(a1 + 32) firstObject];
+  if (v2)
+  {
+    v3 = *(a1 + 40);
+    v5 = v2;
+    v4 = [v2 uniqueID];
+    [v3 presentPassWithUniqueID:v4 animated:1 completionHandler:0];
+
+    v2 = v5;
+  }
+}
+
+- (void)presentShareDetailsForPassUniqueIdentifier:(id)a3 shareIdentifier:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  v10[0] = MEMORY[0x1E69E9820];
+  v10[1] = 3221225472;
+  v10[2] = __89__PKPassGroupsViewController_presentShareDetailsForPassUniqueIdentifier_shareIdentifier___block_invoke;
+  v10[3] = &unk_1E8012798;
+  v10[4] = self;
+  v11 = v6;
+  v12 = v7;
+  v8 = v7;
+  v9 = v6;
+  [(PKPassGroupsViewController *)self presentPassWithUniqueID:v9 animated:1 completionHandler:v10];
+}
+
+void __89__PKPassGroupsViewController_presentShareDetailsForPassUniqueIdentifier_shareIdentifier___block_invoke(uint64_t a1, char a2)
+{
+  if ((a2 & 1) == 0)
+  {
+    v3 = [*(a1 + 32) _passFromGroupsControllerWithUniqueIdentifier:*(a1 + 40)];
+    v4 = [v3 secureElementPass];
+
+    v5 = objc_alloc(MEMORY[0x1E69B9268]);
+    v6 = [MEMORY[0x1E69B8EF8] sharedService];
+    v7 = [MEMORY[0x1E69B8BD8] defaultDataProvider];
+    v8 = [v5 initWithPass:v4 webService:v6 paymentServiceProvider:v7 queue:MEMORY[0x1E69E96A0]];
+
+    v12[0] = MEMORY[0x1E69E9820];
+    v12[1] = 3221225472;
+    v12[2] = __89__PKPassGroupsViewController_presentShareDetailsForPassUniqueIdentifier_shareIdentifier___block_invoke_2;
+    v12[3] = &unk_1E8010A88;
+    v13 = v8;
+    v9 = *(a1 + 48);
+    v10 = *(a1 + 32);
+    v14 = v9;
+    v15 = v10;
+    v11 = v8;
+    [v11 updateSharesWithCompletion:v12];
+  }
+}
+
+void __89__PKPassGroupsViewController_presentShareDetailsForPassUniqueIdentifier_shareIdentifier___block_invoke_2(uint64_t a1)
+{
+  v2 = [*(a1 + 32) shareForShareIdentifier:*(a1 + 40)];
+  if (v2)
+  {
+    v3 = objc_alloc_init(MEMORY[0x1E69B9248]);
+    v8[0] = MEMORY[0x1E69E9820];
+    v8[1] = 3221225472;
+    v8[2] = __89__PKPassGroupsViewController_presentShareDetailsForPassUniqueIdentifier_shareIdentifier___block_invoke_3;
+    v8[3] = &unk_1E801F5D0;
+    v9 = v2;
+    v10 = *(a1 + 32);
+    v11 = v3;
+    v12 = *(a1 + 48);
+    v4 = v3;
+    [v4 authorizeDeviceOwnerWithAuthHandler:0 completion:v8];
+  }
+
+  else
+  {
+    v5 = [[PKPassSharesListViewController alloc] initWithSharesController:*(a1 + 32)];
+    v6 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v5];
+    v7 = [*(a1 + 48) pkui_frontMostViewController];
+    [v7 presentViewController:v6 animated:1 completion:0];
+  }
+}
+
+void __89__PKPassGroupsViewController_presentShareDetailsForPassUniqueIdentifier_shareIdentifier___block_invoke_3(uint64_t a1, int a2)
+{
+  if (a2)
+  {
+    v5 = [[PKPassShareDetailsViewController alloc] initWithShare:*(a1 + 32) sharesController:*(a1 + 40) authorizer:*(a1 + 48)];
+    v3 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v5];
+    v4 = [*(a1 + 56) pkui_frontMostViewController];
+    [v4 presentViewController:v3 animated:1 completion:0];
+  }
+}
+
+- (void)presentEntitlementDetailsForPassUniqueIdentifier:(id)a3
+{
+  v4 = a3;
+  v6[0] = MEMORY[0x1E69E9820];
+  v6[1] = 3221225472;
+  v6[2] = __79__PKPassGroupsViewController_presentEntitlementDetailsForPassUniqueIdentifier___block_invoke;
+  v6[3] = &unk_1E8012FD0;
+  v6[4] = self;
+  v7 = v4;
+  v5 = v4;
+  [(PKPassGroupsViewController *)self presentPassWithUniqueID:v5 animated:1 completionHandler:v6];
+}
+
+void __79__PKPassGroupsViewController_presentEntitlementDetailsForPassUniqueIdentifier___block_invoke(uint64_t a1, char a2)
+{
+  if ((a2 & 1) == 0)
+  {
+    v3 = [*(a1 + 32) _passFromGroupsControllerWithUniqueIdentifier:*(a1 + 40)];
+    v4 = [v3 secureElementPass];
+
+    v5 = objc_alloc(MEMORY[0x1E69B9268]);
+    v6 = [MEMORY[0x1E69B8EF8] sharedService];
+    v7 = [MEMORY[0x1E69B8BD8] defaultDataProvider];
+    v8 = [v5 initWithPass:v4 webService:v6 paymentServiceProvider:v7 queue:MEMORY[0x1E69E96A0]];
+
+    v11[0] = MEMORY[0x1E69E9820];
+    v11[1] = 3221225472;
+    v11[2] = __79__PKPassGroupsViewController_presentEntitlementDetailsForPassUniqueIdentifier___block_invoke_2;
+    v11[3] = &unk_1E8010A88;
+    v12 = v8;
+    v13 = v4;
+    v14 = *(a1 + 32);
+    v9 = v4;
+    v10 = v8;
+    [v10 updateEntitlementsWithCompletion:v11];
+  }
+}
+
+void __79__PKPassGroupsViewController_presentEntitlementDetailsForPassUniqueIdentifier___block_invoke_2(id *a1)
+{
+  v2 = objc_alloc(MEMORY[0x1E69B8A38]);
+  v3 = [a1[4] myEntitlements];
+  v4 = [a1[4] possiblePredefinedEntitlements];
+  v8 = [v2 initWithMyEntitlements:v3 predefinedSharedEntitlements:v4];
+
+  v5 = -[PKPassShareEntitlementSelectionViewController initWithAccessType:mode:entitlementComposer:]([PKPassShareEntitlementSelectionViewController alloc], "initWithAccessType:mode:entitlementComposer:", [a1[5] accessType], 2, v8);
+  [(PKPassShareEntitlementSelectionViewController *)v5 setShowDoneButton:1];
+  v6 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v5];
+  v7 = [a1[6] pkui_frontMostViewController];
+  [v7 presentViewController:v6 animated:1 completion:0];
+}
+
+- (void)presentShareActivationWithShareIdentifier:(id)a3
+{
+  v4 = a3;
+  v6[0] = MEMORY[0x1E69E9820];
+  v6[1] = 3221225472;
+  v6[2] = __72__PKPassGroupsViewController_presentShareActivationWithShareIdentifier___block_invoke;
+  v6[3] = &unk_1E8010A10;
+  v6[4] = self;
+  v7 = v4;
+  v5 = v4;
+  [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:0 animated:1 performAction:v6];
+}
+
+uint64_t __72__PKPassGroupsViewController_presentShareActivationWithShareIdentifier___block_invoke(uint64_t a1)
+{
+  v2 = *(a1 + 32);
+  v1 = *(a1 + 40);
+  v3 = *(v2 + 1232);
+  v5[0] = MEMORY[0x1E69E9820];
+  v5[1] = 3221225472;
+  v5[2] = __72__PKPassGroupsViewController_presentShareActivationWithShareIdentifier___block_invoke_2;
+  v5[3] = &unk_1E8024E78;
+  v5[4] = v2;
+  return [v3 pendingShareActivationForShareIdentifier:v1 completion:v5];
+}
+
+void __72__PKPassGroupsViewController_presentShareActivationWithShareIdentifier___block_invoke_2(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  v6[0] = MEMORY[0x1E69E9820];
+  v6[1] = 3221225472;
+  v6[2] = __72__PKPassGroupsViewController_presentShareActivationWithShareIdentifier___block_invoke_3;
+  v6[3] = &unk_1E8010A10;
+  v4 = *(a1 + 32);
+  v7 = v3;
+  v8 = v4;
+  v5 = v3;
+  dispatch_async(MEMORY[0x1E69E96A0], v6);
+}
+
+void __72__PKPassGroupsViewController_presentShareActivationWithShareIdentifier___block_invoke_3(uint64_t a1)
+{
+  if (*(a1 + 32))
+  {
+    v5 = [[PKPassShareActivationViewController alloc] initWithPendingActivation:*(a1 + 32)];
+    v2 = [[PKNavigationController alloc] initWithRootViewController:v5];
+    v3 = [*(a1 + 40) pkui_frontMostViewController];
+    [v3 presentViewController:v2 animated:1 completion:0];
+  }
+
+  else
+  {
+    v4 = [MEMORY[0x1E696ABC0] pkSharingError:5];
+    v5 = PKAlertForDisplayableErrorWithHandlers(v4, 0, 0, 0);
+
+    v2 = [*(a1 + 40) pkui_frontMostViewController];
+    [(PKNavigationController *)v2 presentViewController:v5 animated:1 completion:0];
+  }
+}
+
+- (void)presentProvisioningForPendingProvisioningOfType:(id)a3 identifier:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  v10[0] = MEMORY[0x1E69E9820];
+  v10[1] = 3221225472;
+  v10[2] = __89__PKPassGroupsViewController_presentProvisioningForPendingProvisioningOfType_identifier___block_invoke;
+  v10[3] = &unk_1E8010A88;
+  v10[4] = self;
+  v11 = v6;
+  v12 = v7;
+  v8 = v7;
+  v9 = v6;
+  [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:0 animated:1 performAction:v10];
+}
+
+void __89__PKPassGroupsViewController_presentProvisioningForPendingProvisioningOfType_identifier___block_invoke(void *a1)
+{
+  v2 = a1[4];
+  v3 = a1[5];
+  v4 = *(v2 + 1232);
+  v5 = a1[6];
+  v6[0] = MEMORY[0x1E69E9820];
+  v6[1] = 3221225472;
+  v6[2] = __89__PKPassGroupsViewController_presentProvisioningForPendingProvisioningOfType_identifier___block_invoke_2;
+  v6[3] = &unk_1E8024EC8;
+  v6[4] = v2;
+  v7 = v3;
+  v8 = a1[6];
+  [v4 retrievePendingProvisioningOfType:v7 withUniqueIdentifier:v5 completion:v6];
+}
+
+void __89__PKPassGroupsViewController_presentProvisioningForPendingProvisioningOfType_identifier___block_invoke_2(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  if ([v3 status] == 3)
+  {
+    v7[0] = MEMORY[0x1E69E9820];
+    v7[1] = 3221225472;
+    v7[2] = __89__PKPassGroupsViewController_presentProvisioningForPendingProvisioningOfType_identifier___block_invoke_3;
+    v7[3] = &unk_1E8011C98;
+    v4 = v3;
+    v5 = *(a1 + 32);
+    v6 = *(a1 + 40);
+    v8 = v4;
+    v9 = v5;
+    v10 = v6;
+    v11 = *(a1 + 48);
+    dispatch_async(MEMORY[0x1E69E96A0], v7);
+  }
+}
+
+void __89__PKPassGroupsViewController_presentProvisioningForPendingProvisioningOfType_identifier___block_invoke_3(id *a1)
+{
+  v22[1] = *MEMORY[0x1E69E9840];
+  v2 = [a1[4] credential];
+  if (v2)
+  {
+    v3 = objc_alloc(MEMORY[0x1E69B8D48]);
+    v4 = [MEMORY[0x1E69B8EF8] sharedService];
+    v5 = [v3 initWithWebService:v4];
+
+    v6 = [objc_alloc(MEMORY[0x1E69B90E0]) initWithEnvironment:0 provisioningController:v5 groupsController:0];
+    v7 = [[PKPaymentSetupDismissibleNavigationController alloc] initWithContext:0];
+    objc_initWeak(&location, a1[5]);
+    v19[0] = 0;
+    v19[1] = v19;
+    v19[2] = 0x2020000000;
+    v20 = 0;
+    v22[0] = v2;
+    v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
+    v9 = [a1[5] navigationController];
+    v13[0] = MEMORY[0x1E69E9820];
+    v13[1] = 3221225472;
+    v13[2] = __89__PKPassGroupsViewController_presentProvisioningForPendingProvisioningOfType_identifier___block_invoke_4;
+    v13[3] = &unk_1E8024EA0;
+    objc_copyWeak(&v18, &location);
+    v17 = v19;
+    v10 = v7;
+    v14 = v10;
+    v15 = a1[6];
+    v16 = a1[7];
+    v11[0] = MEMORY[0x1E69E9820];
+    v11[1] = 3221225472;
+    v11[2] = __89__PKPassGroupsViewController_presentProvisioningForPendingProvisioningOfType_identifier___block_invoke_6;
+    v11[3] = &unk_1E801E260;
+    objc_copyWeak(&v12, &location);
+    v11[4] = a1[5];
+    v11[5] = v19;
+    [PKProvisioningFlowBridge startCredentialsProvisioningFlowWithNavController:v10 context:v6 credentials:v8 parentNavController:v9 presentNavController:v13 completion:v11];
+
+    objc_destroyWeak(&v12);
+    objc_destroyWeak(&v18);
+    _Block_object_dispose(v19, 8);
+    objc_destroyWeak(&location);
+  }
+}
+
+void __89__PKPassGroupsViewController_presentProvisioningForPendingProvisioningOfType_identifier___block_invoke_4(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 64));
+  if (WeakRetained)
+  {
+    *(*(*(a1 + 56) + 8) + 24) = 1;
+    v4 = WeakRetained;
+    v3 = [WeakRetained pkui_frontMostViewController];
+    [v3 presentViewController:*(a1 + 32) animated:1 completion:0];
+
+    [v4[154] removePendingProvisioningOfType:*(a1 + 40) withUniqueIdentifier:*(a1 + 48) completion:&__block_literal_global_313_0];
+    WeakRetained = v4;
+  }
+}
+
+void __89__PKPassGroupsViewController_presentProvisioningForPendingProvisioningOfType_identifier___block_invoke_6(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 48));
+  if (WeakRetained && *(*(*(a1 + 40) + 8) + 24) == 1)
+  {
+    v3 = WeakRetained;
+    [*(a1 + 32) dismissViewControllerAnimated:1 completion:0];
+    WeakRetained = v3;
+  }
+}
+
+- (void)presentPeerPaymentPassAnimated:(BOOL)a3 campaignAttributionReferrerIdentifier:(id)a4 completion:(id)a5
+{
+  v8 = a4;
+  v9 = a5;
+  v10 = [MEMORY[0x1E69B9000] sharedInstance];
+  v13[0] = MEMORY[0x1E69E9820];
+  v13[1] = 3221225472;
+  v13[2] = __110__PKPassGroupsViewController_presentPeerPaymentPassAnimated_campaignAttributionReferrerIdentifier_completion___block_invoke;
+  v13[3] = &unk_1E8024EF0;
+  v14 = v8;
+  v15 = self;
+  v17 = a3;
+  v16 = v9;
+  v11 = v9;
+  v12 = v8;
+  [v10 accountWithCompletion:v13];
+}
+
+void __110__PKPassGroupsViewController_presentPeerPaymentPassAnimated_campaignAttributionReferrerIdentifier_completion___block_invoke(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __110__PKPassGroupsViewController_presentPeerPaymentPassAnimated_campaignAttributionReferrerIdentifier_completion___block_invoke_2;
+  block[3] = &unk_1E8021110;
+  v9 = v3;
+  v4 = *(a1 + 32);
+  v5 = *(a1 + 40);
+  v6 = *(a1 + 48);
+  v10 = v4;
+  v11 = v5;
+  v13 = *(a1 + 56);
+  v12 = v6;
+  v7 = v3;
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+}
+
+void __110__PKPassGroupsViewController_presentPeerPaymentPassAnimated_campaignAttributionReferrerIdentifier_completion___block_invoke_2(uint64_t a1)
+{
+  v2 = [*(a1 + 32) associatedPassUniqueID];
+  if (v2)
+  {
+    v3 = objc_alloc_init(PKPassPresentationContext);
+    [(PKPassPresentationContext *)v3 setCampaignAttributionReferrerIdentifier:*(a1 + 40)];
+    v4 = *(a1 + 64);
+    v7[0] = MEMORY[0x1E69E9820];
+    v7[1] = 3221225472;
+    v7[2] = __110__PKPassGroupsViewController_presentPeerPaymentPassAnimated_campaignAttributionReferrerIdentifier_completion___block_invoke_3;
+    v7[3] = &unk_1E80109C0;
+    v5 = *(a1 + 48);
+    v9 = *(a1 + 56);
+    v8 = v2;
+    [v5 presentPassWithUniqueID:v8 context:v3 animated:v4 completionHandler:v7];
+  }
+
+  else
+  {
+    v6 = *(a1 + 56);
+    if (v6)
+    {
+      (*(v6 + 16))(v6, 1, 0);
+    }
+  }
+}
+
+uint64_t __110__PKPassGroupsViewController_presentPeerPaymentPassAnimated_campaignAttributionReferrerIdentifier_completion___block_invoke_3(uint64_t a1, uint64_t a2)
+{
+  result = *(a1 + 40);
+  if (result)
+  {
+    return (*(result + 16))(result, a2, *(a1 + 32));
+  }
+
+  return result;
+}
+
+- (void)presentSecurePassSessionWithIssuerData:(id)a3 withSignature:(id)a4 animated:(BOOL)a5
+{
+  v8 = a3;
+  v9 = a4;
+  v12[0] = MEMORY[0x1E69E9820];
+  v12[1] = 3221225472;
+  v12[2] = __92__PKPassGroupsViewController_presentSecurePassSessionWithIssuerData_withSignature_animated___block_invoke;
+  v12[3] = &unk_1E80170D8;
+  v12[4] = self;
+  v13 = v8;
+  v14 = v9;
+  v15 = a5;
+  v10 = v9;
+  v11 = v8;
+  [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:0 animated:1 performAction:v12];
+}
+
+void __92__PKPassGroupsViewController_presentSecurePassSessionWithIssuerData_withSignature_animated___block_invoke(uint64_t a1)
+{
+  v2 = objc_alloc_init(PKServiceAddPassesViewController);
+  [(PKServiceAddPassesViewController *)v2 setResultsDelegate:*(a1 + 32)];
+  [(PKServiceAddPassesViewController *)v2 ingestPasses:0 orPassesContainer:0 orIssuerData:*(a1 + 40) withSignature:*(a1 + 48) fromPresentationSource:2];
+  if (v2 && ([(PKServiceAddPassesViewController *)v2 topViewController], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
+  {
+    v4 = [*(a1 + 32) pkui_frontMostViewController];
+    [v4 presentViewController:v2 animated:*(a1 + 56) completion:0];
+  }
+
+  else
+  {
+    v5 = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    {
+      *v11 = 0;
+      _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "Unable to present issuer binding view controller", v11, 2u);
+    }
+
+    v4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BBBC8] code:1 userInfo:0];
+    v6 = PKLocalizedPaymentString(&cfstr_IssuerDataGene_3.isa);
+    v7 = PKLocalizedPaymentString(&cfstr_IssuerDataGene_6.isa);
+    v8 = PKDisplayableErrorCustom();
+
+    v9 = PKAlertForDisplayableErrorWithHandlers(v8, 0, 0, 0);
+    v10 = [*(a1 + 32) pkui_frontMostViewController];
+    [v10 presentViewController:v9 animated:1 completion:0];
+  }
+}
+
+- (void)presentApplicationWithIdentifier:(id)a3
+{
+  v4 = a3;
+  paymentService = self->_paymentService;
+  v7[0] = MEMORY[0x1E69E9820];
+  v7[1] = 3221225472;
+  v7[2] = __63__PKPassGroupsViewController_presentApplicationWithIdentifier___block_invoke;
+  v7[3] = &unk_1E801ABD0;
+  v8 = v4;
+  v9 = self;
+  v6 = v4;
+  [(PKPaymentService *)paymentService featureApplicationsForProvisioningWithCompletion:v7];
+}
+
+void __63__PKPassGroupsViewController_presentApplicationWithIdentifier___block_invoke(uint64_t a1, void *a2, void *a3)
+{
+  location[3] = *MEMORY[0x1E69E9840];
+  v5 = a2;
+  v6 = a3;
+  v20[0] = MEMORY[0x1E69E9820];
+  v20[1] = 3221225472;
+  v20[2] = __63__PKPassGroupsViewController_presentApplicationWithIdentifier___block_invoke_2;
+  v20[3] = &unk_1E8014968;
+  v21 = *(a1 + 32);
+  v7 = [v5 pk_firstObjectPassingTest:v20];
+  if (v7)
+  {
+    v8 = objc_alloc(MEMORY[0x1E69B8D48]);
+    v9 = [MEMORY[0x1E69B8EF8] sharedService];
+    v10 = [v8 initWithWebService:v9];
+
+    v11 = [[PKApplyControllerConfiguration alloc] initWithSetupDelegate:0 context:0 provisioningController:v10];
+    [(PKApplyControllerConfiguration *)v11 setFeatureApplication:v7];
+    -[PKApplyControllerConfiguration setFeature:](v11, "setFeature:", [v7 feature]);
+    v12 = [[PKApplyController alloc] initWithApplyConfiguration:v11];
+    v14 = *(a1 + 40);
+    v13 = (a1 + 40);
+    v15 = *(v14 + 1352);
+    *(v14 + 1352) = v12;
+
+    objc_initWeak(location, *v13);
+    v16 = *(*v13 + 169);
+    v18[0] = MEMORY[0x1E69E9820];
+    v18[1] = 3221225472;
+    v18[2] = __63__PKPassGroupsViewController_presentApplicationWithIdentifier___block_invoke_326;
+    v18[3] = &unk_1E80162F0;
+    objc_copyWeak(&v19, location);
+    [v16 nextViewControllerWithCompletion:v18];
+    objc_destroyWeak(&v19);
+    objc_destroyWeak(location);
+  }
+
+  else
+  {
+    v10 = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    {
+      v17 = *(a1 + 32);
+      LODWORD(location[0]) = 138412290;
+      *(location + 4) = v17;
+      _os_log_impl(&dword_1BD026000, v10, OS_LOG_TYPE_DEFAULT, "No application found with identifier %@", location, 0xCu);
+    }
+  }
+}
+
+uint64_t __63__PKPassGroupsViewController_presentApplicationWithIdentifier___block_invoke_2(uint64_t a1, void *a2)
+{
+  v3 = [a2 applicationIdentifier];
+  v4 = *(a1 + 32);
+  v5 = v3;
+  v6 = v4;
+  v7 = v6;
+  if (v5 == v6)
+  {
+    v8 = 1;
+  }
+
+  else
+  {
+    v8 = 0;
+    if (v5 && v6)
+    {
+      v8 = [v5 isEqualToString:v6];
+    }
+  }
+
+  return v8;
+}
+
+void __63__PKPassGroupsViewController_presentApplicationWithIdentifier___block_invoke_326(uint64_t a1, void *a2, void *a3)
+{
+  v5 = a2;
+  v6 = a3;
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __63__PKPassGroupsViewController_presentApplicationWithIdentifier___block_invoke_2_327;
+  block[3] = &unk_1E8011828;
+  objc_copyWeak(&v12, (a1 + 32));
+  v10 = v5;
+  v11 = v6;
+  v7 = v6;
+  v8 = v5;
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+
+  objc_destroyWeak(&v12);
+}
+
+void __63__PKPassGroupsViewController_presentApplicationWithIdentifier___block_invoke_2_327(uint64_t a1)
+{
+  v8 = *MEMORY[0x1E69E9840];
+  WeakRetained = objc_loadWeakRetained((a1 + 48));
+  v3 = WeakRetained;
+  if (WeakRetained)
+  {
+    if (*(a1 + 32))
+    {
+      v4 = [WeakRetained pkui_frontMostViewController];
+      [v4 presentViewController:*(a1 + 32) animated:1 completion:0];
+    }
+
+    else
+    {
+      v4 = PKLogFacilityTypeGetObject();
+      if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+      {
+        v5 = *(a1 + 40);
+        v6 = 138412290;
+        v7 = v5;
+        _os_log_impl(&dword_1BD026000, v4, OS_LOG_TYPE_DEFAULT, "No apply view returned with error: %@", &v6, 0xCu);
+      }
+    }
+  }
+}
+
+- (void)presentPrecursorPassUpdateForPassUniqueIdentifier:(id)a3
+{
+  v3[0] = MEMORY[0x1E69E9820];
+  v3[1] = 3221225472;
+  v3[2] = __80__PKPassGroupsViewController_presentPrecursorPassUpdateForPassUniqueIdentifier___block_invoke;
+  v3[3] = &unk_1E8011D28;
+  v3[4] = self;
+  [(PKPassGroupsViewController *)self presentPassWithUniqueID:a3 animated:1 completionHandler:v3];
+}
+
+void __80__PKPassGroupsViewController_presentPrecursorPassUpdateForPassUniqueIdentifier___block_invoke(uint64_t a1, char a2)
+{
+  if ((a2 & 1) == 0)
+  {
+    v3 = [*(a1 + 32) _dashboardPassGroupViewController];
+    if (v3)
+    {
+      v6 = v3;
+      v4 = [v3 navigationController];
+      v5 = [v4 isBeingDismissed];
+
+      v3 = v6;
+      if ((v5 & 1) == 0)
+      {
+        [(PKDashboardPassGroupViewController *)v6 performPrecursorPassAction];
+        v3 = v6;
+      }
+    }
+  }
+}
+
+- (void)presentApplePayUserEducationDemoFromSource:(unint64_t)a3
+{
+  v5 = 4 * (a3 == 4);
+  objc_initWeak(&location, self);
+  v6[0] = MEMORY[0x1E69E9820];
+  v6[1] = 3221225472;
+  v6[2] = __73__PKPassGroupsViewController_presentApplePayUserEducationDemoFromSource___block_invoke;
+  v6[3] = &unk_1E801E5C8;
+  objc_copyWeak(v7, &location);
+  v7[1] = a3;
+  [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:v5 animated:1 performAction:v6];
+  objc_destroyWeak(v7);
+  objc_destroyWeak(&location);
+}
+
+void __73__PKPassGroupsViewController_presentApplePayUserEducationDemoFromSource___block_invoke(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  if (WeakRetained)
+  {
+    v12 = WeakRetained;
+    v3 = [WeakRetained navigationController];
+    v4 = [v3 pkui_frontMostViewController];
+
+    if (PKIsApplePayUserEducationDemoSupported())
+    {
+      v5 = [PKApplePayUserEducationDemoProvider viewControllerWithSource:*(a1 + 40)];
+      v6 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v5];
+      [v4 presentViewController:v6 animated:1 completion:0];
+    }
+
+    else
+    {
+      v7 = MEMORY[0x1E69DC650];
+      v8 = PKLocalizedPaymentString(&cfstr_UserEducationD_4.isa);
+      v5 = [v7 alertControllerWithTitle:v8 message:0 preferredStyle:1];
+
+      v9 = MEMORY[0x1E69DC648];
+      v10 = PKLocalizedPaymentString(&cfstr_UserEducationD_5.isa);
+      v11 = [v9 actionWithTitle:v10 style:0 handler:0];
+      [v5 addAction:v11];
+
+      [v4 presentViewController:v5 animated:1 completion:0];
+    }
+
+    WeakRetained = v12;
+  }
+}
+
+- (void)presentHowToUseWalletWithCardLotIdentifier:(id)a3
+{
+  location[3] = *MEMORY[0x1E69E9840];
+  v4 = a3;
+  if (PKEvergreenEducationEnabled())
+  {
+    v5 = [MEMORY[0x1E69B8908] sharedInstance];
+    v6 = [v5 latestHowToUseWalletModel];
+    if ([v4 length])
+    {
+      v7 = [v5 latestCardForLotIdentifier:v4];
+      v8 = v7;
+      if (v7)
+      {
+        v27[0] = MEMORY[0x1E69E9820];
+        v27[1] = 3221225472;
+        v27[2] = __73__PKPassGroupsViewController_presentHowToUseWalletWithCardLotIdentifier___block_invoke;
+        v27[3] = &unk_1E8024F18;
+        v9 = v7;
+        v28 = v9;
+        if ([v6 containsCardPassingTest:v27])
+        {
+          objc_initWeak(location, self);
+          v23[0] = MEMORY[0x1E69E9820];
+          v23[1] = 3221225472;
+          v23[2] = __73__PKPassGroupsViewController_presentHowToUseWalletWithCardLotIdentifier___block_invoke_2;
+          v23[3] = &unk_1E8011828;
+          objc_copyWeak(&v26, location);
+          v24 = v6;
+          v25 = v9;
+          [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:0 animated:1 performAction:v23];
+
+          objc_destroyWeak(&v26);
+          objc_destroyWeak(location);
+        }
+
+        else
+        {
+          v11 = [PKDiscoveryArticleViewController alloc];
+          v12 = [v9 article];
+          v13 = [(PKDiscoveryArticleViewController *)v11 initWithArticleLayout:v12 referrerIdentifier:0 cardSize:[v9 cardSizeType]];
+
+          v14 = [(PKDiscoveryArticleViewController *)v13 defaultZoomTransitionForDiscoveryCardView:0];
+          v15 = [[PKNavigationController alloc] initWithRootViewController:v13];
+          [(PKNavigationController *)v15 setModalPresentationStyle:0];
+          [(PKNavigationController *)v15 setPreferredTransition:v14];
+          objc_initWeak(location, self);
+          v20[0] = MEMORY[0x1E69E9820];
+          v20[1] = 3221225472;
+          v20[2] = __73__PKPassGroupsViewController_presentHowToUseWalletWithCardLotIdentifier___block_invoke_3;
+          v20[3] = &unk_1E80110E0;
+          objc_copyWeak(&v22, location);
+          v16 = v15;
+          v21 = v16;
+          [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:4 animated:1 performAction:v20];
+
+          objc_destroyWeak(&v22);
+          objc_destroyWeak(location);
+        }
+
+        v10 = v28;
+      }
+
+      else
+      {
+        v10 = PKLogFacilityTypeGetObject();
+        if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+        {
+          LODWORD(location[0]) = 138412290;
+          *(location + 4) = v4;
+          _os_log_impl(&dword_1BD026000, v10, OS_LOG_TYPE_DEFAULT, "No card found for lot identifier '%@'", location, 0xCu);
+        }
+      }
+    }
+
+    else
+    {
+      objc_initWeak(location, self);
+      v17[0] = MEMORY[0x1E69E9820];
+      v17[1] = 3221225472;
+      v17[2] = __73__PKPassGroupsViewController_presentHowToUseWalletWithCardLotIdentifier___block_invoke_338;
+      v17[3] = &unk_1E80110E0;
+      objc_copyWeak(&v19, location);
+      v18 = v6;
+      [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:0 animated:1 performAction:v17];
+
+      objc_destroyWeak(&v19);
+      objc_destroyWeak(location);
+    }
+  }
+}
+
+uint64_t __73__PKPassGroupsViewController_presentHowToUseWalletWithCardLotIdentifier___block_invoke(uint64_t a1, void *a2)
+{
+  v3 = [a2 identifier];
+  v4 = [*(a1 + 32) identifier];
+  v5 = v3;
+  v6 = v4;
+  v7 = v6;
+  if (v5 == v6)
+  {
+    v8 = 1;
+  }
+
+  else
+  {
+    v8 = 0;
+    if (v5 && v6)
+    {
+      v8 = [v5 isEqualToString:v6];
+    }
+  }
+
+  return v8;
+}
+
+void __73__PKPassGroupsViewController_presentHowToUseWalletWithCardLotIdentifier___block_invoke_2(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 48));
+  [WeakRetained _presentHowToUseWalletWithModel:*(a1 + 32) destinationCard:*(a1 + 40)];
+}
+
+void __73__PKPassGroupsViewController_presentHowToUseWalletWithCardLotIdentifier___block_invoke_3(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 40));
+  v2 = [WeakRetained pkui_frontMostViewController];
+  [v2 presentViewController:*(a1 + 32) animated:1 completion:0];
+}
+
+void __73__PKPassGroupsViewController_presentHowToUseWalletWithCardLotIdentifier___block_invoke_338(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 40));
+  [WeakRetained _presentHowToUseWalletWithModel:*(a1 + 32) destinationCard:0];
+}
+
+- (void)peerPaymentAccountResolutionController:(id)a3 requestsPresentViewController:(id)a4 animated:(BOOL)a5
+{
+  v5 = a5;
+  v7 = a4;
+  v8 = [(UIViewController *)self pkui_frontMostViewController];
+  [v8 presentViewController:v7 animated:v5 completion:0];
+}
+
+- (void)peerPaymentAccountResolutionController:(id)a3 requestsDismissCurrentViewControllerAnimated:(BOOL)a4
+{
+  v4 = a4;
+  v6 = [(UIViewController *)self pkui_frontMostViewController];
+  [v6 dismissViewControllerAnimated:v4 completion:0];
+
+  peerPaymentAccountResolutionController = self->_peerPaymentAccountResolutionController;
+  self->_peerPaymentAccountResolutionController = 0;
+}
+
+- (void)accountServiceAccountResolutionController:(id)a3 requestsPresentViewController:(id)a4 animated:(BOOL)a5
+{
+  v5 = a5;
+  v7 = a4;
+  v8 = [(UIViewController *)self pkui_frontMostViewController];
+  [v8 presentViewController:v7 animated:v5 completion:0];
+}
+
+- (void)performActionViewControllerDidCancel:(id)a3
+{
+  v3 = a3;
+  [v3 setDelegate:0];
+  v4 = [v3 presentingViewController];
+
+  [v4 dismissViewControllerAnimated:1 completion:0];
+}
+
+- (void)performActionViewControllerDidPerformAction:(id)a3
+{
+  v3 = a3;
+  [v3 setDelegate:0];
+  v4 = [v3 presentingViewController];
+
+  [v4 dismissViewControllerAnimated:1 completion:0];
+}
+
+- (void)startPaymentPreflight:(id)a3 withPaymentSetupMode:(int64_t)a4 referrerIdentifier:(id)a5 referralSource:(id)a6 campaignIdentifier:(id)a7 paymentNetworks:(id)a8 transitNetworkIdentifiers:(id)a9 allowedFeatureIdentifiers:(id)a10 productIdentifiers:(id)a11 sectionIdentifier:(id)a12
+{
+  v17 = a3;
+  v47 = a5;
+  v18 = a6;
+  v45 = a7;
+  v19 = a8;
+  v20 = a9;
+  v50 = a10;
+  v51 = a11;
+  v49 = a12;
+  PKTimeProfileBegin();
+  v21 = PKLogFacilityTypeGetObject();
+  v22 = os_signpost_id_make_with_pointer(v21, self);
+  if (v22 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  {
+    v23 = v22;
+    if (os_signpost_enabled(v21))
+    {
+      *buf = 0;
+      _os_signpost_emit_with_name_impl(&dword_1BD026000, v21, OS_SIGNPOST_INTERVAL_BEGIN, v23, "provisioning:preflight:add_card_button_total", "", buf, 2u);
+    }
+  }
+
+  objc_opt_class();
+  v24 = v17;
+  if (objc_opt_isKindOfClass())
+  {
+    aBlock[0] = MEMORY[0x1E69E9820];
+    aBlock[1] = 3221225472;
+    aBlock[2] = __231__PKPassGroupsViewController_startPaymentPreflight_withPaymentSetupMode_referrerIdentifier_referralSource_campaignIdentifier_paymentNetworks_transitNetworkIdentifiers_allowedFeatureIdentifiers_productIdentifiers_sectionIdentifier___block_invoke;
+    aBlock[3] = &unk_1E8011D28;
+    v67 = v17;
+    v25 = _Block_copy(aBlock);
+    v26 = [v25 copy];
+
+    v27 = v67;
+  }
+
+  else
+  {
+    v27 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
+    [v27 startAnimating];
+    v28 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:v27];
+    v29 = [(UIBarButtonItemGroup *)self->_navigationItem.trailing.add.group barButtonItems];
+    v63[0] = MEMORY[0x1E69E9820];
+    v63[1] = 3221225472;
+    v63[2] = __231__PKPassGroupsViewController_startPaymentPreflight_withPaymentSetupMode_referrerIdentifier_referralSource_campaignIdentifier_paymentNetworks_transitNetworkIdentifiers_allowedFeatureIdentifiers_productIdentifiers_sectionIdentifier___block_invoke_2;
+    v63[3] = &unk_1E8012798;
+    v63[4] = self;
+    v64 = v28;
+    v65 = v29;
+    v30 = v18;
+    v31 = v29;
+    v32 = v28;
+    v33 = _Block_copy(v63);
+    v26 = [v33 copy];
+
+    v24 = v17;
+    v18 = v30;
+  }
+
+  v35 = v45;
+  v34 = v47;
+
+  if (([objc_opt_class() isPerformingAction] & 1) == 0)
+  {
+    v36 = [(PKPassGroupsViewController *)self presentedViewController];
+
+    if (!v36)
+    {
+      v26[2](v26, 1);
+      [objc_opt_class() beginTrackingAction];
+      v37 = [MEMORY[0x1E69DC668] sharedApplication];
+      [v37 _setIdleTimerDisabled:1 forReason:@"SetupPayments"];
+
+      v46 = [MEMORY[0x1E69B8EF8] sharedService];
+      v38 = [objc_alloc(MEMORY[0x1E69B8D48]) initWithWebService:v46];
+      [v38 setReferrerIdentifier:v47];
+      [v38 setAllowedFeatureIdentifiers:v50];
+      [v38 setAllowedProductIdentifiers:v51];
+      [v38 setSelectedSectionIdentifier:v49];
+      [v38 setAllowProductsInUnsupportedRegion:1];
+      [v38 setReferralSource:v18];
+      [v38 setCampaignAttributionReferrerIdentifier:v35];
+      if (v19)
+      {
+        [v38 setAllowedPaymentNetworks:v19];
+      }
+
+      v48 = v18;
+      if (v20)
+      {
+        [v38 setRequiredTransitNetworkIdentifiers:v20];
+      }
+
+      v59[0] = MEMORY[0x1E69E9820];
+      v59[1] = 3221225472;
+      v59[2] = __231__PKPassGroupsViewController_startPaymentPreflight_withPaymentSetupMode_referrerIdentifier_referralSource_campaignIdentifier_paymentNetworks_transitNetworkIdentifiers_allowedFeatureIdentifiers_productIdentifiers_sectionIdentifier___block_invoke_3;
+      v59[3] = &unk_1E8024F40;
+      v59[4] = self;
+      v61 = v26;
+      v39 = v38;
+      v60 = v39;
+      v62 = a4;
+      v40 = _Block_copy(v59);
+      v52[0] = MEMORY[0x1E69E9820];
+      v52[1] = 3221225472;
+      v52[2] = __231__PKPassGroupsViewController_startPaymentPreflight_withPaymentSetupMode_referrerIdentifier_referralSource_campaignIdentifier_paymentNetworks_transitNetworkIdentifiers_allowedFeatureIdentifiers_productIdentifiers_sectionIdentifier___block_invoke_354;
+      v52[3] = &unk_1E8024F68;
+      v41 = v39;
+      v53 = v41;
+      v58 = a4;
+      v54 = v19;
+      v55 = v20;
+      v56 = v51;
+      v57 = v40;
+      v42 = v40;
+      v43 = _Block_copy(v52);
+      if (a4 == 2)
+      {
+        [v41 preflightWithRequirements:1007 completionRequirements:1007 completion:v43];
+      }
+
+      else
+      {
+        [v41 preflightWithCompletion:v43];
+      }
+
+      v18 = v48;
+    }
+  }
+}
+
+void __231__PKPassGroupsViewController_startPaymentPreflight_withPaymentSetupMode_referrerIdentifier_referralSource_campaignIdentifier_paymentNetworks_transitNetworkIdentifiers_allowedFeatureIdentifiers_productIdentifiers_sectionIdentifier___block_invoke_2(void *a1, int a2)
+{
+  v6[1] = *MEMORY[0x1E69E9840];
+  v2 = *(a1[4] + 1072);
+  if (a2)
+  {
+    v6[0] = a1[5];
+    v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
+    [v2 setBarButtonItems:v3];
+  }
+
+  else
+  {
+    v4 = a1[6];
+    v5 = *(a1[4] + 1072);
+
+    [v5 setBarButtonItems:v4];
+  }
+}
+
+void __231__PKPassGroupsViewController_startPaymentPreflight_withPaymentSetupMode_referrerIdentifier_referralSource_campaignIdentifier_paymentNetworks_transitNetworkIdentifiers_allowedFeatureIdentifiers_productIdentifiers_sectionIdentifier___block_invoke_3(uint64_t a1, int a2, void *a3, void *a4)
+{
+  v41[3] = *MEMORY[0x1E69E9840];
+  v7 = a3;
+  v8 = a4;
+  [objc_opt_class() endTrackingAction];
+  v9 = [MEMORY[0x1E69DC668] sharedApplication];
+  [v9 _setIdleTimerDisabled:0 forReason:@"SetupPayments"];
+
+  v10 = [*(a1 + 32) presentedViewController];
+
+  if (v10)
+  {
+    (*(*(a1 + 48) + 16))();
+    goto LABEL_16;
+  }
+
+  if (a2)
+  {
+    v11 = [[PKPaymentSetupNavigationController alloc] initWithProvisioningController:*(a1 + 40) context:0];
+    [(PKPaymentSetupNavigationController *)v11 setSetupDelegate:*(a1 + 32)];
+    [(PKPaymentSetupNavigationController *)v11 setPaymentSetupMode:*(a1 + 56)];
+    [(PKPaymentSetupNavigationController *)v11 setGroupsController:*(*(a1 + 32) + 1424)];
+    v33[0] = MEMORY[0x1E69E9820];
+    v33[1] = 3221225472;
+    v33[2] = __231__PKPassGroupsViewController_startPaymentPreflight_withPaymentSetupMode_referrerIdentifier_referralSource_campaignIdentifier_paymentNetworks_transitNetworkIdentifiers_allowedFeatureIdentifiers_productIdentifiers_sectionIdentifier___block_invoke_4;
+    v33[3] = &unk_1E8019A98;
+    v33[4] = *(a1 + 32);
+    v34 = v11;
+    v35 = *(a1 + 48);
+    v12 = v11;
+    [(PKPaymentSetupNavigationController *)v12 preflightWithCompletion:v33];
+
+    goto LABEL_16;
+  }
+
+  if (v7)
+  {
+    v13 = *(a1 + 32);
+    v31[0] = MEMORY[0x1E69E9820];
+    v31[1] = 3221225472;
+    v31[2] = __231__PKPassGroupsViewController_startPaymentPreflight_withPaymentSetupMode_referrerIdentifier_referralSource_campaignIdentifier_paymentNetworks_transitNetworkIdentifiers_allowedFeatureIdentifiers_productIdentifiers_sectionIdentifier___block_invoke_351;
+    v31[3] = &unk_1E8010AD8;
+    v32 = *(a1 + 48);
+    [v13 presentPassWithUniqueID:v7 animated:1 completionHandler:v31];
+
+    goto LABEL_16;
+  }
+
+  (*(*(a1 + 48) + 16))();
+  v14 = [v8 domain];
+  v15 = [v14 isEqualToString:*MEMORY[0x1E69BB840]];
+
+  if (v15)
+  {
+    if ([v8 code] == 6)
+    {
+      v16 = MEMORY[0x1E69B8540];
+      v17 = *MEMORY[0x1E69BB6E8];
+      v41[0] = *MEMORY[0x1E69BB6E0];
+      v41[1] = v17;
+      v41[2] = *MEMORY[0x1E69BB728];
+      v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:3];
+      v19 = *MEMORY[0x1E69BABE8];
+      v39[0] = *MEMORY[0x1E69BA680];
+      v39[1] = v19;
+      v20 = *MEMORY[0x1E69BB458];
+      v40[0] = *MEMORY[0x1E69BA818];
+      v40[1] = v20;
+      v21 = MEMORY[0x1E695DF20];
+      v22 = v40;
+      v23 = v39;
+LABEL_12:
+      v27 = [v21 dictionaryWithObjects:v22 forKeys:v23 count:2];
+      [v16 subjects:v18 sendEvent:v27];
+
+      goto LABEL_13;
+    }
+
+    if ([v8 code] == 9)
+    {
+      v16 = MEMORY[0x1E69B8540];
+      v24 = *MEMORY[0x1E69BB6E8];
+      v38[0] = *MEMORY[0x1E69BB6E0];
+      v38[1] = v24;
+      v38[2] = *MEMORY[0x1E69BB728];
+      v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:3];
+      v25 = *MEMORY[0x1E69BABE8];
+      v36[0] = *MEMORY[0x1E69BA680];
+      v36[1] = v25;
+      v26 = *MEMORY[0x1E69BB590];
+      v37[0] = *MEMORY[0x1E69BA818];
+      v37[1] = v26;
+      v21 = MEMORY[0x1E695DF20];
+      v22 = v37;
+      v23 = v36;
+      goto LABEL_12;
+    }
+  }
+
+LABEL_13:
+  v28 = PKAlertForDisplayableErrorWithHandlers(v8, 0, 0, 0);
+  if (v28)
+  {
+    v29 = *(a1 + 32);
+    v30[0] = MEMORY[0x1E69E9820];
+    v30[1] = 3221225472;
+    v30[2] = __231__PKPassGroupsViewController_startPaymentPreflight_withPaymentSetupMode_referrerIdentifier_referralSource_campaignIdentifier_paymentNetworks_transitNetworkIdentifiers_allowedFeatureIdentifiers_productIdentifiers_sectionIdentifier___block_invoke_2_352;
+    v30[3] = &unk_1E8010970;
+    v30[4] = v29;
+    [v29 presentViewController:v28 animated:1 completion:v30];
+  }
+
+LABEL_16:
+}
+
+void __231__PKPassGroupsViewController_startPaymentPreflight_withPaymentSetupMode_referrerIdentifier_referralSource_campaignIdentifier_paymentNetworks_transitNetworkIdentifiers_allowedFeatureIdentifiers_productIdentifiers_sectionIdentifier___block_invoke_4(uint64_t a1)
+{
+  v2 = [*(a1 + 32) presentedViewController];
+
+  if (v2)
+  {
+    v3 = *(*(a1 + 48) + 16);
+
+    v3();
+  }
+
+  else
+  {
+    v4 = *(a1 + 32);
+    v5 = *(a1 + 40);
+    v7[0] = MEMORY[0x1E69E9820];
+    v7[1] = 3221225472;
+    v7[2] = __231__PKPassGroupsViewController_startPaymentPreflight_withPaymentSetupMode_referrerIdentifier_referralSource_campaignIdentifier_paymentNetworks_transitNetworkIdentifiers_allowedFeatureIdentifiers_productIdentifiers_sectionIdentifier___block_invoke_5;
+    v7[3] = &unk_1E8010E20;
+    v6 = *(a1 + 48);
+    v7[4] = *(a1 + 32);
+    v8 = v6;
+    [v4 presentViewController:v5 animated:1 completion:v7];
+  }
+}
+
+void __231__PKPassGroupsViewController_startPaymentPreflight_withPaymentSetupMode_referrerIdentifier_referralSource_campaignIdentifier_paymentNetworks_transitNetworkIdentifiers_allowedFeatureIdentifiers_productIdentifiers_sectionIdentifier___block_invoke_5(uint64_t a1)
+{
+  (*(*(a1 + 40) + 16))();
+  v2 = PKLogFacilityTypeGetObject();
+  v3 = os_signpost_id_make_with_pointer(v2, *(a1 + 32));
+  if (v3 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  {
+    v4 = v3;
+    if (os_signpost_enabled(v2))
+    {
+      *v7 = 0;
+      _os_signpost_emit_with_name_impl(&dword_1BD026000, v2, OS_SIGNPOST_INTERVAL_END, v4, "provisioning:preflight:add_card_button_total", "", v7, 2u);
+    }
+  }
+
+  v5 = PKLogFacilityTypeGetObject();
+  v6 = PKTimeProfileEnd();
+}
+
+void __231__PKPassGroupsViewController_startPaymentPreflight_withPaymentSetupMode_referrerIdentifier_referralSource_campaignIdentifier_paymentNetworks_transitNetworkIdentifiers_allowedFeatureIdentifiers_productIdentifiers_sectionIdentifier___block_invoke_2_352(uint64_t a1)
+{
+  v2 = PKLogFacilityTypeGetObject();
+  v3 = PKTimeProfileEnd();
+
+  v4 = PKLogFacilityTypeGetObject();
+  v5 = os_signpost_id_make_with_pointer(v4, *(a1 + 32));
+  if (v5 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  {
+    v6 = v5;
+    if (os_signpost_enabled(v4))
+    {
+      *v7 = 0;
+      _os_signpost_emit_with_name_impl(&dword_1BD026000, v4, OS_SIGNPOST_INTERVAL_END, v6, "provisioning:preflight:add_card_button_total", "", v7, 2u);
+    }
+  }
+}
+
+void __231__PKPassGroupsViewController_startPaymentPreflight_withPaymentSetupMode_referrerIdentifier_referralSource_campaignIdentifier_paymentNetworks_transitNetworkIdentifiers_allowedFeatureIdentifiers_productIdentifiers_sectionIdentifier___block_invoke_354(uint64_t a1, int a2, void *a3)
+{
+  v25 = *MEMORY[0x1E69E9840];
+  v5 = a3;
+  v6 = PKLogFacilityTypeGetObject();
+  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  {
+    *buf = 138412290;
+    v22 = @"SetupPayments";
+    _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "Enabling Idle Timer: %@", buf, 0xCu);
+  }
+
+  v7 = [*(a1 + 32) paymentSetupProductModel];
+  v8 = [v7 allSetupProducts];
+
+  if (a2 && *(a1 + 72) == 3 && (*(a1 + 40) || *(a1 + 48) || *(a1 + 56)) && [v8 count] == 1)
+  {
+    v9 = [v8 firstObject];
+    v10 = [v9 configuration];
+    v11 = [v10 type];
+
+    if (v11 == 12)
+    {
+      v12 = [v9 criteriaIdentifier];
+      v13 = [*(a1 + 32) paymentOffersController];
+      v14 = [v13 paymentOfferCriteriaForIdentifier:v12];
+
+      if (!v14)
+      {
+        if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+        {
+          *buf = 138412546;
+          v22 = v12;
+          v23 = 2112;
+          v24 = v9;
+          _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "There is no payment offer criteria defined for criteriaIdentifier %@ defined for issuer installment prodiuct %@", buf, 0x16u);
+        }
+      }
+
+      v15 = [v14 associatedPassUniqueID];
+      if (v15)
+      {
+        v16 = v15;
+        (*(*(a1 + 64) + 16))();
+
+LABEL_20:
+        goto LABEL_17;
+      }
+    }
+
+    v17 = *(a1 + 32);
+    v18 = [v8 firstObject];
+    v19[0] = MEMORY[0x1E69E9820];
+    v19[1] = 3221225472;
+    v19[2] = __231__PKPassGroupsViewController_startPaymentPreflight_withPaymentSetupMode_referrerIdentifier_referralSource_campaignIdentifier_paymentNetworks_transitNetworkIdentifiers_allowedFeatureIdentifiers_productIdentifiers_sectionIdentifier___block_invoke_355;
+    v19[3] = &unk_1E8010B28;
+    v20 = *(a1 + 64);
+    [v17 setupProductForProvisioning:v18 includePurchases:1 withCompletionHandler:v19];
+
+    goto LABEL_20;
+  }
+
+  (*(*(a1 + 64) + 16))();
+LABEL_17:
+}
+
+- (void)addVASPassWithIdentifier:(id)a3
+{
+  v21[1] = *MEMORY[0x1E69E9840];
+  v4 = a3;
+  v5 = MEMORY[0x1E695DFF8];
+  v6 = PKVASPassCacheDirectoryPath();
+  v7 = [v5 fileURLWithPath:v6];
+
+  v8 = [v7 URLByAppendingPathComponent:v4 isDirectory:0];
+
+  v9 = [v8 URLByAppendingPathExtension:*MEMORY[0x1E69BC390]];
+
+  v16 = 0;
+  v10 = [MEMORY[0x1E69B8A20] createWithFileURL:v9 warnings:0 error:&v16];
+  v11 = v16;
+  v12 = PKLogFacilityTypeGetObject();
+  v13 = v12;
+  if (v10)
+  {
+    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    {
+      v14 = [v10 uniqueID];
+      *buf = 138412290;
+      v18 = v14;
+      _os_log_impl(&dword_1BD026000, v13, OS_LOG_TYPE_DEFAULT, "Add VAS pass with identifier: %@", buf, 0xCu);
+    }
+
+    v21[0] = v10;
+    v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
+    [(PKPassGroupsViewController *)self _presentAddPassesControllerWithPasses:v13];
+  }
+
+  else if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+  {
+    *buf = 138543618;
+    v18 = v4;
+    v19 = 2114;
+    v20 = v11;
+    _os_log_error_impl(&dword_1BD026000, v13, OS_LOG_TYPE_ERROR, "Failed to add VAS pass with identifier: %{public}@ %{public}@.", buf, 0x16u);
+  }
+
+  v15 = [MEMORY[0x1E696AC08] defaultManager];
+  [v15 removeItemAtURL:v9 error:0];
+}
+
+- (void)presentOrderManagementAnimated:(BOOL)a3 completion:(id)a4
+{
+  v4 = a3;
+  v6 = a4;
+  aBlock[0] = MEMORY[0x1E69E9820];
+  aBlock[1] = 3221225472;
+  aBlock[2] = __72__PKPassGroupsViewController_presentOrderManagementAnimated_completion___block_invoke;
+  aBlock[3] = &unk_1E80150A8;
+  aBlock[4] = self;
+  v13 = v4;
+  v7 = v6;
+  v12 = v7;
+  v8 = _Block_copy(aBlock);
+  v9 = [(PKPassGroupsViewController *)self presentedViewController];
+  v10 = v9;
+  if (v9 && ([v9 isBeingDismissed] & 1) == 0)
+  {
+    if ([v10 conformsToProtocol:&unk_1F3E3D608])
+    {
+      (*(v7 + 2))(v7, v10);
+    }
+
+    else
+    {
+      [(PKPassGroupsViewController *)self dismissViewControllerAnimated:v4 completion:v8];
+    }
+  }
+
+  else
+  {
+    v8[2](v8);
+  }
+}
+
+void __72__PKPassGroupsViewController_presentOrderManagementAnimated_completion___block_invoke(uint64_t a1)
+{
+  v2 = [(objc_class *)getFKOrderManagementViewControllerProviderClass() makeViewController];
+  v3 = *(a1 + 48);
+  v7[0] = MEMORY[0x1E69E9820];
+  v7[1] = 3221225472;
+  v7[2] = __72__PKPassGroupsViewController_presentOrderManagementAnimated_completion___block_invoke_2;
+  v7[3] = &unk_1E8010E20;
+  v4 = *(a1 + 32);
+  v5 = *(a1 + 40);
+  v8 = v2;
+  v9 = v5;
+  v6 = v2;
+  [v4 presentViewController:v6 animated:v3 completion:v7];
+}
+
+uint64_t __72__PKPassGroupsViewController_presentOrderManagementAnimated_completion___block_invoke_2(uint64_t a1)
+{
+  result = *(a1 + 40);
+  if (result)
+  {
+    return (*(result + 16))(result, *(a1 + 32));
+  }
+
+  return result;
+}
+
+- (void)presentMerchantTokenWithIdentifier:(id)a3 animated:(BOOL)a4 completion:(id)a5
+{
+  v6 = a4;
+  v8 = a3;
+  v9 = a5;
+  v15 = MEMORY[0x1E69E9820];
+  v16 = 3221225472;
+  v17 = __85__PKPassGroupsViewController_presentMerchantTokenWithIdentifier_animated_completion___block_invoke;
+  v18 = &unk_1E8024548;
+  v10 = v8;
+  v19 = v10;
+  v20 = self;
+  v22 = v6;
+  v11 = v9;
+  v21 = v11;
+  v12 = _Block_copy(&v15);
+  v13 = [(PKPassGroupsViewController *)self presentedViewController:v15];
+  v14 = v13;
+  if (v13 && ([v13 isBeingDismissed] & 1) == 0)
+  {
+    if ([v14 conformsToProtocol:&unk_1F3E3BF80])
+    {
+      (*(v11 + 2))(v11, v14);
+    }
+
+    else
+    {
+      [(PKPassGroupsViewController *)self dismissViewControllerAnimated:v6 completion:v12];
+    }
+  }
+
+  else
+  {
+    v12[2](v12);
+  }
+}
+
+void __85__PKPassGroupsViewController_presentMerchantTokenWithIdentifier_animated_completion___block_invoke(uint64_t a1)
+{
+  v2 = +[PKMerchantTokenUnifiedListViewControllerProvider makeViewController];
+  v3 = v2;
+  if (*(a1 + 32))
+  {
+    [v2 presentMerchantTokenWithIdentifier:?];
+  }
+
+  v4 = *(a1 + 56);
+  v8[0] = MEMORY[0x1E69E9820];
+  v8[1] = 3221225472;
+  v8[2] = __85__PKPassGroupsViewController_presentMerchantTokenWithIdentifier_animated_completion___block_invoke_2;
+  v8[3] = &unk_1E8010E20;
+  v5 = *(a1 + 40);
+  v6 = *(a1 + 48);
+  v9 = v3;
+  v10 = v6;
+  v7 = v3;
+  [v5 presentViewController:v7 animated:v4 completion:v8];
+}
+
+uint64_t __85__PKPassGroupsViewController_presentMerchantTokenWithIdentifier_animated_completion___block_invoke_2(uint64_t a1)
+{
+  result = *(a1 + 40);
+  if (result)
+  {
+    return (*(result + 16))(result, *(a1 + 32));
+  }
+
+  return result;
+}
+
+- (void)presentAuthorizationFlowAnimated:(BOOL)a3 completion:(id)a4
+{
+  v4 = a3;
+  v6 = a4;
+  objc_initWeak(&location, self);
+  v15 = MEMORY[0x1E69E9820];
+  v16 = 3221225472;
+  v17 = __74__PKPassGroupsViewController_presentAuthorizationFlowAnimated_completion___block_invoke;
+  v18 = &unk_1E8021ED8;
+  v7 = v6;
+  v19 = v7;
+  objc_copyWeak(&v20, &location);
+  v21 = v4;
+  v8 = _Block_copy(&v15);
+  v9 = [(UIViewController *)self pkui_frontMostViewController:v15];
+  v10 = v9;
+  if (v9 && ([v9 isBeingDismissed] & 1) == 0)
+  {
+    if ([v10 conformsToProtocol:&unk_1F3E3D668])
+    {
+      (*(v7 + 2))(v7, v10);
+    }
+
+    else
+    {
+      v11 = [v10 presentingViewController];
+      v12 = [v11 conformsToProtocol:&unk_1F3E3D668];
+
+      if (v12)
+      {
+        v13 = [v10 presentingViewController];
+        (*(v7 + 2))(v7, v13);
+      }
+
+      else
+      {
+        v14 = [v10 childViewControllers];
+        v13 = [v14 pk_firstObjectPassingTest:&__block_literal_global_383];
+
+        if (v13)
+        {
+          (*(v7 + 2))(v7, v13);
+        }
+
+        else
+        {
+          [(PKPassGroupsViewController *)self dismissViewControllerAnimated:v4 completion:v8];
+          v13 = 0;
+        }
+      }
+    }
+  }
+
+  else
+  {
+    v8[2](v8);
+  }
+
+  objc_destroyWeak(&v20);
+  objc_destroyWeak(&location);
+}
+
+void __74__PKPassGroupsViewController_presentAuthorizationFlowAnimated_completion___block_invoke(uint64_t a1)
+{
+  v2 = objc_alloc_init(MEMORY[0x1E6967DB0]);
+  v3[0] = MEMORY[0x1E69E9820];
+  v3[1] = 3221225472;
+  v3[2] = __74__PKPassGroupsViewController_presentAuthorizationFlowAnimated_completion___block_invoke_2;
+  v3[3] = &unk_1E8024FB8;
+  v4 = *(a1 + 32);
+  objc_copyWeak(&v5, (a1 + 40));
+  v6 = *(a1 + 48);
+  [v2 authorizationSessionWithCompletion:v3];
+  objc_destroyWeak(&v5);
+}
+
+void __74__PKPassGroupsViewController_presentAuthorizationFlowAnimated_completion___block_invoke_2(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  if (v3)
+  {
+    v5[0] = MEMORY[0x1E69E9820];
+    v5[1] = 3221225472;
+    v5[2] = __74__PKPassGroupsViewController_presentAuthorizationFlowAnimated_completion___block_invoke_376;
+    v5[3] = &unk_1E8020C68;
+    objc_copyWeak(&v8, (a1 + 40));
+    v7 = *(a1 + 32);
+    v6 = v3;
+    v9 = *(a1 + 48);
+    dispatch_async(MEMORY[0x1E69E96A0], v5);
+
+    objc_destroyWeak(&v8);
+  }
+
+  else
+  {
+    (*(*(a1 + 32) + 16))();
+    v4 = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    {
+      *buf = 0;
+      _os_log_error_impl(&dword_1BD026000, v4, OS_LOG_TYPE_ERROR, "Failed to handle BankConnect auth redirect. The auth session is nil!", buf, 2u);
+    }
+  }
+}
+
+void __74__PKPassGroupsViewController_presentAuthorizationFlowAnimated_completion___block_invoke_376(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 48));
+  if (WeakRetained)
+  {
+    v3 = objc_alloc_init(MEMORY[0x1E69B8A58]);
+    v4 = [*(a1 + 32) fpanId];
+    if (v4 && (v5 = v4, [*(a1 + 32) fpanId], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "passWithFPANIdentifier:", v6), v7 = objc_claimAutoreleasedReturnValue(), v6, v5, v7))
+    {
+      v8 = [v7 uniqueID];
+      v9 = *(a1 + 56);
+      v10[0] = MEMORY[0x1E69E9820];
+      v10[1] = 3221225472;
+      v10[2] = __74__PKPassGroupsViewController_presentAuthorizationFlowAnimated_completion___block_invoke_2_377;
+      v10[3] = &unk_1E8024F90;
+      v10[4] = WeakRetained;
+      v12 = *(a1 + 40);
+      v11 = *(a1 + 32);
+      v13 = *(a1 + 56);
+      [WeakRetained presentPassWithUniqueID:v8 animated:v9 completionHandler:v10];
+    }
+
+    else
+    {
+      [WeakRetained presentAuthorizationViewControllerWithSession:*(a1 + 32) animated:*(a1 + 56) completion:*(a1 + 40)];
+    }
+  }
+
+  else
+  {
+    (*(*(a1 + 40) + 16))();
+  }
+}
+
+uint64_t __74__PKPassGroupsViewController_presentAuthorizationFlowAnimated_completion___block_invoke_2_377(uint64_t a1, char a2)
+{
+  if ((a2 & 1) != 0 || (v3 = [*(a1 + 32) _dashboardPassGroupViewControllerWithRequirements:3], v3, !v3))
+  {
+    v9 = *(*(a1 + 48) + 16);
+
+    return v9();
+  }
+
+  else
+  {
+    v4 = *(a1 + 32);
+    v5 = *(a1 + 40);
+    v6 = *(a1 + 56);
+    v7 = *(a1 + 48);
+
+    return [v4 presentAuthorizationViewControllerWithSession:v5 animated:v6 completion:v7];
+  }
+}
+
+- (void)presentAuthorizationViewControllerWithSession:(id)a3 animated:(BOOL)a4 completion:(id)a5
+{
+  v6 = a4;
+  v8 = a3;
+  v9 = a5;
+  objc_initWeak(&location, self);
+  v10 = +[PKDismissalPreventionAssertionManager sharedInstance];
+  v11 = [v10 acquireAssertion];
+
+  v28 = 0;
+  v29 = &v28;
+  v30 = 0x3032000000;
+  v31 = __Block_byref_object_copy__65;
+  v32 = __Block_byref_object_dispose__65;
+  v33 = 0;
+  aBlock[0] = MEMORY[0x1E69E9820];
+  aBlock[1] = 3221225472;
+  aBlock[2] = __96__PKPassGroupsViewController_presentAuthorizationViewControllerWithSession_animated_completion___block_invoke;
+  aBlock[3] = &unk_1E8025000;
+  objc_copyWeak(&v26, &location);
+  v12 = v9;
+  v25 = v12;
+  v27 = v6;
+  v13 = v11;
+  v24 = v13;
+  v14 = _Block_copy(aBlock);
+  v15 = [(objc_class *)getFKBankConnectAuthorizationViewControllerProviderClass_0() makeAuthorizationViewControllerForAuthorizationSession:v8 completion:v14];
+  v16 = v29[5];
+  v29[5] = v15;
+
+  v17 = [(UIViewController *)self pkui_frontMostViewController];
+  v18 = v29[5];
+  v20[0] = MEMORY[0x1E69E9820];
+  v20[1] = 3221225472;
+  v20[2] = __96__PKPassGroupsViewController_presentAuthorizationViewControllerWithSession_animated_completion___block_invoke_2;
+  v20[3] = &unk_1E8017240;
+  v19 = v12;
+  v21 = v19;
+  v22 = &v28;
+  [v17 presentViewController:v18 animated:v6 completion:v20];
+
+  objc_destroyWeak(&v26);
+  _Block_object_dispose(&v28, 8);
+
+  objc_destroyWeak(&location);
+}
+
+void __96__PKPassGroupsViewController_presentAuthorizationViewControllerWithSession_animated_completion___block_invoke(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 48));
+  v3 = WeakRetained;
+  if (WeakRetained)
+  {
+    [WeakRetained dismissViewControllerAnimated:*(a1 + 56) completion:0];
+    [*(a1 + 32) invalidate];
+  }
+
+  else
+  {
+    (*(*(a1 + 40) + 16))();
+  }
+}
+
+- (void)presentBackgroundRefreshConfirmationAnimated:(BOOL)a3
+{
+  v3 = a3;
+  v8[0] = MEMORY[0x1E69E9820];
+  v8[1] = 3221225472;
+  v8[2] = __75__PKPassGroupsViewController_presentBackgroundRefreshConfirmationAnimated___block_invoke;
+  v8[3] = &unk_1E8013F80;
+  v8[4] = self;
+  v9 = a3;
+  v5 = _Block_copy(v8);
+  v6 = [(PKPassGroupsViewController *)self presentedViewController];
+  v7 = v6;
+  if (v6 && ([v6 isBeingDismissed] & 1) == 0)
+  {
+    [(PKPassGroupsViewController *)self dismissViewControllerAnimated:v3 completion:v5];
+  }
+
+  else
+  {
+    v5[2](v5);
+  }
+}
+
+void __75__PKPassGroupsViewController_presentBackgroundRefreshConfirmationAnimated___block_invoke(uint64_t a1)
+{
+  v2 = [(objc_class *)getFKBankConnectBackgroundRefreshConfirmationViewControllerProviderClass() makeViewController];
+  if (v2)
+  {
+    v3 = v2;
+    [*(a1 + 32) presentViewController:v2 animated:*(a1 + 40) completion:0];
+    v2 = v3;
+  }
+}
+
+- (void)dismissDiscoveryArticleViewController:(id)a3 afterActionCompleted:(BOOL)a4 withRelevantPassUniqueIdenitifer:(id)a5
+{
+  v5 = a4;
+  v7 = a5;
+  v8 = v7;
+  v9 = 0;
+  if (v7 && v5)
+  {
+    v10 = MEMORY[0x1E69E9820];
+    v11 = 3221225472;
+    v12 = __122__PKPassGroupsViewController_dismissDiscoveryArticleViewController_afterActionCompleted_withRelevantPassUniqueIdenitifer___block_invoke;
+    v13 = &unk_1E8010A10;
+    v14 = self;
+    v15 = v7;
+    v9 = _Block_copy(&v10);
+  }
+
+  [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:0 animated:1 performAction:v9, v10, v11, v12, v13, v14];
+}
+
+- (void)_invalidateForType:(int64_t)a3
+{
+  v17 = *MEMORY[0x1E69E9840];
+  invalidationStatus = self->_invalidationStatus;
+  if (invalidationStatus != a3)
+  {
+    self->_invalidationStatus = a3;
+    if (a3 >= 1 && invalidationStatus <= 0)
+    {
+      v6 = PKLogFacilityTypeGetObject();
+      if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+      {
+        groupStackView = self->_groupStackView;
+        v13 = 134349312;
+        v14 = self;
+        v15 = 2050;
+        v16 = groupStackView;
+        _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "PKPassGroupsViewController (%{public}p:%{public}p): partially invalidated.", &v13, 0x16u);
+      }
+
+      [(PKPassGroupStackView *)self->_groupStackView _tombstone];
+      [(PKPaymentService *)self->_paymentService unregisterObserver:self];
+      paymentService = self->_paymentService;
+      self->_paymentService = 0;
+
+      [(PKPassGroupsViewController *)self _registerForExpressTransactionNotifications:0];
+    }
+
+    if (a3 > 1 && invalidationStatus <= 1)
+    {
+      v9 = PKLogFacilityTypeGetObject();
+      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      {
+        v10 = self->_groupStackView;
+        v13 = 134349312;
+        v14 = self;
+        v15 = 2050;
+        v16 = v10;
+        _os_log_impl(&dword_1BD026000, v9, OS_LOG_TYPE_DEFAULT, "PKPassGroupsViewController (%{public}p:%{public}p): invalidated.", &v13, 0x16u);
+      }
+
+      self->_externalNavigationController = 0;
+      [(PKPassGroupStackView *)self->_groupStackView setPaused:1];
+      [(PKPassGroupStackView *)self->_groupStackView setDelegate:0];
+      v11 = self->_groupStackView;
+      if (v11)
+      {
+        v11->_externalNavigationController = 0;
+        v12 = self->_groupStackView;
+      }
+
+      else
+      {
+        v12 = 0;
+      }
+
+      [(PKPassGroupStackView *)v12 invalidate];
+    }
+  }
+}
+
+- (id)_passGroupsViewNavigationController
+{
+  result = [(PKPassGroupsViewController *)self navigationController];
+  if (result)
+  {
+    v3 = result;
+    objc_opt_class();
+    result = objc_opt_isKindOfClass();
+    if (result)
+    {
+      return v3;
+    }
+  }
+
+  __break(1u);
+  return result;
+}
+
+- (id)_dashboardPassGroupViewControllerWithRequirements:(unsigned __int8)a3
+{
+  v5 = [(PKPassGroupsViewController *)self _dashboardPassGroupViewController];
+  v6 = v5;
+  if (v5)
+  {
+    v7 = [v5 navigationController];
+    v8 = v7;
+    if ((a3 & 1) != 0 && ([v7 presentedViewController], v9 = objc_claimAutoreleasedReturnValue(), v9, v9) || (a3 & 2) != 0 && (objc_msgSend(v8, "topViewController"), v10 = objc_claimAutoreleasedReturnValue(), v10, v10 != self))
+    {
+      v11 = 0;
+    }
+
+    else
+    {
+      v11 = v6;
+    }
+  }
+
+  else
+  {
+    v11 = 0;
+  }
+
+  return v11;
+}
+
+- (void)_setExternalNavigationController:(void *)a1
+{
+  v3 = a2;
+  if (a1)
+  {
+    if (a1[126] == 2)
+    {
+
+      v3 = 0;
+    }
+
+    if (a1[180] != v3)
+    {
+      a1[180] = v3;
+      v4 = a1[144];
+      if (v4)
+      {
+        *(v4 + 3056) = v3;
+      }
+    }
+  }
+}
+
+- (void)_updateFooterSuppressionAnimated:(BOOL)a3
+{
+  if (self->_persistentCardEmulationQueued)
+  {
+    v4 = a3;
+    v7 = objc_alloc_init(PKPassPresentationContext);
+    [(PKPassPresentationContext *)v7 setPersistentCardEmulation:1];
+    v5 = [(PKPassGroupStackView *)self->_groupStackView modalGroupFrontmostPass];
+    v6 = [v5 uniqueID];
+    [(PKPassGroupsViewController *)self presentPassWithUniqueID:v6 context:v7 animated:v4 completionHandler:0];
+  }
+
+  else
+  {
+    v7 = 0;
+  }
+
+  [(PKPassGroupsViewController *)self _updateFooterSuppressionWithContext:v7];
+}
+
+- (void)_updateFooterSuppressionWithContext:(id)a3
+{
+  v4 = a3;
+  v5 = atomic_load(&FooterSuppressionCounter);
+  v8 = v4;
+  if (v5 || self->_instanceFooterSuppressionCounter)
+  {
+    [(PKPassGroupStackView *)self->_groupStackView setFooterSuppressed:1 withContext:v4];
+    [(PKPassGroupStackView *)self->_groupStackView setExternalFooterSuppressed:1];
+    if (!self->_invalidationStatus)
+    {
+      v6 = [MEMORY[0x1E69DC668] sharedApplication];
+      [v6 pkui_consumeSharedRootAuthenticationContext];
+    }
+  }
+
+  else
+  {
+    viewAppeared = self->_viewAppeared;
+    if (viewAppeared)
+    {
+      self->_persistentCardEmulationQueued = 0;
+    }
+
+    [(PKPassGroupStackView *)self->_groupStackView setFooterSuppressed:!viewAppeared withContext:v4];
+    [(PKPassGroupStackView *)self->_groupStackView setExternalFooterSuppressed:0];
+  }
+}
+
+- (id)_passFromGroupsControllerWithUniqueIdentifier:(id)a3
+{
+  v4 = a3;
+  if (v4 && (v5 = [(PKGroupsController *)self->_groupsController groupIndexForPassUniqueID:v4], v5 != 0x7FFFFFFFFFFFFFFFLL))
+  {
+    v7 = [(PKGroupsController *)self->_groupsController groupAtIndex:v5];
+    v8 = [v7 indexForPassUniqueID:v4];
+    if (v8 == 0x7FFFFFFFFFFFFFFFLL)
+    {
+      v6 = 0;
+    }
+
+    else
+    {
+      v6 = [v7 passAtIndex:v8];
+    }
+  }
+
+  else
+  {
+    v6 = 0;
+  }
+
+  return v6;
+}
+
+- (void)_createNavigationGroups
+{
+  kind = self->_kind;
+  if (kind == 2)
+  {
+
+    v5 = [(PKPassGroupsViewController *)self _createTrailingItemGroups];
+    goto LABEL_7;
+  }
+
+  if (kind == 1)
+  {
+
+    v5 = [(PKPassGroupsViewController *)self _application_createTrailingItemGroups];
+LABEL_7:
+
+    v6 = [[PKNavigationItemController alloc] initWithDelegate:?];
+    controller = self->_navigationItem.controller;
+    self->_navigationItem.controller = v6;
+    goto LABEL_8;
+  }
+
+  if (self->_kind)
+  {
+    goto LABEL_9;
+  }
+
+  controller = [(PKPassGroupsViewController *)self _createTrailingItemGroups];
+LABEL_8:
+
+LABEL_9:
+
+  [(PKPassGroupsViewController *)self _updateNavigationItemAnimated:0];
+}
+
+- (id)_createLeadingItemGroups
+{
+  if (*(self + 1064) == 1)
+  {
+    __break(1u);
+  }
+
+  else
+  {
+    *(self + 1064) = 1;
+    return [self _leadingItemGroups];
+  }
+
+  return self;
+}
+
+- (id)_leadingItemGroups
+{
+  if (*(self + 1064))
+  {
+    return MEMORY[0x1E695E0F0];
+  }
+
+  __break(1u);
+  return self;
+}
+
+- (id)_createTrailingItemGroups
+{
+  if (*(self + 992) == 1 || *(self + 1136) == 1)
+  {
+    __break(1u);
+  }
+
+  else
+  {
+    *(self + 1136) = 1;
+    return [self _trailingItemGroups];
+  }
+
+  return self;
+}
+
+- (id)_application_createTrailingItemGroups
+{
+  if (*(self + 992) != 1 || (v2 = self, v3 = (self + 1024), *(self + 1136) == 1))
+  {
+    __break(1u);
+  }
+
+  else
+  {
+    *(self + 1136) = 1;
+    objc_initWeak(location, self);
+    aBlock[0] = MEMORY[0x1E69E9820];
+    aBlock[1] = 3221225472;
+    aBlock[2] = __67__PKPassGroupsViewController__application_createTrailingItemGroups__block_invoke;
+    aBlock[3] = &unk_1E8025048;
+    objc_copyWeak(&v44, location);
+    v4 = _Block_copy(aBlock);
+    v41[0] = MEMORY[0x1E69E9820];
+    v41[1] = 3221225472;
+    v41[2] = __67__PKPassGroupsViewController__application_createTrailingItemGroups__block_invoke_3;
+    v41[3] = &unk_1E8025098;
+    v38 = v4;
+    v42 = v38;
+    v5 = _Block_copy(v41);
+    v6 = [[PKPassGroupsMoreMenuFactory alloc] initWithAutoFillCardManager:*(v2 + 170)];
+    v7 = *(v2 + 143);
+    *(v2 + 143) = v6;
+
+    [*(v2 + 143) setArePaymentPassesProvisioned:{objc_msgSend(v2, "doesContainActivatedPaymentPasses")}];
+    [*(v2 + 143) setExpiredPassesCount:{objc_msgSend(*(v2 + 178), "expiredSectionPassesCount")}];
+    [*(v2 + 143) setDelegate:v2];
+    v8 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"ellipsis"];
+    v9 = PKLocalizedString(&cfstr_More.isa);
+    v10 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v9 image:v8 target:0 action:0 menu:0];
+    v11 = objc_alloc(MEMORY[0x1E69DC708]);
+    v12 = [*(v2 + 143) moreMenu];
+    v13 = [v11 initWithTitle:v9 image:v8 target:0 action:0 menu:v12];
+
+    objc_storeStrong(v3 + 10, v10);
+    objc_storeStrong(v3 + 11, v13);
+    v14 = PKLocalizedPaymentString(&cfstr_MoreButtonTool_5.isa);
+    [v13 setAccessibilityLabel:v14];
+
+    [v13 setAccessibilityIdentifier:*MEMORY[0x1E69B9970]];
+    v15 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"plus"];
+    v16 = PKLocalizedPaymentString(&cfstr_ApplePay_0.isa);
+    v17 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v16 image:v15 target:0 action:0 menu:0];
+    v18 = objc_alloc(MEMORY[0x1E69DC708]);
+    v19 = MEMORY[0x1E69DC628];
+    v20 = v5[2](v5, &__block_literal_global_412);
+    v21 = [v19 actionWithTitle:v16 image:v15 identifier:0 handler:v20];
+    v22 = [v18 initWithPrimaryAction:v21];
+
+    objc_storeStrong(v3 + 7, v17);
+    objc_storeStrong(v3 + 8, v22);
+    v23 = PKLocalizedPaymentString(&cfstr_AddCard.isa);
+    [v22 setAccessibilityLabel:v23];
+
+    [v22 setAccessibilityIdentifier:*MEMORY[0x1E69B93E8]];
+    if (PKInWalletSearchEnabled())
+    {
+      v24 = objc_alloc(MEMORY[0x1E69DC708]);
+      v25 = MEMORY[0x1E69DC628];
+      v40[0] = MEMORY[0x1E69E9820];
+      v40[1] = 3221225472;
+      v40[2] = __67__PKPassGroupsViewController__application_createTrailingItemGroups__block_invoke_6;
+      v40[3] = &unk_1E80250E0;
+      v40[4] = v2;
+      v26 = v5[2](v5, v40);
+      v27 = [v25 actionWithHandler:{v26, v38}];
+      v28 = [v24 initWithBarButtonSystemItem:12 primaryAction:v27];
+
+      objc_storeStrong(v3 + 12, v28);
+      v29 = PKLocalizedPaymentString(&cfstr_SearchAccessib.isa);
+      [v28 setAccessibilityLabel:v29];
+
+      [v28 setAccessibilityIdentifier:*MEMORY[0x1E69B9BD0]];
+    }
+
+    v30 = [MEMORY[0x1E69DCAB8] systemImageNamed:{@"person.crop.circle", v38}];
+    v31 = PKLocalizedString(&cfstr_DashboardMoreM_50.isa);
+    v32 = objc_alloc(MEMORY[0x1E69DC708]);
+    v33 = MEMORY[0x1E69DC628];
+    v34 = v5[2](v5, &__block_literal_global_431);
+    v35 = [v33 actionWithTitle:v31 image:v30 identifier:0 handler:v34];
+    v36 = [v32 initWithPrimaryAction:v35];
+
+    objc_storeStrong(v3 + 13, v36);
+    [v36 setAccessibilityIdentifier:*MEMORY[0x1E69B9A90]];
+
+    v37 = [v2 _trailingItemGroups];
+    objc_destroyWeak(&v44);
+    objc_destroyWeak(location);
+    return v37;
+  }
+
+  return self;
+}
+
+id __67__PKPassGroupsViewController__application_createTrailingItemGroups__block_invoke(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  v7[0] = MEMORY[0x1E69E9820];
+  v7[1] = 3221225472;
+  v7[2] = __67__PKPassGroupsViewController__application_createTrailingItemGroups__block_invoke_2;
+  v7[3] = &unk_1E8023568;
+  objc_copyWeak(&v9, (a1 + 32));
+  v8 = v3;
+  v4 = v3;
+  v5 = _Block_copy(v7);
+
+  objc_destroyWeak(&v9);
+
+  return v5;
+}
+
+void __67__PKPassGroupsViewController__application_createTrailingItemGroups__block_invoke_2(uint64_t a1, void *a2)
+{
+  v7 = a2;
+  WeakRetained = objc_loadWeakRetained((a1 + 40));
+  v4 = WeakRetained;
+  if (WeakRetained)
+  {
+    v5 = WeakRetained[128];
+    if (!v5 || *(v5 + 56) != 1 || WeakRetained[131])
+    {
+      v6 = [WeakRetained viewIfLoaded];
+      if (v6)
+      {
+        (*(*(a1 + 32) + 16))();
+      }
+    }
+  }
+}
+
+id __67__PKPassGroupsViewController__application_createTrailingItemGroups__block_invoke_3(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  v4 = *(a1 + 32);
+  v9[0] = MEMORY[0x1E69E9820];
+  v9[1] = 3221225472;
+  v9[2] = __67__PKPassGroupsViewController__application_createTrailingItemGroups__block_invoke_4;
+  v9[3] = &unk_1E8025070;
+  v10 = v3;
+  v5 = *(v4 + 16);
+  v6 = v3;
+  v7 = v5(v4, v9);
+
+  return v7;
+}
+
+void __67__PKPassGroupsViewController__application_createTrailingItemGroups__block_invoke_4(uint64_t a1, void *a2, void *a3, void *a4)
+{
+  v9 = a2;
+  v7 = a3;
+  v8 = a4;
+  if (PKUIStoreDemoGatewayWithView(v7))
+  {
+    (*(*(a1 + 32) + 16))();
+  }
+}
+
+void __67__PKPassGroupsViewController__application_createTrailingItemGroups__block_invoke_5(uint64_t a1, void *a2, void *a3)
+{
+  v13[2] = *MEMORY[0x1E69E9840];
+  v4 = MEMORY[0x1E69B8540];
+  v5 = *MEMORY[0x1E69BB718];
+  v6 = *MEMORY[0x1E69BA440];
+  v12[0] = *MEMORY[0x1E69BA680];
+  v12[1] = v6;
+  v7 = *MEMORY[0x1E69BB028];
+  v13[0] = *MEMORY[0x1E69BA6F0];
+  v13[1] = v7;
+  v8 = MEMORY[0x1E695DF20];
+  v9 = a3;
+  v10 = a2;
+  v11 = [v8 dictionaryWithObjects:v13 forKeys:v12 count:2];
+  [v4 subject:v5 sendEvent:v11];
+
+  [v10 startPaymentPreflight:v9 withPaymentSetupMode:0 referrerIdentifier:0 referralSource:*MEMORY[0x1E69BB0E8] campaignIdentifier:0 paymentNetworks:0 transitNetworkIdentifiers:0 allowedFeatureIdentifiers:0 productIdentifiers:0 sectionIdentifier:0];
+}
+
+void __67__PKPassGroupsViewController__application_createTrailingItemGroups__block_invoke_6(uint64_t a1, void *a2)
+{
+  v3 = [a2 navigationController];
+  v4 = [v3 presentedViewController];
+
+  if (v4)
+  {
+    v5 = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    {
+      *buf = 0;
+      _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "Another VC already presented", buf, 2u);
+    }
+  }
+
+  else
+  {
+    v5 = [MEMORY[0x1E69B8BD8] defaultDataProvider];
+    v6 = [[PKSearchResultsViewController alloc] initWithPaymentDataProvider:v5 transactionSourceCollection:0 familyCollection:0];
+    [(PKSearchResultsViewController *)v6 preflightWithCompletion:0];
+    [(PKSearchResultsViewController *)v6 setDelegate:*(a1 + 32)];
+    v7 = [objc_alloc(MEMORY[0x1E69DCF10]) initWithSearchResultsController:0];
+    [v7 setSearchResultsUpdater:v6];
+    v8 = [v7 searchBar];
+    [v8 setDelegate:v6];
+    v9 = [v8 searchTextField];
+    [v9 setAllowsCopyingTokens:0];
+
+    v10 = [[PKNavigationController alloc] initWithRootViewController:v6];
+    [(PKNavigationController *)v10 setModalPresentationStyle:5];
+    [(PKNavigationController *)v10 setModalTransitionStyle:2];
+    v11 = [(PKSearchResultsViewController *)v6 navigationItem];
+    [v11 setSearchController:v7];
+
+    v13[0] = MEMORY[0x1E69E9820];
+    v13[1] = 3221225472;
+    v13[2] = __67__PKPassGroupsViewController__application_createTrailingItemGroups__block_invoke_418;
+    v13[3] = &unk_1E8010970;
+    v14 = v7;
+    v12 = v7;
+    [v3 presentViewController:v10 animated:1 completion:v13];
+  }
+}
+
+void __67__PKPassGroupsViewController__application_createTrailingItemGroups__block_invoke_418(uint64_t a1)
+{
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __67__PKPassGroupsViewController__application_createTrailingItemGroups__block_invoke_2_419;
+  block[3] = &unk_1E8010970;
+  v2 = *(a1 + 32);
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+}
+
+void __67__PKPassGroupsViewController__application_createTrailingItemGroups__block_invoke_2_419(uint64_t a1)
+{
+  v1 = [*(a1 + 32) searchBar];
+  [v1 becomeFirstResponder];
+}
+
+void __67__PKPassGroupsViewController__application_createTrailingItemGroups__block_invoke_3_429(uint64_t a1, void *a2)
+{
+  v6 = a2;
+  v2 = [v6 navigationController];
+  v3 = [v2 presentedViewController];
+
+  if (!v3)
+  {
+    v4 = [[PKInboxViewController alloc] initWithInboxDataSource:v6[168] contactAvatarManager:v6[173] context:0];
+    v5 = [[PKNavigationController alloc] initWithRootViewController:v4];
+    [v2 presentViewController:v5 animated:1 completion:0];
+  }
+}
+
+- (id)_trailingItemGroups
+{
+  v16[2] = *MEMORY[0x1E69E9840];
+  p_navigationItem = &self->_navigationItem;
+  if (!self->_navigationItem.trailing.created)
+  {
+    __break(1u);
+  }
+
+  if (self->_kind != 1)
+  {
+    return MEMORY[0x1E695E0F0];
+  }
+
+  v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
+  if ([(PKInboxDataSource *)self->_inboxDataSource inboxVisible])
+  {
+    v5 = [(PKInboxDataSource *)self->_inboxDataSource badgeCount];
+    if (v5)
+    {
+      v6 = [MEMORY[0x1E69DC718] badgeWithCount:v5];
+      [(UIBarButtonItem *)p_navigationItem->trailing.more.items.inbox setBadge:v6];
+    }
+
+    else
+    {
+      [(UIBarButtonItem *)p_navigationItem->trailing.more.items.inbox setBadge:?];
+    }
+
+    [v4 addObject:p_navigationItem->trailing.more.items.inbox];
+  }
+
+  if (p_navigationItem->trailing.more.items.search)
+  {
+    [v4 addObject:?];
+  }
+
+  [v4 addObject:p_navigationItem->trailing.more.items.more];
+  group = p_navigationItem->trailing.more.group;
+  if (group)
+  {
+    [(UIBarButtonItemGroup *)group setBarButtonItems:v4];
+  }
+
+  else
+  {
+    v9 = [objc_alloc(MEMORY[0x1E69DC720]) initWithBarButtonItems:v4 representativeItem:p_navigationItem->trailing.more.representativeItem];
+    v10 = p_navigationItem->trailing.more.group;
+    p_navigationItem->trailing.more.group = v9;
+  }
+
+  v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
+  [v11 addObject:p_navigationItem->trailing.add.items.add];
+  v12 = p_navigationItem->trailing.add.group;
+  if (v12)
+  {
+    [(UIBarButtonItemGroup *)v12 setBarButtonItems:v11];
+  }
+
+  else
+  {
+    v13 = [objc_alloc(MEMORY[0x1E69DC720]) initWithBarButtonItems:v11 representativeItem:p_navigationItem->trailing.add.representativeItem];
+    v14 = p_navigationItem->trailing.add.group;
+    p_navigationItem->trailing.add.group = v13;
+  }
+
+  v15 = p_navigationItem->trailing.more.group;
+  v16[0] = p_navigationItem->trailing.add.group;
+  v16[1] = v15;
+  [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
+  return objc_claimAutoreleasedReturnValue();
+}
+
+- (BOOL)_showNavigationBar
+{
+  if (self->_navigationItem.active.handle && self->_navigationItem.active.external)
+  {
+    return 0;
+  }
+
+  if (![(PKPassGroupsViewController *)self isViewLoaded])
+  {
+    return self->_kind == 1;
+  }
+
+  groupStackView = self->_groupStackView;
+
+  return [(PKPassGroupStackView *)groupStackView needsNavigationBar];
+}
+
+- (void)_applyNavigationItemConfiguration:(id)a3
+{
+  v4 = a3;
+  if (v4)
+  {
+    v7 = v4;
+    [(PKNavigationItemConfiguration *)v4 applyToViewController:?];
+    v5 = v7;
+    v6 = (*(v7 + 9) & 1) == 0;
+    if (self->_needsDefaultStatusBar != v6)
+    {
+      self->_needsDefaultStatusBar = v6;
+      [(PKNavigationController *)self->_externalNavigationController setNeedsNavigationBarUpdateAnimated:1];
+      v5 = v7;
+    }
+  }
+
+  else
+  {
+    __break(1u);
+  }
+}
+
+- (void)_updateNavigationItemAnimated:(BOOL)a3
+{
+  v3 = a3;
+  controller = self->_navigationItem.controller;
+  if (!controller || !controller->_activated || self->_navigationItem.active.handle)
+  {
+    aBlock[0] = MEMORY[0x1E69E9820];
+    aBlock[1] = 3221225472;
+    aBlock[2] = __60__PKPassGroupsViewController__updateNavigationItemAnimated___block_invoke;
+    aBlock[3] = &unk_1E8013F80;
+    aBlock[4] = self;
+    v11 = a3;
+    v5 = _Block_copy(aBlock);
+    v6 = v5;
+    v7 = MEMORY[0x1E69DD250];
+    if (v3)
+    {
+      [MEMORY[0x1E69DD250] _animateUsingDefaultTimingWithOptions:6 animations:v5 completion:0];
+    }
+
+    else
+    {
+      v8[0] = MEMORY[0x1E69E9820];
+      v8[1] = 3221225472;
+      v8[2] = __60__PKPassGroupsViewController__updateNavigationItemAnimated___block_invoke_3;
+      v8[3] = &unk_1E8010B50;
+      v9 = v5;
+      [v7 performWithoutAnimation:v8];
+    }
+  }
+}
+
+void __60__PKPassGroupsViewController__updateNavigationItemAnimated___block_invoke(uint64_t a1)
+{
+  v1 = *(a1 + 32);
+  v2 = *(v1 + 1152);
+  v3[0] = MEMORY[0x1E69E9820];
+  v3[1] = 3221225472;
+  v3[2] = __60__PKPassGroupsViewController__updateNavigationItemAnimated___block_invoke_2;
+  v3[3] = &unk_1E8010970;
+  v3[4] = v1;
+  [(PKPassGroupStackView *)v2 _performGeometryUpdates:v3 animated:*(a1 + 40)];
+}
+
+void __60__PKPassGroupsViewController__updateNavigationItemAnimated___block_invoke_2(uint64_t a1)
+{
+  v2 = *(a1 + 32);
+  v3 = *(v2 + 1048);
+  if (v3)
+  {
+    [(PKNavigationItemHandle *)v3 updateItem];
+    v4 = *(a1 + 32);
+    if (v4[1056] != 1)
+    {
+      return;
+    }
+
+    v5 = [(PKPassGroupsViewController *)v4 _navigationItemConfiguration];
+    v6 = v5;
+    if (v5)
+    {
+      v7 = [(PKNavigationItemConfiguration *)v5 copy];
+      *(v7 + 8) = 1;
+      v8 = *(v7 + 40);
+      v11 = v7;
+      *(v7 + 40) = 0;
+    }
+
+    else
+    {
+      v11 = 0;
+    }
+
+    v9 = *(a1 + 32);
+    v10 = v11;
+  }
+
+  else
+  {
+    v10 = [(PKPassGroupsViewController *)v2 _navigationItemConfiguration];
+    v9 = v2;
+    v11 = v10;
+  }
+
+  [v9 _applyNavigationItemConfiguration:v10];
+}
+
+- (id)_peerPaymentAccountResolutionController
+{
+  peerPaymentAccountResolutionController = self->_peerPaymentAccountResolutionController;
+  if (!peerPaymentAccountResolutionController)
+  {
+    v4 = [PKPeerPaymentAccountResolutionController alloc];
+    v5 = [(PKPeerPaymentService *)self->_peerPaymentService account];
+    v6 = [MEMORY[0x1E69B9020] sharedService];
+    v7 = [(PKPeerPaymentAccountResolutionController *)v4 initWithAccount:v5 webService:v6 context:0 delegate:self passLibraryDataProvider:self->_passLibraryDataProvider];
+    v8 = self->_peerPaymentAccountResolutionController;
+    self->_peerPaymentAccountResolutionController = v7;
+
+    peerPaymentAccountResolutionController = self->_peerPaymentAccountResolutionController;
+  }
+
+  return peerPaymentAccountResolutionController;
+}
+
+- (void)dismissVerificationPageForPassWithDeviceAccountID:(id)a3
+{
+  v4 = a3;
+  v5 = [(PKPassGroupsViewController *)self presentedPass];
+  v12 = [v5 paymentPass];
+
+  v6 = [v12 deviceAccountIdentifier];
+  v7 = [v6 isEqualToString:v4];
+
+  if (v7)
+  {
+    objc_opt_class();
+    v8 = [(PKPassGroupsViewController *)self presentedViewController];
+    v9 = [v8 presentedViewController];
+    isKindOfClass = objc_opt_isKindOfClass();
+
+    if (isKindOfClass)
+    {
+      v11 = [(PKPassGroupsViewController *)self presentedViewController];
+      [v11 dismissViewControllerAnimated:1 completion:0];
+    }
+  }
+}
+
+- (void)_presentAddPassesControllerWithPasses:(id)a3
+{
+  v4 = a3;
+  v5 = [[PKAddPassesViewController alloc] initWithPasses:v4 fromPresentationSource:1];
+
+  if (v5)
+  {
+    v8[0] = MEMORY[0x1E69E9820];
+    v8[1] = 3221225472;
+    v8[2] = __68__PKPassGroupsViewController__presentAddPassesControllerWithPasses___block_invoke;
+    v8[3] = &unk_1E8010A10;
+    v8[4] = self;
+    v9 = v5;
+    [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:0 animated:1 performAction:v8];
+  }
+
+  else
+  {
+    v6 = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    {
+      *v7 = 0;
+      _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "Couldn't add passes", v7, 2u);
+    }
+  }
+}
+
+- (void)presentPaymentSetupController
+{
+  objc_initWeak(&location, self);
+  v2 = objc_alloc(MEMORY[0x1E69B8D48]);
+  v3 = [MEMORY[0x1E69B8EF8] sharedService];
+  v4 = [v2 initWithWebService:v3];
+
+  v6[0] = MEMORY[0x1E69E9820];
+  v6[1] = 3221225472;
+  v6[2] = __59__PKPassGroupsViewController_presentPaymentSetupController__block_invoke;
+  v6[3] = &unk_1E8013B00;
+  objc_copyWeak(&v8, &location);
+  v5 = v4;
+  v7 = v5;
+  [v5 validatePreconditionsAndRegister:v6];
+
+  objc_destroyWeak(&v8);
+  objc_destroyWeak(&location);
+}
+
+void __59__PKPassGroupsViewController_presentPaymentSetupController__block_invoke(uint64_t a1, char a2, void *a3)
+{
+  v5 = a3;
+  v7[0] = MEMORY[0x1E69E9820];
+  v7[1] = 3221225472;
+  v7[2] = __59__PKPassGroupsViewController_presentPaymentSetupController__block_invoke_2;
+  v7[3] = &unk_1E8013AD8;
+  objc_copyWeak(&v10, (a1 + 40));
+  v11 = a2;
+  v8 = v5;
+  v9 = *(a1 + 32);
+  v6 = v5;
+  dispatch_async(MEMORY[0x1E69E96A0], v7);
+
+  objc_destroyWeak(&v10);
+}
+
+void __59__PKPassGroupsViewController_presentPaymentSetupController__block_invoke_2(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 48));
+  v3 = WeakRetained;
+  if (WeakRetained)
+  {
+    if (*(a1 + 56) == 1 && *(a1 + 32) == 0)
+    {
+      v5 = [WeakRetained _paymentSetupNavigationControllerForProvisioningController:*(a1 + 40)];
+      v7[0] = MEMORY[0x1E69E9820];
+      v7[1] = 3221225472;
+      v7[2] = __59__PKPassGroupsViewController_presentPaymentSetupController__block_invoke_3;
+      v7[3] = &unk_1E8012FD0;
+      v8 = v3;
+      v9 = v5;
+      v6 = v5;
+      [v6 preflightWithCompletion:v7];
+    }
+
+    else
+    {
+      [WeakRetained _handleProvisioningError:?];
+    }
+  }
+}
+
+- (id)_paymentSetupNavigationControllerForProvisioningController:(id)a3
+{
+  v4 = a3;
+  v5 = [[PKPaymentSetupNavigationController alloc] initWithProvisioningController:v4 context:0];
+
+  [(PKNavigationController *)v5 setCustomFormSheetPresentationStyleForiPad];
+  [(PKPaymentSetupNavigationController *)v5 setSetupDelegate:self];
+  [(PKPaymentSetupNavigationController *)v5 setGroupsController:self->_groupsController];
+
+  return v5;
+}
+
+- (void)_handleProvisioningError:(id)a3
+{
+  v4 = [PKPaymentSetupNavigationController viewControllerForPresentingPaymentError:a3];
+  [(PKPassGroupsViewController *)self presentViewController:v4 animated:1 completion:0];
+}
+
+- (void)dismissPresentedVCsWithRequirements:(unint64_t)a3 animated:(BOOL)a4 performAction:(id)a5
+{
+  v5 = a4;
+  v8 = a5;
+  if (a3)
+  {
+    if (self->_invalidationStatus || !self->_foregroundActiveState.foregroundActive)
+    {
+      goto LABEL_29;
+    }
+
+    v16 = self;
+    v17 = v8;
+  }
+
+  else
+  {
+    v9 = self;
+    v10 = v8;
+    if (!v9)
+    {
+      goto LABEL_30;
+    }
+  }
+
+  v11 = [(PKPassGroupsViewController *)self navigationController];
+  v12 = [v11 presentedViewController];
+  if (v12)
+  {
+    if ((a3 & 2) != 0)
+    {
+      v13 = [MEMORY[0x1E69BC740] viewServiceBundleID];
+      if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+      {
+        v14 = [v12 serviceBundleIdentifier];
+        v15 = [v14 isEqualToString:v13];
+
+        if (v15)
+        {
+          goto LABEL_28;
+        }
+      }
+
+      else
+      {
+      }
+    }
+
+    if (!PresentationTrackingCounter)
+    {
+      v18 = [v12 isBeingPresented];
+      v19 = [v12 isBeingDismissed];
+      v20 = [v12 transitionCoordinator];
+      v21 = v20;
+      if (v20)
+      {
+        LODWORD(v20) = [v20 isCancelled];
+      }
+
+      if ((v18 | v19))
+      {
+        if (v19)
+        {
+          v22 = v20 ^ 1;
+        }
+
+        else
+        {
+          v22 = v18 & v20;
+        }
+
+        if (!v21 || !v22)
+        {
+          goto LABEL_27;
+        }
+
+        objc_initWeak(&location, self);
+        v23 = v29;
+        v29[0] = MEMORY[0x1E69E9820];
+        v29[1] = 3221225472;
+        v29[2] = __SanitizePresentedVC_block_invoke;
+        v29[3] = &unk_1E80251A0;
+        objc_copyWeak(v31, &location);
+        v31[1] = a3;
+        v32 = v5;
+        v30 = v8;
+        [v21 animateAlongsideTransition:0 completion:v29];
+        v24 = v30;
+      }
+
+      else
+      {
+        objc_initWeak(&location, self);
+        v23 = v25;
+        v25[0] = MEMORY[0x1E69E9820];
+        v25[1] = 3221225472;
+        v25[2] = __SanitizePresentedVC_block_invoke_3;
+        v25[3] = &unk_1E80231E0;
+        objc_copyWeak(v27, &location);
+        v27[1] = a3;
+        v28 = v5;
+        v26 = v8;
+        [v11 dismissViewControllerAnimated:v5 completion:v25];
+        v24 = v26;
+      }
+
+      objc_destroyWeak(v23 + 5);
+      objc_destroyWeak(&location);
+LABEL_27:
+    }
+
+LABEL_28:
+
+LABEL_29:
+    return;
+  }
+
+  if (v11)
+  {
+    SanitizeNavigationController(a3, v5, self, v11, v8);
+    goto LABEL_28;
+  }
+
+LABEL_30:
+  __break(1u);
+}
+
+- (id)_appleCardUpsellAlertWithAccount:(id)a3
+{
+  v4 = [a3 feature];
+  v5 = MEMORY[0x1E69DC650];
+  v6 = PKLocalizedFeatureString();
+  v7 = PKLocalizedFeatureString();
+  v8 = [v5 alertControllerWithTitle:v6 message:v7 preferredStyle:1];
+
+  v9 = MEMORY[0x1E69DC648];
+  v10 = PKLocalizedPaymentString(&cfstr_AddCard.isa);
+  v16[0] = MEMORY[0x1E69E9820];
+  v16[1] = 3221225472;
+  v16[2] = __63__PKPassGroupsViewController__appleCardUpsellAlertWithAccount___block_invoke;
+  v16[3] = &unk_1E8025108;
+  v16[4] = self;
+  v16[5] = v4;
+  v11 = [v9 actionWithTitle:v10 style:0 handler:v16];
+
+  v12 = MEMORY[0x1E69DC648];
+  v13 = PKLocalizedString(&cfstr_Cancel.isa);
+  v14 = [v12 actionWithTitle:v13 style:1 handler:0];
+
+  [v8 addAction:v11];
+  [v8 addAction:v14];
+
+  return v8;
+}
+
+void __63__PKPassGroupsViewController__appleCardUpsellAlertWithAccount___block_invoke(uint64_t a1)
+{
+  v3 = PKFeatureIdentifierToString();
+  v2 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v3, 0}];
+  [*(a1 + 32) presentPaymentSetupInMode:4 referrerIdentifier:0 referralSource:0 campaignIdentifier:0 paymentNetwork:0 transitNetworkIdentifier:0 allowedFeatureIdentifiers:v2 productIdentifiers:0 sectionIdentifier:0];
+}
+
+- (void)_beginSuppressingInstanceFooter
+{
+  instanceFooterSuppressionCounter = self->_instanceFooterSuppressionCounter;
+  self->_instanceFooterSuppressionCounter = instanceFooterSuppressionCounter + 1;
+  if (!instanceFooterSuppressionCounter)
+  {
+    [(PKPassGroupsViewController *)self _updateFooterSuppressionAnimated:1];
+  }
+}
+
+- (void)_endSuppressingInstanceFooterWithContext:(id)a3
+{
+  v4 = a3;
+  instanceFooterSuppressionCounter = self->_instanceFooterSuppressionCounter;
+  if (instanceFooterSuppressionCounter)
+  {
+    v6 = instanceFooterSuppressionCounter - 1;
+    self->_instanceFooterSuppressionCounter = v6;
+    if (!v6)
+    {
+      [(PKPassGroupsViewController *)self _updateFooterSuppressionWithContext:v4];
+    }
+  }
+
+  else
+  {
+    v7 = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    {
+      *v8 = 0;
+      _os_log_impl(&dword_1BD026000, v7, OS_LOG_TYPE_DEFAULT, "INVARIANT VIOLATION: attempting to end footer suppression when already stopped.", v8, 2u);
+    }
+  }
+}
+
+- (id)_paymentPassDetailsViewControllerForPaymentPass:(id)a3
+{
+  if (a3)
+  {
+    groupsController = self->_groupsController;
+    v5 = a3;
+    v6 = [v5 uniqueID];
+    v7 = [(PKGroupsController *)groupsController groupAtIndex:[(PKGroupsController *)groupsController groupIndexForPassUniqueID:v6]];
+
+    v8 = [MEMORY[0x1E69B8BD8] defaultDataProvider];
+    v9 = [PKPaymentPassDetailViewController alloc];
+    v10 = self->_groupsController;
+    v11 = [MEMORY[0x1E69B8EF8] sharedService];
+    v12 = [MEMORY[0x1E69B9020] sharedService];
+    v13 = [(PKPaymentPassDetailViewController *)v9 initWithPass:v5 group:v7 groupsController:v10 webService:v11 peerPaymentWebService:v12 style:0 passLibraryDataProvider:self->_passLibraryDataProvider paymentServiceDataProvider:v8];
+
+    [(PKPaymentPassDetailViewController *)v13 setShowDoneButton:1];
+    v14 = [(PKPassGroupsViewController *)self groupStackView];
+    [(PKPaymentPassDetailViewController *)v13 setDeleteOverrider:v14];
+  }
+
+  else
+  {
+    v13 = 0;
+  }
+
+  return v13;
+}
+
+- (id)_barcodePassDetailsViewControllerForBarcodePass:(id)a3
+{
+  if (a3)
+  {
+    v4 = a3;
+    v5 = [[PKBarcodePassDetailViewController alloc] initWithPass:v4];
+
+    v6 = (PKRunningInRemoteContext() & 1) != 0 || [(PKPassGroupStackView *)self->_groupStackView isTableModalPresentation];
+    [(PKBarcodePassDetailViewController *)v5 setShowCloseButton:v6];
+    v7 = [(PKPassGroupsViewController *)self groupStackView];
+    [(PKBarcodePassDetailViewController *)v5 setDeleteOverrider:v7];
+  }
+
+  else
+  {
+    v5 = 0;
+  }
+
+  return v5;
+}
+
+- (void)_warnFailForward
+{
+  v13 = PDDeviceSpecificLocalizedStringKeyForKey();
+  v3 = MEMORY[0x1E69DC650];
+  v4 = PKLocalizedPaymentString(v13);
+  v5 = PKLocalizedPaymentString(&cfstr_FailForwardUpd_1.isa);
+  v6 = [v3 alertControllerWithTitle:v4 message:v5 preferredStyle:1];
+
+  v7 = MEMORY[0x1E69DC648];
+  v8 = PKLocalizedPaymentString(&cfstr_FailForwardLea.isa);
+  v9 = [v7 actionWithTitle:v8 style:1 handler:&__block_literal_global_463_0];
+  [v6 addAction:v9];
+
+  v10 = MEMORY[0x1E69DC648];
+  v11 = PKLocalizedPaymentString(&cfstr_FailForwardDon.isa);
+  v12 = [v10 actionWithTitle:v11 style:0 handler:0];
+
+  [v6 addAction:v12];
+  [v6 setPreferredAction:v12];
+  [(PKPassGroupsViewController *)self presentViewController:v6 animated:1 completion:0];
+}
+
+void __46__PKPassGroupsViewController__warnFailForward__block_invoke()
+{
+  v0 = [MEMORY[0x1E695DFF8] URLWithString:*MEMORY[0x1E69BB8C8]];
+  PKOpenURL();
+}
+
+- (void)_presentExpiredPasses
+{
+  MEMORY[0x1BFB41980](*MEMORY[0x1E69B9EB0], 0);
+  v3 = [[PKExpiredPassesNavigationController alloc] initWithExistingGroupsController:self->_groupsController delegate:self];
+  [(PKPassGroupsViewController *)self presentViewController:v3 animated:1 completion:0];
+}
+
+- (void)_handlePeerPaymentAccountDidChangeNotification:(id)a3
+{
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __77__PKPassGroupsViewController__handlePeerPaymentAccountDidChangeNotification___block_invoke;
+  block[3] = &unk_1E8010970;
+  block[4] = self;
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+}
+
+- (void)_registerForExpressTransactionNotifications:(BOOL)a3
+{
+  v19 = *MEMORY[0x1E69E9840];
+  if (a3 && !self->_invalidationStatus)
+  {
+    if (self->_expressTransactionNotificationObserver == -1)
+    {
+      objc_initWeak(&location, self);
+      v11 = MEMORY[0x1E69E9820];
+      v12 = 3221225472;
+      v13 = __74__PKPassGroupsViewController__registerForExpressTransactionNotifications___block_invoke;
+      v14 = &unk_1E8012010;
+      objc_copyWeak(&v15, &location);
+      v5 = _Block_copy(&v11);
+      v6 = [*MEMORY[0x1E69BBB40] UTF8String];
+      v7 = MEMORY[0x1E69E96A0];
+      v8 = MEMORY[0x1E69E96A0];
+      LODWORD(v7) = notify_register_dispatch(v6, &self->_expressTransactionNotificationObserver, v7, v5) == 0;
+
+      v9 = PKLogFacilityTypeGetObject();
+      v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
+      if (v7)
+      {
+        if (v10)
+        {
+          *buf = 134349056;
+          v18 = self;
+          _os_log_impl(&dword_1BD026000, v9, OS_LOG_TYPE_DEFAULT, "PKPassGroupsViewController (%{public}p): registered for express transaction handling.", buf, 0xCu);
+        }
+      }
+
+      else
+      {
+        if (v10)
+        {
+          *buf = 134349056;
+          v18 = self;
+          _os_log_impl(&dword_1BD026000, v9, OS_LOG_TYPE_DEFAULT, "PKPassGroupsViewController (%{public}p): ERROR - failed to register for express transaction notifications!", buf, 0xCu);
+        }
+
+        self->_expressTransactionNotificationObserver = -1;
+      }
+
+      objc_destroyWeak(&v15);
+      objc_destroyWeak(&location);
+    }
+  }
+
+  else if (self->_expressTransactionNotificationObserver != -1)
+  {
+    v4 = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    {
+      *buf = 134349056;
+      v18 = self;
+      _os_log_impl(&dword_1BD026000, v4, OS_LOG_TYPE_DEFAULT, "PKPassGroupsViewController (%{public}p): unregistered for express transaction handling.", buf, 0xCu);
+    }
+
+    notify_cancel(self->_expressTransactionNotificationObserver);
+    self->_expressTransactionNotificationObserver = -1;
+  }
+}
+
+void __74__PKPassGroupsViewController__registerForExpressTransactionNotifications___block_invoke(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  [WeakRetained _handleExpressNotification];
+}
+
+- (void)_handleExpressNotification
+{
+  if (!self->_invalidationStatus && self->_foregroundActiveState.foregroundActive)
+  {
+    v3 = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    {
+      LOWORD(buf[0]) = 0;
+      _os_log_impl(&dword_1BD026000, v3, OS_LOG_TYPE_DEFAULT, "PKPassGroupsViewController: handling outstanding express transaction...", buf, 2u);
+    }
+
+    v4 = [(PKPaymentService *)self->_paymentService outstandingExpressTransactionState];
+    v5 = v4;
+    if (!v4)
+    {
+      goto LABEL_30;
+    }
+
+    v6 = [v4 passUniqueIdentifier];
+    if (!v6)
+    {
+LABEL_29:
+
+LABEL_30:
+      return;
+    }
+
+    if (![(PKPassGroupStackView *)self->_groupStackView presentedPassIsPerformingPayment])
+    {
+      v13 = [v5 isIgnorable];
+      goto LABEL_13;
+    }
+
+    v7 = [(PKPassGroupStackView *)self->_groupStackView modalGroupFrontmostPass];
+    v8 = [v7 uniqueID];
+    v9 = v6;
+    v10 = v8;
+    v11 = v10;
+    if (v9 == v10)
+    {
+    }
+
+    else
+    {
+      if (!v10)
+      {
+
+LABEL_24:
+        if ([v5 isIgnorable])
+        {
+          if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+          {
+            LOWORD(buf[0]) = 0;
+            v19 = "PKPassGroupsViewController: skipping express notification because a transaction is already underway and the event is for a failure transaction";
+            goto LABEL_27;
+          }
+
+          goto LABEL_28;
+        }
+
+        v13 = 0;
+LABEL_13:
+        v3 = [(PKPassGroupsViewController *)self presentedViewController];
+        if (v3 || (v14 = -[PKPassGroupsViewController _passGroupsViewNavigationController](self, "_passGroupsViewNavigationController"), v15 = [v14 VCsState], v14, v15))
+        {
+          [(PKPassGroupsViewController *)self _beginSuppressingInstanceFooter];
+          LOBYTE(v15) = 1;
+        }
+
+        v16 = objc_alloc_init(PKPassPresentationContext);
+        -[PKPassPresentationContext setStandaloneTransactionType:](v16, "setStandaloneTransactionType:", [v5 standaloneTransactionType]);
+        [(PKPassPresentationContext *)v16 setPostPayment:v13 ^ 1];
+        [(PKPassPresentationContext *)v16 setFieldDetect:v13];
+        if (v15)
+        {
+          v17 = objc_alloc_init(PKPassPresentationContext);
+          [(PKPassPresentationContext *)v17 setForceModalPresentation:1];
+        }
+
+        else
+        {
+          v17 = v16;
+        }
+
+        objc_initWeak(buf, self);
+        v20[0] = MEMORY[0x1E69E9820];
+        v20[1] = 3221225472;
+        v20[2] = __56__PKPassGroupsViewController__handleExpressNotification__block_invoke;
+        v20[3] = &unk_1E8025130;
+        v23 = v15;
+        objc_copyWeak(&v22, buf);
+        v18 = v16;
+        v21 = v18;
+        [(PKPassGroupsViewController *)self presentPassWithUniqueID:v6 context:v17 animated:1 completionHandler:v20];
+
+        objc_destroyWeak(&v22);
+        objc_destroyWeak(buf);
+
+        goto LABEL_28;
+      }
+
+      v12 = [v9 isEqualToString:v10];
+
+      if ((v12 & 1) == 0)
+      {
+        goto LABEL_24;
+      }
+    }
+
+    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    {
+      LOWORD(buf[0]) = 0;
+      v19 = "PKPassGroupsViewController: skipping express notification because a transaction for same pass already underway";
+LABEL_27:
+      _os_log_impl(&dword_1BD026000, v3, OS_LOG_TYPE_DEFAULT, v19, buf, 2u);
+    }
+
+LABEL_28:
+
+    goto LABEL_29;
+  }
+}
+
+void __56__PKPassGroupsViewController__handleExpressNotification__block_invoke(uint64_t a1, char a2)
+{
+  if (*(a1 + 48) == 1)
+  {
+    WeakRetained = objc_loadWeakRetained((a1 + 40));
+    if (a2)
+    {
+      v6 = 0;
+    }
+
+    else
+    {
+      v6 = *(a1 + 32);
+    }
+
+    v7 = WeakRetained;
+    [WeakRetained _endSuppressingInstanceFooterWithContext:v6];
+  }
+}
+
+- (void)_handleChildViewControllerRequestingServiceMode:(id)a3
+{
+  v6 = objc_alloc_init(PKPassPresentationContext);
+  [(PKPassPresentationContext *)v6 setPersistentCardEmulation:1];
+  v4 = [(PKPassGroupStackView *)self->_groupStackView modalGroupFrontmostPass];
+  v5 = [v4 uniqueID];
+  [(PKPassGroupsViewController *)self presentPassWithUniqueID:v5 context:v6 animated:1 completionHandler:0];
+}
+
+- (void)_regionConfigurationDidChangeNotification
+{
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __71__PKPassGroupsViewController__regionConfigurationDidChangeNotification__block_invoke;
+  block[3] = &unk_1E8010970;
+  block[4] = self;
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+}
+
+uint64_t __71__PKPassGroupsViewController__regionConfigurationDidChangeNotification__block_invoke(uint64_t a1)
+{
+  v2 = PKLogFacilityTypeGetObject();
+  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  {
+    *v4 = 0;
+    _os_log_impl(&dword_1BD026000, v2, OS_LOG_TYPE_DEFAULT, "Region configuration changed", v4, 2u);
+  }
+
+  return [*(*(a1 + 32) + 1152) updateHeaderAndSubheaderViewsIfNecessary];
+}
+
+- (BOOL)_canPerformExternalModalPresentation
+{
+  kind = self->_kind;
+  if ((kind - 1) >= 2)
+  {
+    if (self->_kind)
+    {
+      __break(1u);
+      return self;
+    }
+  }
+
+  else
+  {
+    LOBYTE(kind) = !self->_inField;
+  }
+
+  LOBYTE(self) = kind & 1;
+  return self;
+}
+
+- (void)paymentSetupDidFinish:(id)a3
+{
+  groupsController = self->_groupsController;
+  v5 = a3;
+  v6 = [(PKGroupsController *)groupsController passes];
+  v7 = [v5 provisioningController];
+
+  v8 = [v7 provisionedPasses];
+
+  v9 = [v8 reverseObjectEnumerator];
+  v10 = [v9 allObjects];
+  v16[0] = MEMORY[0x1E69E9820];
+  v16[1] = 3221225472;
+  v16[2] = __52__PKPassGroupsViewController_paymentSetupDidFinish___block_invoke;
+  v16[3] = &unk_1E8025158;
+  v11 = v6;
+  v17 = v11;
+  v12 = [v10 pk_firstObjectPassingTest:v16];
+
+  v13 = [v12 secureElementPass];
+  v14 = [v13 uniqueID];
+
+  if (v14)
+  {
+    v15[0] = MEMORY[0x1E69E9820];
+    v15[1] = 3221225472;
+    v15[2] = __52__PKPassGroupsViewController_paymentSetupDidFinish___block_invoke_3;
+    v15[3] = &unk_1E8011D28;
+    v15[4] = self;
+    [(PKPassGroupsViewController *)self presentPassWithUniqueID:v14 animated:1 completionHandler:v15];
+  }
+
+  else
+  {
+    [(PKPassGroupsViewController *)self dismissViewControllerAnimated:1 completion:0];
+  }
+}
+
+uint64_t __52__PKPassGroupsViewController_paymentSetupDidFinish___block_invoke(uint64_t a1, void *a2)
+{
+  v3 = [a2 secureElementPass];
+  v4 = [v3 uniqueID];
+
+  if (v4)
+  {
+    v5 = *(a1 + 32);
+    v8[0] = MEMORY[0x1E69E9820];
+    v8[1] = 3221225472;
+    v8[2] = __52__PKPassGroupsViewController_paymentSetupDidFinish___block_invoke_2;
+    v8[3] = &unk_1E8011C28;
+    v9 = v4;
+    v6 = [v5 pk_containsObjectPassingTest:v8];
+  }
+
+  else
+  {
+    v6 = 0;
+  }
+
+  return v6;
+}
+
+uint64_t __52__PKPassGroupsViewController_paymentSetupDidFinish___block_invoke_2(uint64_t a1, void *a2)
+{
+  v3 = [a2 uniqueID];
+  v4 = [v3 isEqualToString:*(a1 + 32)];
+
+  return v4;
+}
+
+void __52__PKPassGroupsViewController_paymentSetupDidFinish___block_invoke_3(uint64_t a1, int a2)
+{
+  v9[2] = *MEMORY[0x1E69E9840];
+  if (a2)
+  {
+    v2 = *(a1 + 32);
+
+    [v2 dismissViewControllerAnimated:1 completion:0];
+  }
+
+  else
+  {
+    v3 = MEMORY[0x1E69B8540];
+    v4 = *MEMORY[0x1E69BB728];
+    v5 = *MEMORY[0x1E69BABE8];
+    v8[0] = *MEMORY[0x1E69BA680];
+    v8[1] = v5;
+    v6 = *MEMORY[0x1E69BB4E8];
+    v9[0] = *MEMORY[0x1E69BA818];
+    v9[1] = v6;
+    v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2];
+    [v3 subject:v4 sendEvent:v7];
+  }
+}
+
+- (void)discoveryDataSource:(id)a3 didUpdateArticleLayouts:(id)a4
+{
+  v5 = a4;
+  WeakRetained = objc_loadWeakRetained(&self->_discoveryGalleryView);
+  v8 = WeakRetained;
+  if (WeakRetained)
+  {
+    [WeakRetained updateArticleLayouts:v5];
+  }
+
+  else
+  {
+    v7 = [v5 count];
+
+    if (v7)
+    {
+      [(PKPassGroupStackView *)self->_groupStackView updateHeaderAndSubheaderViewsIfNecessary];
+    }
+  }
+}
+
+- (void)inboxDataSourceDidUpdateInboxMessages:(id)a3
+{
+  if (self->_kind == 1)
+  {
+    block[5] = v3;
+    block[6] = v4;
+    block[0] = MEMORY[0x1E69E9820];
+    block[1] = 3221225472;
+    block[2] = __68__PKPassGroupsViewController_inboxDataSourceDidUpdateInboxMessages___block_invoke;
+    block[3] = &unk_1E8010970;
+    block[4] = self;
+    dispatch_async(MEMORY[0x1E69E96A0], block);
+  }
+}
+
+- (void)virtualCardEnrollmentViewController:(id)a3 didCompleteWithSuccess:(BOOL)a4
+{
+  v4 = [a3 presentingViewController];
+  [v4 dismissViewControllerAnimated:1 completion:0];
+}
+
+- (void)applicationMessageViewNeedsSizeUpdate:(id)a3
+{
+  v15 = a3;
+  WeakRetained = objc_loadWeakRetained(&self->_applicationMessageView);
+
+  if (WeakRetained == v15)
+  {
+    v5 = [v15 configuration];
+    [v5 width];
+    v7 = v6;
+
+    [v15 sizeThatFits:{v7, 1.79769313e308}];
+    v9 = v8;
+    v11 = v10;
+    [v15 bounds];
+    if (v9 != v13 || v11 != v12)
+    {
+      [v15 setBounds:?];
+      [v15 layoutIfNeededAnimated:1];
+      [(PKPassGroupStackView *)self->_groupStackView updateHeaderAndSubheaderViewsIfNecessary];
+    }
+  }
+}
+
+- (void)applicationMessageViewNeedsRemoval:(id)a3
+{
+  v4 = a3;
+  WeakRetained = objc_loadWeakRetained(&self->_applicationMessageView);
+
+  if (WeakRetained == v4)
+  {
+    groupStackView = self->_groupStackView;
+
+    [(PKPassGroupStackView *)groupStackView updateHeaderAndSubheaderViewsIfNecessary];
+  }
+}
+
+- (void)applicationMessageView:(id)a3 requestsContentDismissal:(id)a4
+{
+  v10 = 0;
+  v5 = [MEMORY[0x1E69B85B8] messageKeysForNode:a4 localKeys:&v10];
+  v6 = v5;
+  if (v5)
+  {
+    v7 = [v5 count];
+    if (v7)
+    {
+      if (v7 == 1)
+      {
+        paymentService = self->_paymentService;
+        v9 = [v6 firstObject];
+        [(PKPaymentService *)paymentService removeApplicationMessageWithKey:v9];
+      }
+
+      else
+      {
+        [(PKPaymentService *)self->_paymentService removeApplicationMessagesWithKeys:v6 completion:0];
+      }
+    }
+  }
+}
+
+- (void)applicationMessageView:(id)a3 tappedApplicationMessageWithKey:(id)a4
+{
+  v5 = a4;
+  if ([v5 source])
+  {
+    [(PKPaymentService *)self->_paymentService tappedApplicationMessageWithKey:v5];
+  }
+}
+
+- (void)presentPaymentSetupForHeaderView:(id)a3
+{
+  v12[2] = *MEMORY[0x1E69E9840];
+  v4 = MEMORY[0x1E69B8540];
+  v5 = *MEMORY[0x1E69BB718];
+  v6 = *MEMORY[0x1E69BA440];
+  v11[0] = *MEMORY[0x1E69BA680];
+  v11[1] = v6;
+  v7 = *MEMORY[0x1E69BB028];
+  v12[0] = *MEMORY[0x1E69BA6F0];
+  v12[1] = v7;
+  v8 = MEMORY[0x1E695DF20];
+  v9 = a3;
+  v10 = [v8 dictionaryWithObjects:v12 forKeys:v11 count:2];
+  [v4 subject:v5 sendEvent:v10];
+
+  [(PKPassGroupsViewController *)self startPaymentPreflight:v9 withPaymentSetupMode:0 referrerIdentifier:0 referralSource:0 campaignIdentifier:0 paymentNetworks:0 transitNetworkIdentifiers:0 allowedFeatureIdentifiers:0 productIdentifiers:0 sectionIdentifier:0];
+}
+
+- (id)passForSectionHeaderView:(id)a3
+{
+  if ([(PKGroupsController *)self->_groupsController groupCount]== 1 && [(PKGroupsController *)self->_groupsController indexOfSeparationGroup]== 0x7FFFFFFFFFFFFFFFLL)
+  {
+    v4 = [(PKGroupsController *)self->_groupsController groupAtIndex:0];
+    v5 = [v4 passAtIndex:{objc_msgSend(v4, "frontmostPassIndex")}];
+  }
+
+  else
+  {
+    v5 = 0;
+  }
+
+  return v5;
+}
+
+- (void)presentPassDetailsForHeaderView:(id)a3
+{
+  v7 = [(PKGroupsController *)self->_groupsController groupAtIndex:0];
+  v4 = [v7 passAtIndex:{objc_msgSend(v7, "frontmostPassIndex")}];
+  v5 = v4;
+  if (v4)
+  {
+    v6 = [v4 uniqueID];
+    [(PKPassGroupsViewController *)self presentPassDetailsWithUniqueID:v6 animated:1 completionHandler:0];
+  }
+}
+
+- (void)presentInvitationsForHeaderView:(id)a3
+{
+  v5 = [[PKInboxViewController alloc] initWithInboxDataSource:self->_inboxDataSource contactAvatarManager:self->_avatarManager context:0];
+  v4 = [[PKNavigationController alloc] initWithRootViewController:v5];
+  [(PKPassGroupsViewController *)self presentViewController:v4 animated:1 completion:0];
+}
+
+- (BOOL)doesContainActivatedPaymentPasses
+{
+  v2 = [(PKGroupsController *)self->_groupsController passes];
+  v3 = [v2 pk_containsObjectPassingTest:&__block_literal_global_473];
+
+  return v3;
+}
+
+BOOL __63__PKPassGroupsViewController_doesContainActivatedPaymentPasses__block_invoke(uint64_t a1, void *a2)
+{
+  v2 = a2;
+  if ([v2 passType] == 1)
+  {
+    v3 = [v2 paymentPass];
+    v4 = [v3 passActivationState] == 0;
+  }
+
+  else
+  {
+    v4 = 0;
+  }
+
+  return v4;
+}
+
+void __52__PKPassGroupsViewController_presentOrderManagement__block_invoke()
+{
+  v7[3] = *MEMORY[0x1E69E9840];
+  v0 = MEMORY[0x1E69B8540];
+  v1 = *MEMORY[0x1E69BB6F0];
+  v2 = *MEMORY[0x1E69BA6F0];
+  v3 = *MEMORY[0x1E69BB0E0];
+  v6[0] = *MEMORY[0x1E69BA680];
+  v6[1] = v3;
+  v4 = *MEMORY[0x1E69BB118];
+  v7[0] = v2;
+  v7[1] = v4;
+  v6[2] = *MEMORY[0x1E69BAA40];
+  v7[2] = *MEMORY[0x1E69BAA48];
+  v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:v6 count:3];
+  [v0 subject:v1 sendEvent:v5];
+}
+
+- (void)presentNotificationSettings
+{
+  v4 = objc_alloc_init(PKNotificationSettingsViewController);
+  v3 = [[PKNavigationController alloc] initWithRootViewController:v4];
+  [(PKPassGroupsViewController *)self presentViewController:v3 animated:1 completion:0];
+}
+
+- (void)presentHowToUseWallet
+{
+  v4 = [MEMORY[0x1E69B8908] sharedInstance];
+  v3 = [v4 latestHowToUseWalletModel];
+  [(PKPassGroupsViewController *)self _presentHowToUseWalletWithModel:v3 destinationCard:0];
+}
+
+- (void)_presentHowToUseWalletWithModel:(id)a3 destinationCard:(id)a4
+{
+  v5 = [PKHowToUseWalletViewProvider makeViewControllerWithModel:a3 destinationCard:a4];
+  if (v5)
+  {
+    v8 = v5;
+    v6 = [[PKNavigationController alloc] initWithRootViewController:v5];
+    v7 = [(PKNavigationController *)v6 navigationBar];
+    [v7 setPrefersLargeTitles:1];
+
+    [(PKPassGroupsViewController *)self presentViewController:v6 animated:1 completion:0];
+    v5 = v8;
+  }
+}
+
+- (void)presentAutoFillCards
+{
+  v3 = [[PKPaymentSetupDismissibleNavigationController alloc] initWithContext:0];
+  v4 = [MEMORY[0x1E69B8EF8] sharedService];
+  v5 = [objc_alloc(MEMORY[0x1E69B8D48]) initWithWebService:v4];
+  v6 = [objc_alloc(MEMORY[0x1E69B90E0]) initWithEnvironment:0 provisioningController:v5 groupsController:0];
+  v10[0] = MEMORY[0x1E69E9820];
+  v10[1] = 3221225472;
+  v10[2] = __50__PKPassGroupsViewController_presentAutoFillCards__block_invoke;
+  v10[3] = &unk_1E8010A10;
+  v10[4] = self;
+  v11 = v3;
+  v8[0] = MEMORY[0x1E69E9820];
+  v8[1] = 3221225472;
+  v8[2] = __50__PKPassGroupsViewController_presentAutoFillCards__block_invoke_2;
+  v8[3] = &unk_1E8012FD0;
+  v8[4] = self;
+  v9 = v11;
+  v7 = v11;
+  [PKProvisioningFlowBridge presentAutoFillCardsWithNavController:v7 groupsViewController:self context:v6 presentNavController:v10 completion:v8];
+}
+
+void __50__PKPassGroupsViewController_presentAutoFillCards__block_invoke(uint64_t a1)
+{
+  v2 = [*(a1 + 32) pkui_frontMostViewController];
+  [v2 presentViewController:*(a1 + 40) animated:1 completion:0];
+}
+
+uint64_t __50__PKPassGroupsViewController_presentAutoFillCards__block_invoke_2(uint64_t a1)
+{
+  v2 = [*(a1 + 32) pkui_frontMostViewController];
+  [v2 dismissViewControllerAnimated:1 completion:0];
+
+  v3 = *(a1 + 40);
+
+  return [v3 dismissViewControllerAnimated:1 completion:0];
+}
+
+- (void)_fetchAutoFillCards:(id)a3
+{
+  v4 = a3;
+  v5 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:&unk_1F3CC8738];
+  autoFillCardManager = self->_autoFillCardManager;
+  v8[0] = MEMORY[0x1E69E9820];
+  v8[1] = 3221225472;
+  v8[2] = __50__PKPassGroupsViewController__fetchAutoFillCards___block_invoke;
+  v8[3] = &unk_1E8010DA8;
+  v9 = v4;
+  v7 = v4;
+  [(PKAutoFillCardManager *)autoFillCardManager activeFPANCardsWithOptions:7 allowedCardTypes:v5 sortType:1 completion:v8];
+}
+
+- (int64_t)visibilityBackdropView:(id)a3 preferredStyleForTraitCollection:(id)a4
+{
+  if ([a4 userInterfaceStyle] == 2)
+  {
+    return 2030;
+  }
+
+  else
+  {
+    return 2010;
+  }
+}
+
+@end

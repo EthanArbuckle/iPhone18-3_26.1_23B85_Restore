@@ -1,0 +1,275 @@
+@interface _UIFieldEditorSystemInputHost
+- (BOOL)_isTV;
+- (void)_updateFieldEditorBackgroundViewLayoutForcingDefault:(BOOL)a3;
+- (void)addFieldEditor:(id)a3;
+- (void)addPlaceholderLabel:(id)a3;
+- (void)dealloc;
+- (void)removeFieldEditor;
+@end
+
+@implementation _UIFieldEditorSystemInputHost
+
+- (void)dealloc
+{
+  [(UISystemInputViewController *)self->_systemInputViewController resetContainingResponder];
+  v3.receiver = self;
+  v3.super_class = _UIFieldEditorSystemInputHost;
+  [(_UIFieldEditorSystemInputHost *)&v3 dealloc];
+}
+
+- (void)addFieldEditor:(id)a3
+{
+  v21[2] = *MEMORY[0x1E69E9840];
+  v4 = a3;
+  v5 = [(_UIFieldEditorHost *)self hostingView];
+  v6 = objc_opt_new();
+  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  v19 = +[UIBlurEffect effectWithStyle:](UIBlurEffect, "effectWithStyle:", [v5 _blurEffectStyleForAppearance]);
+  v7 = [UIVibrancyEffect effectForBlurEffect:?];
+  v8 = [[UIVisualEffectView alloc] initWithEffect:v7];
+  [(UIView *)v8 setUserInteractionEnabled:0];
+  [(UIVisualEffectView *)v8 _setCornerRadius:6.0];
+  [v6 addSubview:v8];
+  objc_storeStrong(&self->_containerView, v6);
+  objc_storeStrong(&self->_backgroundEffectView, v8);
+  v9 = [MEMORY[0x1E69977A0] constraintWithItem:v6 attribute:8 relatedBy:0 constant:0.0];
+  [v6 setHeightConstraint:v9];
+
+  v10 = [MEMORY[0x1E69977A0] constraintWithItem:v6 attribute:7 relatedBy:0 constant:0.0];
+  [v6 setWidthConstraint:v10];
+
+  v11 = MEMORY[0x1E69977A0];
+  v12 = [v6 heightConstraint];
+  v21[0] = v12;
+  v13 = [v6 widthConstraint];
+  v21[1] = v13;
+  v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
+  [v11 activateConstraints:v14];
+
+  v15 = [(UIVisualEffectView *)v8 contentView];
+  [v15 setClipsToBounds:0];
+
+  v20.receiver = self;
+  v20.super_class = _UIFieldEditorSystemInputHost;
+  [(_UIFieldEditorHost *)&v20 addFieldEditor:v4];
+
+  v16 = [UISystemInputViewController systemInputViewControllerForResponder:v5 editorView:v6];
+  systemInputViewController = self->_systemInputViewController;
+  self->_systemInputViewController = v16;
+
+  [(_UIFieldEditorSystemInputHost *)self _updateFieldEditorBackgroundViewLayoutForcingDefault:1];
+  if (self->_systemInputViewController)
+  {
+    v18 = [UIViewController _viewControllerForFullScreenPresentationFromView:v5];
+    [v18 presentViewController:self->_systemInputViewController animated:-[UISystemInputViewController isAutomaticResponderTransition](self->_systemInputViewController completion:{"isAutomaticResponderTransition") ^ 1, 0}];
+  }
+}
+
+- (void)removeFieldEditor
+{
+  systemInputViewController = self->_systemInputViewController;
+  if (systemInputViewController)
+  {
+    [(UIViewController *)systemInputViewController dismissViewControllerAnimated:[(UISystemInputViewController *)self->_systemInputViewController isAutomaticResponderTransition]^ 1 completion:0];
+    [(UISystemInputViewController *)self->_systemInputViewController prepareForRelease];
+    v4 = self->_systemInputViewController;
+    self->_systemInputViewController = 0;
+  }
+
+  v7.receiver = self;
+  v7.super_class = _UIFieldEditorSystemInputHost;
+  [(_UIFieldEditorHost *)&v7 removeFieldEditor];
+  containerView = self->_containerView;
+  self->_containerView = 0;
+
+  backgroundEffectView = self->_backgroundEffectView;
+  self->_backgroundEffectView = 0;
+}
+
+- (void)addPlaceholderLabel:(id)a3
+{
+  v4 = a3;
+  has_internal_diagnostics = os_variant_has_internal_diagnostics();
+  containerView = self->_containerView;
+  if (has_internal_diagnostics)
+  {
+    if (containerView)
+    {
+      goto LABEL_3;
+    }
+
+    v32 = __UIFaultDebugAssertLog();
+    if (os_log_type_enabled(v32, OS_LOG_TYPE_FAULT))
+    {
+      *buf = 0;
+      _os_log_fault_impl(&dword_188A29000, v32, OS_LOG_TYPE_FAULT, "Should have a _backgroundView when adding the placeholder label.", buf, 2u);
+    }
+  }
+
+  else
+  {
+    if (containerView)
+    {
+      goto LABEL_3;
+    }
+
+    v33 = *(__UILogGetCategoryCachedImpl("Assert", &addPlaceholderLabel____s_category) + 8);
+    if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
+    {
+      *buf = 0;
+      _os_log_impl(&dword_188A29000, v33, OS_LOG_TYPE_ERROR, "Should have a _backgroundView when adding the placeholder label.", buf, 2u);
+    }
+  }
+
+  if (!self->_containerView)
+  {
+    v34.receiver = self;
+    v34.super_class = _UIFieldEditorSystemInputHost;
+    [(_UIFieldEditorHost *)&v34 addPlaceholderLabel:v4];
+    goto LABEL_7;
+  }
+
+LABEL_3:
+  v7 = [(_UIFieldEditorHost *)self hostingView];
+  [(UIView *)self->_containerView bounds];
+  [v7 placeholderRectForBounds:?];
+  v9 = v8;
+  v11 = v10;
+  v13 = v12;
+  v15 = v14;
+  [(UIView *)self->_containerView bounds];
+  v17 = v16;
+  v19 = v18;
+  v21 = v20;
+  v23 = v22;
+  [v7 contentScaleFactor];
+  v25 = UIRectCenteredYInRectScale(v9, v11, v13, v15, v17, v19, v21, v23, v24);
+  v27 = v26;
+  v29 = v28;
+  v31 = v30;
+  if ([(_UIFieldEditorSystemInputHost *)self _isTV])
+  {
+    v35[0] = MEMORY[0x1E69E9820];
+    v35[1] = 3221225472;
+    v35[2] = __53___UIFieldEditorSystemInputHost_addPlaceholderLabel___block_invoke;
+    v35[3] = &unk_1E70F3B20;
+    v36 = v4;
+    v37 = v25;
+    v38 = v27;
+    v39 = v29;
+    v40 = v31;
+    [UIView performWithoutAnimation:v35];
+  }
+
+  else
+  {
+    [v4 setFrame:{v25, v27, v29, v31}];
+  }
+
+  [(UIView *)self->_containerView addSubview:v4];
+
+LABEL_7:
+}
+
+- (void)_updateFieldEditorBackgroundViewLayoutForcingDefault:(BOOL)a3
+{
+  if (self->_systemInputViewController)
+  {
+    v3 = a3;
+    v5 = [(_UIFieldEditorHost *)self hostingView];
+    v6 = v5;
+    if (v3)
+    {
+      v7 = [(_UIFieldEditorHost *)self hostedFieldEditor];
+      v8 = 600.0;
+    }
+
+    else
+    {
+      if (![v5 _fieldEditorAttached] || !objc_msgSend(v6, "_hasContent") || !-[UISystemInputViewController supportsTouchInput](self->_systemInputViewController, "supportsTouchInput"))
+      {
+LABEL_15:
+
+        return;
+      }
+
+      v7 = [(_UIFieldEditorHost *)self hostedFieldEditor];
+      v22 = [objc_opt_self() mainScreen];
+      [v22 bounds];
+      v24 = v23;
+      [v22 overscanCompensationInsets];
+      v8 = v24 - (v25 + v26);
+      v27 = [v7 attributedText];
+      [v27 size];
+      v29 = v28 + 20.0;
+      if (v29 <= v8)
+      {
+        v8 = v29;
+        if (v29 < 600.0)
+        {
+          v8 = 600.0;
+        }
+      }
+    }
+
+    v9 = *MEMORY[0x1E695EFF8];
+    v10 = *(MEMORY[0x1E695EFF8] + 8);
+    [(UIView *)self->_backgroundEffectView setFrame:*MEMORY[0x1E695EFF8], v10, v8, 70.0];
+    v11 = [(_UIFieldEditorSystemInputHostView *)self->_containerView widthConstraint];
+    [v11 setConstant:v8];
+
+    v12 = [(_UIFieldEditorSystemInputHostView *)self->_containerView heightConstraint];
+    [v12 setConstant:70.0];
+
+    v13 = v8 + -20.0;
+    v14 = [v7 attributedText];
+    [v14 size];
+    v16 = v15;
+
+    v17 = [v6 selectedTextRange];
+    v18 = [v17 start];
+    v19 = [v6 baseWritingDirectionForPosition:v18 inDirection:0];
+
+    if (v19 != 1 && v16 > v13)
+    {
+      [v7 contentSize];
+      v9 = v20 - v13;
+      v10 = 0.0;
+    }
+
+    v30[0] = MEMORY[0x1E69E9820];
+    v30[1] = 3221225472;
+    v30[2] = __86___UIFieldEditorSystemInputHost__updateFieldEditorBackgroundViewLayoutForcingDefault___block_invoke;
+    v30[3] = &unk_1E70F3DC8;
+    v31 = v7;
+    v32 = xmmword_18A67B6F0;
+    v33 = v13;
+    v34 = 0x4051800000000000;
+    v35 = v9;
+    v36 = v10;
+    v21 = v7;
+    [UIView performWithoutAnimation:v30];
+
+    goto LABEL_15;
+  }
+}
+
+- (BOOL)_isTV
+{
+  v2 = [(_UIFieldEditorHost *)self hostingView];
+  v3 = [v2 traitCollection];
+
+  if (v3)
+  {
+    v4 = [v3 userInterfaceIdiom] == 2;
+  }
+
+  else
+  {
+    v4 = 0;
+  }
+
+  return v4;
+}
+
+@end

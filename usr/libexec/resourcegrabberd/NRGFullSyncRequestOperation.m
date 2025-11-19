@@ -1,0 +1,323 @@
+@interface NRGFullSyncRequestOperation
+- (NRGCompanionDaemon)daemon;
+- (NRGFullSyncRequestOperation)initWithRequest:(id)a3;
+- (_opaque_pthread_mutex_t)requestLock;
+- (void)handleFullSyncResponse:(id)a3 url:(id)a4 iconVersionTracker:(id)a5;
+- (void)main;
+- (void)requestComplete:(id)a3 error:(id)a4;
+- (void)requestSent:(id)a3 error:(id)a4;
+- (void)setCompletionHandler:(id)a3;
+- (void)setIconVariants:(id)a3;
+- (void)setRequestLock:(_opaque_pthread_mutex_t *)a3;
+- (void)setRequestSentHandler:(id)a3;
+- (void)start;
+- (void)withLock:(id)a3;
+@end
+
+@implementation NRGFullSyncRequestOperation
+
+- (NRGFullSyncRequestOperation)initWithRequest:(id)a3
+{
+  v5 = a3;
+  v9.receiver = self;
+  v9.super_class = NRGFullSyncRequestOperation;
+  v6 = [(NRGFullSyncRequestOperation *)&v9 init];
+  v7 = v6;
+  if (v6)
+  {
+    objc_storeStrong(&v6->_request, a3);
+    v7->_requestExecuting = 0;
+    v7->_requestFinished = 0;
+    pthread_mutex_init(&v7->_requestLock, 0);
+  }
+
+  return v7;
+}
+
+- (void)withLock:(id)a3
+{
+  v4 = a3;
+  pthread_mutex_lock(&self->_requestLock);
+  v4[2](v4);
+
+  pthread_mutex_unlock(&self->_requestLock);
+}
+
+- (void)start
+{
+  if ([(NRGFullSyncRequestOperation *)self isCancelled])
+  {
+    [(NRGFullSyncRequestOperation *)self willChangeValueForKey:@"isFinished"];
+    [(NRGFullSyncRequestOperation *)self setRequestFinished:1];
+    [(NRGFullSyncRequestOperation *)self didChangeValueForKey:@"isFinished"];
+    v3 = [NRGFullSyncError errorWithCode:1 description:@"operation cancelled"];
+    [(NRGFullSyncRequestOperation *)self requestComplete:0 error:v3];
+  }
+
+  else
+  {
+    [(NRGFullSyncRequestOperation *)self willChangeValueForKey:@"isExecuting"];
+    [NSThread detachNewThreadSelector:"main" toTarget:self withObject:0];
+    [(NRGFullSyncRequestOperation *)self setRequestExecuting:1];
+
+    [(NRGFullSyncRequestOperation *)self didChangeValueForKey:@"isExecuting"];
+  }
+}
+
+- (void)setIconVariants:(id)a3
+{
+  v4[0] = _NSConcreteStackBlock;
+  v4[1] = 3221225472;
+  v4[2] = sub_10000D93C;
+  v4[3] = &unk_100020648;
+  v5 = self;
+  v6 = a3;
+  v3 = v6;
+  [(NRGFullSyncRequestOperation *)v5 withLock:v4];
+}
+
+- (void)setRequestSentHandler:(id)a3
+{
+  v4[0] = _NSConcreteStackBlock;
+  v4[1] = 3221225472;
+  v4[2] = sub_10000DA1C;
+  v4[3] = &unk_100020A78;
+  v5 = self;
+  v6 = a3;
+  v3 = v6;
+  [(NRGFullSyncRequestOperation *)v5 withLock:v4];
+}
+
+- (void)setCompletionHandler:(id)a3
+{
+  v4[0] = _NSConcreteStackBlock;
+  v4[1] = 3221225472;
+  v4[2] = sub_10000DAFC;
+  v4[3] = &unk_100020A78;
+  v5 = self;
+  v6 = a3;
+  v3 = v6;
+  [(NRGFullSyncRequestOperation *)v5 withLock:v4];
+}
+
+- (void)main
+{
+  if (!self->_request)
+  {
+    v3 = objc_opt_new();
+    request = self->_request;
+    self->_request = v3;
+
+    v12[0] = _NSConcreteStackBlock;
+    v12[1] = 3221225472;
+    v12[2] = sub_10000DD08;
+    v12[3] = &unk_1000205D0;
+    v12[4] = self;
+    [(NRGFullSyncRequestOperation *)self withLock:v12];
+  }
+
+  objc_initWeak(&location, self);
+  WeakRetained = objc_loadWeakRetained(&self->_daemon);
+  v6 = self->_request;
+  v9[0] = _NSConcreteStackBlock;
+  v9[1] = 3221225472;
+  v9[2] = sub_10000DE20;
+  v9[3] = &unk_100020A00;
+  objc_copyWeak(&v10, &location);
+  v7[0] = _NSConcreteStackBlock;
+  v7[1] = 3221225472;
+  v7[2] = sub_10000DF14;
+  v7[3] = &unk_100020AA0;
+  objc_copyWeak(&v8, &location);
+  [WeakRetained sendFullSyncRequest:v6 requestHandler:v9 responseHandler:v7];
+
+  objc_destroyWeak(&v8);
+  objc_destroyWeak(&v10);
+  objc_destroyWeak(&location);
+}
+
+- (void)handleFullSyncResponse:(id)a3 url:(id)a4 iconVersionTracker:(id)a5
+{
+  v8 = a3;
+  v9 = a4;
+  v10 = a5;
+  v11 = nrg_daemon_log();
+  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  {
+    LODWORD(buf) = 138543362;
+    *(&buf + 4) = v8;
+    _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "received full sync response for %{public}@", &buf, 0xCu);
+  }
+
+  if ([(NRGFullSyncRequestOperation *)self shouldReset])
+  {
+    [v10 reset];
+  }
+
+  v12 = [[NRGIconCatalog alloc] initWithURL:v9 readonly:1];
+  v13 = NRGGetActivePairedDeviceStorePath();
+  *&buf = 0;
+  *(&buf + 1) = &buf;
+  v27 = 0x2020000000;
+  v28 = 0;
+  v18[0] = _NSConcreteStackBlock;
+  v18[1] = 3221225472;
+  v18[2] = sub_10000E2F0;
+  v18[3] = &unk_100020AC8;
+  p_buf = &buf;
+  v14 = v10;
+  v19 = v14;
+  v15 = v13;
+  v20 = v15;
+  [(NRGIconCatalog *)v12 readIcons:v18];
+  if (*(*(&buf + 1) + 24))
+  {
+    [v14 commit];
+    v16 = nrg_daemon_log();
+    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    {
+      v17 = *(*(&buf + 1) + 24);
+      *v22 = 134218242;
+      v23 = v17;
+      v24 = 2112;
+      v25 = v9;
+      _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "found %ld icons in %@", v22, 0x16u);
+    }
+  }
+
+  else
+  {
+    v16 = nrg_daemon_log();
+    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    {
+      sub_100011904(v9, v16);
+    }
+  }
+
+  [(NRGFullSyncRequestOperation *)self requestComplete:v8 error:0];
+  _Block_object_dispose(&buf, 8);
+}
+
+- (void)requestSent:(id)a3 error:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  v8 = nrg_daemon_log();
+  v9 = v8;
+  if (v7)
+  {
+    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    {
+      sub_10001197C();
+    }
+  }
+
+  else if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  {
+    *buf = 138543362;
+    v14 = v6;
+    _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "full sync request %{public}@ sent successfully", buf, 0xCu);
+  }
+
+  v11[0] = _NSConcreteStackBlock;
+  v11[1] = 3221225472;
+  v11[2] = sub_10000E610;
+  v11[3] = &unk_100020648;
+  v11[4] = self;
+  v12 = v7;
+  v10 = v7;
+  [(NRGFullSyncRequestOperation *)self withLock:v11];
+}
+
+- (void)requestComplete:(id)a3 error:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  v8 = nrg_daemon_log();
+  v9 = v8;
+  if (v7)
+  {
+    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    {
+      sub_1000119E4();
+    }
+  }
+
+  else if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  {
+    *buf = 138543362;
+    v20 = v6;
+    _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "full sync request %{public}@ complete", buf, 0xCu);
+  }
+
+  [(NRGFullSyncRequestOperation *)self setError:v7];
+  v13 = _NSConcreteStackBlock;
+  v14 = 3221225472;
+  v15 = sub_10000E87C;
+  v16 = &unk_100020648;
+  v17 = self;
+  v18 = v7;
+  v10 = v7;
+  [(NRGFullSyncRequestOperation *)self withLock:&v13];
+  v11 = [(NRGFullSyncRequestOperation *)self requestExecuting:v13];
+  v12 = [(NRGFullSyncRequestOperation *)self requestFinished];
+  if ((v12 & 1) == 0)
+  {
+    [(NRGFullSyncRequestOperation *)self willChangeValueForKey:@"isFinished"];
+  }
+
+  if (v11)
+  {
+    [(NRGFullSyncRequestOperation *)self willChangeValueForKey:@"isExecuting"];
+    [(NRGFullSyncRequestOperation *)self setRequestExecuting:0];
+    [(NRGFullSyncRequestOperation *)self setRequestFinished:1];
+    [(NRGFullSyncRequestOperation *)self didChangeValueForKey:@"isExecuting"];
+    if (v12)
+    {
+      goto LABEL_13;
+    }
+
+    goto LABEL_12;
+  }
+
+  [(NRGFullSyncRequestOperation *)self setRequestExecuting:0];
+  [(NRGFullSyncRequestOperation *)self setRequestFinished:1];
+  if ((v12 & 1) == 0)
+  {
+LABEL_12:
+    [(NRGFullSyncRequestOperation *)self didChangeValueForKey:@"isFinished"];
+  }
+
+LABEL_13:
+}
+
+- (NRGCompanionDaemon)daemon
+{
+  WeakRetained = objc_loadWeakRetained(&self->_daemon);
+
+  return WeakRetained;
+}
+
+- (_opaque_pthread_mutex_t)requestLock
+{
+  v3 = *&self[1].__opaque[8];
+  *&retstr->__sig = *&self[1].__sig;
+  *&retstr->__opaque[8] = v3;
+  v4 = *&self[1].__opaque[40];
+  *&retstr->__opaque[24] = *&self[1].__opaque[24];
+  *&retstr->__opaque[40] = v4;
+  return self;
+}
+
+- (void)setRequestLock:(_opaque_pthread_mutex_t *)a3
+{
+  v3 = *&a3->__opaque[40];
+  v5 = *&a3->__sig;
+  v4 = *&a3->__opaque[8];
+  *&self->_requestLock.__opaque[24] = *&a3->__opaque[24];
+  *&self->_requestLock.__opaque[40] = v3;
+  *&self->_requestLock.__sig = v5;
+  *&self->_requestLock.__opaque[8] = v4;
+}
+
+@end

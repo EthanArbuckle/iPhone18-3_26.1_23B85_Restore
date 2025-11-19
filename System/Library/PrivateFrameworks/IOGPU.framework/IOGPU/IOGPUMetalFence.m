@@ -1,0 +1,40 @@
+@interface IOGPUMetalFence
+- (IOGPUMetalFence)initWithDevice:(id)a3;
+- (void)dealloc;
+@end
+
+@implementation IOGPUMetalFence
+
+- (IOGPUMetalFence)initWithDevice:(id)a3
+{
+  v7.receiver = self;
+  v7.super_class = IOGPUMetalFence;
+  v4 = [(_MTLObjectWithLabel *)&v7 init];
+  if (v4)
+  {
+    v4->_device = a3;
+    v5 = -[IOGPUMTLFence initWithDevice:]([IOGPUMTLFence alloc], "initWithDevice:", [a3 deviceRef]);
+    v4->_fence = v5;
+    if (v5)
+    {
+      v4->_fenceIndex = v5->_fenceName;
+    }
+
+    else
+    {
+
+      return 0;
+    }
+  }
+
+  return v4;
+}
+
+- (void)dealloc
+{
+  v3.receiver = self;
+  v3.super_class = IOGPUMetalFence;
+  [(_MTLObjectWithLabel *)&v3 dealloc];
+}
+
+@end

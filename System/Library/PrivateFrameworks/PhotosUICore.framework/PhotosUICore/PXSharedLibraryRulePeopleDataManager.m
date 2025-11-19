@@ -1,0 +1,263 @@
+@interface PXSharedLibraryRulePeopleDataManager
+- (NSDiffableDataSourceSnapshot)currentSnapshot;
+- (PXSharedLibraryRulePeopleDataManager)initWithSharedLibraryStatusProvider:(id)a3;
+- (PXSharedLibraryRulePeopleDataManagerDelegate)delegate;
+- (void)_updateCurrentSnapshot;
+- (void)_updateIfNeeded;
+- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+@end
+
+@implementation PXSharedLibraryRulePeopleDataManager
+
+- (PXSharedLibraryRulePeopleDataManagerDelegate)delegate
+{
+  WeakRetained = objc_loadWeakRetained(&self->_delegate);
+
+  return WeakRetained;
+}
+
+- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+{
+  v9 = a3;
+  if (PXSharedLibraryStatusProviderObservationContext_166009 != a5)
+  {
+    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    [v8 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryRulePeopleDataManager.m" lineNumber:127 description:@"Code which should be unreachable has been reached"];
+
+    abort();
+  }
+
+  [(PXSharedLibraryRulePeopleDataManager *)self _updateIfNeeded];
+}
+
+- (NSDiffableDataSourceSnapshot)currentSnapshot
+{
+  currentSnapshot = self->_currentSnapshot;
+  if (!currentSnapshot)
+  {
+    [(PXSharedLibraryRulePeopleDataManager *)self _updateCurrentSnapshot];
+    currentSnapshot = self->_currentSnapshot;
+  }
+
+  return currentSnapshot;
+}
+
+- (void)_updateIfNeeded
+{
+  v3 = [(PXSharedLibraryRulePeopleDataManager *)self statusProvider];
+  v4 = [v3 sharedLibrary];
+  obj = [v4 rule];
+
+  v5 = self->_currentSharedLibraryRule;
+  v6 = v5;
+  if (v5 == obj)
+  {
+  }
+
+  else
+  {
+    v7 = [(PXSharedLibraryRule *)v5 isEqual:obj];
+
+    if ((v7 & 1) == 0)
+    {
+      objc_storeStrong(&self->_currentSharedLibraryRule, obj);
+      [(PXSharedLibraryRulePeopleDataManager *)self _updateCurrentSnapshot];
+    }
+  }
+}
+
+- (void)_updateCurrentSnapshot
+{
+  v65 = *MEMORY[0x1E69E9840];
+  v3 = [(PXSharedLibraryRulePeopleDataManager *)self statusProvider];
+  v4 = [v3 sharedLibrary];
+
+  v5 = [(PXSharedLibraryRule *)self->_currentSharedLibraryRule personUUIDs];
+  v6 = [v5 mutableCopy];
+
+  v52 = v6;
+  v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
+  statusMessage = self->_statusMessage;
+  v51 = self;
+  self->_statusMessage = 0;
+
+  v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
+  v59 = 0u;
+  v60 = 0u;
+  v61 = 0u;
+  v62 = 0u;
+  v10 = [v4 participants];
+  v11 = [v10 countByEnumeratingWithState:&v59 objects:v64 count:16];
+  if (v11)
+  {
+    v12 = v11;
+    v13 = *v60;
+    do
+    {
+      v14 = 0;
+      do
+      {
+        if (*v60 != v13)
+        {
+          objc_enumerationMutation(v10);
+        }
+
+        v15 = *(*(&v59 + 1) + 8 * v14);
+        if (([v15 isCurrentUser] & 1) == 0)
+        {
+          v16 = [v15 person];
+          if (v16)
+          {
+            objc_opt_class();
+            if ((objc_opt_isKindOfClass() & 1) == 0)
+            {
+              v47 = [MEMORY[0x1E696AAA8] currentHandler];
+              v22 = objc_opt_class();
+              v23 = NSStringFromClass(v22);
+              v46 = [v16 px_descriptionForAssertionMessage];
+              [v47 handleFailureInMethod:a2 object:v51 file:@"PXSharedLibraryRulePeopleDataManager.m" lineNumber:70 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"participant.person", v23, v46}];
+            }
+
+            v17 = [v16 uuid];
+            [v52 removeObject:v17];
+
+            v18 = [PXSharedLibraryRulePerson rulePersonWithParticipant:v15];
+            [v9 addObject:v18];
+
+            v19 = MEMORY[0x1E6978980];
+            v20 = [v16 uuid];
+            v21 = [v19 localIdentifierWithUUID:v20];
+            [(NSArray *)v7 addObject:v21];
+          }
+
+          else if (!v51->_statusMessage && ([v15 isCurrentUser] & 1) == 0)
+          {
+            PXSharedLibrarySettingsTextForIdentifyingParticipant(v15);
+          }
+        }
+
+        ++v14;
+      }
+
+      while (v12 != v14);
+      v24 = [v10 countByEnumeratingWithState:&v59 objects:v64 count:16];
+      v12 = v24;
+    }
+
+    while (v24);
+  }
+
+  v25 = v4;
+  if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
+  {
+    v26 = v25;
+  }
+
+  else
+  {
+    v26 = 0;
+  }
+
+  v27 = [v26 libraryScope];
+  v28 = [v27 photoLibrary];
+
+  if (v28)
+  {
+    v49 = v28;
+    v50 = v25;
+    v29 = [v28 librarySpecificFetchOptions];
+    v30 = [MEMORY[0x1E6978980] fetchPersonsWithLocalIdentifiers:v52 options:v29];
+    v55 = 0u;
+    v56 = 0u;
+    v57 = 0u;
+    v58 = 0u;
+    v31 = [v30 countByEnumeratingWithState:&v55 objects:v63 count:16];
+    if (v31)
+    {
+      v32 = v31;
+      v33 = *v56;
+      do
+      {
+        for (i = 0; i != v32; ++i)
+        {
+          if (*v56 != v33)
+          {
+            objc_enumerationMutation(v30);
+          }
+
+          v35 = *(*(&v55 + 1) + 8 * i);
+          v36 = [PXSharedLibraryRulePerson rulePersonWithPerson:v35];
+          [v9 addObject:v36];
+
+          v37 = MEMORY[0x1E6978980];
+          v38 = [v35 uuid];
+          v39 = [v37 localIdentifierWithUUID:v38];
+          [(NSArray *)v7 addObject:v39];
+        }
+
+        v32 = [v30 countByEnumeratingWithState:&v55 objects:v63 count:16];
+      }
+
+      while (v32);
+    }
+
+    v28 = v49;
+    v25 = v50;
+  }
+
+  else
+  {
+    v29 = PLSharedLibraryGetLog();
+    if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+    {
+      *buf = 0;
+      _os_log_impl(&dword_1A3C1C000, v29, OS_LOG_TYPE_ERROR, "Unable to add people to the snapshot without a valid Photo Library", buf, 2u);
+    }
+  }
+
+  v40 = objc_opt_new();
+  [(NSDiffableDataSourceSnapshot *)v40 appendSectionsWithIdentifiers:&unk_1F19110F8];
+  [(NSDiffableDataSourceSnapshot *)v40 appendItemsWithIdentifiers:v9];
+  currentSnapshot = v51->_currentSnapshot;
+  v51->_currentSnapshot = v40;
+  v42 = v40;
+
+  currentPersonIdentifiers = v51->_currentPersonIdentifiers;
+  v51->_currentPersonIdentifiers = v7;
+  v44 = v7;
+
+  v45 = [(PXSharedLibraryRulePeopleDataManager *)v51 delegate];
+  [v45 sharedLibraryRulePeopleControllerDidChangeCurrentSnapshot:v51];
+
+  v53[0] = MEMORY[0x1E69E9820];
+  v53[1] = 3221225472;
+  v53[2] = __62__PXSharedLibraryRulePeopleDataManager__updateCurrentSnapshot__block_invoke;
+  v53[3] = &unk_1E774C5F8;
+  v53[4] = v51;
+  [(PXSharedLibraryRulePeopleDataManager *)v51 performChanges:v53];
+}
+
+- (PXSharedLibraryRulePeopleDataManager)initWithSharedLibraryStatusProvider:(id)a3
+{
+  v5 = a3;
+  v13.receiver = self;
+  v13.super_class = PXSharedLibraryRulePeopleDataManager;
+  v6 = [(PXSharedLibraryRulePeopleDataManager *)&v13 init];
+  v7 = v6;
+  if (v6)
+  {
+    objc_storeStrong(&v6->_statusProvider, a3);
+    [(PXSharedLibraryStatusProvider *)v7->_statusProvider registerChangeObserver:v7 context:PXSharedLibraryStatusProviderObservationContext_166009];
+    v8 = [(PXSharedLibraryStatusProvider *)v7->_statusProvider sharedLibrary];
+    v9 = [v8 rule];
+    currentSharedLibraryRule = v7->_currentSharedLibraryRule;
+    v7->_currentSharedLibraryRule = v9;
+
+    currentPersonIdentifiers = v7->_currentPersonIdentifiers;
+    v7->_currentPersonIdentifiers = MEMORY[0x1E695E0F0];
+  }
+
+  return v7;
+}
+
+@end

@@ -1,0 +1,57 @@
+@interface PHAssetCreationOptions
+- (PHAssetCreationOptions)init;
+- (id)copyWithZone:(_NSZone *)a3;
+- (void)setStillSourceTime:(id *)a3;
+@end
+
+@implementation PHAssetCreationOptions
+
+- (void)setStillSourceTime:(id *)a3
+{
+  v3 = *&a3->var0;
+  self->_stillSourceTime.epoch = a3->var3;
+  *&self->_stillSourceTime.value = v3;
+}
+
+- (id)copyWithZone:(_NSZone *)a3
+{
+  objc_opt_class();
+  v4 = objc_opt_new();
+  [v4 setShouldDownloadOrCloudReReferenceMissingResources:{-[PHAssetCreationOptions shouldDownloadOrCloudReReferenceMissingResources](self, "shouldDownloadOrCloudReReferenceMissingResources")}];
+  v5 = [(PHAssetCreationOptions *)self adjustmentBakeInOptions];
+  [v4 setAdjustmentBakeInOptions:v5];
+
+  v6 = [(PHAssetCreationOptions *)self metadataCopyOptions];
+  [v4 setMetadataCopyOptions:v6];
+
+  [(PHAssetCreationOptions *)self stillSourceTime];
+  v8 = v10;
+  v9 = v11;
+  [v4 setStillSourceTime:&v8];
+  [v4 setResetUserSpecificMetadata:{-[PHAssetCreationOptions resetUserSpecificMetadata](self, "resetUserSpecificMetadata")}];
+  [v4 setCopyStillPhotoFromLivePhoto:{-[PHAssetCreationOptions copyStillPhotoFromLivePhoto](self, "copyStillPhotoFromLivePhoto")}];
+  [v4 setCopyOriginal:{-[PHAssetCreationOptions copyOriginal](self, "copyOriginal")}];
+  [v4 setCopySinglePhotoFromBurst:{-[PHAssetCreationOptions copySinglePhotoFromBurst](self, "copySinglePhotoFromBurst")}];
+  [v4 setCopyAsAlternateAsset:{-[PHAssetCreationOptions copyAsAlternateAsset](self, "copyAsAlternateAsset")}];
+  [v4 setUseRecoverableStagingDirectory:{-[PHAssetCreationOptions useRecoverableStagingDirectory](self, "useRecoverableStagingDirectory")}];
+  [v4 setShouldCreateScreenshot:{-[PHAssetCreationOptions shouldCreateScreenshot](self, "shouldCreateScreenshot")}];
+  [v4 setShouldUseAutomaticallyGeneratedOriginalFilename:{-[PHAssetCreationOptions shouldUseAutomaticallyGeneratedOriginalFilename](self, "shouldUseAutomaticallyGeneratedOriginalFilename")}];
+  return v4;
+}
+
+- (PHAssetCreationOptions)init
+{
+  v4.receiver = self;
+  v4.super_class = PHAssetCreationOptions;
+  result = [(PHAssetCreationOptions *)&v4 init];
+  if (result)
+  {
+    v3 = MEMORY[0x1E6960C70];
+    *&result->_stillSourceTime.value = *MEMORY[0x1E6960C70];
+    result->_stillSourceTime.epoch = *(v3 + 16);
+  }
+
+  return result;
+}
+
+@end

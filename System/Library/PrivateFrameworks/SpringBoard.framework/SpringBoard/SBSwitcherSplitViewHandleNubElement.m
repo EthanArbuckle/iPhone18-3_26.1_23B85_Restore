@@ -1,0 +1,86 @@
+@interface SBSwitcherSplitViewHandleNubElement
+- (BOOL)isEqual:(id)a3;
+- (SBSwitcherSplitViewHandleNubElement)initWithDisplayItems:(id)a3;
+@end
+
+@implementation SBSwitcherSplitViewHandleNubElement
+
+- (SBSwitcherSplitViewHandleNubElement)initWithDisplayItems:(id)a3
+{
+  v5 = a3;
+  v12.receiver = self;
+  v12.super_class = SBSwitcherSplitViewHandleNubElement;
+  v6 = [(SBSwitcherSplitViewHandleNubElement *)&v12 init];
+  if (v6)
+  {
+    if ([v5 count] != 2)
+    {
+      [(SBSwitcherSplitViewHandleNubElement *)a2 initWithDisplayItems:v6];
+    }
+
+    v7 = [v5 copy];
+    displayItems = v6->_displayItems;
+    v6->_displayItems = v7;
+  }
+
+  v9 = objc_alloc_init(MEMORY[0x277CF0C40]);
+  v10 = [v9 appendObject:v6->_displayItems];
+  v6->_hash = [v9 hash];
+
+  return v6;
+}
+
+- (BOOL)isEqual:(id)a3
+{
+  v4 = a3;
+  if (v4 == self)
+  {
+    v8 = 1;
+  }
+
+  else
+  {
+    v5 = objc_opt_class();
+    v6 = v4;
+    if (v5)
+    {
+      if (objc_opt_isKindOfClass())
+      {
+        v7 = v6;
+      }
+
+      else
+      {
+        v7 = 0;
+      }
+    }
+
+    else
+    {
+      v7 = 0;
+    }
+
+    v9 = v7;
+
+    if (v9)
+    {
+      v10 = [(SBSwitcherSplitViewHandleNubElement *)v9 displayItems];
+      v8 = BSEqualObjects();
+    }
+
+    else
+    {
+      v8 = 0;
+    }
+  }
+
+  return v8;
+}
+
+- (void)initWithDisplayItems:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)
+{
+  v4 = [MEMORY[0x277CCA890] currentHandler];
+  [v4 handleFailureInMethod:a1 object:a2 file:@"SBSwitcherSplitViewHandleNubElement.m" lineNumber:21 description:@"A split view handle can only be between exactly two items"];
+}
+
+@end

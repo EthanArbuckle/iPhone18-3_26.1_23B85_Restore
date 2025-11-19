@@ -1,0 +1,101 @@
+@interface NUITableViewContainerCell
++ (Class)containerViewClass;
+- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (NUITableViewContainerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+@end
+
+@implementation NUITableViewContainerCell
+
++ (Class)containerViewClass
+{
+  v3 = MEMORY[0x277CBEAD8];
+  v4 = *MEMORY[0x277CBE658];
+  v5 = objc_opt_class();
+  v6 = NSStringFromClass(v5);
+  v7 = NSStringFromSelector(a2);
+  [v3 raise:v4 format:{@"-[%@ %@] not implemented.", v6, v7}];
+
+  return 0;
+}
+
+- (NUITableViewContainerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+{
+  v14.receiver = self;
+  v14.super_class = NUITableViewContainerCell;
+  v4 = [(NUITableViewContainerCell *)&v14 initWithStyle:a3 reuseIdentifier:a4];
+  if (v4)
+  {
+    v5 = objc_alloc([objc_opt_class() containerViewClass]);
+    v6 = [(NUITableViewContainerCell *)v4 contentView];
+    [v6 bounds];
+    v7 = [v5 initWithFrame:?];
+    containerView = v4->_containerView;
+    v4->_containerView = v7;
+
+    [(NUIContainerView *)v4->_containerView setPreservesSuperviewLayoutMargins:1];
+    [(NUIContainerView *)v4->_containerView setLayoutMarginsRelativeArrangement:1];
+    [(NUIContainerView *)v4->_containerView setAutoresizingMask:18];
+    v9 = [(NUITableViewContainerCell *)v4 contentView];
+    [v9 addSubview:v4->_containerView];
+
+    [(UIView *)v4->_containerView setInvalidatingIntrinsicContentSizeAlsoInvalidatesSuperview:1];
+    v10 = v4->_containerView;
+    v12[0] = MEMORY[0x277D85DD0];
+    v12[1] = 3221225472;
+    v12[2] = __59__NUITableViewContainerCell_initWithStyle_reuseIdentifier___block_invoke;
+    v12[3] = &unk_278329468;
+    v13 = v4;
+    [(NUIContainerView *)v10 performBatchUpdates:v12];
+  }
+
+  return v4;
+}
+
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+{
+  if (a4 <= 50.0)
+  {
+    a3.width = 0.0;
+  }
+
+  if (a5 <= 50.0)
+  {
+    a3.height = 0.0;
+  }
+
+  v7.receiver = self;
+  v7.super_class = NUITableViewContainerCell;
+  [(NUITableViewContainerCell *)&v7 systemLayoutSizeFittingSize:a3.width withHorizontalFittingPriority:a3.height verticalFittingPriority:?];
+  result.height = v6;
+  result.width = v5;
+  return result;
+}
+
+- (CGSize)sizeThatFits:(CGSize)a3
+{
+  height = a3.height;
+  width = a3.width;
+  v6 = [(NUITableViewContainerCell *)self contentView];
+  [v6 bounds];
+  v8 = v7;
+
+  if (width >= v8)
+  {
+    v9 = v8;
+  }
+
+  else
+  {
+    v9 = width;
+  }
+
+  containerView = self->_containerView;
+
+  [(NUIContainerView *)containerView effectiveLayoutSizeFittingSize:v9, height];
+  result.height = v12;
+  result.width = v11;
+  return result;
+}
+
+@end

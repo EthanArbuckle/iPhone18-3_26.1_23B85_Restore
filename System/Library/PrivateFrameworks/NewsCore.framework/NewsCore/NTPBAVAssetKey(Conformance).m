@@ -1,0 +1,54 @@
+@interface NTPBAVAssetKey(Conformance)
+- (BOOL)isExpired;
+- (FCContentManifest)contentManifest;
+- (id)creationDate;
+- (id)expirationDate;
+@end
+
+@implementation NTPBAVAssetKey(Conformance)
+
+- (id)creationDate
+{
+  v1 = MEMORY[0x1E695DF00];
+  v2 = [a1 createdAt];
+  v3 = [v1 dateWithPBDate:v2];
+
+  return v3;
+}
+
+- (id)expirationDate
+{
+  v1 = MEMORY[0x1E695DF00];
+  v2 = [a1 expiresAt];
+  v3 = [v1 dateWithPBDate:v2];
+
+  return v3;
+}
+
+- (BOOL)isExpired
+{
+  v2 = [MEMORY[0x1E695DF00] date];
+  [v2 timeIntervalSince1970];
+  v4 = v3;
+  v5 = [a1 expiresAt];
+  [v5 timeIntervalSince1970];
+  v7 = v4 >= v6;
+
+  return v7;
+}
+
+- (FCContentManifest)contentManifest
+{
+  v8[1] = *MEMORY[0x1E69E9840];
+  v2 = [FCContentManifest alloc];
+  v3 = [a1 identifier];
+  v8[0] = v3;
+  v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
+  v5 = [(FCContentManifest *)v2 initWithAVAssetKeyIDs:v4];
+
+  v6 = *MEMORY[0x1E69E9840];
+
+  return v5;
+}
+
+@end

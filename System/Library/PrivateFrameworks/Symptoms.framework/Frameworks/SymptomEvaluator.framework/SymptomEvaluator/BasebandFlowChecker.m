@@ -1,0 +1,392 @@
+@interface BasebandFlowChecker
++ (id)sharedInstance;
+- (BasebandFlowChecker)init;
+- (void)_administrativeDisable;
+- (void)_administrativeEnable;
+- (void)activate;
+- (void)flowDispositionChangeTo:(unsigned int)a3 flowIdentifier:(id)a4 ledger:(id)a5 snapshot:(id)a6;
+- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)setEnabled:(BOOL)a3;
+- (void)willPollFlows;
+@end
+
+@implementation BasebandFlowChecker
+
+- (BasebandFlowChecker)init
+{
+  v9.receiver = self;
+  v9.super_class = BasebandFlowChecker;
+  v2 = [(BasebandFlowChecker *)&v9 init];
+  v3 = v2;
+  if (v2)
+  {
+    *(v2 + 4) = 0;
+    *(v2 + 24) = xmmword_232816C50;
+    *(v2 + 5) = 0x3FC999999999999ALL;
+    v4 = +[FlowOracle sharedInstance];
+    flowOracle = v3->_flowOracle;
+    v3->_flowOracle = v4;
+
+    v6 = +[FlowRefreshScheduler sharedInstance];
+    refreshScheduler = v3->_refreshScheduler;
+    v3->_refreshScheduler = v6;
+  }
+
+  return v3;
+}
+
+- (void)setEnabled:(BOOL)a3
+{
+  v14 = *MEMORY[0x277D85DE8];
+  if (self->_enabled != a3)
+  {
+    if (a3)
+    {
+      if (!self->_informer)
+      {
+        v4 = +[BasebandFlowInformer sharedInstance];
+        informer = self->_informer;
+        self->_informer = v4;
+      }
+
+      self->_pollingCancelToken = [(FlowRefreshScheduler *)self->_refreshScheduler periodicRefreshDataUsageWithInterval:@"BasebandFlowChecker" maxStale:self->_pollInterval maxDelay:self->_pollMaxStale logAs:self->_pollMaxDelay];
+      v6 = flowScrutinyLogHandle;
+      if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEFAULT))
+      {
+        pollingCancelToken = self->_pollingCancelToken;
+        pollInterval = self->_pollInterval;
+        v10 = 134218240;
+        v11 = pollInterval;
+        v12 = 2048;
+        v13 = pollingCancelToken;
+        _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_DEFAULT, "BasebandFlowChecker new poll interval %.3f, new cancel token %lld", &v10, 0x16u);
+      }
+    }
+
+    else
+    {
+      [(FlowRefreshScheduler *)self->_refreshScheduler cancelRefresh:self->_pollingCancelToken];
+      self->_pollingCancelToken = 0;
+    }
+  }
+
+  v9 = *MEMORY[0x277D85DE8];
+}
+
+- (void)flowDispositionChangeTo:(unsigned int)a3 flowIdentifier:(id)a4 ledger:(id)a5 snapshot:(id)a6
+{
+  v33 = *MEMORY[0x277D85DE8];
+  v10 = a4;
+  v11 = a5;
+  v12 = a6;
+  v13 = [v11 reportedDisposition];
+  if (v13 == a3)
+  {
+    v14 = flowScrutinyLogHandle;
+    if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEBUG))
+    {
+      v25 = 138412802;
+      v26 = v10;
+      v27 = 1024;
+      v28 = a3;
+      v29 = 1024;
+      v30 = a3;
+      v15 = "BasebandFlowChecker flowClassificationChange no change on %@  %d -> %d";
+LABEL_4:
+      v16 = v14;
+LABEL_5:
+      _os_log_impl(&dword_23255B000, v16, OS_LOG_TYPE_DEBUG, v15, &v25, 0x18u);
+    }
+  }
+
+  else
+  {
+    v17 = v13;
+    if (([v12 interfaceCellular] & 1) == 0 && !objc_msgSend(v12, "rxCellularBytes") && !objc_msgSend(v12, "txCellularBytes"))
+    {
+      v14 = flowScrutinyLogHandle;
+      if (!os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEBUG))
+      {
+        goto LABEL_32;
+      }
+
+      v25 = 138412802;
+      v26 = v10;
+      v27 = 1024;
+      v28 = v17;
+      v29 = 1024;
+      v30 = a3;
+      v15 = "BasebandFlowChecker non-cell flowClassificationChange %@  %d -> %d, new is reportable";
+      goto LABEL_4;
+    }
+
+    v18 = v17 - 32;
+    if (a3 - 32 > 2)
+    {
+      v21 = flowScrutinyLogHandle;
+      if (v18 > 2)
+      {
+        if (!os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEBUG))
+        {
+          goto LABEL_32;
+        }
+
+        v25 = 138412802;
+        v26 = v10;
+        v27 = 1024;
+        v28 = v17;
+        v29 = 1024;
+        v30 = a3;
+        v15 = "BasebandFlowChecker flowClassificationChange %@  %d -> %d, nothing reportable";
+        v16 = v21;
+        goto LABEL_5;
+      }
+
+      if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEFAULT))
+      {
+        v25 = 138412802;
+        v26 = v10;
+        v27 = 1024;
+        v28 = v17;
+        v29 = 1024;
+        v30 = a3;
+        _os_log_impl(&dword_23255B000, v21, OS_LOG_TYPE_DEFAULT, "BasebandFlowChecker flow stop for %@  %d -> %d", &v25, 0x18u);
+      }
+
+      [(BasebandFlowInformer *)self->_informer flowStop:v10];
+    }
+
+    else
+    {
+      if (v18 <= 2)
+      {
+        v19 = flowScrutinyLogHandle;
+        if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEFAULT))
+        {
+          v25 = 138412290;
+          v26 = v10;
+          _os_log_impl(&dword_23255B000, v19, OS_LOG_TYPE_DEFAULT, "BasebandFlowChecker flow stop prior to change %@", &v25, 0xCu);
+        }
+
+        [(BasebandFlowInformer *)self->_informer flowStop:v10];
+      }
+
+      v20 = objc_alloc_init(BasebandFlowDigest);
+      if ([(BasebandFlowDigest *)v20 primeFromSnapshot:v12])
+      {
+        if (a3 == 34)
+        {
+          [(BasebandFlowDigest *)v20 setIsBalanced:1];
+        }
+
+        else if (a3 == 33)
+        {
+          [(BasebandFlowDigest *)v20 setIsUpload:1];
+        }
+
+        else
+        {
+          [(BasebandFlowDigest *)v20 setIsDownload:1];
+        }
+
+        [(BasebandFlowDigest *)v20 setIsElephant:1];
+        v23 = flowScrutinyLogHandle;
+        if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEFAULT))
+        {
+          v25 = 138413058;
+          v26 = v10;
+          v27 = 1024;
+          v28 = v17;
+          v29 = 1024;
+          v30 = a3;
+          v31 = 2112;
+          v32 = v12;
+          _os_log_impl(&dword_23255B000, v23, OS_LOG_TYPE_DEFAULT, "BasebandFlowChecker flow start for %@ %d -> %d %@", &v25, 0x22u);
+        }
+
+        [(BasebandFlowInformer *)self->_informer flowStart:v10 digest:v20];
+      }
+
+      else
+      {
+        v22 = flowScrutinyLogHandle;
+        if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_ERROR))
+        {
+          v25 = 138412290;
+          v26 = v12;
+          _os_log_impl(&dword_23255B000, v22, OS_LOG_TYPE_ERROR, "BasebandFlowChecker can't create digest from snapshot: %@", &v25, 0xCu);
+        }
+      }
+    }
+  }
+
+LABEL_32:
+
+  v24 = *MEMORY[0x277D85DE8];
+}
+
+- (void)willPollFlows
+{
+  v3 = flowScrutinyLogHandle;
+  if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEBUG))
+  {
+    *v4 = 0;
+    _os_log_impl(&dword_23255B000, v3, OS_LOG_TYPE_DEBUG, "CellThroughputAdviser willPollFlows", v4, 2u);
+  }
+
+  self->_pollInProgress = 1;
+  [(BasebandFlowInformer *)self->_informer setInformImmediate:0];
+}
+
+- (void)_administrativeEnable
+{
+  v3 = flowScrutinyLogHandle;
+  if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEFAULT))
+  {
+    *v5 = 0;
+    _os_log_impl(&dword_23255B000, v3, OS_LOG_TYPE_DEFAULT, "BasebandFlowChecker: _administrativeEnable", v5, 2u);
+  }
+
+  v4 = +[FlowScrutinizer sharedInstance];
+  [v4 addDelegate:self];
+  [v4 expectedTransferScrutinyOnBehalfOf:@"BB" required:1];
+  [v4 cellFlowScrutinyOnBehalfOf:@"BB" required:1];
+  self->_pollingCancelToken = [(FlowRefreshScheduler *)self->_refreshScheduler periodicRefreshDataUsageWithInterval:@"BasebandFlowChecker" maxStale:self->_pollInterval maxDelay:1.0 logAs:1.0];
+}
+
+- (void)_administrativeDisable
+{
+  v3 = flowScrutinyLogHandle;
+  if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEFAULT))
+  {
+    *v5 = 0;
+    _os_log_impl(&dword_23255B000, v3, OS_LOG_TYPE_DEFAULT, "BasebandFlowChecker: _administrativeDisable", v5, 2u);
+  }
+
+  v4 = +[FlowScrutinizer sharedInstance];
+  [v4 removeDelegate:self];
+  [v4 expectedTransferScrutinyOnBehalfOf:@"BB" required:0];
+  [v4 cellFlowScrutinyOnBehalfOf:@"BB" required:0];
+  if (self->_pollingCancelToken)
+  {
+    [(FlowRefreshScheduler *)self->_refreshScheduler cancelRefresh:?];
+  }
+}
+
+- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+{
+  v27 = *MEMORY[0x277D85DE8];
+  v8 = a3;
+  v9 = a5;
+  v10 = [v8 isEqualToString:@"enabled"];
+  v11 = flowScrutinyLogHandle;
+  if (v10)
+  {
+    if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEFAULT))
+    {
+      *buf = 138412290;
+      v24 = v9;
+      _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_DEFAULT, "BasebandFlowChecker: keyPath: enabled, change: %@", buf, 0xCu);
+    }
+
+    v12 = [v9 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    {
+      v13 = v12;
+      v14 = [v13 BOOLValue];
+      v15 = [(BasebandFlowChecker *)self queue];
+      v16 = v15;
+      if (v14)
+      {
+        v17 = v22;
+        v22[0] = MEMORY[0x277D85DD0];
+        v22[1] = 3221225472;
+        v18 = __70__BasebandFlowChecker_observeValueForKeyPath_ofObject_change_context___block_invoke;
+      }
+
+      else
+      {
+        v17 = v21;
+        v21[0] = MEMORY[0x277D85DD0];
+        v21[1] = 3221225472;
+        v18 = __70__BasebandFlowChecker_observeValueForKeyPath_ofObject_change_context___block_invoke_2;
+      }
+
+      v17[2] = v18;
+      v17[3] = &unk_27898A0C8;
+      v17[4] = self;
+      dispatch_async(v15, v17);
+    }
+
+    else
+    {
+      v19 = flowScrutinyLogHandle;
+      if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_ERROR))
+      {
+        *buf = 138412290;
+        v24 = v12;
+        _os_log_impl(&dword_23255B000, v19, OS_LOG_TYPE_ERROR, "BasebandFlowChecker: keypath for enabled had bad format for new, %@", buf, 0xCu);
+      }
+    }
+  }
+
+  else if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_ERROR))
+  {
+    *buf = 138412546;
+    v24 = v8;
+    v25 = 2112;
+    v26 = v9;
+    _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_ERROR, "BasebandFlowChecker: unrecognized keyPath: %@, change: %@", buf, 0x16u);
+  }
+
+  v20 = *MEMORY[0x277D85DE8];
+}
+
+- (void)activate
+{
+  v10 = *MEMORY[0x277D85DE8];
+  v3 = +[BasebandFlowInformer sharedInstance];
+  informer = self->_informer;
+  self->_informer = v3;
+
+  [(BasebandFlowInformer *)self->_informer addObserver:self forKeyPath:@"enabled" options:7 context:0];
+  [(BasebandFlowInformer *)self->_informer reset];
+  v5 = flowScrutinyLogHandle;
+  if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEFAULT))
+  {
+    v6 = self->_informer;
+    v8 = 138412290;
+    v9 = v6;
+    _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEFAULT, "BasebandFlowChecker: informer is %@", &v8, 0xCu);
+  }
+
+  v7 = *MEMORY[0x277D85DE8];
+}
+
++ (id)sharedInstance
+{
+  block[0] = MEMORY[0x277D85DD0];
+  block[1] = 3221225472;
+  block[2] = __37__BasebandFlowChecker_sharedInstance__block_invoke;
+  block[3] = &__block_descriptor_40_e5_v8__0l;
+  block[4] = a1;
+  if (sharedInstance_pred_21 != -1)
+  {
+    dispatch_once(&sharedInstance_pred_21, block);
+  }
+
+  v2 = sharedInstance_sharedInstance_21;
+
+  return v2;
+}
+
+uint64_t __37__BasebandFlowChecker_sharedInstance__block_invoke(uint64_t a1)
+{
+  v1 = objc_alloc_init(*(a1 + 32));
+  v2 = sharedInstance_sharedInstance_21;
+  sharedInstance_sharedInstance_21 = v1;
+
+  return MEMORY[0x2821F96F8](v1, v2);
+}
+
+@end

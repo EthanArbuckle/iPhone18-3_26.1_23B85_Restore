@@ -1,0 +1,108 @@
+@interface PosterStore
+- (_TtC11PosterBoard11PosterStore)init;
+- (void)dataStoreDidTearDown;
+- (void)posterExtensionDataStore:(id)a3 didAddConfiguration:(id)a4;
+- (void)posterExtensionDataStore:(id)a3 didUpdateGalleryConfiguration:(id)a4;
+- (void)posterExtensionDataStore:(id)a3 posterConfiguration:(id)a4 didUpdateAssociatedHomeScreenPosterConfigurationTo:(id)a5;
+@end
+
+@implementation PosterStore
+
+- (_TtC11PosterBoard11PosterStore)init
+{
+  swift_getObjectType();
+  type metadata accessor for IncludeAllPostersFilter();
+  v2 = swift_allocObject();
+  v3 = objc_allocWithZone(type metadata accessor for PosterStore());
+  v4 = sub_21B629420(v2, v3);
+  swift_deallocPartialClassInstance();
+  return v4;
+}
+
+- (void)posterExtensionDataStore:(id)a3 didUpdateGalleryConfiguration:(id)a4
+{
+  v6 = swift_allocObject();
+  *(v6 + 16) = self;
+  *(v6 + 24) = a4;
+  v7 = swift_allocObject();
+  v7[2] = self;
+  v7[3] = sub_21B62A904;
+  v7[4] = v6;
+  v13[4] = sub_21B62ABA8;
+  v13[5] = v7;
+  v13[0] = MEMORY[0x277D85DD0];
+  v13[1] = 1107296256;
+  v13[2] = sub_21B63863C;
+  v13[3] = &block_descriptor_215;
+  v8 = _Block_copy(v13);
+  v9 = self;
+  v10 = a4;
+  v11 = v9;
+  v12 = v10;
+
+  BSDispatchMain();
+
+  _Block_release(v8);
+}
+
+- (void)posterExtensionDataStore:(id)a3 didAddConfiguration:(id)a4
+{
+  v6 = swift_allocObject();
+  *(v6 + 16) = self;
+  *(v6 + 24) = a4;
+  v11[4] = sub_21B62AB54;
+  v11[5] = v6;
+  v11[0] = MEMORY[0x277D85DD0];
+  v11[1] = 1107296256;
+  v11[2] = sub_21B63863C;
+  v11[3] = &block_descriptor_205;
+  v7 = _Block_copy(v11);
+  v8 = a4;
+  v9 = self;
+  v10 = v8;
+
+  BSDispatchMain();
+
+  _Block_release(v7);
+}
+
+- (void)posterExtensionDataStore:(id)a3 posterConfiguration:(id)a4 didUpdateAssociatedHomeScreenPosterConfigurationTo:(id)a5
+{
+  v7 = swift_allocObject();
+  *(v7 + 16) = self;
+  *(v7 + 24) = a4;
+  v12[4] = sub_21B62A8E0;
+  v12[5] = v7;
+  v12[0] = MEMORY[0x277D85DD0];
+  v12[1] = 1107296256;
+  v12[2] = sub_21B63863C;
+  v12[3] = &block_descriptor_181;
+  v8 = _Block_copy(v12);
+  v9 = a4;
+  v10 = self;
+  v11 = v9;
+
+  BSDispatchMain();
+
+  _Block_release(v8);
+}
+
+- (void)dataStoreDidTearDown
+{
+  v3 = swift_allocObject();
+  *(v3 + 16) = self;
+  v6[4] = sub_21B62A880;
+  v6[5] = v3;
+  v6[0] = MEMORY[0x277D85DD0];
+  v6[1] = 1107296256;
+  v6[2] = sub_21B63863C;
+  v6[3] = &block_descriptor_147;
+  v4 = _Block_copy(v6);
+  v5 = self;
+
+  BSDispatchMain();
+
+  _Block_release(v4);
+}
+
+@end

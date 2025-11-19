@@ -1,0 +1,57 @@
+@interface tmf02fbce43bb83f6eb51bd31374aa8279
+- (id)initProduct:(id)a3;
+- (void)updateAllThermalLoad:(BOOL)a3;
+- (void)updateCoreAnalyticsInfo;
+@end
+
+@implementation tmf02fbce43bb83f6eb51bd31374aa8279
+
+- (id)initProduct:(id)a3
+{
+  v6.receiver = self;
+  v6.super_class = tmf02fbce43bb83f6eb51bd31374aa8279;
+  v3 = [(CommonProduct *)&v6 initProduct:a3];
+  v4 = v3;
+  if (v3)
+  {
+    [v3 resetVTFilterState];
+  }
+
+  return v4;
+}
+
+- (void)updateAllThermalLoad:(BOOL)a3
+{
+  v4 = qword_1000AB824;
+  v5 = dword_1000AB83C;
+  v7 = HIDWORD(qword_1000AB82C);
+  v6 = qword_1000AB834;
+  v8 = [(CommonProduct *)self findComponent:18];
+  v9 = [(CommonProduct *)self dieTempMaxAverage]/ 100.0;
+  v10 = [(CommonProduct *)self dieTempFilteredMaxAverage]/ 100.0;
+  *&v11 = v10;
+  *&v10 = v9;
+  [v8 calculateControlEffort:v10 trigger:v11];
+  sub_10000533C(52, (v4 * 0.88 + -22.0 + v6 * 0.13));
+  sub_10000533C(51, (v5 * 1.06 + 67.0 + v7 * -0.08));
+  v12 = qword_1000AB8F4;
+  v13 = [(CommonProduct *)self findComponent:19];
+  v14 = v12 / 100.0;
+  *&v15 = v14;
+  [v13 calculateControlEffort:v15];
+  v16 = [(CommonProduct *)self findComponent:20];
+  *&v17 = v14;
+
+  [v16 calculateControlEffort:v17];
+}
+
+- (void)updateCoreAnalyticsInfo
+{
+  [(CommonProduct *)self dieTempMaxAverage];
+  [+[ContextAwareThermalManager sharedInstance](ContextAwareThermalManager isContextTriggered:"isContextTriggered:", 0];
+  [(CommonProduct *)self thermalPressureLevel];
+  [-[CommonProduct findComponent:](self findComponent:{13), "releaseMaxLI"}];
+  AnalyticsSendEventLazy();
+}
+
+@end

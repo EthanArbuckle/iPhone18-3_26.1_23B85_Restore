@@ -1,0 +1,223 @@
+@interface PKSearchOrderResult
+- (BOOL)isEqual:(id)a3;
+- (PKSearchOrderResult)initWithCoder:(id)a3;
+- (id)description;
+- (unint64_t)hash;
+- (void)encodeWithCoder:(id)a3;
+@end
+
+@implementation PKSearchOrderResult
+
+- (void)encodeWithCoder:(id)a3
+{
+  uri = self->_uri;
+  v5 = a3;
+  [v5 encodeObject:uri forKey:@"uri"];
+  [v5 encodeObject:self->_orderTypeIdentifier forKey:@"orderTypeIdentifier"];
+  [v5 encodeObject:self->_orderIdentifier forKey:@"orderIdentifier"];
+  [v5 encodeObject:self->_displayName forKey:@"displayName"];
+  [v5 encodeObject:self->_spotlightDisplayName forKey:@"spotlightDisplayName"];
+  [v5 encodeObject:self->_contentDescription forKey:@"contentDescription"];
+  [v5 encodeObject:self->_thumbnailData forKey:@"thumbnailData"];
+}
+
+- (PKSearchOrderResult)initWithCoder:(id)a3
+{
+  v4 = a3;
+  v5 = [(PKSearchOrderResult *)self init];
+  if (v5)
+  {
+    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uri"];
+    uri = v5->_uri;
+    v5->_uri = v6;
+
+    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"orderTypeIdentifier"];
+    orderTypeIdentifier = v5->_orderTypeIdentifier;
+    v5->_orderTypeIdentifier = v8;
+
+    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"orderIdentifier"];
+    orderIdentifier = v5->_orderIdentifier;
+    v5->_orderIdentifier = v10;
+
+    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+    displayName = v5->_displayName;
+    v5->_displayName = v12;
+
+    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"spotlightDisplayName"];
+    spotlightDisplayName = v5->_spotlightDisplayName;
+    v5->_spotlightDisplayName = v14;
+
+    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentDescription"];
+    contentDescription = v5->_contentDescription;
+    v5->_contentDescription = v16;
+
+    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"thumbnailData"];
+    thumbnailData = v5->_thumbnailData;
+    v5->_thumbnailData = v18;
+  }
+
+  return v5;
+}
+
+- (id)description
+{
+  v7.receiver = self;
+  v7.super_class = PKSearchOrderResult;
+  v3 = [(PKSearchOrderResult *)&v7 description];
+  v4 = [v3 mutableCopy];
+
+  [v4 appendFormat:@"uri: '%@'; ", self->_uri];
+  [v4 appendFormat:@"orderTypeIdentifier: '%@'; ", self->_orderTypeIdentifier];
+  [v4 appendFormat:@"orderIdentifier: '%@'; ", self->_orderIdentifier];
+  [v4 appendFormat:@"displayName: '%@'; ", self->_displayName];
+  [v4 appendFormat:@"spotlightDisplayName: '%@'; ", self->_spotlightDisplayName];
+  [v4 appendFormat:@"contentDescription: '%@'; ", self->_contentDescription];
+  thumbnailData = self->_thumbnailData;
+  if (thumbnailData)
+  {
+    thumbnailData = [(NSData *)thumbnailData length];
+  }
+
+  [v4 appendFormat:@"thumbnailData: %lu", thumbnailData];
+  [v4 appendFormat:@">"];
+
+  return v4;
+}
+
+- (BOOL)isEqual:(id)a3
+{
+  v4 = a3;
+  objc_opt_class();
+  if ((objc_opt_isKindOfClass() & 1) == 0)
+  {
+    goto LABEL_34;
+  }
+
+  uri = self->_uri;
+  v6 = v4[1];
+  if (uri && v6)
+  {
+    if (([(NSString *)uri isEqual:?]& 1) == 0)
+    {
+      goto LABEL_34;
+    }
+  }
+
+  else if (uri != v6)
+  {
+    goto LABEL_34;
+  }
+
+  orderTypeIdentifier = self->_orderTypeIdentifier;
+  v8 = v4[2];
+  if (orderTypeIdentifier && v8)
+  {
+    if (([(NSString *)orderTypeIdentifier isEqual:?]& 1) == 0)
+    {
+      goto LABEL_34;
+    }
+  }
+
+  else if (orderTypeIdentifier != v8)
+  {
+    goto LABEL_34;
+  }
+
+  orderIdentifier = self->_orderIdentifier;
+  v10 = v4[3];
+  if (orderIdentifier && v10)
+  {
+    if (([(NSString *)orderIdentifier isEqual:?]& 1) == 0)
+    {
+      goto LABEL_34;
+    }
+  }
+
+  else if (orderIdentifier != v10)
+  {
+    goto LABEL_34;
+  }
+
+  displayName = self->_displayName;
+  v12 = v4[4];
+  if (displayName && v12)
+  {
+    if (([(NSString *)displayName isEqual:?]& 1) == 0)
+    {
+      goto LABEL_34;
+    }
+  }
+
+  else if (displayName != v12)
+  {
+    goto LABEL_34;
+  }
+
+  spotlightDisplayName = self->_spotlightDisplayName;
+  v14 = v4[5];
+  if (spotlightDisplayName && v14)
+  {
+    if (([(NSString *)spotlightDisplayName isEqual:?]& 1) == 0)
+    {
+      goto LABEL_34;
+    }
+  }
+
+  else if (spotlightDisplayName != v14)
+  {
+    goto LABEL_34;
+  }
+
+  contentDescription = self->_contentDescription;
+  v16 = v4[6];
+  if (!contentDescription || !v16)
+  {
+    if (contentDescription == v16)
+    {
+      goto LABEL_30;
+    }
+
+LABEL_34:
+    v19 = 0;
+    goto LABEL_35;
+  }
+
+  if (([(NSString *)contentDescription isEqual:?]& 1) == 0)
+  {
+    goto LABEL_34;
+  }
+
+LABEL_30:
+  thumbnailData = self->_thumbnailData;
+  v18 = v4[7];
+  if (thumbnailData && v18)
+  {
+    v19 = [(NSData *)thumbnailData isEqual:?];
+  }
+
+  else
+  {
+    v19 = thumbnailData == v18;
+  }
+
+LABEL_35:
+
+  return v19;
+}
+
+- (unint64_t)hash
+{
+  v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
+  [v3 safelyAddObject:self->_uri];
+  [v3 safelyAddObject:self->_orderTypeIdentifier];
+  [v3 safelyAddObject:self->_orderIdentifier];
+  [v3 safelyAddObject:self->_displayName];
+  [v3 safelyAddObject:self->_spotlightDisplayName];
+  [v3 safelyAddObject:self->_contentDescription];
+  [v3 safelyAddObject:self->_thumbnailData];
+  v4 = PKCombinedHash(17, v3);
+
+  return v4;
+}
+
+@end

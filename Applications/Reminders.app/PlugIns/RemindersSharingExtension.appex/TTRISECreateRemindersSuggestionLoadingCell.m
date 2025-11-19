@@ -1,0 +1,25 @@
+@interface TTRISECreateRemindersSuggestionLoadingCell
+- (_TtC25RemindersSharingExtension42TTRISECreateRemindersSuggestionLoadingCell)initWithCoder:(id)a3;
+- (void)containerViewDidLayoutArrangedSubviews:(id)a3;
+@end
+
+@implementation TTRISECreateRemindersSuggestionLoadingCell
+
+- (_TtC25RemindersSharingExtension42TTRISECreateRemindersSuggestionLoadingCell)initWithCoder:(id)a3
+{
+  v3 = self + OBJC_IVAR____TtC25RemindersSharingExtension42TTRISECreateRemindersSuggestionLoadingCell_referenceTextViewWidth;
+  *v3 = 0;
+  v3[8] = 1;
+  result = sub_10004CD40();
+  __break(1u);
+  return result;
+}
+
+- (void)containerViewDidLayoutArrangedSubviews:(id)a3
+{
+  v4 = a3;
+  v5 = self;
+  sub_100016AD4();
+}
+
+@end

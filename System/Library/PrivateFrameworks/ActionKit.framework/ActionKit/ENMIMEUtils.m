@@ -1,0 +1,388 @@
+@interface ENMIMEUtils
++ (id)determineMIMETypeForFile:(id)a3;
++ (id)fileExtensionForMIMEType:(id)a3;
++ (id)mimeTypeForUTI:(id)a3;
+@end
+
+@implementation ENMIMEUtils
+
++ (id)mimeTypeForUTI:(id)a3
+{
+  v3 = a3;
+  v4 = UTTypeCopyPreferredTagWithClass(v3, *MEMORY[0x277CC1F60]);
+  if (v4)
+  {
+    v5 = v4;
+    if (CFStringGetLength(v4) > 0)
+    {
+      goto LABEL_9;
+    }
+
+    CFRelease(v5);
+  }
+
+  if (([(__CFString *)v3 isEqualToString:@"public.jpeg"]& 1) != 0)
+  {
+    v5 = @"image/jpeg";
+  }
+
+  else if ([(__CFString *)v3 isEqualToString:@"public.png"])
+  {
+    v5 = @"image/png";
+  }
+
+  else
+  {
+    v5 = 0;
+  }
+
+LABEL_9:
+
+  return v5;
+}
+
++ (id)determineMIMETypeForFile:(id)a3
+{
+  v3 = [a3 pathExtension];
+  PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x277CC1F58], v3, 0);
+  if (PreferredIdentifierForTag)
+  {
+    v5 = PreferredIdentifierForTag;
+    v6 = UTTypeCopyPreferredTagWithClass(PreferredIdentifierForTag, *MEMORY[0x277CC1F60]);
+    v7 = v6;
+    if (v6 && CFStringGetLength(v6) <= 0)
+    {
+      CFRelease(v7);
+      v7 = 0;
+    }
+
+    CFRelease(v5);
+  }
+
+  else
+  {
+    v7 = 0;
+  }
+
+  v8 = +[EDAMLimitsConstants EDAM_MIME_TYPE_GIF];
+  if ([v7 isEqualToString:v8])
+  {
+  }
+
+  else
+  {
+    v9 = [(__CFString *)v3 isEqualToString:@"gif"];
+
+    if (v9)
+    {
+      v10 = +[EDAMLimitsConstants EDAM_MIME_TYPE_GIF];
+LABEL_38:
+      v23 = v7;
+      v7 = v10;
+      goto LABEL_39;
+    }
+  }
+
+  v11 = +[EDAMLimitsConstants EDAM_MIME_TYPE_JPEG];
+  if ([v7 isEqualToString:v11])
+  {
+
+    goto LABEL_15;
+  }
+
+  v12 = [(__CFString *)v3 isEqualToString:@"jpg"];
+
+  if (v12)
+  {
+    v10 = +[EDAMLimitsConstants EDAM_MIME_TYPE_JPEG];
+    goto LABEL_38;
+  }
+
+LABEL_15:
+  v13 = +[EDAMLimitsConstants EDAM_MIME_TYPE_PNG];
+  if ([v7 isEqualToString:v13])
+  {
+
+    goto LABEL_19;
+  }
+
+  v14 = [(__CFString *)v3 isEqualToString:@"png"];
+
+  if (v14)
+  {
+    v10 = +[EDAMLimitsConstants EDAM_MIME_TYPE_PNG];
+    goto LABEL_38;
+  }
+
+LABEL_19:
+  v15 = +[EDAMLimitsConstants EDAM_MIME_TYPE_WAV];
+  if ([v7 isEqualToString:v15])
+  {
+
+    goto LABEL_23;
+  }
+
+  v16 = [(__CFString *)v3 isEqualToString:@"wav"];
+
+  if (v16)
+  {
+    v10 = +[EDAMLimitsConstants EDAM_MIME_TYPE_WAV];
+    goto LABEL_38;
+  }
+
+LABEL_23:
+  v17 = +[EDAMLimitsConstants EDAM_MIME_TYPE_MP3];
+  if ([v7 isEqualToString:v17])
+  {
+
+    goto LABEL_27;
+  }
+
+  v18 = [(__CFString *)v3 isEqualToString:@"mp3"];
+
+  if (v18)
+  {
+    v10 = +[EDAMLimitsConstants EDAM_MIME_TYPE_MP3];
+    goto LABEL_38;
+  }
+
+LABEL_27:
+  v19 = +[EDAMLimitsConstants EDAM_MIME_TYPE_AMR];
+  if ([v7 isEqualToString:v19])
+  {
+
+    goto LABEL_31;
+  }
+
+  v20 = [(__CFString *)v3 isEqualToString:@"amr"];
+
+  if (v20)
+  {
+    v10 = +[EDAMLimitsConstants EDAM_MIME_TYPE_AMR];
+    goto LABEL_38;
+  }
+
+LABEL_31:
+  v21 = +[EDAMLimitsConstants EDAM_MIME_TYPE_MP4_VIDEO];
+  if ([v7 isEqualToString:v21])
+  {
+
+    goto LABEL_35;
+  }
+
+  v22 = [(__CFString *)v3 isEqualToString:@"mp4"];
+
+  if (v22)
+  {
+    v10 = +[EDAMLimitsConstants EDAM_MIME_TYPE_MP4_VIDEO];
+    goto LABEL_38;
+  }
+
+LABEL_35:
+  v23 = +[EDAMLimitsConstants EDAM_MIME_TYPE_PDF];
+  if (([v7 isEqualToString:v23] & 1) == 0)
+  {
+    v24 = [(__CFString *)v3 isEqualToString:@"pdf"];
+
+    if (!v24)
+    {
+      goto LABEL_40;
+    }
+
+    v10 = +[EDAMLimitsConstants EDAM_MIME_TYPE_PDF];
+    goto LABEL_38;
+  }
+
+LABEL_39:
+
+LABEL_40:
+
+  return v7;
+}
+
++ (id)fileExtensionForMIMEType:(id)a3
+{
+  v3 = a3;
+  v4 = +[EDAMLimitsConstants EDAM_MIME_TYPE_INK];
+  v5 = [(__CFString *)v3 isEqualToString:v4];
+
+  if (v5)
+  {
+    v6 = @"png";
+    goto LABEL_42;
+  }
+
+  PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x277CC1F60], v3, 0);
+  if (PreferredIdentifierForTag)
+  {
+    v8 = PreferredIdentifierForTag;
+    v9 = UTTypeCopyPreferredTagWithClass(PreferredIdentifierForTag, *MEMORY[0x277CC1F58]);
+    v6 = v9;
+    if (v9 && CFStringGetLength(v9) <= 0)
+    {
+      CFRelease(v6);
+      v6 = 0;
+    }
+
+    CFRelease(v8);
+  }
+
+  else
+  {
+    v6 = 0;
+  }
+
+  v10 = +[EDAMLimitsConstants EDAM_MIME_TYPE_GIF];
+  if ([(__CFString *)v3 isEqualToString:v10])
+  {
+    v11 = @"gif";
+    v12 = [(__CFString *)v6 isEqualToString:@"gif"];
+
+    if ((v12 & 1) == 0)
+    {
+      goto LABEL_40;
+    }
+  }
+
+  else
+  {
+  }
+
+  v13 = +[EDAMLimitsConstants EDAM_MIME_TYPE_JPEG];
+  if ([(__CFString *)v3 isEqualToString:v13])
+  {
+    v11 = @"jpg";
+    v14 = [(__CFString *)v6 isEqualToString:@"jpg"];
+
+    if ((v14 & 1) == 0)
+    {
+      goto LABEL_40;
+    }
+  }
+
+  else
+  {
+  }
+
+  v15 = +[EDAMLimitsConstants EDAM_MIME_TYPE_PNG];
+  if (([(__CFString *)v3 isEqualToString:v15]& 1) != 0 || [(__CFString *)v3 isEqualToString:@"image/x-png"])
+  {
+    v11 = @"png";
+    v16 = [(__CFString *)v6 isEqualToString:@"png"];
+
+    if ((v16 & 1) == 0)
+    {
+      goto LABEL_40;
+    }
+  }
+
+  else
+  {
+  }
+
+  v17 = +[EDAMLimitsConstants EDAM_MIME_TYPE_WAV];
+  if ([(__CFString *)v3 isEqualToString:v17])
+  {
+    v11 = @"wav";
+    v18 = [(__CFString *)v6 isEqualToString:@"wav"];
+
+    if ((v18 & 1) == 0)
+    {
+      goto LABEL_40;
+    }
+  }
+
+  else
+  {
+  }
+
+  v19 = +[EDAMLimitsConstants EDAM_MIME_TYPE_MP3];
+  if ([(__CFString *)v3 isEqualToString:v19])
+  {
+    v11 = @"mp3";
+    v20 = [(__CFString *)v6 isEqualToString:@"mp3"];
+
+    if ((v20 & 1) == 0)
+    {
+      goto LABEL_40;
+    }
+  }
+
+  else
+  {
+  }
+
+  v21 = +[EDAMLimitsConstants EDAM_MIME_TYPE_AMR];
+  if ([(__CFString *)v3 isEqualToString:v21])
+  {
+    v11 = @"amr";
+    v22 = [(__CFString *)v6 isEqualToString:@"amr"];
+
+    if ((v22 & 1) == 0)
+    {
+      goto LABEL_40;
+    }
+  }
+
+  else
+  {
+  }
+
+  v23 = +[EDAMLimitsConstants EDAM_MIME_TYPE_MP4_VIDEO];
+  if ([(__CFString *)v3 isEqualToString:v23])
+  {
+    v11 = @"mp4";
+    v24 = [(__CFString *)v6 isEqualToString:@"mp4"];
+
+    if ((v24 & 1) == 0)
+    {
+      goto LABEL_40;
+    }
+  }
+
+  else
+  {
+  }
+
+  v25 = +[EDAMLimitsConstants EDAM_MIME_TYPE_INK];
+  if ([(__CFString *)v3 isEqualToString:v25])
+  {
+    v11 = @"png";
+    v26 = [(__CFString *)v6 isEqualToString:@"png"];
+
+    if ((v26 & 1) == 0)
+    {
+LABEL_40:
+      v27 = v6;
+      goto LABEL_41;
+    }
+  }
+
+  else
+  {
+  }
+
+  v27 = +[EDAMLimitsConstants EDAM_MIME_TYPE_PDF];
+  if (![(__CFString *)v3 isEqualToString:v27])
+  {
+    v11 = v6;
+    goto LABEL_41;
+  }
+
+  v11 = @"pdf";
+  v29 = [(__CFString *)v6 isEqualToString:@"pdf"];
+
+  v27 = v6;
+  if ((v29 & 1) == 0)
+  {
+LABEL_41:
+
+    v6 = v11;
+  }
+
+LABEL_42:
+
+  return v6;
+}
+
+@end

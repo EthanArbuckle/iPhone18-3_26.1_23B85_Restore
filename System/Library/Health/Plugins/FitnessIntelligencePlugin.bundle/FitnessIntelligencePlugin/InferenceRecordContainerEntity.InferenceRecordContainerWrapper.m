@@ -1,0 +1,82 @@
+@interface InferenceRecordContainerEntity.InferenceRecordContainerWrapper
+- (_TtCC25FitnessIntelligencePlugin30InferenceRecordContainerEntityP33_B585107B97BC3D4BB109E3030F1DB06531InferenceRecordContainerWrapper)init;
+- (_TtCC25FitnessIntelligencePlugin30InferenceRecordContainerEntityP33_B585107B97BC3D4BB109E3030F1DB06531InferenceRecordContainerWrapper)initWithData:(id)a3;
+- (id)data;
+- (int64_t)encodedByteCount;
+@end
+
+@implementation InferenceRecordContainerEntity.InferenceRecordContainerWrapper
+
+- (_TtCC25FitnessIntelligencePlugin30InferenceRecordContainerEntityP33_B585107B97BC3D4BB109E3030F1DB06531InferenceRecordContainerWrapper)initWithData:(id)a3
+{
+  v5 = sub_38F8(&unk_8FA00, &qword_7A740);
+  v6 = *(*(v5 - 8) + 64);
+  __chkstk_darwin(v5 - 8);
+  v8 = &v17 - v7;
+  v9 = a3;
+  v10 = sub_748C8();
+  v12 = v11;
+
+  v13 = sub_74D78();
+  sub_398C(v10, v12);
+  sub_479D0(&qword_8F178, &type metadata accessor for InferenceRecord);
+  sub_74F88();
+  (*(*(v13 - 8) + 56))(v8, 0, 1, v13);
+  sub_477F8(v8, self + OBJC_IVAR____TtCC25FitnessIntelligencePlugin30InferenceRecordContainerEntityP33_B585107B97BC3D4BB109E3030F1DB06531InferenceRecordContainerWrapper_inferenceRecord);
+  v14 = (self + OBJC_IVAR____TtCC25FitnessIntelligencePlugin30InferenceRecordContainerEntityP33_B585107B97BC3D4BB109E3030F1DB06531InferenceRecordContainerWrapper_inferenceRecordData);
+  *v14 = v10;
+  v14[1] = v12;
+  v15 = _s31InferenceRecordContainerWrapperCMa();
+  v18.receiver = self;
+  v18.super_class = v15;
+  return [(InferenceRecordContainerEntity.InferenceRecordContainerWrapper *)&v18 init];
+}
+
+- (id)data
+{
+  v2 = self + OBJC_IVAR____TtCC25FitnessIntelligencePlugin30InferenceRecordContainerEntityP33_B585107B97BC3D4BB109E3030F1DB06531InferenceRecordContainerWrapper_inferenceRecordData;
+  v3 = *(&self->super.isa + OBJC_IVAR____TtCC25FitnessIntelligencePlugin30InferenceRecordContainerEntityP33_B585107B97BC3D4BB109E3030F1DB06531InferenceRecordContainerWrapper_inferenceRecordData);
+  v4 = *(v2 + 1);
+  if (v4 >> 60 == 15)
+  {
+    v5 = 0;
+  }
+
+  else
+  {
+    v5 = v3;
+  }
+
+  if (v4 >> 60 == 15)
+  {
+    v6 = 0xC000000000000000;
+  }
+
+  else
+  {
+    v6 = *(v2 + 1);
+  }
+
+  sub_11760(v3, v4);
+  v7.super.isa = sub_748A8().super.isa;
+  sub_FB28(v5, v6);
+
+  return v7.super.isa;
+}
+
+- (int64_t)encodedByteCount
+{
+  v2 = self;
+  v3 = sub_44AEC();
+
+  return v3;
+}
+
+- (_TtCC25FitnessIntelligencePlugin30InferenceRecordContainerEntityP33_B585107B97BC3D4BB109E3030F1DB06531InferenceRecordContainerWrapper)init
+{
+  result = _swift_stdlib_reportUnimplementedInitializer();
+  __break(1u);
+  return result;
+}
+
+@end

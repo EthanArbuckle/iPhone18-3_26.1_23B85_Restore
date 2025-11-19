@@ -1,0 +1,155 @@
+@interface PPScoredLabeledValue
+- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqualToScoredLabeledValue:(id)a3;
+- (PPScoredLabeledValue)initWithCoder:(id)a3;
+- (PPScoredLabeledValue)initWithLabeledValue:(id)a3 score:(double)a4 flags:(unsigned __int8)a5;
+- (id)copyWithZone:(_NSZone *)a3;
+- (id)description;
+- (int64_t)compare:(id)a3;
+- (unint64_t)hash;
+- (void)encodeWithCoder:(id)a3;
+@end
+
+@implementation PPScoredLabeledValue
+
+- (BOOL)isEqualToScoredLabeledValue:(id)a3
+{
+  v4 = a3;
+  if (!v4)
+  {
+    goto LABEL_8;
+  }
+
+  v5 = self->_labeledValue;
+  v6 = v5;
+  if (v5 == v4[2])
+  {
+  }
+
+  else
+  {
+    v7 = [(PPLabeledValue *)v5 isEqual:?];
+
+    if (!v7)
+    {
+      goto LABEL_8;
+    }
+  }
+
+  if (self->_score != *(v4 + 3))
+  {
+LABEL_8:
+    v8 = 0;
+    goto LABEL_9;
+  }
+
+  v8 = self->_flags == *(v4 + 8);
+LABEL_9:
+
+  return v8;
+}
+
+- (BOOL)isEqual:(id)a3
+{
+  v4 = a3;
+  v5 = v4;
+  if (v4 == self)
+  {
+    v6 = 1;
+  }
+
+  else
+  {
+    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPScoredLabeledValue *)self isEqualToScoredLabeledValue:v5];
+  }
+
+  return v6;
+}
+
+- (id)copyWithZone:(_NSZone *)a3
+{
+  v5 = objc_opt_class();
+  v6 = [(PPLabeledValue *)self->_labeledValue copyWithZone:a3];
+  v7 = [v5 scoredLabeledValueWithLabeledValue:v6 score:self->_flags flags:self->_score];
+
+  return v7;
+}
+
+- (unint64_t)hash
+{
+  v3 = [(PPLabeledValue *)self->_labeledValue hash];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:self->_score];
+  v5 = [v4 hash] - v3 + 32 * v3;
+
+  return self->_flags - v5 + 32 * v5;
+}
+
+- (void)encodeWithCoder:(id)a3
+{
+  labeledValue = self->_labeledValue;
+  v5 = a3;
+  [v5 encodeObject:labeledValue forKey:@"lvl"];
+  [v5 encodeDouble:@"sco" forKey:self->_score];
+  [v5 encodeInt32:self->_flags forKey:@"fla"];
+}
+
+- (PPScoredLabeledValue)initWithCoder:(id)a3
+{
+  v4 = a3;
+  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lvl"];
+  [v4 decodeDoubleForKey:@"sco"];
+  v7 = v6;
+  v8 = [v4 decodeInt32ForKey:@"fla"];
+
+  v9 = [(PPScoredLabeledValue *)self initWithLabeledValue:v5 score:v8 flags:v7];
+  return v9;
+}
+
+- (int64_t)compare:(id)a3
+{
+  v4 = a3;
+  score = self->_score;
+  [v4 score];
+  v7 = [PPUtils compareDouble:score withDouble:v6];
+  if (!v7)
+  {
+    v8 = [(PPLabeledValue *)self->_labeledValue label];
+    v9 = [v4 labeledValue];
+    v10 = [v9 label];
+    v7 = [v8 compare:v10];
+  }
+
+  return v7;
+}
+
+- (id)description
+{
+  v2 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"<PPScoredLabeledValue lv:%@ s:%f f:%u>", self->_labeledValue, *&self->_score, self->_flags];
+
+  return v2;
+}
+
+- (PPScoredLabeledValue)initWithLabeledValue:(id)a3 score:(double)a4 flags:(unsigned __int8)a5
+{
+  v10 = a3;
+  if (!v10)
+  {
+    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    [v14 handleFailureInMethod:a2 object:self file:@"PPScoredLabeledValue.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"labeledValue"}];
+  }
+
+  v15.receiver = self;
+  v15.super_class = PPScoredLabeledValue;
+  v11 = [(PPScoredLabeledValue *)&v15 init];
+  v12 = v11;
+  if (v11)
+  {
+    objc_storeStrong(&v11->_labeledValue, a3);
+    v12->_score = a4;
+    v12->_flags = a5;
+  }
+
+  return v12;
+}
+
+@end

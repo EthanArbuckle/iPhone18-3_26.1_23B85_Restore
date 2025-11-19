@@ -1,0 +1,81 @@
+@interface ADVisualDepthMetalDescriptor
+- (ADVisualDepthMetalDescriptor)initWithColorInputSize:(CGSize)a3 colorInputFormat:(unsigned int)a4 rasterizedMeshInputSize:(CGSize)a5 occlusionSize:(CGSize)a6 povcSize:(CGSize)a7 predictsDisparity:(BOOL)a8;
+@end
+
+@implementation ADVisualDepthMetalDescriptor
+
+- (ADVisualDepthMetalDescriptor)initWithColorInputSize:(CGSize)a3 colorInputFormat:(unsigned int)a4 rasterizedMeshInputSize:(CGSize)a5 occlusionSize:(CGSize)a6 povcSize:(CGSize)a7 predictsDisparity:(BOOL)a8
+{
+  v8 = a8;
+  height = a7.height;
+  width = a7.width;
+  v11 = a6.height;
+  v12 = a6.width;
+  v13 = a5.height;
+  v14 = a5.width;
+  v15 = *&a4;
+  v16 = a3.height;
+  v17 = a3.width;
+  v41.receiver = self;
+  v41.super_class = ADVisualDepthMetalDescriptor;
+  v18 = [(ADVisualDepthMetalDescriptor *)&v41 init];
+  if (v18)
+  {
+    if (v8)
+    {
+      v19 = 1751411059;
+    }
+
+    else
+    {
+      v19 = 1751410032;
+    }
+
+    v20 = [MEMORY[0x277CED078] descriptorWithDefaultSize:v15 pixelFormat:v17, v16];
+    primaryColorInput = v18->_primaryColorInput;
+    v18->_primaryColorInput = v20;
+
+    v22 = [MEMORY[0x277CED078] descriptorWithDefaultSize:v19 pixelFormat:width, height];
+    primaryPredictionOutput = v18->_primaryPredictionOutput;
+    v18->_primaryPredictionOutput = v22;
+
+    v24 = [MEMORY[0x277CED078] descriptorWithDefaultSize:1278226536 pixelFormat:width, height];
+    primaryPredictionConfidenceOutput = v18->_primaryPredictionConfidenceOutput;
+    v18->_primaryPredictionConfidenceOutput = v24;
+
+    v26 = [MEMORY[0x277CED078] descriptorWithDefaultSize:v15 pixelFormat:v17, v16];
+    secondaryColorInput = v18->_secondaryColorInput;
+    v18->_secondaryColorInput = v26;
+
+    v28 = [MEMORY[0x277CED078] descriptorWithDefaultSize:v19 pixelFormat:width, height];
+    secondaryPredictionOutput = v18->_secondaryPredictionOutput;
+    v18->_secondaryPredictionOutput = v28;
+
+    v30 = [MEMORY[0x277CED078] descriptorWithDefaultSize:1278226536 pixelFormat:width, height];
+    secondaryPredictionConfidenceOutput = v18->_secondaryPredictionConfidenceOutput;
+    v18->_secondaryPredictionConfidenceOutput = v30;
+
+    v32 = [MEMORY[0x277CED078] descriptorWithDefaultSize:1380411457 pixelFormat:v12, v11];
+    primaryOcclusionMapOutput = v18->_primaryOcclusionMapOutput;
+    v18->_primaryOcclusionMapOutput = v32;
+
+    v34 = [MEMORY[0x277CED078] descriptorWithDefaultSize:1380411457 pixelFormat:v12, v11];
+    secondaryOcclusionMapOutput = v18->_secondaryOcclusionMapOutput;
+    v18->_secondaryOcclusionMapOutput = v34;
+
+    if (v14 != *MEMORY[0x277CBF3A8] || v13 != *(MEMORY[0x277CBF3A8] + 8))
+    {
+      v36 = [MEMORY[0x277CED078] descriptorWithDefaultSize:1380411457 pixelFormat:v14, v13];
+      primaryRasterizedMeshInput = v18->_primaryRasterizedMeshInput;
+      v18->_primaryRasterizedMeshInput = v36;
+
+      v38 = [MEMORY[0x277CED078] descriptorWithDefaultSize:1380411457 pixelFormat:v14, v13];
+      secondaryRasterizedMeshInput = v18->_secondaryRasterizedMeshInput;
+      v18->_secondaryRasterizedMeshInput = v38;
+    }
+  }
+
+  return v18;
+}
+
+@end

@@ -1,0 +1,778 @@
+@interface MTStorePlatformUtil
++ (BOOL)isAValue:(id)a3;
++ (BOOL)isExplicitForStorePlatformDictionary:(id)a3;
++ (id)_genreNameForStoreItemDictionary:(id)a3;
++ (id)_offerNameForOfferFlavor:(id)a3;
++ (id)_storeDownloadArtworkArrayForStoreItemDictionary:(id)a3;
++ (id)_storeDownloadOffersForStoreItemDictionary:(id)a3;
++ (id)_storeOfferDownloadDictionaryForStoreOfferItemDictionary:(id)a3;
++ (id)_unmodifiedTitleForStoreItemDictionary:(id)a3;
++ (id)artworkDictionary:(id)a3 closestToSize:(double)a4;
++ (id)dateFromFormattedString:(id)a3;
++ (id)encodedQueryStringFromDictionary:(id)a3;
++ (id)formatDate:(id)a3;
++ (id)latestEpisodeDictionaryFromPodcastDictionary:(id)a3;
++ (id)pubDateFromStoreMediaDictionary:(id)a3;
++ (id)storeDownloadDictionaryFromStorePlatformDictionary:(id)a3;
++ (id)storeMediaDictionaryFromStorePlatformDictionary:(id)a3 artworkSize:(double)a4 restricted:(BOOL *)a5 isNotSubscribeable:(BOOL)a6;
++ (id)stringFromDictionary:(id)a3 forKey:(id)a4;
+@end
+
+@implementation MTStorePlatformUtil
+
++ (id)storeMediaDictionaryFromStorePlatformDictionary:(id)a3 artworkSize:(double)a4 restricted:(BOOL *)a5 isNotSubscribeable:(BOOL)a6
+{
+  v6 = a6;
+  v10 = a3;
+  v11 = [a1 isExplicitForStorePlatformDictionary:v10];
+  if (!v11 || (+[PFRestrictionsController isExplicitContentAllowed]& 1) != 0)
+  {
+    v60 = v6;
+    v12 = objc_alloc_init(NSMutableDictionary);
+    v13 = [v10 objectForKeyedSubscript:@"offers"];
+    v14 = [v13 firstObject];
+    v15 = [v14 objectForKeyedSubscript:@"download"];
+
+    v16 = [v15 objectForKeyedSubscript:@"url"];
+    if (![v16 length])
+    {
+      v42 = 0;
+LABEL_71:
+
+      goto LABEL_72;
+    }
+
+    [v12 setObject:v16 forKeyedSubscript:@"assetURL"];
+    v17 = [a1 stringFromDictionary:v10 forKey:@"feedUrl"];
+    if (v17)
+    {
+      [v12 setObject:v17 forKeyedSubscript:kPodcastFeedUrl];
+    }
+
+    v69 = v17;
+    v18 = [a1 stringFromDictionary:v10 forKey:@"collectionName"];
+    if (v18)
+    {
+      [v12 setObject:v18 forKeyedSubscript:@"podcastTitle"];
+    }
+
+    v71 = v15;
+    v74 = v18;
+    v19 = [a1 stringFromDictionary:v10 forKey:@"name"];
+    if (v19)
+    {
+      [v12 setObject:v19 forKeyedSubscript:@"episodeTitle"];
+    }
+
+    v73 = v19;
+    v20 = [v10 objectForKeyedSubscript:@"description"];
+    v21 = [a1 stringFromDictionary:v20 forKey:@"standard"];
+    if (![v21 length])
+    {
+      v22 = [a1 stringFromDictionary:v20 forKey:@"short"];
+
+      v21 = v22;
+    }
+
+    if ([v21 length])
+    {
+      [v12 setObject:v21 forKeyedSubscript:@"episodeDescription"];
+    }
+
+    v23 = [a1 stringFromDictionary:v10 forKey:@"url"];
+    if (v23)
+    {
+      v24 = [NSURL URLWithString:v23];
+      [v12 setObject:v24 forKeyedSubscript:@"episodeShareUrl"];
+    }
+
+    v25 = [v10 objectForKeyedSubscript:@"id"];
+    v76 = [v25 stringValue];
+    if (v25)
+    {
+      [v12 setObject:v25 forKeyedSubscript:@"episodeId"];
+    }
+
+    v26 = [v10 objectForKeyedSubscript:@"podcastEpisodeGuid"];
+    if (v26)
+    {
+      [v12 setObject:v26 forKeyedSubscript:@"episodeGuid"];
+    }
+
+    v64 = v26;
+    v27 = [v10 objectForKeyedSubscript:@"collectionId"];
+    v75 = [v27 stringValue];
+    if (v27)
+    {
+      [v12 setObject:v27 forKeyedSubscript:@"podcastId"];
+    }
+
+    v65 = v25;
+    v28 = [v10 objectForKeyedSubscript:@"artistName"];
+    if (v28)
+    {
+      [v12 setObject:v28 forKeyedSubscript:@"artistName"];
+    }
+
+    v62 = v28;
+    v29 = [v10 objectForKeyedSubscript:@"releaseDate"];
+    objc_opt_class();
+    v72 = v29;
+    if (objc_opt_isKindOfClass())
+    {
+      v30 = [a1 formatDate:v29];
+      if (v30)
+      {
+        [v12 setObject:v30 forKeyedSubscript:kEpisodePubDate];
+      }
+    }
+
+    v31 = [v10 objectForKeyedSubscript:@"artwork"];
+    v66 = v23;
+    v61 = v31;
+    if (v31)
+    {
+      v32 = v31;
+      if ([v31 count])
+      {
+        v33 = [a1 artworkDictionary:v32 closestToSize:a4];
+        v34 = v33;
+        if (v33)
+        {
+          v77 = v33;
+          [NSArray arrayWithObjects:&v77 count:1];
+          v35 = v21;
+          v37 = v36 = v20;
+          [v12 setObject:v37 forKeyedSubscript:@"artworkURL"];
+
+          v20 = v36;
+          v21 = v35;
+        }
+      }
+    }
+
+    v68 = v20;
+    v38 = [NSNumber numberWithBool:v11];
+    [v12 setObject:v38 forKeyedSubscript:@"explicit"];
+
+    v39 = [v10 objectForKeyedSubscript:@"isNotSubscribeable"];
+    v40 = v39;
+    v67 = v21;
+    if (v39)
+    {
+      v41 = [v39 BOOLValue];
+    }
+
+    else
+    {
+      v41 = v60;
+    }
+
+    v43 = [NSNumber numberWithBool:v41];
+    [v12 setObject:v43 forKeyedSubscript:@"isNotSubscribeable"];
+
+    v44 = [v10 objectForKeyedSubscript:@"offers"];
+    v45 = [v44 firstObject];
+
+    v70 = v16;
+    v63 = v27;
+    if (!v45)
+    {
+      v52 = 0;
+      v53 = &stru_1004F3018;
+      v54 = v74;
+LABEL_56:
+      [v12 setObject:v53 forKeyedSubscript:kEpisodeUti];
+      v56 = [a1 stringFromDictionary:v10 forKey:@"artistId"];
+      v57 = objc_alloc_init(NSMutableDictionary);
+      if ([a1 isAValue:v56])
+      {
+        [v57 setObject:v56 forKeyedSubscript:@"artistId"];
+      }
+
+      if ([a1 isAValue:v75])
+      {
+        [v57 setObject:v75 forKeyedSubscript:@"podcastId"];
+      }
+
+      if ([a1 isAValue:v54])
+      {
+        [v57 setObject:v54 forKeyedSubscript:@"podcastName"];
+      }
+
+      if ([a1 isAValue:@"1"])
+      {
+        [v57 setObject:@"1" forKeyedSubscript:@"podcastType"];
+      }
+
+      if ([a1 isAValue:v73])
+      {
+        [v57 setObject:v73 forKeyedSubscript:@"episodeName"];
+      }
+
+      if ([a1 isAValue:v76])
+      {
+        [v57 setObject:v76 forKeyedSubscript:@"episodeId"];
+      }
+
+      if ([a1 isAValue:v52])
+      {
+        [v57 setObject:v52 forKeyedSubscript:@"episodeKind"];
+      }
+
+      [v57 setObject:@"3" forKeyedSubscript:@"v"];
+      [v57 setObject:@"ntc" forKeyedSubscript:@"pageLocation"];
+      v58 = [a1 encodedQueryStringFromDictionary:v57];
+      [v12 setObject:v58 forKeyedSubscript:@"reportParams"];
+
+      v42 = v12;
+      v16 = v70;
+      v15 = v71;
+      goto LABEL_71;
+    }
+
+    v46 = [v45 objectForKeyedSubscript:@"assets"];
+    v47 = [v46 firstObject];
+
+    if (!v47)
+    {
+      v52 = 0;
+      v53 = &stru_1004F3018;
+LABEL_55:
+      v54 = v74;
+
+      goto LABEL_56;
+    }
+
+    v48 = [v47 objectForKeyedSubscript:@"duration"];
+    if (v48)
+    {
+      [v12 setObject:v48 forKeyedSubscript:@"duration"];
+    }
+
+    v49 = [v47 objectForKeyedSubscript:@"flavor"];
+    v50 = +[NSNull null];
+
+    if (v49 == v50)
+    {
+      v52 = 0;
+      v53 = &stru_1004F3018;
+LABEL_54:
+
+      goto LABEL_55;
+    }
+
+    v51 = [v47 objectForKeyedSubscript:@"flavor"];
+    if ([v51 rangeOfString:@"Video"] == 0x7FFFFFFFFFFFFFFFLL)
+    {
+      if ([v51 rangeOfString:@"Audio"] == 0x7FFFFFFFFFFFFFFFLL)
+      {
+        v52 = 0;
+        v53 = &stru_1004F3018;
+LABEL_53:
+
+        goto LABEL_54;
+      }
+
+      v52 = @"episode";
+      v55 = &UTTypeAudio;
+    }
+
+    else
+    {
+      v52 = @"movie";
+      v55 = &UTTypeVideo;
+    }
+
+    v53 = [*v55 identifier];
+    goto LABEL_53;
+  }
+
+  v42 = 0;
+  if (a5)
+  {
+    *a5 = 1;
+  }
+
+LABEL_72:
+
+  return v42;
+}
+
++ (BOOL)isExplicitForStorePlatformDictionary:(id)a3
+{
+  v3 = a3;
+  v4 = [v3 objectForKeyedSubscript:@"contentRating"];
+  if (!v4)
+  {
+    v5 = [v3 objectForKeyedSubscript:@"contentRatingsBySystem"];
+    v4 = [v5 objectForKeyedSubscript:@"riaa"];
+  }
+
+  v6 = [v4 objectForKeyedSubscript:@"rank"];
+  v7 = [v6 integerValue] > 1;
+
+  return v7;
+}
+
++ (id)latestEpisodeDictionaryFromPodcastDictionary:(id)a3
+{
+  v3 = a3;
+  v13 = 0u;
+  v14 = 0u;
+  v15 = 0u;
+  v16 = 0u;
+  v4 = [v3 objectForKeyedSubscript:{@"childrenIds", 0}];
+  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  if (v5)
+  {
+    v6 = v5;
+    v7 = *v14;
+LABEL_3:
+    v8 = 0;
+    while (1)
+    {
+      if (*v14 != v7)
+      {
+        objc_enumerationMutation(v4);
+      }
+
+      v9 = [*(*(&v13 + 1) + 8 * v8) stringValue];
+      v10 = [v3 objectForKeyedSubscript:@"children"];
+      v11 = [v10 objectForKeyedSubscript:v9];
+
+      if (v11)
+      {
+        break;
+      }
+
+      if (v6 == ++v8)
+      {
+        v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        if (v6)
+        {
+          goto LABEL_3;
+        }
+
+        goto LABEL_9;
+      }
+    }
+  }
+
+  else
+  {
+LABEL_9:
+    v11 = 0;
+  }
+
+  return v11;
+}
+
++ (id)artworkDictionary:(id)a3 closestToSize:(double)a4
+{
+  v20 = 0u;
+  v21 = 0u;
+  v22 = 0u;
+  v23 = 0u;
+  v5 = a3;
+  v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  if (v6)
+  {
+    v7 = v6;
+    v8 = 0;
+    v9 = *v21;
+    v10 = 1.79769313e308;
+    while (2)
+    {
+      for (i = 0; i != v7; i = i + 1)
+      {
+        if (*v21 != v9)
+        {
+          objc_enumerationMutation(v5);
+        }
+
+        v12 = *(*(&v20 + 1) + 8 * i);
+        v13 = [v12 objectForKey:{@"height", v20}];
+        [v13 floatValue];
+        v15 = v14;
+        if (v15 == a4)
+        {
+          v18 = v12;
+
+          goto LABEL_15;
+        }
+
+        v16 = vabdd_f64(v15, a4);
+        if (v16 < v10)
+        {
+          v17 = v12;
+
+          v10 = v16;
+          v8 = v17;
+        }
+      }
+
+      v7 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      if (v7)
+      {
+        continue;
+      }
+
+      break;
+    }
+  }
+
+  else
+  {
+    v8 = 0;
+  }
+
+  v8 = v8;
+  v18 = v8;
+LABEL_15:
+
+  return v18;
+}
+
++ (BOOL)isAValue:(id)a3
+{
+  if (a3)
+  {
+    v3 = a3;
+    objc_opt_class();
+    isKindOfClass = objc_opt_isKindOfClass();
+
+    v5 = isKindOfClass ^ 1;
+  }
+
+  else
+  {
+    v5 = 0;
+  }
+
+  return v5 & 1;
+}
+
++ (id)stringFromDictionary:(id)a3 forKey:(id)a4
+{
+  v5 = [a3 objectForKeyedSubscript:a4];
+  if ([a1 isAValue:v5])
+  {
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      v6 = v5;
+LABEL_6:
+      v7 = v6;
+      goto LABEL_8;
+    }
+
+    if (objc_opt_respondsToSelector())
+    {
+      v6 = [v5 stringValue];
+      goto LABEL_6;
+    }
+  }
+
+  v7 = 0;
+LABEL_8:
+
+  return v7;
+}
+
++ (id)encodedQueryStringFromDictionary:(id)a3
+{
+  v3 = a3;
+  v4 = objc_alloc_init(NSMutableString);
+  v15 = 0u;
+  v16 = 0u;
+  v17 = 0u;
+  v18 = 0u;
+  v5 = v3;
+  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  if (v6)
+  {
+    v7 = v6;
+    v8 = *v16;
+    v9 = @"%@=%@";
+    do
+    {
+      for (i = 0; i != v7; i = i + 1)
+      {
+        if (*v16 != v8)
+        {
+          objc_enumerationMutation(v5);
+        }
+
+        v11 = *(*(&v15 + 1) + 8 * i);
+        v12 = [v5 objectForKeyedSubscript:v11];
+        v13 = [v12 stringByAddingPercentEscapesUsingEncoding:1];
+        [v4 appendFormat:v9, v11, v13, v15];
+
+        v9 = @"&%@=%@";
+      }
+
+      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = @"&%@=%@";
+    }
+
+    while (v7);
+  }
+
+  return v4;
+}
+
++ (id)formatDate:(id)a3
+{
+  v3 = a3;
+  v4 = qword_100583D00;
+  if (!qword_100583D00)
+  {
+    v5 = objc_alloc_init(NSDateFormatter);
+    v6 = qword_100583D00;
+    qword_100583D00 = v5;
+
+    [qword_100583D00 setDateFormat:@"yyyy-MM-dd"];
+    v7 = objc_alloc_init(NSDateFormatter);
+    v8 = qword_100583D08;
+    qword_100583D08 = v7;
+
+    [qword_100583D08 setDateStyle:2];
+    v4 = qword_100583D00;
+  }
+
+  v9 = [v4 dateFromString:v3];
+  v10 = [qword_100583D08 stringFromDate:v9];
+
+  return v10;
+}
+
++ (id)dateFromFormattedString:(id)a3
+{
+  v3 = a3;
+  v4 = qword_100583D10;
+  if (!qword_100583D10)
+  {
+    v5 = objc_alloc_init(NSDateFormatter);
+    v6 = qword_100583D10;
+    qword_100583D10 = v5;
+
+    [qword_100583D10 setDateStyle:2];
+    v4 = qword_100583D10;
+  }
+
+  v7 = [v4 dateFromString:v3];
+
+  return v7;
+}
+
++ (id)pubDateFromStoreMediaDictionary:(id)a3
+{
+  v4 = [a3 objectForKeyedSubscript:kEpisodePubDate];
+  v5 = [a1 dateFromFormattedString:v4];
+
+  return v5;
+}
+
++ (id)storeDownloadDictionaryFromStorePlatformDictionary:(id)a3
+{
+  v4 = a3;
+  v5 = +[NSMutableDictionary dictionary];
+  [v5 setObject:@"episode" forKeyedSubscript:@"episode-kind"];
+  v6 = [v4 objectForKeyedSubscript:@"collectionId"];
+  [v5 setObject:v6 forKeyedSubscript:@"collection-id"];
+
+  [v5 setObject:@"podcast-episode" forKeyedSubscript:@"type"];
+  v7 = [v4 objectForKeyedSubscript:@"artistName"];
+  [v5 setObject:v7 forKeyedSubscript:@"artist-name"];
+
+  v8 = [a1 _genreNameForStoreItemDictionary:v4];
+  [v5 setObject:v8 forKeyedSubscript:@"genre-name"];
+
+  v9 = [v4 objectForKeyedSubscript:@"collectionName"];
+  [v5 setObject:v9 forKeyedSubscript:@"collection-name"];
+
+  v10 = [a1 _unmodifiedTitleForStoreItemDictionary:v4];
+  [v5 setObject:v10 forKeyedSubscript:@"unmodified-title"];
+
+  v11 = [v4 objectForKeyedSubscript:@"id"];
+  [v5 setObject:v11 forKeyedSubscript:@"item-id"];
+
+  v12 = [v4 objectForKeyedSubscript:@"id"];
+  [v5 setObject:v12 forKeyedSubscript:@"itemId"];
+
+  v13 = [v4 objectForKeyedSubscript:@"url"];
+  [v5 setObject:v13 forKeyedSubscript:@"url"];
+
+  v14 = [v4 objectForKeyedSubscript:@"releaseDate"];
+  [v5 setObject:v14 forKeyedSubscript:@"release-date"];
+
+  v15 = [v4 objectForKeyedSubscript:@"podcastEpisodeGuid"];
+  [v5 setObject:v15 forKeyedSubscript:@"episode-guid"];
+
+  v16 = [v4 objectForKeyedSubscript:@"description"];
+  v17 = [v16 objectForKeyedSubscript:@"standard"];
+  [v5 setObject:v17 forKeyedSubscript:@"longDescription"];
+
+  v18 = [v4 objectForKeyedSubscript:@"feedUrl"];
+  [v5 setObject:v18 forKeyedSubscript:@"podcast-feed-url"];
+
+  [v5 setObject:@"1" forKeyedSubscript:@"podcast-type-dzc"];
+  v19 = [a1 _storeDownloadOffersForStoreItemDictionary:v4];
+  [v5 setObject:v19 forKeyedSubscript:@"store-offers"];
+
+  v20 = [a1 _storeDownloadArtworkArrayForStoreItemDictionary:v4];
+
+  [v5 setObject:v20 forKeyedSubscript:@"artwork-urls"];
+  v21 = [v5 copy];
+
+  return v21;
+}
+
++ (id)_storeDownloadArtworkArrayForStoreItemDictionary:(id)a3
+{
+  v3 = [a3 objectForKeyedSubscript:@"artwork"];
+  v4 = [v3 mt_compactMap:&stru_1004DCD30];
+
+  return v4;
+}
+
++ (id)_genreNameForStoreItemDictionary:(id)a3
+{
+  v3 = [a3 objectForKeyedSubscript:@"genres"];
+  v4 = [v3 firstObject];
+  v5 = [v4 objectForKeyedSubscript:@"name"];
+
+  return v5;
+}
+
++ (id)_unmodifiedTitleForStoreItemDictionary:(id)a3
+{
+  v3 = a3;
+  v4 = [v3 objectForKeyedSubscript:@"rawName"];
+  v5 = [v3 objectForKeyedSubscript:@"name"];
+
+  if ([v4 length])
+  {
+    v6 = v4;
+  }
+
+  else
+  {
+    v6 = v5;
+  }
+
+  v7 = v6;
+
+  return v6;
+}
+
++ (id)_storeDownloadOffersForStoreItemDictionary:(id)a3
+{
+  v4 = a3;
+  v5 = +[NSMutableDictionary dictionary];
+  v6 = [v4 objectForKeyedSubscript:@"offers"];
+  v14 = 0u;
+  v15 = 0u;
+  v16 = 0u;
+  v17 = 0u;
+  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  if (v7)
+  {
+    v8 = v7;
+    v9 = *v15;
+    do
+    {
+      for (i = 0; i != v8; i = i + 1)
+      {
+        if (*v15 != v9)
+        {
+          objc_enumerationMutation(v6);
+        }
+
+        v11 = [a1 _storeOfferDownloadDictionaryForStoreOfferItemDictionary:*(*(&v14 + 1) + 8 * i)];
+        if (v11)
+        {
+          [v5 addEntriesFromDictionary:v11];
+        }
+      }
+
+      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    }
+
+    while (v8);
+  }
+
+  v12 = [v5 copy];
+
+  return v12;
+}
+
++ (id)_storeOfferDownloadDictionaryForStoreOfferItemDictionary:(id)a3
+{
+  v4 = a3;
+  v5 = [v4 objectForKeyedSubscript:@"type"];
+  if ([v5 isEqualToString:@"anonymousDownload"])
+  {
+    v6 = [v4 objectForKeyedSubscript:@"download"];
+    v7 = [v6 objectForKeyedSubscript:@"url"];
+
+    if (v7)
+    {
+      v16 = [v4 objectForKeyedSubscript:@"assets"];
+      v8 = [v16 firstObject];
+      v9 = [v8 objectForKeyedSubscript:@"duration"];
+      v10 = +[NSMutableDictionary dictionary];
+      [v10 setObject:v7 forKeyedSubscript:@"asset-url"];
+      if (v9)
+      {
+        [v10 setObject:v9 forKeyedSubscript:@"duration"];
+      }
+
+      v11 = [v10 copy];
+      v12 = [v8 objectForKeyedSubscript:@"flavor"];
+      v13 = [a1 _offerNameForOfferFlavor:v12];
+      v17 = v13;
+      v18 = v11;
+      v14 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
+    }
+
+    else
+    {
+      v14 = 0;
+    }
+  }
+
+  else
+  {
+    v14 = 0;
+  }
+
+  return v14;
+}
+
++ (id)_offerNameForOfferFlavor:(id)a3
+{
+  v3 = a3;
+  if ([v3 localizedCaseInsensitiveContainsString:@"video"])
+  {
+    v4 = @"standard-video";
+  }
+
+  else
+  {
+    v4 = @"standard-audio";
+    if (([v3 localizedCaseInsensitiveContainsString:@"audio"] & 1) == 0)
+    {
+      v4 = @"document";
+      if (([v3 localizedCaseInsensitiveContainsString:@"booklet"] & 1) == 0 && !objc_msgSend(v3, "localizedCaseInsensitiveContainsString:", @"document"))
+      {
+        v4 = @"standard-audio";
+      }
+    }
+  }
+
+  return v4;
+}
+
+@end

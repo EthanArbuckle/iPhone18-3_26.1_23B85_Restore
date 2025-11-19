@@ -1,0 +1,850 @@
+@interface DMFConfigurationSourceClient
++ (id)activeRestrictionsURL;
++ (id)setOfActiveRestrictionUUIDs;
++ (void)setOfActiveRestrictionUUIDs;
+- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (DMFConfigurationSourceClient)init;
+- (DMFConfigurationSourceClient)initWithConnection:(id)a3 organizationIdentifier:(id)a4 displayName:(id)a5 localMachServiceName:(id)a6;
+- (DMFConfigurationSourceClientDelegate)delegate;
+- (DMFReportingRequirements)reportingRequirements;
+- (NSString)debugDescription;
+- (NSString)description;
+- (id)stateDescription;
+- (void)assetResolutionOperationDidFinish:(id)a3 completion:(id)a4;
+- (void)configurationEngineRequestedAsset:(id)a3 completion:(id)a4;
+- (void)configurationEventsDidChange:(id)a3 completion:(id)a4;
+- (void)configurationStatusDidChange:(id)a3 completion:(id)a4;
+- (void)dealloc;
+- (void)enqueueOperationToReportEvents:(id)a3 completion:(id)a4;
+- (void)enqueueOperationToReportStatusChange:(id)a3 completion:(id)a4;
+- (void)enqueueOperationToResolveAsset:(id)a3 completion:(id)a4;
+- (void)eventsReportingOperationDidFinish:(id)a3 completion:(id)a4;
+- (void)invalidate;
+- (void)registerConfigurationSourceIfNeeded;
+- (void)registrationOperationDidFinish:(id)a3;
+- (void)resume;
+- (void)setReportingRequirements:(id)a3;
+- (void)statusReportingOperationDidFinish:(id)a3 completion:(id)a4;
+@end
+
+@implementation DMFConfigurationSourceClient
+
+- (DMFConfigurationSourceClient)init
+{
+  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  v5 = NSStringFromSelector(a2);
+  [v4 handleFailureInMethod:a2 object:self file:@"DMFConfigurationSourceClient.m" lineNumber:60 description:{@"%@ cannot call %@", self, v5}];
+
+  return [(DMFConfigurationSourceClient *)self initWithConnection:0 organizationIdentifier:0 displayName:0 localMachServiceName:0];
+}
+
+- (DMFConfigurationSourceClient)initWithConnection:(id)a3 organizationIdentifier:(id)a4 displayName:(id)a5 localMachServiceName:(id)a6
+{
+  v11 = a3;
+  v12 = a4;
+  v13 = a5;
+  v14 = a6;
+  if (!v11)
+  {
+    [DMFConfigurationSourceClient initWithConnection:organizationIdentifier:displayName:localMachServiceName:];
+  }
+
+  if (![v12 length])
+  {
+    [DMFConfigurationSourceClient initWithConnection:organizationIdentifier:displayName:localMachServiceName:];
+  }
+
+  if (![v13 length])
+  {
+    [DMFConfigurationSourceClient initWithConnection:organizationIdentifier:displayName:localMachServiceName:];
+  }
+
+  v44.receiver = self;
+  v44.super_class = DMFConfigurationSourceClient;
+  v15 = [(DMFConfigurationSourceClient *)&v44 init];
+  v16 = v15;
+  if (v15)
+  {
+    v17 = [(DMFConfigurationSourceClient *)v15 description];
+    v18 = dispatch_queue_create([v17 UTF8String], 0);
+    serialQueue = v16->_serialQueue;
+    v16->_serialQueue = v18;
+
+    v20 = dispatch_source_create(MEMORY[0x1E69E96B8], 0, 0, v16->_serialQueue);
+    registerConfigurationSource = v16->_registerConfigurationSource;
+    v16->_registerConfigurationSource = v20;
+
+    objc_initWeak(&location, v16);
+    v22 = v16->_registerConfigurationSource;
+    v38 = MEMORY[0x1E69E9820];
+    v39 = 3221225472;
+    v40 = __107__DMFConfigurationSourceClient_initWithConnection_organizationIdentifier_displayName_localMachServiceName___block_invoke;
+    v41 = &unk_1E8616210;
+    objc_copyWeak(&v42, &location);
+    dispatch_source_set_event_handler(v22, &v38);
+    v23 = [(DMFConfigurationSourceClient *)v16 registerConfigurationSource:v38];
+    dispatch_resume(v23);
+
+    objc_storeStrong(&v16->_connection, a3);
+    if (v14)
+    {
+      v24 = [objc_alloc(MEMORY[0x1E696B0D8]) initWithMachServiceName:v14];
+    }
+
+    else
+    {
+      v24 = [MEMORY[0x1E696B0D8] anonymousListener];
+    }
+
+    listener = v16->_listener;
+    v16->_listener = v24;
+
+    [(NSXPCListener *)v16->_listener setDelegate:v16];
+    [(NSXPCListener *)v16->_listener _setQueue:v16->_serialQueue];
+    v26 = objc_opt_new();
+    operationQueue = v16->_operationQueue;
+    v16->_operationQueue = v26;
+
+    v28 = [(DMFConfigurationSourceClient *)v16 description];
+    [(CATOperationQueue *)v16->_operationQueue setName:v28];
+
+    [(CATOperationQueue *)v16->_operationQueue setUnderlyingQueue:v16->_serialQueue];
+    v29 = [v13 copy];
+    configurationSourceName = v16->_configurationSourceName;
+    v16->_configurationSourceName = v29;
+
+    v31 = [v12 copy];
+    organizationIdentifier = v16->_organizationIdentifier;
+    v16->_organizationIdentifier = v31;
+
+    v33 = [v14 copy];
+    machServiceName = v16->_machServiceName;
+    v16->_machServiceName = v33;
+
+    v35 = objc_opt_new();
+    reportingRequirementsLock = v16->_reportingRequirementsLock;
+    v16->_reportingRequirementsLock = v35;
+
+    objc_destroyWeak(&v42);
+    objc_destroyWeak(&location);
+  }
+
+  return v16;
+}
+
+void __107__DMFConfigurationSourceClient_initWithConnection_organizationIdentifier_displayName_localMachServiceName___block_invoke(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  [WeakRetained registerConfigurationSourceIfNeeded];
+}
+
+- (void)dealloc
+{
+  OUTLINED_FUNCTION_2();
+  v2 = [MEMORY[0x1E696AAA8] currentHandler];
+  OUTLINED_FUNCTION_3();
+  [v1 handleFailureInMethod:v0 object:? file:? lineNumber:? description:?];
+}
+
+- (DMFReportingRequirements)reportingRequirements
+{
+  v3 = self->_reportingRequirementsLock;
+  objc_sync_enter(v3);
+  v4 = self->_reportingRequirements;
+  objc_sync_exit(v3);
+
+  return v4;
+}
+
+- (void)setReportingRequirements:(id)a3
+{
+  v4 = [a3 copy];
+  v5 = self->_reportingRequirementsLock;
+  objc_sync_enter(v5);
+  reportingRequirements = self->_reportingRequirements;
+  self->_reportingRequirements = v4;
+  v7 = v4;
+
+  objc_sync_exit(v5);
+  v8 = [(DMFConfigurationSourceClient *)self registerConfigurationSource];
+  dispatch_source_merge_data(v8, 1uLL);
+}
+
+- (void)resume
+{
+  v4 = [(DMFConfigurationSourceClient *)self serialQueue];
+  v5[0] = MEMORY[0x1E69E9820];
+  v5[1] = 3221225472;
+  v5[2] = __38__DMFConfigurationSourceClient_resume__block_invoke;
+  v5[3] = &unk_1E8616238;
+  v5[4] = self;
+  v5[5] = a2;
+  dispatch_async(v4, v5);
+}
+
+void __38__DMFConfigurationSourceClient_resume__block_invoke(uint64_t a1)
+{
+  v1 = (a1 + 32);
+  if ([*(a1 + 32) state])
+  {
+    __38__DMFConfigurationSourceClient_resume__block_invoke_cold_1();
+  }
+
+  [*v1 setState:1];
+  v2 = [*v1 listener];
+  [v2 resume];
+
+  v3 = [*v1 registerConfigurationSource];
+  dispatch_source_merge_data(v3, 1uLL);
+}
+
+- (void)invalidate
+{
+  v3 = [(DMFConfigurationSourceClient *)self serialQueue];
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __42__DMFConfigurationSourceClient_invalidate__block_invoke;
+  block[3] = &unk_1E86160F8;
+  block[4] = self;
+  dispatch_async(v3, block);
+}
+
+void __42__DMFConfigurationSourceClient_invalidate__block_invoke(uint64_t a1)
+{
+  v30 = *MEMORY[0x1E69E9840];
+  if (![*(a1 + 32) state] || (objc_msgSend(*(a1 + 32), "isInvalid") & 1) == 0)
+  {
+    v2 = DMFConfigurationEngineLog();
+    if (os_log_type_enabled(v2, OS_LOG_TYPE_INFO))
+    {
+      v3 = *(a1 + 32);
+      *buf = 138543362;
+      v29 = v3;
+      _os_log_impl(&dword_1DBFFF000, v2, OS_LOG_TYPE_INFO, "Invalidating configuration source %{public}@...", buf, 0xCu);
+    }
+
+    v4 = dispatch_group_create();
+    v5 = [*(a1 + 32) listener];
+    [v5 invalidate];
+
+    v6 = [*(a1 + 32) incomingConnection];
+
+    if (v6)
+    {
+      dispatch_group_enter(v4);
+      v26[0] = MEMORY[0x1E69E9820];
+      v26[1] = 3221225472;
+      v26[2] = __42__DMFConfigurationSourceClient_invalidate__block_invoke_28;
+      v26[3] = &unk_1E86160F8;
+      v27 = v4;
+      v7 = [*(a1 + 32) incomingConnection];
+      [v7 setInvalidationHandler:v26];
+
+      v8 = [*(a1 + 32) incomingConnection];
+      [v8 invalidate];
+    }
+
+    v9 = [*(a1 + 32) operationQueue];
+    [v9 cancelAllOperations];
+
+    dispatch_group_enter(v4);
+    v10 = MEMORY[0x1E696AAE0];
+    v24[0] = MEMORY[0x1E69E9820];
+    v24[1] = 3221225472;
+    v24[2] = __42__DMFConfigurationSourceClient_invalidate__block_invoke_2;
+    v24[3] = &unk_1E86160F8;
+    v11 = v4;
+    v25 = v11;
+    v12 = [v10 blockOperationWithBlock:v24];
+    v13 = [*(a1 + 32) operationQueue];
+    v14 = [v13 operations];
+    [v12 cat_addDependencies:v14];
+
+    v15 = [*(a1 + 32) operationQueue];
+    [v15 addOperation:v12];
+
+    dispatch_group_enter(v11);
+    v16 = [*(a1 + 32) serialQueue];
+    block[0] = MEMORY[0x1E69E9820];
+    block[1] = 3221225472;
+    block[2] = __42__DMFConfigurationSourceClient_invalidate__block_invoke_3;
+    block[3] = &unk_1E86160F8;
+    v23 = v11;
+    v17 = v11;
+    dispatch_async(v16, block);
+
+    v18 = [*(a1 + 32) registerConfigurationSource];
+    dispatch_suspend(v18);
+
+    v19 = [*(a1 + 32) serialQueue];
+    v21[0] = MEMORY[0x1E69E9820];
+    v21[1] = 3221225472;
+    v21[2] = __42__DMFConfigurationSourceClient_invalidate__block_invoke_4;
+    v21[3] = &unk_1E86160F8;
+    v21[4] = *(a1 + 32);
+    dispatch_group_notify(v17, v19, v21);
+  }
+
+  v20 = *MEMORY[0x1E69E9840];
+}
+
+void __42__DMFConfigurationSourceClient_invalidate__block_invoke_4(uint64_t a1)
+{
+  v9 = *MEMORY[0x1E69E9840];
+  [*(a1 + 32) setState:4];
+  v2 = [*(a1 + 32) registerConfigurationSource];
+  dispatch_source_cancel(v2);
+
+  v3 = [*(a1 + 32) registerConfigurationSource];
+  dispatch_resume(v3);
+
+  [*(a1 + 32) setRegisterConfigurationSource:0];
+  v4 = DMFConfigurationEngineLog();
+  if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
+  {
+    v5 = *(a1 + 32);
+    v7 = 138543362;
+    v8 = v5;
+    _os_log_impl(&dword_1DBFFF000, v4, OS_LOG_TYPE_INFO, "Did invalidate configuration source: %{public}@", &v7, 0xCu);
+  }
+
+  v6 = *MEMORY[0x1E69E9840];
+}
+
+- (id)stateDescription
+{
+  v2 = [(DMFConfigurationSourceClient *)self state];
+  if (v2 - 1 > 3)
+  {
+    return @"notStarted";
+  }
+
+  else
+  {
+    return off_1E8616258[v2 - 1];
+  }
+}
+
+- (NSString)debugDescription
+{
+  v7[3] = *MEMORY[0x1E69E9840];
+  v7[0] = @"stateDescription";
+  v7[1] = @"name";
+  v7[2] = @"machService";
+  v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:3];
+  v4 = DMFObjectDescriptionWithProperties(self, v3);
+
+  v5 = *MEMORY[0x1E69E9840];
+
+  return v4;
+}
+
+- (NSString)description
+{
+  v7[2] = *MEMORY[0x1E69E9840];
+  v7[0] = @"name";
+  v7[1] = @"machService";
+  v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:2];
+  v4 = DMFObjectDescriptionWithProperties(self, v3);
+
+  v5 = *MEMORY[0x1E69E9840];
+
+  return v4;
+}
+
+- (void)registerConfigurationSourceIfNeeded
+{
+  v8 = *MEMORY[0x1E69E9840];
+  v1 = [a1 connection];
+  OUTLINED_FUNCTION_1();
+  OUTLINED_FUNCTION_0();
+  _os_log_error_impl(v2, v3, v4, v5, v6, 0x16u);
+
+  v7 = *MEMORY[0x1E69E9840];
+}
+
+- (void)registrationOperationDidFinish:(id)a3
+{
+  v17 = *MEMORY[0x1E69E9840];
+  v4 = a3;
+  v5 = [(DMFConfigurationSourceClient *)self serialQueue];
+  dispatch_assert_queue_V2(v5);
+
+  v6 = [(DMFConfigurationSourceClient *)self registerConfigurationSource];
+  dispatch_resume(v6);
+
+  if (![(DMFConfigurationSourceClient *)self isInvalid])
+  {
+    if ([(DMFConfigurationSourceClient *)self state]== 1)
+    {
+      [(DMFConfigurationSourceClient *)self setState:2];
+      v7 = DMFConfigurationEngineLog();
+      if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+      {
+        v15 = 138543362;
+        v16 = self;
+        _os_log_impl(&dword_1DBFFF000, v7, OS_LOG_TYPE_INFO, "Configuration source resumed %{public}@", &v15, 0xCu);
+      }
+    }
+
+    v8 = [v4 error];
+
+    v9 = DMFConfigurationEngineLog();
+    v10 = v9;
+    if (!v8)
+    {
+      if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+      {
+        v15 = 138543362;
+        v16 = self;
+        _os_log_impl(&dword_1DBFFF000, v10, OS_LOG_TYPE_INFO, "Registered as a configuration source: %{public}@", &v15, 0xCu);
+      }
+
+      goto LABEL_13;
+    }
+
+    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    {
+      [(DMFConfigurationSourceClient *)self registrationOperationDidFinish:v4];
+    }
+
+    v11 = [(DMFConfigurationSourceClient *)self delegate];
+    v12 = objc_opt_respondsToSelector();
+
+    if (v12)
+    {
+      v10 = [(DMFConfigurationSourceClient *)self delegate];
+      v13 = [v4 error];
+      [v10 configurationSourceDidFailToRegister:self withError:v13];
+
+LABEL_13:
+    }
+  }
+
+  v14 = *MEMORY[0x1E69E9840];
+}
+
+- (void)enqueueOperationToReportStatusChange:(id)a3 completion:(id)a4
+{
+  v15 = a3;
+  v6 = a4;
+  v7 = [(DMFConfigurationSourceClient *)self serialQueue];
+  dispatch_assert_queue_V2(v7);
+
+  v8 = [(DMFConfigurationSourceClient *)self delegate];
+  v9 = objc_opt_respondsToSelector();
+
+  if ((v9 & 1) != 0 && (-[DMFConfigurationSourceClient delegate](self, "delegate"), v10 = objc_claimAutoreleasedReturnValue(), [v10 operationToSendStatusUpdate:v15], v11 = objc_claimAutoreleasedReturnValue(), v10, v11))
+  {
+    if (v6)
+    {
+      v12 = MEMORY[0x1E128DE70](v6);
+      v13 = [(DMFConfigurationSourceClient *)self serialQueue];
+      [v11 addTarget:self selector:sel_statusReportingOperationDidFinish_completion_ forOperationEvents:6 userInfo:v12 delegateQueue:v13];
+    }
+
+    v14 = [(DMFConfigurationSourceClient *)self operationQueue];
+    [v14 addOperation:v11];
+  }
+
+  else
+  {
+    v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"TODO" code:1010 userInfo:0];
+    v6[2](v6, v11);
+  }
+}
+
+- (void)statusReportingOperationDidFinish:(id)a3 completion:(id)a4
+{
+  v6 = a4;
+  v7 = a3;
+  v8 = [(DMFConfigurationSourceClient *)self serialQueue];
+  dispatch_assert_queue_V2(v8);
+
+  v9 = [v7 error];
+
+  v6[2](v6, v9);
+}
+
+- (void)enqueueOperationToReportEvents:(id)a3 completion:(id)a4
+{
+  v15 = a3;
+  v6 = a4;
+  v7 = [(DMFConfigurationSourceClient *)self serialQueue];
+  dispatch_assert_queue_V2(v7);
+
+  v8 = [(DMFConfigurationSourceClient *)self delegate];
+  v9 = objc_opt_respondsToSelector();
+
+  if ((v9 & 1) != 0 && (-[DMFConfigurationSourceClient delegate](self, "delegate"), v10 = objc_claimAutoreleasedReturnValue(), [v10 operationToSendEvents:v15], v11 = objc_claimAutoreleasedReturnValue(), v10, v11))
+  {
+    if (v6)
+    {
+      v12 = MEMORY[0x1E128DE70](v6);
+      v13 = [(DMFConfigurationSourceClient *)self serialQueue];
+      [v11 addTarget:self selector:sel_eventsReportingOperationDidFinish_completion_ forOperationEvents:6 userInfo:v12 delegateQueue:v13];
+    }
+
+    v14 = [(DMFConfigurationSourceClient *)self operationQueue];
+    [v14 addOperation:v11];
+  }
+
+  else
+  {
+    v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"TODO" code:1010 userInfo:0];
+    v6[2](v6, v11);
+  }
+}
+
+- (void)eventsReportingOperationDidFinish:(id)a3 completion:(id)a4
+{
+  v6 = a4;
+  v7 = a3;
+  v8 = [(DMFConfigurationSourceClient *)self serialQueue];
+  dispatch_assert_queue_V2(v8);
+
+  v9 = [v7 error];
+
+  v6[2](v6, v9);
+}
+
+- (void)enqueueOperationToResolveAsset:(id)a3 completion:(id)a4
+{
+  v15 = a3;
+  v6 = a4;
+  v7 = [(DMFConfigurationSourceClient *)self serialQueue];
+  dispatch_assert_queue_V2(v7);
+
+  v8 = [(DMFConfigurationSourceClient *)self delegate];
+  v9 = objc_opt_respondsToSelector();
+
+  if ((v9 & 1) != 0 && (-[DMFConfigurationSourceClient delegate](self, "delegate"), v10 = objc_claimAutoreleasedReturnValue(), [v10 operationToResolveAsset:v15], v11 = objc_claimAutoreleasedReturnValue(), v10, v11))
+  {
+    v12 = MEMORY[0x1E128DE70](v6);
+    v13 = [(DMFConfigurationSourceClient *)self serialQueue];
+    [v11 addTarget:self selector:sel_assetResolutionOperationDidFinish_completion_ forOperationEvents:6 userInfo:v12 delegateQueue:v13];
+
+    v14 = [(DMFConfigurationSourceClient *)self operationQueue];
+    [v14 addOperation:v11];
+  }
+
+  else
+  {
+    v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"TODO" code:1010 userInfo:0];
+    v6[2](v6, 0, v11);
+  }
+}
+
+- (void)assetResolutionOperationDidFinish:(id)a3 completion:(id)a4
+{
+  v6 = a4;
+  v7 = a3;
+  v8 = [(DMFConfigurationSourceClient *)self serialQueue];
+  dispatch_assert_queue_V2(v8);
+
+  v10 = [v7 resultObject];
+  v9 = [v7 error];
+
+  v6[2](v6, v10, v9);
+}
+
+- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+{
+  v17 = *MEMORY[0x1E69E9840];
+  v5 = a4;
+  v6 = [(DMFConfigurationSourceClient *)self serialQueue];
+  dispatch_assert_queue_V2(v6);
+
+  v7 = [v5 valueForEntitlement:@"application-identifier"];
+  objc_opt_class();
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([v7 isEqualToString:@"com.apple.dmd"] & 1) == 0)
+  {
+    v9 = DMFConfigurationEngineLog();
+    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    {
+      [DMFConfigurationSourceClient listener:shouldAcceptNewConnection:];
+    }
+
+    v8 = 0;
+    goto LABEL_8;
+  }
+
+  if (![(DMFConfigurationSourceClient *)self isInvalid])
+  {
+    v12 = [(DMFConfigurationSourceClient *)self incomingConnection];
+    [v12 invalidate];
+
+    [(DMFConfigurationSourceClient *)self setIncomingConnection:v5];
+    v13 = [(DMFConfigurationSourceClient *)self serialQueue];
+    [v5 _setQueue:v13];
+
+    v14 = DMFConfigurationSourceClientXPCInterface();
+    [v5 setExportedInterface:v14];
+
+    [v5 setExportedObject:self];
+    [v5 resume];
+    v9 = DMFConfigurationEngineLog();
+    v8 = 1;
+    if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+    {
+      v15 = 138543362;
+      v16 = v5;
+      _os_log_impl(&dword_1DBFFF000, v9, OS_LOG_TYPE_INFO, "new connection %{public}@", &v15, 0xCu);
+    }
+
+LABEL_8:
+
+    goto LABEL_9;
+  }
+
+  v8 = 0;
+LABEL_9:
+
+  v10 = *MEMORY[0x1E69E9840];
+  return v8;
+}
+
+- (void)configurationStatusDidChange:(id)a3 completion:(id)a4
+{
+  v9 = a3;
+  v6 = a4;
+  v7 = [(DMFConfigurationSourceClient *)self serialQueue];
+  dispatch_assert_queue_V2(v7);
+
+  if ([(DMFConfigurationSourceClient *)self isInvalid])
+  {
+    v8 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:4099 userInfo:0];
+    v6[2](v6, v8);
+  }
+
+  else
+  {
+    [(DMFConfigurationSourceClient *)self enqueueOperationToReportStatusChange:v9 completion:v6];
+  }
+}
+
+- (void)configurationEventsDidChange:(id)a3 completion:(id)a4
+{
+  v9 = a3;
+  v6 = a4;
+  v7 = [(DMFConfigurationSourceClient *)self serialQueue];
+  dispatch_assert_queue_V2(v7);
+
+  if ([(DMFConfigurationSourceClient *)self isInvalid])
+  {
+    v8 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:4099 userInfo:0];
+    v6[2](v6, v8);
+  }
+
+  else
+  {
+    [(DMFConfigurationSourceClient *)self enqueueOperationToReportEvents:v9 completion:v6];
+  }
+}
+
+- (void)configurationEngineRequestedAsset:(id)a3 completion:(id)a4
+{
+  v9 = a3;
+  v6 = a4;
+  v7 = [(DMFConfigurationSourceClient *)self serialQueue];
+  dispatch_assert_queue_V2(v7);
+
+  if ([(DMFConfigurationSourceClient *)self isInvalid])
+  {
+    v8 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:4099 userInfo:0];
+    v6[2](v6, 0, v8);
+  }
+
+  else
+  {
+    [(DMFConfigurationSourceClient *)self enqueueOperationToResolveAsset:v9 completion:v6];
+  }
+}
+
++ (id)activeRestrictionsURL
+{
+  v9[5] = *MEMORY[0x1E69E9840];
+  v2 = NSHomeDirectoryForUser(&cfstr_Mobile.isa);
+  v3 = v2;
+  if (v2)
+  {
+    v4 = MEMORY[0x1E695DFF8];
+    v9[0] = v2;
+    v9[1] = @"Library";
+    v9[2] = @"dmd";
+    v9[3] = @"ConfigurationEngine";
+    v9[4] = @"ActiveRestrictions.plist";
+    v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:5];
+    v6 = [v4 fileURLWithPathComponents:v5];
+  }
+
+  else
+  {
+    v6 = 0;
+  }
+
+  v7 = *MEMORY[0x1E69E9840];
+
+  return v6;
+}
+
++ (id)setOfActiveRestrictionUUIDs
+{
+  v2 = [a1 activeRestrictionsURL];
+  if (v2)
+  {
+    v15 = 0;
+    v3 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v2 options:0 error:&v15];
+    v4 = v15;
+    if (!v3)
+    {
+      v5 = DMFConfigurationEngineLog();
+      if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+      {
+        +[(DMFConfigurationSourceClient *)v4];
+      }
+
+      v8 = 0;
+      v6 = v4;
+      goto LABEL_24;
+    }
+
+    v14 = 0;
+    v5 = [MEMORY[0x1E696AE40] propertyListWithData:v3 options:0 format:0 error:&v14];
+    v6 = v14;
+
+    if (v5)
+    {
+      objc_opt_class();
+      if (objc_opt_isKindOfClass())
+      {
+        v7 = [MEMORY[0x1E695DFD8] setWithArray:v5];
+LABEL_17:
+        v8 = v7;
+LABEL_24:
+
+        goto LABEL_25;
+      }
+
+      v12 = DMFConfigurationEngineLog();
+      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      {
+        +[DMFConfigurationSourceClient setOfActiveRestrictionUUIDs];
+      }
+    }
+
+    else
+    {
+      v9 = [v6 domain];
+      if ([v9 isEqualToString:*MEMORY[0x1E696A250]])
+      {
+        v10 = [v6 code];
+
+        if (v10 == 4)
+        {
+          v11 = DMFConfigurationEngineLog();
+          if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+          {
+            +[(DMFConfigurationSourceClient *)v11];
+          }
+
+          v7 = [MEMORY[0x1E695DFD8] set];
+          goto LABEL_17;
+        }
+      }
+
+      else
+      {
+      }
+
+      v12 = DMFConfigurationEngineLog();
+      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      {
+        +[(DMFConfigurationSourceClient *)v6];
+      }
+    }
+
+    v8 = 0;
+    goto LABEL_24;
+  }
+
+  v6 = DMFConfigurationEngineLog();
+  if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  {
+    +[(DMFConfigurationSourceClient *)v6];
+  }
+
+  v8 = 0;
+LABEL_25:
+
+  return v8;
+}
+
+- (DMFConfigurationSourceClientDelegate)delegate
+{
+  WeakRetained = objc_loadWeakRetained(&self->_delegate);
+
+  return WeakRetained;
+}
+
+- (void)initWithConnection:organizationIdentifier:displayName:localMachServiceName:.cold.1()
+{
+  OUTLINED_FUNCTION_2();
+  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  OUTLINED_FUNCTION_3();
+  [v0 handleFailureInMethod:@"connection" object:? file:? lineNumber:? description:?];
+}
+
+- (void)initWithConnection:organizationIdentifier:displayName:localMachServiceName:.cold.2()
+{
+  OUTLINED_FUNCTION_2();
+  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  OUTLINED_FUNCTION_3();
+  [v0 handleFailureInMethod:@"organizationIdentifier.length > 0" object:? file:? lineNumber:? description:?];
+}
+
+- (void)initWithConnection:organizationIdentifier:displayName:localMachServiceName:.cold.3()
+{
+  OUTLINED_FUNCTION_2();
+  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  OUTLINED_FUNCTION_3();
+  [v0 handleFailureInMethod:@"displayName.length > 0" object:? file:? lineNumber:? description:?];
+}
+
+void __38__DMFConfigurationSourceClient_resume__block_invoke_cold_1()
+{
+  OUTLINED_FUNCTION_2();
+  v2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [v2 handleFailureInMethod:*(v1 + 40) object:*v0 file:? lineNumber:? description:?];
+}
+
+- (void)registrationOperationDidFinish:(uint64_t)a1 .cold.1(uint64_t a1, void *a2)
+{
+  v9 = *MEMORY[0x1E69E9840];
+  v8 = [a2 error];
+  OUTLINED_FUNCTION_0();
+  _os_log_error_impl(v2, v3, v4, v5, v6, 0x16u);
+
+  v7 = *MEMORY[0x1E69E9840];
+}
+
+- (void)listener:shouldAcceptNewConnection:.cold.1()
+{
+  v3 = *MEMORY[0x1E69E9840];
+  OUTLINED_FUNCTION_1();
+  _os_log_error_impl(&dword_1DBFFF000, v0, OS_LOG_TYPE_ERROR, "rejecting incoming connection from %{public}@", v2, 0xCu);
+  v1 = *MEMORY[0x1E69E9840];
+}
+
++ (void)setOfActiveRestrictionUUIDs
+{
+  v8 = *MEMORY[0x1E69E9840];
+  v1 = [a1 verboseDescription];
+  OUTLINED_FUNCTION_1();
+  OUTLINED_FUNCTION_0();
+  _os_log_error_impl(v2, v3, v4, v5, v6, 0xCu);
+
+  v7 = *MEMORY[0x1E69E9840];
+}
+
+@end

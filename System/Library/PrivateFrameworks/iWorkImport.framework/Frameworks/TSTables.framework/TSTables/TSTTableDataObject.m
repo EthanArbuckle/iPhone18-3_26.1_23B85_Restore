@@ -1,0 +1,180 @@
+@interface TSTTableDataObject
++ (id)objectWithRefCount:(unsigned int)a3;
++ (void)loadObjectFromArchive:(const void *)a3 listType:(int)a4 unarchiver:(id)a5 completion:(id)a6;
+- (BOOL)dropReference;
+- (BOOL)dropReferences:(unsigned int)a3;
+- (BOOL)isEqual:(id)a3;
+- (TSTTableDataObject)initWithRefCount:(unsigned int)a3;
+- (unint64_t)byteSizeForArchiving;
+- (unint64_t)estimateByteSize;
+- (void)encodeToArchive:(void *)a3 archiver:(id)a4;
+- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4 completion:(id)a5;
+- (void)p_sharedInitWithRefCount:(unsigned int)a3 key:(unsigned int)a4;
+@end
+
+@implementation TSTTableDataObject
+
++ (id)objectWithRefCount:(unsigned int)a3
+{
+  v3 = *&a3;
+  v4 = [a1 alloc];
+  v8 = objc_msgSend_initWithRefCount_(v4, v5, v3, v6, v7);
+
+  return v8;
+}
+
++ (void)loadObjectFromArchive:(const void *)a3 listType:(int)a4 unarchiver:(id)a5 completion:(id)a6
+{
+  v13 = a5;
+  v9 = a6;
+  if (a4 - 1) <= 0xB && ((0xBFFu >> (a4 - 1)))
+  {
+    v10 = objc_opt_class();
+  }
+
+  else
+  {
+    v10 = 0;
+  }
+
+  v11 = objc_alloc_init(v10);
+  objc_msgSend_loadFromArchive_unarchiver_completion_(v11, v12, a3, v13, v9);
+}
+
+- (void)p_sharedInitWithRefCount:(unsigned int)a3 key:(unsigned int)a4
+{
+  if (a3 <= 1)
+  {
+    v4 = 1;
+  }
+
+  else
+  {
+    v4 = a3;
+  }
+
+  self->_key = a4;
+  self->_refCount = v4;
+  self->_byteSizeForArchiving = 0x7FFFFFFFFFFFFFFFLL;
+}
+
+- (TSTTableDataObject)initWithRefCount:(unsigned int)a3
+{
+  v3 = *&a3;
+  v9.receiver = self;
+  v9.super_class = TSTTableDataObject;
+  v4 = [(TSTTableDataObject *)&v9 init];
+  v7 = v4;
+  if (v4)
+  {
+    objc_msgSend_p_sharedInitWithRefCount_key_(v4, v5, v3, 0, v6);
+  }
+
+  return v7;
+}
+
+- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4 completion:(id)a5
+{
+  v6 = a4;
+  v7 = a5;
+  v8 = MEMORY[0x277D81150];
+  v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "[TSTTableDataObject loadFromArchive:unarchiver:completion:]", v10, v11);
+  v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTTableDataObject.mm", v14, v15);
+  v17 = objc_opt_class();
+  v18 = NSStringFromClass(v17);
+  objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v19, v12, v16, 131, 0, "Abstract method not overridden by %{public}@", v18);
+
+  objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21, v22, v23);
+  v24 = MEMORY[0x277CBEAD8];
+  v25 = MEMORY[0x277CCACA8];
+  v26 = objc_opt_class();
+  v27 = NSStringFromClass(v26);
+  v31 = objc_msgSend_stringWithFormat_(v25, v28, @"Abstract method not overridden by %@: %s", v29, v30, v27, "[TSTTableDataObject loadFromArchive:unarchiver:completion:]");
+  v33 = objc_msgSend_exceptionWithName_reason_userInfo_(v24, v32, *MEMORY[0x277CBE658], v31, 0);
+  v34 = v33;
+
+  objc_exception_throw(v33);
+}
+
+- (void)encodeToArchive:(void *)a3 archiver:(id)a4
+{
+  key = self->_key;
+  v5 = *(a3 + 4);
+  *(a3 + 4) = v5 | 0x200;
+  *(a3 + 24) = key;
+  refCount = self->_refCount;
+  *(a3 + 4) = v5 | 0x600;
+  *(a3 + 25) = refCount;
+}
+
+- (BOOL)dropReference
+{
+  v2 = self->_refCount - 1;
+  self->_refCount = v2;
+  return v2 == 0;
+}
+
+- (BOOL)dropReferences:(unsigned int)a3
+{
+  refCount = self->_refCount;
+  v7 = refCount >= a3;
+  v8 = refCount - a3;
+  if (!v7)
+  {
+    v9 = MEMORY[0x277D81150];
+    v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTTableDataObject dropReferences:]", v3, v4);
+    v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTTableDataObject.mm", v12, v13);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v9, v15, v10, v14, 160, 0, "dropping data list ref count by more than the total count");
+
+    objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v16, v17, v18, v19);
+    v8 = 0;
+  }
+
+  self->_refCount = v8;
+  return v8 == 0;
+}
+
+- (unint64_t)byteSizeForArchiving
+{
+  result = self->_byteSizeForArchiving;
+  if (result == 0x7FFFFFFFFFFFFFFFLL)
+  {
+    result = objc_msgSend_estimateByteSize(self, a2, v2, v3, v4);
+    self->_byteSizeForArchiving = result;
+  }
+
+  return result;
+}
+
+- (unint64_t)estimateByteSize
+{
+  v4 = MEMORY[0x277D81150];
+  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTTableDataObject estimateByteSize]", v2, v3);
+  v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTTableDataObject.mm", v7, v8);
+  v10 = objc_opt_class();
+  v11 = NSStringFromClass(v10);
+  objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v4, v12, v5, v9, 180, 0, "Abstract method not overridden by %{public}@", v11);
+
+  objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v13, v14, v15, v16);
+  v17 = MEMORY[0x277CBEAD8];
+  v18 = MEMORY[0x277CCACA8];
+  v19 = objc_opt_class();
+  v20 = NSStringFromClass(v19);
+  v24 = objc_msgSend_stringWithFormat_(v18, v21, @"Abstract method not overridden by %@: %s", v22, v23, v20, "[TSTTableDataObject estimateByteSize]");
+  v26 = objc_msgSend_exceptionWithName_reason_userInfo_(v17, v25, *MEMORY[0x277CBE658], v24, 0);
+  v27 = v26;
+
+  objc_exception_throw(v26);
+}
+
+- (BOOL)isEqual:(id)a3
+{
+  v4 = a3;
+  objc_opt_class();
+  v5 = TSUDynamicCast();
+  LOBYTE(self) = objc_msgSend_tst_dataObjectIsEqual_(self->_payload, v6, v5[1], v7, v8);
+
+  return self;
+}
+
+@end

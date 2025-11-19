@@ -1,0 +1,483 @@
+@interface CKPluginMessageStatusCell
+- (BOOL)_shouldOverrideStatusAlignmentWithCenterAlignment;
+- (BOOL)hidesCheckmark;
+- (CKPluginMessageStatusCell)initWithFrame:(CGRect)a3;
+- (void)_updateBalloonPluginIconImage;
+- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7;
+- (void)dealloc;
+- (void)layoutSubviewsForAlignmentContents;
+- (void)performInsertion:(id)a3;
+- (void)prepareForReuse;
+- (void)setBalloonBundleID:(id)a3;
+- (void)setDataSource:(id)a3;
+- (void)setPreviousPluginSnapshot:(id)a3;
+@end
+
+@implementation CKPluginMessageStatusCell
+
+- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7
+{
+  v9 = a5;
+  v12 = a3;
+  v29.receiver = self;
+  v29.super_class = CKPluginMessageStatusCell;
+  [(CKTranscriptStampCell *)&v29 configureForChatItem:v12 context:a4 animated:v9 animationDuration:a7 animationCurve:a6];
+  v13 = [v12 IMChatItem];
+  v14 = [v13 balloonBundleID];
+  [(CKPluginMessageStatusCell *)self setBalloonBundleID:v14];
+
+  v15 = [(CKTranscriptLabelCell *)self label];
+  [v15 frame];
+  v17 = v16;
+  v19 = v18;
+  v21 = v20;
+  v23 = v22;
+  [v12 size];
+  v25 = v24;
+  v27 = v26;
+  if (objc_opt_respondsToSelector())
+  {
+    [v12 iconSizePlusHorizontalPadding];
+    v25 = v25 - v28;
+  }
+
+  if (v21 != v25 || v23 != v27)
+  {
+    [v15 setFrame:{v17, v19, v25, v27}];
+    [(CKPluginMessageStatusCell *)self setNeedsLayout];
+  }
+}
+
+- (CKPluginMessageStatusCell)initWithFrame:(CGRect)a3
+{
+  v9.receiver = self;
+  v9.super_class = CKPluginMessageStatusCell;
+  v3 = [(CKTranscriptLabelCell *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  if (v3)
+  {
+    v4 = objc_alloc(MEMORY[0x1E69DCAE0]);
+    v5 = [v4 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+    [v5 setContentMode:0];
+    v6 = [(CKEditableCollectionViewCell *)v3 contentView];
+    [v6 addSubview:v5];
+
+    [(CKPluginMessageStatusCell *)v3 setImageView:v5];
+    v7 = [MEMORY[0x1E696AD88] defaultCenter];
+    [v7 addObserver:v3 selector:sel__updateBalloonPluginIconImage name:*MEMORY[0x1E69A56D8] object:0];
+  }
+
+  return v3;
+}
+
+- (BOOL)hidesCheckmark
+{
+  if (IMGetDomainBoolForKey())
+  {
+    return ![(CKTranscriptStampCell *)self isRetractionStamp];
+  }
+
+  else
+  {
+    return 1;
+  }
+}
+
+- (void)dealloc
+{
+  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [v3 removeObserver:self];
+
+  v4.receiver = self;
+  v4.super_class = CKPluginMessageStatusCell;
+  [(CKPluginMessageStatusCell *)&v4 dealloc];
+}
+
+- (void)_updateBalloonPluginIconImage
+{
+  v3 = [(CKPluginMessageStatusCell *)self balloonBundleID];
+
+  if (v3)
+  {
+    v4 = [MEMORY[0x1E69A5AD0] sharedInstance];
+    v5 = [(CKPluginMessageStatusCell *)self balloonBundleID];
+    v6 = [v4 balloonPluginForBundleID:v5];
+
+    v7 = [v6 identifier];
+    v8 = IMBalloonExtensionIDWithSuffix();
+    v9 = [v7 isEqualToString:v8];
+
+    v10 = [v6 shouldBreadcrumbHideAppIcon] | v9;
+    if (v6 || ([(CKPluginMessageStatusCell *)self balloonBundleID], (v11 = objc_claimAutoreleasedReturnValue()) == 0))
+    {
+      if ((v10 & 1) == 0)
+      {
+        objc_initWeak(&location, self);
+        v13[0] = MEMORY[0x1E69E9820];
+        v13[1] = 3221225472;
+        v13[2] = __58__CKPluginMessageStatusCell__updateBalloonPluginIconImage__block_invoke;
+        v13[3] = &unk_1E72F7EA0;
+        objc_copyWeak(&v14, &location);
+        [v6 __ck_generateStatusImage:v13];
+        objc_destroyWeak(&v14);
+        objc_destroyWeak(&location);
+      }
+    }
+
+    else
+    {
+    }
+  }
+
+  else
+  {
+    v12 = [(CKPluginMessageStatusCell *)self imageView];
+    [v12 setImage:0];
+  }
+}
+
+void __58__CKPluginMessageStatusCell__updateBalloonPluginIconImage__block_invoke(uint64_t a1, void *a2)
+{
+  v8 = a2;
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  v4 = WeakRetained;
+  if (WeakRetained)
+  {
+    v5 = [WeakRetained imageView];
+    v6 = [v5 image];
+
+    if (v6 != v8)
+    {
+      v7 = [v4 imageView];
+      [v7 setImage:v8];
+
+      [v4 setNeedsLayout];
+    }
+  }
+}
+
+- (void)prepareForReuse
+{
+  v3.receiver = self;
+  v3.super_class = CKPluginMessageStatusCell;
+  [(CKTranscriptStampCell *)&v3 prepareForReuse];
+  [(CKPluginMessageStatusCell *)self setPreviousPluginSnapshot:0];
+  [(CKPluginMessageStatusCell *)self setDataSource:0];
+}
+
+- (void)layoutSubviewsForAlignmentContents
+{
+  v3 = +[CKUIBehavior sharedBehaviors];
+  v4 = [(CKTranscriptLabelCell *)self label];
+  [v4 frame];
+  v6 = v5;
+  v8 = v7;
+  v50.receiver = self;
+  v50.super_class = CKPluginMessageStatusCell;
+  [(CKTranscriptStampCell *)&v50 layoutSubviewsForAlignmentContents];
+  v9 = [(CKPluginMessageStatusCell *)self imageView];
+  v10 = [v9 image];
+
+  [v10 size];
+  v12 = v11;
+  [v10 size];
+  v14 = CKFloatApproximatelyEqualToFloatWithTolerance(v12, v13, 0.1);
+  v15 = +[CKUIBehavior sharedBehaviors];
+  v16 = v15;
+  if (v14)
+  {
+    [v15 iMessageAppIconSizeSquare];
+  }
+
+  else
+  {
+    [v15 iMessageAppIconSize];
+  }
+
+  v19 = v17;
+  v20 = v18;
+
+  v49 = v19;
+  if (v10)
+  {
+    [v3 transcriptCustomStatusImagePadding];
+    v22 = v19 + v21;
+  }
+
+  else
+  {
+    v22 = 0.0;
+  }
+
+  [(CKTranscriptStampCell *)self contentAlignmentRect];
+  v24 = v23;
+  v26 = v25;
+  v28 = v27;
+  v30 = v29;
+  v31 = [(CKEditableCollectionViewCell *)self orientation];
+  if (v31 == 1 || (v32 = v31, [(CKPluginMessageStatusCell *)self _shouldOverrideStatusAlignmentWithCenterAlignment]))
+  {
+    v51.origin.x = v24;
+    v51.origin.y = v26;
+    v51.size.width = v28;
+    v51.size.height = v30;
+    MidX = CGRectGetMidX(v51);
+    v52.origin.x = v24;
+    v52.origin.y = v26;
+    v52.size.width = v6;
+    v52.size.height = v8;
+    v24 = MidX + (v22 + CGRectGetWidth(v52)) * -0.5;
+  }
+
+  else if (v32 == 2)
+  {
+    v54.origin.x = v24;
+    v54.origin.y = v26;
+    v54.size.width = v28;
+    v54.size.height = v30;
+    MaxX = CGRectGetMaxX(v54);
+    v55.origin.x = v24;
+    v55.origin.y = v26;
+    v55.size.width = v6;
+    v55.size.height = v8;
+    v24 = MaxX - CGRectGetWidth(v55);
+  }
+
+  else if (!v32)
+  {
+    v53.origin.x = v24;
+    v53.origin.y = v26;
+    v53.size.width = v28;
+    v53.size.height = v30;
+    v24 = v22 + CGRectGetMinX(v53);
+  }
+
+  [v4 setFrame:{v24, v26, v6, v8}];
+  if (v10)
+  {
+    v34 = [v3 transcriptTextFont];
+    [v34 lineHeight];
+    v36 = v26 + (v35 - v20) * 0.5;
+
+    v37 = [(CKPluginMessageStatusCell *)self imageView];
+    [v3 transcriptCustomStatusImageEdgeInsets];
+    v39 = v24 - v22 + v38;
+    v41 = v36 + v40;
+    v43 = v49 - (v38 + v42);
+    v45 = v20 - (v40 + v44);
+    v46 = [v37 layer];
+    v47 = [v46 mask];
+    [v47 setFrame:{0.0, 0.0, v43, v45}];
+
+    [v37 setFrame:{v39, v41, v43, v45}];
+  }
+}
+
+- (BOOL)_shouldOverrideStatusAlignmentWithCenterAlignment
+{
+  v15[3] = *MEMORY[0x1E69E9840];
+  v2 = [(CKPluginMessageStatusCell *)self balloonBundleID];
+  if ([v2 length])
+  {
+    v3 = IMBalloonBundleIDFromExtensionID();
+    v4 = *MEMORY[0x1E69A6918];
+    v15[0] = *MEMORY[0x1E69A6920];
+    v15[1] = v4;
+    v15[2] = *MEMORY[0x1E69A68E0];
+    [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:3];
+    v10 = 0u;
+    v11 = 0u;
+    v12 = 0u;
+    v5 = v13 = 0u;
+    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    if (v6)
+    {
+      v7 = *v11;
+      while (2)
+      {
+        for (i = 0; i != v6; ++i)
+        {
+          if (*v11 != v7)
+          {
+            objc_enumerationMutation(v5);
+          }
+
+          if ([*(*(&v10 + 1) + 8 * i) isEqualToString:{v3, v10}])
+          {
+            LOBYTE(v6) = 1;
+            goto LABEL_12;
+          }
+        }
+
+        v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        if (v6)
+        {
+          continue;
+        }
+
+        break;
+      }
+    }
+
+LABEL_12:
+  }
+
+  else
+  {
+    LOBYTE(v6) = 0;
+  }
+
+  return v6;
+}
+
+- (void)performInsertion:(id)a3
+{
+  v4 = a3;
+  v5 = [(CKPluginMessageStatusCell *)self previousPluginSnapshot];
+  if (v5)
+  {
+    previousPluginSnapshot = self->_previousPluginSnapshot;
+    self->_previousPluginSnapshot = 0;
+
+    v7 = MEMORY[0x1E69DD250];
+    v11[0] = MEMORY[0x1E69E9820];
+    v11[1] = 3221225472;
+    v11[2] = __46__CKPluginMessageStatusCell_performInsertion___block_invoke;
+    v11[3] = &unk_1E72EB8D0;
+    v11[4] = self;
+    v12 = v5;
+    v8[0] = MEMORY[0x1E69E9820];
+    v8[1] = 3221225472;
+    v8[2] = __46__CKPluginMessageStatusCell_performInsertion___block_invoke_2;
+    v8[3] = &unk_1E72ED638;
+    v9 = v12;
+    v10 = v4;
+    [v7 animateWithDuration:0x10000 delay:v11 options:v8 animations:0.3 completion:0.0];
+  }
+
+  else if (v4)
+  {
+    (*(v4 + 2))(v4, 1);
+  }
+}
+
+void __46__CKPluginMessageStatusCell_performInsertion___block_invoke(uint64_t a1)
+{
+  v2 = [*(a1 + 32) imageView];
+  v3 = [v2 image];
+
+  if (v3)
+  {
+    v4 = [*(a1 + 32) imageView];
+    [v4 frame];
+    v6 = v5;
+    v8 = v7;
+    v10 = v9;
+    v12 = v11;
+  }
+
+  else
+  {
+    [*(a1 + 40) frame];
+    v6 = v13;
+    v8 = v14;
+    v10 = v15;
+    v12 = 0.0;
+  }
+
+  [*(a1 + 40) setFrame:{v6, v8, v10, v12}];
+  [*(a1 + 40) setAlpha:0.0];
+  v16 = [*(a1 + 32) imageView];
+  [v16 setAlpha:1.0];
+
+  v17 = [*(a1 + 32) label];
+  [v17 setAlpha:1.0];
+}
+
+uint64_t __46__CKPluginMessageStatusCell_performInsertion___block_invoke_2(uint64_t a1)
+{
+  [*(a1 + 32) removeFromSuperview];
+  result = *(a1 + 40);
+  if (result)
+  {
+    v3 = *(result + 16);
+
+    return v3();
+  }
+
+  return result;
+}
+
+- (void)setDataSource:(id)a3
+{
+  v5 = a3;
+  v12 = v5;
+  if (v5)
+  {
+    v6 = [v5 pluginPayload];
+    v7 = [v6 pluginBundleID];
+
+    balloonBundleID = self->_balloonBundleID;
+    if (balloonBundleID != v7 && !-[NSString isEqualToString:](balloonBundleID, "isEqualToString:", v7) || (-[CKPluginMessageStatusCell imageView](self, "imageView"), v9 = objc_claimAutoreleasedReturnValue(), [v9 image], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, !v10))
+    {
+      objc_storeStrong(&self->_dataSource, a3);
+      [(CKPluginMessageStatusCell *)self _updateBalloonPluginIconImage];
+    }
+  }
+
+  else
+  {
+    dataSource = self->_dataSource;
+    self->_dataSource = 0;
+
+    [(CKPluginMessageStatusCell *)self setBalloonBundleID:0];
+    [(CKPluginMessageStatusCell *)self _updateBalloonPluginIconImage];
+  }
+}
+
+- (void)setBalloonBundleID:(id)a3
+{
+  v5 = a3;
+  balloonBundleID = self->_balloonBundleID;
+  v9 = v5;
+  if (balloonBundleID != v5 && !-[NSString isEqualToString:](balloonBundleID, "isEqualToString:", v5) || (-[CKPluginMessageStatusCell imageView](self, "imageView"), v7 = objc_claimAutoreleasedReturnValue(), [v7 image], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, !v8))
+  {
+    objc_storeStrong(&self->_balloonBundleID, a3);
+    [(CKPluginMessageStatusCell *)self _updateBalloonPluginIconImage];
+  }
+}
+
+- (void)setPreviousPluginSnapshot:(id)a3
+{
+  v5 = a3;
+  previousPluginSnapshot = self->_previousPluginSnapshot;
+  if (previousPluginSnapshot != v5)
+  {
+    v12 = v5;
+    [(UIView *)previousPluginSnapshot removeFromSuperview];
+    objc_storeStrong(&self->_previousPluginSnapshot, a3);
+    v7 = self->_previousPluginSnapshot;
+    v8 = [(CKPluginMessageStatusCell *)self imageView];
+    v9 = v8;
+    if (v7)
+    {
+      [v8 setAlpha:0.0];
+
+      v10 = [(CKTranscriptLabelCell *)self label];
+      [v10 setAlpha:0.0];
+
+      [(CKPluginMessageStatusCell *)self insertSubview:self->_previousPluginSnapshot atIndex:0];
+    }
+
+    else
+    {
+      [v8 setAlpha:1.0];
+
+      v11 = [(CKTranscriptLabelCell *)self label];
+      [v11 setAlpha:1.0];
+    }
+
+    v5 = v12;
+  }
+}
+
+@end

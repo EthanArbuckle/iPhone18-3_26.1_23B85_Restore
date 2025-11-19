@@ -1,0 +1,27 @@
+uint64_t start()
+{
+  v0 = objc_autoreleasePoolPush();
+  v1 = initComputeSafeguards();
+  if (v1)
+  {
+    objc_autoreleasePoolPop(v0);
+    do
+    {
+      v2 = +[NSRunLoop currentRunLoop];
+      v3 = +[NSDate distantFuture];
+      v4 = [v2 runMode:NSDefaultRunLoopMode beforeDate:v3];
+    }
+
+    while ((v4 & 1) != 0);
+    v5 = 0;
+  }
+
+  else
+  {
+    NSLog(@"safeguardsDaemon is NULL?");
+    objc_autoreleasePoolPop(v0);
+    v5 = 1;
+  }
+
+  return v5;
+}

@@ -1,0 +1,57 @@
+@interface UGCPOIEnrichmentHeaderCell
+- (UGCPOIEnrichmentHeaderCell)initWithFrame:(CGRect)a3;
+- (void)traitCollectionDidChange:(id)a3;
+@end
+
+@implementation UGCPOIEnrichmentHeaderCell
+
+- (void)traitCollectionDidChange:(id)a3
+{
+  v10.receiver = self;
+  v10.super_class = UGCPOIEnrichmentHeaderCell;
+  v4 = a3;
+  [(UGCPOIEnrichmentHeaderCell *)&v10 traitCollectionDidChange:v4];
+  v5 = [(UGCPOIEnrichmentHeaderCell *)self traitCollection:v10.receiver];
+  v6 = [v5 preferredContentSizeCategory];
+  v7 = [v4 preferredContentSizeCategory];
+
+  v8 = sub_10008FB5C(v6, v7);
+  if (v8)
+  {
+    v9 = +[UGCFontManager poiEnrichmentSectionHeaderTitleFont];
+    [(UILabel *)self->_headerLabel setFont:v9];
+  }
+}
+
+- (UGCPOIEnrichmentHeaderCell)initWithFrame:(CGRect)a3
+{
+  v14.receiver = self;
+  v14.super_class = UGCPOIEnrichmentHeaderCell;
+  v3 = [(UGCPOIEnrichmentEditorCell *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  if (v3)
+  {
+    v4 = objc_opt_class();
+    v5 = NSStringFromClass(v4);
+    [(UGCPOIEnrichmentHeaderCell *)v3 setAccessibilityIdentifier:v5];
+
+    v6 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
+    headerLabel = v3->_headerLabel;
+    v3->_headerLabel = v6;
+
+    [(UILabel *)v3->_headerLabel setAccessibilityIdentifier:@"HeaderLabel"];
+    v8 = +[UGCFontManager poiEnrichmentSectionHeaderTitleFont];
+    [(UILabel *)v3->_headerLabel setFont:v8];
+
+    [(UILabel *)v3->_headerLabel setNumberOfLines:0];
+    [(UGCPOIEnrichmentHeaderCell *)v3 addSubview:v3->_headerLabel];
+    v9 = [MUEdgeLayout alloc];
+    v10 = v3->_headerLabel;
+    v11 = [(UGCPOIEnrichmentHeaderCell *)v3 layoutMarginsGuide];
+    v12 = [v9 initWithItem:v10 container:v11];
+    [v12 activate];
+  }
+
+  return v3;
+}
+
+@end

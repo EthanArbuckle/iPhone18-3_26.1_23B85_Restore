@@ -1,0 +1,365 @@
+@interface CPLResourceTransferTaskOptions
++ (BOOL)isForegroundOperationForIntent:(unint64_t)a3 priority:(unint64_t)a4;
++ (BOOL)isHighPriorityForIntent:(unint64_t)a3 priority:(unint64_t)a4;
++ (id)defaultOptions;
++ (id)descriptionForIntent:(unint64_t)a3;
++ (id)descriptionForIntentPriority:(unint64_t)a3;
++ (id)optionsForLegacyIntent:(unint64_t)a3;
+- ($0E4A422D128941990FD19C13E5416F99)timeRange;
+- (BOOL)allowsUnsafeClientCache;
+- (BOOL)isForeground;
+- (BOOL)isHighPriority;
+- (CPLResourceTransferTaskOptions)initWithCoder:(id)a3;
+- (CPLResourceTransferTaskOptions)initWithHighPriority:(BOOL)a3;
+- (CPLResourceTransferTaskOptions)initWithIntent:(unint64_t)a3 priority:(unint64_t)a4;
+- (CPLResourceTransferTaskOptions)initWithIntent:(unint64_t)a3 priority:(unint64_t)a4 bypassCaches:(BOOL)a5 timeRange:(id *)a6;
+- (CPLResourceTransferTaskOptions)initWithIntent:(unint64_t)a3 priority:(unint64_t)a4 timeRange:(id *)a5;
+- (id)copyWithZone:(_NSZone *)a3;
+- (id)description;
+- (unint64_t)legacyIntent;
+- (void)encodeWithCoder:(id)a3;
+- (void)setTimeRange:(id *)a3;
+@end
+
+@implementation CPLResourceTransferTaskOptions
+
+- (void)setTimeRange:(id *)a3
+{
+  v3 = *&a3->var0.var0;
+  v4 = *&a3->var1.var1;
+  *&self->_timeRange.start.epoch = *&a3->var0.var3;
+  *&self->_timeRange.duration.timescale = v4;
+  *&self->_timeRange.start.value = v3;
+}
+
+- ($0E4A422D128941990FD19C13E5416F99)timeRange
+{
+  v3 = *&self[1].var0.var0;
+  *&retstr->var0.var0 = *&self->var1.var1;
+  *&retstr->var0.var3 = v3;
+  *&retstr->var1.var1 = *&self[1].var0.var3;
+  return self;
+}
+
+- (BOOL)allowsUnsafeClientCache
+{
+  if ([(CPLResourceTransferTaskOptions *)self shouldBypassCaches])
+  {
+    return 1;
+  }
+
+  return [(CPLResourceTransferTaskOptions *)self isHighPriority];
+}
+
+- (id)copyWithZone:(_NSZone *)a3
+{
+  result = objc_alloc_init(objc_opt_class());
+  *(result + 2) = self->_intent;
+  *(result + 3) = self->_priority;
+  v5 = *&self->_timeRange.start.value;
+  v6 = *&self->_timeRange.duration.timescale;
+  *(result + 3) = *&self->_timeRange.start.epoch;
+  *(result + 4) = v6;
+  *(result + 2) = v5;
+  return result;
+}
+
+- (CPLResourceTransferTaskOptions)initWithCoder:(id)a3
+{
+  v4 = a3;
+  v5 = [(CPLResourceTransferTaskOptions *)self init];
+  if (v5)
+  {
+    v5->_intent = [v4 decodeInt64ForKey:@"intent"];
+    v5->_priority = [v4 decodeInt64ForKey:@"priority"];
+    if (v4)
+    {
+      [v4 decodeCMTimeRangeForKey:@"timeRange"];
+    }
+
+    else
+    {
+      v8 = 0u;
+      v9 = 0u;
+      v7 = 0u;
+    }
+
+    *&v5->_timeRange.start.value = v7;
+    *&v5->_timeRange.start.epoch = v8;
+    *&v5->_timeRange.duration.timescale = v9;
+  }
+
+  return v5;
+}
+
+- (void)encodeWithCoder:(id)a3
+{
+  intent = self->_intent;
+  v5 = a3;
+  [v5 encodeInt64:intent forKey:@"intent"];
+  [v5 encodeInt64:self->_priority forKey:@"priority"];
+  v6 = *&self->_timeRange.start.epoch;
+  v7[0] = *&self->_timeRange.start.value;
+  v7[1] = v6;
+  v7[2] = *&self->_timeRange.duration.timescale;
+  [v5 encodeCMTimeRange:v7 forKey:@"timeRange"];
+}
+
+- (unint64_t)legacyIntent
+{
+  intent = self->_intent;
+  if (intent > 7)
+  {
+    if ((intent - 10) < 8)
+    {
+      return 0;
+    }
+
+    v7 = intent == 8 || intent == 9;
+    result = self->_intent;
+    if (!v7)
+    {
+      return 0;
+    }
+  }
+
+  else
+  {
+    result = 1;
+    if (intent > 3)
+    {
+      if (intent > 5)
+      {
+        if (intent != 6)
+        {
+          return 7;
+        }
+
+        priority = self->_priority;
+        if (priority >= 3)
+        {
+          return 7;
+        }
+
+        v6 = &unk_1DC208BE0;
+        return v6[priority];
+      }
+
+      if (intent == 4)
+      {
+        return 4;
+      }
+    }
+
+    else
+    {
+      if (intent <= 1)
+      {
+        if (intent)
+        {
+          if (intent == 1)
+          {
+            return result;
+          }
+
+          return 0;
+        }
+
+        priority = self->_priority;
+        if (priority >= 3)
+        {
+          return 0;
+        }
+
+        v6 = &unk_1DC208BB0;
+        return v6[priority];
+      }
+
+      result = intent;
+      if (intent != 2)
+      {
+        priority = self->_priority;
+        if (priority < 3)
+        {
+          v6 = &unk_1DC208BC8;
+          return v6[priority];
+        }
+
+        return 4;
+      }
+    }
+  }
+
+  return result;
+}
+
+- (id)description
+{
+  v3 = MEMORY[0x1E696AD60];
+  v4 = [objc_opt_class() descriptionForIntent:self->_intent];
+  v5 = [objc_opt_class() descriptionForIntentPriority:self->_priority];
+  v6 = [v3 stringWithFormat:@"intent %@ priority %@", v4, v5];
+
+  if ([(CPLResourceTransferTaskOptions *)self hasValidTimeRange])
+  {
+    v7 = *MEMORY[0x1E695E480];
+    v8 = *&self->_timeRange.start.epoch;
+    *&range.start.value = *&self->_timeRange.start.value;
+    *&range.start.epoch = v8;
+    *&range.duration.timescale = *&self->_timeRange.duration.timescale;
+    v9 = CMTimeRangeCopyDescription(v7, &range);
+    [v6 appendFormat:@" timeRange %@", v9];
+  }
+
+  return v6;
+}
+
+- (BOOL)isForeground
+{
+  v3 = objc_opt_class();
+  intent = self->_intent;
+  priority = self->_priority;
+
+  return [v3 isForegroundOperationForIntent:intent priority:priority];
+}
+
+- (BOOL)isHighPriority
+{
+  v3 = objc_opt_class();
+  intent = self->_intent;
+  priority = self->_priority;
+
+  return [v3 isHighPriorityForIntent:intent priority:priority];
+}
+
+- (CPLResourceTransferTaskOptions)initWithHighPriority:(BOOL)a3
+{
+  if (a3)
+  {
+    v3 = 0;
+  }
+
+  else
+  {
+    v3 = 2;
+  }
+
+  return [(CPLResourceTransferTaskOptions *)self initWithIntent:0 priority:v3];
+}
+
+- (CPLResourceTransferTaskOptions)initWithIntent:(unint64_t)a3 priority:(unint64_t)a4
+{
+  v4 = *(MEMORY[0x1E6960C98] + 16);
+  v6[0] = *MEMORY[0x1E6960C98];
+  v6[1] = v4;
+  v6[2] = *(MEMORY[0x1E6960C98] + 32);
+  return [(CPLResourceTransferTaskOptions *)self initWithIntent:a3 priority:a4 bypassCaches:0 timeRange:v6];
+}
+
+- (CPLResourceTransferTaskOptions)initWithIntent:(unint64_t)a3 priority:(unint64_t)a4 timeRange:(id *)a5
+{
+  v5 = *&a5->var0.var3;
+  v7[0] = *&a5->var0.var0;
+  v7[1] = v5;
+  v7[2] = *&a5->var1.var1;
+  return [(CPLResourceTransferTaskOptions *)self initWithIntent:a3 priority:a4 bypassCaches:0 timeRange:v7];
+}
+
+- (CPLResourceTransferTaskOptions)initWithIntent:(unint64_t)a3 priority:(unint64_t)a4 bypassCaches:(BOOL)a5 timeRange:(id *)a6
+{
+  v7 = a5;
+  v13.receiver = self;
+  v13.super_class = CPLResourceTransferTaskOptions;
+  result = [(CPLResourceTransferTaskOptions *)&v13 init];
+  if (result)
+  {
+    result->_intent = a3;
+    result->_priority = a4;
+    result->_shouldBypassCaches = v7;
+    if (v7)
+    {
+      result->_priority = a4 != 0;
+    }
+
+    v11 = *&a6->var0.var0;
+    v12 = *&a6->var1.var1;
+    *&result->_timeRange.start.epoch = *&a6->var0.var3;
+    *&result->_timeRange.duration.timescale = v12;
+    *&result->_timeRange.start.value = v11;
+  }
+
+  return result;
+}
+
++ (id)optionsForLegacyIntent:(unint64_t)a3
+{
+  v3 = a3 - 1;
+  if (a3 - 1 > 9)
+  {
+    v4 = 0;
+    v5 = 0;
+  }
+
+  else
+  {
+    v4 = qword_1DC208B10[v3];
+    v5 = qword_1DC208B60[v3];
+  }
+
+  v6 = [[CPLResourceTransferTaskOptions alloc] initWithIntent:v5 priority:v4];
+
+  return v6;
+}
+
++ (BOOL)isForegroundOperationForIntent:(unint64_t)a3 priority:(unint64_t)a4
+{
+  v4 = ((1 << a3) & 9) == 0 || a4 != 2;
+  v5 = ((1 << a3) & 0x3DC76) == 0 && v4;
+  return a3 > 0x11 || v5;
+}
+
++ (BOOL)isHighPriorityForIntent:(unint64_t)a3 priority:(unint64_t)a4
+{
+  v4 = ((1 << a3) & 0x41) == 0 || a4 != 2;
+  v5 = ((1 << a3) & 0x36) == 0 && v4;
+  return a3 > 6 || v5;
+}
+
++ (id)descriptionForIntentPriority:(unint64_t)a3
+{
+  if (a3 >= 3)
+  {
+    v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"CPLResourceTransferTaskIntentPriority-%lu", a3];
+  }
+
+  else
+  {
+    v3 = off_1E861DC90[a3];
+  }
+
+  return v3;
+}
+
++ (id)descriptionForIntent:(unint64_t)a3
+{
+  if (a3 >= 0x12)
+  {
+    v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"CPLResourceTransferTaskIntent-%lu", a3];
+  }
+
+  else
+  {
+    v3 = off_1E861DC00[a3];
+  }
+
+  return v3;
+}
+
++ (id)defaultOptions
+{
+  v2 = objc_alloc_init(a1);
+
+  return v2;
+}
+
+@end

@@ -1,0 +1,66 @@
+@interface HMDIDSActivityObserverModel
++ (id)hmbProperties;
++ (id)sentinelParentUUID;
+- (HMDIDSActivityObserverModel)initWithModelID:(id)a3;
+@end
+
+@implementation HMDIDSActivityObserverModel
+
+- (HMDIDSActivityObserverModel)initWithModelID:(id)a3
+{
+  v4 = a3;
+  v5 = [objc_opt_class() sentinelParentUUID];
+  v8.receiver = self;
+  v8.super_class = HMDIDSActivityObserverModel;
+  v6 = [(HMBModel *)&v8 initWithModelID:v4 parentModelID:v5];
+
+  return v6;
+}
+
++ (id)hmbProperties
+{
+  if (hmbProperties_onceToken_184649 != -1)
+  {
+    dispatch_once(&hmbProperties_onceToken_184649, &__block_literal_global_3_184650);
+  }
+
+  v3 = hmbProperties_properties_184651;
+
+  return v3;
+}
+
+void __44__HMDIDSActivityObserverModel_hmbProperties__block_invoke()
+{
+  v5[1] = *MEMORY[0x277D85DE8];
+  v4 = @"pushToken";
+  v0 = [MEMORY[0x277D170B8] fieldWithClass:objc_opt_class()];
+  v5[0] = v0;
+  v1 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v5 forKeys:&v4 count:1];
+  v2 = hmbProperties_properties_184651;
+  hmbProperties_properties_184651 = v1;
+
+  v3 = *MEMORY[0x277D85DE8];
+}
+
++ (id)sentinelParentUUID
+{
+  if (sentinelParentUUID_onceToken_184659 != -1)
+  {
+    dispatch_once(&sentinelParentUUID_onceToken_184659, &__block_literal_global_184660);
+  }
+
+  v3 = sentinelParentUUID_sentinelParentUUID_184661;
+
+  return v3;
+}
+
+uint64_t __49__HMDIDSActivityObserverModel_sentinelParentUUID__block_invoke()
+{
+  v0 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"6E0AF7DC-15F3-4FC8-ACB2-B98338E4FE85"];
+  v1 = sentinelParentUUID_sentinelParentUUID_184661;
+  sentinelParentUUID_sentinelParentUUID_184661 = v0;
+
+  return MEMORY[0x2821F96F8](v0, v1);
+}
+
+@end

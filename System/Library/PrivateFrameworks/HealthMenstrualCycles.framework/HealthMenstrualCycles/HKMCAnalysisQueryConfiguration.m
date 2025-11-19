@@ -1,0 +1,41 @@
+@interface HKMCAnalysisQueryConfiguration
+- (HKMCAnalysisQueryConfiguration)initWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)a3;
+- (void)encodeWithCoder:(id)a3;
+@end
+
+@implementation HKMCAnalysisQueryConfiguration
+
+- (id)copyWithZone:(_NSZone *)a3
+{
+  v6.receiver = self;
+  v6.super_class = HKMCAnalysisQueryConfiguration;
+  v4 = [(HKQueryServerConfiguration *)&v6 copyWithZone:a3];
+  [v4 setForceAnalysis:{-[HKMCAnalysisQueryConfiguration forceAnalysis](self, "forceAnalysis")}];
+  return v4;
+}
+
+- (HKMCAnalysisQueryConfiguration)initWithCoder:(id)a3
+{
+  v4 = a3;
+  v7.receiver = self;
+  v7.super_class = HKMCAnalysisQueryConfiguration;
+  v5 = [(HKQueryServerConfiguration *)&v7 initWithCoder:v4];
+  if (v5)
+  {
+    v5->_forceAnalysis = [v4 decodeBoolForKey:@"ForceAnalysis"];
+  }
+
+  return v5;
+}
+
+- (void)encodeWithCoder:(id)a3
+{
+  v5.receiver = self;
+  v5.super_class = HKMCAnalysisQueryConfiguration;
+  v4 = a3;
+  [(HKQueryServerConfiguration *)&v5 encodeWithCoder:v4];
+  [v4 encodeBool:self->_forceAnalysis forKey:{@"ForceAnalysis", v5.receiver, v5.super_class}];
+}
+
+@end

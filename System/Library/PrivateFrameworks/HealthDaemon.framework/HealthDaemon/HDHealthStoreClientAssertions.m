@@ -1,0 +1,89 @@
+@interface HDHealthStoreClientAssertions
+- (_TtC12HealthDaemon29HDHealthStoreClientAssertions)init;
+- (id)accessibilityAssertions;
+- (id)assertionForHKDatabaseAccessibilityAssertionWithHkDatabaseAccessibilityAssertion:(id)a3;
+- (id)firstAssertion;
+- (void)addAssertionMappingWithAssertion:(id)a3;
+- (void)dealloc;
+- (void)invalidateAssertions;
+- (void)removeAssertionMappingWithAssertion:(id)a3;
+@end
+
+@implementation HDHealthStoreClientAssertions
+
+- (void)dealloc
+{
+  v2 = self;
+  sub_2289E6C60();
+  v3.receiver = v2;
+  v3.super_class = type metadata accessor for HDHealthStoreClientAssertions();
+  [(HDHealthStoreClientAssertions *)&v3 dealloc];
+}
+
+- (void)invalidateAssertions
+{
+  v2 = self;
+  sub_2289E6C60();
+}
+
+- (id)firstAssertion
+{
+  v2 = self;
+  v3 = sub_2289E6E20();
+
+  return v3;
+}
+
+- (id)accessibilityAssertions
+{
+  v2 = self;
+  v3 = sub_2289E6F3C();
+
+  if (v3)
+  {
+    sub_2289B3D00(0, &qword_280D67888, 0x277D10AB8);
+    v4 = sub_22911C44C();
+  }
+
+  else
+  {
+    v4 = 0;
+  }
+
+  return v4;
+}
+
+- (id)assertionForHKDatabaseAccessibilityAssertionWithHkDatabaseAccessibilityAssertion:(id)a3
+{
+  v4 = a3;
+  v5 = self;
+  v6 = sub_2289E7114(v4);
+
+  return v6;
+}
+
+- (void)addAssertionMappingWithAssertion:(id)a3
+{
+  v4 = a3;
+  v5 = self;
+  sub_2289E7350(v4);
+}
+
+- (void)removeAssertionMappingWithAssertion:(id)a3
+{
+  v4 = a3;
+  v5 = self;
+  sub_2289E757C(v4);
+}
+
+- (_TtC12HealthDaemon29HDHealthStoreClientAssertions)init
+{
+  *(&self->super.isa + OBJC_IVAR____TtC12HealthDaemon29HDHealthStoreClientAssertions__dbAssertionLock) = 0;
+  v3 = OBJC_IVAR____TtC12HealthDaemon29HDHealthStoreClientAssertions_databaseAccessibilityAssertions;
+  *(&self->super.isa + v3) = sub_2289B2A1C(MEMORY[0x277D84F90]);
+  v5.receiver = self;
+  v5.super_class = type metadata accessor for HDHealthStoreClientAssertions();
+  return [(HDHealthStoreClientAssertions *)&v5 init];
+}
+
+@end

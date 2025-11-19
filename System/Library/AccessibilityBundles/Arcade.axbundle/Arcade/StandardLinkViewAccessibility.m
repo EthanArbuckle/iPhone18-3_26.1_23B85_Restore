@@ -1,0 +1,14 @@
+@interface StandardLinkViewAccessibility
+- (unint64_t)accessibilityTraits;
+@end
+
+@implementation StandardLinkViewAccessibility
+
+- (unint64_t)accessibilityTraits
+{
+  v3.receiver = self;
+  v3.super_class = StandardLinkViewAccessibility;
+  return *MEMORY[0x29EDC7F70] | [(StandardLinkViewAccessibility *)&v3 accessibilityTraits];
+}
+
+@end

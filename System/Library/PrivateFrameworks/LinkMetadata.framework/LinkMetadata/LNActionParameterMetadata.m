@@ -1,0 +1,662 @@
+@interface LNActionParameterMetadata
+- (BOOL)isEqual:(id)a3;
+- (LNActionParameterMetadata)actionParameterMetadataWithCapabilities:(unint64_t)a3;
+- (LNActionParameterMetadata)actionParameterMetadataWithDescriptiveMetadataFromParameter:(id)a3 usingLibraryKey:(id)a4;
+- (LNActionParameterMetadata)initWithCoder:(id)a3;
+- (LNActionParameterMetadata)initWithName:(id)a3 valueType:(id)a4 optional:(BOOL)a5 title:(id)a6 description:(id)a7 resolvableInputTypes:(id)a8 typeSpecificMetadata:(id)a9 dynamicOptionsSupport:(int64_t)a10 inputConnectionBehavior:(int64_t)a11 capabilities:(unint64_t)a12 queryIdentifier:(id)a13;
+- (id)copyWithZone:(_NSZone *)a3;
+- (id)description;
+- (unint64_t)hash;
+- (void)encodeWithCoder:(id)a3;
+@end
+
+@implementation LNActionParameterMetadata
+
+- (LNActionParameterMetadata)actionParameterMetadataWithDescriptiveMetadataFromParameter:(id)a3 usingLibraryKey:(id)a4
+{
+  v5 = a3;
+  v6 = [(LNActionParameterMetadata *)self copy];
+  v7 = v6[4];
+  if (!v7 || ([v7 key], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "length"), v8, !v9))
+  {
+    v10 = [v5 title];
+    v11 = v6[4];
+    v6[4] = v10;
+  }
+
+  v12 = v6[5];
+  if (!v12 || ([v12 key], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "length"), v13, !v14))
+  {
+    v15 = [v5 parameterDescription];
+    v16 = v6[5];
+    v6[5] = v15;
+  }
+
+  if (!v6[10])
+  {
+    v6[10] = [v5 capabilities];
+  }
+
+  v17 = [(LNActionParameterMetadata *)self typeSpecificMetadata];
+  v18 = [v17 mutableCopy];
+
+  v19 = [v5 typeSpecificMetadata];
+  v24[0] = MEMORY[0x1E69E9820];
+  v24[1] = 3221225472;
+  v24[2] = __105__LNActionParameterMetadata_actionParameterMetadataWithDescriptiveMetadataFromParameter_usingLibraryKey___block_invoke;
+  v24[3] = &unk_1E72B12A8;
+  v25 = v18;
+  v20 = v18;
+  [v19 enumerateKeysAndObjectsUsingBlock:v24];
+
+  v21 = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:v20];
+  v22 = v6[7];
+  v6[7] = v21;
+
+  return v6;
+}
+
+void __105__LNActionParameterMetadata_actionParameterMetadataWithDescriptiveMetadataFromParameter_usingLibraryKey___block_invoke(uint64_t a1, void *a2, void *a3)
+{
+  v12 = a2;
+  v5 = a3;
+  objc_opt_class();
+  isKindOfClass = objc_opt_isKindOfClass();
+  v7 = [*(a1 + 32) objectForKey:v12];
+  v8 = v7;
+  if (isKindOfClass)
+  {
+    if (v7)
+    {
+      isKindOfClass = [v7 key];
+      v9 = [isKindOfClass length];
+      if (!v5 || v9)
+      {
+
+LABEL_14:
+        goto LABEL_15;
+      }
+    }
+
+    else if (!v5)
+    {
+      goto LABEL_14;
+    }
+
+    v10 = [v5 key];
+    v11 = [v10 length];
+
+    if (v8)
+    {
+    }
+
+    if (v11)
+    {
+      [*(a1 + 32) setObject:v5 forKey:v12];
+    }
+
+    goto LABEL_14;
+  }
+
+  if (v5 && !v8)
+  {
+    [*(a1 + 32) setObject:v5 forKey:v12];
+  }
+
+LABEL_15:
+}
+
+- (LNActionParameterMetadata)actionParameterMetadataWithCapabilities:(unint64_t)a3
+{
+  v4 = [(LNActionParameterMetadata *)self copy];
+  v4[10] = a3;
+
+  return v4;
+}
+
+- (BOOL)isEqual:(id)a3
+{
+  v4 = a3;
+  v5 = v4;
+  if (self != v4)
+  {
+    v6 = v4;
+    if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+    {
+      LOBYTE(v12) = 0;
+LABEL_49:
+
+      goto LABEL_50;
+    }
+
+    v7 = [(LNActionParameterMetadata *)self name];
+    v8 = [(LNActionParameterMetadata *)v6 name];
+    v9 = v7;
+    v10 = v8;
+    v11 = v10;
+    if (v9 == v10)
+    {
+    }
+
+    else
+    {
+      LOBYTE(v12) = 0;
+      v13 = v10;
+      v14 = v9;
+      if (!v9 || !v10)
+      {
+        goto LABEL_47;
+      }
+
+      v15 = [v9 isEqualToString:v10];
+
+      if (!v15)
+      {
+        LOBYTE(v12) = 0;
+LABEL_48:
+
+        goto LABEL_49;
+      }
+    }
+
+    v16 = [(LNActionParameterMetadata *)self title];
+    v17 = [(LNActionParameterMetadata *)v6 title];
+    v14 = v16;
+    v18 = v17;
+    v13 = v18;
+    if (v14 == v18)
+    {
+    }
+
+    else
+    {
+      LOBYTE(v12) = 0;
+      v19 = v18;
+      v20 = v14;
+      if (!v14 || !v18)
+      {
+        goto LABEL_46;
+      }
+
+      v21 = [v14 isEqual:v18];
+
+      if (!v21)
+      {
+        LOBYTE(v12) = 0;
+LABEL_47:
+
+        goto LABEL_48;
+      }
+    }
+
+    v22 = [(LNActionParameterMetadata *)self valueType];
+    v23 = [(LNActionParameterMetadata *)v6 valueType];
+    v20 = v22;
+    v24 = v23;
+    v19 = v24;
+    if (v20 == v24)
+    {
+    }
+
+    else
+    {
+      LOBYTE(v12) = 0;
+      v46 = v20;
+      v25 = v24;
+      if (!v20 || !v24)
+      {
+        goto LABEL_45;
+      }
+
+      v12 = [v20 isEqual:v24];
+
+      if (!v12)
+      {
+        goto LABEL_46;
+      }
+    }
+
+    v26 = [(LNActionParameterMetadata *)self isOptional];
+    if (v26 != [(LNActionParameterMetadata *)v6 isOptional])
+    {
+      LOBYTE(v12) = 0;
+LABEL_46:
+
+      goto LABEL_47;
+    }
+
+    v46 = v20;
+    v27 = [(LNActionParameterMetadata *)self typeSpecificMetadata];
+    v44 = [(LNActionParameterMetadata *)v6 typeSpecificMetadata];
+    v20 = v27;
+    v28 = v44;
+    v45 = v28;
+    if (v20 == v28)
+    {
+
+      v43 = v20;
+    }
+
+    else
+    {
+      LOBYTE(v12) = 0;
+      if (!v20)
+      {
+        v29 = v28;
+        v30 = 0;
+        goto LABEL_43;
+      }
+
+      v29 = v28;
+      v30 = v20;
+      if (!v28)
+      {
+LABEL_43:
+        v40 = v30;
+
+        goto LABEL_44;
+      }
+
+      v31 = v28;
+      v42 = [v20 isEqualToDictionary:v28];
+
+      v43 = v20;
+      if (!v42)
+      {
+LABEL_39:
+        LOBYTE(v12) = 0;
+        v20 = v43;
+LABEL_44:
+        v25 = v45;
+LABEL_45:
+
+        v20 = v46;
+        goto LABEL_46;
+      }
+    }
+
+    v32 = [(LNActionParameterMetadata *)self dynamicOptionsSupport];
+    if (v32 != [(LNActionParameterMetadata *)v6 dynamicOptionsSupport])
+    {
+      goto LABEL_39;
+    }
+
+    v33 = [(LNActionParameterMetadata *)self inputConnectionBehavior];
+    if (v33 != [(LNActionParameterMetadata *)v6 inputConnectionBehavior])
+    {
+      goto LABEL_39;
+    }
+
+    v34 = [(LNActionParameterMetadata *)self capabilities];
+    if (v34 != [(LNActionParameterMetadata *)v6 capabilities])
+    {
+      goto LABEL_39;
+    }
+
+    v35 = [(LNActionParameterMetadata *)self queryIdentifier];
+    v36 = [(LNActionParameterMetadata *)v6 queryIdentifier];
+    v37 = v35;
+    v38 = v36;
+    v39 = v38;
+    if (v37 == v38)
+    {
+      LOBYTE(v12) = 1;
+    }
+
+    else
+    {
+      LOBYTE(v12) = 0;
+      if (v37 && v38)
+      {
+        LOBYTE(v12) = [v37 isEqualToString:v38];
+      }
+    }
+
+    v29 = v39;
+    v20 = v43;
+    v30 = v37;
+    goto LABEL_43;
+  }
+
+  LOBYTE(v12) = 1;
+LABEL_50:
+
+  return v12;
+}
+
+- (unint64_t)hash
+{
+  v3 = [(LNActionParameterMetadata *)self isOptional];
+  v4 = [(LNActionParameterMetadata *)self valueType];
+  v5 = [v4 hash];
+  v6 = [(LNActionParameterMetadata *)self name];
+  v7 = v5 ^ [v6 hash] ^ v3;
+  v8 = [(LNActionParameterMetadata *)self title];
+  v9 = [v8 hash];
+  v10 = [(LNActionParameterMetadata *)self typeSpecificMetadata];
+  v11 = v9 ^ [v10 hash];
+  v12 = v7 ^ v11 ^ [(LNActionParameterMetadata *)self dynamicOptionsSupport];
+  v13 = [(LNActionParameterMetadata *)self inputConnectionBehavior];
+  v14 = v13 ^ [(LNActionParameterMetadata *)self capabilities];
+  v15 = [(LNActionParameterMetadata *)self queryIdentifier];
+  v16 = v14 ^ [v15 hash];
+
+  return v12 ^ v16;
+}
+
+- (id)description
+{
+  v26 = MEMORY[0x1E696AEC0];
+  v3 = objc_opt_class();
+  v4 = NSStringFromClass(v3);
+  v27 = [(LNActionParameterMetadata *)self name];
+  v5 = [(LNActionParameterMetadata *)self valueType];
+  v6 = [(LNActionParameterMetadata *)self title];
+  v25 = [(LNActionParameterMetadata *)self resolvableInputTypes];
+  v24 = [v25 valueForKeyPath:@"description"];
+  v7 = [v24 componentsJoinedByString:{@", "}];
+  v22 = [(LNActionParameterMetadata *)self isOptional];
+  v8 = [(LNActionParameterMetadata *)self typeSpecificMetadata];
+  v23 = [(LNActionParameterMetadata *)self dynamicOptionsSupport];
+  v9 = [(LNActionParameterMetadata *)self inputConnectionBehavior];
+  v10 = @"Default";
+  if (v9 == 1)
+  {
+    v10 = @"Never";
+  }
+
+  if (v9 == 2)
+  {
+    v10 = @"ConnectToPreviousIntentResult";
+  }
+
+  v11 = v10;
+  v12 = [(LNActionParameterMetadata *)self capabilities];
+  v13 = [(LNActionParameterMetadata *)self queryIdentifier];
+  if (v12)
+  {
+    v21 = v4;
+    v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
+    v15 = v14;
+    if (v12)
+    {
+      [v14 addObject:@"HasStaticDefault"];
+      if ((v12 & 2) == 0)
+      {
+LABEL_8:
+        if ((v12 & 4) == 0)
+        {
+          goto LABEL_9;
+        }
+
+        goto LABEL_21;
+      }
+    }
+
+    else if ((v12 & 2) == 0)
+    {
+      goto LABEL_8;
+    }
+
+    [v15 addObject:@"HasDynamicDefault"];
+    if ((v12 & 4) == 0)
+    {
+LABEL_9:
+      if ((v12 & 8) == 0)
+      {
+LABEL_11:
+        v16 = [v15 componentsJoinedByString:{@", "}];
+
+        v4 = v21;
+        goto LABEL_13;
+      }
+
+LABEL_10:
+      [v15 addObject:@"HasOptionsProvider"];
+      goto LABEL_11;
+    }
+
+LABEL_21:
+    v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"HasQuery(%@)", v13];
+    [v15 addObject:v20];
+
+    if ((v12 & 8) == 0)
+    {
+      goto LABEL_11;
+    }
+
+    goto LABEL_10;
+  }
+
+  v16 = @"N/A";
+LABEL_13:
+  if (v22)
+  {
+    v17 = @"YES";
+  }
+
+  else
+  {
+    v17 = @"NO";
+  }
+
+  v18 = [v26 stringWithFormat:@"<%@: %p, name: %@, valueType: %@, title: %@, resolvableInputTypes: [%@], isOptional: %@, typeSpecificMetadata: %@, dynamicOptionsSupport: %ld, inputConnectionBehavior: %@, capabilities: %@>", v4, self, v27, v5, v6, v7, v17, v8, v23, v11, v16];
+
+  return v18;
+}
+
+- (LNActionParameterMetadata)initWithCoder:(id)a3
+{
+  v30[9] = *MEMORY[0x1E69E9840];
+  v4 = a3;
+  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"valueType"];
+  if (v6)
+  {
+    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parameterDescription"];
+    v7 = [v4 decodeBoolForKey:@"optional"];
+    v8 = MEMORY[0x1E695DFD8];
+    v9 = objc_opt_class();
+    v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
+    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"resolvableInputTypes"];
+
+    if (v11)
+    {
+      v27 = v7;
+      v12 = LNValueTypeObjectClassesForCoding();
+      v30[0] = objc_opt_class();
+      v30[1] = objc_opt_class();
+      v30[2] = objc_opt_class();
+      v30[3] = objc_opt_class();
+      v30[4] = objc_opt_class();
+      v30[5] = objc_opt_class();
+      v30[6] = objc_opt_class();
+      v30[7] = objc_opt_class();
+      v30[8] = objc_opt_class();
+      v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:9];
+      v14 = [v12 setByAddingObjectsFromArray:v13];
+      v15 = [v4 decodeObjectOfClasses:v14 forKey:@"typeSpecificMetadata"];
+
+      if (v15)
+      {
+        v16 = [v4 decodeIntegerForKey:@"dynamicOptionsSupport"];
+        v17 = [v4 decodeIntegerForKey:@"inputConnectionBehavior"];
+        v18 = [v4 decodeIntegerForKey:@"capabilities"];
+        v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"queryIdentifier"];
+        v26 = v18;
+        v25 = v16;
+        v21 = v28;
+        v20 = v29;
+        self = [(LNActionParameterMetadata *)self initWithName:v5 valueType:v6 optional:v27 title:v29 description:v28 resolvableInputTypes:v11 typeSpecificMetadata:v15 dynamicOptionsSupport:v25 inputConnectionBehavior:v17 capabilities:v26 queryIdentifier:v19];
+
+        v22 = self;
+      }
+
+      else
+      {
+        v22 = 0;
+        v21 = v28;
+        v20 = v29;
+      }
+    }
+
+    else
+    {
+      v22 = 0;
+      v21 = v28;
+      v20 = v29;
+    }
+  }
+
+  else
+  {
+    v22 = 0;
+  }
+
+  v23 = *MEMORY[0x1E69E9840];
+  return v22;
+}
+
+- (void)encodeWithCoder:(id)a3
+{
+  v4 = a3;
+  v5 = [(LNActionParameterMetadata *)self name];
+  [v4 encodeObject:v5 forKey:@"name"];
+
+  v6 = [(LNActionParameterMetadata *)self valueType];
+  [v4 encodeObject:v6 forKey:@"valueType"];
+
+  v7 = [(LNActionParameterMetadata *)self title];
+  [v4 encodeObject:v7 forKey:@"title"];
+
+  v8 = [(LNActionParameterMetadata *)self parameterDescription];
+  [v4 encodeObject:v8 forKey:@"parameterDescription"];
+
+  [v4 encodeBool:-[LNActionParameterMetadata isOptional](self forKey:{"isOptional"), @"optional"}];
+  v9 = [(LNActionParameterMetadata *)self resolvableInputTypes];
+  [v4 encodeObject:v9 forKey:@"resolvableInputTypes"];
+
+  v10 = [(LNActionParameterMetadata *)self typeSpecificMetadata];
+  [v4 encodeObject:v10 forKey:@"typeSpecificMetadata"];
+
+  [v4 encodeInteger:-[LNActionParameterMetadata dynamicOptionsSupport](self forKey:{"dynamicOptionsSupport"), @"dynamicOptionsSupport"}];
+  [v4 encodeInteger:-[LNActionParameterMetadata inputConnectionBehavior](self forKey:{"inputConnectionBehavior"), @"inputConnectionBehavior"}];
+  [v4 encodeInteger:-[LNActionParameterMetadata capabilities](self forKey:{"capabilities"), @"capabilities"}];
+  v11 = [(LNActionParameterMetadata *)self queryIdentifier];
+  [v4 encodeObject:v11 forKey:@"queryIdentifier"];
+}
+
+- (id)copyWithZone:(_NSZone *)a3
+{
+  v17 = [LNActionParameterMetadata alloc];
+  v16 = [(LNActionParameterMetadata *)self name];
+  v4 = [(LNActionParameterMetadata *)self valueType];
+  v5 = [(LNActionParameterMetadata *)self isOptional];
+  v6 = [(LNActionParameterMetadata *)self title];
+  v7 = [(LNActionParameterMetadata *)self parameterDescription];
+  v8 = [(LNActionParameterMetadata *)self resolvableInputTypes];
+  v9 = [(LNActionParameterMetadata *)self typeSpecificMetadata];
+  v10 = [(LNActionParameterMetadata *)self dynamicOptionsSupport];
+  v11 = [(LNActionParameterMetadata *)self inputConnectionBehavior];
+  v12 = [(LNActionParameterMetadata *)self capabilities];
+  v13 = [(LNActionParameterMetadata *)self queryIdentifier];
+  v14 = [(LNActionParameterMetadata *)v17 initWithName:v16 valueType:v4 optional:v5 title:v6 description:v7 resolvableInputTypes:v8 typeSpecificMetadata:v9 dynamicOptionsSupport:v10 inputConnectionBehavior:v11 capabilities:v12 queryIdentifier:v13];
+
+  return v14;
+}
+
+- (LNActionParameterMetadata)initWithName:(id)a3 valueType:(id)a4 optional:(BOOL)a5 title:(id)a6 description:(id)a7 resolvableInputTypes:(id)a8 typeSpecificMetadata:(id)a9 dynamicOptionsSupport:(int64_t)a10 inputConnectionBehavior:(int64_t)a11 capabilities:(unint64_t)a12 queryIdentifier:(id)a13
+{
+  v45 = a3;
+  v19 = a4;
+  v20 = a6;
+  v44 = a7;
+  v21 = a8;
+  v22 = a9;
+  v23 = a13;
+  if (v21)
+  {
+    if (v19)
+    {
+      goto LABEL_3;
+    }
+  }
+
+  else
+  {
+    v41 = [MEMORY[0x1E696AAA8] currentHandler];
+    [v41 handleFailureInMethod:a2 object:self file:@"LNActionParameterMetadata.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"resolvableInputTypes"}];
+
+    if (v19)
+    {
+      goto LABEL_3;
+    }
+  }
+
+  v42 = [MEMORY[0x1E696AAA8] currentHandler];
+  [v42 handleFailureInMethod:a2 object:self file:@"LNActionParameterMetadata.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"valueType"}];
+
+LABEL_3:
+  v46.receiver = self;
+  v46.super_class = LNActionParameterMetadata;
+  v24 = [(LNActionParameterMetadata *)&v46 init];
+  if (v24)
+  {
+    v25 = [v45 copy];
+    name = v24->_name;
+    v24->_name = v25;
+
+    v27 = v20;
+    if (v27)
+    {
+      objc_opt_class();
+      if (objc_opt_isKindOfClass())
+      {
+        v28 = v27;
+      }
+
+      else
+      {
+        v28 = 0;
+      }
+    }
+
+    else
+    {
+      v28 = 0;
+    }
+
+    v29 = v28;
+
+    title = v24->_title;
+    v24->_title = v29;
+
+    objc_storeStrong(&v24->_parameterDescription, a7);
+    v31 = [v19 copy];
+    valueType = v24->_valueType;
+    v24->_valueType = v31;
+
+    v24->_optional = a5;
+    v33 = [v21 copy];
+    resolvableInputTypes = v24->_resolvableInputTypes;
+    v24->_resolvableInputTypes = v33;
+
+    v35 = [v22 copy];
+    typeSpecificMetadata = v24->_typeSpecificMetadata;
+    v24->_typeSpecificMetadata = v35;
+
+    v24->_dynamicOptionsSupport = a10;
+    v24->_inputConnectionBehavior = a11;
+    v24->_capabilities = a12;
+    v37 = [v23 copy];
+    queryIdentifier = v24->_queryIdentifier;
+    v24->_queryIdentifier = v37;
+
+    v39 = v24;
+  }
+
+  return v24;
+}
+
+@end

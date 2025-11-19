@@ -1,0 +1,22 @@
+@interface HAHDCodablePinnedContentDifference
+- (HAHDCodablePinnedContentDifference)init;
+- (void)encodeWithCoder:(id)a3;
+@end
+
+@implementation HAHDCodablePinnedContentDifference
+
+- (void)encodeWithCoder:(id)a3
+{
+  v4 = a3;
+  v5 = self;
+  sub_2512EC26C(v4);
+}
+
+- (HAHDCodablePinnedContentDifference)init
+{
+  result = _swift_stdlib_reportUnimplementedInitializer();
+  __break(1u);
+  return result;
+}
+
+@end

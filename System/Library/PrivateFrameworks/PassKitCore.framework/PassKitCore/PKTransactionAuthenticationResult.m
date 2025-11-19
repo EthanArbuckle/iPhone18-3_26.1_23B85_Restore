@@ -1,0 +1,179 @@
+@interface PKTransactionAuthenticationResult
+- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqualToTransactionAuthenticationResult:(id)a3;
+- (PKTransactionAuthenticationResult)initWithCoder:(id)a3;
+- (unint64_t)hash;
+- (void)encodeWithCoder:(id)a3;
+@end
+
+@implementation PKTransactionAuthenticationResult
+
+- (void)encodeWithCoder:(id)a3
+{
+  encryptedPIN = self->_encryptedPIN;
+  v5 = a3;
+  [v5 encodeObject:encryptedPIN forKey:@"encryptedPIN"];
+  [v5 encodeObject:self->_userConfirmation forKey:@"userConfirmation"];
+  [v5 encodeObject:self->_transactionDetailsSignature forKey:@"transactionDetailsSignature"];
+  [v5 encodeObject:self->_authenticationContext forKey:@"authenticationContext"];
+  [v5 encodeObject:self->_transactionServiceIdentifier forKey:@"transactionServiceIdentifier"];
+}
+
+- (PKTransactionAuthenticationResult)initWithCoder:(id)a3
+{
+  v4 = a3;
+  v17.receiver = self;
+  v17.super_class = PKTransactionAuthenticationResult;
+  v5 = [(PKTransactionAuthenticationResult *)&v17 init];
+  if (v5)
+  {
+    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"encryptedPIN"];
+    encryptedPIN = v5->_encryptedPIN;
+    v5->_encryptedPIN = v6;
+
+    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userConfirmation"];
+    userConfirmation = v5->_userConfirmation;
+    v5->_userConfirmation = v8;
+
+    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionDetailsSignature"];
+    transactionDetailsSignature = v5->_transactionDetailsSignature;
+    v5->_transactionDetailsSignature = v10;
+
+    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"authenticationContext"];
+    authenticationContext = v5->_authenticationContext;
+    v5->_authenticationContext = v12;
+
+    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionServiceIdentifier"];
+    transactionServiceIdentifier = v5->_transactionServiceIdentifier;
+    v5->_transactionServiceIdentifier = v14;
+  }
+
+  return v5;
+}
+
+- (unint64_t)hash
+{
+  v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
+  [v3 safelyAddObject:self->_encryptedPIN];
+  [v3 safelyAddObject:self->_userConfirmation];
+  [v3 safelyAddObject:self->_transactionDetailsSignature];
+  [v3 safelyAddObject:self->_authenticationContext];
+  [v3 safelyAddObject:self->_transactionServiceIdentifier];
+  v4 = PKCombinedHash(17, v3);
+
+  return v4;
+}
+
+- (BOOL)isEqual:(id)a3
+{
+  v4 = a3;
+  v5 = v4;
+  if (v4 == self)
+  {
+    v6 = 1;
+  }
+
+  else
+  {
+    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKTransactionAuthenticationResult *)self isEqualToTransactionAuthenticationResult:v5];
+  }
+
+  return v6;
+}
+
+- (BOOL)isEqualToTransactionAuthenticationResult:(id)a3
+{
+  v4 = a3;
+  encryptedPIN = self->_encryptedPIN;
+  v6 = v4[2];
+  if (encryptedPIN)
+  {
+    v7 = v6 == 0;
+  }
+
+  else
+  {
+    v7 = 1;
+  }
+
+  if (v7)
+  {
+    if (encryptedPIN != v6)
+    {
+      goto LABEL_26;
+    }
+  }
+
+  else if (([(NSData *)encryptedPIN isEqual:?]& 1) == 0)
+  {
+    goto LABEL_26;
+  }
+
+  userConfirmation = self->_userConfirmation;
+  v9 = v4[4];
+  if (userConfirmation && v9)
+  {
+    if (([(NSData *)userConfirmation isEqual:?]& 1) == 0)
+    {
+      goto LABEL_26;
+    }
+  }
+
+  else if (userConfirmation != v9)
+  {
+    goto LABEL_26;
+  }
+
+  transactionDetailsSignature = self->_transactionDetailsSignature;
+  v11 = v4[3];
+  if (transactionDetailsSignature && v11)
+  {
+    if (([(NSData *)transactionDetailsSignature isEqual:?]& 1) == 0)
+    {
+      goto LABEL_26;
+    }
+  }
+
+  else if (transactionDetailsSignature != v11)
+  {
+    goto LABEL_26;
+  }
+
+  authenticationContext = self->_authenticationContext;
+  v13 = v4[1];
+  if (!authenticationContext || !v13)
+  {
+    if (authenticationContext == v13)
+    {
+      goto LABEL_22;
+    }
+
+LABEL_26:
+    v16 = 0;
+    goto LABEL_27;
+  }
+
+  if (![(PKTransactionAuthenticationContext *)authenticationContext isEqual:?])
+  {
+    goto LABEL_26;
+  }
+
+LABEL_22:
+  transactionServiceIdentifier = self->_transactionServiceIdentifier;
+  v15 = v4[5];
+  if (transactionServiceIdentifier && v15)
+  {
+    v16 = [(NSString *)transactionServiceIdentifier isEqual:?];
+  }
+
+  else
+  {
+    v16 = transactionServiceIdentifier == v15;
+  }
+
+LABEL_27:
+
+  return v16;
+}
+
+@end

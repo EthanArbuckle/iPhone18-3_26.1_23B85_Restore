@@ -1,0 +1,254 @@
+@interface MKCrypto
+- (MKCrypto)initWithKey:(id)a3;
+- (id)bytes:(unint64_t)a3;
+- (id)decryptData:(id)a3;
+- (id)encrypt:(BOOL)a3 data:(id)a4 withKey:(id)a5 iv:(id)a6;
+- (id)encryptData:(id)a3;
+@end
+
+@implementation MKCrypto
+
+- (MKCrypto)initWithKey:(id)a3
+{
+  v28 = *MEMORY[0x277D85DE8];
+  v4 = a3;
+  v26.receiver = self;
+  v26.super_class = MKCrypto;
+  v5 = [(MKCrypto *)&v26 init];
+  if (!v5)
+  {
+LABEL_18:
+    v13 = v5;
+    goto LABEL_19;
+  }
+
+  if ([v4 length] > 0xF)
+  {
+    v24 = 0u;
+    v25 = 0u;
+    v22 = 0u;
+    v23 = 0u;
+    v14 = [&unk_286AAD338 countByEnumeratingWithState:&v22 objects:v27 count:16];
+    if (v14)
+    {
+      v15 = v14;
+      v16 = *v23;
+      while (2)
+      {
+        for (i = 0; i != v15; ++i)
+        {
+          if (*v23 != v16)
+          {
+            objc_enumerationMutation(&unk_286AAD338);
+          }
+
+          v18 = [*(*(&v22 + 1) + 8 * i) unsignedIntegerValue];
+          if ([v4 length] > v18)
+          {
+            v19 = [v4 subdataWithRange:{0, v18}];
+
+            v4 = v19;
+            goto LABEL_17;
+          }
+
+          if ([v4 length] == v18)
+          {
+            goto LABEL_17;
+          }
+        }
+
+        v15 = [&unk_286AAD338 countByEnumeratingWithState:&v22 objects:v27 count:16];
+        if (v15)
+        {
+          continue;
+        }
+
+        break;
+      }
+    }
+
+LABEL_17:
+    [(MKCrypto *)v5 setKey:v4];
+    goto LABEL_18;
+  }
+
+  v6 = +[MKLog log];
+  if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  {
+    [(MKCrypto *)v5 initWithKey:v6, v7, v8, v9, v10, v11, v12];
+  }
+
+  v13 = 0;
+LABEL_19:
+
+  v20 = *MEMORY[0x277D85DE8];
+  return v13;
+}
+
+- (id)encryptData:(id)a3
+{
+  v4 = a3;
+  if ([v4 length])
+  {
+    v5 = [(MKCrypto *)self bytes:16];
+    v6 = [(MKCrypto *)self encrypt:1 data:v4 withKey:self->_key iv:v5];
+    if (v6)
+    {
+      v7 = [MEMORY[0x277CBEB28] dataWithCapacity:{objc_msgSend(v6, "length") + objc_msgSend(v5, "length")}];
+      [v7 appendData:v5];
+      [v7 appendData:v6];
+    }
+
+    else
+    {
+      v7 = 0;
+    }
+  }
+
+  else
+  {
+    v8 = +[MKLog log];
+    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    {
+      [(MKCrypto *)self encryptData:v8, v9, v10, v11, v12, v13, v14];
+    }
+
+    v7 = 0;
+  }
+
+  return v7;
+}
+
+- (id)decryptData:(id)a3
+{
+  v4 = a3;
+  if ([v4 length] > 0x10)
+  {
+    v13 = [v4 subdataWithRange:{0, 16}];
+    v14 = [v4 subdataWithRange:{objc_msgSend(v13, "length"), objc_msgSend(v4, "length") - objc_msgSend(v13, "length")}];
+    v12 = [(MKCrypto *)self encrypt:0 data:v14 withKey:self->_key iv:v13];
+  }
+
+  else
+  {
+    v5 = +[MKLog log];
+    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    {
+      [(MKCrypto *)self decryptData:v5, v6, v7, v8, v9, v10, v11];
+    }
+
+    v12 = 0;
+  }
+
+  return v12;
+}
+
+- (id)encrypt:(BOOL)a3 data:(id)a4 withKey:(id)a5 iv:(id)a6
+{
+  v8 = a3;
+  v10 = a4;
+  v11 = a5;
+  v12 = a6;
+  cryptorRef = 0;
+  v13 = [v11 length];
+  if (v13 > 0x20 || ((1 << v13) & 0x101010000) == 0)
+  {
+    v16 = [MKError alloc];
+    v17 = @"did receive an invalid key.";
+    v18 = 0;
+    goto LABEL_13;
+  }
+
+  if ([v12 length] != 16)
+  {
+    v16 = [MKError alloc];
+    v17 = @"did receive an invalid iv.";
+    v18 = 1;
+    goto LABEL_13;
+  }
+
+  if ([(MKCrypto *)self useCFB8Mode])
+  {
+    v15 = 10;
+  }
+
+  else
+  {
+    v15 = 3;
+  }
+
+  if (CCCryptorCreateWithMode(!v8, v15, 0, 0, [v12 bytes], objc_msgSend(v11, "bytes"), objc_msgSend(v11, "length"), 0, 0, 0, 0, &cryptorRef))
+  {
+    v16 = [MKError alloc];
+    v17 = @"could not create a cryptor.";
+    v18 = 3;
+LABEL_13:
+    v19 = [(MKError *)v16 initWithDomain:0x286A907B0 code:v18 message:v17];
+    v20 = 0;
+    goto LABEL_14;
+  }
+
+  dataOutMoved = 0;
+  v23 = [MEMORY[0x277CBEB28] dataWithLength:{objc_msgSend(v10, "length") + 16}];
+  if (CCCryptorUpdate(cryptorRef, [v10 bytes], objc_msgSend(v10, "length"), objc_msgSend(v23, "mutableBytes"), objc_msgSend(v23, "length"), &dataOutMoved))
+  {
+    v24 = [MKError alloc];
+    v25 = @"could not update the cryptor.";
+  }
+
+  else
+  {
+    [v23 setLength:dataOutMoved];
+    if (!CCCryptorFinal(cryptorRef, [v23 mutableBytes], objc_msgSend(v23, "length"), &dataOutMoved))
+    {
+      v20 = v23;
+      v19 = 0;
+      goto LABEL_28;
+    }
+
+    v24 = [MKError alloc];
+    v25 = @"could not finalize the cryptor.";
+  }
+
+  v19 = [(MKError *)v24 initWithDomain:0x286A907B0 code:3 message:v25];
+  v20 = 0;
+LABEL_28:
+
+LABEL_14:
+  if (cryptorRef)
+  {
+    CCCryptorRelease(cryptorRef);
+  }
+
+  if (v19)
+  {
+    v21 = +[MKLog log];
+    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    {
+      [MKCrypto encrypt:v19 data:v21 withKey:? iv:?];
+    }
+  }
+
+  return v20;
+}
+
+- (id)bytes:(unint64_t)a3
+{
+  v4 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:a3];
+  if (a3 >= 4)
+  {
+    v5 = a3 >> 2;
+    do
+    {
+      v7 = arc4random();
+      [v4 appendBytes:&v7 length:4];
+      --v5;
+    }
+
+    while (v5);
+  }
+
+  return v4;
+}
+
+@end

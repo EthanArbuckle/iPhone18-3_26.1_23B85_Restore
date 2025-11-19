@@ -1,0 +1,183 @@
+@interface DebugFormatVersioningModeViewController
+- (_TtC8NewsFeed39DebugFormatVersioningModeViewController)initWithCoder:(id)a3;
+- (_TtC8NewsFeed39DebugFormatVersioningModeViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
+- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)viewDidLoad;
+- (void)viewWillLayoutSubviews;
+@end
+
+@implementation DebugFormatVersioningModeViewController
+
+- (_TtC8NewsFeed39DebugFormatVersioningModeViewController)initWithCoder:(id)a3
+{
+  v4 = OBJC_IVAR____TtC8NewsFeed39DebugFormatVersioningModeViewController_tableView;
+  *(&self->super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x1E69DD020]) initWithFrame:2 style:{0.0, 0.0, 0.0, 0.0}];
+  v5 = OBJC_IVAR____TtC8NewsFeed39DebugFormatVersioningModeViewController__currentMode;
+  if (qword_1EC87D510 != -1)
+  {
+    swift_once();
+  }
+
+  sub_1D62EAEB0();
+  swift_allocObject();
+
+  *(&self->super.super.super.isa + v5) = sub_1D725977C();
+  result = sub_1D726402C();
+  __break(1u);
+  return result;
+}
+
+- (void)viewDidLoad
+{
+  v2 = self;
+  sub_1D62E9930();
+}
+
+- (void)viewWillLayoutSubviews
+{
+  v14.receiver = self;
+  v14.super_class = swift_getObjectType();
+  v2 = v14.receiver;
+  [(DebugFormatVersioningModeViewController *)&v14 viewWillLayoutSubviews];
+  v3 = *&v2[OBJC_IVAR____TtC8NewsFeed39DebugFormatVersioningModeViewController_tableView];
+  v4 = [v2 view];
+  if (v4)
+  {
+    v5 = v4;
+    [v4 bounds];
+    v7 = v6;
+    v9 = v8;
+    v11 = v10;
+    v13 = v12;
+
+    [v3 setFrame_];
+  }
+
+  else
+  {
+    __break(1u);
+  }
+}
+
+- (_TtC8NewsFeed39DebugFormatVersioningModeViewController)initWithNibName:(id)a3 bundle:(id)a4
+{
+  result = _swift_stdlib_reportUnimplementedInitializer();
+  __break(1u);
+  return result;
+}
+
+- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+{
+  if (a4 < 0)
+  {
+    __break(1u);
+  }
+
+  else
+  {
+    v4 = *(self + OBJC_IVAR____TtC8NewsFeed39DebugFormatVersioningModeViewController_sections);
+    if (*(v4 + 16) > a4)
+    {
+      return *(*(v4 + 40 * a4 + 64) + 16);
+    }
+  }
+
+  __break(1u);
+  return self;
+}
+
+- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+{
+  if (a4 < 0)
+  {
+    __break(1u);
+    goto LABEL_10;
+  }
+
+  v5 = *(self + OBJC_IVAR____TtC8NewsFeed39DebugFormatVersioningModeViewController_sections);
+  if (*(v5 + 16) <= a4)
+  {
+LABEL_10:
+    __break(1u);
+    return self;
+  }
+
+  if (*(v5 + 40 * a4 + 40))
+  {
+
+    v6 = sub_1D726203C();
+  }
+
+  else
+  {
+    v6 = 0;
+  }
+
+  return v6;
+}
+
+- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+{
+  if (a4 < 0)
+  {
+    __break(1u);
+    goto LABEL_10;
+  }
+
+  v5 = *(self + OBJC_IVAR____TtC8NewsFeed39DebugFormatVersioningModeViewController_sections);
+  if (*(v5 + 16) <= a4)
+  {
+LABEL_10:
+    __break(1u);
+    return self;
+  }
+
+  if (*(v5 + 40 * a4 + 56))
+  {
+
+    v6 = sub_1D726203C();
+  }
+
+  else
+  {
+    v6 = 0;
+  }
+
+  return v6;
+}
+
+- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+{
+  v6 = sub_1D7258DBC();
+  v7 = *(v6 - 8);
+  MEMORY[0x1EEE9AC00](v6, v8);
+  v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
+  sub_1D7258D6C();
+  v11 = a3;
+  v12 = self;
+  v13 = sub_1D62E9F98();
+
+  (*(v7 + 8))(v10, v6);
+
+  return v13;
+}
+
+- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+{
+  v6 = sub_1D7258DBC();
+  v7 = *(v6 - 8);
+  MEMORY[0x1EEE9AC00](v6, v8);
+  v10 = &v13 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
+  sub_1D7258D6C();
+  v11 = a3;
+  v12 = self;
+  sub_1D62EA944(v11);
+
+  (*(v7 + 8))(v10, v6);
+}
+
+@end

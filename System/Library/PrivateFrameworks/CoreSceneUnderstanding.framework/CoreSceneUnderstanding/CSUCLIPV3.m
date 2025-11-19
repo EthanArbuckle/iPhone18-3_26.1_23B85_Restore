@@ -1,0 +1,130 @@
+@interface CSUCLIPV3
++ (BOOL)calculateCosineSimilarity:(float *)a3 ofEmbedding:(id)a4 toEmbedding:(id)a5 error:(id *)a6;
+- (BOOL)loadResources:(id *)a3;
+- (CSUCLIPV3)initWithConfiguration:(id)a3;
+- (void)encodeInputImage:(__CVBuffer *)a3 completion:(id)a4;
+- (void)encodeInputText:(id)a3 completion:(id)a4;
+@end
+
+@implementation CSUCLIPV3
+
+- (CSUCLIPV3)initWithConfiguration:(id)a3
+{
+  v5 = a3;
+  v32.receiver = self;
+  v32.super_class = CSUCLIPV3;
+  v6 = [(CSUCLIPV3 *)&v32 init];
+  v7 = v6;
+  if (v6)
+  {
+    objc_storeStrong(&v6->_configuration, a3);
+    v8 = [CSUCLIPTextEncoderV3 alloc];
+    v13 = objc_msgSend_textEncoderConfiguration(v5, v9, v10, v11, v12);
+    v17 = objc_msgSend_initWithConfiguration_(v8, v14, v13, v15, v16);
+    textEncoder = v7->_textEncoder;
+    v7->_textEncoder = v17;
+
+    v19 = [CSUCLIPImageEncoderV3 alloc];
+    v24 = objc_msgSend_imageEncoderConfiguration(v5, v20, v21, v22, v23);
+    v28 = objc_msgSend_initWithConfiguration_(v19, v25, v24, v26, v27);
+    imageEncoder = v7->_imageEncoder;
+    v7->_imageEncoder = v28;
+
+    v30 = v7;
+  }
+
+  return v7;
+}
+
+- (BOOL)loadResources:(id *)a3
+{
+  Resources = objc_msgSend_loadResources_(self->_textEncoder, a2, a3, v3, v4);
+  if (Resources)
+  {
+    imageEncoder = self->_imageEncoder;
+
+    LOBYTE(Resources) = objc_msgSend_loadResources_(imageEncoder, v8, a3, v9, v10);
+  }
+
+  return Resources;
+}
+
+- (void)encodeInputImage:(__CVBuffer *)a3 completion:(id)a4
+{
+  v6 = a4;
+  imageEncoder = self->_imageEncoder;
+  v11[0] = MEMORY[0x1E69E9820];
+  v11[1] = 3221225472;
+  v11[2] = sub_1AC078258;
+  v11[3] = &unk_1E7967DE0;
+  v11[4] = self;
+  v12 = v6;
+  v8 = v6;
+  objc_msgSend_runOnInputImage_completion_(imageEncoder, v9, a3, v11, v10);
+}
+
+- (void)encodeInputText:(id)a3 completion:(id)a4
+{
+  v6 = a4;
+  textEncoder = self->_textEncoder;
+  v11[0] = MEMORY[0x1E69E9820];
+  v11[1] = 3221225472;
+  v11[2] = sub_1AC078450;
+  v11[3] = &unk_1E7967E08;
+  v11[4] = self;
+  v12 = v6;
+  v8 = v6;
+  objc_msgSend_runOnInputText_completion_(textEncoder, v9, a3, v11, v10);
+}
+
++ (BOOL)calculateCosineSimilarity:(float *)a3 ofEmbedding:(id)a4 toEmbedding:(id)a5 error:(id *)a6
+{
+  v9 = a4;
+  v10 = a5;
+  v15 = objc_msgSend_revision(v9, v11, v12, v13, v14);
+  if (v15 == objc_msgSend_revision(v10, v16, v17, v18, v19))
+  {
+    v39 = 0;
+    v40 = &v39;
+    v41 = 0x2020000000;
+    v42 = 0;
+    v35 = 0;
+    v36 = &v35;
+    v37 = 0x2020000000;
+    v38 = 2143289344;
+    v24 = objc_msgSend_buffer(v9, v20, v21, v22, v23);
+    v30[0] = MEMORY[0x1E69E9820];
+    v30[1] = 3221225472;
+    v30[2] = sub_1AC078784;
+    v30[3] = &unk_1E7967E58;
+    v31 = v10;
+    v32 = &v35;
+    v33 = &v39;
+    v34 = a6;
+    objc_msgSend_accessDataUsingBlock_(v24, v25, v30, v26, v27);
+
+    v28 = *(v40 + 24);
+    if (v28 == 1)
+    {
+      *a3 = v36[6];
+    }
+
+    _Block_object_dispose(&v35, 8);
+    _Block_object_dispose(&v39, 8);
+  }
+
+  else if (a6)
+  {
+    objc_msgSend_errorWithCode_message_(CSUError, v20, 8, @"Attempting to compare embeddings in different latent spaces", v23);
+    *a6 = LOBYTE(v28) = 0;
+  }
+
+  else
+  {
+    LOBYTE(v28) = 0;
+  }
+
+  return v28;
+}
+
+@end

@@ -1,0 +1,97 @@
+@interface CHLineWrappableGroup
+- (CHLineWrappableGroup)initWithCoder:(id)a3;
+- (CHLineWrappableGroup)initWithLines:(id)a3;
+- (void)encodeWithCoder:(id)a3;
+@end
+
+@implementation CHLineWrappableGroup
+
+- (CHLineWrappableGroup)initWithLines:(id)a3
+{
+  v5 = a3;
+  v33.receiver = self;
+  v33.super_class = CHLineWrappableGroup;
+  v6 = [(CHLineWrappableGroup *)&v33 init];
+  v12 = v6;
+  if (v6)
+  {
+    v6->_canWrapToNextGroup = 1;
+    v18 = objc_msgSend_firstObject(v5, v7, v8, v9, v10, v11);
+    if (v18)
+    {
+      v19 = objc_msgSend_firstObject(v5, v13, v14, v15, v16, v17);
+      v12->_layoutDirection = objc_msgSend_layoutDirection(v19, v20, v21, v22, v23, v24);
+    }
+
+    else
+    {
+      v12->_layoutDirection = 0;
+    }
+
+    objc_storeStrong(&v12->_subregions, a3);
+    v12->_textRegionType = 3;
+    v30 = objc_msgSend_UUID(MEMORY[0x1E696AFB0], v25, v26, v27, v28, v29);
+    uuid = v12->_uuid;
+    v12->_uuid = v30;
+  }
+
+  return v12;
+}
+
+- (void)encodeWithCoder:(id)a3
+{
+  v4 = a3;
+  v10 = objc_msgSend_boundingQuad(self, v5, v6, v7, v8, v9);
+  objc_msgSend_encodeObject_forKey_(v4, v11, v10, @"boundingQuad", v12, v13);
+
+  canWrapToNextGroup = objc_msgSend_canWrapToNextGroup(self, v14, v15, v16, v17, v18);
+  objc_msgSend_encodeBool_forKey_(v4, v20, canWrapToNextGroup, @"canWrapToNextGroup", v21, v22);
+  v28 = objc_msgSend_layoutDirection(self, v23, v24, v25, v26, v27);
+  objc_msgSend_encodeInteger_forKey_(v4, v29, v28, @"layoutDirection", v30, v31);
+  v37 = objc_msgSend_subregions(self, v32, v33, v34, v35, v36);
+  objc_msgSend_encodeObject_forKey_(v4, v38, v37, @"subregions", v39, v40);
+
+  v46 = objc_msgSend_text(self, v41, v42, v43, v44, v45);
+  objc_msgSend_encodeObject_forKey_(v4, v47, v46, @"text", v48, v49);
+
+  v55 = objc_msgSend_textRegionType(self, v50, v51, v52, v53, v54);
+  objc_msgSend_encodeInteger_forKey_(v4, v56, v55, @"textRegionType", v57, v58);
+  v67 = objc_msgSend_uuid(self, v59, v60, v61, v62, v63);
+  objc_msgSend_encodeObject_forKey_(v4, v64, v67, @"uuid", v65, v66);
+}
+
+- (CHLineWrappableGroup)initWithCoder:(id)a3
+{
+  v4 = a3;
+  v43.receiver = self;
+  v43.super_class = CHLineWrappableGroup;
+  v9 = [(CHLineWrappableGroup *)&v43 init];
+  if (v9)
+  {
+    v10 = objc_msgSend_decodeObjectForKey_(v4, v5, @"boundingQuad", v6, v7, v8);
+    boundingQuad = v9->_boundingQuad;
+    v9->_boundingQuad = v10;
+
+    v9->_canWrapToNextGroup = objc_msgSend_decodeBoolForKey_(v4, v12, @"canWrapToNextGroup", v13, v14, v15);
+    v9->_layoutDirection = objc_msgSend_decodeIntegerForKey_(v4, v16, @"layoutDirection", v17, v18, v19);
+    v20 = objc_opt_class();
+    v24 = objc_msgSend_decodeArrayOfObjectsOfClass_forKey_(v4, v21, v20, @"subregions", v22, v23);
+    subregions = v9->_subregions;
+    v9->_subregions = v24;
+
+    v26 = objc_opt_class();
+    v30 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v27, v26, @"text", v28, v29);
+    text = v9->_text;
+    v9->_text = v30;
+
+    v9->_textRegionType = objc_msgSend_decodeIntegerForKey_(v4, v32, @"textRegionType", v33, v34, v35);
+    v36 = objc_opt_class();
+    v40 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v37, v36, @"uuid", v38, v39);
+    uuid = v9->_uuid;
+    v9->_uuid = v40;
+  }
+
+  return v9;
+}
+
+@end

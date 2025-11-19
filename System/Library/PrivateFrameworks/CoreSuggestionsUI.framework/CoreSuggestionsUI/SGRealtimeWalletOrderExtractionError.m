@@ -1,0 +1,35 @@
+@interface SGRealtimeWalletOrderExtractionError
+- (NSString)localizedDescription;
+- (NSString)messageID;
+- (void)setMessageID:(id)a3;
+@end
+
+@implementation SGRealtimeWalletOrderExtractionError
+
+- (NSString)messageID
+{
+  sub_1B8189CF0();
+  v2 = sub_1B81F8F58();
+
+  return v2;
+}
+
+- (void)setMessageID:(id)a3
+{
+  v4 = sub_1B81F8F98();
+  v6 = v5;
+  v7 = self;
+  sub_1B8189DB8(v4, v6);
+}
+
+- (NSString)localizedDescription
+{
+  v2 = self;
+  sub_1B818A244();
+
+  v3 = sub_1B81F8F58();
+
+  return v3;
+}
+
+@end

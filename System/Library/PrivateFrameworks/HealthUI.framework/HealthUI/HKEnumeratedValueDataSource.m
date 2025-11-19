@@ -1,0 +1,230 @@
+@interface HKEnumeratedValueDataSource
+- (id)_enumeratedValueOrderMapping;
+- (id)_enumeratedValuesToIndices:(id)a3 mapping:(id)a4;
+- (id)queriesForRequest:(id)a3 completionHandler:(id)a4;
+- (id)queryDescription;
+- (void)_handleSamples:(id)a3 blockStart:(id)a4 blockEnd:(id)a5 intervalComponents:(id)a6 completion:(id)a7;
+@end
+
+@implementation HKEnumeratedValueDataSource
+
+- (id)queryDescription
+{
+  v2 = MEMORY[0x1E696AEC0];
+  v3 = [(HKHealthQueryChartCacheDataSource *)self displayType];
+  v4 = [v3 localization];
+  v5 = [v4 displayName];
+  v6 = [v2 stringWithFormat:@"HKEnumeratedValue(%@)", v5];
+
+  return v6;
+}
+
+- (id)queriesForRequest:(id)a3 completionHandler:(id)a4
+{
+  v29[1] = *MEMORY[0x1E69E9840];
+  v6 = a3;
+  v7 = a4;
+  v8 = MEMORY[0x1E696C378];
+  v9 = [v6 startDate];
+  v10 = [v6 endDate];
+  v11 = [v8 predicateForSamplesWithStartDate:v9 endDate:v10 options:0];
+
+  v12 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:*MEMORY[0x1E696BE38] ascending:1];
+  v13 = [(HKHealthQueryChartCacheDataSource *)self displayType];
+  v14 = [v13 sampleType];
+
+  v15 = objc_alloc(MEMORY[0x1E696C3C8]);
+  v29[0] = v12;
+  v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
+  v23[0] = MEMORY[0x1E69E9820];
+  v23[1] = 3221225472;
+  v23[2] = __67__HKEnumeratedValueDataSource_queriesForRequest_completionHandler___block_invoke;
+  v23[3] = &unk_1E81BADF0;
+  v24 = v14;
+  v25 = self;
+  v26 = v6;
+  v27 = v7;
+  v17 = v7;
+  v18 = v6;
+  v19 = v14;
+  v20 = [v15 initWithSampleType:v19 predicate:v11 limit:0 sortDescriptors:v16 resultsHandler:v23];
+
+  [v20 setDebugIdentifier:@"charting (enumerated value)"];
+  v28 = v20;
+  v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v28 count:1];
+
+  return v21;
+}
+
+void __67__HKEnumeratedValueDataSource_queriesForRequest_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
+{
+  v7 = a2;
+  v8 = a3;
+  v9 = a4;
+  v10 = v9;
+  if (v9)
+  {
+    v11 = [v9 hk_isDatabaseAccessibilityError];
+    _HKInitializeLogging();
+    v12 = HKLogWellnessDashboard();
+    v13 = v12;
+    if (!v11)
+    {
+      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      {
+        __68__HKHandwashingEventDataSource_queriesForRequest_completionHandler___block_invoke_cold_1();
+      }
+
+      goto LABEL_8;
+    }
+
+    v14 = os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG);
+
+    if (v14)
+    {
+      v13 = HKLogWellnessDashboard();
+      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+      {
+        __68__HKHandwashingEventDataSource_queriesForRequest_completionHandler___block_invoke_cold_2();
+      }
+
+LABEL_8:
+    }
+  }
+
+  v15 = *(a1 + 40);
+  v16 = [*(a1 + 48) startDate];
+  v17 = [*(a1 + 48) endDate];
+  v18 = [*(a1 + 48) statisticsInterval];
+  [v15 _handleSamples:v8 blockStart:v16 blockEnd:v17 intervalComponents:v18 completion:*(a1 + 56)];
+}
+
+- (void)_handleSamples:(id)a3 blockStart:(id)a4 blockEnd:(id)a5 intervalComponents:(id)a6 completion:(id)a7
+{
+  v12 = a7;
+  v13 = [MEMORY[0x1E696C660] calculateIncludedValuesWithSamples:a3 startDate:a4 endDate:a5 intervalComponents:a6];
+  v14 = [MEMORY[0x1E695DF70] array];
+  v15 = [(HKEnumeratedValueDataSource *)self _enumeratedValueOrderMapping];
+  v19[0] = MEMORY[0x1E69E9820];
+  v19[1] = 3221225472;
+  v19[2] = __96__HKEnumeratedValueDataSource__handleSamples_blockStart_blockEnd_intervalComponents_completion___block_invoke;
+  v19[3] = &unk_1E81BAE18;
+  v19[4] = self;
+  v16 = v15;
+  v20 = v16;
+  v17 = v14;
+  v21 = v17;
+  [v13 enumerateKeysAndObjectsUsingBlock:v19];
+  v18 = objc_alloc_init(HKGraphSeriesDataBlock);
+  [(HKGraphSeriesDataBlock *)v18 setChartPoints:v17];
+  if (v12)
+  {
+    v12[2](v12, v18, 0);
+  }
+}
+
+void __96__HKEnumeratedValueDataSource__handleSamples_blockStart_blockEnd_intervalComponents_completion___block_invoke(uint64_t a1, void *a2, void *a3)
+{
+  v5 = a3;
+  v6 = a2;
+  v13 = objc_alloc_init(HKEnumeratedValueChartPoint);
+  v7 = [*(a1 + 32) _enumeratedValuesToIndices:v5 mapping:*(a1 + 40)];
+
+  v8 = [v6 startDate];
+  v9 = [v6 endDate];
+
+  v10 = HKUIMidDate(v8, v9);
+  [(HKEnumeratedValueChartPoint *)v13 setXValue:v10];
+
+  [(HKEnumeratedValueChartPoint *)v13 setIndices:v7];
+  v11 = *(*(a1 + 32) + 64);
+  if (v11)
+  {
+    v12 = (*(v11 + 16))(v11, v7);
+    [(HKEnumeratedValueChartPoint *)v13 setUserInfo:v12];
+  }
+
+  [*(a1 + 48) addObject:v13];
+}
+
+- (id)_enumeratedValueOrderMapping
+{
+  v18 = *MEMORY[0x1E69E9840];
+  v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
+  v13 = 0u;
+  v14 = 0u;
+  v15 = 0u;
+  v16 = 0u;
+  v4 = self->_enumeratedValueOrder;
+  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  if (v5)
+  {
+    v6 = v5;
+    v7 = 0;
+    v8 = *v14;
+    do
+    {
+      for (i = 0; i != v6; ++i)
+      {
+        if (*v14 != v8)
+        {
+          objc_enumerationMutation(v4);
+        }
+
+        v10 = *(*(&v13 + 1) + 8 * i);
+        v11 = [MEMORY[0x1E696AD98] numberWithInteger:{v7, v13}];
+        [v3 setObject:v11 forKeyedSubscript:v10];
+
+        ++v7;
+      }
+
+      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    }
+
+    while (v6);
+  }
+
+  return v3;
+}
+
+- (id)_enumeratedValuesToIndices:(id)a3 mapping:(id)a4
+{
+  v21 = *MEMORY[0x1E69E9840];
+  v5 = a3;
+  v6 = a4;
+  v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
+  v16 = 0u;
+  v17 = 0u;
+  v18 = 0u;
+  v19 = 0u;
+  v8 = v5;
+  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  if (v9)
+  {
+    v10 = v9;
+    v11 = *v17;
+    do
+    {
+      for (i = 0; i != v10; ++i)
+      {
+        if (*v17 != v11)
+        {
+          objc_enumerationMutation(v8);
+        }
+
+        v13 = [v6 objectForKeyedSubscript:{*(*(&v16 + 1) + 8 * i), v16}];
+        [v7 addObject:v13];
+      }
+
+      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    }
+
+    while (v10);
+  }
+
+  v14 = [v7 sortedArrayUsingSelector:sel_compare_];
+
+  return v14;
+}
+
+@end

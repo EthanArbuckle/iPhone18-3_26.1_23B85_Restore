@@ -1,0 +1,28 @@
+@interface INDeleteParkingLocationIntentHandler
+- (_TtC7SiriGeo36INDeleteParkingLocationIntentHandler)init;
+- (void)handleDeleteParkingLocation:(id)a3 completion:(id)a4;
+@end
+
+@implementation INDeleteParkingLocationIntentHandler
+
+- (void)handleDeleteParkingLocation:(id)a3 completion:(id)a4
+{
+  v6 = _Block_copy(a4);
+  v7 = swift_allocObject();
+  *(v7 + 16) = v6;
+  v8 = a3;
+  v9 = self;
+  specialized INDeleteParkingLocationIntentHandler.handle(intent:completion:)(partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned INDeleteParkingLocationIntentResponse) -> (), v7);
+}
+
+- (_TtC7SiriGeo36INDeleteParkingLocationIntentHandler)init
+{
+  v3 = OBJC_IVAR____TtC7SiriGeo36INDeleteParkingLocationIntentHandler_logObject;
+  type metadata accessor for OS_os_log(0, &lazy cache variable for type metadata for OS_os_log, 0x277D86200);
+  *(&self->super.isa + v3) = OS_os_log.init(subsystem:category:)();
+  v5.receiver = self;
+  v5.super_class = type metadata accessor for INDeleteParkingLocationIntentHandler();
+  return [(INDeleteParkingLocationIntentHandler *)&v5 init];
+}
+
+@end

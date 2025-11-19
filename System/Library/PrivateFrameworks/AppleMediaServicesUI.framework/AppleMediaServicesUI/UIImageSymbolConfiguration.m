@@ -1,0 +1,12 @@
+@interface UIImageSymbolConfiguration
+@end
+
+@implementation UIImageSymbolConfiguration
+
+void __109__UIImageSymbolConfiguration_AMSUIImageSymbolConfiguration__ams_imageSymbolConfigurationScaleWithDictionary___block_invoke()
+{
+  v0 = ams_imageSymbolConfigurationScaleWithDictionary__ams_once_object___COUNTER__;
+  ams_imageSymbolConfigurationScaleWithDictionary__ams_once_object___COUNTER__ = &unk_1F394A8F0;
+}
+
+@end

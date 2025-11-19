@@ -1,0 +1,1323 @@
+@interface HAP2AccessoryServerCoordinator
+- (BOOL)isDiscovering;
+- (BOOL)isStartDiscoveringPending;
+- (BOOL)isStopDiscoveringPending;
+- (HAP2AccessoryServerBrowserPrivate)browser;
+- (HAP2AccessoryServerCoordinator)initWithDiscovery:(id)a3 pairingFactory:(id)a4 transportFactory:(id)a5 secureTransportFactory:(id)a6 encodingFactory:(id)a7 controllerFactory:(id)a8;
+- (HAP2AccessoryServerCoordinatorDelegate)delegate;
+- (NSMutableDictionary)discoveredAccessoryServers;
+- (id)_createMetadataForAccessoryServerWithAccessoryInfo:(id)a3;
+- (id)_createPairedAccessoryServerWithAccessoryInfo:(id)a3 transport:(id)a4 operationQueue:(id)a5;
+- (id)_createUnpairedAccessoryServerWithAccessoryInfo:(id)a3 transport:(id)a4 operationQueue:(id)a5;
+- (void)_didDeterminePairingStateForAccessory:(id)a3 isPaired:(BOOL)a4 completion:(id)a5;
+- (void)_didDiscoverAccessory:(id)a3 completion:(id)a4;
+- (void)_didDiscoverPairedAccessory:(id)a3 transport:(id)a4 operationQueue:(id)a5 completion:(id)a6;
+- (void)_didDiscoverUnpairedAccessory:(id)a3 transport:(id)a4 operationQueue:(id)a5 completion:(id)a6;
+- (void)_didLoseAccessory:(id)a3 error:(id)a4;
+- (void)_didStartDiscoveringWithError:(id)a3;
+- (void)_didStopDiscoveringWithError:(id)a3;
+- (void)_startDiscovering;
+- (void)_stopDiscovering;
+- (void)discovery:(id)a3 didDiscoverAccessory:(id)a4;
+- (void)discovery:(id)a3 didLoseAccessory:(id)a4 error:(id)a5;
+- (void)discovery:(id)a3 didStartDiscoveringWithError:(id)a4;
+- (void)discovery:(id)a3 didStopDiscoveringWithError:(id)a4;
+- (void)resurfaceDiscoveryInfoForDeviceID:(id)a3;
+- (void)setBrowser:(id)a3 operationQueue:(id)a4;
+- (void)setDelegate:(id)a3;
+- (void)setDiscovering:(BOOL)a3;
+- (void)setStartDiscoveringPending:(BOOL)a3;
+- (void)setStopDiscoveringPending:(BOOL)a3;
+- (void)startDiscovering;
+- (void)stopDiscovering;
+@end
+
+@implementation HAP2AccessoryServerCoordinator
+
+- (HAP2AccessoryServerBrowserPrivate)browser
+{
+  WeakRetained = objc_loadWeakRetained(&self->_browser);
+
+  return WeakRetained;
+}
+
+- (id)_createPairedAccessoryServerWithAccessoryInfo:(id)a3 transport:(id)a4 operationQueue:(id)a5
+{
+  v39 = *MEMORY[0x277D85DE8];
+  v8 = a3;
+  v9 = a4;
+  v10 = a5;
+  v11 = [(HAP2AccessoryServerCoordinator *)self operationQueue];
+  [v11 assertCurrentQueue];
+
+  if (v9)
+  {
+    v12 = [(HAP2AccessoryServerCoordinator *)self _createMetadataForAccessoryServerWithAccessoryInfo:v8];
+    if (v12)
+    {
+      v13 = [(HAP2AccessoryServerCoordinator *)self browser];
+      v14 = [v12 protocolVersion];
+      v15 = [v9 protocolFeaturesForVersion:v14];
+
+      if (v15)
+      {
+        v16 = [(HAP2AccessoryServerCoordinator *)self encodingFactory];
+        v17 = [v16 createEncodingWithOperationQueue:v10 accessoryServerMetadata:v12 encodingFeatures:v15];
+
+        v18 = [(HAP2AccessoryServerCoordinator *)self secureTransportFactory];
+        v19 = [v18 createSecureTransportWithTransport:v9 isPaired:1 encryptedSession:0];
+
+        v20 = [(HAP2AccessoryServerCoordinator *)self controllerFactory];
+        v21 = [v20 createControllerWithEncoding:v17 secureTransport:v19 operationQueue:v10];
+
+        v22 = [HAP2AccessoryServer pairedAccessoryServerWithMetadata:v12 browser:v13 controller:v21 operationQueue:v10];
+      }
+
+      else
+      {
+        if (hap2LogInitialize_onceToken != -1)
+        {
+          dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
+        }
+
+        v26 = hap2Log_accessory;
+        if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
+        {
+          v29 = v26;
+          v30 = [v12 name];
+          v31 = [v12 deviceID];
+          v32 = [v12 protocolVersion];
+          v33 = 138412802;
+          v34 = v30;
+          v35 = 2112;
+          v36 = v31;
+          v37 = 2112;
+          v38 = v32;
+          _os_log_error_impl(&dword_22AADC000, v29, OS_LOG_TYPE_ERROR, "Coordinator: Paired server [%@/%@] has invalid or unexpected version %@", &v33, 0x20u);
+        }
+
+        v22 = 0;
+      }
+    }
+
+    else
+    {
+      v22 = 0;
+    }
+  }
+
+  else
+  {
+    if (hap2LogInitialize_onceToken != -1)
+    {
+      dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
+    }
+
+    v23 = hap2Log_accessory;
+    if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_DEFAULT))
+    {
+      v24 = v23;
+      v25 = [v8 deviceID];
+      v33 = 138412290;
+      v34 = v25;
+      _os_log_impl(&dword_22AADC000, v24, OS_LOG_TYPE_DEFAULT, "Coordinator: Ignoring discovered paired accessory %@ with no transport", &v33, 0xCu);
+    }
+
+    v22 = 0;
+  }
+
+  v27 = *MEMORY[0x277D85DE8];
+
+  return v22;
+}
+
+- (id)_createUnpairedAccessoryServerWithAccessoryInfo:(id)a3 transport:(id)a4 operationQueue:(id)a5
+{
+  v44 = *MEMORY[0x277D85DE8];
+  v8 = a3;
+  v9 = a4;
+  v10 = a5;
+  v11 = [(HAP2AccessoryServerCoordinator *)self operationQueue];
+  [v11 assertCurrentQueue];
+
+  if (v9)
+  {
+    v12 = [(HAP2AccessoryServerCoordinator *)self _createMetadataForAccessoryServerWithAccessoryInfo:v8];
+    if (v12)
+    {
+      v13 = [(HAP2AccessoryServerCoordinator *)self browser];
+      v14 = [v12 protocolVersion];
+      v15 = [v9 protocolFeaturesForVersion:v14];
+
+      if (v15)
+      {
+        v16 = [(HAP2AccessoryServerCoordinator *)self encodingFactory];
+        v17 = [v16 createEncodingWithOperationQueue:v10 accessoryServerMetadata:v12 encodingFeatures:v15];
+
+        [(HAP2AccessoryServerCoordinator *)self secureTransportFactory];
+        v18 = v37 = v13;
+        v19 = [v18 createSecureTransportWithTransport:v9 isPaired:0 encryptedSession:0];
+
+        v20 = [(HAP2AccessoryServerCoordinator *)self controllerFactory];
+        v21 = [v20 createControllerWithEncoding:v17 secureTransport:v19 operationQueue:v10];
+
+        v22 = [(HAP2AccessoryServerCoordinator *)self pairingFactory];
+        v23 = [(HAP2AccessoryServerCoordinator *)self secureTransportFactory];
+        v24 = [v22 createPairingDriverWithAccessoryInfo:v8 transport:v9 secureTransportFactory:v23 encoding:v17 operationQueue:v10];
+
+        v13 = v37;
+        v25 = [HAP2AccessoryServer unpairedAccessoryServerWithMetadata:v12 browser:v37 controller:v21 pairingDriver:v24 operationQueue:v10];
+      }
+
+      else
+      {
+        if (hap2LogInitialize_onceToken != -1)
+        {
+          dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
+        }
+
+        v29 = hap2Log_accessory;
+        if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
+        {
+          v32 = v29;
+          v33 = [v12 name];
+          v34 = [v12 deviceID];
+          [v12 protocolVersion];
+          v36 = v35 = v13;
+          *buf = 138412802;
+          v39 = v33;
+          v40 = 2112;
+          v41 = v34;
+          v42 = 2112;
+          v43 = v36;
+          _os_log_error_impl(&dword_22AADC000, v32, OS_LOG_TYPE_ERROR, "Coordinator: Unpaired server [%@/%@] has invalid or unexpected version %@", buf, 0x20u);
+
+          v13 = v35;
+        }
+
+        v25 = 0;
+      }
+    }
+
+    else
+    {
+      v25 = 0;
+    }
+  }
+
+  else
+  {
+    if (hap2LogInitialize_onceToken != -1)
+    {
+      dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
+    }
+
+    v26 = hap2Log_accessory;
+    if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_DEFAULT))
+    {
+      v27 = v26;
+      v28 = [v8 deviceID];
+      *buf = 138412290;
+      v39 = v28;
+      _os_log_impl(&dword_22AADC000, v27, OS_LOG_TYPE_DEFAULT, "Coordinator: Ignoring discovered unpaired accessory %@ with no transport", buf, 0xCu);
+    }
+
+    v25 = 0;
+  }
+
+  v30 = *MEMORY[0x277D85DE8];
+
+  return v25;
+}
+
+- (id)_createMetadataForAccessoryServerWithAccessoryInfo:(id)a3
+{
+  v4 = a3;
+  v5 = [(HAP2AccessoryServerCoordinator *)self operationQueue];
+  [v5 assertCurrentQueue];
+
+  objc_opt_class();
+  v21 = v4;
+  if (objc_opt_isKindOfClass())
+  {
+    v6 = v4;
+  }
+
+  else
+  {
+    v6 = 0;
+  }
+
+  v7 = v6;
+  v20 = ([v7 status] & 1) == 0;
+  v8 = [HAP2AccessoryServerMetadata alloc];
+  v9 = [v7 deviceID];
+  v10 = [v7 protocolVersion];
+  v11 = [v7 name];
+  v12 = [v7 model];
+  v13 = [v7 category];
+  v14 = [v7 stateNumber];
+  v15 = [v7 configurationNumber];
+  v16 = [v7 setupHash];
+
+  WORD1(v19) = v15;
+  LOWORD(v19) = v14;
+  v17 = [(HAP2AccessoryServerMetadata *)v8 initWithDeviceID:v9 hasPairings:v20 protocolVersion:v10 name:v11 model:v12 category:v13 stateNumber:v19 configNumber:v16 setupHash:?];
+
+  return v17;
+}
+
+- (void)_didDiscoverPairedAccessory:(id)a3 transport:(id)a4 operationQueue:(id)a5 completion:(id)a6
+{
+  v24 = *MEMORY[0x277D85DE8];
+  v10 = a3;
+  v11 = a4;
+  v12 = a5;
+  v13 = a6;
+  v14 = [(HAP2AccessoryServerCoordinator *)self operationQueue];
+  [v14 assertCurrentQueue];
+
+  v15 = [(HAP2AccessoryServerCoordinator *)self delegate];
+  if (v15)
+  {
+    v16 = [(HAP2AccessoryServerCoordinator *)self _createPairedAccessoryServerWithAccessoryInfo:v10 transport:v11 operationQueue:v12];
+    if (v16)
+    {
+      if (hap2LogInitialize_onceToken != -1)
+      {
+        dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
+      }
+
+      v17 = hap2Log_accessory;
+      if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_DEFAULT))
+      {
+        v22 = 138412290;
+        v23 = v16;
+        _os_log_impl(&dword_22AADC000, v17, OS_LOG_TYPE_DEFAULT, "Coordinator: Discovered paired accessory %@", &v22, 0xCu);
+      }
+
+      [v15 coordinator:self didCreatePairedAccessoryServer:v16];
+    }
+
+    v13[2](v13);
+  }
+
+  else
+  {
+    if (hap2LogInitialize_onceToken != -1)
+    {
+      dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
+    }
+
+    v18 = hap2Log_accessory;
+    if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_DEBUG))
+    {
+      v20 = v18;
+      v21 = [v10 deviceID];
+      v22 = 138412290;
+      v23 = v21;
+      _os_log_debug_impl(&dword_22AADC000, v20, OS_LOG_TYPE_DEBUG, "Coordinator: Ignoring discovered paired accessory %@ with no delegate", &v22, 0xCu);
+    }
+
+    v13[2](v13);
+  }
+
+  v19 = *MEMORY[0x277D85DE8];
+}
+
+- (void)_didDiscoverUnpairedAccessory:(id)a3 transport:(id)a4 operationQueue:(id)a5 completion:(id)a6
+{
+  v24 = *MEMORY[0x277D85DE8];
+  v10 = a3;
+  v11 = a4;
+  v12 = a5;
+  v13 = a6;
+  v14 = [(HAP2AccessoryServerCoordinator *)self operationQueue];
+  [v14 assertCurrentQueue];
+
+  v15 = [(HAP2AccessoryServerCoordinator *)self delegate];
+  if (v15)
+  {
+    v16 = [(HAP2AccessoryServerCoordinator *)self _createUnpairedAccessoryServerWithAccessoryInfo:v10 transport:v11 operationQueue:v12];
+    if (v16)
+    {
+      if (hap2LogInitialize_onceToken != -1)
+      {
+        dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
+      }
+
+      v17 = hap2Log_accessory;
+      if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_DEFAULT))
+      {
+        v22 = 138412290;
+        v23 = v16;
+        _os_log_impl(&dword_22AADC000, v17, OS_LOG_TYPE_DEFAULT, "Coordinator: Discovered unpaired accessory %@", &v22, 0xCu);
+      }
+
+      [v15 coordinator:self didCreateUnpairedAccessoryServer:v16];
+    }
+
+    v13[2](v13);
+  }
+
+  else
+  {
+    if (hap2LogInitialize_onceToken != -1)
+    {
+      dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
+    }
+
+    v18 = hap2Log_accessory;
+    if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_DEBUG))
+    {
+      v20 = v18;
+      v21 = [v10 deviceID];
+      v22 = 138412290;
+      v23 = v21;
+      _os_log_debug_impl(&dword_22AADC000, v20, OS_LOG_TYPE_DEBUG, "Coordinator: Ignoring discovered unpaired accessory %@ with no delegate", &v22, 0xCu);
+    }
+
+    v13[2](v13);
+  }
+
+  v19 = *MEMORY[0x277D85DE8];
+}
+
+- (void)_didLoseAccessory:(id)a3 error:(id)a4
+{
+  v27 = *MEMORY[0x277D85DE8];
+  v6 = a3;
+  v7 = a4;
+  v8 = [(HAP2AccessoryServerCoordinator *)self operationQueue];
+  [v8 assertCurrentQueue];
+
+  if (hap2LogInitialize_onceToken != -1)
+  {
+    dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
+  }
+
+  v9 = hap2Log_accessory;
+  if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_DEBUG))
+  {
+    v17 = v9;
+    [(HAP2AccessoryServerCoordinator *)self isDiscovering];
+    v18 = HMFBooleanToString();
+    v21 = 138412802;
+    v22 = v6;
+    v23 = 2112;
+    v24 = v7;
+    v25 = 2112;
+    v26 = v18;
+    _os_log_debug_impl(&dword_22AADC000, v17, OS_LOG_TYPE_DEBUG, "Coordinator: lost accessory: %@ with error: %@ and isDiscovering: %@", &v21, 0x20u);
+  }
+
+  if ([(HAP2AccessoryServerCoordinator *)self isDiscovering])
+  {
+    v10 = [(HAP2AccessoryServerCoordinator *)self discoveredAccessoryServers];
+    v11 = [v6 deviceID];
+    [v10 removeObjectForKey:v11];
+
+    v12 = [(HAP2AccessoryServerCoordinator *)self delegate];
+    v13 = v12;
+    if (v12)
+    {
+      [v12 coordinator:self didLoseAccessory:v6 error:v7];
+    }
+
+    else
+    {
+      if (hap2LogInitialize_onceToken != -1)
+      {
+        dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
+      }
+
+      v15 = hap2Log_accessory;
+      if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_DEBUG))
+      {
+        v19 = v15;
+        v20 = [v6 deviceID];
+        v21 = 138412290;
+        v22 = v20;
+        _os_log_debug_impl(&dword_22AADC000, v19, OS_LOG_TYPE_DEBUG, "Coordinator: Ignoring lost unpaired accessory %@ with no delegate", &v21, 0xCu);
+      }
+    }
+  }
+
+  else
+  {
+    if (hap2LogInitialize_onceToken != -1)
+    {
+      dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
+    }
+
+    v14 = hap2Log_accessory;
+    if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_DEBUG))
+    {
+      LOWORD(v21) = 0;
+      _os_log_debug_impl(&dword_22AADC000, v14, OS_LOG_TYPE_DEBUG, "Coordinator: Ignoring lost accessory while not discovering", &v21, 2u);
+    }
+  }
+
+  v16 = *MEMORY[0x277D85DE8];
+}
+
+- (void)_didDeterminePairingStateForAccessory:(id)a3 isPaired:(BOOL)a4 completion:(id)a5
+{
+  v6 = a4;
+  v21 = *MEMORY[0x277D85DE8];
+  v8 = a3;
+  v9 = a5;
+  v10 = [(HAP2AccessoryServerCoordinator *)self operationQueue];
+  [v10 assertCurrentQueue];
+
+  v11 = [v8 deviceID];
+  if ([(HAP2AccessoryServerCoordinator *)self isDiscovering])
+  {
+    v12 = [(HAP2AccessoryServerCoordinator *)self browser];
+    v13 = [v12 operationQueueForDeviceID:v11];
+    v14 = [(HAP2AccessoryServerCoordinator *)self transportFactory];
+    v15 = [(HAP2AccessoryServerCoordinator *)self discovery];
+    v16 = [v14 createTransportWithAccessoryInfo:v8 discovery:v15];
+
+    if (v6)
+    {
+      [(HAP2AccessoryServerCoordinator *)self _didDiscoverPairedAccessory:v8 transport:v16 operationQueue:v13 completion:v9];
+    }
+
+    else
+    {
+      [(HAP2AccessoryServerCoordinator *)self _didDiscoverUnpairedAccessory:v8 transport:v16 operationQueue:v13 completion:v9];
+    }
+  }
+
+  else
+  {
+    if (hap2LogInitialize_onceToken != -1)
+    {
+      dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
+    }
+
+    v17 = hap2Log_accessory;
+    if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_DEBUG))
+    {
+      v19 = 138412290;
+      v20 = v11;
+      _os_log_debug_impl(&dword_22AADC000, v17, OS_LOG_TYPE_DEBUG, "Coordinator: Ignoring discovered accessory %@ while not discovering", &v19, 0xCu);
+    }
+
+    v9[2](v9);
+  }
+
+  v18 = *MEMORY[0x277D85DE8];
+}
+
+- (void)_didDiscoverAccessory:(id)a3 completion:(id)a4
+{
+  location[3] = *MEMORY[0x277D85DE8];
+  v6 = a3;
+  v7 = a4;
+  v8 = [(HAP2AccessoryServerCoordinator *)self operationQueue];
+  [v8 assertCurrentQueue];
+
+  if ([(HAP2AccessoryServerCoordinator *)self isDiscovering])
+  {
+    v9 = [(HAP2AccessoryServerCoordinator *)self delegate];
+    if (v9)
+    {
+      v10 = [(HAP2AccessoryServerCoordinator *)self browser];
+      if (v10)
+      {
+        v11 = [v6 deviceID];
+        v12 = [(HAP2AccessoryServerCoordinator *)self discoveredAccessoryServers];
+        [v12 setObject:v6 forKeyedSubscript:v11];
+
+        objc_initWeak(location, self);
+        v24[0] = MEMORY[0x277D85DD0];
+        v24[1] = 3221225472;
+        v24[2] = __67__HAP2AccessoryServerCoordinator__didDiscoverAccessory_completion___block_invoke;
+        v24[3] = &unk_2786D25F8;
+        v13 = v11;
+        v25 = v13;
+        v27 = v7;
+        objc_copyWeak(&v28, location);
+        v26 = v6;
+        [v10 accessoryWithDeviceIDIsPaired:v13 completion:v24];
+
+        objc_destroyWeak(&v28);
+        objc_destroyWeak(location);
+      }
+
+      else
+      {
+        if (hap2LogInitialize_onceToken != -1)
+        {
+          dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
+        }
+
+        v16 = hap2Log_accessory;
+        if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_DEBUG))
+        {
+          v22 = v16;
+          v23 = [v6 deviceID];
+          LODWORD(location[0]) = 138412290;
+          *(location + 4) = v23;
+          _os_log_debug_impl(&dword_22AADC000, v22, OS_LOG_TYPE_DEBUG, "Coordinator: Ignoring discovered accessory %@ after browser has died", location, 0xCu);
+        }
+
+        v7[2](v7);
+      }
+    }
+
+    else
+    {
+      if (hap2LogInitialize_onceToken != -1)
+      {
+        dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
+      }
+
+      v15 = hap2Log_accessory;
+      if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_DEBUG))
+      {
+        v20 = v15;
+        v21 = [v6 deviceID];
+        LODWORD(location[0]) = 138412290;
+        *(location + 4) = v21;
+        _os_log_debug_impl(&dword_22AADC000, v20, OS_LOG_TYPE_DEBUG, "Coordinator: Ignoring discovered accessory %@ with no delegate", location, 0xCu);
+      }
+
+      v7[2](v7);
+    }
+  }
+
+  else
+  {
+    if (hap2LogInitialize_onceToken != -1)
+    {
+      dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
+    }
+
+    v14 = hap2Log_accessory;
+    if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_DEBUG))
+    {
+      v18 = v14;
+      v19 = [v6 deviceID];
+      LODWORD(location[0]) = 138412290;
+      *(location + 4) = v19;
+      _os_log_debug_impl(&dword_22AADC000, v18, OS_LOG_TYPE_DEBUG, "Coordinator: Ignoring discovered accessory %@ while not discovering", location, 0xCu);
+    }
+
+    v7[2](v7);
+  }
+
+  v17 = *MEMORY[0x277D85DE8];
+}
+
+void __67__HAP2AccessoryServerCoordinator__didDiscoverAccessory_completion___block_invoke(uint64_t a1, char a2, void *a3)
+{
+  v20 = *MEMORY[0x277D85DE8];
+  v5 = a3;
+  if (v5)
+  {
+    if (hap2LogInitialize_onceToken != -1)
+    {
+      dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
+    }
+
+    v6 = hap2Log_accessory;
+    if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
+    {
+      v10 = *(a1 + 32);
+      *buf = 138412546;
+      v17 = v10;
+      v18 = 2112;
+      v19 = v5;
+      _os_log_error_impl(&dword_22AADC000, v6, OS_LOG_TYPE_ERROR, "Coordinator: Failed to determine if discovered accessory %@ is paired: %@", buf, 0x16u);
+    }
+
+    (*(*(a1 + 48) + 16))();
+  }
+
+  else
+  {
+    WeakRetained = objc_loadWeakRetained((a1 + 56));
+    v8 = [WeakRetained operationQueue];
+    v11[0] = MEMORY[0x277D85DD0];
+    v11[1] = 3221225472;
+    v11[2] = __67__HAP2AccessoryServerCoordinator__didDiscoverAccessory_completion___block_invoke_13;
+    v11[3] = &unk_2786D25D0;
+    objc_copyWeak(&v14, (a1 + 56));
+    v12 = *(a1 + 40);
+    v15 = a2;
+    v13 = *(a1 + 48);
+    [v8 addBlock:v11];
+
+    objc_destroyWeak(&v14);
+  }
+
+  v9 = *MEMORY[0x277D85DE8];
+}
+
+void __67__HAP2AccessoryServerCoordinator__didDiscoverAccessory_completion___block_invoke_13(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 48));
+  [WeakRetained _didDeterminePairingStateForAccessory:*(a1 + 32) isPaired:*(a1 + 56) completion:*(a1 + 40)];
+}
+
+- (void)_didStopDiscoveringWithError:(id)a3
+{
+  v12 = *MEMORY[0x277D85DE8];
+  v4 = a3;
+  v5 = [(HAP2AccessoryServerCoordinator *)self operationQueue];
+  [v5 assertCurrentQueue];
+
+  [(HAP2AccessoryServerCoordinator *)self setStopDiscoveringPending:0];
+  [(HAP2AccessoryServerCoordinator *)self setDiscovering:0];
+  v6 = [(HAP2AccessoryServerCoordinator *)self discoveredAccessoryServers];
+  [v6 removeAllObjects];
+
+  if (hap2LogInitialize_onceToken != -1)
+  {
+    dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
+  }
+
+  v7 = hap2Log_accessory;
+  if (v4)
+  {
+    if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
+    {
+      v10 = 138412290;
+      v11 = v4;
+      _os_log_error_impl(&dword_22AADC000, v7, OS_LOG_TYPE_ERROR, "Coordinator: Failed to stop discovering: %@", &v10, 0xCu);
+    }
+  }
+
+  else if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_INFO))
+  {
+    LOWORD(v10) = 0;
+    _os_log_impl(&dword_22AADC000, v7, OS_LOG_TYPE_INFO, "Coordinator: Stopped discovering", &v10, 2u);
+  }
+
+  v8 = [(HAP2AccessoryServerCoordinator *)self delegate];
+  if (objc_opt_respondsToSelector())
+  {
+    [v8 coordinator:self didStopDiscoveringWithError:v4];
+  }
+
+  v9 = *MEMORY[0x277D85DE8];
+}
+
+- (void)_didStartDiscoveringWithError:(id)a3
+{
+  v11 = *MEMORY[0x277D85DE8];
+  v4 = a3;
+  v5 = [(HAP2AccessoryServerCoordinator *)self operationQueue];
+  [v5 assertCurrentQueue];
+
+  [(HAP2AccessoryServerCoordinator *)self setStartDiscoveringPending:0];
+  if (hap2LogInitialize_onceToken != -1)
+  {
+    dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
+  }
+
+  v6 = hap2Log_accessory;
+  if (v4)
+  {
+    if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
+    {
+      v9 = 138412290;
+      v10 = v4;
+      _os_log_error_impl(&dword_22AADC000, v6, OS_LOG_TYPE_ERROR, "Coordinator: Failed to start discovering: %@", &v9, 0xCu);
+    }
+  }
+
+  else if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_INFO))
+  {
+    LOWORD(v9) = 0;
+    _os_log_impl(&dword_22AADC000, v6, OS_LOG_TYPE_INFO, "Coordinator: Started discovering", &v9, 2u);
+  }
+
+  [(HAP2AccessoryServerCoordinator *)self setDiscovering:v4 == 0];
+  v7 = [(HAP2AccessoryServerCoordinator *)self delegate];
+  if (objc_opt_respondsToSelector())
+  {
+    [v7 coordinator:self didStartDiscoveringWithError:v4];
+  }
+
+  v8 = *MEMORY[0x277D85DE8];
+}
+
+- (void)_stopDiscovering
+{
+  v3 = [(HAP2AccessoryServerCoordinator *)self operationQueue];
+  [v3 assertCurrentQueue];
+
+  if ([(HAP2AccessoryServerCoordinator *)self isDiscovering])
+  {
+    v4 = [(HAP2AccessoryServerCoordinator *)self isStopDiscoveringPending];
+    if (hap2LogInitialize_onceToken != -1)
+    {
+      dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
+    }
+
+    v5 = hap2Log_accessory;
+    if (v4)
+    {
+      if (!os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_DEBUG))
+      {
+        return;
+      }
+
+      v12 = 0;
+      v6 = "Coordinator: stopDiscovering called while a previous call is pending";
+      v7 = &v12;
+      v8 = v5;
+      goto LABEL_11;
+    }
+
+    if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_INFO))
+    {
+      *v11 = 0;
+      _os_log_impl(&dword_22AADC000, v5, OS_LOG_TYPE_INFO, "Coordinator: Stopping discovery", v11, 2u);
+    }
+
+    [(HAP2AccessoryServerCoordinator *)self setStopDiscoveringPending:1];
+    v10 = [(HAP2AccessoryServerCoordinator *)self discovery];
+    [v10 stopDiscovering];
+  }
+
+  else
+  {
+    if (hap2LogInitialize_onceToken != -1)
+    {
+      dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
+    }
+
+    v9 = hap2Log_accessory;
+    if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_DEBUG))
+    {
+      *buf = 0;
+      v6 = "Coordinator: stopDiscovering called while not discovering";
+      v7 = buf;
+      v8 = v9;
+LABEL_11:
+      _os_log_debug_impl(&dword_22AADC000, v8, OS_LOG_TYPE_DEBUG, v6, v7, 2u);
+    }
+  }
+}
+
+- (void)_startDiscovering
+{
+  v3 = [(HAP2AccessoryServerCoordinator *)self operationQueue];
+  [v3 assertCurrentQueue];
+
+  if ([(HAP2AccessoryServerCoordinator *)self isDiscovering])
+  {
+    if (hap2LogInitialize_onceToken != -1)
+    {
+      dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
+    }
+
+    v4 = hap2Log_accessory;
+    if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_DEBUG))
+    {
+      v13 = 0;
+      v5 = "Coordinator: startDiscovering called while already discovering";
+      v6 = &v13;
+      v7 = v4;
+LABEL_11:
+      _os_log_debug_impl(&dword_22AADC000, v7, OS_LOG_TYPE_DEBUG, v5, v6, 2u);
+    }
+  }
+
+  else
+  {
+    v8 = [(HAP2AccessoryServerCoordinator *)self isStartDiscoveringPending];
+    if (hap2LogInitialize_onceToken != -1)
+    {
+      dispatch_once(&hap2LogInitialize_onceToken, &__block_literal_global_1996);
+    }
+
+    v9 = hap2Log_accessory;
+    if (v8)
+    {
+      if (!os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_DEBUG))
+      {
+        return;
+      }
+
+      *buf = 0;
+      v5 = "Coordinator: startDiscovering called while a previous call is pending";
+      v6 = buf;
+      v7 = v9;
+      goto LABEL_11;
+    }
+
+    if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_INFO))
+    {
+      *v11 = 0;
+      _os_log_impl(&dword_22AADC000, v9, OS_LOG_TYPE_INFO, "Coordinator: Starting discovery", v11, 2u);
+    }
+
+    [(HAP2AccessoryServerCoordinator *)self setStartDiscoveringPending:1];
+    v10 = [(HAP2AccessoryServerCoordinator *)self discovery];
+    [v10 startDiscovering];
+  }
+}
+
+- (void)discovery:(id)a3 didLoseAccessory:(id)a4 error:(id)a5
+{
+  v8 = a3;
+  v9 = a4;
+  v10 = a5;
+  v11 = [(HAP2AccessoryServerCoordinator *)self discovery];
+
+  if (v11 == v8)
+  {
+    objc_initWeak(&location, self);
+    v12 = [(HAP2AccessoryServerCoordinator *)self localOperationQueue];
+    v13 = MEMORY[0x277CCA8C8];
+    v15 = MEMORY[0x277D85DD0];
+    v16 = 3221225472;
+    v17 = __67__HAP2AccessoryServerCoordinator_discovery_didLoseAccessory_error___block_invoke;
+    v18 = &unk_2786D6F50;
+    objc_copyWeak(&v21, &location);
+    v19 = v9;
+    v20 = v10;
+    v14 = [v13 blockOperationWithBlock:&v15];
+    [v12 addOperation:{v14, v15, v16, v17, v18}];
+
+    objc_destroyWeak(&v21);
+    objc_destroyWeak(&location);
+  }
+}
+
+void __67__HAP2AccessoryServerCoordinator_discovery_didLoseAccessory_error___block_invoke(id *a1)
+{
+  WeakRetained = objc_loadWeakRetained(a1 + 6);
+  v3 = [WeakRetained operationQueue];
+  v4[0] = MEMORY[0x277D85DD0];
+  v4[1] = 3221225472;
+  v4[2] = __67__HAP2AccessoryServerCoordinator_discovery_didLoseAccessory_error___block_invoke_2;
+  v4[3] = &unk_2786D6F50;
+  objc_copyWeak(&v7, a1 + 6);
+  v5 = a1[4];
+  v6 = a1[5];
+  [v3 addBlock:v4];
+
+  objc_destroyWeak(&v7);
+}
+
+void __67__HAP2AccessoryServerCoordinator_discovery_didLoseAccessory_error___block_invoke_2(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 48));
+  [WeakRetained _didLoseAccessory:*(a1 + 32) error:*(a1 + 40)];
+}
+
+- (void)discovery:(id)a3 didDiscoverAccessory:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  v8 = [(HAP2AccessoryServerCoordinator *)self discovery];
+
+  if (v8 == v6)
+  {
+    objc_initWeak(&location, self);
+    v20 = 0;
+    v21 = &v20;
+    v22 = 0x3032000000;
+    v23 = __Block_byref_object_copy__374;
+    v24 = __Block_byref_object_dispose__375;
+    v25 = 0;
+    v9 = [HAP2AsynchronousBlockOperation alloc];
+    v13 = MEMORY[0x277D85DD0];
+    v14 = 3221225472;
+    v15 = __65__HAP2AccessoryServerCoordinator_discovery_didDiscoverAccessory___block_invoke;
+    v16 = &unk_2786D5FC0;
+    objc_copyWeak(&v19, &location);
+    v17 = v7;
+    v18 = &v20;
+    v10 = [(HAP2AsynchronousBlockOperation *)v9 initWithBlock:&v13];
+    v11 = v21[5];
+    v21[5] = v10;
+
+    v12 = [(HAP2AccessoryServerCoordinator *)self localOperationQueue:v13];
+    [v12 addOperation:v21[5]];
+
+    _Block_object_dispose(&v20, 8);
+    objc_destroyWeak(&v19);
+    objc_destroyWeak(&location);
+  }
+}
+
+void __65__HAP2AccessoryServerCoordinator_discovery_didDiscoverAccessory___block_invoke(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 48));
+  v3 = [WeakRetained operationQueue];
+  v6[0] = MEMORY[0x277D85DD0];
+  v6[1] = 3221225472;
+  v6[2] = __65__HAP2AccessoryServerCoordinator_discovery_didDiscoverAccessory___block_invoke_2;
+  v6[3] = &unk_2786D5FC0;
+  objc_copyWeak(&v9, (a1 + 48));
+  v4 = *(a1 + 32);
+  v5 = *(a1 + 40);
+  v7 = v4;
+  v8 = v5;
+  [v3 addBlock:v6];
+
+  objc_destroyWeak(&v9);
+}
+
+void __65__HAP2AccessoryServerCoordinator_discovery_didDiscoverAccessory___block_invoke_2(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 48));
+  v4[0] = MEMORY[0x277D85DD0];
+  v4[1] = 3221225472;
+  v4[2] = __65__HAP2AccessoryServerCoordinator_discovery_didDiscoverAccessory___block_invoke_3;
+  v4[3] = &unk_2786D3B88;
+  v3 = *(a1 + 32);
+  v4[4] = *(a1 + 40);
+  [WeakRetained _didDiscoverAccessory:v3 completion:v4];
+}
+
+- (void)discovery:(id)a3 didStopDiscoveringWithError:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  v8 = [(HAP2AccessoryServerCoordinator *)self discovery];
+
+  if (v8 == v6)
+  {
+    objc_initWeak(&location, self);
+    v9 = [(HAP2AccessoryServerCoordinator *)self operationQueue];
+    v10[0] = MEMORY[0x277D85DD0];
+    v10[1] = 3221225472;
+    v10[2] = __72__HAP2AccessoryServerCoordinator_discovery_didStopDiscoveringWithError___block_invoke;
+    v10[3] = &unk_2786D6EB0;
+    objc_copyWeak(&v12, &location);
+    v11 = v7;
+    [v9 addBlock:v10];
+
+    objc_destroyWeak(&v12);
+    objc_destroyWeak(&location);
+  }
+}
+
+void __72__HAP2AccessoryServerCoordinator_discovery_didStopDiscoveringWithError___block_invoke(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 40));
+  [WeakRetained _didStopDiscoveringWithError:*(a1 + 32)];
+}
+
+- (void)discovery:(id)a3 didStartDiscoveringWithError:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  v8 = [(HAP2AccessoryServerCoordinator *)self discovery];
+
+  if (v8 == v6)
+  {
+    objc_initWeak(&location, self);
+    v9 = [(HAP2AccessoryServerCoordinator *)self operationQueue];
+    v10[0] = MEMORY[0x277D85DD0];
+    v10[1] = 3221225472;
+    v10[2] = __73__HAP2AccessoryServerCoordinator_discovery_didStartDiscoveringWithError___block_invoke;
+    v10[3] = &unk_2786D6EB0;
+    objc_copyWeak(&v12, &location);
+    v11 = v7;
+    [v9 addBlock:v10];
+
+    objc_destroyWeak(&v12);
+    objc_destroyWeak(&location);
+  }
+}
+
+void __73__HAP2AccessoryServerCoordinator_discovery_didStartDiscoveringWithError___block_invoke(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 40));
+  [WeakRetained _didStartDiscoveringWithError:*(a1 + 32)];
+}
+
+- (void)resurfaceDiscoveryInfoForDeviceID:(id)a3
+{
+  v4 = a3;
+  objc_initWeak(&location, self);
+  v17 = 0;
+  v18 = &v17;
+  v19 = 0x3032000000;
+  v20 = __Block_byref_object_copy__374;
+  v21 = __Block_byref_object_dispose__375;
+  v22 = 0;
+  v5 = [HAP2AsynchronousBlockOperation alloc];
+  v10 = MEMORY[0x277D85DD0];
+  v11 = 3221225472;
+  v12 = __68__HAP2AccessoryServerCoordinator_resurfaceDiscoveryInfoForDeviceID___block_invoke;
+  v13 = &unk_2786D5FC0;
+  objc_copyWeak(&v16, &location);
+  v6 = v4;
+  v14 = v6;
+  v15 = &v17;
+  v7 = [(HAP2AsynchronousBlockOperation *)v5 initWithBlock:&v10];
+  v8 = v18[5];
+  v18[5] = v7;
+
+  v9 = [(HAP2AccessoryServerCoordinator *)self localOperationQueue:v10];
+  [v9 addOperation:v18[5]];
+
+  _Block_object_dispose(&v17, 8);
+  objc_destroyWeak(&v16);
+  objc_destroyWeak(&location);
+}
+
+void __68__HAP2AccessoryServerCoordinator_resurfaceDiscoveryInfoForDeviceID___block_invoke(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 48));
+  v3 = [WeakRetained operationQueue];
+  v6[0] = MEMORY[0x277D85DD0];
+  v6[1] = 3221225472;
+  v6[2] = __68__HAP2AccessoryServerCoordinator_resurfaceDiscoveryInfoForDeviceID___block_invoke_2;
+  v6[3] = &unk_2786D5FC0;
+  objc_copyWeak(&v9, (a1 + 48));
+  v4 = *(a1 + 32);
+  v5 = *(a1 + 40);
+  v7 = v4;
+  v8 = v5;
+  [v3 addBlock:v6];
+
+  objc_destroyWeak(&v9);
+}
+
+void __68__HAP2AccessoryServerCoordinator_resurfaceDiscoveryInfoForDeviceID___block_invoke_2(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 48));
+  v3 = [WeakRetained discoveredAccessoryServers];
+  v4 = [v3 objectForKeyedSubscript:*(a1 + 32)];
+
+  if (v4)
+  {
+    v5[0] = MEMORY[0x277D85DD0];
+    v5[1] = 3221225472;
+    v5[2] = __68__HAP2AccessoryServerCoordinator_resurfaceDiscoveryInfoForDeviceID___block_invoke_3;
+    v5[3] = &unk_2786D3B88;
+    v5[4] = *(a1 + 40);
+    [WeakRetained _didDiscoverAccessory:v4 completion:v5];
+  }
+
+  else
+  {
+    [*(*(*(a1 + 40) + 8) + 40) finish];
+  }
+}
+
+- (void)stopDiscovering
+{
+  objc_initWeak(&location, self);
+  v3 = [(HAP2AccessoryServerCoordinator *)self operationQueue];
+  v4[0] = MEMORY[0x277D85DD0];
+  v4[1] = 3221225472;
+  v4[2] = __49__HAP2AccessoryServerCoordinator_stopDiscovering__block_invoke;
+  v4[3] = &unk_2786D6FC8;
+  objc_copyWeak(&v5, &location);
+  [v3 addBlock:v4];
+
+  objc_destroyWeak(&v5);
+  objc_destroyWeak(&location);
+}
+
+void __49__HAP2AccessoryServerCoordinator_stopDiscovering__block_invoke(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  [WeakRetained _stopDiscovering];
+}
+
+- (void)startDiscovering
+{
+  objc_initWeak(&location, self);
+  v3 = [(HAP2AccessoryServerCoordinator *)self operationQueue];
+  v4[0] = MEMORY[0x277D85DD0];
+  v4[1] = 3221225472;
+  v4[2] = __50__HAP2AccessoryServerCoordinator_startDiscovering__block_invoke;
+  v4[3] = &unk_2786D6FC8;
+  objc_copyWeak(&v5, &location);
+  [v3 addBlock:v4];
+
+  objc_destroyWeak(&v5);
+  objc_destroyWeak(&location);
+}
+
+void __50__HAP2AccessoryServerCoordinator_startDiscovering__block_invoke(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  [WeakRetained _startDiscovering];
+}
+
+- (NSMutableDictionary)discoveredAccessoryServers
+{
+  v3 = [(HAP2AccessoryServerCoordinator *)self operationQueue];
+  [v3 assertCurrentQueue];
+
+  discoveredAccessoryServers = self->_discoveredAccessoryServers;
+
+  return discoveredAccessoryServers;
+}
+
+- (void)setStopDiscoveringPending:(BOOL)a3
+{
+  v5 = [(HAP2AccessoryServerCoordinator *)self operationQueue];
+  [v5 assertCurrentQueue];
+
+  self->_stopDiscoveringPending = a3;
+}
+
+- (BOOL)isStopDiscoveringPending
+{
+  v3 = [(HAP2AccessoryServerCoordinator *)self operationQueue];
+  [v3 assertCurrentQueue];
+
+  return self->_stopDiscoveringPending;
+}
+
+- (void)setStartDiscoveringPending:(BOOL)a3
+{
+  v5 = [(HAP2AccessoryServerCoordinator *)self operationQueue];
+  [v5 assertCurrentQueue];
+
+  self->_startDiscoveringPending = a3;
+}
+
+- (BOOL)isStartDiscoveringPending
+{
+  v3 = [(HAP2AccessoryServerCoordinator *)self operationQueue];
+  [v3 assertCurrentQueue];
+
+  return self->_startDiscoveringPending;
+}
+
+- (void)setDiscovering:(BOOL)a3
+{
+  v5 = [(HAP2AccessoryServerCoordinator *)self propertyLock];
+  v6[0] = MEMORY[0x277D85DD0];
+  v6[1] = 3221225472;
+  v6[2] = __49__HAP2AccessoryServerCoordinator_setDiscovering___block_invoke;
+  v6[3] = &unk_2786D6768;
+  v6[4] = self;
+  v7 = a3;
+  [v5 performWritingBlock:v6];
+}
+
+- (BOOL)isDiscovering
+{
+  v2 = self;
+  v6 = 0;
+  v7 = &v6;
+  v8 = 0x2020000000;
+  v9 = 0;
+  v3 = [(HAP2AccessoryServerCoordinator *)self propertyLock];
+  v5[0] = MEMORY[0x277D85DD0];
+  v5[1] = 3221225472;
+  v5[2] = __47__HAP2AccessoryServerCoordinator_isDiscovering__block_invoke;
+  v5[3] = &unk_2786D6E60;
+  v5[4] = v2;
+  v5[5] = &v6;
+  [v3 performReadingBlock:v5];
+
+  LOBYTE(v2) = *(v7 + 24);
+  _Block_object_dispose(&v6, 8);
+  return v2;
+}
+
+- (void)setDelegate:(id)a3
+{
+  v4 = a3;
+  v5 = [(HAP2AccessoryServerCoordinator *)self propertyLock];
+  v7[0] = MEMORY[0x277D85DD0];
+  v7[1] = 3221225472;
+  v7[2] = __46__HAP2AccessoryServerCoordinator_setDelegate___block_invoke;
+  v7[3] = &unk_2786D7050;
+  v7[4] = self;
+  v8 = v4;
+  v6 = v4;
+  [v5 performWritingBlock:v7];
+}
+
+- (HAP2AccessoryServerCoordinatorDelegate)delegate
+{
+  v7 = 0;
+  v8 = &v7;
+  v9 = 0x3032000000;
+  v10 = __Block_byref_object_copy__374;
+  v11 = __Block_byref_object_dispose__375;
+  v12 = 0;
+  v3 = [(HAP2AccessoryServerCoordinator *)self propertyLock];
+  v6[0] = MEMORY[0x277D85DD0];
+  v6[1] = 3221225472;
+  v6[2] = __42__HAP2AccessoryServerCoordinator_delegate__block_invoke;
+  v6[3] = &unk_2786D6E60;
+  v6[4] = self;
+  v6[5] = &v7;
+  [v3 performReadingBlock:v6];
+
+  v4 = v8[5];
+  _Block_object_dispose(&v7, 8);
+
+  return v4;
+}
+
+uint64_t __42__HAP2AccessoryServerCoordinator_delegate__block_invoke(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((*(a1 + 32) + 16));
+  v3 = *(*(a1 + 40) + 8);
+  v4 = *(v3 + 40);
+  *(v3 + 40) = WeakRetained;
+
+  return MEMORY[0x2821F96F8]();
+}
+
+- (void)setBrowser:(id)a3 operationQueue:(id)a4
+{
+  v6 = a4;
+  objc_storeWeak(&self->_browser, a3);
+  operationQueue = self->_operationQueue;
+  self->_operationQueue = v6;
+}
+
+- (HAP2AccessoryServerCoordinator)initWithDiscovery:(id)a3 pairingFactory:(id)a4 transportFactory:(id)a5 secureTransportFactory:(id)a6 encodingFactory:(id)a7 controllerFactory:(id)a8
+{
+  v15 = a3;
+  v29 = a4;
+  v28 = a5;
+  v27 = a6;
+  v16 = a7;
+  v17 = a8;
+  v30.receiver = self;
+  v30.super_class = HAP2AccessoryServerCoordinator;
+  v18 = [(HAP2AccessoryServerCoordinator *)&v30 init];
+  v19 = v18;
+  if (v18)
+  {
+    objc_storeStrong(&v18->_discovery, a3);
+    objc_storeStrong(&v19->_pairingFactory, a4);
+    objc_storeStrong(&v19->_transportFactory, a5);
+    objc_storeStrong(&v19->_secureTransportFactory, a6);
+    objc_storeStrong(&v19->_encodingFactory, a7);
+    objc_storeStrong(&v19->_controllerFactory, a8);
+    v20 = [HAP2PropertyLock lockWithName:@"HAP2AccessoryServerCoordinator.propertyLock"];
+    propertyLock = v19->_propertyLock;
+    v19->_propertyLock = v20;
+
+    v22 = [MEMORY[0x277CBEB38] dictionary];
+    discoveredAccessoryServers = v19->_discoveredAccessoryServers;
+    v19->_discoveredAccessoryServers = v22;
+
+    v24 = objc_alloc_init(MEMORY[0x277CCABD8]);
+    localOperationQueue = v19->_localOperationQueue;
+    v19->_localOperationQueue = v24;
+
+    [(NSOperationQueue *)v19->_localOperationQueue setMaxConcurrentOperationCount:1];
+    [(NSOperationQueue *)v19->_localOperationQueue setName:@"HAP2AccessoryServerCoordinator.localOperationQueue"];
+    [v15 setDelegate:v19];
+  }
+
+  return v19;
+}
+
+@end

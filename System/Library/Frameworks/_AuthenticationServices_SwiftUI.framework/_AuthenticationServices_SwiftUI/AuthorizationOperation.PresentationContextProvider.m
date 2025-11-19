@@ -1,0 +1,14 @@
+@interface AuthorizationOperation.PresentationContextProvider
+- (_TtCC31_AuthenticationServices_SwiftUI22AuthorizationOperationP33_BCDE3EDBB9065C8EBFE58D5929093A3327PresentationContextProvider)init;
+@end
+
+@implementation AuthorizationOperation.PresentationContextProvider
+
+- (_TtCC31_AuthenticationServices_SwiftUI22AuthorizationOperationP33_BCDE3EDBB9065C8EBFE58D5929093A3327PresentationContextProvider)init
+{
+  result = _swift_stdlib_reportUnimplementedInitializer();
+  __break(1u);
+  return result;
+}
+
+@end

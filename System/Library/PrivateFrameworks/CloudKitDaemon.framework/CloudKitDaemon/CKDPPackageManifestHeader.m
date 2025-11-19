@@ -1,0 +1,370 @@
+@interface CKDPPackageManifestHeader
+- (BOOL)isEqual:(id)a3;
+- (BOOL)readFrom:(id)a3;
+- (id)copyWithZone:(_NSZone *)a3;
+- (id)description;
+- (id)dictionaryRepresentation;
+- (unint64_t)hash;
+- (void)copyTo:(id)a3;
+- (void)mergeFrom:(id)a3;
+- (void)writeTo:(id)a3;
+@end
+
+@implementation CKDPPackageManifestHeader
+
+- (id)description
+{
+  v3 = MEMORY[0x277CCACA8];
+  v11.receiver = self;
+  v11.super_class = CKDPPackageManifestHeader;
+  v4 = [(CKDPPackageManifestHeader *)&v11 description];
+  v7 = objc_msgSend_dictionaryRepresentation(self, v5, v6);
+  v9 = objc_msgSend_stringWithFormat_(v3, v8, @"%@ %@", v4, v7);
+
+  return v9;
+}
+
+- (id)dictionaryRepresentation
+{
+  v5 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], a2, v2);
+  if (*&self->_has)
+  {
+    v6 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], v4, self->_version);
+    objc_msgSend_setObject_forKey_(v5, v7, v6, @"version");
+  }
+
+  signature = self->_signature;
+  if (signature)
+  {
+    objc_msgSend_setObject_forKey_(v5, v4, signature, @"signature");
+  }
+
+  verificationKey = self->_verificationKey;
+  if (verificationKey)
+  {
+    objc_msgSend_setObject_forKey_(v5, v4, verificationKey, @"verificationKey");
+  }
+
+  return v5;
+}
+
+- (BOOL)readFrom:(id)a3
+{
+  v5 = objc_msgSend_position(a3, a2, a3);
+  if (v5 < objc_msgSend_length(a3, v6, v7))
+  {
+    do
+    {
+      if (objc_msgSend_hasError(a3, v8, v9))
+      {
+        break;
+      }
+
+      v10 = 0;
+      v11 = 0;
+      v12 = 0;
+      while (1)
+      {
+        v62 = 0;
+        v13 = objc_msgSend_position(a3, v8, v9) + 1;
+        if (v13 >= objc_msgSend_position(a3, v14, v15) && (v18 = objc_msgSend_position(a3, v16, v17) + 1, v18 <= objc_msgSend_length(a3, v19, v20)))
+        {
+          v21 = objc_msgSend_data(a3, v16, v17);
+          v24 = objc_msgSend_position(a3, v22, v23);
+          objc_msgSend_getBytes_range_(v21, v25, &v62, v24, 1);
+
+          v28 = objc_msgSend_position(a3, v26, v27);
+          objc_msgSend_setPosition_(a3, v29, v28 + 1);
+        }
+
+        else
+        {
+          objc_msgSend__setError(a3, v16, v17);
+        }
+
+        v12 |= (v62 & 0x7F) << v10;
+        if ((v62 & 0x80) == 0)
+        {
+          break;
+        }
+
+        v10 += 7;
+        v30 = v11++ >= 9;
+        if (v30)
+        {
+          v31 = 0;
+          goto LABEL_15;
+        }
+      }
+
+      v31 = objc_msgSend_hasError(a3, v8, v9) ? 0 : v12;
+LABEL_15:
+      if (objc_msgSend_hasError(a3, v8, v9))
+      {
+        break;
+      }
+
+      v9 = v31 & 7;
+      if (v9 == 4)
+      {
+        break;
+      }
+
+      v32 = (v31 >> 3);
+      if ((v31 >> 3) == 3)
+      {
+        v54 = PBReaderReadData();
+        v55 = 16;
+      }
+
+      else
+      {
+        if (v32 != 2)
+        {
+          if (v32 == 1)
+          {
+            v33 = 0;
+            v34 = 0;
+            v35 = 0;
+            *&self->_has |= 1u;
+            while (1)
+            {
+              v63 = 0;
+              v36 = objc_msgSend_position(a3, v32, v9) + 1;
+              if (v36 >= objc_msgSend_position(a3, v37, v38) && (v41 = objc_msgSend_position(a3, v39, v40) + 1, v41 <= objc_msgSend_length(a3, v42, v43)))
+              {
+                v44 = objc_msgSend_data(a3, v39, v40);
+                v47 = objc_msgSend_position(a3, v45, v46);
+                objc_msgSend_getBytes_range_(v44, v48, &v63, v47, 1);
+
+                v51 = objc_msgSend_position(a3, v49, v50);
+                objc_msgSend_setPosition_(a3, v52, v51 + 1);
+              }
+
+              else
+              {
+                objc_msgSend__setError(a3, v39, v40);
+              }
+
+              v35 |= (v63 & 0x7F) << v33;
+              if ((v63 & 0x80) == 0)
+              {
+                break;
+              }
+
+              v33 += 7;
+              v30 = v34++ >= 9;
+              if (v30)
+              {
+                v53 = 0;
+                goto LABEL_37;
+              }
+            }
+
+            if (objc_msgSend_hasError(a3, v32, v9))
+            {
+              v53 = 0;
+            }
+
+            else
+            {
+              v53 = v35;
+            }
+
+LABEL_37:
+            self->_version = v53;
+          }
+
+          else
+          {
+            v57 = PBReaderSkipValueWithTag();
+            if (!v57)
+            {
+              return v57;
+            }
+          }
+
+          goto LABEL_38;
+        }
+
+        v54 = PBReaderReadData();
+        v55 = 8;
+      }
+
+      v56 = *(&self->super.super.isa + v55);
+      *(&self->super.super.isa + v55) = v54;
+
+LABEL_38:
+      v58 = objc_msgSend_position(a3, v32, v9);
+    }
+
+    while (v58 < objc_msgSend_length(a3, v59, v60));
+  }
+
+  LOBYTE(v57) = objc_msgSend_hasError(a3, v8, v9) ^ 1;
+  return v57;
+}
+
+- (void)writeTo:(id)a3
+{
+  v4 = a3;
+  v6 = v4;
+  if (*&self->_has)
+  {
+    version = self->_version;
+    PBDataWriterWriteInt32Field();
+    v4 = v6;
+  }
+
+  if (self->_signature)
+  {
+    PBDataWriterWriteDataField();
+    v4 = v6;
+  }
+
+  if (self->_verificationKey)
+  {
+    PBDataWriterWriteDataField();
+    v4 = v6;
+  }
+}
+
+- (void)copyTo:(id)a3
+{
+  v4 = a3;
+  if (*&self->_has)
+  {
+    v4[6] = self->_version;
+    *(v4 + 28) |= 1u;
+  }
+
+  signature = self->_signature;
+  v8 = v4;
+  if (signature)
+  {
+    objc_msgSend_setSignature_(v4, v5, signature);
+    v4 = v8;
+  }
+
+  verificationKey = self->_verificationKey;
+  if (verificationKey)
+  {
+    objc_msgSend_setVerificationKey_(v8, v5, verificationKey);
+    v4 = v8;
+  }
+}
+
+- (id)copyWithZone:(_NSZone *)a3
+{
+  v5 = objc_opt_class();
+  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v10 = objc_msgSend_init(v7, v8, v9);
+  v12 = v10;
+  if (*&self->_has)
+  {
+    *(v10 + 24) = self->_version;
+    *(v10 + 28) |= 1u;
+  }
+
+  v13 = objc_msgSend_copyWithZone_(self->_signature, v11, a3);
+  v14 = v12[1];
+  v12[1] = v13;
+
+  v16 = objc_msgSend_copyWithZone_(self->_verificationKey, v15, a3);
+  v17 = v12[2];
+  v12[2] = v16;
+
+  return v12;
+}
+
+- (BOOL)isEqual:(id)a3
+{
+  v4 = a3;
+  v5 = objc_opt_class();
+  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  {
+    goto LABEL_11;
+  }
+
+  v8 = *(v4 + 28);
+  if (*&self->_has)
+  {
+    if ((*(v4 + 28) & 1) == 0 || self->_version != *(v4 + 6))
+    {
+      goto LABEL_11;
+    }
+  }
+
+  else if (*(v4 + 28))
+  {
+LABEL_11:
+    isEqual = 0;
+    goto LABEL_12;
+  }
+
+  signature = self->_signature;
+  v10 = v4[1];
+  if (signature | v10 && !objc_msgSend_isEqual_(signature, v7, v10))
+  {
+    goto LABEL_11;
+  }
+
+  verificationKey = self->_verificationKey;
+  v12 = v4[2];
+  if (verificationKey | v12)
+  {
+    isEqual = objc_msgSend_isEqual_(verificationKey, v7, v12);
+  }
+
+  else
+  {
+    isEqual = 1;
+  }
+
+LABEL_12:
+
+  return isEqual;
+}
+
+- (unint64_t)hash
+{
+  if (*&self->_has)
+  {
+    v4 = 2654435761 * self->_version;
+  }
+
+  else
+  {
+    v4 = 0;
+  }
+
+  v5 = objc_msgSend_hash(self->_signature, a2, v2) ^ v4;
+  return v5 ^ objc_msgSend_hash(self->_verificationKey, v6, v7);
+}
+
+- (void)mergeFrom:(id)a3
+{
+  v4 = a3;
+  if (*(v4 + 28))
+  {
+    self->_version = *(v4 + 6);
+    *&self->_has |= 1u;
+  }
+
+  v6 = *(v4 + 1);
+  v8 = v4;
+  if (v6)
+  {
+    objc_msgSend_setSignature_(self, v5, v6);
+    v4 = v8;
+  }
+
+  v7 = *(v4 + 2);
+  if (v7)
+  {
+    objc_msgSend_setVerificationKey_(self, v5, v7);
+    v4 = v8;
+  }
+}
+
+@end

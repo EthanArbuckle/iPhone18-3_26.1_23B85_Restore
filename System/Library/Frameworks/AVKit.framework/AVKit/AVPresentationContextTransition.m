@@ -1,0 +1,80 @@
+@interface AVPresentationContextTransition
+- (BOOL)isRotated;
+- (CGAffineTransform)counterRotationTransform;
+- (CGAffineTransform)rotationTransform;
+- (int64_t)initialInterfaceOrientation;
+- (int64_t)interfaceRotation;
+@end
+
+@implementation AVPresentationContextTransition
+
+- (int64_t)initialInterfaceOrientation
+{
+  v3 = [(AVPresentationContextTransition *)self wasCancelledWithInactiveScene];
+  v4 = 24;
+  if (v3)
+  {
+    v4 = 32;
+  }
+
+  return *(&self->super.isa + v4);
+}
+
+- (BOOL)isRotated
+{
+  v2 = [(AVPresentationContextTransition *)self interfaceRotation];
+  if (v2 >= 0)
+  {
+    v3 = v2;
+  }
+
+  else
+  {
+    v3 = -v2;
+  }
+
+  return v3 == 1;
+}
+
+- (int64_t)interfaceRotation
+{
+  v3 = [(AVPresentationContextTransition *)self initialInterfaceOrientation];
+  v4 = [(AVPresentationContextTransition *)self finalInterfaceOrientation];
+  if ((v3 - 2) > 2)
+  {
+    v5 = 0;
+  }
+
+  else
+  {
+    v5 = qword_18B6EC6F0[v3 - 2];
+  }
+
+  if ((v4 - 2) > 2)
+  {
+    v6 = 0;
+  }
+
+  else
+  {
+    v6 = qword_18B6EC708[v4 - 2];
+  }
+
+  return v6 + v5;
+}
+
+- (CGAffineTransform)counterRotationTransform
+{
+  v4 = [(AVPresentationContextTransition *)self]* 1.57079633;
+
+  return CGAffineTransformMakeRotation(retstr, v4);
+}
+
+- (CGAffineTransform)rotationTransform
+{
+  v4 = [(AVPresentationContextTransition *)self interfaceRotation]* 1.57079633;
+
+  return CGAffineTransformMakeRotation(retstr, v4);
+}
+
+@end

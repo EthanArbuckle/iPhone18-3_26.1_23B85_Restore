@@ -1,0 +1,757 @@
+@interface WOPersistence
++ (id)persistenceFromProto:(id)a3;
++ (id)zeroObjectModificationDate;
+- (WOPersistence)initWithCoder:(id)a3;
+- (WOPersistence)initWithData:(id)a3;
+- (WOPersistence)initWithVersion:(int64_t)a3 type:(unint64_t)a4 uuid:(id)a5 persistedData:(id)a6 objectState:(unint64_t)a7 objectModificationDate:(id)a8 syncIdentity:(id)a9;
+- (WOPersistence)initWithVersion:(int64_t)a3 type:(unint64_t)a4 uuid:(id)a5 persistedData:(id)a6 persistedProtoData:(id)a7 objectState:(unint64_t)a8 objectModificationDate:(id)a9 syncIdentity:(id)a10;
+- (id)data;
+- (id)protobuf;
+- (int64_t)encodedByteCount;
+- (void)encodeWithCoder:(id)a3;
+@end
+
+@implementation WOPersistence
+
+- (WOPersistence)initWithVersion:(int64_t)a3 type:(unint64_t)a4 uuid:(id)a5 persistedData:(id)a6 objectState:(unint64_t)a7 objectModificationDate:(id)a8 syncIdentity:(id)a9
+{
+  v23 = self;
+  v22 = a2;
+  v21 = a3;
+  v20 = a4;
+  location = 0;
+  objc_storeStrong(&location, a5);
+  v18 = 0;
+  objc_storeStrong(&v18, a6);
+  v17 = a7;
+  v16 = 0;
+  objc_storeStrong(&v16, a8);
+  v15 = 0;
+  objc_storeStrong(&v15, a9);
+  v9 = v23;
+  v23 = 0;
+  v23 = [(WOPersistence *)v9 initWithVersion:v21 type:v20 uuid:location persistedData:v18 persistedProtoData:0 objectState:v17 objectModificationDate:v16 syncIdentity:v15];
+  v14 = MEMORY[0x277D82BE0](v23);
+  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&v16, 0);
+  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&location, 0);
+  objc_storeStrong(&v23, 0);
+  return v14;
+}
+
+- (WOPersistence)initWithVersion:(int64_t)a3 type:(unint64_t)a4 uuid:(id)a5 persistedData:(id)a6 persistedProtoData:(id)a7 objectState:(unint64_t)a8 objectModificationDate:(id)a9 syncIdentity:(id)a10
+{
+  v30 = self;
+  v29 = a2;
+  v28 = a3;
+  v27 = a4;
+  location = 0;
+  objc_storeStrong(&location, a5);
+  v25 = 0;
+  objc_storeStrong(&v25, a6);
+  v24 = 0;
+  objc_storeStrong(&v24, a7);
+  v23 = a8;
+  v22 = 0;
+  objc_storeStrong(&v22, a9);
+  v21 = 0;
+  objc_storeStrong(&v21, a10);
+  v10 = v30;
+  v30 = 0;
+  v20.receiver = v10;
+  v20.super_class = WOPersistence;
+  v30 = [(WOPersistence *)&v20 init];
+  objc_storeStrong(&v30, v30);
+  if (v30)
+  {
+    [(WOPersistence *)v30 setVersion:v28];
+    [(WOPersistence *)v30 setType:v27];
+    [(WOPersistence *)v30 setUuid:location];
+    [(WOPersistence *)v30 setPersistedData:v25];
+    [(WOPersistence *)v30 setPersistedProtoData:v24];
+    [(WOPersistence *)v30 setObjectState:v23];
+    [(WOPersistence *)v30 setObjectModificationDate:v22];
+    [(WOPersistence *)v30 setSyncIdentity:v21];
+    v13 = objc_opt_new();
+    [(WOPersistence *)v30 setKeyedNumbers:?];
+    MEMORY[0x277D82BD8](v13);
+    v14 = objc_opt_new();
+    [(WOPersistence *)v30 setKeyedStrings:?];
+    MEMORY[0x277D82BD8](v14);
+    v15 = objc_opt_new();
+    [(WOPersistence *)v30 setKeyedDatas:?];
+    MEMORY[0x277D82BD8](v15);
+    v16 = objc_opt_new();
+    [(WOPersistence *)v30 setKeyedDatas:?];
+    MEMORY[0x277D82BD8](v16);
+  }
+
+  v12 = MEMORY[0x277D82BE0](v30);
+  objc_storeStrong(&v21, 0);
+  objc_storeStrong(&v22, 0);
+  objc_storeStrong(&v24, 0);
+  objc_storeStrong(&v25, 0);
+  objc_storeStrong(&location, 0);
+  objc_storeStrong(&v30, 0);
+  return v12;
+}
+
+- (void)encodeWithCoder:(id)a3
+{
+  v4 = self;
+  location[1] = a2;
+  location[0] = 0;
+  objc_storeStrong(location, a3);
+  [location[0] encodeInteger:v4->_version forKey:@"version"];
+  [location[0] encodeInteger:v4->_type forKey:@"type"];
+  [location[0] encodeObject:v4->_uuid forKey:@"uuid"];
+  [location[0] encodeObject:v4->_keyedNumbers forKey:@"numbers"];
+  [location[0] encodeObject:v4->_keyedStrings forKey:@"strings"];
+  [location[0] encodeObject:v4->_keyedDates forKey:@"dates"];
+  [location[0] encodeObject:v4->_persistedData forKey:@"data"];
+  [location[0] encodeObject:v4->_keyedDatas forKey:@"keyedDatas"];
+  [location[0] encodeObject:v4->_persistedProtoData forKey:@"proto_data"];
+  [location[0] encodeInteger:v4->_objectState forKey:@"objectState"];
+  [location[0] encodeObject:v4->_objectModificationDate forKey:@"objectModificationDate"];
+  [location[0] encodeObject:v4->_syncIdentity forKey:@"syncIdentity"];
+  objc_storeStrong(location, 0);
+}
+
+- (WOPersistence)initWithCoder:(id)a3
+{
+  v41[3] = *MEMORY[0x277D85DE8];
+  v37 = self;
+  location[1] = a2;
+  location[0] = 0;
+  objc_storeStrong(location, a3);
+  v3 = v37;
+  v37 = 0;
+  v35.receiver = v3;
+  v35.super_class = WOPersistence;
+  v37 = [(WOPersistence *)&v35 init];
+  objc_storeStrong(&v37, v37);
+  if (v37)
+  {
+    v4 = [location[0] decodeIntegerForKey:@"version"];
+    [(WOPersistence *)v37 setVersion:v4];
+    v5 = [location[0] decodeIntegerForKey:@"type"];
+    [(WOPersistence *)v37 setType:v5];
+    v14 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    [(WOPersistence *)v37 setUuid:?];
+    MEMORY[0x277D82BD8](v14);
+    v16 = location[0];
+    v15 = MEMORY[0x277CBEB98];
+    v41[0] = objc_opt_class();
+    v41[1] = objc_opt_class();
+    v41[2] = objc_opt_class();
+    v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:?];
+    v18 = [v15 setWithArray:?];
+    v17 = [v16 decodeObjectOfClasses:? forKey:?];
+    [(WOPersistence *)v37 setKeyedNumbers:?];
+    MEMORY[0x277D82BD8](v17);
+    MEMORY[0x277D82BD8](v18);
+    MEMORY[0x277D82BD8](v19);
+    v21 = location[0];
+    v20 = MEMORY[0x277CBEB98];
+    v40[0] = objc_opt_class();
+    v40[1] = objc_opt_class();
+    v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:2];
+    v23 = [v20 setWithArray:?];
+    v22 = [v21 decodeObjectOfClasses:? forKey:?];
+    [(WOPersistence *)v37 setKeyedStrings:?];
+    MEMORY[0x277D82BD8](v22);
+    MEMORY[0x277D82BD8](v23);
+    MEMORY[0x277D82BD8](v24);
+    v26 = location[0];
+    v25 = MEMORY[0x277CBEB98];
+    v39[0] = objc_opt_class();
+    v39[1] = objc_opt_class();
+    v39[2] = objc_opt_class();
+    v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:3];
+    v28 = [v25 setWithArray:?];
+    v27 = [v26 decodeObjectOfClasses:? forKey:?];
+    [(WOPersistence *)v37 setKeyedDates:?];
+    MEMORY[0x277D82BD8](v27);
+    MEMORY[0x277D82BD8](v28);
+    MEMORY[0x277D82BD8](v29);
+    v31 = location[0];
+    v30 = MEMORY[0x277CBEB98];
+    v38[0] = objc_opt_class();
+    v38[1] = objc_opt_class();
+    v38[2] = objc_opt_class();
+    v34 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:3];
+    v33 = [v30 setWithArray:?];
+    v32 = [v31 decodeObjectOfClasses:? forKey:?];
+    [(WOPersistence *)v37 setKeyedDatas:?];
+    MEMORY[0x277D82BD8](v32);
+    MEMORY[0x277D82BD8](v33);
+    MEMORY[0x277D82BD8](v34);
+    if ([location[0] containsValueForKey:@"proto_data"])
+    {
+      v13 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"proto_data"];
+      [(WOPersistence *)v37 setPersistedProtoData:?];
+      MEMORY[0x277D82BD8](v13);
+    }
+
+    else
+    {
+      [(WOPersistence *)v37 setPersistedProtoData:0];
+    }
+
+    v12 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+    [(WOPersistence *)v37 setPersistedData:?];
+    MEMORY[0x277D82BD8](v12);
+    if ([location[0] containsValueForKey:@"objectState"])
+    {
+      v6 = [location[0] decodeIntegerForKey:@"objectState"];
+      [(WOPersistence *)v37 setObjectState:v6];
+    }
+
+    else
+    {
+      [(WOPersistence *)v37 setObjectState:0];
+    }
+
+    if ([location[0] containsValueForKey:@"objectModificationDate"])
+    {
+      v11 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"objectModificationDate"];
+      [(WOPersistence *)v37 setObjectModificationDate:?];
+      MEMORY[0x277D82BD8](v11);
+    }
+
+    else
+    {
+      v10 = +[WOPersistence zeroObjectModificationDate];
+      [(WOPersistence *)v37 setObjectModificationDate:?];
+      MEMORY[0x277D82BD8](v10);
+    }
+
+    if ([location[0] containsValueForKey:@"syncIdentity"])
+    {
+      v9 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"syncIdentity"];
+      [(WOPersistence *)v37 setSyncIdentity:?];
+      MEMORY[0x277D82BD8](v9);
+    }
+  }
+
+  v8 = MEMORY[0x277D82BE0](v37);
+  objc_storeStrong(location, 0);
+  objc_storeStrong(&v37, 0);
+  *MEMORY[0x277D85DE8];
+  return v8;
+}
+
+- (WOPersistence)initWithData:(id)a3
+{
+  v15 = *MEMORY[0x277D85DE8];
+  v13 = self;
+  location[1] = a2;
+  location[0] = 0;
+  objc_storeStrong(location, a3);
+  v11 = 0;
+  v6 = MEMORY[0x277CCAAC8];
+  v3 = objc_opt_class();
+  v9 = v11;
+  v7 = [v6 unarchivedObjectOfClass:v3 fromData:location[0] error:&v9];
+  objc_storeStrong(&v11, v9);
+  v10 = v7;
+  if (!v7)
+  {
+    _HKInitializeLogging();
+    oslog = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
+    {
+      __os_log_helper_16_2_1_8_66(v14, v11);
+      _os_log_error_impl(&dword_274C77000, oslog, OS_LOG_TYPE_ERROR, "Unable to decode persistence data: %{public}@", v14, 0xCu);
+    }
+
+    objc_storeStrong(&oslog, 0);
+  }
+
+  v5 = MEMORY[0x277D82BE0](v10);
+  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&v11, 0);
+  objc_storeStrong(location, 0);
+  objc_storeStrong(&v13, 0);
+  *MEMORY[0x277D85DE8];
+  return v5;
+}
+
++ (id)zeroObjectModificationDate
+{
+  v2 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:0.0];
+
+  return v2;
+}
+
+- (id)data
+{
+  v11 = *MEMORY[0x277D85DE8];
+  v8[2] = self;
+  v8[1] = a2;
+  v8[0] = 0;
+  obj = 0;
+  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self requiringSecureCoding:1 error:&obj];
+  objc_storeStrong(v8, obj);
+  v7 = v4;
+  if (v4)
+  {
+    v9 = MEMORY[0x277D82BE0](v7);
+  }
+
+  else
+  {
+    _HKInitializeLogging();
+    oslog = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
+    {
+      __os_log_helper_16_2_1_8_66(v10, v8[0]);
+      _os_log_error_impl(&dword_274C77000, oslog, OS_LOG_TYPE_ERROR, "Unable to archive WOPersistence object: %{public}@", v10, 0xCu);
+    }
+
+    objc_storeStrong(&oslog, 0);
+    v9 = [MEMORY[0x277CBEA90] data];
+  }
+
+  objc_storeStrong(&v7, 0);
+  objc_storeStrong(v8, 0);
+  *MEMORY[0x277D85DE8];
+  v2 = v9;
+
+  return v2;
+}
+
+- (int64_t)encodedByteCount
+{
+  v4[2] = self;
+  v4[1] = a2;
+  v4[0] = [(WOPersistence *)self data];
+  v3 = [v4[0] length];
+  objc_storeStrong(v4, 0);
+  return v3;
+}
+
+- (id)protobuf
+{
+  v58 = *MEMORY[0x277D85DE8];
+  v53 = self;
+  v52[1] = a2;
+  v52[0] = objc_opt_new();
+  context = objc_autoreleasePoolPush();
+  [v52[0] setVersion:v53->_version];
+  [v52[0] setType:v53->_type];
+  v32 = [(NSUUID *)v53->_uuid hk_dataForUUIDBytes];
+  [v52[0] setUuid:?];
+  MEMORY[0x277D82BD8](v32);
+  [v52[0] setPersistedProtoData:v53->_persistedProtoData];
+  [v52[0] setPersistedData:v53->_persistedData];
+  [v52[0] setObjectState:v53->_objectState];
+  [(NSDate *)v53->_objectModificationDate timeIntervalSinceReferenceDate];
+  [v52[0] setObjectModificationTimeSinceReferenceDate:?];
+  memset(__b, 0, sizeof(__b));
+  obj = MEMORY[0x277D82BE0](v53->_keyedNumbers);
+  v34 = [obj countByEnumeratingWithState:__b objects:v57 count:16];
+  if (v34)
+  {
+    v28 = *__b[2];
+    v29 = 0;
+    v30 = v34;
+    while (1)
+    {
+      v27 = v29;
+      if (*__b[2] != v28)
+      {
+        objc_enumerationMutation(obj);
+      }
+
+      v51 = *(__b[1] + 8 * v29);
+      v49 = [(NSDictionary *)v53->_keyedNumbers objectForKeyedSubscript:v51];
+      v48 = objc_opt_new();
+      [v48 setKey:v51];
+      [v49 doubleValue];
+      [v48 setNumber:?];
+      [v52[0] addKeyedNumbers:v48];
+      objc_storeStrong(&v48, 0);
+      objc_storeStrong(&v49, 0);
+      ++v29;
+      if (v27 + 1 >= v30)
+      {
+        v29 = 0;
+        v30 = [obj countByEnumeratingWithState:__b objects:v57 count:16];
+        if (!v30)
+        {
+          break;
+        }
+      }
+    }
+  }
+
+  MEMORY[0x277D82BD8](obj);
+  memset(v46, 0, sizeof(v46));
+  v25 = MEMORY[0x277D82BE0](v53->_keyedStrings);
+  v26 = [v25 countByEnumeratingWithState:v46 objects:v56 count:16];
+  if (v26)
+  {
+    v22 = *v46[2];
+    v23 = 0;
+    v24 = v26;
+    while (1)
+    {
+      v21 = v23;
+      if (*v46[2] != v22)
+      {
+        objc_enumerationMutation(v25);
+      }
+
+      v47 = *(v46[1] + 8 * v23);
+      v45 = [(NSDictionary *)v53->_keyedStrings objectForKeyedSubscript:v47];
+      v44 = objc_opt_new();
+      [v44 setKey:v47];
+      [v44 setString:v45];
+      [v52[0] addKeyedStrings:v44];
+      objc_storeStrong(&v44, 0);
+      objc_storeStrong(&v45, 0);
+      ++v23;
+      if (v21 + 1 >= v24)
+      {
+        v23 = 0;
+        v24 = [v25 countByEnumeratingWithState:v46 objects:v56 count:16];
+        if (!v24)
+        {
+          break;
+        }
+      }
+    }
+  }
+
+  MEMORY[0x277D82BD8](v25);
+  memset(v42, 0, sizeof(v42));
+  v19 = MEMORY[0x277D82BE0](v53->_keyedDates);
+  v20 = [v19 countByEnumeratingWithState:v42 objects:v55 count:16];
+  if (v20)
+  {
+    v16 = *v42[2];
+    v17 = 0;
+    v18 = v20;
+    while (1)
+    {
+      v15 = v17;
+      if (*v42[2] != v16)
+      {
+        objc_enumerationMutation(v19);
+      }
+
+      v43 = *(v42[1] + 8 * v17);
+      v41 = [(NSDictionary *)v53->_keyedDates objectForKeyedSubscript:v43];
+      v40 = objc_opt_new();
+      [v40 setKey:v43];
+      [v41 timeIntervalSinceReferenceDate];
+      [v40 setTimeSinceReferenceDate:?];
+      [v52[0] addKeyedDates:v40];
+      objc_storeStrong(&v40, 0);
+      objc_storeStrong(&v41, 0);
+      ++v17;
+      if (v15 + 1 >= v18)
+      {
+        v17 = 0;
+        v18 = [v19 countByEnumeratingWithState:v42 objects:v55 count:16];
+        if (!v18)
+        {
+          break;
+        }
+      }
+    }
+  }
+
+  MEMORY[0x277D82BD8](v19);
+  memset(v38, 0, sizeof(v38));
+  v13 = MEMORY[0x277D82BE0](v53->_keyedDatas);
+  v14 = [v13 countByEnumeratingWithState:v38 objects:v54 count:16];
+  if (v14)
+  {
+    v10 = *v38[2];
+    v11 = 0;
+    v12 = v14;
+    while (1)
+    {
+      v9 = v11;
+      if (*v38[2] != v10)
+      {
+        objc_enumerationMutation(v13);
+      }
+
+      v39 = *(v38[1] + 8 * v11);
+      v37 = [(NSDictionary *)v53->_keyedDatas objectForKeyedSubscript:v39];
+      v36 = objc_opt_new();
+      [v36 setKey:v39];
+      [v36 setOurData:v37];
+      [v52[0] addKeyedDatas:v36];
+      objc_storeStrong(&v36, 0);
+      objc_storeStrong(&v37, 0);
+      ++v11;
+      if (v9 + 1 >= v12)
+      {
+        v11 = 0;
+        v12 = [v13 countByEnumeratingWithState:v38 objects:v54 count:16];
+        if (!v12)
+        {
+          break;
+        }
+      }
+    }
+  }
+
+  MEMORY[0x277D82BD8](v13);
+  if (v53->_syncIdentity)
+  {
+    v35 = objc_opt_new();
+    v5 = [(WOSyncIdentity *)v53->_syncIdentity databaseIdentifier];
+    v4 = [(NSUUID *)v5 hk_dataForUUIDBytes];
+    [v35 setDatabaseIdentifier:?];
+    MEMORY[0x277D82BD8](v4);
+    MEMORY[0x277D82BD8](v5);
+    v7 = [(WOSyncIdentity *)v53->_syncIdentity hardwareIdentifier];
+    v6 = [(NSUUID *)v7 hk_dataForUUIDBytes];
+    [v35 setHardwareIdentifier:?];
+    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](v7);
+    v8 = [(WOSyncIdentity *)v53->_syncIdentity instanceDiscriminator];
+    [v35 setInstanceDiscriminator:?];
+    MEMORY[0x277D82BD8](v8);
+    [v52[0] setSyncIdentity:v35];
+    objc_storeStrong(&v35, 0);
+  }
+
+  objc_autoreleasePoolPop(context);
+  v3 = MEMORY[0x277D82BE0](v52[0]);
+  objc_storeStrong(v52, 0);
+  *MEMORY[0x277D85DE8];
+
+  return v3;
+}
+
++ (id)persistenceFromProto:(id)a3
+{
+  v84 = *MEMORY[0x277D85DE8];
+  location[2] = a1;
+  location[1] = a2;
+  location[0] = 0;
+  objc_storeStrong(location, a3);
+  v59 = [WOPersistence alloc];
+  v56 = [location[0] version];
+  v57 = [location[0] type];
+  v54 = MEMORY[0x277CCAD78];
+  v64 = [location[0] uuid];
+  v63 = [v54 hk_UUIDWithData:?];
+  v62 = [location[0] persistedData];
+  v61 = [location[0] persistedProtoData];
+  v58 = [location[0] objectState];
+  v55 = MEMORY[0x277CBEAA8];
+  [location[0] objectModificationTimeSinceReferenceDate];
+  v60 = [v55 dateWithTimeIntervalSinceReferenceDate:?];
+  v78 = [(WOPersistence *)v59 initWithVersion:v56 type:v57 uuid:v63 persistedData:v62 persistedProtoData:v61 objectState:v58 objectModificationDate:v60 syncIdentity:0];
+  MEMORY[0x277D82BD8](v60);
+  MEMORY[0x277D82BD8](v61);
+  MEMORY[0x277D82BD8](v62);
+  MEMORY[0x277D82BD8](v63);
+  MEMORY[0x277D82BD8](v64);
+  if ([location[0] hasSyncIdentity])
+  {
+    v45 = [WOSyncIdentity alloc];
+    v43 = MEMORY[0x277CCAD78];
+    v53 = [location[0] syncIdentity];
+    v52 = [v53 hardwareIdentifier];
+    v51 = [v43 hk_UUIDWithData:?];
+    v44 = MEMORY[0x277CCAD78];
+    v50 = [location[0] syncIdentity];
+    v49 = [v50 databaseIdentifier];
+    v48 = [v44 hk_UUIDWithData:?];
+    v47 = [location[0] syncIdentity];
+    v46 = [v47 instanceDiscriminator];
+    v77 = [(WOSyncIdentity *)v45 initWithHardwareIdentifier:v51 databaseIdentifier:v48 instanceDiscriminator:?];
+    MEMORY[0x277D82BD8](v46);
+    MEMORY[0x277D82BD8](v47);
+    MEMORY[0x277D82BD8](v48);
+    MEMORY[0x277D82BD8](v49);
+    MEMORY[0x277D82BD8](v50);
+    MEMORY[0x277D82BD8](v51);
+    MEMORY[0x277D82BD8](v52);
+    MEMORY[0x277D82BD8](v53);
+    [(WOPersistence *)v78 setSyncIdentity:v77];
+    objc_storeStrong(&v77, 0);
+  }
+
+  v76 = objc_opt_new();
+  memset(__b, 0, sizeof(__b));
+  obj = [location[0] keyedNumbers];
+  v42 = [obj countByEnumeratingWithState:__b objects:v83 count:16];
+  if (v42)
+  {
+    v38 = *__b[2];
+    v39 = 0;
+    v40 = v42;
+    while (1)
+    {
+      v37 = v39;
+      if (*__b[2] != v38)
+      {
+        objc_enumerationMutation(obj);
+      }
+
+      v75 = *(__b[1] + 8 * v39);
+      v33 = MEMORY[0x277CCABB0];
+      [v75 number];
+      v36 = [v33 numberWithDouble:?];
+      v34 = v76;
+      v35 = [v75 key];
+      [v34 setObject:v36 forKeyedSubscript:?];
+      MEMORY[0x277D82BD8](v35);
+      MEMORY[0x277D82BD8](v36);
+      ++v39;
+      if (v37 + 1 >= v40)
+      {
+        v39 = 0;
+        v40 = [obj countByEnumeratingWithState:__b objects:v83 count:16];
+        if (!v40)
+        {
+          break;
+        }
+      }
+    }
+  }
+
+  MEMORY[0x277D82BD8](obj);
+  [(WOPersistence *)v78 setKeyedNumbers:v76];
+  objc_storeStrong(&v76, 0);
+  v73 = objc_opt_new();
+  memset(v71, 0, sizeof(v71));
+  v31 = [location[0] keyedStrings];
+  v32 = [v31 countByEnumeratingWithState:v71 objects:v82 count:16];
+  if (v32)
+  {
+    v28 = *v71[2];
+    v29 = 0;
+    v30 = v32;
+    while (1)
+    {
+      v27 = v29;
+      if (*v71[2] != v28)
+      {
+        objc_enumerationMutation(v31);
+      }
+
+      v72 = *(v71[1] + 8 * v29);
+      v26 = [v72 string];
+      v24 = v73;
+      v25 = [v72 key];
+      [v24 setObject:v26 forKeyedSubscript:?];
+      MEMORY[0x277D82BD8](v25);
+      MEMORY[0x277D82BD8](v26);
+      ++v29;
+      if (v27 + 1 >= v30)
+      {
+        v29 = 0;
+        v30 = [v31 countByEnumeratingWithState:v71 objects:v82 count:16];
+        if (!v30)
+        {
+          break;
+        }
+      }
+    }
+  }
+
+  MEMORY[0x277D82BD8](v31);
+  [(WOPersistence *)v78 setKeyedStrings:v73];
+  objc_storeStrong(&v73, 0);
+  v70 = objc_opt_new();
+  memset(v68, 0, sizeof(v68));
+  v22 = [location[0] keyedDatas];
+  v23 = [v22 countByEnumeratingWithState:v68 objects:v81 count:16];
+  if (v23)
+  {
+    v19 = *v68[2];
+    v20 = 0;
+    v21 = v23;
+    while (1)
+    {
+      v18 = v20;
+      if (*v68[2] != v19)
+      {
+        objc_enumerationMutation(v22);
+      }
+
+      v69 = *(v68[1] + 8 * v20);
+      v17 = [v69 ourData];
+      v15 = v70;
+      v16 = [v69 key];
+      [v15 setObject:v17 forKeyedSubscript:?];
+      MEMORY[0x277D82BD8](v16);
+      MEMORY[0x277D82BD8](v17);
+      ++v20;
+      if (v18 + 1 >= v21)
+      {
+        v20 = 0;
+        v21 = [v22 countByEnumeratingWithState:v68 objects:v81 count:16];
+        if (!v21)
+        {
+          break;
+        }
+      }
+    }
+  }
+
+  MEMORY[0x277D82BD8](v22);
+  [(WOPersistence *)v78 setKeyedDatas:v70];
+  objc_storeStrong(&v70, 0);
+  v67 = objc_opt_new();
+  memset(v65, 0, sizeof(v65));
+  v13 = [location[0] keyedDates];
+  v14 = [v13 countByEnumeratingWithState:v65 objects:v80 count:16];
+  if (v14)
+  {
+    v10 = *v65[2];
+    v11 = 0;
+    v12 = v14;
+    while (1)
+    {
+      v9 = v11;
+      if (*v65[2] != v10)
+      {
+        objc_enumerationMutation(v13);
+      }
+
+      v66 = *(v65[1] + 8 * v11);
+      v5 = MEMORY[0x277CBEAA8];
+      [v66 timeSinceReferenceDate];
+      v8 = [v5 dateWithTimeIntervalSinceReferenceDate:?];
+      v6 = v67;
+      v7 = [v66 key];
+      [v6 setObject:v8 forKeyedSubscript:?];
+      MEMORY[0x277D82BD8](v7);
+      MEMORY[0x277D82BD8](v8);
+      ++v11;
+      if (v9 + 1 >= v12)
+      {
+        v11 = 0;
+        v12 = [v13 countByEnumeratingWithState:v65 objects:v80 count:16];
+        if (!v12)
+        {
+          break;
+        }
+      }
+    }
+  }
+
+  MEMORY[0x277D82BD8](v13);
+  [(WOPersistence *)v78 setKeyedDates:v67];
+  objc_storeStrong(&v67, 0);
+  v4 = MEMORY[0x277D82BE0](v78);
+  objc_storeStrong(&v78, 0);
+  objc_storeStrong(location, 0);
+  *MEMORY[0x277D85DE8];
+
+  return v4;
+}
+
+@end

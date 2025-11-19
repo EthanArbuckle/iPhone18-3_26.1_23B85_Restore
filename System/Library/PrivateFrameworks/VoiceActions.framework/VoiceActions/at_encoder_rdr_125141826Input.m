@@ -1,0 +1,42 @@
+@interface at_encoder_rdr_125141826Input
+- (NSSet)featureNames;
+- (id)featureValueForName:(id)a3;
+@end
+
+@implementation at_encoder_rdr_125141826Input
+
+- (NSSet)featureNames
+{
+  sub_272291FE0(&unk_28817F9F8);
+  sub_272203A70(&unk_28817FA18);
+  v2 = sub_272377D7C();
+
+  return v2;
+}
+
+- (id)featureValueForName:(id)a3
+{
+  if (sub_27237782C() == 0x61775F7475706E69 && v4 == 0xE900000000000076)
+  {
+
+LABEL_5:
+    v7 = (*(self->super.isa + 11))(v5);
+    v8 = [objc_opt_self() featureValueWithMultiArray_];
+
+    goto LABEL_7;
+  }
+
+  v6 = sub_27237865C();
+
+  if (v6)
+  {
+    goto LABEL_5;
+  }
+
+  v8 = 0;
+LABEL_7:
+
+  return v8;
+}
+
+@end

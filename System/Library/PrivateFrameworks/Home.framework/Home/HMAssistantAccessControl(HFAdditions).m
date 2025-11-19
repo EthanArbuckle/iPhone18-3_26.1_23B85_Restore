@@ -1,0 +1,179 @@
+@interface HMAssistantAccessControl(HFAdditions)
+- (uint64_t)hf_effectivelyEnabledForSupportedVoiceRecognitionLanguages:()HFAdditions currentUserIsOwner:;
+@end
+
+@implementation HMAssistantAccessControl(HFAdditions)
+
+- (uint64_t)hf_effectivelyEnabledForSupportedVoiceRecognitionLanguages:()HFAdditions currentUserIsOwner:
+{
+  v52 = *MEMORY[0x277D85DE8];
+  v7 = a3;
+  v8 = HFLogForCategory(0);
+  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  {
+    v9 = NSStringFromSelector(a2);
+    *buf = 138412546;
+    v44 = v9;
+    v45 = 1024;
+    *v46 = a4;
+    _os_log_impl(&dword_20D9BF000, v8, OS_LOG_TYPE_DEFAULT, "%@ Is Current User the Owner?: %{BOOL}d", buf, 0x12u);
+  }
+
+  if ([a1 isEnabled])
+  {
+    v10 = [a1 accessories];
+    v11 = [v10 count] != 0;
+
+    if (!a4)
+    {
+      goto LABEL_5;
+    }
+
+LABEL_11:
+    v15 = HFLogForCategory(0);
+    if (!os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    {
+      goto LABEL_26;
+    }
+
+    v20 = NSStringFromSelector(a2);
+    v21 = [a1 accessories];
+    v22 = [v21 count];
+    v23 = [a1 isEnabled];
+    *buf = 138413058;
+    v44 = v20;
+    v45 = 1024;
+    *v46 = v11;
+    *&v46[4] = 2048;
+    *&v46[6] = v22;
+    *&v46[14] = 1024;
+    *&v46[16] = v23;
+    _os_log_impl(&dword_20D9BF000, v15, OS_LOG_TYPE_DEFAULT, "%@ = %{BOOL}d because (owner case) Owner has Siri (Assistant) accessories count = %lu, self.enabled = %{BOOL}d", buf, 0x22u);
+
+LABEL_25:
+    goto LABEL_26;
+  }
+
+  v11 = 0;
+  if (a4)
+  {
+    goto LABEL_11;
+  }
+
+LABEL_5:
+  v12 = [a1 accessories];
+  v13 = [v12 count];
+
+  if (!v13)
+  {
+    v15 = HFLogForCategory(0);
+    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    {
+      v24 = NSStringFromSelector(a2);
+      *buf = 138412290;
+      v44 = v24;
+      _os_log_impl(&dword_20D9BF000, v15, OS_LOG_TYPE_DEFAULT, "%@ No Siri accessories available for this user", buf, 0xCu);
+    }
+
+    v25 = 0;
+    goto LABEL_23;
+  }
+
+  v14 = [a1 accessories];
+  v15 = [v14 na_filter:&__block_literal_global_130];
+
+  if (![v15 count])
+  {
+    v26 = [a1 accessories];
+    v27 = [v26 na_filter:&__block_literal_global_3_19];
+
+    v28 = HFLogForCategory(0);
+    if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+    {
+      v29 = NSStringFromSelector(a2);
+      v30 = [v15 count];
+      v31 = [v27 count];
+      v32 = [a1 accessories];
+      v33 = [v32 count];
+      *buf = 138413570;
+      v44 = v29;
+      v45 = 2048;
+      *v46 = v30;
+      *&v46[8] = 2112;
+      *&v46[10] = v15;
+      *&v46[18] = 2048;
+      v47 = v31;
+      v48 = 2112;
+      v49 = v27;
+      v50 = 2048;
+      v51 = v33;
+      _os_log_impl(&dword_20D9BF000, v28, OS_LOG_TYPE_DEFAULT, "%@ (non-owner case) Siri Accessories NOT Supporting Voice Recognition (%lu) = [%@] / Supporting Multi-User (%lu) = [%@] (Total Siri Accessory count: (%lu)", buf, 0x3Eu);
+    }
+
+    if (![v27 count])
+    {
+      NSLog(&cfstr_ThisShouldNotH_0.isa);
+    }
+
+    v34 = [v27 count];
+    v35 = [v15 count]+ v34;
+    v36 = [a1 accessories];
+    v37 = [v36 count];
+
+    if (v35 != v37)
+    {
+      NSLog(&cfstr_ThisShouldNotH_1.isa);
+    }
+
+    v41[0] = MEMORY[0x277D85DD0];
+    v41[1] = 3221225472;
+    v41[2] = __119__HMAssistantAccessControl_HFAdditions__hf_effectivelyEnabledForSupportedVoiceRecognitionLanguages_currentUserIsOwner___block_invoke_8;
+    v41[3] = &unk_277DF3888;
+    v42 = v7;
+    v25 = [v27 na_any:v41];
+
+LABEL_23:
+    v11 = [a1 isEnabled] & v25;
+    v15 = HFLogForCategory(0);
+    if (!os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    {
+      goto LABEL_26;
+    }
+
+    v20 = NSStringFromSelector(a2);
+    v38 = [a1 isEnabled];
+    *buf = 138413058;
+    v44 = v20;
+    v45 = 1024;
+    *v46 = v11;
+    *&v46[4] = 1024;
+    *&v46[6] = v25;
+    *&v46[10] = 1024;
+    *&v46[12] = v38;
+    _os_log_impl(&dword_20D9BF000, v15, OS_LOG_TYPE_DEFAULT, "%@ = %{BOOL}d (non-owner case) At least one Siri accessory is on a supported Voice Recognition language = %{BOOL}d, & self.enabled = %{BOOL}d", buf, 0x1Eu);
+    goto LABEL_25;
+  }
+
+  v16 = HFLogForCategory(0);
+  if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+  {
+    v17 = NSStringFromSelector(a2);
+    v18 = [a1 isEnabled];
+    v19 = [v15 count];
+    *buf = 138412802;
+    v44 = v17;
+    v45 = 1024;
+    *v46 = v18;
+    *&v46[4] = 2048;
+    *&v46[6] = v19;
+    _os_log_impl(&dword_20D9BF000, v16, OS_LOG_TYPE_DEFAULT, "%@ = %{BOOL}d (non-owner case) Some Siri accessories don't support Voice Recognition (%lu), so we'll rely on self.enabled", buf, 0x1Cu);
+  }
+
+  v11 = [a1 isEnabled];
+LABEL_26:
+
+  v39 = *MEMORY[0x277D85DE8];
+  return v11;
+}
+
+@end

@@ -1,0 +1,195 @@
+@interface ICSEMediaPreviewGenerator
+- (ICSEMediaPreviewGenerator)initWithScreenScale:(double)a3;
+- (id)generateImagePreviewUsingAttachment:(id)a3;
+- (id)generatePreviewWithAttachments:(id)a3;
+- (id)generateVideoPreviewUsingAttachment:(id)a3;
+@end
+
+@implementation ICSEMediaPreviewGenerator
+
+- (ICSEMediaPreviewGenerator)initWithScreenScale:(double)a3
+{
+  v5.receiver = self;
+  v5.super_class = ICSEMediaPreviewGenerator;
+  result = [(ICSEMediaPreviewGenerator *)&v5 init];
+  if (result)
+  {
+    result->_screenScale = a3;
+  }
+
+  return result;
+}
+
+- (id)generatePreviewWithAttachments:(id)a3
+{
+  v4 = a3;
+  v5 = [v4 count];
+  v6 = v5;
+  if (v5 >= 3)
+  {
+    v7 = 3;
+  }
+
+  else
+  {
+    v7 = v5;
+  }
+
+  v8 = [NSMutableArray arrayWithCapacity:v7];
+  if (v6)
+  {
+    v9 = 0;
+    do
+    {
+      v10 = [v4 objectAtIndexedSubscript:v9];
+      v11 = [v10 mediaUTI];
+      v12 = [ICAttachment typeUTIIsPlayableMovie:v11];
+
+      if (v12)
+      {
+        [(ICSEMediaPreviewGenerator *)self generateVideoPreviewUsingAttachment:v10];
+      }
+
+      else
+      {
+        [(ICSEMediaPreviewGenerator *)self generateImagePreviewUsingAttachment:v10];
+      }
+      v13 = ;
+      [v8 ic_addNonNilObject:v13];
+
+      ++v9;
+    }
+
+    while (v7 != v9);
+  }
+
+  v14 = [v8 copy];
+
+  return v14;
+}
+
+- (id)generateVideoPreviewUsingAttachment:(id)a3
+{
+  v3 = [a3 mediaURL];
+  v4 = [AVURLAsset ic_safeURLAssetWithURL:v3];
+
+  v5 = [ICSEMediaPreview alloc];
+  v6 = [v4 ic_previewImage];
+  if (v4)
+  {
+    [v4 duration];
+  }
+
+  else
+  {
+    memset(v9, 0, sizeof(v9));
+  }
+
+  v7 = [(ICSEMediaPreview *)v5 initWithWithImage:v6 videoDuration:v9];
+
+  return v7;
+}
+
+- (id)generateImagePreviewUsingAttachment:(id)a3
+{
+  v4 = a3;
+  v5 = [v4 mediaURL];
+
+  if (v5)
+  {
+    v6 = [v4 mediaURL];
+    v7 = CGImageSourceCreateWithURL(v6, 0);
+LABEL_5:
+    v9 = v7;
+    goto LABEL_6;
+  }
+
+  v8 = [v4 mediaData];
+
+  if (v8)
+  {
+    v6 = [v4 mediaData];
+    v7 = CGImageSourceCreateWithData(v6, 0);
+    goto LABEL_5;
+  }
+
+  v30 = [v4 image];
+
+  if (v30)
+  {
+    v6 = [v4 image];
+    v31 = [(__CFURL *)v6 ic_PNGData];
+    v9 = CGImageSourceCreateWithData(v31, 0);
+
+LABEL_6:
+    v10 = CGImageSourceCopyPropertiesAtIndex(v9, 0, 0);
+    ImageAtIndex = CGImageSourceCreateImageAtIndex(v9, 0, 0);
+    Width = CGImageGetWidth(ImageAtIndex);
+    v13 = Width / CGImageGetHeight(ImageAtIndex);
+    [(ICSEMediaPreviewGenerator *)self screenScale];
+    v15 = v14;
+    v16 = v14 * 64.0;
+    v17 = v16 / v13;
+    v18 = v16 * v13;
+    if (v13 > 1.0)
+    {
+      v19 = v18;
+    }
+
+    else
+    {
+      v19 = v17;
+    }
+
+    v20 = +[NSMutableData data];
+    v21 = [UTTypeJPEG identifier];
+    v22 = CGImageDestinationCreateWithData(v20, v21, 1uLL, 0);
+
+    if (v22)
+    {
+      v23 = [(__CFDictionary *)v10 mutableCopy];
+      v24 = [NSNumber numberWithInt:v19];
+      [v23 setObject:v24 forKeyedSubscript:kCGImageDestinationImageMaxPixelSize];
+
+      CGImageDestinationAddImage(v22, ImageAtIndex, v23);
+      LODWORD(v24) = CGImageDestinationFinalize(v22);
+      CFRelease(v22);
+
+      CFRelease(v9);
+      CGImageRelease(ImageAtIndex);
+      if (v24)
+      {
+        v25 = [[UIImage alloc] initWithData:v20 scale:v15];
+        v26 = [[ICSEMediaPreview alloc] initWithImage:v25];
+
+LABEL_14:
+        v27 = v26;
+
+        v28 = v27;
+        goto LABEL_15;
+      }
+    }
+
+    else
+    {
+      CFRelease(v9);
+      CGImageRelease(ImageAtIndex);
+    }
+
+    v26 = 0;
+    goto LABEL_14;
+  }
+
+  v27 = os_log_create("com.apple.notes", "SharingExtension");
+  if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+  {
+    sub_1000B3310(v27);
+  }
+
+  v28 = 0;
+LABEL_15:
+
+  return v28;
+}
+
+@end

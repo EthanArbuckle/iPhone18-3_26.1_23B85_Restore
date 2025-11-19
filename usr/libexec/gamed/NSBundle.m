@@ -1,0 +1,506 @@
+@interface NSBundle
++ (id)_gkBundleIdentifierFromAuditToken:(id *)a3;
++ (id)_gkBundleIdentifierFromConnection:(id)a3;
++ (id)_gkBundleIdentifierFromPID:(int)a3;
++ (id)_gkBundleIdentifierOrProcessNameForPID:(int)a3;
++ (id)_gkBundleInfoWithPID:(int)a3;
++ (id)_gkBundleWithIdentifier:(id)a3;
++ (id)_gkBundleWithPID:(int)a3;
++ (id)_gkLocalizedMessageFromDictionary:(id)a3 forBundleID:(id)a4;
++ (id)_gkLocalizedMessageFromPushDictionary:(id)a3 forBundleID:(id)a4;
++ (id)executablePathForPid:(int)a3;
++ (id)executableURLForPid:(int)a3;
+- (BOOL)_gkIsBadgingEnabled;
+- (BOOL)_gkIsGameCenterEnabled;
+@end
+
+@implementation NSBundle
+
++ (id)_gkBundleIdentifierOrProcessNameForPID:(int)a3
+{
+  v4 = [objc_opt_class() executablePathForPid:*&a3];
+  if (!v4)
+  {
+    v11 = 0;
+    goto LABEL_29;
+  }
+
+  v5 = objc_autoreleasePoolPush();
+  v6 = CFURLCreateWithFileSystemPath(0, v4, kCFURLPOSIXPathStyle, 0);
+  v7 = _CFBundleCopyBundleURLForExecutableURL();
+  if (v7)
+  {
+    v8 = v7;
+    v9 = CFBundleCreate(0, v7);
+    if (v9)
+    {
+      v10 = v9;
+      v11 = CFBundleGetIdentifier(v9);
+      if (!os_log_GKGeneral)
+      {
+        v12 = GKOSLoggers();
+      }
+
+      v13 = os_log_GKDaemon;
+      if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
+      {
+        *buf = 138412290;
+        v26 = v11;
+        _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Getting bundleId from bundleURL %@", buf, 0xCu);
+      }
+
+      CFRelease(v10);
+      CFRelease(v8);
+      if (v11)
+      {
+        goto LABEL_28;
+      }
+    }
+
+    else
+    {
+      CFRelease(v8);
+    }
+  }
+
+  v14 = CFBundleCopyInfoDictionaryForURL(v6);
+  if (!v14)
+  {
+    goto LABEL_23;
+  }
+
+  v15 = v14;
+  v11 = [(__CFDictionary *)v14 objectForKey:@"CFBundleIdentifier"];
+  if (!os_log_GKGeneral)
+  {
+    v16 = GKOSLoggers();
+  }
+
+  v17 = os_log_GKDaemon;
+  if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
+  {
+    *buf = 138412290;
+    v26 = v15;
+    _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Getting bundleId from plist in binary %@", buf, 0xCu);
+  }
+
+  if (!v11)
+  {
+LABEL_23:
+    if (!proc_name(a3, buf, 0x400u))
+    {
+      goto LABEL_24;
+    }
+
+    v11 = [NSString stringWithUTF8String:buf];
+    if (!os_log_GKGeneral)
+    {
+      v18 = GKOSLoggers();
+    }
+
+    v19 = os_log_GKDaemon;
+    if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
+    {
+      v23 = 138412290;
+      v24 = v11;
+      _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Getting bundleID in debug from pid/procname %@", &v23, 0xCu);
+    }
+
+    if (!v11)
+    {
+LABEL_24:
+      v11 = [(__CFString *)v4 lastPathComponent];
+      if (!os_log_GKGeneral)
+      {
+        v20 = GKOSLoggers();
+      }
+
+      v21 = os_log_GKDaemon;
+      if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
+      {
+        *buf = 138412290;
+        v26 = v11;
+        _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Getting bundleId from process name %@", buf, 0xCu);
+      }
+    }
+  }
+
+LABEL_28:
+  CFRelease(v6);
+  objc_autoreleasePoolPop(v5);
+LABEL_29:
+
+  return v11;
+}
+
++ (id)executablePathForPid:(int)a3
+{
+  v3 = proc_pidpath(a3, buffer, 0x1000u);
+  if (v3 < 1)
+  {
+    v4 = 0;
+  }
+
+  else
+  {
+    v4 = [[NSString alloc] initWithBytes:buffer length:v3 encoding:4];
+  }
+
+  return v4;
+}
+
++ (id)executableURLForPid:(int)a3
+{
+  v3 = [objc_opt_class() executablePathForPid:*&a3];
+  if (v3)
+  {
+    v4 = [NSURL fileURLWithPath:v3];
+  }
+
+  else
+  {
+    v4 = 0;
+  }
+
+  return v4;
+}
+
++ (id)_gkBundleWithIdentifier:(id)a3
+{
+  v3 = a3;
+  v4 = +[GKApplicationWorkspace defaultWorkspace];
+  v5 = [v4 applicationProxyForBundleID:v3];
+
+  v6 = [v5 bundle];
+
+  return v6;
+}
+
++ (id)_gkBundleWithPID:(int)a3
+{
+  v4 = [objc_opt_class() executableURLForPid:*&a3];
+  if (v4)
+  {
+    v5 = _CFBundleCopyBundleURLForExecutableURL();
+    if (v5)
+    {
+      v6 = [a1 bundleWithURL:v5];
+    }
+
+    else
+    {
+      v6 = 0;
+    }
+  }
+
+  else
+  {
+    v6 = 0;
+  }
+
+  return v6;
+}
+
++ (id)_gkBundleInfoWithPID:(int)a3
+{
+  v3 = [objc_opt_class() executableURLForPid:*&a3];
+  v4 = v3;
+  if (v3)
+  {
+    v5 = CFBundleCopyInfoDictionaryForURL(v3);
+  }
+
+  else
+  {
+    v5 = 0;
+  }
+
+  return v5;
+}
+
++ (id)_gkBundleIdentifierFromPID:(int)a3
+{
+  v3 = *&a3;
+  v4 = [NSBundle _gkBundleWithPID:?];
+  if (v4)
+  {
+    v5 = v4;
+    v6 = [v4 bundleIdentifier];
+    v7 = os_log_GKGeneral;
+    if (!os_log_GKGeneral)
+    {
+      v8 = GKOSLoggers();
+      v7 = os_log_GKGeneral;
+    }
+
+    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+    {
+      sub_10028DE48(v6, v7, v9, v10, v11, v12, v13, v14);
+    }
+
+LABEL_6:
+
+    goto LABEL_14;
+  }
+
+  v15 = [NSBundle _gkBundleInfoWithPID:v3];
+  v5 = v15;
+  if (v15)
+  {
+    v16 = [v15 objectForKey:@"CFBundleIdentifier"];
+    if (v16)
+    {
+      v6 = v16;
+      v17 = os_log_GKGeneral;
+      if (!os_log_GKGeneral)
+      {
+        v18 = GKOSLoggers();
+        v17 = os_log_GKGeneral;
+      }
+
+      if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
+      {
+        sub_10028DEB4(v6, v17, v19, v20, v21, v22, v23, v24);
+      }
+
+      goto LABEL_6;
+    }
+  }
+
+  v6 = 0;
+LABEL_14:
+
+  return v6;
+}
+
++ (id)_gkBundleIdentifierFromAuditToken:(id *)a3
+{
+  error = 0;
+  v4 = *&a3->var0[4];
+  *token.val = *a3->var0;
+  *&token.val[4] = v4;
+  if (CPCopyBundleIdentifierAndTeamFromAuditToken())
+  {
+    v5 = error;
+    v6 = os_log_GKGeneral;
+    if (!os_log_GKGeneral)
+    {
+      v7 = GKOSLoggers();
+      v6 = os_log_GKGeneral;
+    }
+
+    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+    {
+      sub_10028DF20(error, v6, v8, v9, v10, v11, v12, v13);
+    }
+
+    goto LABEL_15;
+  }
+
+  v14 = *&a3->var0[4];
+  *token.val = *a3->var0;
+  *&token.val[4] = v14;
+  v15 = SecTaskCreateWithAuditToken(0, &token);
+  if (!v15)
+  {
+LABEL_14:
+    v5 = 0;
+    goto LABEL_15;
+  }
+
+  v16 = v15;
+  error = 0;
+  v5 = SecTaskCopySigningIdentifier(v15, &error);
+  CFRelease(v16);
+  if (error)
+  {
+    v17 = os_log_GKGeneral;
+    if (!os_log_GKGeneral)
+    {
+      v18 = GKOSLoggers();
+      v17 = os_log_GKGeneral;
+    }
+
+    if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+    {
+      token.val[0] = 138412290;
+      *&token.val[1] = error;
+      _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "bundleIdentifierFromAuditToken: SecTaskCopySigningIdentifier() failed %@", &token, 0xCu);
+    }
+
+    CFRelease(error);
+    goto LABEL_13;
+  }
+
+  if (!v5)
+  {
+LABEL_13:
+
+    goto LABEL_14;
+  }
+
+  v20 = os_log_GKGeneral;
+  if (!os_log_GKGeneral)
+  {
+    v21 = GKOSLoggers();
+    v20 = os_log_GKGeneral;
+  }
+
+  if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
+  {
+    token.val[0] = 138412290;
+    *&token.val[1] = v5;
+    _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "bundleIdentifierFromAuditToken: SecTaskCopySigningIdentifier(): %@", &token, 0xCu);
+  }
+
+LABEL_15:
+
+  return v5;
+}
+
++ (id)_gkBundleIdentifierFromConnection:(id)a3
+{
+  v4 = a3;
+  v5 = v4;
+  if (v4)
+  {
+    [v4 auditToken];
+  }
+
+  else
+  {
+    memset(v9, 0, sizeof(v9));
+  }
+
+  v6 = [a1 _gkBundleIdentifierFromAuditToken:v9];
+  if (!v6)
+  {
+    v7 = [v5 processIdentifier];
+    if (v7)
+    {
+      v6 = [a1 _gkBundleIdentifierFromPID:v7];
+    }
+
+    else
+    {
+      v6 = 0;
+    }
+  }
+
+  return v6;
+}
+
++ (id)_gkLocalizedMessageFromDictionary:(id)a3 forBundleID:(id)a4
+{
+  v5 = a4;
+  if (!a3)
+  {
+    v12 = 0;
+    goto LABEL_11;
+  }
+
+  v6 = a3;
+  v7 = [v6 objectForKey:@"loc-key"];
+  v8 = [v6 objectForKey:@"loc-args"];
+  v9 = [v6 objectForKey:@"loc-default"];
+
+  if (!v9)
+  {
+    v9 = v7;
+  }
+
+  v10 = +[NSBundle mainBundle];
+  v11 = [v10 bundleIdentifier];
+  if ([v11 isEqualToString:v5])
+  {
+
+LABEL_9:
+    v15 = +[NSBundle mainBundle];
+    goto LABEL_10;
+  }
+
+  v13 = +[GKApplicationWorkspace defaultWorkspace];
+  v14 = [v13 applicationIsInstalled:v5];
+
+  if (!v14)
+  {
+    goto LABEL_9;
+  }
+
+  v15 = [NSBundle _gkBundleWithIdentifier:v5];
+LABEL_10:
+  v16 = v15;
+  v12 = [v15 _gkLocalizedStringForKey:v7 defaultValue:v9 arguments:v8];
+
+LABEL_11:
+
+  return v12;
+}
+
++ (id)_gkLocalizedMessageFromPushDictionary:(id)a3 forBundleID:(id)a4
+{
+  v5 = a4;
+  if (a3)
+  {
+    v6 = a3;
+    v7 = [v6 objectForKeyedSubscript:@"k"];
+    v8 = [v6 objectForKeyedSubscript:@"a"];
+    v9 = [v6 objectForKeyedSubscript:@"d"];
+
+    if (!v9)
+    {
+      v9 = v7;
+    }
+
+    v10 = +[GKApplicationWorkspace defaultWorkspace];
+    v11 = [v10 applicationIsInstalled:v5];
+
+    if (v11 && ([NSBundle _gkBundleWithIdentifier:v5], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+    {
+      v13 = v12;
+      v14 = [v12 _gkLocalizedStringForKey:v7 defaultValue:v9 arguments:v8];
+    }
+
+    else
+    {
+      v14 = v9;
+    }
+  }
+
+  else
+  {
+    v14 = 0;
+  }
+
+  return v14;
+}
+
+- (BOOL)_gkIsGameCenterEnabled
+{
+  v2 = [(NSBundle *)self bundleIdentifier];
+  v3 = +[GKApplicationWorkspace defaultWorkspace];
+  v4 = [v3 applicationProxyForBundleID:v2];
+
+  LOBYTE(v3) = [v4 isGameCenterEnabled];
+  return v3;
+}
+
+- (BOOL)_gkIsBadgingEnabled
+{
+  v2 = [(NSBundle *)self infoDictionary];
+  v3 = [v2 objectForKey:@"GKGameCenterBadgingDisabled"];
+
+  if (v3)
+  {
+    v4 = [v3 BOOLValue] ^ 1;
+  }
+
+  else
+  {
+    LOBYTE(v4) = 1;
+  }
+
+  return v4;
+}
+
+@end

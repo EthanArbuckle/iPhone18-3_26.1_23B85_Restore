@@ -1,0 +1,406 @@
+@interface CoreDAVContainerQueryTask
++ (id)_copySearchTermsFromSearchString:(id)a3;
+- (CoreDAVContainerQueryTask)initWithSearchString:(id)a3 searchLimit:(unint64_t)a4 atURL:(id)a5 appSpecificDataItemClass:(Class)a6;
+- (id)_initWithSearchTerms:(id)a3 searchLimit:(unint64_t)a4 atURL:(id)a5 appSpecificDataItemClass:(Class)a6;
+- (id)copyDefaultParserForContentType:(id)a3;
+- (id)requestBody;
+- (void)addFiltersToXMLData:(id)a3;
+- (void)finishCoreDAVTaskWithError:(id)a3;
+@end
+
+@implementation CoreDAVContainerQueryTask
+
++ (id)_copySearchTermsFromSearchString:(id)a3
+{
+  v3 = a3;
+  v4 = [(__CFString *)v3 length];
+  v5 = CFLocaleCopyCurrent();
+  v29.location = 0;
+  v29.length = v4;
+  v6 = CFStringTokenizerCreate(*MEMORY[0x277CBECE8], v3, v29, 0, v5);
+  v28 = objc_alloc_init(MEMORY[0x277CBEB58]);
+  v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
+  while (CFStringTokenizerAdvanceToNextToken(v6))
+  {
+    CurrentTokenRange = CFStringTokenizerGetCurrentTokenRange(v6);
+    v9 = [MEMORY[0x277CCAE60] valueWithRange:{CurrentTokenRange.location, CurrentTokenRange.length}];
+    [v7 addObject:v9];
+  }
+
+  CFRelease(v6);
+  CFRelease(v5);
+  if (!_copySearchTermsFromSearchString____friendlyPunctuationCharacterSet)
+  {
+    v10 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"-@._"];
+    v11 = _copySearchTermsFromSearchString____friendlyPunctuationCharacterSet;
+    _copySearchTermsFromSearchString____friendlyPunctuationCharacterSet = v10;
+  }
+
+  if ([v7 count])
+  {
+    v12 = 0;
+    do
+    {
+      v13 = [v7 objectAtIndex:v12];
+      v14 = [v13 rangeValue];
+      v16 = v15;
+
+      v17 = [(__CFString *)v3 length];
+      if (v12 >= [v7 count] - 1)
+      {
+        v20 = 0;
+        if (v14)
+        {
+LABEL_11:
+          v27 = v14 + v16;
+          while (1)
+          {
+            v21 = v14 - 1;
+            if (![_copySearchTermsFromSearchString____friendlyPunctuationCharacterSet characterIsMember:{-[__CFString characterAtIndex:](v3, "characterAtIndex:", v14 - 1, v27)}])
+            {
+              break;
+            }
+
+            ++v16;
+            --v14;
+            if (!v21)
+            {
+              v16 = v27;
+              break;
+            }
+          }
+        }
+      }
+
+      else
+      {
+        v18 = [v7 objectAtIndex:v12 + 1];
+        v17 = [v18 rangeValue];
+        v20 = v19;
+
+        if (v14)
+        {
+          goto LABEL_11;
+        }
+      }
+
+      v22 = v16 + v14;
+      ++v12;
+      while (v22 < v17 && [_copySearchTermsFromSearchString____friendlyPunctuationCharacterSet characterIsMember:{-[__CFString characterAtIndex:](v3, "characterAtIndex:")}])
+      {
+        if (++v16 + v14 == v17 && v20)
+        {
+          v16 += v20;
+          [v7 removeObjectAtIndex:v12];
+          if (v12 < [v7 count])
+          {
+            v23 = [v7 objectAtIndex:v12];
+            v17 = [v23 rangeValue];
+            v20 = v24;
+          }
+        }
+
+        v22 = v16 + v14;
+      }
+
+      v25 = [(__CFString *)v3 substringWithRange:v14, v16];
+      [v28 addObject:v25];
+    }
+
+    while (v12 < [v7 count]);
+  }
+
+  return v28;
+}
+
+- (CoreDAVContainerQueryTask)initWithSearchString:(id)a3 searchLimit:(unint64_t)a4 atURL:(id)a5 appSpecificDataItemClass:(Class)a6
+{
+  v10 = a5;
+  v11 = [CoreDAVContainerQueryTask _copySearchTermsFromSearchString:a3];
+  v12 = [(CoreDAVContainerQueryTask *)self initWithSearchTerms:v11 searchLimit:a4 atURL:v10 appSpecificDataItemClass:a6];
+
+  return v12;
+}
+
+- (id)_initWithSearchTerms:(id)a3 searchLimit:(unint64_t)a4 atURL:(id)a5 appSpecificDataItemClass:(Class)a6
+{
+  v11 = a3;
+  v15.receiver = self;
+  v15.super_class = CoreDAVContainerQueryTask;
+  v12 = [(CoreDAVTask *)&v15 initWithURL:a5];
+  v13 = v12;
+  if (v12)
+  {
+    objc_storeStrong(&v12->_searchTerms, a3);
+    v13->_searchLimit = a4;
+    if (!a6)
+    {
+      a6 = objc_opt_class();
+    }
+
+    v13->_appSpecificDataItemClass = a6;
+    v13->super._depth = 3;
+  }
+
+  return v13;
+}
+
+- (void)addFiltersToXMLData:(id)a3
+{
+  v12 = *MEMORY[0x277D85DE8];
+  v4 = +[CoreDAVLogging sharedLogging];
+  WeakRetained = objc_loadWeakRetained(&self->super._accountInfoProvider);
+  v6 = [v4 logHandleForAccountInfoProvider:WeakRetained];
+
+  if (v6)
+  {
+    v7 = v6;
+    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    {
+      v10 = 138543362;
+      v11 = objc_opt_class();
+      v8 = v11;
+      _os_log_impl(&dword_2452FB000, v7, OS_LOG_TYPE_ERROR, "addFiltersToXMLData: to be implemented by subclass %{public}@", &v10, 0xCu);
+    }
+  }
+
+  v9 = *MEMORY[0x277D85DE8];
+}
+
+- (id)requestBody
+{
+  v3 = objc_alloc_init(CoreDAVXMLData);
+  [(CoreDAVXMLData *)v3 startElement:self->_appSpecificQueryCommand inNamespace:self->_appSpecificNamespace withAttributeNamesAndValues:0];
+  [(CoreDAVXMLData *)v3 startElement:@"prop" inNamespace:@"DAV:" withAttributeNamesAndValues:0];
+  [(CoreDAVXMLData *)v3 appendElement:@"getetag" inNamespace:@"DAV:" withStringContent:0 withAttributeNamesAndValues:0];
+  [(CoreDAVXMLData *)v3 appendElement:self->_appSpecificDataProp inNamespace:self->_appSpecificNamespace withStringContent:0 withAttributeNamesAndValues:0];
+  [(CoreDAVXMLData *)v3 endElement:@"prop" inNamespace:@"DAV:"];
+  [(CoreDAVContainerQueryTask *)self addFiltersToXMLData:v3];
+  [(CoreDAVXMLData *)v3 endElement:self->_appSpecificQueryCommand inNamespace:self->_appSpecificNamespace];
+  v4 = [(CoreDAVXMLData *)v3 data];
+
+  return v4;
+}
+
+- (id)copyDefaultParserForContentType:(id)a3
+{
+  v4 = [CoreDAVXMLParser alloc];
+  v5 = objc_opt_class();
+  v6 = [(CoreDAVTask *)self url];
+  v7 = [(CoreDAVXMLParser *)v4 initWithRootElementNameSpace:@"DAV:" name:@"multistatus" parseClass:v5 baseURL:v6];
+
+  v8 = [[CoreDAVItemParserMapping alloc] initWithNameSpace:@"DAV:" name:@"getetag" parseClass:objc_opt_class()];
+  v9 = [[CoreDAVItemParserMapping alloc] initWithNameSpace:self->_appSpecificNamespace name:self->_appSpecificDataProp parseClass:objc_opt_class()];
+  v10 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:2];
+  [v10 addObject:v8];
+  [v10 addObject:v9];
+  [(CoreDAVXMLParser *)v7 setParseHints:v10];
+
+  return v7;
+}
+
+- (void)finishCoreDAVTaskWithError:(id)a3
+{
+  v66 = *MEMORY[0x277D85DE8];
+  v4 = a3;
+  v5 = v4;
+  if (v4)
+  {
+    v6 = [(__CFString *)v4 code];
+    v7 = +[CoreDAVLogging sharedLogging];
+    WeakRetained = objc_loadWeakRetained(&self->super._accountInfoProvider);
+    v9 = [v7 logHandleForAccountInfoProvider:WeakRetained];
+
+    if (v6 == 1)
+    {
+      if (v9)
+      {
+        v10 = v9;
+        if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+        {
+          *buf = 138543362;
+          v63 = objc_opt_class();
+          v11 = v63;
+          v12 = "%{public}@ cancelled";
+          v13 = v10;
+          v14 = OS_LOG_TYPE_INFO;
+          v15 = 12;
+LABEL_29:
+          _os_log_impl(&dword_2452FB000, v13, v14, v12, buf, v15);
+
+          goto LABEL_30;
+        }
+
+        goto LABEL_30;
+      }
+    }
+
+    else if (v9)
+    {
+      v42 = v9;
+      if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
+      {
+        *buf = 138543618;
+        v63 = objc_opt_class();
+        v64 = 2112;
+        v65 = v5;
+        v11 = v63;
+        v12 = "%{public}@ failed: %@";
+        v13 = v42;
+        v14 = OS_LOG_TYPE_DEFAULT;
+        v15 = 22;
+        goto LABEL_29;
+      }
+
+LABEL_30:
+    }
+
+    v41 = v5;
+    LOBYTE(v18) = 0;
+    v16 = 0;
+    goto LABEL_32;
+  }
+
+  v16 = objc_alloc_init(MEMORY[0x277CBEB58]);
+  v50 = [(CoreDAVTask *)self responseBodyParser];
+  [v50 rootElement];
+  v57 = 0u;
+  v58 = 0u;
+  v59 = 0u;
+  v49 = v60 = 0u;
+  v17 = [v49 responses];
+  v55 = [v17 countByEnumeratingWithState:&v57 objects:v61 count:16];
+  v18 = 0;
+  if (v55)
+  {
+    v19 = *v58;
+    v52 = *v58;
+    v51 = v17;
+    do
+    {
+      v20 = 0;
+      do
+      {
+        if (*v58 != v19)
+        {
+          objc_enumerationMutation(v17);
+        }
+
+        v21 = *(*(&v57 + 1) + 8 * v20);
+        v22 = [(__CFString *)v21 errorItem];
+        v23 = [v22 numberOfMatchesWithinLimits];
+
+        if (v23)
+        {
+          v24 = +[CoreDAVLogging sharedLogging];
+          v25 = objc_loadWeakRetained(&self->super._accountInfoProvider);
+          v26 = [v24 logHandleForAccountInfoProvider:v25];
+
+          if (v26 && os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
+          {
+            *buf = 138412546;
+            v63 = @"number-of-matches-within-limits";
+            v64 = 2112;
+            v65 = v21;
+            _os_log_impl(&dword_2452FB000, v26, OS_LOG_TYPE_DEBUG, "Received %@ response %@", buf, 0x16u);
+          }
+
+          v18 = 1;
+        }
+
+        else
+        {
+          v27 = [(__CFString *)v21 successfulPropertiesToValues];
+          v24 = v27;
+          if (v27)
+          {
+            v28 = [v27 CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"getetag"];
+            v26 = [v28 payloadAsString];
+
+            v29 = [v24 CDVObjectForKeyWithNameSpace:self->_appSpecificNamespace andName:self->_appSpecificDataProp];
+            v54 = [v29 payload];
+
+            v30 = [(__CFString *)v21 firstHref];
+            v53 = [v30 payloadAsFullURL];
+
+            v31 = objc_alloc(self->_appSpecificDataItemClass);
+            [(CoreDAVTask *)self url];
+            v33 = v32 = v16;
+            [(CoreDAVTask *)self accountInfoProvider];
+            v34 = v18;
+            v36 = v35 = self;
+            v37 = v54;
+            v38 = [v31 initWithURL:v53 eTag:v26 dataPayload:v54 inContainerWithURL:v33 withAccountInfoProvider:v36];
+
+            self = v35;
+            v18 = v34;
+
+            v16 = v32;
+            v17 = v51;
+            [v16 addObject:v38];
+          }
+
+          else
+          {
+            v26 = +[CoreDAVLogging sharedLogging];
+            v39 = objc_loadWeakRetained(&self->super._accountInfoProvider);
+            v37 = [v26 logHandleForAccountInfoProvider:v39];
+
+            if (v37 && os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
+            {
+              *buf = 138412290;
+              v63 = v21;
+              _os_log_impl(&dword_2452FB000, v37, OS_LOG_TYPE_DEFAULT, "Unexpected status response %@", buf, 0xCu);
+            }
+          }
+
+          v19 = v52;
+        }
+
+        ++v20;
+      }
+
+      while (v55 != v20);
+      v40 = [v17 countByEnumeratingWithState:&v57 objects:v61 count:16];
+      v55 = v40;
+    }
+
+    while (v40);
+  }
+
+  v41 = 0;
+  v5 = 0;
+LABEL_32:
+  self->super._numDownloadedElements = [v16 count];
+  v43 = [(CoreDAVTask *)self delegate];
+  v44 = objc_opt_respondsToSelector();
+
+  v45 = [(CoreDAVTask *)self delegate];
+  v46 = v45;
+  if (v44)
+  {
+    [v45 containerQueryTask:self completedWithFoundItems:v16 limitReached:v18 & 1 error:v41];
+LABEL_36:
+
+    [(CoreDAVTask *)self setDelegate:0];
+    goto LABEL_37;
+  }
+
+  v47 = objc_opt_respondsToSelector();
+
+  if (v47)
+  {
+    v46 = [(CoreDAVTask *)self delegate];
+    [v46 containerQueryTask:self completedWithFoundItems:v16 error:v41];
+    goto LABEL_36;
+  }
+
+LABEL_37:
+  v56.receiver = self;
+  v56.super_class = CoreDAVContainerQueryTask;
+  [(CoreDAVTask *)&v56 finishCoreDAVTaskWithError:v5];
+
+  v48 = *MEMORY[0x277D85DE8];
+}
+
+@end

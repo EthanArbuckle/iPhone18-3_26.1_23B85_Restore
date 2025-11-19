@@ -1,0 +1,378 @@
+@interface NLActivityTypeOcurrenceRegistry
++ (id)activityTypeForRegistryFromActivityType:(id)a3;
++ (id)registryWithActivityType:(id)a3 dates:(id)a4;
+- (NLActivityTypeOcurrenceRegistry)initWithCoder:(id)a3;
+- (NSArray)endDatesWithinSpecifiedDateRange;
+- (id)_mostRecentOccurrence;
+- (id)description;
+- (int64_t)compare:(id)a3;
+- (int64_t)count;
+- (void)addOccurrenceWithEndDate:(id)a3;
+- (void)encodeWithCoder:(id)a3;
+- (void)removeMostRecentOccurence;
+- (void)setCurrentDate:(id)a3;
+@end
+
+@implementation NLActivityTypeOcurrenceRegistry
+
+- (void)encodeWithCoder:(id)a3
+{
+  v19 = self;
+  location[1] = a2;
+  location[0] = 0;
+  objc_storeStrong(location, a3);
+  v7 = location[0];
+  activityType = v19->_activityType;
+  v8 = NSStringFromSelector(sel_activityType);
+  [v7 encodeObject:activityType forKey:?];
+  *&v3 = MEMORY[0x277D82BD8](v8).n128_u64[0];
+  v9 = location[0];
+  v11 = [(NLActivityTypeOcurrenceRegistry *)v19 endDatesWithinSpecifiedDateRange];
+  v10 = NSStringFromSelector(sel_endDates);
+  [v9 encodeObject:v11 forKey:?];
+  MEMORY[0x277D82BD8](v10);
+  *&v4 = MEMORY[0x277D82BD8](v11).n128_u64[0];
+  v12 = location[0];
+  v14 = [(NLActivityTypeOcurrenceRegistry *)v19 lastActivityGoal];
+  v13 = NSStringFromSelector(sel_lastActivityGoal);
+  [v12 encodeObject:v14 forKey:?];
+  MEMORY[0x277D82BD8](v13);
+  *&v5 = MEMORY[0x277D82BD8](v14).n128_u64[0];
+  v16 = location[0];
+  v15 = [(NLActivityTypeOcurrenceRegistry *)v19 hidden];
+  v17 = NSStringFromSelector(sel_hidden);
+  [v16 encodeBool:v15 forKey:?];
+  MEMORY[0x277D82BD8](v17);
+  objc_storeStrong(location, 0);
+}
+
+- (NLActivityTypeOcurrenceRegistry)initWithCoder:(id)a3
+{
+  v30[2] = *MEMORY[0x277D85DE8];
+  v29 = self;
+  location[1] = a2;
+  location[0] = 0;
+  objc_storeStrong(location, a3);
+  v3 = v29;
+  v29 = 0;
+  v27.receiver = v3;
+  v27.super_class = NLActivityTypeOcurrenceRegistry;
+  v26 = [(NLActivityTypeOcurrenceRegistry *)&v27 init];
+  v29 = v26;
+  objc_storeStrong(&v29, v26);
+  if (v26)
+  {
+    v14 = location[0];
+    v13 = objc_opt_class();
+    v15 = NSStringFromSelector(sel_activityType);
+    v4 = [v14 decodeObjectOfClass:v13 forKey:?];
+    activityType = v29->_activityType;
+    v29->_activityType = v4;
+    MEMORY[0x277D82BD8](activityType);
+    MEMORY[0x277D82BD8](v15);
+    v17 = location[0];
+    v16 = MEMORY[0x277CBEB98];
+    v30[0] = objc_opt_class();
+    v30[1] = objc_opt_class();
+    v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:2];
+    v19 = [v16 setWithArray:?];
+    v18 = NSStringFromSelector(sel_endDates);
+    v6 = [v17 decodeObjectOfClasses:v19 forKey:?];
+    endDates = v29->_endDates;
+    v29->_endDates = v6;
+    MEMORY[0x277D82BD8](endDates);
+    MEMORY[0x277D82BD8](v18);
+    MEMORY[0x277D82BD8](v19);
+    MEMORY[0x277D82BD8](v20);
+    v22 = location[0];
+    v21 = objc_opt_class();
+    v23 = NSStringFromSelector(sel_lastActivityGoal);
+    v8 = [v22 decodeObjectOfClass:v21 forKey:?];
+    lastActivityGoal = v29->_lastActivityGoal;
+    v29->_lastActivityGoal = v8;
+    MEMORY[0x277D82BD8](lastActivityGoal);
+    MEMORY[0x277D82BD8](v23);
+    v24 = location[0];
+    v25 = NSStringFromSelector(sel_hidden);
+    v10 = [v24 decodeBoolForKey:?];
+    v29->_hidden = v10;
+    MEMORY[0x277D82BD8](v25);
+  }
+
+  v12 = MEMORY[0x277D82BE0](v29);
+  objc_storeStrong(location, 0);
+  objc_storeStrong(&v29, 0);
+  *MEMORY[0x277D85DE8];
+  return v12;
+}
+
+- (NSArray)endDatesWithinSpecifiedDateRange
+{
+  v23 = self;
+  v22[1] = a2;
+  v22[0] = [(NSArray *)self->_endDates mutableCopy];
+  currentDate = v23->_currentDate;
+  v19 = 0;
+  if (currentDate)
+  {
+    v2 = MEMORY[0x277D82BE0](currentDate);
+  }
+
+  else
+  {
+    v20 = [MEMORY[0x277CBEAA8] date];
+    v19 = 1;
+    v2 = MEMORY[0x277D82BE0](v20);
+  }
+
+  v21 = v2;
+  if (v19)
+  {
+    MEMORY[0x277D82BD8](v20);
+  }
+
+  v6 = [MEMORY[0x277CBEA80] currentCalendar];
+  v18 = [v6 dateByAddingUnit:16 value:-30 toDate:v21 options:0];
+  MEMORY[0x277D82BD8](v6);
+  v8 = v22[0];
+  v7 = MEMORY[0x277CCAC30];
+  v12 = MEMORY[0x277D85DD0];
+  v13 = -1073741824;
+  v14 = 0;
+  v15 = __67__NLActivityTypeOcurrenceRegistry_endDatesWithinSpecifiedDateRange__block_invoke;
+  v16 = &unk_277D890F8;
+  v17 = MEMORY[0x277D82BE0](v18);
+  v9 = [v7 predicateWithBlock:&v12];
+  [v8 filterUsingPredicate:?];
+  *&v3 = MEMORY[0x277D82BD8](v9).n128_u64[0];
+  if (![v22[0] count])
+  {
+    location = [(NSArray *)v23->_endDates lastObject];
+    if (location)
+    {
+      [v22[0] addObject:location];
+    }
+
+    objc_storeStrong(&location, 0);
+  }
+
+  v5 = [MEMORY[0x277CBEA60] arrayWithArray:v22[0]];
+  objc_storeStrong(&v17, 0);
+  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&v21, 0);
+  objc_storeStrong(v22, 0);
+
+  return v5;
+}
+
+BOOL __67__NLActivityTypeOcurrenceRegistry_endDatesWithinSpecifiedDateRange__block_invoke(void *a1, void *a2, void *a3)
+{
+  location[1] = a1;
+  location[0] = 0;
+  objc_storeStrong(location, a2);
+  v8 = 0;
+  objc_storeStrong(&v8, a3);
+  v7 = [location[0] laterDate:a1[4]];
+  v6 = location[0];
+  MEMORY[0x277D82BD8](v7);
+  v10 = v7 == v6;
+  objc_storeStrong(&v8, 0);
+  objc_storeStrong(location, 0);
+  return v10;
+}
+
+- (void)addOccurrenceWithEndDate:(id)a3
+{
+  v13[1] = *MEMORY[0x277D85DE8];
+  v12 = self;
+  location[1] = a2;
+  location[0] = 0;
+  objc_storeStrong(location, a3);
+  if (!location[0])
+  {
+    v3 = [MEMORY[0x277CBEAA8] date];
+    v4 = location[0];
+    location[0] = v3;
+    MEMORY[0x277D82BD8](v4);
+  }
+
+  v10 = [(NLActivityTypeOcurrenceRegistry *)v12 endDatesWithinSpecifiedDateRange];
+  v9 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"self" ascending:1];
+  v8 = [(NSArray *)v10 arrayByAddingObject:location[0]];
+  v13[0] = v9;
+  v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
+  v5 = [(NSArray *)v8 sortedArrayUsingDescriptors:?];
+  endDates = v12->_endDates;
+  v12->_endDates = v5;
+  MEMORY[0x277D82BD8](endDates);
+  MEMORY[0x277D82BD8](v7);
+  MEMORY[0x277D82BD8](v8);
+  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&v10, 0);
+  objc_storeStrong(location, 0);
+  *MEMORY[0x277D85DE8];
+}
+
+- (void)removeMostRecentOccurence
+{
+  v7 = self;
+  v6[1] = a2;
+  v5 = [(NLActivityTypeOcurrenceRegistry *)self endDatesWithinSpecifiedDateRange];
+  v6[0] = [(NSArray *)v5 mutableCopy];
+  *&v2 = MEMORY[0x277D82BD8](v5).n128_u64[0];
+  [v6[0] removeLastObject];
+  v3 = [MEMORY[0x277CBEA60] arrayWithArray:v6[0]];
+  endDates = v7->_endDates;
+  v7->_endDates = v3;
+  MEMORY[0x277D82BD8](endDates);
+  objc_storeStrong(v6, 0);
+}
+
++ (id)activityTypeForRegistryFromActivityType:(id)a3
+{
+  location[2] = a1;
+  location[1] = a2;
+  location[0] = 0;
+  objc_storeStrong(location, a3);
+  v8 = [location[0] metadata];
+  v9 = [v8 mutableCopy];
+  [v9 removeObjectForKey:{*MEMORY[0x277D0A6F8], MEMORY[0x277D82BD8](v8).n128_f64[0]}];
+  [v9 removeObjectForKey:*MEMORY[0x277D0A700]];
+  if (![v9 count])
+  {
+    objc_storeStrong(&v9, 0);
+  }
+
+  v6 = objc_alloc(MEMORY[0x277D0A810]);
+  v5 = [location[0] effectiveTypeIdentifier];
+  v3 = [location[0] isIndoor];
+  v7 = [v6 initWithActivityTypeIdentifier:v5 isIndoor:v3 metadata:v9];
+  objc_storeStrong(&v9, 0);
+  objc_storeStrong(location, 0);
+
+  return v7;
+}
+
++ (id)registryWithActivityType:(id)a3 dates:(id)a4
+{
+  v13 = a1;
+  location[1] = a2;
+  location[0] = 0;
+  objc_storeStrong(location, a3);
+  v11 = 0;
+  objc_storeStrong(&v11, a4);
+  v10 = objc_alloc_init(v13);
+  v7 = [objc_opt_class() activityTypeForRegistryFromActivityType:location[0]];
+  [v10 setActivityType:?];
+  *&v4 = MEMORY[0x277D82BD8](v7).n128_u64[0];
+  v8 = [v11 copy];
+  [v10 setEndDates:?];
+  MEMORY[0x277D82BD8](v8);
+  v9 = MEMORY[0x277D82BE0](v10);
+  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&v11, 0);
+  objc_storeStrong(location, 0);
+
+  return v9;
+}
+
+- (int64_t)count
+{
+  v3 = [(NLActivityTypeOcurrenceRegistry *)self endDatesWithinSpecifiedDateRange];
+  v4 = [(NSArray *)v3 count];
+  MEMORY[0x277D82BD8](v3);
+  return v4;
+}
+
+- (id)description
+{
+  v17 = self;
+  v16 = a2;
+  v6 = MEMORY[0x277CCACA8];
+  v15.receiver = self;
+  v15.super_class = NLActivityTypeOcurrenceRegistry;
+  v13 = [(NLActivityTypeOcurrenceRegistry *)&v15 description];
+  v12 = [(NLActivityTypeOcurrenceRegistry *)v17 activityType];
+  v11 = [MEMORY[0x277CCABB0] numberWithInteger:{-[NLActivityTypeOcurrenceRegistry count](v17, "count")}];
+  v5 = MEMORY[0x277CCABB0];
+  v10 = [(NLActivityTypeOcurrenceRegistry *)v17 lastActivityGoal];
+  v9 = [v5 numberWithUnsignedInteger:{-[NLSessionActivityGoal goalTypeIdentifier](v10, "goalTypeIdentifier")}];
+  v8 = [(NLActivityTypeOcurrenceRegistry *)v17 lastActivityGoal];
+  v7 = [(NLSessionActivityGoal *)v8 value];
+  v2 = [(NLActivityTypeOcurrenceRegistry *)v17 hidden];
+  v3 = @"YES";
+  if (!v2)
+  {
+    v3 = @"NO";
+  }
+
+  v14 = [v6 stringWithFormat:@"%@ :%@ -- %@ instances; GoalType: %@; Goal Value: %@ Hidden: %@", v13, v12, v11, v9, v7, v3];
+  MEMORY[0x277D82BD8](v7);
+  MEMORY[0x277D82BD8](v8);
+  MEMORY[0x277D82BD8](v9);
+  MEMORY[0x277D82BD8](v10);
+  MEMORY[0x277D82BD8](v11);
+  MEMORY[0x277D82BD8](v12);
+  MEMORY[0x277D82BD8](v13);
+
+  return v14;
+}
+
+- (id)_mostRecentOccurrence
+{
+  location[2] = self;
+  location[1] = a2;
+  v6 = [(NLActivityTypeOcurrenceRegistry *)self endDatesWithinSpecifiedDateRange];
+  location[0] = [(NSArray *)v6 lastObject];
+  *&v2 = MEMORY[0x277D82BD8](v6).n128_u64[0];
+  v7 = 0;
+  if (location[0])
+  {
+    v3 = MEMORY[0x277D82BE0](location[0]);
+  }
+
+  else
+  {
+    v8 = [MEMORY[0x277CBEAA8] distantPast];
+    v7 = 1;
+    v3 = MEMORY[0x277D82BE0](v8);
+  }
+
+  v10 = v3;
+  if (v7)
+  {
+    MEMORY[0x277D82BD8](v8);
+  }
+
+  objc_storeStrong(location, 0);
+  v4 = v10;
+
+  return v4;
+}
+
+- (int64_t)compare:(id)a3
+{
+  v8 = self;
+  location[1] = a2;
+  location[0] = 0;
+  objc_storeStrong(location, a3);
+  v5 = [(NLActivityTypeOcurrenceRegistry *)v8 _mostRecentOccurrence];
+  v4 = [location[0] _mostRecentOccurrence];
+  v6 = [v5 compare:?];
+  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](v5);
+  objc_storeStrong(location, 0);
+  return v6;
+}
+
+- (void)setCurrentDate:(id)a3
+{
+  v4 = self;
+  location[1] = a2;
+  location[0] = 0;
+  objc_storeStrong(location, a3);
+  objc_storeStrong(&v4->_currentDate, location[0]);
+  objc_storeStrong(location, 0);
+}
+
+@end

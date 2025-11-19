@@ -1,0 +1,121 @@
+@interface SAStrokeData
+- (SAStrokeData)initWithCharacter:(id)a3 strokeAnimationRepresention:(id)a4 strokeNames:(id)a5 pronunciation:(id)a6;
+- (SAStrokeData)initWithCharacters:(id)a3 strokeAnimationRepresention:(id)a4 strokeNames:(id)a5 pronunciations:(id)a6;
+@end
+
+@implementation SAStrokeData
+
+- (SAStrokeData)initWithCharacter:(id)a3 strokeAnimationRepresention:(id)a4 strokeNames:(id)a5 pronunciation:(id)a6
+{
+  v30[1] = *MEMORY[0x277D85DE8];
+  v28 = self;
+  location[1] = a2;
+  location[0] = 0;
+  objc_storeStrong(location, a3);
+  v26 = 0;
+  objc_storeStrong(&v26, a4);
+  v25 = 0;
+  objc_storeStrong(&v25, a5);
+  v24 = 0;
+  objc_storeStrong(&v24, a6);
+  v6 = v28;
+  v28 = 0;
+  v23.receiver = v6;
+  v23.super_class = SAStrokeData;
+  v18 = [(SAStrokeData *)&v23 init];
+  v28 = v18;
+  objc_storeStrong(&v28, v18);
+  if (v18)
+  {
+    v14 = [SAStrokeDataInternal alloc];
+    v21 = 0;
+    if (location[0])
+    {
+      v30[0] = location[0];
+      v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:1];
+      v21 = 1;
+      v13 = v22;
+    }
+
+    else
+    {
+      v13 = 0;
+    }
+
+    v11 = v26;
+    v12 = v25;
+    v19 = 0;
+    if (v24)
+    {
+      v29 = v24;
+      v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v29 count:1];
+      v19 = 1;
+      v10 = v20;
+    }
+
+    else
+    {
+      v10 = 0;
+    }
+
+    v9 = [(SAStrokeDataInternal *)v14 initWithCharacters:v13 strokeAnimationRepresention:v11 strokeNames:v12 pronunciations:v10];
+    [(SAStrokeData *)v28 setUnderlyingObject:?];
+    MEMORY[0x277D82BD8](v9);
+    if (v19)
+    {
+      MEMORY[0x277D82BD8](v20);
+    }
+
+    if (v21)
+    {
+      MEMORY[0x277D82BD8](v22);
+    }
+  }
+
+  v8 = MEMORY[0x277D82BE0](v28);
+  objc_storeStrong(&v24, 0);
+  objc_storeStrong(&v25, 0);
+  objc_storeStrong(&v26, 0);
+  objc_storeStrong(location, 0);
+  objc_storeStrong(&v28, 0);
+  *MEMORY[0x277D85DE8];
+  return v8;
+}
+
+- (SAStrokeData)initWithCharacters:(id)a3 strokeAnimationRepresention:(id)a4 strokeNames:(id)a5 pronunciations:(id)a6
+{
+  v20 = self;
+  location[1] = a2;
+  location[0] = 0;
+  objc_storeStrong(location, a3);
+  v18 = 0;
+  objc_storeStrong(&v18, a4);
+  v17 = 0;
+  objc_storeStrong(&v17, a5);
+  v16 = 0;
+  objc_storeStrong(&v16, a6);
+  v6 = v20;
+  v20 = 0;
+  v15.receiver = v6;
+  v15.super_class = SAStrokeData;
+  v14 = [(SAStrokeData *)&v15 init];
+  v20 = v14;
+  objc_storeStrong(&v20, v14);
+  if (v14)
+  {
+    v7 = [SAStrokeDataInternal alloc];
+    v10 = [(SAStrokeDataInternal *)v7 initWithCharacters:location[0] strokeAnimationRepresention:v18 strokeNames:v17 pronunciations:v16];
+    [(SAStrokeData *)v20 setUnderlyingObject:?];
+    MEMORY[0x277D82BD8](v10);
+  }
+
+  v9 = MEMORY[0x277D82BE0](v20);
+  objc_storeStrong(&v16, 0);
+  objc_storeStrong(&v17, 0);
+  objc_storeStrong(&v18, 0);
+  objc_storeStrong(location, 0);
+  objc_storeStrong(&v20, 0);
+  return v9;
+}
+
+@end

@@ -1,0 +1,904 @@
+@interface HUAvailableTriggerItem
+- (BOOL)isActive;
+- (HFServiceLikeItem)preferredRelatedItem;
+- (HFTriggerItem)triggerItem;
+- (HMTrigger)trigger;
+- (HRERecommendationItem)recommendationItem;
+- (HUAvailableTriggerItem)initWithHome:(id)a3 containingItem:(id)a4 relatedToServiceLikeItems:(id)a5;
+- (NSString)identifier;
+- (id)_subclass_updateWithOptions:(id)a3;
+- (id)buildersForActivating:(BOOL)a3 inHome:(id)a4 withContext:(id)a5 serviceLikeItems:(id)a6;
+- (id)removalTriggerBuildersForTriggers:(id)a3 home:(id)a4 context:(id)a5 relatedItems:(id)a6;
+- (void)_updateNaturalLanguageOptions;
+- (void)setActive:(BOOL)a3;
+- (void)setSourceItem:(id)a3;
+@end
+
+@implementation HUAvailableTriggerItem
+
+- (HUAvailableTriggerItem)initWithHome:(id)a3 containingItem:(id)a4 relatedToServiceLikeItems:(id)a5
+{
+  v9 = a3;
+  v10 = a4;
+  v11 = a5;
+  v16.receiver = self;
+  v16.super_class = HUAvailableTriggerItem;
+  v12 = [(HUAvailableTriggerItem *)&v16 init];
+  v13 = v12;
+  if (v12)
+  {
+    [(HUAvailableTriggerItem *)v12 setSourceItem:v10];
+    objc_storeStrong(&v13->_home, a3);
+    objc_storeStrong(&v13->_relatedServiceLikeItems, a5);
+    activeValue = v13->_activeValue;
+    v13->_activeValue = 0;
+  }
+
+  return v13;
+}
+
+- (void)setSourceItem:(id)a3
+{
+  v4 = a3;
+  if (!v4)
+  {
+    NSLog(&cfstr_Huavailabletri.isa);
+  }
+
+  sourceItem = self->_sourceItem;
+  self->_sourceItem = v4;
+}
+
+- (HFServiceLikeItem)preferredRelatedItem
+{
+  v2 = [(HUAvailableTriggerItem *)self relatedServiceLikeItems];
+  v3 = [v2 firstObject];
+
+  return v3;
+}
+
+- (id)buildersForActivating:(BOOL)a3 inHome:(id)a4 withContext:(id)a5 serviceLikeItems:(id)a6
+{
+  v8 = a3;
+  v10 = a4;
+  v11 = a5;
+  v12 = a6;
+  objc_opt_class();
+  v13 = [(HUAvailableTriggerItem *)self recommendationItem];
+  v14 = [v13 recommendation];
+  if (objc_opt_isKindOfClass())
+  {
+    v15 = v14;
+  }
+
+  else
+  {
+    v15 = 0;
+  }
+
+  v16 = v15;
+
+  if (v16)
+  {
+    v17 = [MEMORY[0x277CBEB18] array];
+    v18 = [MEMORY[0x277CBEB18] array];
+    if (v8)
+    {
+      v19 = [v16 selectedTriggerBuilder];
+      v20 = [v19 triggerBuilderWithContext:v11];
+
+      [v20 setEnabled:1];
+      [v17 na_safeAddObject:v20];
+      v21 = [v10 triggers];
+      v34[0] = MEMORY[0x277D85DD0];
+      v34[1] = 3221225472;
+      v34[2] = __84__HUAvailableTriggerItem_buildersForActivating_inHome_withContext_serviceLikeItems___block_invoke;
+      v34[3] = &unk_277DC3A28;
+      v35 = v10;
+      v36 = v11;
+      v37 = v16;
+      v22 = [v21 na_filter:v34];
+
+      [v18 addObjectsFromArray:v22];
+    }
+
+    else
+    {
+      v23 = [v10 triggers];
+      v27 = MEMORY[0x277D85DD0];
+      v28 = 3221225472;
+      v29 = __84__HUAvailableTriggerItem_buildersForActivating_inHome_withContext_serviceLikeItems___block_invoke_2;
+      v30 = &unk_277DC3A28;
+      v31 = v10;
+      v32 = v11;
+      v33 = v16;
+      v24 = [v23 na_filter:&v27];
+
+      [v18 addObjectsFromArray:{v24, v27, v28, v29, v30}];
+      v20 = v31;
+    }
+
+    if ([v18 count])
+    {
+      v25 = [(HUAvailableTriggerItem *)self removalTriggerBuildersForTriggers:v18 home:v10 context:v11 relatedItems:v12];
+      [v17 addObjectsFromArray:v25];
+    }
+  }
+
+  else
+  {
+    v17 = MEMORY[0x277CBEBF8];
+  }
+
+  return v17;
+}
+
+uint64_t __84__HUAvailableTriggerItem_buildersForActivating_inHome_withContext_serviceLikeItems___block_invoke(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  if ([v3 isEnabled])
+  {
+    v4 = 0;
+  }
+
+  else
+  {
+    v5 = [MEMORY[0x277D14C48] triggerBuilderForTrigger:v3 inHome:*(a1 + 32) context:*(a1 + 40) assertsFailure:0];
+    if (v5)
+    {
+      v6 = [*(a1 + 48) compareForMatchingToTrigger:v5];
+      v4 = [v6 hasNoDifferencesHigherThanPriority:0];
+    }
+
+    else
+    {
+      v4 = 0;
+    }
+  }
+
+  return v4;
+}
+
+uint64_t __84__HUAvailableTriggerItem_buildersForActivating_inHome_withContext_serviceLikeItems___block_invoke_2(uint64_t a1, uint64_t a2)
+{
+  v3 = [MEMORY[0x277D14C48] triggerBuilderForTrigger:a2 inHome:*(a1 + 32) context:*(a1 + 40) assertsFailure:0];
+  if (v3)
+  {
+    v4 = [*(a1 + 48) compareForMatchingToTrigger:v3];
+    v5 = [v4 hasNoDifferencesHigherThanPriority:0];
+  }
+
+  else
+  {
+    v5 = 0;
+  }
+
+  return v5;
+}
+
+- (id)removalTriggerBuildersForTriggers:(id)a3 home:(id)a4 context:(id)a5 relatedItems:(id)a6
+{
+  v9 = a4;
+  v10 = a5;
+  v11 = a6;
+  v17[0] = MEMORY[0x277D85DD0];
+  v17[1] = 3221225472;
+  v17[2] = __86__HUAvailableTriggerItem_removalTriggerBuildersForTriggers_home_context_relatedItems___block_invoke;
+  v17[3] = &unk_277DC3A78;
+  v18 = v9;
+  v19 = v10;
+  v20 = v11;
+  v12 = v11;
+  v13 = v10;
+  v14 = v9;
+  v15 = [a3 na_map:v17];
+
+  return v15;
+}
+
+id __86__HUAvailableTriggerItem_removalTriggerBuildersForTriggers_home_context_relatedItems___block_invoke(void *a1, uint64_t a2)
+{
+  v3 = [MEMORY[0x277D14C48] triggerBuilderForTrigger:a2 inHome:a1[4] context:a1[5]];
+  v4 = a1[6];
+  v7[0] = MEMORY[0x277D85DD0];
+  v7[1] = 3221225472;
+  v7[2] = __86__HUAvailableTriggerItem_removalTriggerBuildersForTriggers_home_context_relatedItems___block_invoke_2;
+  v7[3] = &unk_277DC3A50;
+  v5 = v3;
+  v8 = v5;
+  [v4 na_each:v7];
+
+  return v5;
+}
+
+- (BOOL)isActive
+{
+  v3 = [(HUAvailableTriggerItem *)self activeValue];
+
+  if (v3)
+  {
+    v4 = [(HUAvailableTriggerItem *)self activeValue];
+    v5 = [v4 BOOLValue];
+  }
+
+  else
+  {
+    v6 = [(HUAvailableTriggerItem *)self latestResults];
+    v4 = [v6 objectForKeyedSubscript:*MEMORY[0x277D14068]];
+
+    if (v4)
+    {
+      v5 = [v4 integerValue] == 2;
+    }
+
+    else
+    {
+      v5 = 0;
+    }
+  }
+
+  return v5;
+}
+
+- (void)setActive:(BOOL)a3
+{
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  [(HUAvailableTriggerItem *)self setActiveValue:v4];
+}
+
+- (HFTriggerItem)triggerItem
+{
+  objc_opt_class();
+  v3 = [(HUAvailableTriggerItem *)self sourceItem];
+  if (objc_opt_isKindOfClass())
+  {
+    v4 = v3;
+  }
+
+  else
+  {
+    v4 = 0;
+  }
+
+  v5 = v4;
+
+  return v4;
+}
+
+- (HRERecommendationItem)recommendationItem
+{
+  objc_opt_class();
+  v3 = [(HUAvailableTriggerItem *)self sourceItem];
+  if (objc_opt_isKindOfClass())
+  {
+    v4 = v3;
+  }
+
+  else
+  {
+    v4 = 0;
+  }
+
+  v5 = v4;
+
+  return v4;
+}
+
+- (NSString)identifier
+{
+  v2 = [(HUAvailableTriggerItem *)self sourceItem];
+  v3 = [v2 identifier];
+
+  return v3;
+}
+
+- (HMTrigger)trigger
+{
+  v2 = [(HUAvailableTriggerItem *)self sourceItem];
+  v3 = [v2 trigger];
+
+  return v3;
+}
+
+- (id)_subclass_updateWithOptions:(id)a3
+{
+  v4 = a3;
+  v5 = [MEMORY[0x277CBEB38] dictionary];
+  objc_opt_class();
+  v6 = [(HUAvailableTriggerItem *)self recommendationItem];
+  v7 = [v6 recommendation];
+  if (objc_opt_isKindOfClass())
+  {
+    v8 = v7;
+  }
+
+  else
+  {
+    v8 = 0;
+  }
+
+  v9 = v8;
+
+  v10 = [(HUAvailableTriggerItem *)self sourceItem];
+
+  if (!v10)
+  {
+    v19 = MEMORY[0x277D2C900];
+    v18 = [MEMORY[0x277D14780] outcomeWithResults:MEMORY[0x277CBEC10]];
+    v20 = [v19 futureWithResult:v18];
+    goto LABEL_12;
+  }
+
+  v11 = [v4 objectForKeyedSubscript:@"shallow"];
+  if (([v11 BOOLValue] & 1) == 0)
+  {
+
+    goto LABEL_10;
+  }
+
+  v12 = [(HUAvailableTriggerItem *)self sourceItem];
+  v13 = [v12 latestResults];
+  v14 = [v13 count];
+
+  if (!v14)
+  {
+LABEL_10:
+    v16 = [v4 mutableCopy];
+    [v16 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D14248]];
+    v17 = [(HUAvailableTriggerItem *)self sourceItem];
+    v21 = [v17 updateWithOptions:v16];
+    v18 = [v21 flatMap:&__block_literal_global_262];
+
+    goto LABEL_11;
+  }
+
+  v15 = MEMORY[0x277D2C900];
+  v16 = [(HUAvailableTriggerItem *)self sourceItem];
+  v17 = [v16 latestResults];
+  v18 = [v15 futureWithResult:v17];
+LABEL_11:
+
+  [(HUAvailableTriggerItem *)self _updateNaturalLanguageOptions];
+  v22 = [(HUAvailableTriggerItem *)self triggerNaturalLanguageOptions];
+  v23 = [v22 copy];
+
+  v24 = MEMORY[0x277D14C68];
+  v25 = [(HUAvailableTriggerItem *)self triggerNaturalLanguageOptions];
+  v26 = [v24 detailOptionsWithOptions:v25];
+
+  v30[0] = MEMORY[0x277D85DD0];
+  v30[1] = 3221225472;
+  v30[2] = __54__HUAvailableTriggerItem__subclass_updateWithOptions___block_invoke_2;
+  v30[3] = &unk_277DC3AE8;
+  v31 = v5;
+  v32 = self;
+  v33 = v9;
+  v34 = v23;
+  v35 = v26;
+  v27 = v23;
+  v28 = v26;
+  v20 = [v18 flatMap:v30];
+
+LABEL_12:
+
+  return v20;
+}
+
+id __54__HUAvailableTriggerItem__subclass_updateWithOptions___block_invoke(uint64_t a1, void *a2)
+{
+  v2 = MEMORY[0x277D2C900];
+  v3 = [a2 results];
+  v4 = [v2 futureWithResult:v3];
+
+  return v4;
+}
+
+id __54__HUAvailableTriggerItem__subclass_updateWithOptions___block_invoke_2(id *a1, uint64_t a2)
+{
+  [a1[4] addEntriesFromDictionary:a2];
+  v3 = *MEMORY[0x277D13DA8];
+  v4 = [a1[4] objectForKeyedSubscript:*MEMORY[0x277D13DA8]];
+  v5 = [v4 mutableCopy];
+  v6 = v5;
+  if (v5)
+  {
+    v7 = v5;
+  }
+
+  else
+  {
+    v7 = [MEMORY[0x277CBEB58] set];
+  }
+
+  v8 = v7;
+
+  v9 = [a1[5] relatedServiceLikeItems];
+  v10 = [v9 na_map:&__block_literal_global_20_5];
+  [v8 addObjectsFromArray:v10];
+
+  v11 = [a1[5] triggerItem];
+  if (v11)
+  {
+  }
+
+  else
+  {
+    v12 = [a1[5] recommendationItem];
+    v13 = [v12 recommendation];
+    v14 = [v13 hu_triggerBuilderIfAny];
+    v15 = [v14 trigger];
+
+    if (!v15)
+    {
+      goto LABEL_8;
+    }
+  }
+
+  v16 = [a1[5] trigger];
+  [v8 addObject:v16];
+
+LABEL_8:
+  [a1[4] setObject:v8 forKeyedSubscript:v3];
+  v17 = [a1[5] recommendationItem];
+
+  if (v17)
+  {
+    [a1[6] containsMeaningfulChanges];
+    v18 = [a1[5] activeValue];
+
+    if (v18)
+    {
+      v19 = [a1[5] activeValue];
+      [v19 BOOLValue];
+    }
+
+    v24 = [MEMORY[0x277CCABB0] numberWithInteger:HFPrimaryStateFromBOOL()];
+    [a1[4] setObject:v24 forKeyedSubscript:*MEMORY[0x277D14068]];
+
+    v25 = MEMORY[0x277CCABB0];
+    v26 = [a1[5] home];
+    v27 = [v25 numberWithInt:{objc_msgSend(v26, "hf_userCanCreateTrigger") ^ 1}];
+    [a1[4] setObject:v27 forKeyedSubscript:*MEMORY[0x277D13EA8]];
+
+    v21 = [a1[7] actionNaturalLanguageOptions];
+    [v21 setIgnoreOptionalCharacteristics:1];
+  }
+
+  else
+  {
+    v20 = [a1[5] triggerItem];
+
+    if (!v20)
+    {
+      goto LABEL_18;
+    }
+
+    v21 = [a1[5] trigger];
+    if ([v21 isEnabled])
+    {
+      v22 = @"HUSmartAutomationTriggerEnabledValueText";
+    }
+
+    else
+    {
+      v22 = @"HUSmartAutomationTriggerDisabledValueText";
+    }
+
+    v23 = _HULocalizedStringWithDefaultValue(v22, v22, 1);
+    [a1[4] setObject:v23 forKeyedSubscript:*MEMORY[0x277D13E30]];
+  }
+
+LABEL_18:
+  v28 = [a1[4] objectForKeyedSubscript:*MEMORY[0x277D140E0]];
+  [a1[7] setFormattingStyle:1];
+  [a1[8] setFormattingStyle:3];
+  [a1[8] setShouldUseFullDayNames:1];
+  if ([v28 triggerNameIsConfigured])
+  {
+    v29 = [v28 triggerName];
+  }
+
+  else
+  {
+    v29 = 0;
+  }
+
+  v30 = [a1[5] recommendationItem];
+
+  if (v30)
+  {
+    [a1[7] setShouldUseFirstPersonPronounIfPossible:1];
+    v31 = [a1[6] selectedTriggerBuilder];
+    v32 = [v31 naturalLanguageNameWithOptions:a1[7]];
+
+    v33 = [a1[6] selectedTriggerBuilder];
+    v34 = [v33 naturalLanguageDetailsWithOptions:a1[8]];
+LABEL_34:
+    v41 = v34;
+LABEL_35:
+
+    goto LABEL_36;
+  }
+
+  v35 = [a1[5] triggerItem];
+
+  if (v35)
+  {
+    if (v29)
+    {
+      v32 = v29;
+    }
+
+    else
+    {
+      v40 = [a1[5] trigger];
+      v32 = [v40 hf_naturalLanguageNameWithOptions:a1[7]];
+    }
+
+    v33 = [a1[5] trigger];
+    v34 = [v33 hf_naturalLangugeDetailsWithOptions:a1[8]];
+    goto LABEL_34;
+  }
+
+  v36 = [a1[5] trigger];
+  objc_opt_class();
+  isKindOfClass = objc_opt_isKindOfClass();
+
+  if (isKindOfClass)
+  {
+    objc_opt_class();
+    v38 = [a1[5] trigger];
+    if (objc_opt_isKindOfClass())
+    {
+      v39 = v38;
+    }
+
+    else
+    {
+      v39 = 0;
+    }
+
+    v33 = v39;
+
+    if (v29)
+    {
+      v32 = v29;
+    }
+
+    else
+    {
+      v72 = MEMORY[0x277CD19F8];
+      v73 = a1[7];
+      v74 = [v33 events];
+      v75 = [v33 hf_effectiveRecurrences];
+      v32 = [v72 hf_naturalLanguageNameWithOptions:v73 events:v74 recurrences:v75];
+    }
+
+    v76 = [a1[5] trigger];
+    v41 = [v76 hf_naturalLangugeDetailsWithOptions:a1[8]];
+
+    goto LABEL_35;
+  }
+
+  v32 = 0;
+  v41 = 0;
+LABEL_36:
+  if ([v32 length])
+  {
+    [a1[4] setObject:v32 forKeyedSubscript:*MEMORY[0x277D13F60]];
+    v42 = [v41 length];
+    v43 = a1[4];
+    if (v42)
+    {
+      [v43 setObject:v41 forKeyedSubscript:*MEMORY[0x277D13E20]];
+    }
+
+    else
+    {
+      [v43 removeObjectForKey:*MEMORY[0x277D13E20]];
+    }
+  }
+
+  v44 = *MEMORY[0x277D13E88];
+  v45 = [a1[4] objectForKeyedSubscript:*MEMORY[0x277D13E88]];
+  v78 = v8;
+  if (v45)
+  {
+    [a1[4] setObject:v45 forKeyedSubscript:v44];
+  }
+
+  else
+  {
+    v46 = objc_alloc(MEMORY[0x277D14728]);
+    v47 = [v46 initWithImageIdentifier:*MEMORY[0x277D13A30]];
+    [a1[4] setObject:v47 forKeyedSubscript:v44];
+  }
+
+  v77 = v32;
+
+  v48 = *MEMORY[0x277D13D80];
+  v49 = [a1[4] objectForKeyedSubscript:*MEMORY[0x277D13D80]];
+  v50 = [v49 mutableCopy];
+  v51 = v50;
+  v52 = v41;
+  if (v50)
+  {
+    v53 = v50;
+  }
+
+  else
+  {
+    v53 = objc_opt_new();
+  }
+
+  v54 = v53;
+
+  v55 = [a1[5] sourceItem];
+  [v54 addObject:v55];
+
+  [a1[4] setObject:v54 forKeyedSubscript:v48];
+  objc_opt_class();
+  v56 = [a1[5] latestResults];
+  v57 = [v56 objectForKeyedSubscript:v48];
+  if (objc_opt_isKindOfClass())
+  {
+    v58 = v57;
+  }
+
+  else
+  {
+    v58 = 0;
+  }
+
+  if (v58)
+  {
+    v59 = v57;
+  }
+
+  else
+  {
+    v59 = [MEMORY[0x277CBEB98] set];
+  }
+
+  v60 = v59;
+
+  v61 = [a1[5] sourceItem];
+  v62 = [v60 containsObject:v61];
+
+  aBlock[0] = MEMORY[0x277D85DD0];
+  aBlock[1] = 3221225472;
+  aBlock[2] = __54__HUAvailableTriggerItem__subclass_updateWithOptions___block_invoke_4;
+  aBlock[3] = &unk_277DBB548;
+  v63 = a1[4];
+  v64 = a1[5];
+  v80 = v63;
+  v81 = v64;
+  v65 = _Block_copy(aBlock);
+  v66 = v65;
+  if (v62 && !(*(v65 + 2))(v65))
+  {
+    v67 = 0;
+  }
+
+  else
+  {
+    v67 = 2;
+  }
+
+  v68 = MEMORY[0x277D2C900];
+  v69 = [objc_alloc(MEMORY[0x277D14780]) initWithResults:a1[4] type:v67];
+  v70 = [v68 futureWithResult:v69];
+
+  return v70;
+}
+
+uint64_t __54__HUAvailableTriggerItem__subclass_updateWithOptions___block_invoke_4(uint64_t a1)
+{
+  if (_MergedGlobals_4_7 != -1)
+  {
+    dispatch_once(&_MergedGlobals_4_7, &__block_literal_global_35_3);
+  }
+
+  v2 = qword_27C838080;
+  v9 = MEMORY[0x277D85DD0];
+  v10 = 3221225472;
+  v11 = __54__HUAvailableTriggerItem__subclass_updateWithOptions___block_invoke_7;
+  v12 = &unk_277DC3AC0;
+  v3 = *(a1 + 32);
+  v4 = *(a1 + 40);
+  v13 = v3;
+  v14 = v4;
+  v5 = [v2 na_map:&v9];
+  v6 = [v5 mutableCopy];
+
+  v7 = [v6 na_any:&__block_literal_global_40_2];
+  return v7;
+}
+
+void __54__HUAvailableTriggerItem__subclass_updateWithOptions___block_invoke_6()
+{
+  v4[5] = *MEMORY[0x277D85DE8];
+  v0 = *MEMORY[0x277D13E20];
+  v4[0] = *MEMORY[0x277D13F60];
+  v4[1] = v0;
+  v1 = *MEMORY[0x277D13EA8];
+  v4[2] = *MEMORY[0x277D14068];
+  v4[3] = v1;
+  v4[4] = *MEMORY[0x277D13FB8];
+  v2 = [MEMORY[0x277CBEA60] arrayWithObjects:v4 count:5];
+  v3 = qword_27C838080;
+  qword_27C838080 = v2;
+}
+
+id __54__HUAvailableTriggerItem__subclass_updateWithOptions___block_invoke_7(uint64_t a1, void *a2)
+{
+  v3 = MEMORY[0x277CCABB0];
+  v4 = *(a1 + 32);
+  v5 = a2;
+  v6 = [v4 objectForKeyedSubscript:v5];
+  v7 = [*(a1 + 40) latestResults];
+  v8 = [v7 objectForKeyedSubscript:v5];
+
+  v9 = v6;
+  v10 = v8;
+  if (v9 == v10)
+  {
+    v11 = 0;
+  }
+
+  else if (v9)
+  {
+    v11 = [v9 isEqual:v10] ^ 1;
+  }
+
+  else
+  {
+    v11 = 1;
+  }
+
+  v12 = [v3 numberWithInt:v11];
+
+  return v12;
+}
+
+- (void)_updateNaturalLanguageOptions
+{
+  v3 = [MEMORY[0x277CBEB98] set];
+  v4 = [(HUAvailableTriggerItem *)self triggerItem];
+
+  if (v4)
+  {
+    v5 = [(HUAvailableTriggerItem *)self trigger];
+    v6 = [v5 hf_anonymousActions];
+  }
+
+  else
+  {
+    v7 = [(HUAvailableTriggerItem *)self recommendationItem];
+
+    if (!v7)
+    {
+      goto LABEL_6;
+    }
+
+    v8 = [(HUAvailableTriggerItem *)self recommendationItem];
+    v5 = [v8 recommendation];
+
+    v9 = [v5 triggerBuilders];
+    v10 = [v9 allObjects];
+
+    v11 = [v10 na_flatMap:&__block_literal_global_45_3];
+    v6 = [MEMORY[0x277CBEB98] setWithArray:v11];
+
+    v3 = v10;
+  }
+
+  v3 = v6;
+LABEL_6:
+  v27[0] = MEMORY[0x277D85DD0];
+  v27[1] = 3221225472;
+  v27[2] = __55__HUAvailableTriggerItem__updateNaturalLanguageOptions__block_invoke_4;
+  v27[3] = &unk_277DC3B50;
+  v27[4] = self;
+  v12 = [v3 na_filter:v27];
+  if ([v12 count])
+  {
+    v13 = v12;
+  }
+
+  else
+  {
+    v13 = v3;
+  }
+
+  v14 = v13;
+  v15 = [(HUAvailableTriggerItem *)self triggerNaturalLanguageOptions];
+
+  if (v15)
+  {
+    v16 = [v14 allObjects];
+    v17 = [(HUAvailableTriggerItem *)self triggerNaturalLanguageOptions];
+    [v17 setActions:v16];
+  }
+
+  else
+  {
+    v18 = objc_alloc(MEMORY[0x277D14C70]);
+    v16 = [(HUAvailableTriggerItem *)self home];
+    v17 = [v14 allObjects];
+    v19 = [v18 initWithHome:v16 nameType:2 actions:v17];
+    [(HUAvailableTriggerItem *)self setTriggerNaturalLanguageOptions:v19];
+  }
+
+  v20 = MEMORY[0x277CBEB98];
+  v21 = [(HUAvailableTriggerItem *)self relatedServiceLikeItems];
+  v22 = [v20 setWithArray:v21];
+  v23 = [v22 na_flatMap:&__block_literal_global_57_2];
+
+  v24 = [(HUAvailableTriggerItem *)self triggerNaturalLanguageOptions];
+  [v24 setObjectsInContext:v23];
+
+  v25 = [(HUAvailableTriggerItem *)self triggerNaturalLanguageOptions];
+  v26 = [v25 actionNaturalLanguageOptions];
+  [v26 setObjectsInContext:v23];
+}
+
+id __55__HUAvailableTriggerItem__updateNaturalLanguageOptions__block_invoke(uint64_t a1, void *a2)
+{
+  v2 = [a2 triggerActionSets];
+  v3 = [v2 anonymousActionBuilder];
+  v4 = [v3 na_map:&__block_literal_global_48_0];
+  v5 = [v4 na_filter:&__block_literal_global_51_0];
+
+  return v5;
+}
+
+uint64_t __55__HUAvailableTriggerItem__updateNaturalLanguageOptions__block_invoke_4(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  v4 = [*(a1 + 32) relatedServiceLikeItems];
+  v8[0] = MEMORY[0x277D85DD0];
+  v8[1] = 3221225472;
+  v8[2] = __55__HUAvailableTriggerItem__updateNaturalLanguageOptions__block_invoke_5;
+  v8[3] = &unk_277DC3528;
+  v9 = v3;
+  v5 = v3;
+  v6 = [v4 na_any:v8];
+
+  return v6;
+}
+
+id __55__HUAvailableTriggerItem__updateNaturalLanguageOptions__block_invoke_6(uint64_t a1, void *a2)
+{
+  v2 = a2;
+  v3 = [v2 homeKitObject];
+  v4 = objc_opt_respondsToSelector();
+
+  if (v4)
+  {
+    v5 = MEMORY[0x277CBEB98];
+    v6 = [v2 homeKitObject];
+    v7 = [v6 hf_accessoryLikeObject];
+    v8 = [v5 setWithObject:v7];
+
+LABEL_5:
+    goto LABEL_7;
+  }
+
+  v9 = [v2 homeKitObject];
+  v10 = objc_opt_respondsToSelector();
+
+  if (v10)
+  {
+    v6 = [v2 homeKitObject];
+    v8 = [v6 hf_accessoryLikeObjects];
+    goto LABEL_5;
+  }
+
+  v8 = 0;
+LABEL_7:
+
+  return v8;
+}
+
+@end

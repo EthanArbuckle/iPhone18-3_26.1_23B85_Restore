@@ -1,0 +1,485 @@
+@interface TVRUIShortcutsMenuViewController
+- (BOOL)hasInternalShortcuts;
+- (BOOL)itemIsEnabled:(id)a3;
+- (CGSize)_effectiveContentSize;
+- (id)_layout;
+- (void)_configureHierarchy;
+- (void)_invokePlayerCommandHandlerForItem:(id)a3;
+- (void)_toggleEditing;
+- (void)_updateDataSourceAnimated:(BOOL)a3;
+- (void)_updateEditButtonFromCurrentState;
+- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)viewDidLoad;
+@end
+
+@implementation TVRUIShortcutsMenuViewController
+
+- (void)viewDidLoad
+{
+  v5.receiver = self;
+  v5.super_class = TVRUIShortcutsMenuViewController;
+  [(TVRUIShortcutsMenuViewController *)&v5 viewDidLoad];
+  [(TVRUIShortcutsMenuViewController *)self setIsCompact:1];
+  [(TVRUIShortcutsMenuViewController *)self setIsEditing:0];
+  [(TVRUIShortcutsMenuViewController *)self _updateEditButtonFromCurrentState];
+  v3 = objc_alloc_init(TVRUIShortcutsController);
+  [(TVRUIShortcutsMenuViewController *)self setShortcutsController:v3];
+
+  [(TVRUIShortcutsMenuViewController *)self _configureHierarchy];
+  [(TVRUIShortcutsMenuViewController *)self _updateDataSourceAnimated:0];
+  v4 = [MEMORY[0x277CCAB98] defaultCenter];
+  [v4 addObserver:self selector:sel__shortcutsDidChange_ name:@"TVRUIShortcutsControllerShortcutsDidChangeNotification" object:0];
+}
+
+- (BOOL)hasInternalShortcuts
+{
+  v2 = [(TVRUIShortcutsMenuViewController *)self shortcutsController];
+  v3 = [v2 internalShortcuts];
+  v4 = [v3 count] != 0;
+
+  return v4;
+}
+
+- (BOOL)itemIsEnabled:(id)a3
+{
+  v4 = a3;
+  v5 = [(TVRUIShortcutsMenuViewController *)self shortcutsController];
+  v6 = [v4 identifier];
+
+  LOBYTE(v4) = [v5 itemIsEnabledWithIdentifier:v6];
+  return v4;
+}
+
+- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+{
+  v5 = a4;
+  v6 = [(TVRUIShortcutsMenuViewController *)self dataSource];
+  v7 = [v6 itemIdentifierForIndexPath:v5];
+
+  if ([(TVRUIShortcutsMenuViewController *)self isEditing])
+  {
+    v8 = [(TVRUIShortcutsMenuViewController *)self shortcutsController];
+    v9 = [v7 identifier];
+    [v8 toggleItemEnablementWithIdentifier:v9];
+  }
+
+  else
+  {
+    v10[0] = MEMORY[0x277D85DD0];
+    v10[1] = 3221225472;
+    v10[2] = __76__TVRUIShortcutsMenuViewController_collectionView_didSelectItemAtIndexPath___block_invoke;
+    v10[3] = &unk_279D88230;
+    v10[4] = self;
+    v11 = v7;
+    [(TVRUIShortcutsMenuViewController *)self dismissViewControllerAnimated:1 completion:v10];
+  }
+}
+
+- (void)_invokePlayerCommandHandlerForItem:(id)a3
+{
+  v7 = a3;
+  v4 = [(TVRUIShortcutsMenuViewController *)self playerCommandHandler];
+
+  if (v4)
+  {
+    v5 = [(TVRUIShortcutsMenuViewController *)self playerCommandHandler];
+    v6 = [v7 playerCommand];
+    v5[2](v5, v6, MEMORY[0x277CBEC10]);
+  }
+}
+
+- (CGSize)_effectiveContentSize
+{
+  v3 = [(TVRUIShortcutsMenuViewController *)self isCompact];
+  v4 = [(TVRUIShortcutsMenuViewController *)self isEditing];
+  v5 = [(TVRUIShortcutsMenuViewController *)self shortcutsController];
+  v6 = v5;
+  if (v4)
+  {
+    [v5 allShortcuts];
+  }
+
+  else
+  {
+    [v5 availableShortcuts];
+  }
+  v7 = ;
+  v8 = [v7 count];
+
+  if (v3)
+  {
+    if (v8 == 3 * (v8 / 3))
+    {
+      v8 /= 3uLL;
+    }
+
+    else
+    {
+      v8 = v8 / 3 + 1;
+    }
+
+    v9 = 30.0;
+    v10 = 80.0;
+  }
+
+  else
+  {
+    v9 = 66.0;
+    v10 = 44.0;
+  }
+
+  v11 = v9 + v8 * v10;
+  v12 = 240.0;
+  result.height = v11;
+  result.width = v12;
+  return result;
+}
+
+- (void)_updateEditButtonFromCurrentState
+{
+  v3 = [(TVRUIShortcutsMenuViewController *)self isEditing];
+  v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+  v5 = v4;
+  if (v3)
+  {
+    v6 = @"TVRUIDone";
+  }
+
+  else
+  {
+    v6 = @"TVRUIEdit";
+  }
+
+  v10 = [v4 localizedStringForKey:v6 value:&stru_287E6AEF8 table:@"Localizable"];
+
+  v7 = [(TVRUIShortcutsMenuViewController *)self editButton];
+  v8 = [v7 configuration];
+
+  [v8 setTitle:v10];
+  v9 = [(TVRUIShortcutsMenuViewController *)self editButton];
+  [v9 setConfiguration:v8];
+}
+
+- (void)_toggleEditing
+{
+  [(TVRUIShortcutsMenuViewController *)self setIsEditing:[(TVRUIShortcutsMenuViewController *)self isEditing]^ 1];
+  [(TVRUIShortcutsMenuViewController *)self setIsCompact:[(TVRUIShortcutsMenuViewController *)self isEditing]^ 1];
+  [(TVRUIShortcutsMenuViewController *)self _updateEditButtonFromCurrentState];
+  [(TVRUIShortcutsMenuViewController *)self _updateDataSourceAnimated:1];
+  [(TVRUIShortcutsMenuViewController *)self _effectiveContentSize];
+  v4 = v3;
+  v6 = v5;
+  v8 = [(TVRUIShortcutsMenuViewController *)self popoverPresentationController];
+  v7 = [v8 presentedViewController];
+  [v7 setPreferredContentSize:{v4, v6}];
+}
+
+- (void)_configureHierarchy
+{
+  v90 = *MEMORY[0x277D85DE8];
+  objc_initWeak(&location, self);
+  v72 = [(TVRUIShortcutsMenuViewController *)self view];
+  v2 = objc_alloc(MEMORY[0x277D752A0]);
+  v3 = [(TVRUIShortcutsMenuViewController *)self _layout];
+  v73 = [v2 initWithFrame:v3 collectionViewLayout:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
+
+  [v73 setTranslatesAutoresizingMaskIntoConstraints:0];
+  v4 = [MEMORY[0x277D75348] clearColor];
+  [v73 setBackgroundColor:v4];
+
+  [v73 setDelegate:self];
+  [v72 addSubview:v73];
+  v70 = objc_alloc_init(MEMORY[0x277D756B8]);
+  v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+  v6 = [v5 localizedStringForKey:@"TVRUIShortcuts" value:&stru_287E6AEF8 table:@"Localizable"];
+  [v70 setText:v6];
+
+  v7 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
+  [v70 setFont:v7];
+
+  v8 = [MEMORY[0x277D75348] whiteColor];
+  [v70 setTextColor:v8];
+
+  v9 = [MEMORY[0x277D75230] borderlessButtonConfiguration];
+  v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+  v11 = [v10 localizedStringForKey:@"TVRUIEdit" value:&stru_287E6AEF8 table:@"Localizable"];
+  [v9 setTitle:v11];
+
+  [v9 setButtonSize:0];
+  v12 = MEMORY[0x277D750C8];
+  v84[0] = MEMORY[0x277D85DD0];
+  v84[1] = 3221225472;
+  v84[2] = __55__TVRUIShortcutsMenuViewController__configureHierarchy__block_invoke;
+  v84[3] = &unk_279D87C68;
+  objc_copyWeak(&v85, &location);
+  v13 = [v12 actionWithHandler:v84];
+  v69 = [MEMORY[0x277D75220] buttonWithConfiguration:v9 primaryAction:v13];
+  v14 = [MEMORY[0x277D75348] whiteColor];
+  [v69 setTintColor:v14];
+
+  objc_destroyWeak(&v85);
+  v15 = objc_alloc_init(MEMORY[0x277D75D18]);
+  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [v72 addSubview:v15];
+  v82 = 0u;
+  v83 = 0u;
+  v81 = 0u;
+  v80 = 0u;
+  v88[0] = v69;
+  v88[1] = v70;
+  v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v88 count:2];
+  v17 = [v16 countByEnumeratingWithState:&v80 objects:v89 count:16];
+  if (v17)
+  {
+    v18 = *v81;
+    do
+    {
+      for (i = 0; i != v17; ++i)
+      {
+        if (*v81 != v18)
+        {
+          objc_enumerationMutation(v16);
+        }
+
+        v20 = *(*(&v80 + 1) + 8 * i);
+        [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
+        [v15 addSubview:v20];
+      }
+
+      v17 = [v16 countByEnumeratingWithState:&v80 objects:v89 count:16];
+    }
+
+    while (v17);
+  }
+
+  v40 = MEMORY[0x277CCAAD0];
+  v68 = [v15 topAnchor];
+  v67 = [v72 topAnchor];
+  v66 = [v68 constraintEqualToAnchor:v67 constant:20.0];
+  v87[0] = v66;
+  v65 = [v15 leadingAnchor];
+  v64 = [v72 leadingAnchor];
+  v63 = [v65 constraintEqualToAnchor:v64 constant:20.0];
+  v87[1] = v63;
+  v62 = [v15 trailingAnchor];
+  v61 = [v72 trailingAnchor];
+  v60 = [v62 constraintEqualToAnchor:v61 constant:-10.0];
+  v87[2] = v60;
+  v59 = [v70 topAnchor];
+  v58 = [v15 topAnchor];
+  v57 = [v59 constraintEqualToAnchor:v58];
+  v87[3] = v57;
+  v56 = [v70 bottomAnchor];
+  v55 = [v15 bottomAnchor];
+  v54 = [v56 constraintEqualToAnchor:v55];
+  v87[4] = v54;
+  v53 = [v70 leadingAnchor];
+  v52 = [v15 leadingAnchor];
+  v51 = [v53 constraintEqualToAnchor:v52];
+  v87[5] = v51;
+  v50 = [v69 centerYAnchor];
+  v49 = [v15 centerYAnchor];
+  v48 = [v50 constraintEqualToAnchor:v49];
+  v87[6] = v48;
+  v47 = [v69 trailingAnchor];
+  v46 = [v15 trailingAnchor];
+  v45 = [v47 constraintEqualToAnchor:v46];
+  v87[7] = v45;
+  v44 = [v73 topAnchor];
+  v43 = [v15 bottomAnchor];
+  v42 = [v44 constraintEqualToAnchor:v43 constant:20.0];
+  v87[8] = v42;
+  v41 = [v73 leadingAnchor];
+  v21 = [v72 leadingAnchor];
+  v22 = [v41 constraintEqualToAnchor:v21];
+  v87[9] = v22;
+  v23 = [v73 trailingAnchor];
+  v24 = [v72 trailingAnchor];
+  v25 = [v23 constraintEqualToAnchor:v24];
+  v87[10] = v25;
+  v26 = [v73 bottomAnchor];
+  v27 = [v72 bottomAnchor];
+  v28 = [v26 constraintEqualToAnchor:v27];
+  v87[11] = v28;
+  v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v87 count:12];
+  [v40 activateConstraints:v29];
+
+  v30 = MEMORY[0x277D752B0];
+  v31 = objc_opt_class();
+  v78[0] = MEMORY[0x277D85DD0];
+  v78[1] = 3221225472;
+  v78[2] = __55__TVRUIShortcutsMenuViewController__configureHierarchy__block_invoke_2;
+  v78[3] = &unk_279D88F68;
+  objc_copyWeak(&v79, &location);
+  v32 = [v30 registrationWithCellClass:v31 configurationHandler:v78];
+  v33 = [MEMORY[0x277D75320] registrationWithSupplementaryClass:objc_opt_class() elementKind:@"internalHeaderElementKind" configurationHandler:&__block_literal_global_21];
+  v34 = objc_alloc(MEMORY[0x277D752D0]);
+  v76[0] = MEMORY[0x277D85DD0];
+  v76[1] = 3221225472;
+  v76[2] = __55__TVRUIShortcutsMenuViewController__configureHierarchy__block_invoke_4;
+  v76[3] = &unk_279D88FB0;
+  v35 = v32;
+  v77 = v35;
+  v36 = [v34 initWithCollectionView:v73 cellProvider:v76];
+  v37 = objc_opt_class();
+  v38 = +[_TVRUIShortcutInternalHeaderView reuseIdentifier];
+  [v73 registerClass:v37 forSupplementaryViewOfKind:@"internalHeaderElementKind" withReuseIdentifier:v38];
+
+  v74[0] = MEMORY[0x277D85DD0];
+  v74[1] = 3221225472;
+  v74[2] = __55__TVRUIShortcutsMenuViewController__configureHierarchy__block_invoke_5;
+  v74[3] = &unk_279D88FD8;
+  v39 = v33;
+  v75 = v39;
+  [v36 setSupplementaryViewProvider:v74];
+  [(TVRUIShortcutsMenuViewController *)self setCollectionView:v73];
+  [(TVRUIShortcutsMenuViewController *)self setDataSource:v36];
+  [(TVRUIShortcutsMenuViewController *)self setEditButton:v69];
+
+  objc_destroyWeak(&v79);
+  objc_destroyWeak(&location);
+}
+
+void __55__TVRUIShortcutsMenuViewController__configureHierarchy__block_invoke(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  [WeakRetained _toggleEditing];
+}
+
+void __55__TVRUIShortcutsMenuViewController__configureHierarchy__block_invoke_2(uint64_t a1, void *a2, uint64_t a3, void *a4)
+{
+  v6 = a4;
+  v8 = a2;
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  [v8 setDelegate:WeakRetained];
+
+  [v8 setItem:v6];
+}
+
+- (void)_updateDataSourceAnimated:(BOOL)a3
+{
+  v3 = a3;
+  v5 = [(TVRUIShortcutsMenuViewController *)self isEditing];
+  v13 = objc_alloc_init(MEMORY[0x277CFB890]);
+  [v13 appendSectionsWithIdentifiers:&unk_287E84C90];
+  v6 = [(TVRUIShortcutsMenuViewController *)self shortcutsController];
+  v7 = [v6 availableShortcuts];
+  [v13 appendItemsWithIdentifiers:v7];
+
+  if (v5)
+  {
+    [v13 appendSectionsWithIdentifiers:&unk_287E84CA8];
+    v8 = [(TVRUIShortcutsMenuViewController *)self shortcutsController];
+    v9 = [v8 disabledShortcuts];
+    [v13 appendItemsWithIdentifiers:v9];
+
+    if ([(TVRUIShortcutsMenuViewController *)self hasInternalShortcuts]&& v5)
+    {
+      [v13 appendSectionsWithIdentifiers:&unk_287E84CC0];
+      v10 = [(TVRUIShortcutsMenuViewController *)self shortcutsController];
+      v11 = [v10 internalShortcuts];
+      [v13 appendItemsWithIdentifiers:v11];
+    }
+  }
+
+  else
+  {
+    [(TVRUIShortcutsMenuViewController *)self hasInternalShortcuts];
+  }
+
+  v12 = [(TVRUIShortcutsMenuViewController *)self dataSource];
+  [v12 applySnapshot:v13 animatingDifferences:v3];
+}
+
+- (id)_layout
+{
+  objc_initWeak(&location, self);
+  v2 = objc_alloc(MEMORY[0x277D752B8]);
+  v5[0] = MEMORY[0x277D85DD0];
+  v5[1] = 3221225472;
+  v5[2] = __43__TVRUIShortcutsMenuViewController__layout__block_invoke;
+  v5[3] = &unk_279D88388;
+  objc_copyWeak(&v6, &location);
+  v3 = [v2 initWithSectionProvider:v5];
+  objc_destroyWeak(&v6);
+  objc_destroyWeak(&location);
+
+  return v3;
+}
+
+id __43__TVRUIShortcutsMenuViewController__layout__block_invoke(uint64_t a1, uint64_t a2)
+{
+  v39[1] = *MEMORY[0x277D85DE8];
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  v4 = WeakRetained;
+  if (WeakRetained)
+  {
+    v5 = [WeakRetained isCompact];
+    v6 = MEMORY[0x277CFB870];
+    if (v5)
+    {
+      v7 = [MEMORY[0x277CFB840] fractionalWidthDimension:0.333333333];
+      v8 = [MEMORY[0x277CFB840] fractionalHeightDimension:1.0];
+      v9 = [v6 sizeWithWidthDimension:v7 heightDimension:v8];
+
+      v10 = [MEMORY[0x277CFB860] itemWithLayoutSize:v9];
+      [v10 setContentInsets:{5.0, 5.0, 5.0, 5.0}];
+      v11 = MEMORY[0x277CFB870];
+      v12 = [MEMORY[0x277CFB840] fractionalWidthDimension:1.0];
+      v13 = [MEMORY[0x277CFB840] fractionalWidthDimension:0.3];
+      v14 = [v11 sizeWithWidthDimension:v12 heightDimension:v13];
+
+      v15 = [MEMORY[0x277CFB850] horizontalGroupWithLayoutSize:v14 repeatingSubitem:v10 count:3];
+      v16 = [MEMORY[0x277CFB868] sectionWithGroup:v15];
+      [v16 setContentInsets:{0.0, 10.0, 0.0, 10.0}];
+    }
+
+    else
+    {
+      v17 = [MEMORY[0x277CFB840] fractionalWidthDimension:1.0];
+      v18 = [MEMORY[0x277CFB840] fractionalHeightDimension:1.0];
+      v9 = [v6 sizeWithWidthDimension:v17 heightDimension:v18];
+
+      v10 = [MEMORY[0x277CFB860] itemWithLayoutSize:v9];
+      v19 = MEMORY[0x277CFB870];
+      v20 = [MEMORY[0x277CFB840] fractionalWidthDimension:1.0];
+      v21 = [MEMORY[0x277CFB840] absoluteDimension:44.0];
+      v22 = [v19 sizeWithWidthDimension:v20 heightDimension:v21];
+
+      v23 = MEMORY[0x277CFB850];
+      v39[0] = v10;
+      v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:1];
+      v25 = [v23 horizontalGroupWithLayoutSize:v22 subitems:v24];
+
+      v16 = [MEMORY[0x277CFB868] sectionWithGroup:v25];
+      v26 = [v4 dataSource];
+      v27 = [v26 snapshot];
+
+      v28 = [v27 sectionIdentifiers];
+      v29 = [v28 objectAtIndexedSubscript:a2];
+      v30 = [v29 isEqualToString:@"internalSection"];
+
+      if (v30)
+      {
+        v31 = MEMORY[0x277CFB870];
+        v32 = [MEMORY[0x277CFB840] fractionalWidthDimension:1.0];
+        v33 = [MEMORY[0x277CFB840] estimatedDimension:44.0];
+        v34 = [v31 sizeWithWidthDimension:v32 heightDimension:v33];
+
+        v35 = [MEMORY[0x277CFB830] boundarySupplementaryItemWithLayoutSize:v34 elementKind:@"internalHeaderElementKind" alignment:1];
+        v38 = v35;
+        v36 = [MEMORY[0x277CBEA60] arrayWithObjects:&v38 count:1];
+        [v16 setBoundarySupplementaryItems:v36];
+      }
+    }
+  }
+
+  else
+  {
+    v16 = 0;
+  }
+
+  return v16;
+}
+
+@end

@@ -1,0 +1,57 @@
+@interface BDSSecureEngagementDataHelper
++ (BOOL)isEngagementTimeSliceDataEmpty:(id)a3;
++ (id)mergedTimeSliceDataLocal:(id)a3 remote:(id)a4;
+- (BDSSecureEngagementDataHelper)init;
+@end
+
+@implementation BDSSecureEngagementDataHelper
+
++ (id)mergedTimeSliceDataLocal:(id)a3 remote:(id)a4
+{
+  v5 = a3;
+  v6 = a4;
+  v7 = sub_1E4709BDC();
+  v9 = v8;
+
+  v10 = sub_1E4709BDC();
+  v12 = v11;
+
+  swift_getObjCClassMetadata();
+  v13 = static SecureEngagementDataHelper.mergedTimeSliceData(local:remote:)(v7, v9, v10, v12);
+  v15 = v14;
+  sub_1E465746C(v10, v12);
+  sub_1E465746C(v7, v9);
+  if (v15 >> 60 == 15)
+  {
+    v16 = 0;
+  }
+
+  else
+  {
+    v17 = sub_1E4709BCC();
+    sub_1E465DDA0(v13, v15);
+    v16 = v17;
+  }
+
+  return v16;
+}
+
++ (BOOL)isEngagementTimeSliceDataEmpty:(id)a3
+{
+  v3 = a3;
+  v4 = sub_1E4709BDC();
+  v6 = v5;
+
+  LOBYTE(v3) = _s13BookDataStore016SecureEngagementB6HelperC7isEmpty9timeSliceSb10Foundation0B0V_tFZ_0(v4, v6);
+  sub_1E465746C(v4, v6);
+  return v3 & 1;
+}
+
+- (BDSSecureEngagementDataHelper)init
+{
+  v3.receiver = self;
+  v3.super_class = type metadata accessor for SecureEngagementDataHelper();
+  return [(BDSSecureEngagementDataHelper *)&v3 init];
+}
+
+@end

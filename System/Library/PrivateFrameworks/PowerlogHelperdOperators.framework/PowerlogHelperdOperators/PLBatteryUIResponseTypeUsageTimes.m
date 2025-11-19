@@ -1,0 +1,113 @@
+@interface PLBatteryUIResponseTypeUsageTimes
+- (id)entriesInRange:(_PLTimeIntervalRange)a3 fromEntries:(id)a4;
+- (id)result;
+- (void)configure:(id)a3;
+- (void)run;
+@end
+
+@implementation PLBatteryUIResponseTypeUsageTimes
+
+- (void)configure:(id)a3
+{
+  v4 = a3;
+  v5 = [v4 objectForKeyedSubscript:@"start"];
+  [v5 doubleValue];
+  v7 = v6;
+
+  v8 = [v4 objectForKeyedSubscript:@"end"];
+  [v8 doubleValue];
+  v10 = v9;
+
+  v11 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v7];
+  [(PLBatteryUIResponseTypeUsageTimes *)self setStart:v11];
+
+  v12 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v10];
+  [(PLBatteryUIResponseTypeUsageTimes *)self setEnd:v12];
+
+  v13 = [(PLBatteryUIResponseTypeUsageTimes *)self start];
+  v14 = [(PLBatteryUIResponseTypeUsageTimes *)self end];
+  [v13 timeIntervalSince1970];
+  v16 = v15;
+  [v14 timeIntervalSince1970];
+  v18 = v17 - v16;
+
+  v19 = [v4 objectForKeyedSubscript:@"bucket"];
+
+  [v19 doubleValue];
+  [(PLBatteryUIResponseTypeUsageTimes *)self setBucketSize:?];
+
+  v23 = [(PLOperator *)PLDisplayAgent entryKeyForType:*MEMORY[0x277D3F5B8] andName:@"ScreenOn"];
+  v20 = [(PLBatteryUIResponseTypeUsageTimes *)self responderService];
+  v21 = [v20 storage];
+  v22 = [v21 entriesForKey:v23 inTimeRange:0 withFilters:{v16 + -1800.0, v18 + 1800.0}];
+  [(PLBatteryUIResponseTypeUsageTimes *)self setAggregateEntries:v22];
+}
+
+- (void)run
+{
+  *buf = 0;
+  *a2 = 0;
+  _os_log_error_impl(&dword_25EE51000, log, OS_LOG_TYPE_ERROR, "screenOn time is negative. Setting screenOn equal to default empty value", buf, 2u);
+}
+
+- (id)result
+{
+  [(PLBatteryUIResponseTypeUsageTimes *)self setAggregateEntries:0];
+
+  return [(PLBatteryUIResponseTypeUsageTimes *)self resultDictionary];
+}
+
+- (id)entriesInRange:(_PLTimeIntervalRange)a3 fromEntries:(id)a4
+{
+  length = a3.length;
+  location = a3.location;
+  v27 = *MEMORY[0x277D85DE8];
+  v6 = a4;
+  v7 = objc_opt_new();
+  v22 = 0u;
+  v23 = 0u;
+  v24 = 0u;
+  v25 = 0u;
+  v8 = v6;
+  v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  if (v9)
+  {
+    v10 = v9;
+    v11 = *v23;
+    v12 = location + length;
+    do
+    {
+      for (i = 0; i != v10; ++i)
+      {
+        if (*v23 != v11)
+        {
+          objc_enumerationMutation(v8);
+        }
+
+        v14 = *(*(&v22 + 1) + 8 * i);
+        v15 = [v14 entryDate];
+        if (v15)
+        {
+          v16 = v15;
+          [v15 timeIntervalSince1970];
+          v18 = v17;
+
+          if (location <= v18 && v18 < v12)
+          {
+            [v7 addObject:v14];
+          }
+        }
+      }
+
+      v10 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    }
+
+    while (v10);
+  }
+
+  v20 = *MEMORY[0x277D85DE8];
+
+  return v7;
+}
+
+@end

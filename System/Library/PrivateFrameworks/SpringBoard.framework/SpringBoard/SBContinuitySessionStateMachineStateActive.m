@@ -1,0 +1,21 @@
+@interface SBContinuitySessionStateMachineStateActive
+@end
+
+@implementation SBContinuitySessionStateMachineStateActive
+
+void __73___SBContinuitySessionStateMachineStateActive_appendDescriptionToStream___block_invoke(uint64_t a1)
+{
+  v2 = *(a1 + 32);
+  v3 = *(a1 + 40);
+  v6[0] = MEMORY[0x277D85DD0];
+  v6[1] = 3221225472;
+  v6[2] = __73___SBContinuitySessionStateMachineStateActive_appendDescriptionToStream___block_invoke_2;
+  v6[3] = &unk_2783A92D8;
+  v4 = v2;
+  v5 = *(a1 + 40);
+  v7 = v4;
+  v8 = v5;
+  [v4 appendProem:v3 block:v6];
+}
+
+@end

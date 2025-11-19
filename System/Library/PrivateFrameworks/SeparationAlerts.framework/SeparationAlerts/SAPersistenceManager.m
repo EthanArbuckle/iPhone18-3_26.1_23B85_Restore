@@ -1,0 +1,410 @@
+@interface SAPersistenceManager
+- (BOOL)_createDirectoryIfNotPresent;
+- (BOOL)load;
+- (BOOL)reset;
+- (BOOL)save;
+- (SAPersistenceManager)initWithSettings:(id)a3;
+- (void)_notifyObserversOnReadFromURL:(id)a3 bytes:(unint64_t)a4;
+- (void)_notifyObserversOnWriteToURL:(id)a3 bytes:(unint64_t)a4;
+- (void)onUpdatedMonitoringSessionRecord:(id)a3;
+@end
+
+@implementation SAPersistenceManager
+
+- (SAPersistenceManager)initWithSettings:(id)a3
+{
+  v5 = a3;
+  v14.receiver = self;
+  v14.super_class = SAPersistenceManager;
+  v6 = [(SAPersistenceManager *)&v14 init];
+  v7 = v6;
+  if (v6)
+  {
+    objc_storeStrong(&v6->_settings, a3);
+    if (![(SAPersistenceManager *)v7 _createDirectoryIfNotPresent])
+    {
+      v12 = 0;
+      goto LABEL_6;
+    }
+
+    v8 = objc_alloc_init(SAPersistenceStore);
+    store = v7->_store;
+    v7->_store = v8;
+
+    v10 = [MEMORY[0x277CCAA50] hashTableWithOptions:517];
+    observers = v7->_observers;
+    v7->_observers = v10;
+  }
+
+  v12 = v7;
+LABEL_6:
+
+  return v12;
+}
+
+- (BOOL)_createDirectoryIfNotPresent
+{
+  v19 = *MEMORY[0x277D85DE8];
+  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  v4 = [(SAPersistenceManagerSettings *)self->_settings persistenceDirectoryURL];
+  v12 = 0;
+  [v3 createDirectoryAtURL:v4 withIntermediateDirectories:1 attributes:0 error:&v12];
+  v5 = v12;
+
+  if (v5)
+  {
+    v6 = TASALog;
+    if (os_log_type_enabled(TASALog, OS_LOG_TYPE_ERROR))
+    {
+      v7 = v6;
+      v8 = [v5 description];
+      v9 = [v8 UTF8String];
+      *buf = 68289283;
+      v14 = 0;
+      v15 = 2082;
+      v16 = "";
+      v17 = 2081;
+      v18 = v9;
+      _os_log_impl(&dword_2656EA000, v7, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#SAPersistenceManager encountered error in creating directory, error:%{private}s}", buf, 0x1Cu);
+    }
+  }
+
+  v10 = *MEMORY[0x277D85DE8];
+  return v5 == 0;
+}
+
+- (void)_notifyObserversOnWriteToURL:(id)a3 bytes:(unint64_t)a4
+{
+  v19 = *MEMORY[0x277D85DE8];
+  v6 = a3;
+  v14 = 0u;
+  v15 = 0u;
+  v16 = 0u;
+  v17 = 0u;
+  v7 = self->_observers;
+  v8 = [(NSHashTable *)v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  if (v8)
+  {
+    v9 = v8;
+    v10 = *v15;
+    do
+    {
+      v11 = 0;
+      do
+      {
+        if (*v15 != v10)
+        {
+          objc_enumerationMutation(v7);
+        }
+
+        v12 = *(*(&v14 + 1) + 8 * v11);
+        if (objc_opt_respondsToSelector())
+        {
+          [v12 didWriteToURL:v6 bytes:{a4, v14}];
+        }
+
+        ++v11;
+      }
+
+      while (v9 != v11);
+      v9 = [(NSHashTable *)v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    }
+
+    while (v9);
+  }
+
+  v13 = *MEMORY[0x277D85DE8];
+}
+
+- (void)_notifyObserversOnReadFromURL:(id)a3 bytes:(unint64_t)a4
+{
+  v19 = *MEMORY[0x277D85DE8];
+  v6 = a3;
+  v14 = 0u;
+  v15 = 0u;
+  v16 = 0u;
+  v17 = 0u;
+  v7 = self->_observers;
+  v8 = [(NSHashTable *)v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  if (v8)
+  {
+    v9 = v8;
+    v10 = *v15;
+    do
+    {
+      v11 = 0;
+      do
+      {
+        if (*v15 != v10)
+        {
+          objc_enumerationMutation(v7);
+        }
+
+        v12 = *(*(&v14 + 1) + 8 * v11);
+        if (objc_opt_respondsToSelector())
+        {
+          [v12 didReadFromURL:v6 bytes:{a4, v14}];
+        }
+
+        ++v11;
+      }
+
+      while (v9 != v11);
+      v9 = [(NSHashTable *)v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    }
+
+    while (v9);
+  }
+
+  v13 = *MEMORY[0x277D85DE8];
+}
+
+- (BOOL)load
+{
+  v37 = *MEMORY[0x277D85DE8];
+  v3 = [(SAPersistenceManagerSettings *)self->_settings _getStoreURL];
+  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [v3 path];
+  v6 = [v4 fileExistsAtPath:v5];
+
+  if (v6)
+  {
+    v28 = 0;
+    v7 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v3 options:2 error:&v28];
+    v8 = v28;
+    if (v8)
+    {
+      v9 = TASALog;
+      if (os_log_type_enabled(TASALog, OS_LOG_TYPE_ERROR))
+      {
+        v10 = v9;
+        v11 = [v3 absoluteString];
+        v12 = [v11 UTF8String];
+        v13 = [v8 description];
+        v14 = [v13 UTF8String];
+        *buf = 68289539;
+        v30 = 0;
+        v31 = 2082;
+        v32 = "";
+        v33 = 2081;
+        v34 = v12;
+        v35 = 2081;
+        v36 = v14;
+        _os_log_impl(&dword_2656EA000, v10, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#SAPersistenceManager encountered error in loading file, url:%{private}s, error:%{private}s}", buf, 0x26u);
+      }
+
+      v15 = 0;
+    }
+
+    else
+    {
+      v27 = 0;
+      v17 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v7 error:&v27];
+      v18 = v27;
+      v15 = v18 == 0;
+      if (v18)
+      {
+        v19 = TASALog;
+        if (os_log_type_enabled(TASALog, OS_LOG_TYPE_ERROR))
+        {
+          log = v19;
+          v20 = [v3 absoluteString];
+          v21 = [v20 UTF8String];
+          v22 = [v18 description];
+          v23 = [v22 UTF8String];
+          *buf = 68289539;
+          v30 = 0;
+          v31 = 2082;
+          v32 = "";
+          v33 = 2081;
+          v34 = v21;
+          v35 = 2081;
+          v36 = v23;
+          _os_log_impl(&dword_2656EA000, log, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#SAPersistenceManager encountered error in unarchiving store, url:%{private}s, error:%{private}s}", buf, 0x26u);
+        }
+      }
+
+      else
+      {
+        objc_storeStrong(&self->_store, v17);
+        -[SAPersistenceManager _notifyObserversOnReadFromURL:bytes:](self, "_notifyObserversOnReadFromURL:bytes:", v3, [v7 length]);
+      }
+    }
+  }
+
+  else
+  {
+    v16 = TASALog;
+    if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEBUG))
+    {
+      *buf = 68289026;
+      v30 = 0;
+      v31 = 2082;
+      v32 = "";
+      _os_log_impl(&dword_2656EA000, v16, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#SAPersistenceManager file does not exist}", buf, 0x12u);
+    }
+
+    v15 = 0;
+  }
+
+  v24 = *MEMORY[0x277D85DE8];
+  return v15;
+}
+
+- (BOOL)save
+{
+  v33 = *MEMORY[0x277D85DE8];
+  if (self->_store)
+  {
+    v3 = [(SAPersistenceManagerSettings *)self->_settings _getStoreURL];
+    v4 = objc_autoreleasePoolPush();
+    store = self->_store;
+    v26 = 0;
+    v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:store requiringSecureCoding:1 error:&v26];
+    v7 = v26;
+    v8 = TASALog;
+    if (v7)
+    {
+      if (!os_log_type_enabled(TASALog, OS_LOG_TYPE_ERROR))
+      {
+LABEL_14:
+
+        objc_autoreleasePoolPop(v4);
+        v13 = 0;
+LABEL_15:
+
+        goto LABEL_16;
+      }
+
+      v9 = v8;
+      v10 = [v7 description];
+      v11 = [v10 UTF8String];
+      *buf = 68289283;
+      v28 = 0;
+      v29 = 2082;
+      v30 = "";
+      v31 = 2081;
+      v32 = v11;
+      _os_log_impl(&dword_2656EA000, v9, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#SAPersistenceManager error archiving store, error:%{private}s}", buf, 0x1Cu);
+    }
+
+    else
+    {
+      if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEBUG))
+      {
+        v14 = v8;
+        v15 = [v3 path];
+        v16 = [v15 UTF8String];
+        *buf = 68289283;
+        v28 = 0;
+        v29 = 2082;
+        v30 = "";
+        v31 = 2081;
+        v32 = v16;
+        _os_log_impl(&dword_2656EA000, v14, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#SAPersistenceManager saving to location, path:%{private}s}", buf, 0x1Cu);
+      }
+
+      v25 = 0;
+      [v6 writeToURL:v3 options:1073741825 error:&v25];
+      v17 = v25;
+      if (!v17)
+      {
+        v24 = [v6 length];
+
+        objc_autoreleasePoolPop(v4);
+        [(SAPersistenceManager *)self _notifyObserversOnWriteToURL:v3 bytes:v24];
+        v13 = 1;
+        goto LABEL_15;
+      }
+
+      v10 = v17;
+      v18 = TASALog;
+      if (os_log_type_enabled(TASALog, OS_LOG_TYPE_ERROR))
+      {
+        v19 = v18;
+        v20 = [v10 description];
+        v21 = [v20 UTF8String];
+        *buf = 68289283;
+        v28 = 0;
+        v29 = 2082;
+        v30 = "";
+        v31 = 2081;
+        v32 = v21;
+        _os_log_impl(&dword_2656EA000, v19, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#SAPersistenceManager error archiving store, error:%{private}s}", buf, 0x1Cu);
+      }
+    }
+
+    goto LABEL_14;
+  }
+
+  v12 = TASALog;
+  if (os_log_type_enabled(TASALog, OS_LOG_TYPE_ERROR))
+  {
+    *buf = 68289026;
+    v28 = 0;
+    v29 = 2082;
+    v30 = "";
+    _os_log_impl(&dword_2656EA000, v12, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#SAPersistenceManager no store to save}", buf, 0x12u);
+  }
+
+  v13 = 0;
+LABEL_16:
+  v22 = *MEMORY[0x277D85DE8];
+  return v13;
+}
+
+- (BOOL)reset
+{
+  v22 = *MEMORY[0x277D85DE8];
+  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  v4 = [(SAPersistenceManagerSettings *)self->_settings persistenceDirectoryURL];
+  v15 = 0;
+  [v3 removeItemAtURL:v4 error:&v15];
+  v5 = v15;
+
+  if (v5)
+  {
+    v6 = TASALog;
+    if (os_log_type_enabled(TASALog, OS_LOG_TYPE_ERROR))
+    {
+      v7 = v6;
+      v8 = [v5 description];
+      v9 = [v8 UTF8String];
+      *buf = 68289283;
+      v17 = 0;
+      v18 = 2082;
+      v19 = "";
+      v20 = 2081;
+      v21 = v9;
+      _os_log_impl(&dword_2656EA000, v7, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#SAPersistenceManager error reseting directory, error:%{private}s}", buf, 0x1Cu);
+    }
+
+    goto LABEL_6;
+  }
+
+  if (![(SAPersistenceManager *)self _createDirectoryIfNotPresent])
+  {
+LABEL_6:
+    v12 = 0;
+    goto LABEL_7;
+  }
+
+  v10 = objc_alloc_init(SAPersistenceStore);
+  store = self->_store;
+  self->_store = v10;
+
+  v12 = 1;
+LABEL_7:
+
+  v13 = *MEMORY[0x277D85DE8];
+  return v12;
+}
+
+- (void)onUpdatedMonitoringSessionRecord:(id)a3
+{
+  [(SAPersistenceStore *)self->_store setMonitoringSessionRecord:a3];
+
+  [(SAPersistenceManager *)self save];
+}
+
+@end

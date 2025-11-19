@@ -1,0 +1,24 @@
+@interface EQKitMathMLMUnder
+- (const)mathMLAttributes;
+- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+@end
+
+@implementation EQKitMathMLMUnder
+
+- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+{
+  v5.receiver = self;
+  v5.super_class = EQKitMathMLMUnder;
+  return [(EQKitMathMLBinaryNode *)&v5 initFromXMLNode:a3 parser:a4];
+}
+
+- (const)mathMLAttributes
+{
+  {
+    std::set<EQKitTypes::Attributes::Enum>::set[abi:nn200100]<EQKitTypes::Attributes::Enum const*>(-[EQKitMathMLMUnder mathMLAttributes]::sAttributesSet, &-[EQKitMathMLMUnder mathMLAttributes]::sAttributesData, -[EQKitMathMLMUnderover mathMLAttributes]::sAttributesData);
+  }
+
+  return [EQKitMathMLMUnder mathMLAttributes]::sAttributesSet;
+}
+
+@end

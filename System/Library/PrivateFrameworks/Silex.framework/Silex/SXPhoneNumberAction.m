@@ -1,0 +1,22 @@
+@interface SXPhoneNumberAction
+- (SXPhoneNumberAction)initWithPhoneNumber:(id)a3;
+@end
+
+@implementation SXPhoneNumberAction
+
+- (SXPhoneNumberAction)initWithPhoneNumber:(id)a3
+{
+  v5 = a3;
+  v9.receiver = self;
+  v9.super_class = SXPhoneNumberAction;
+  v6 = [(SXPhoneNumberAction *)&v9 init];
+  v7 = v6;
+  if (v6)
+  {
+    objc_storeStrong(&v6->_phoneNumber, a3);
+  }
+
+  return v7;
+}
+
+@end

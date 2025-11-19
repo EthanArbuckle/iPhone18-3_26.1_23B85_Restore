@@ -1,0 +1,26 @@
+@interface ICMusicLibraryRecommendationResult
+- (ICMusicLibraryRecommendationResult)initWithAdamID:(id)a3 date:(id)a4 score:(id)a5;
+@end
+
+@implementation ICMusicLibraryRecommendationResult
+
+- (ICMusicLibraryRecommendationResult)initWithAdamID:(id)a3 date:(id)a4 score:(id)a5
+{
+  v9 = a3;
+  v10 = a4;
+  v11 = a5;
+  v15.receiver = self;
+  v15.super_class = ICMusicLibraryRecommendationResult;
+  v12 = [(ICMusicLibraryRecommendationResult *)&v15 init];
+  v13 = v12;
+  if (v12)
+  {
+    objc_storeStrong(&v12->_adamID, a3);
+    objc_storeStrong(&v13->_date, a4);
+    objc_storeStrong(&v13->_score, a5);
+  }
+
+  return v13;
+}
+
+@end

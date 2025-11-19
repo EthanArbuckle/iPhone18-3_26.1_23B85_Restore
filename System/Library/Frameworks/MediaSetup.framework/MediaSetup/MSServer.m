@@ -1,0 +1,412 @@
+@interface MSServer
+- (BOOL)_isConnectionEntitled:(id)a3;
+- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (MSServer)initWithMediator:(id)a3;
+- (void)_addConnection:(id)a3;
+- (void)_initializeServer;
+- (void)_removeConnection:(id)a3;
+- (void)openConnection;
+- (void)serviceSettingDidUpdate:(id)a3 homeUserID:(id)a4;
+- (void)userDidRemoveService:(id)a3 homeUserID:(id)a4;
+- (void)userDidUpdateDefaultService:(id)a3 homeUserID:(id)a4;
+@end
+
+@implementation MSServer
+
+- (MSServer)initWithMediator:(id)a3
+{
+  v14 = *MEMORY[0x277D85DE8];
+  v5 = a3;
+  v11.receiver = self;
+  v11.super_class = MSServer;
+  v6 = [(MSServer *)&v11 init];
+  if (v6)
+  {
+    v7 = _MSLogingFacility();
+    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    {
+      *buf = 136315138;
+      v13 = "[MSServer initWithMediator:]";
+      _os_log_impl(&dword_23986C000, v7, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
+    }
+
+    objc_storeStrong(&v6->_mediator, a3);
+    [(MSServerMediator *)v6->_mediator setConnectionDelegate:v6];
+    v8 = +[MSServiceUpdatedHandler shared];
+    [v8 setDelegate:v6];
+
+    [(MSServer *)v6 _initializeServer];
+  }
+
+  v9 = *MEMORY[0x277D85DE8];
+  return v6;
+}
+
+- (void)_initializeServer
+{
+  v3 = objc_opt_new();
+  connections = self->_connections;
+  self->_connections = v3;
+
+  v5 = [objc_alloc(MEMORY[0x277CCAE98]) initWithMachServiceName:@"com.apple.mediasetupd.server"];
+  serverListener = self->_serverListener;
+  self->_serverListener = v5;
+
+  [(NSXPCListener *)self->_serverListener setDelegate:self];
+  v7 = self->_serverListener;
+
+  [(NSXPCListener *)v7 resume];
+}
+
+- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  v8 = [(MSServer *)self _isConnectionEntitled:v7];
+  v9 = v8;
+  if (v8)
+  {
+    v57 = v8;
+    v58 = v6;
+    [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_284C68FC0];
+    v10 = v59 = self;
+    v11 = MEMORY[0x277CBEB98];
+    v12 = objc_opt_class();
+    v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
+    [v10 setClasses:v13 forSelector:sel_addMediaService_usingSetupBundles_completion_ argumentIndex:1 ofReply:0];
+
+    v14 = MEMORY[0x277CBEB98];
+    v15 = objc_opt_class();
+    v56 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
+    [NSObject setClasses:v10 forSelector:"setClasses:forSelector:argumentIndex:ofReply:" argumentIndex:? ofReply:?];
+    v16 = MEMORY[0x277CBEB98];
+    v17 = objc_opt_class();
+    v18 = objc_opt_class();
+    v19 = objc_opt_class();
+    v55 = [v16 setWithObjects:{v17, v18, v19, objc_opt_class(), 0}];
+    [NSObject setClasses:v10 forSelector:"setClasses:forSelector:argumentIndex:ofReply:" argumentIndex:? ofReply:?];
+    v20 = MEMORY[0x277CBEB98];
+    v21 = objc_opt_class();
+    v22 = objc_opt_class();
+    v23 = objc_opt_class();
+    v24 = objc_opt_class();
+    v25 = [v20 setWithObjects:{v21, v22, v23, v24, objc_opt_class(), 0}];
+    [v10 setClasses:v25 forSelector:sel_getResolvedServiceInfo_sharedUserID_completion_ argumentIndex:0 ofReply:1];
+    v54 = v25;
+    [v10 setClasses:v25 forSelector:sel_getResolvedServiceInfo_completion_ argumentIndex:0 ofReply:1];
+    v26 = MEMORY[0x277CBEB98];
+    v27 = objc_opt_class();
+    v28 = objc_opt_class();
+    v29 = objc_opt_class();
+    v30 = objc_opt_class();
+    v31 = [v26 setWithObjects:{v27, v28, v29, v30, objc_opt_class(), 0}];
+    [v10 setClasses:v31 forSelector:sel_getServiceConfigurationInfo_serviceID_completion_ argumentIndex:0 ofReply:1];
+    v32 = MEMORY[0x277CBEB98];
+    v33 = objc_opt_class();
+    v34 = [v32 setWithObjects:{v33, objc_opt_class(), 0}];
+    [v10 setClasses:v34 forSelector:sel_getServiceConfigurationInfo_serviceID_completion_ argumentIndex:0 ofReply:0];
+
+    [v10 setClasses:v31 forSelector:sel_getDefaultMediaServiceForAllUsers_ argumentIndex:0 ofReply:1];
+    [v10 setClass:objc_opt_class() forSelector:sel_getCachedServiceInfo_homeUserID_endpointID_completion_ argumentIndex:0 ofReply:1];
+    [v10 setClass:objc_opt_class() forSelector:sel_getDefaultMediaService_homeUserID_completion_ argumentIndex:0 ofReply:1];
+    [v10 setClass:objc_opt_class() forSelector:sel_requestAuthRenewalForMediaService_homeUserID_parentNetworkActivity_completion_ argumentIndex:0 ofReply:1];
+    v35 = MEMORY[0x277CBEB98];
+    v36 = objc_opt_class();
+    v37 = objc_opt_class();
+    v38 = [v35 setWithObjects:{v36, v37, objc_opt_class(), 0}];
+    [v10 setClasses:v38 forSelector:sel_getPublicInfoForBundleID_completion_ argumentIndex:0 ofReply:1];
+
+    v39 = MEMORY[0x277CBEB98];
+    v40 = objc_opt_class();
+    v41 = objc_opt_class();
+    v42 = objc_opt_class();
+    v43 = objc_opt_class();
+    v44 = [v39 setWithObjects:{v40, v41, v42, v43, objc_opt_class(), 0}];
+    [v10 setClasses:v44 forSelector:sel_activeServiceApplicationInformationForSharedUserID_completionHandler_ argumentIndex:0 ofReply:1];
+
+    v45 = MEMORY[0x277CBEB98];
+    v46 = objc_opt_class();
+    v47 = [v45 setWithObjects:{v46, objc_opt_class(), 0}];
+    [v10 setClasses:v47 forSelector:sel_getSupportedThirdPartyMediaServices_ argumentIndex:0 ofReply:1];
+
+    v48 = MEMORY[0x277CBEB98];
+    v49 = objc_opt_class();
+    v50 = [v48 setWithObjects:{v49, objc_opt_class(), 0}];
+    [v10 setClasses:v50 forSelector:sel_getMediaServiceChoicesForSharedUser_completion_ argumentIndex:0 ofReply:1];
+
+    [v7 setExportedInterface:v10];
+    [v7 setExportedObject:v59->_mediator];
+    v51 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_284C54538];
+    [v7 setRemoteObjectInterface:v51];
+
+    objc_initWeak(location, v7);
+    objc_initWeak(&from, v59);
+    v64[0] = MEMORY[0x277D85DD0];
+    v64[1] = 3221225472;
+    v64[2] = __47__MSServer_listener_shouldAcceptNewConnection___block_invoke;
+    v64[3] = &unk_278AA2C60;
+    objc_copyWeak(&v65, &from);
+    objc_copyWeak(&v66, location);
+    [v7 setInterruptionHandler:v64];
+    v61[0] = MEMORY[0x277D85DD0];
+    v61[1] = 3221225472;
+    v61[2] = __47__MSServer_listener_shouldAcceptNewConnection___block_invoke_130;
+    v61[3] = &unk_278AA2C60;
+    objc_copyWeak(&v62, &from);
+    objc_copyWeak(&v63, location);
+    [v7 setInvalidationHandler:v61];
+    [v7 resume];
+    v52 = _MSLogingFacility();
+    if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
+    {
+      *buf = 0;
+      _os_log_impl(&dword_23986C000, v52, OS_LOG_TYPE_DEFAULT, "Connection accepted", buf, 2u);
+    }
+
+    objc_destroyWeak(&v63);
+    objc_destroyWeak(&v62);
+    objc_destroyWeak(&v66);
+    objc_destroyWeak(&v65);
+    objc_destroyWeak(&from);
+    objc_destroyWeak(location);
+
+    v6 = v58;
+    v9 = v57;
+  }
+
+  else
+  {
+    v10 = _MSLogingFacility();
+    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    {
+      [MSServer listener:v10 shouldAcceptNewConnection:?];
+    }
+  }
+
+  return v9;
+}
+
+void __47__MSServer_listener_shouldAcceptNewConnection___block_invoke(uint64_t a1)
+{
+  v2 = _MSLogingFacility();
+  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  {
+    *v5 = 0;
+    _os_log_impl(&dword_23986C000, v2, OS_LOG_TYPE_DEFAULT, "MSD Server Connection interrupted", v5, 2u);
+  }
+
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  v4 = objc_loadWeakRetained((a1 + 40));
+  [WeakRetained _removeConnection:v4];
+}
+
+void __47__MSServer_listener_shouldAcceptNewConnection___block_invoke_130(uint64_t a1)
+{
+  v2 = _MSLogingFacility();
+  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  {
+    *v5 = 0;
+    _os_log_impl(&dword_23986C000, v2, OS_LOG_TYPE_DEFAULT, "MSD Server Connection invalidated", v5, 2u);
+  }
+
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  v4 = objc_loadWeakRetained((a1 + 40));
+  [WeakRetained _removeConnection:v4];
+}
+
+- (void)openConnection
+{
+  v8 = *MEMORY[0x277D85DE8];
+  v3 = [MEMORY[0x277CCAE80] currentConnection];
+  v4 = _MSLogingFacility();
+  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  {
+    v6 = 138412290;
+    v7 = v3;
+    _os_log_impl(&dword_23986C000, v4, OS_LOG_TYPE_DEFAULT, "Registering client connection, %@", &v6, 0xCu);
+  }
+
+  [(MSServer *)self _addConnection:v3];
+  v5 = *MEMORY[0x277D85DE8];
+}
+
+- (void)serviceSettingDidUpdate:(id)a3 homeUserID:(id)a4
+{
+  v20 = *MEMORY[0x277D85DE8];
+  v6 = a3;
+  v7 = a4;
+  v8 = [(MSServer *)self connections];
+  objc_sync_enter(v8);
+  v15 = 0u;
+  v16 = 0u;
+  v17 = 0u;
+  v18 = 0u;
+  v9 = [(MSServer *)self connections];
+  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  if (v10)
+  {
+    v11 = *v16;
+    do
+    {
+      v12 = 0;
+      do
+      {
+        if (*v16 != v11)
+        {
+          objc_enumerationMutation(v9);
+        }
+
+        v13 = [*(*(&v15 + 1) + 8 * v12) remoteObjectProxy];
+        [v13 serviceSettingDidUpdate:v6 homeUserID:v7];
+
+        ++v12;
+      }
+
+      while (v10 != v12);
+      v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    }
+
+    while (v10);
+  }
+
+  objc_sync_exit(v8);
+  ICSiriPostDynamiteClientStateChangedNotification();
+
+  v14 = *MEMORY[0x277D85DE8];
+}
+
+- (void)userDidRemoveService:(id)a3 homeUserID:(id)a4
+{
+  v20 = *MEMORY[0x277D85DE8];
+  v6 = a3;
+  v7 = a4;
+  v8 = [(MSServer *)self connections];
+  objc_sync_enter(v8);
+  v15 = 0u;
+  v16 = 0u;
+  v17 = 0u;
+  v18 = 0u;
+  v9 = [(MSServer *)self connections];
+  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  if (v10)
+  {
+    v11 = *v16;
+    do
+    {
+      v12 = 0;
+      do
+      {
+        if (*v16 != v11)
+        {
+          objc_enumerationMutation(v9);
+        }
+
+        v13 = [*(*(&v15 + 1) + 8 * v12) remoteObjectProxy];
+        [v13 userDidRemoveService:v6 homeUserID:v7];
+
+        ++v12;
+      }
+
+      while (v10 != v12);
+      v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    }
+
+    while (v10);
+  }
+
+  objc_sync_exit(v8);
+  ICSiriPostDynamiteClientStateChangedNotification();
+
+  v14 = *MEMORY[0x277D85DE8];
+}
+
+- (void)userDidUpdateDefaultService:(id)a3 homeUserID:(id)a4
+{
+  v20 = *MEMORY[0x277D85DE8];
+  v6 = a3;
+  v7 = a4;
+  v8 = [(MSServer *)self connections];
+  objc_sync_enter(v8);
+  v15 = 0u;
+  v16 = 0u;
+  v17 = 0u;
+  v18 = 0u;
+  v9 = [(MSServer *)self connections];
+  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  if (v10)
+  {
+    v11 = *v16;
+    do
+    {
+      v12 = 0;
+      do
+      {
+        if (*v16 != v11)
+        {
+          objc_enumerationMutation(v9);
+        }
+
+        v13 = [*(*(&v15 + 1) + 8 * v12) remoteObjectProxy];
+        [v13 userDidUpdateDefaultService:v6 homeUserID:v7];
+
+        ++v12;
+      }
+
+      while (v10 != v12);
+      v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    }
+
+    while (v10);
+  }
+
+  objc_sync_exit(v8);
+  ICSiriPostDynamiteClientStateChangedNotification();
+
+  v14 = *MEMORY[0x277D85DE8];
+}
+
+- (BOOL)_isConnectionEntitled:(id)a3
+{
+  v3 = a3;
+  v4 = [v3 valueForEntitlement:@"com.apple.mediasetupd.client"];
+  v5 = [v4 BOOLValue];
+
+  v6 = [v3 valueForEntitlement:@"com.apple.developer.mediasetup"];
+
+  LOBYTE(v3) = [v6 BOOLValue];
+  return (v5 | v3) & 1;
+}
+
+- (void)_addConnection:(id)a3
+{
+  v6 = a3;
+  v4 = [(MSServer *)self connections];
+  objc_sync_enter(v4);
+  v5 = [(MSServer *)self connections];
+  [v5 addObject:v6];
+
+  objc_sync_exit(v4);
+}
+
+- (void)_removeConnection:(id)a3
+{
+  v11 = *MEMORY[0x277D85DE8];
+  v4 = a3;
+  v5 = [(MSServer *)self connections];
+  objc_sync_enter(v5);
+  v6 = [(MSServer *)self connections];
+  [v6 removeObject:v4];
+
+  v7 = _MSLogingFacility();
+  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  {
+    v9 = 138412290;
+    v10 = v4;
+    _os_log_impl(&dword_23986C000, v7, OS_LOG_TYPE_DEFAULT, "Removed Connection: (%@)", &v9, 0xCu);
+  }
+
+  objc_sync_exit(v5);
+  v8 = *MEMORY[0x277D85DE8];
+}
+
+@end

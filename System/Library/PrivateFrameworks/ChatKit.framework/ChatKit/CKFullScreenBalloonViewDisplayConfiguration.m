@@ -1,0 +1,389 @@
+@interface CKFullScreenBalloonViewDisplayConfiguration
++ (id)addStickerContextDismissingAppCardOnExit:(BOOL)a3;
++ (id)tapbackKeyboardInputContext;
++ (id)tapbackPickerContext;
+- (BOOL)shouldAvoidAppCardAtInitialPresentation;
+- (BOOL)shouldDismissAppCardOnExit;
+- (BOOL)shouldDismissWithAppCard;
+- (BOOL)shouldHideBalloonTail;
+- (BOOL)shouldHideTapbackAttributionAndPicker;
+- (BOOL)shouldPresentAsTapbackKeyboardInput;
+- (BOOL)shouldPresentTintViewBeforeScrolling;
+- (BOOL)shouldReturnToStartingScrollOffset;
+- (BOOL)shouldShowHighlightButton;
+- (BOOL)shouldShowReplyButton;
+- (BOOL)shouldShowStickers;
+- (CKMessagePartChatItem)supplementaryLayoutChatItem;
+- (UIColor)tintViewBackgroundColor;
+- (UIView)snapshotView;
+- (double)darkModeTintAlpha;
+- (double)scrollDuration;
+- (double)tintAlpha;
+- (double)tintDismissDuration;
+- (double)tintRevealDuration;
+- (id)supplementaryLayoutContext;
+- (int64_t)type;
+- (void)setDarkModeTintAlpha:(double)a3;
+- (void)setScrollDuration:(double)a3;
+- (void)setShouldAvoidAppCardAtInitialPresentation:(BOOL)a3;
+- (void)setShouldDismissAppCardOnExit:(BOOL)a3;
+- (void)setShouldDismissWithAppCard:(BOOL)a3;
+- (void)setShouldHideBalloonTail:(BOOL)a3;
+- (void)setShouldHideTapbackAttributionAndPicker:(BOOL)a3;
+- (void)setShouldPresentAsTapbackKeyboardInput:(BOOL)a3;
+- (void)setShouldPresentTintViewBeforeScrolling:(BOOL)a3;
+- (void)setShouldReturnToStartingScrollOffset:(BOOL)a3;
+- (void)setShouldShowHighlightButton:(BOOL)a3;
+- (void)setShouldShowReplyButton:(BOOL)a3;
+- (void)setShouldShowStickers:(BOOL)a3;
+- (void)setSupplementaryLayoutContext:(id)a3;
+- (void)setTintAlpha:(double)a3;
+- (void)setTintDismissDuration:(double)a3;
+- (void)setTintRevealDuration:(double)a3;
+- (void)setTintViewBackgroundColor:(id)a3;
+- (void)setType:(int64_t)a3;
+@end
+
+@implementation CKFullScreenBalloonViewDisplayConfiguration
+
+- (int64_t)type
+{
+  v3 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_type;
+  swift_beginAccess();
+  return *(self + v3);
+}
+
+- (void)setType:(int64_t)a3
+{
+  v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_type;
+  swift_beginAccess();
+  *(self + v5) = a3;
+}
+
+- (BOOL)shouldPresentTintViewBeforeScrolling
+{
+  v3 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldPresentTintViewBeforeScrolling;
+  swift_beginAccess();
+  return *(self + v3);
+}
+
+- (void)setShouldPresentTintViewBeforeScrolling:(BOOL)a3
+{
+  v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldPresentTintViewBeforeScrolling;
+  swift_beginAccess();
+  *(self + v5) = a3;
+}
+
+- (BOOL)shouldHideTapbackAttributionAndPicker
+{
+  v3 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldHideTapbackAttributionAndPicker;
+  swift_beginAccess();
+  return *(self + v3);
+}
+
+- (void)setShouldHideTapbackAttributionAndPicker:(BOOL)a3
+{
+  v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldHideTapbackAttributionAndPicker;
+  swift_beginAccess();
+  *(self + v5) = a3;
+}
+
+- (BOOL)shouldShowReplyButton
+{
+  v3 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldShowReplyButton;
+  swift_beginAccess();
+  return *(self + v3);
+}
+
+- (void)setShouldShowReplyButton:(BOOL)a3
+{
+  v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldShowReplyButton;
+  swift_beginAccess();
+  *(self + v5) = a3;
+}
+
+- (BOOL)shouldShowHighlightButton
+{
+  v3 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldShowHighlightButton;
+  swift_beginAccess();
+  return *(self + v3);
+}
+
+- (void)setShouldShowHighlightButton:(BOOL)a3
+{
+  v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldShowHighlightButton;
+  swift_beginAccess();
+  *(self + v5) = a3;
+}
+
+- (BOOL)shouldAvoidAppCardAtInitialPresentation
+{
+  v3 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldAvoidAppCardAtInitialPresentation;
+  swift_beginAccess();
+  return *(self + v3);
+}
+
+- (void)setShouldAvoidAppCardAtInitialPresentation:(BOOL)a3
+{
+  v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldAvoidAppCardAtInitialPresentation;
+  swift_beginAccess();
+  *(self + v5) = a3;
+}
+
+- (BOOL)shouldReturnToStartingScrollOffset
+{
+  v3 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldReturnToStartingScrollOffset;
+  swift_beginAccess();
+  return *(self + v3);
+}
+
+- (void)setShouldReturnToStartingScrollOffset:(BOOL)a3
+{
+  v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldReturnToStartingScrollOffset;
+  swift_beginAccess();
+  *(self + v5) = a3;
+}
+
+- (BOOL)shouldShowStickers
+{
+  v3 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldShowStickers;
+  swift_beginAccess();
+  return *(self + v3);
+}
+
+- (void)setShouldShowStickers:(BOOL)a3
+{
+  v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldShowStickers;
+  swift_beginAccess();
+  *(self + v5) = a3;
+}
+
+- (BOOL)shouldDismissAppCardOnExit
+{
+  v3 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldDismissAppCardOnExit;
+  swift_beginAccess();
+  return *(self + v3);
+}
+
+- (void)setShouldDismissAppCardOnExit:(BOOL)a3
+{
+  v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldDismissAppCardOnExit;
+  swift_beginAccess();
+  *(self + v5) = a3;
+}
+
+- (BOOL)shouldDismissWithAppCard
+{
+  v3 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldDismissWithAppCard;
+  swift_beginAccess();
+  return *(self + v3);
+}
+
+- (void)setShouldDismissWithAppCard:(BOOL)a3
+{
+  v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldDismissWithAppCard;
+  swift_beginAccess();
+  *(self + v5) = a3;
+}
+
+- (BOOL)shouldPresentAsTapbackKeyboardInput
+{
+  v3 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldPresentAsTapbackKeyboardInput;
+  swift_beginAccess();
+  return *(self + v3);
+}
+
+- (void)setShouldPresentAsTapbackKeyboardInput:(BOOL)a3
+{
+  v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldPresentAsTapbackKeyboardInput;
+  swift_beginAccess();
+  *(self + v5) = a3;
+}
+
+- (BOOL)shouldHideBalloonTail
+{
+  v3 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldHideBalloonTail;
+  swift_beginAccess();
+  return *(self + v3);
+}
+
+- (void)setShouldHideBalloonTail:(BOOL)a3
+{
+  v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldHideBalloonTail;
+  swift_beginAccess();
+  *(self + v5) = a3;
+}
+
+- (UIView)snapshotView
+{
+  v3 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_snapshotView;
+  swift_beginAccess();
+  return *(self + v3);
+}
+
+- (double)tintAlpha
+{
+  v3 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_tintAlpha;
+  swift_beginAccess();
+  return *(self + v3);
+}
+
+- (void)setTintAlpha:(double)a3
+{
+  v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_tintAlpha;
+  swift_beginAccess();
+  *(self + v5) = a3;
+}
+
+- (double)tintRevealDuration
+{
+  v3 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_tintRevealDuration;
+  swift_beginAccess();
+  return *(self + v3);
+}
+
+- (void)setTintRevealDuration:(double)a3
+{
+  v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_tintRevealDuration;
+  swift_beginAccess();
+  *(self + v5) = a3;
+}
+
+- (double)tintDismissDuration
+{
+  v3 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_tintDismissDuration;
+  swift_beginAccess();
+  return *(self + v3);
+}
+
+- (void)setTintDismissDuration:(double)a3
+{
+  v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_tintDismissDuration;
+  swift_beginAccess();
+  *(self + v5) = a3;
+}
+
+- (double)darkModeTintAlpha
+{
+  v3 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_darkModeTintAlpha;
+  swift_beginAccess();
+  return *(self + v3);
+}
+
+- (void)setDarkModeTintAlpha:(double)a3
+{
+  v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_darkModeTintAlpha;
+  swift_beginAccess();
+  *(self + v5) = a3;
+}
+
+- (double)scrollDuration
+{
+  v3 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_scrollDuration;
+  swift_beginAccess();
+  return *(self + v3);
+}
+
+- (void)setScrollDuration:(double)a3
+{
+  v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_scrollDuration;
+  swift_beginAccess();
+  *(self + v5) = a3;
+}
+
+- (UIColor)tintViewBackgroundColor
+{
+  v3 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_tintViewBackgroundColor;
+  swift_beginAccess();
+  return *(self + v3);
+}
+
+- (void)setTintViewBackgroundColor:(id)a3
+{
+  v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_tintViewBackgroundColor;
+  swift_beginAccess();
+  v6 = *(self + v5);
+  *(self + v5) = a3;
+  v7 = a3;
+}
+
+- (CKMessagePartChatItem)supplementaryLayoutChatItem
+{
+  v3 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_supplementaryLayoutChatItem;
+  swift_beginAccess();
+  return *(self + v3);
+}
+
+- (id)supplementaryLayoutContext
+{
+  v3 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_supplementaryLayoutContext;
+  swift_beginAccess();
+  sub_19023C414(self + v3, v13);
+  v4 = v14;
+  if (v14)
+  {
+    v5 = __swift_project_boxed_opaque_existential_1(v13, v14);
+    v6 = *(v4 - 8);
+    v7 = MEMORY[0x1EEE9AC00](v5);
+    v9 = v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0) + 16;
+    (*(v6 + 16))(v9, v7);
+    v10 = sub_190D58740();
+    (*(v6 + 8))(v9, v4);
+    __swift_destroy_boxed_opaque_existential_0(v13);
+  }
+
+  else
+  {
+    v10 = 0;
+  }
+
+  return v10;
+}
+
+- (void)setSupplementaryLayoutContext:(id)a3
+{
+  if (a3)
+  {
+    v4 = self;
+    swift_unknownObjectRetain();
+    sub_190D58140();
+    swift_unknownObjectRelease();
+  }
+
+  else
+  {
+    memset(v7, 0, sizeof(v7));
+    v5 = self;
+  }
+
+  v6 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_supplementaryLayoutContext;
+  swift_beginAccess();
+  sub_190A3A620(v7, self + v6);
+  swift_endAccess();
+}
+
++ (id)tapbackPickerContext
+{
+  v2 = _s7ChatKit41FullScreenBalloonViewDisplayConfigurationC20tapbackPickerContextACyFZ_0();
+
+  return v2;
+}
+
++ (id)tapbackKeyboardInputContext
+{
+  v2 = _s7ChatKit41FullScreenBalloonViewDisplayConfigurationC20tapbackPickerContextACyFZ_0();
+  v3 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldPresentAsTapbackKeyboardInput;
+  swift_beginAccess();
+  v2[v3] = 1;
+
+  return v2;
+}
+
++ (id)addStickerContextDismissingAppCardOnExit:(BOOL)a3
+{
+  v3 = _s7ChatKit41FullScreenBalloonViewDisplayConfigurationC17addStickerContext23dismissingAppCardOnExitACSb_tFZ_0(a3);
+
+  return v3;
+}
+
+@end

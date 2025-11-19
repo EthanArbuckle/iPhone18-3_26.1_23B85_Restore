@@ -1,0 +1,36 @@
+@interface SPUIViewUtilities
++ (void)setGlassForView:(id)a3 style:(unint64_t)a4;
++ (void)setGlassGroupForView:(id)a3;
+- (SPUIViewUtilities)init;
+@end
+
+@implementation SPUIViewUtilities
+
++ (void)setGlassForView:(id)a3 style:(unint64_t)a4
+{
+  v7[3] = sub_26B862BC4();
+  v7[4] = MEMORY[0x277D74E20];
+  __swift_allocate_boxed_opaque_existential_1(v7);
+  v6 = a3;
+  sub_26B862434(a4);
+  sub_26B862D34();
+}
+
++ (void)setGlassGroupForView:(id)a3
+{
+  v5[3] = sub_26B862B64();
+  v5[4] = MEMORY[0x277D74A50];
+  __swift_allocate_boxed_opaque_existential_1(v5);
+  v4 = a3;
+  sub_26B862B54();
+  sub_26B862D34();
+}
+
+- (SPUIViewUtilities)init
+{
+  v3.receiver = self;
+  v3.super_class = SPUIViewUtilities;
+  return [(SPUIViewUtilities *)&v3 init];
+}
+
+@end

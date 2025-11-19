@@ -1,0 +1,12 @@
+@interface NTKBundleIDToComplicationTypesMappingCompanion
+@end
+
+@implementation NTKBundleIDToComplicationTypesMappingCompanion
+
+void ___NTKBundleIDToComplicationTypesMappingCompanion_block_invoke()
+{
+  v0 = _NTKBundleIDToComplicationTypesMappingCompanion_bundleIDToComplicationTypesMapping;
+  _NTKBundleIDToComplicationTypesMappingCompanion_bundleIDToComplicationTypesMapping = &unk_284189E30;
+}
+
+@end

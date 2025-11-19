@@ -1,0 +1,14 @@
+@interface BundleLookupClass#1inclosure#1inPXAppIntentsAnalyticsSendPerformEvent(for:category:count:success:error:source:)
+- (_TtCFF12PhotosUICoreP33_DFB29672D8145358472BB285BA2D4F8137PXAppIntentsAnalyticsSendPerformEventFT3forSS8categoryGSqSS_5countGSqSi_7successSb5errorGSqPs5Error__6sourceGSqOV10AppIntents19IntentSystemContext6Source__T_U_FT_T_L_17BundleLookupClass)init;
+@end
+
+@implementation BundleLookupClass#1inclosure#1inPXAppIntentsAnalyticsSendPerformEvent(for:category:count:success:error:source:)
+
+- (_TtCFF12PhotosUICoreP33_DFB29672D8145358472BB285BA2D4F8137PXAppIntentsAnalyticsSendPerformEventFT3forSS8categoryGSqSS_5countGSqSi_7successSb5errorGSqPs5Error__6sourceGSqOV10AppIntents19IntentSystemContext6Source__T_U_FT_T_L_17BundleLookupClass)init
+{
+  v3.receiver = self;
+  v3.super_class = type metadata accessor for BundleLookupClass();
+  return [(BundleLookupClass *)&v3 #1];
+}
+
+@end

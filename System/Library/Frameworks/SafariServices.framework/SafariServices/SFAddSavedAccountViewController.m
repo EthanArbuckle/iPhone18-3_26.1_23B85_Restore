@@ -1,0 +1,805 @@
+@interface SFAddSavedAccountViewController
+- (BOOL)textFieldShouldReturn:(id)a3;
+- (SFAddSavedAccountViewController)initWithGroupID:(id)a3;
+- (SFAddSavedAccountViewController)initWithSuggestedDomain:(id)a3 password:(id)a4;
+- (SFAddSavedAccountViewControllerDelegate)delegate;
+- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (void)_attemptToSavePassword;
+- (void)_cancelBarButtonItemTapped:(id)a3;
+- (void)_doneBarButtonItemTapped:(id)a3;
+- (void)_fromTextFieldsGetWebsite:(id *)a3 andCustomTitle:(id *)a4;
+- (void)_preFillStrongPasswordIfRequested;
+- (void)_savePasswordAndDismiss;
+- (void)_textFieldChanged:(id)a3;
+- (void)_updateDoneButtonEnabledState;
+- (void)_updateHeaderViewCell;
+- (void)_updateIconForCell:(id)a3;
+- (void)_updateTextInputSuggestionsForPasswordField;
+- (void)_updateTextInputSuggestionsForUserNameField;
+- (void)_updateTextSuggestionsForTextField:(id)a3;
+- (void)accountDetailHeaderViewCell:(id)a3 titleTextFieldDidChange:(id)a4;
+- (void)returnKeyActivatedInAccountDetailHeaderViewCell:(id)a3;
+- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidLoad;
+- (void)viewWillAppear:(BOOL)a3;
+@end
+
+@implementation SFAddSavedAccountViewController
+
+- (SFAddSavedAccountViewController)initWithGroupID:(id)a3
+{
+  v4 = a3;
+  v10.receiver = self;
+  v10.super_class = SFAddSavedAccountViewController;
+  v5 = [(SFAddSavedAccountViewController *)&v10 initWithStyle:2];
+  if (v5)
+  {
+    v6 = [v4 copy];
+    groupID = v5->_groupID;
+    v5->_groupID = v6;
+
+    v8 = v5;
+  }
+
+  return v5;
+}
+
+- (SFAddSavedAccountViewController)initWithSuggestedDomain:(id)a3 password:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  v15.receiver = self;
+  v15.super_class = SFAddSavedAccountViewController;
+  v8 = [(SFAddSavedAccountViewController *)&v15 initWithStyle:2];
+  if (v8)
+  {
+    v9 = [v6 copy];
+    suggestedDomain = v8->_suggestedDomain;
+    v8->_suggestedDomain = v9;
+
+    v11 = [v7 copy];
+    password = v8->_password;
+    v8->_password = v11;
+
+    v8->_shouldPopulatePasswordFieldWithNewGeneratedStrongPassword = [v7 length] == 0;
+    v13 = v8;
+  }
+
+  return v8;
+}
+
+- (void)viewDidLoad
+{
+  v10.receiver = self;
+  v10.super_class = SFAddSavedAccountViewController;
+  [(SFAddSavedAccountViewController *)&v10 viewDidLoad];
+  v3 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel__cancelBarButtonItemTapped_];
+  cancelBarButtonItem = self->_cancelBarButtonItem;
+  self->_cancelBarButtonItem = v3;
+
+  [(UIBarButtonItem *)self->_cancelBarButtonItem setAccessibilityIdentifier:@"Add Password Navigation Bar Cancel Button"];
+  v5 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel__doneBarButtonItemTapped_];
+  doneBarButtonItem = self->_doneBarButtonItem;
+  self->_doneBarButtonItem = v5;
+
+  [(UIBarButtonItem *)self->_doneBarButtonItem setAccessibilityIdentifier:@"Add Password Navigation Bar Done Button"];
+  [(UIBarButtonItem *)self->_doneBarButtonItem setEnabled:0];
+  v7 = [(SFAddSavedAccountViewController *)self navigationItem];
+  v8 = _WBSLocalizedString();
+  [v7 setTitle:v8];
+
+  [v7 setLeftBarButtonItem:self->_cancelBarButtonItem];
+  [v7 setRightBarButtonItem:self->_doneBarButtonItem];
+  v9 = [(SFAddSavedAccountViewController *)self view];
+  [v9 setAccessibilityIdentifier:@"Add Password View"];
+}
+
+- (void)viewWillAppear:(BOOL)a3
+{
+  v4.receiver = self;
+  v4.super_class = SFAddSavedAccountViewController;
+  [(SFAddSavedAccountViewController *)&v4 viewWillAppear:a3];
+  [(SFAddSavedAccountViewController *)self _updateHeaderViewCell];
+}
+
+- (void)viewDidAppear:(BOOL)a3
+{
+  v6.receiver = self;
+  v6.super_class = SFAddSavedAccountViewController;
+  [(SFAddSavedAccountViewController *)&v6 viewDidAppear:a3];
+  [(SFAddSavedAccountViewController *)self setEditing:1];
+  if (!self->_didPreFillAndFocusFields)
+  {
+    [(SFAddSavedAccountViewController *)self _preFillStrongPasswordIfRequested];
+    v4 = [(SFAccountHeaderViewCell *)self->_titleCell titleTextField];
+    if ([(NSString *)self->_suggestedDomain length])
+    {
+      v5 = [(SFEditableTableViewCell *)self->_userCell editableTextField];
+
+      v4 = v5;
+    }
+
+    [v4 becomeFirstResponder];
+    self->_didPreFillAndFocusFields = 1;
+  }
+}
+
+- (void)_preFillStrongPasswordIfRequested
+{
+  if ([(SFAddSavedAccountViewController *)self shouldPopulatePasswordFieldWithNewGeneratedStrongPassword])
+  {
+    v3 = [(SFAccountHeaderViewCell *)self->_titleCell titleTextField];
+    v4 = [v3 text];
+    v5 = [v4 safari_stringByTrimmingWhitespace];
+
+    if ([MEMORY[0x1E69C8A38] userTypedTitleShouldBeTreatedAsAWebsiteWhenAddingNewAccount:v5])
+    {
+      v9 = [v5 safari_bestURLForUserTypedString];
+    }
+
+    else
+    {
+      v9 = 0;
+    }
+
+    v6 = +[_SFFormDataController sharedController];
+    v7 = [v6 autoGeneratedPasswordForURL:v9 respectingPasswordRequirements:0 maxLength:-1];
+
+    v8 = [(SFEditableTableViewCell *)self->_passwordCell editableTextField];
+    [v8 setText:v7];
+  }
+}
+
+- (void)_cancelBarButtonItemTapped:(id)a3
+{
+  WeakRetained = objc_loadWeakRetained(&self->_delegate);
+  if (objc_opt_respondsToSelector())
+  {
+    [WeakRetained addSavedAccountViewControllerDidFinish:self withSavedAccount:0];
+  }
+}
+
+- (void)_doneBarButtonItemTapped:(id)a3
+{
+  [a3 setEnabled:0];
+
+  [(SFAddSavedAccountViewController *)self _attemptToSavePassword];
+}
+
+- (void)_textFieldChanged:(id)a3
+{
+  v4 = a3;
+  [(SFAddSavedAccountViewController *)self _updateDoneButtonEnabledState];
+  [(SFAddSavedAccountViewController *)self _updateTextSuggestionsForTextField:v4];
+}
+
+- (void)_updateDoneButtonEnabledState
+{
+  v3 = [(SFEditableTableViewCell *)self->_passwordCell editableTextField];
+  v4 = [v3 text];
+
+  -[UIBarButtonItem setEnabled:](self->_doneBarButtonItem, "setEnabled:", [v4 length] != 0);
+}
+
+- (void)_updateTextSuggestionsForTextField:(id)a3
+{
+  v8 = a3;
+  v4 = [(SFEditableTableViewCell *)self->_userCell editableTextField];
+  v5 = [v8 isEqual:v4];
+
+  if (v5)
+  {
+    [(SFAddSavedAccountViewController *)self _updateTextInputSuggestionsForUserNameField];
+  }
+
+  else
+  {
+    v6 = [(SFEditableTableViewCell *)self->_passwordCell editableTextField];
+    v7 = [v8 isEqual:v6];
+
+    if (v7)
+    {
+      [(SFAddSavedAccountViewController *)self _updateTextInputSuggestionsForPasswordField];
+    }
+  }
+}
+
+- (void)_updateTextInputSuggestionsForUserNameField
+{
+  v3 = [(SFEditableTableViewCell *)self->_userCell editableTextField];
+  v4 = [v3 text];
+
+  v5 = [MEMORY[0x1E69C8E28] sharedProvider];
+  v7[0] = MEMORY[0x1E69E9820];
+  v7[1] = 3221225472;
+  v7[2] = __78__SFAddSavedAccountViewController__updateTextInputSuggestionsForUserNameField__block_invoke;
+  v7[3] = &unk_1E8491FF0;
+  v8 = v4;
+  v9 = self;
+  v6 = v4;
+  [v5 suggestedUsersOfType:0 matchingText:v6 completionHandler:v7];
+}
+
+void __78__SFAddSavedAccountViewController__updateTextInputSuggestionsForUserNameField__block_invoke(uint64_t a1, void *a2)
+{
+  v8[0] = MEMORY[0x1E69E9820];
+  v8[1] = 3221225472;
+  v8[2] = __78__SFAddSavedAccountViewController__updateTextInputSuggestionsForUserNameField__block_invoke_2;
+  v8[3] = &unk_1E8495320;
+  v9 = *(a1 + 32);
+  v4 = [a2 safari_mapAndFilterObjectsUsingBlock:v8];
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __78__SFAddSavedAccountViewController__updateTextInputSuggestionsForUserNameField__block_invoke_3;
+  block[3] = &unk_1E848F548;
+  block[4] = *(a1 + 40);
+  v7 = v4;
+  v5 = v4;
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+}
+
+id __78__SFAddSavedAccountViewController__updateTextInputSuggestionsForUserNameField__block_invoke_2(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  v4 = [v3 value];
+  v5 = [v4 safari_isCaseInsensitiveEqualToString:*(a1 + 32)];
+
+  if (v5)
+  {
+    v6 = 0;
+  }
+
+  else
+  {
+    v7 = MEMORY[0x1E69DD158];
+    v8 = [v3 value];
+    v6 = [v7 textSuggestionWithInputText:v8 searchText:*(a1 + 32)];
+  }
+
+  return v6;
+}
+
+void __78__SFAddSavedAccountViewController__updateTextInputSuggestionsForUserNameField__block_invoke_3(uint64_t a1)
+{
+  v3 = [*(*(a1 + 32) + 1064) editableTextField];
+  v2 = [v3 textInputSuggestionDelegate];
+  [v2 setSuggestions:*(a1 + 40)];
+}
+
+- (void)_updateTextInputSuggestionsForPasswordField
+{
+  v18[1] = *MEMORY[0x1E69E9840];
+  v3 = [(SFEditableTableViewCell *)self->_passwordCell editableTextField];
+  v4 = [v3 text];
+  v5 = [v4 length];
+
+  if (v5)
+  {
+    v6 = MEMORY[0x1E695E0F0];
+  }
+
+  else
+  {
+    v7 = [(SFAccountHeaderViewCell *)self->_titleCell titleTextField];
+    v8 = [v7 text];
+    v9 = [v8 safari_stringByTrimmingWhitespace];
+
+    if ([MEMORY[0x1E69C8A38] userTypedTitleShouldBeTreatedAsAWebsiteWhenAddingNewAccount:v9])
+    {
+      v10 = [v9 safari_bestURLForUserTypedString];
+    }
+
+    else
+    {
+      v10 = 0;
+    }
+
+    v11 = +[_SFFormDataController sharedController];
+    v12 = [v11 autoGeneratedPasswordForURL:v10 respectingPasswordRequirements:0 maxLength:-1];
+
+    if (v12)
+    {
+      v13 = [MEMORY[0x1E69DD158] textSuggestionWithInputText:v12];
+      v14 = _WBSLocalizedString();
+      [v13 setHeaderText:v14];
+
+      [v13 setDisplayText:v12];
+      v18[0] = v13;
+      v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
+    }
+
+    else
+    {
+      v6 = MEMORY[0x1E695E0F0];
+    }
+  }
+
+  v16[0] = MEMORY[0x1E69E9820];
+  v16[1] = 3221225472;
+  v16[2] = __78__SFAddSavedAccountViewController__updateTextInputSuggestionsForPasswordField__block_invoke;
+  v16[3] = &unk_1E848F548;
+  v16[4] = self;
+  v17 = v6;
+  v15 = v6;
+  dispatch_async(MEMORY[0x1E69E96A0], v16);
+}
+
+void __78__SFAddSavedAccountViewController__updateTextInputSuggestionsForPasswordField__block_invoke(uint64_t a1)
+{
+  v3 = [*(*(a1 + 32) + 1072) editableTextField];
+  v2 = [v3 textInputSuggestionDelegate];
+  [v2 setSuggestions:*(a1 + 40)];
+}
+
+- (void)_fromTextFieldsGetWebsite:(id *)a3 andCustomTitle:(id *)a4
+{
+  v6 = [(SFAccountHeaderViewCell *)self->_titleCell titleTextField];
+  v7 = [v6 text];
+  v10 = [v7 safari_stringByTrimmingWhitespace];
+
+  if ([MEMORY[0x1E69C8A38] userTypedTitleShouldBeTreatedAsAWebsiteWhenAddingNewAccount:v10])
+  {
+    v8 = v10;
+    v9 = 0;
+    *a3 = v8;
+  }
+
+  else
+  {
+    *a3 = 0;
+    v9 = v10;
+  }
+
+  *a4 = v9;
+}
+
+- (void)_attemptToSavePassword
+{
+  v26 = 0;
+  v27 = 0;
+  [(SFAddSavedAccountViewController *)self _fromTextFieldsGetWebsite:&v27 andCustomTitle:&v26];
+  v3 = v27;
+  v4 = v26;
+  v5 = [(SFEditableTableViewCell *)self->_userCell editableTextField];
+  v6 = [v5 text];
+
+  v7 = [(SFEditableTableViewCell *)self->_passwordCell editableTextField];
+  v8 = [v7 text];
+
+  v9 = [MEMORY[0x1E69C8A38] sharedStore];
+  notesForEditing = self->_notesForEditing;
+  groupID = self->_groupID;
+  v25 = 0;
+  v12 = [v9 canSaveUser:v6 password:v8 forUserTypedSite:v3 notes:notesForEditing customTitle:v4 groupID:groupID error:&v25];
+  v13 = v25;
+
+  if (v12)
+  {
+    [(SFAddSavedAccountViewController *)self _savePasswordAndDismiss];
+  }
+
+  else
+  {
+    v14 = MEMORY[0x1E69DC650];
+    v15 = [MEMORY[0x1E69C8800] alertTitleForFailedAccountCreationWithErrorCode:{objc_msgSend(v13, "code")}];
+    v16 = MEMORY[0x1E69C8800];
+    v17 = [v13 code];
+    [v3 safari_highLevelDomainFromHost];
+    v18 = v24 = v4;
+    v19 = [v16 alertSubtitleForFailedAccountCreationWithErrorCode:v17 forUserTypedSite:v3 userTypedUsername:v6 highLevelDomain:v18];
+    v20 = [v14 alertControllerWithTitle:v15 message:v19 preferredStyle:1];
+
+    v21 = MEMORY[0x1E69DC648];
+    v22 = [MEMORY[0x1E69C8800] alertDismissActionTitleForFailedAccountCreation];
+    v23 = [v21 actionWithTitle:v22 style:0 handler:0];
+    [v20 addAction:v23];
+
+    v4 = v24;
+    [(SFAddSavedAccountViewController *)self presentViewController:v20 animated:1 completion:0];
+  }
+}
+
+- (void)_savePasswordAndDismiss
+{
+  WeakRetained = objc_loadWeakRetained(&self->_delegate);
+  if (objc_opt_respondsToSelector())
+  {
+    v16 = 0;
+    v17 = 0;
+    [(SFAddSavedAccountViewController *)self _fromTextFieldsGetWebsite:&v17 andCustomTitle:&v16];
+    v12 = v17;
+    v11 = v16;
+    [(SFAccountHeaderViewCell *)self->_titleCell commitCustomTitle];
+    v4 = [MEMORY[0x1E69C8A38] sharedStore];
+    v5 = [(SFEditableTableViewCell *)self->_userCell editableTextField];
+    v6 = [v5 text];
+    v7 = [(SFEditableTableViewCell *)self->_passwordCell editableTextField];
+    v8 = [v7 text];
+    notesForEditing = self->_notesForEditing;
+    groupID = self->_groupID;
+    v13[0] = MEMORY[0x1E69E9820];
+    v13[1] = 3221225472;
+    v13[2] = __58__SFAddSavedAccountViewController__savePasswordAndDismiss__block_invoke;
+    v13[3] = &unk_1E8495348;
+    v14 = WeakRetained;
+    v15 = self;
+    [v4 saveUser:v6 password:v8 forUserTypedSite:v12 customTitle:v11 notesEntry:notesForEditing groupID:groupID completionHandler:v13];
+  }
+}
+
+void __58__SFAddSavedAccountViewController__savePasswordAndDismiss__block_invoke(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __58__SFAddSavedAccountViewController__savePasswordAndDismiss__block_invoke_2;
+  block[3] = &unk_1E848F6B0;
+  v4 = *(a1 + 32);
+  v5 = *(a1 + 40);
+  v8 = v4;
+  v9 = v5;
+  v10 = v3;
+  v6 = v3;
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+}
+
+- (void)_updateHeaderViewCell
+{
+  titleCell = self->_titleCell;
+  v4 = [(SFAccountHeaderViewCell *)titleCell titleTextField];
+  v5 = [v4 text];
+  v6 = [v5 safari_highLevelDomainForPasswordManager];
+  v7 = [v6 _lp_userVisibleHost];
+  [(SFAccountHeaderViewCell *)titleCell setHeaderTitleForHighLevelDomain:v7 customTitle:self->_titleForEditing];
+
+  [(SFAddSavedAccountViewController *)self _updateIcon];
+}
+
+- (BOOL)textFieldShouldReturn:(id)a3
+{
+  v4 = a3;
+  v5 = [(SFEditableTableViewCell *)self->_userCell editableTextField];
+
+  v6 = [(SFEditableTableViewCell *)self->_passwordCell editableTextField];
+  v7 = v6;
+  if (v5 == v4)
+  {
+    [v6 becomeFirstResponder];
+    goto LABEL_6;
+  }
+
+  if (v6 != v4)
+  {
+LABEL_6:
+
+    goto LABEL_7;
+  }
+
+  v8 = [(UIBarButtonItem *)self->_doneBarButtonItem isEnabled];
+
+  if (v8)
+  {
+    [(SFAddSavedAccountViewController *)self _attemptToSavePassword];
+  }
+
+LABEL_7:
+
+  return 0;
+}
+
+- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+{
+  if (a4)
+  {
+    return a4 == 1;
+  }
+
+  else
+  {
+    return 3;
+  }
+}
+
+- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+{
+  if (a4 == 1)
+  {
+    v5 = _WBSLocalizedString();
+  }
+
+  else
+  {
+    v5 = 0;
+  }
+
+  return v5;
+}
+
+- (void)_updateIconForCell:(id)a3
+{
+  v4 = a3;
+  v5 = [(SFAccountHeaderViewCell *)self->_titleCell titleTextField];
+  v6 = [v5 text];
+  v7 = [v6 safari_stringByTrimmingWhitespace];
+
+  if ([MEMORY[0x1E69C8A38] userTypedTitleShouldBeTreatedAsAWebsiteWhenAddingNewAccount:v7])
+  {
+    v8 = [v7 safari_bestURLForUserTypedString];
+    v9 = [v8 host];
+    v10 = [v9 safari_highLevelDomainForPasswordManager];
+  }
+
+  else
+  {
+    v10 = 0;
+  }
+
+  WeakRetained = objc_loadWeakRetained(&self->_delegate);
+  if (objc_opt_respondsToSelector())
+  {
+    v12 = [WeakRetained iconControllerForAddSavedAccountDetailViewController:self];
+    v13 = [v12 backgroundColorForDomain:v10];
+    [v4 setMonogramBackgroundColor:v13];
+
+    v16[0] = MEMORY[0x1E69E9820];
+    v16[1] = 3221225472;
+    v16[2] = __54__SFAddSavedAccountViewController__updateIconForCell___block_invoke;
+    v16[3] = &unk_1E8495370;
+    v16[4] = self;
+    v17 = v7;
+    v18 = v12;
+    v19 = v4;
+    v20 = v10;
+    v14 = v12;
+    [v14 iconForDomain:v20 responseHandler:v16];
+  }
+
+  else
+  {
+    v15 = +[_SFAccountManagerAppearanceValues defaultMonogramBackgroundColor];
+    [v4 setMonogramBackgroundColor:v15];
+  }
+}
+
+void __54__SFAddSavedAccountViewController__updateIconForCell___block_invoke(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  v4 = v3;
+  if (v3)
+  {
+    [v3 size];
+    if (v6 != 56.0 || v5 != 56.0)
+    {
+      v8 = [MEMORY[0x1E69C97E0] resizedImage:v4 withSize:?];
+LABEL_10:
+      v10 = v8;
+
+      v4 = v10;
+      goto LABEL_11;
+    }
+  }
+
+  v9 = *(a1 + 32);
+  if (*(v9 + 1136) && [*(a1 + 40) isEqualToString:*(v9 + 1104)])
+  {
+    v8 = [*(a1 + 48) appIconForAppID:*(*(a1 + 32) + 1136)];
+    goto LABEL_10;
+  }
+
+LABEL_11:
+  v12[0] = MEMORY[0x1E69E9820];
+  v12[1] = 3221225472;
+  v12[2] = __54__SFAddSavedAccountViewController__updateIconForCell___block_invoke_2;
+  v12[3] = &unk_1E848F570;
+  v13 = v4;
+  v14 = *(a1 + 56);
+  v15 = *(a1 + 48);
+  v16 = *(a1 + 64);
+  v11 = v4;
+  dispatch_async(MEMORY[0x1E69E96A0], v12);
+}
+
+void __54__SFAddSavedAccountViewController__updateIconForCell___block_invoke_2(uint64_t a1)
+{
+  v1 = *(a1 + 40);
+  if (*(a1 + 32))
+  {
+    v2 = *(a1 + 40);
+
+    [v2 setIcon:?];
+  }
+
+  else
+  {
+    v3 = [*(a1 + 48) backgroundColorForDomain:*(a1 + 56)];
+    [v1 setMonogramBackgroundColor:v3];
+  }
+}
+
+- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  v8 = [v6 dequeueReusableCellWithIdentifier:@"editableTableViewCell"];
+  v9 = v8;
+  if (v8)
+  {
+    v10 = v8;
+  }
+
+  else
+  {
+    v10 = [[SFEditableTableViewCell alloc] initWithEnabledState:1];
+  }
+
+  v11 = v10;
+
+  v12 = v11;
+  v13 = [(SFEditableTableViewCell *)v12 editableTextField];
+  [v13 setDelegate:self];
+  [v13 addTarget:self action:sel__textFieldChanged_ forControlEvents:0x20000];
+  v14 = [v7 section];
+  if (v14 == 1)
+  {
+    v24 = [[SFAccountNoteTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"NotesCell"];
+    notesCell = self->_notesCell;
+    self->_notesCell = v24;
+
+    [(SFAccountNoteTableViewCell *)self->_notesCell setDelegate:self];
+    notesForEditing = self->_notesForEditing;
+    v27 = [(SFAccountNoteTableViewCell *)self->_notesCell textView];
+    [v27 setText:notesForEditing];
+
+    objc_initWeak(&location, self);
+    v40 = MEMORY[0x1E69E9820];
+    v41 = 3221225472;
+    v42 = __67__SFAddSavedAccountViewController_tableView_cellForRowAtIndexPath___block_invoke;
+    v43 = &unk_1E848F8F0;
+    objc_copyWeak(&v44, &location);
+    [(SFAccountNoteTableViewCell *)self->_notesCell setTextDidChange:&v40];
+    [(SFAccountNoteTableViewCell *)self->_notesCell setAccessibilityIdentifier:@"Add Password Notes Cell", v40, v41, v42, v43];
+    v28 = self->_notesCell;
+    objc_destroyWeak(&v44);
+    objc_destroyWeak(&location);
+    goto LABEL_22;
+  }
+
+  if (!v14)
+  {
+    v15 = [v7 item];
+    switch(v15)
+    {
+      case 2:
+        v32 = [MEMORY[0x1E695E000] pm_defaults];
+        v33 = [v32 pm_passwordManagerIsInDemoMode];
+
+        v34 = _WBSLocalizedString();
+        [v13 setPlaceholder:v34];
+
+        [v13 setSecureTextEntry:v33 ^ 1u];
+        [v13 setDisplaySecureTextUsingPlainText:v33 ^ 1u];
+        v35 = _WBSLocalizedString();
+        v36 = [(SFEditableTableViewCell *)v12 textLabel];
+        [v36 setText:v35];
+
+        objc_storeStrong(&self->_passwordCell, v11);
+        [(SFEditableTableViewCell *)self->_passwordCell setAccessibilityIdentifier:@"Add Password Password Cell"];
+        if ([(NSString *)self->_password length])
+        {
+          password = self->_password;
+          v38 = [(SFEditableTableViewCell *)self->_passwordCell editableTextField];
+          [v38 setText:password];
+        }
+
+        break;
+      case 1:
+        v29 = _WBSLocalizedString();
+        [v13 setPlaceholder:v29];
+
+        v30 = _WBSLocalizedString();
+        v31 = [(SFEditableTableViewCell *)v12 textLabel];
+        [v31 setText:v30];
+
+        objc_storeStrong(&self->_userCell, v11);
+        [(SFEditableTableViewCell *)self->_userCell setAccessibilityIdentifier:@"Add Password User Name Cell"];
+        break;
+      case 0:
+        v16 = [(SFAddSavedAccountViewController *)self tableView];
+        v17 = [v16 dequeueReusableCellWithIdentifier:@"AddPasswordTitleCell"];
+        v18 = v17;
+        if (!v17)
+        {
+          v18 = [[SFAccountHeaderViewCell alloc] initWithStyle:0 reuseIdentifier:@"AddPasswordTitleCell"];
+        }
+
+        objc_storeStrong(&self->_titleCell, v18);
+        if (!v17)
+        {
+        }
+
+        if ([(NSString *)self->_suggestedDomain length])
+        {
+          suggestedDomain = self->_suggestedDomain;
+          v20 = [(SFAccountHeaderViewCell *)self->_titleCell titleTextField];
+          [v20 setText:suggestedDomain];
+
+          objc_storeStrong(&self->_titleForEditing, self->_suggestedDomain);
+        }
+
+        v21 = [(SFAccountHeaderViewCell *)self->_titleCell titleTextField];
+        [v21 setKeyboardType:3];
+
+        v22 = [(SFAccountHeaderViewCell *)self->_titleCell titleTextField];
+        [v22 setAutocapitalizationType:0];
+
+        [(SFAddSavedAccountViewController *)self _updateHeaderViewCell];
+        [(SFAccountHeaderViewCell *)self->_titleCell setDelegate:self];
+        [(SFAccountHeaderViewCell *)self->_titleCell setAccessibilityIdentifier:@"Add Password Website Cell"];
+        v23 = self->_titleCell;
+        goto LABEL_21;
+    }
+  }
+
+  v23 = v12;
+LABEL_21:
+  v28 = v23;
+LABEL_22:
+
+  return v28;
+}
+
+void __67__SFAddSavedAccountViewController_tableView_cellForRowAtIndexPath___block_invoke(uint64_t a1)
+{
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __67__SFAddSavedAccountViewController_tableView_cellForRowAtIndexPath___block_invoke_2;
+  block[3] = &unk_1E848F8F0;
+  objc_copyWeak(&v2, (a1 + 32));
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+  objc_destroyWeak(&v2);
+}
+
+void __67__SFAddSavedAccountViewController_tableView_cellForRowAtIndexPath___block_invoke_2(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  if (WeakRetained)
+  {
+    v6 = WeakRetained;
+    v2 = [WeakRetained tableView];
+    [v2 beginUpdates];
+    [v2 endUpdates];
+    v3 = [v6[135] textView];
+    v4 = [v3 text];
+    v5 = v6[137];
+    v6[137] = v4;
+
+    [v6 _updateDoneButtonEnabledState];
+    WeakRetained = v6;
+  }
+}
+
+- (void)accountDetailHeaderViewCell:(id)a3 titleTextFieldDidChange:(id)a4
+{
+  v5 = [a4 text];
+  titleForEditing = self->_titleForEditing;
+  self->_titleForEditing = v5;
+
+  [(SFAddSavedAccountViewController *)self _updateHeaderViewCell];
+}
+
+- (void)returnKeyActivatedInAccountDetailHeaderViewCell:(id)a3
+{
+  v3 = [(SFEditableTableViewCell *)self->_userCell editableTextField];
+  [v3 becomeFirstResponder];
+}
+
+- (SFAddSavedAccountViewControllerDelegate)delegate
+{
+  WeakRetained = objc_loadWeakRetained(&self->_delegate);
+
+  return WeakRetained;
+}
+
+@end

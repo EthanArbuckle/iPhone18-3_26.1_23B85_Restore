@@ -1,0 +1,47 @@
+@interface OptionsButton
+- (_TtC22UserNotificationsUIKitP33_31F77A0F2E2B97FF4D299720B6240BE113OptionsButton)initWithCoder:(id)a3;
+- (_TtC22UserNotificationsUIKitP33_31F77A0F2E2B97FF4D299720B6240BE113OptionsButton)initWithFrame:(CGRect)a3;
+@end
+
+@implementation OptionsButton
+
+- (_TtC22UserNotificationsUIKitP33_31F77A0F2E2B97FF4D299720B6240BE113OptionsButton)initWithFrame:(CGRect)a3
+{
+  height = a3.size.height;
+  width = a3.size.width;
+  y = a3.origin.y;
+  x = a3.origin.x;
+  v7 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtC22UserNotificationsUIKitP33_31F77A0F2E2B97FF4D299720B6240BE113OptionsButton_onShowMenu);
+  *v7 = 0;
+  v7[1] = 0;
+  v8 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtC22UserNotificationsUIKitP33_31F77A0F2E2B97FF4D299720B6240BE113OptionsButton_onDismissMenu);
+  *v8 = 0;
+  v8[1] = 0;
+  *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC22UserNotificationsUIKitP33_31F77A0F2E2B97FF4D299720B6240BE113OptionsButton_isPresentingMenu) = 0;
+  v10.receiver = self;
+  v10.super_class = type metadata accessor for OptionsButton();
+  return [(OptionsButton *)&v10 initWithFrame:x, y, width, height];
+}
+
+- (_TtC22UserNotificationsUIKitP33_31F77A0F2E2B97FF4D299720B6240BE113OptionsButton)initWithCoder:(id)a3
+{
+  v4 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtC22UserNotificationsUIKitP33_31F77A0F2E2B97FF4D299720B6240BE113OptionsButton_onShowMenu);
+  *v4 = 0;
+  v4[1] = 0;
+  v5 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtC22UserNotificationsUIKitP33_31F77A0F2E2B97FF4D299720B6240BE113OptionsButton_onDismissMenu);
+  *v5 = 0;
+  v5[1] = 0;
+  *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC22UserNotificationsUIKitP33_31F77A0F2E2B97FF4D299720B6240BE113OptionsButton_isPresentingMenu) = 0;
+  v9.receiver = self;
+  v9.super_class = type metadata accessor for OptionsButton();
+  v6 = a3;
+  v7 = [(OptionsButton *)&v9 initWithCoder:v6];
+
+  if (v7)
+  {
+  }
+
+  return v7;
+}
+
+@end

@@ -1,0 +1,131 @@
+@interface PXDateRangeSet
++ (id)dateRangeSet;
++ (id)dateRangeSetWithDateRange:(id)a3;
+- (BOOL)isEqual:(id)a3;
+- (PXDateRangeSet)init;
+- (PXDateRangeSet)initWithDateRange:(id)a3;
+- (id)dateRanges;
+- (id)description;
+- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (int64_t)count;
+@end
+
+@implementation PXDateRangeSet
+
+- (id)description
+{
+  v3 = MEMORY[0x1E696AEC0];
+  v8.receiver = self;
+  v8.super_class = PXDateRangeSet;
+  v4 = [(PXDateRangeSet *)&v8 description];
+  v5 = [(PXDateRangeSet *)self _dateRanges];
+  v6 = [v3 stringWithFormat:@"<%@ dateRanges=%@>", v4, v5];
+
+  return v6;
+}
+
+- (id)dateRanges
+{
+  v2 = [(PXDateRangeSet *)self _dateRanges];
+  v3 = [v2 copy];
+
+  return v3;
+}
+
+- (BOOL)isEqual:(id)a3
+{
+  v4 = a3;
+  if (v4 == self)
+  {
+    goto LABEL_5;
+  }
+
+  objc_opt_class();
+  if ((objc_opt_isKindOfClass() & 1) == 0)
+  {
+    v6 = 0;
+    goto LABEL_7;
+  }
+
+  dateRanges = self->__dateRanges;
+  if (dateRanges == v4->__dateRanges)
+  {
+LABEL_5:
+    v6 = 1;
+  }
+
+  else
+  {
+    v6 = [(NSMutableArray *)dateRanges isEqualToArray:?];
+  }
+
+LABEL_7:
+
+  return v6;
+}
+
+- (int64_t)count
+{
+  v2 = [(PXDateRangeSet *)self _dateRanges];
+  v3 = [v2 count];
+
+  return v3;
+}
+
+- (id)mutableCopyWithZone:(_NSZone *)a3
+{
+  v4 = objc_alloc_init(PXMutableDateRangeSet);
+  v5 = [(PXDateRangeSet *)self _dateRanges];
+  v6 = [v5 mutableCopy];
+  [(PXDateRangeSet *)v4 set_dateRanges:v6];
+
+  return v4;
+}
+
++ (id)dateRangeSet
+{
+  v2 = objc_alloc_init(a1);
+
+  return v2;
+}
+
++ (id)dateRangeSetWithDateRange:(id)a3
+{
+  v3 = a3;
+  v4 = [objc_alloc(objc_opt_class()) initWithDateRange:v3];
+
+  return v4;
+}
+
+- (PXDateRangeSet)initWithDateRange:(id)a3
+{
+  v4 = a3;
+  v9.receiver = self;
+  v9.super_class = PXDateRangeSet;
+  v5 = [(PXDateRangeSet *)&v9 init];
+  if (v5)
+  {
+    v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v4, 0}];
+    dateRanges = v5->__dateRanges;
+    v5->__dateRanges = v6;
+  }
+
+  return v5;
+}
+
+- (PXDateRangeSet)init
+{
+  v6.receiver = self;
+  v6.super_class = PXDateRangeSet;
+  v2 = [(PXDateRangeSet *)&v6 init];
+  if (v2)
+  {
+    v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
+    dateRanges = v2->__dateRanges;
+    v2->__dateRanges = v3;
+  }
+
+  return v2;
+}
+
+@end

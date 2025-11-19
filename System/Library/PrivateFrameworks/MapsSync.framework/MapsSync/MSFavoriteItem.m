@@ -1,0 +1,681 @@
+@interface MSFavoriteItem
++ (Class)managedClass;
++ (id)findDuplicatesWithContext:(id)a3;
++ (id)mergeWithDuplicates:(id)a3;
++ (id)optionsWith:(id)a3;
++ (id)strippedMapItemWith:(id)a3;
+- (BOOL)hidden;
+- (GEOMapItemStorage)mapItemStorage;
+- (MSFavoriteItem)initWithCustomName:(id)a3 hidden:(BOOL)a4 latitude:(id)a5 longitude:(id)a6 mapItemAddress:(id)a7 mapItemCategory:(id)a8 mapItemLastRefreshed:(id)a9 mapItemName:(id)a10 muid:(id)a11 originatingAddressString:(id)a12 positionIndex:(int64_t)a13 shortcutIdentifier:(id)a14 source:(signed __int16)a15 type:(signed __int16)a16 version:(signed __int16)a17;
+- (MSFavoriteItem)initWithObject:(id)a3 store:(id)a4 lazyLoad:(BOOL)a5 parent:(BOOL)a6;
+- (MSFavoriteItem)initWithStore:(id)a3 customName:(id)a4 hidden:(BOOL)a5 latitude:(id)a6 longitude:(id)a7 mapItemAddress:(id)a8 mapItemCategory:(id)a9 mapItemLastRefreshed:(id)a10 mapItemName:(id)a11 muid:(id)a12 originatingAddressString:(id)a13 positionIndex:(int64_t)a14 shortcutIdentifier:(id)a15 source:(signed __int16)a16 type:(signed __int16)a17 version:(signed __int16)a18;
+- (NSDate)mapItemLastRefreshed;
+- (NSNumber)latitude;
+- (NSNumber)longitude;
+- (NSNumber)muid;
+- (id)fetchContactHandles;
+- (int64_t)positionIndex;
+- (signed)favoriteType;
+- (signed)sourceType;
+- (void)flushChanges;
+- (void)onFirstSaveWithObject:(id)a3 context:(id)a4;
+- (void)placeItemNoteWithCompletionHandler:(id)a3;
+- (void)setFavoriteType:(signed __int16)a3;
+- (void)setHidden:(BOOL)a3;
+- (void)setLatitude:(id)a3;
+- (void)setLongitude:(id)a3;
+- (void)setMapItemLastRefreshed:(id)a3;
+- (void)setMapItemStorage:(id)a3;
+- (void)setMuid:(id)a3;
+- (void)setPlaceItemNote:(NSString *)a3 completionHandler:(id)a4;
+- (void)setPositionIndex:(int64_t)a3;
+- (void)setPropertiesUnsafeWithManagedObject:(id)a3 lazyLoad:(BOOL)a4 parent:(BOOL)a5;
+- (void)setSource:(signed __int16)a3;
+- (void)setSourceType:(signed __int16)a3;
+- (void)setType:(signed __int16)a3;
+- (void)setVersion:(signed __int16)a3;
+@end
+
+@implementation MSFavoriteItem
+
+- (BOOL)hidden
+{
+  v3 = OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock;
+  v4 = *(&self->super.super.isa + OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock);
+  v5 = self;
+  [v4 lock];
+  LOBYTE(v4) = *(&v5->super.super.isa + OBJC_IVAR___MSFavoriteItem__hidden);
+  [*(&self->super.super.isa + v3) unlock];
+
+  return v4;
+}
+
+- (id)fetchContactHandles
+{
+  v2 = self;
+  sub_1B6293444();
+
+  v3 = sub_1B63BEC94();
+
+  return v3;
+}
+
+- (GEOMapItemStorage)mapItemStorage
+{
+  v2 = self;
+  v3 = sub_1B6296250();
+
+  return v3;
+}
+
+- (MSFavoriteItem)initWithObject:(id)a3 store:(id)a4 lazyLoad:(BOOL)a5 parent:(BOOL)a6
+{
+  v6 = a6;
+  v7 = a5;
+  v10 = a3;
+  return sub_1B6292DB0(a3, a4, v7, v6);
+}
+
+- (void)setSourceType:(signed __int16)a3
+{
+  v4 = self;
+  _s8MapsSync12FavoriteItemC10sourceTypeAA0cd6SourceF0Ovs_0(a3);
+}
+
+- (signed)favoriteType
+{
+  v2 = self;
+  v3 = OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock;
+  v4 = *(&self->super.super.isa + OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock);
+  v5 = self;
+  [v4 lock];
+  v6 = *(&v2->super.super.isa + v3);
+  LOWORD(v2) = *(&v5->super.super.isa + OBJC_IVAR___MSFavoriteItem__type);
+  [v6 unlock];
+
+  v7 = sub_1B6296B88(v2);
+  if ((v7 & 0x10000) != 0)
+  {
+    return 0;
+  }
+
+  else
+  {
+    return v7;
+  }
+}
+
+- (MSFavoriteItem)initWithCustomName:(id)a3 hidden:(BOOL)a4 latitude:(id)a5 longitude:(id)a6 mapItemAddress:(id)a7 mapItemCategory:(id)a8 mapItemLastRefreshed:(id)a9 mapItemName:(id)a10 muid:(id)a11 originatingAddressString:(id)a12 positionIndex:(int64_t)a13 shortcutIdentifier:(id)a14 source:(signed __int16)a15 type:(signed __int16)a16 version:(signed __int16)a17
+{
+  v69 = a4;
+  v70 = self;
+  v22 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB943210, &unk_1B63C3F50);
+  v23 = *(*(v22 - 8) + 64);
+  MEMORY[0x1EEE9AC00](v22 - 8);
+  v25 = &v56 - v24;
+  if (a3)
+  {
+    v26 = sub_1B63BEBD4();
+    v67 = v27;
+    v68 = v26;
+  }
+
+  else
+  {
+    v67 = 0;
+    v68 = 0;
+  }
+
+  if (a7)
+  {
+    v28 = sub_1B63BEBD4();
+    v65 = v29;
+    v66 = v28;
+    if (a8)
+    {
+LABEL_6:
+      v64 = sub_1B63BEBD4();
+      v62 = v30;
+      goto LABEL_9;
+    }
+  }
+
+  else
+  {
+    v65 = 0;
+    v66 = 0;
+    if (a8)
+    {
+      goto LABEL_6;
+    }
+  }
+
+  v64 = 0;
+  v62 = 0;
+LABEL_9:
+  v63 = a5;
+  v61 = a6;
+  v31 = a9;
+  v32 = a10;
+  v60 = a11;
+  v33 = a12;
+  v59 = a14;
+  if (v31)
+  {
+    sub_1B63BE974();
+
+    v34 = sub_1B63BE994();
+    (*(*(v34 - 8) + 56))(v25, 0, 1, v34);
+  }
+
+  else
+  {
+    v35 = sub_1B63BE994();
+    (*(*(v35 - 8) + 56))(v25, 1, 1, v35);
+  }
+
+  if (v32)
+  {
+    v36 = sub_1B63BEBD4();
+    v38 = v37;
+
+    v58 = v25;
+    if (v33)
+    {
+LABEL_14:
+      v39 = sub_1B63BEBD4();
+      v41 = v40;
+
+      goto LABEL_17;
+    }
+  }
+
+  else
+  {
+    v36 = 0;
+    v38 = 0;
+    v58 = v25;
+    if (v33)
+    {
+      goto LABEL_14;
+    }
+  }
+
+  v39 = 0;
+  v41 = 0;
+LABEL_17:
+  v42 = a15;
+  if (v59)
+  {
+    v57 = v41;
+    v43 = v39;
+    v44 = v38;
+    v45 = v36;
+    v46 = v59;
+    v47 = sub_1B63BEBD4();
+    v49 = v48;
+
+    v42 = a15;
+    v36 = v45;
+    v38 = v44;
+    v39 = v43;
+    v41 = v57;
+  }
+
+  else
+  {
+    v47 = 0;
+    v49 = 0;
+  }
+
+  HIWORD(v55) = a16;
+  LOWORD(v55) = v42;
+  v50 = v60;
+  v51 = v63;
+  v52 = v61;
+  v53 = sub_1B62E88B0(v68, v67, v69, v63, v61, v66, v65, v64, v62, v58, v36, v38, v60, v39, v41, a13, v47, v49, v55, a17);
+
+  return v53;
+}
+
+- (MSFavoriteItem)initWithStore:(id)a3 customName:(id)a4 hidden:(BOOL)a5 latitude:(id)a6 longitude:(id)a7 mapItemAddress:(id)a8 mapItemCategory:(id)a9 mapItemLastRefreshed:(id)a10 mapItemName:(id)a11 muid:(id)a12 originatingAddressString:(id)a13 positionIndex:(int64_t)a14 shortcutIdentifier:(id)a15 source:(signed __int16)a16 type:(signed __int16)a17 version:(signed __int16)a18
+{
+  v55 = a7;
+  v64 = a5;
+  v65 = self;
+  v22 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB943210, &unk_1B63C3F50);
+  v23 = *(*(v22 - 8) + 64);
+  MEMORY[0x1EEE9AC00](v22 - 8);
+  v25 = &v51 - v24;
+  if (a4)
+  {
+    v26 = sub_1B63BEBD4();
+    v62 = v27;
+    v63 = v26;
+  }
+
+  else
+  {
+    v62 = 0;
+    v63 = 0;
+  }
+
+  if (a8)
+  {
+    v28 = sub_1B63BEBD4();
+    v60 = v29;
+    v61 = v28;
+    if (a9)
+    {
+LABEL_6:
+      v30 = sub_1B63BEBD4();
+      v58 = v31;
+      v59 = v30;
+      goto LABEL_9;
+    }
+  }
+
+  else
+  {
+    v60 = 0;
+    v61 = 0;
+    if (a9)
+    {
+      goto LABEL_6;
+    }
+  }
+
+  v58 = 0;
+  v59 = 0;
+LABEL_9:
+  v57 = a3;
+  v56 = a6;
+  v55 = v55;
+  v32 = a10;
+  v33 = a11;
+  v54 = a12;
+  v34 = a13;
+  v53 = a15;
+  if (v32)
+  {
+    sub_1B63BE974();
+
+    v35 = sub_1B63BE994();
+    (*(*(v35 - 8) + 56))(v25, 0, 1, v35);
+  }
+
+  else
+  {
+    v36 = sub_1B63BE994();
+    (*(*(v36 - 8) + 56))(v25, 1, 1, v36);
+  }
+
+  if (v33)
+  {
+    v37 = sub_1B63BEBD4();
+    v39 = v38;
+
+    v52 = v25;
+    if (v34)
+    {
+LABEL_14:
+      v40 = sub_1B63BEBD4();
+      v42 = v41;
+
+      goto LABEL_17;
+    }
+  }
+
+  else
+  {
+    v37 = 0;
+    v39 = 0;
+    v52 = v25;
+    if (v34)
+    {
+      goto LABEL_14;
+    }
+  }
+
+  v40 = 0;
+  v42 = 0;
+LABEL_17:
+  v43 = a16;
+  if (v53)
+  {
+    v51 = v40;
+    v44 = v39;
+    v45 = v37;
+    v46 = v53;
+    v47 = sub_1B63BEBD4();
+    v49 = v48;
+
+    v43 = a16;
+    v37 = v45;
+    v39 = v44;
+    v40 = v51;
+  }
+
+  else
+  {
+    v47 = 0;
+    v49 = 0;
+  }
+
+  return FavoriteItem.init(store:customName:hidden:latitude:longitude:mapItemAddress:mapItemCategory:mapItemLastRefreshed:mapItemName:muid:originatingAddressString:positionIndex:shortcutIdentifier:source:type:version:)(v57, v63, v62, v64, v56, v55, v61, v60, v59, v58, v52, v37, v39, v54, v40, v42, a14, v47, v49, v43, a17, a18);
+}
+
+- (void)flushChanges
+{
+  v3 = OBJC_IVAR____TtC8MapsSync14MapsSyncObject__editBlocks;
+  swift_beginAccess();
+  v4 = *(&self->super.super.isa + v3);
+  v5 = MEMORY[0x1E69E7CC0];
+  *(&self->super.super.isa + v3) = MEMORY[0x1E69E7CC0];
+  v6 = self;
+
+  v7 = OBJC_IVAR___MSFavoriteItem__handleChanges;
+  swift_beginAccess();
+  v8 = *(&v6->super.super.isa + v7);
+  *(&v6->super.super.isa + v7) = v5;
+}
+
++ (Class)managedClass
+{
+  type metadata accessor for MapsSyncManagedFavoriteItem();
+
+  return swift_getObjCClassFromMetadata();
+}
+
+- (void)setPropertiesUnsafeWithManagedObject:(id)a3 lazyLoad:(BOOL)a4 parent:(BOOL)a5
+{
+  v7 = a3;
+  v8 = self;
+  sub_1B6293904(v7, a4);
+}
+
+- (void)setHidden:(BOOL)a3
+{
+  v4 = self;
+  sub_1B62E2D38(a3);
+}
+
+- (NSNumber)latitude
+{
+  v2 = self;
+  v3 = sub_1B62A00E0();
+
+  return v3;
+}
+
+- (void)setLatitude:(id)a3
+{
+  v6 = a3;
+  v5 = self;
+  sub_1B62E8D90(a3);
+}
+
+- (NSNumber)longitude
+{
+  v2 = self;
+  v3 = sub_1B62A0488();
+
+  return v3;
+}
+
+- (void)setLongitude:(id)a3
+{
+  v6 = a3;
+  v5 = self;
+  sub_1B62E8F78(a3);
+}
+
+- (NSDate)mapItemLastRefreshed
+{
+  v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB943210, &unk_1B63C3F50);
+  v4 = *(*(v3 - 8) + 64);
+  MEMORY[0x1EEE9AC00](v3 - 8);
+  v6 = &v14 - v5;
+  v7 = self;
+  sub_1B62E405C(v6);
+
+  v8 = sub_1B63BE994();
+  v9 = *(v8 - 8);
+  v10 = (*(v9 + 48))(v6, 1, v8);
+  v11 = 0;
+  if (v10 != 1)
+  {
+    v12 = sub_1B63BE954();
+    (*(v9 + 8))(v6, v8);
+    v11 = v12;
+  }
+
+  return v11;
+}
+
+- (void)setMapItemLastRefreshed:(id)a3
+{
+  v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB943210, &unk_1B63C3F50);
+  v6 = *(*(v5 - 8) + 64);
+  MEMORY[0x1EEE9AC00](v5 - 8);
+  v8 = &v12 - v7;
+  if (a3)
+  {
+    sub_1B63BE974();
+    v9 = sub_1B63BE994();
+    (*(*(v9 - 8) + 56))(v8, 0, 1, v9);
+  }
+
+  else
+  {
+    v10 = sub_1B63BE994();
+    (*(*(v10 - 8) + 56))(v8, 1, 1, v10);
+  }
+
+  v11 = self;
+  sub_1B62E465C(v8);
+}
+
+- (NSNumber)muid
+{
+  v2 = self;
+  v3 = sub_1B62E5504();
+
+  return v3;
+}
+
+- (void)setMuid:(id)a3
+{
+  v6 = a3;
+  v5 = self;
+  sub_1B62E92DC(a3);
+}
+
+- (int64_t)positionIndex
+{
+  v3 = OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock;
+  v4 = *(&self->super.super.isa + OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock);
+  v5 = self;
+  [v4 lock];
+  v6 = *(&v5->super.super.isa + OBJC_IVAR___MSFavoriteItem__positionIndex);
+  [*(&self->super.super.isa + v3) unlock];
+
+  return v6;
+}
+
+- (void)setPositionIndex:(int64_t)a3
+{
+  v4 = self;
+  sub_1B62E5EBC(a3);
+}
+
+- (void)setSource:(signed __int16)a3
+{
+  v4 = self;
+  _s8MapsSync12FavoriteItemC10sourceTypeAA0cd6SourceF0Ovs_0(a3);
+}
+
+- (void)setType:(signed __int16)a3
+{
+  v4 = self;
+  _s8MapsSync12FavoriteItemC12favoriteTypeAA0cdF0Ovs_0(a3);
+}
+
+- (void)setVersion:(signed __int16)a3
+{
+  v4 = self;
+  sub_1B62E664C(a3);
+}
+
+- (void)setMapItemStorage:(id)a3
+{
+  v5 = OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock;
+  v6 = *(&self->super.super.isa + OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock);
+  v7 = a3;
+  v8 = self;
+  [v6 lock];
+  sub_1B62E6B74(*(&self->super.super.isa + v5), a3, v8);
+  [*(&self->super.super.isa + v5) unlock];
+}
+
+- (void)setFavoriteType:(signed __int16)a3
+{
+  v4 = self;
+  _s8MapsSync12FavoriteItemC12favoriteTypeAA0cdF0Ovs_0(a3);
+}
+
+- (signed)sourceType
+{
+  v2 = self;
+  v3 = OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock;
+  v4 = *(&self->super.super.isa + OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock);
+  v5 = self;
+  [v4 lock];
+  v6 = *(&v2->super.super.isa + v3);
+  LOWORD(v2) = *(&v5->super.super.isa + OBJC_IVAR___MSFavoriteItem__source);
+  [v6 unlock];
+
+  v7 = sub_1B634BAA0(v2);
+  if ((v7 & 0x10000) != 0)
+  {
+    return -1;
+  }
+
+  else
+  {
+    return v7;
+  }
+}
+
+- (void)onFirstSaveWithObject:(id)a3 context:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  v8 = self;
+  sub_1B63B7B48(v6, v7);
+}
+
++ (id)optionsWith:(id)a3
+{
+  v4 = a3;
+  v5 = sub_1B6292014(a3);
+
+  return v5;
+}
+
++ (id)strippedMapItemWith:(id)a3
+{
+  v4 = objc_opt_self();
+  v5 = a3;
+  result = [v4 mapItemStorageForGEOMapItem:v5 forUseType:5];
+  if (result)
+  {
+    v7 = result;
+
+    return v7;
+  }
+
+  else
+  {
+    __break(1u);
+  }
+
+  return result;
+}
+
++ (id)mergeWithDuplicates:(id)a3
+{
+  sub_1B6281C60(0, &qword_1EDB0ECB0, 0x1E695D620);
+  v3 = sub_1B63BECA4();
+  v4 = sub_1B63BD3E4(v3);
+
+  return v4;
+}
+
++ (id)findDuplicatesWithContext:(id)a3
+{
+  swift_getObjCClassMetadata();
+  v4 = a3;
+  sub_1B63B83B0(v4);
+
+  __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB943710, &qword_1B63C3EB8);
+  v5 = sub_1B63BEC94();
+
+  return v5;
+}
+
+- (void)placeItemNoteWithCompletionHandler:(id)a3
+{
+  v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB943830, &qword_1B63C5100);
+  v6 = *(*(v5 - 8) + 64);
+  MEMORY[0x1EEE9AC00](v5 - 8);
+  v8 = &v15 - v7;
+  v9 = _Block_copy(a3);
+  v10 = swift_allocObject();
+  *(v10 + 16) = v9;
+  *(v10 + 24) = self;
+  v11 = sub_1B63BED34();
+  (*(*(v11 - 8) + 56))(v8, 1, 1, v11);
+  v12 = swift_allocObject();
+  v12[2] = 0;
+  v12[3] = 0;
+  v12[4] = &unk_1B63C7740;
+  v12[5] = v10;
+  v13 = swift_allocObject();
+  v13[2] = 0;
+  v13[3] = 0;
+  v13[4] = &unk_1B63C6420;
+  v13[5] = v12;
+  v14 = self;
+  sub_1B63BBE9C(0, 0, v8, &unk_1B63C6428, v13);
+}
+
+- (void)setPlaceItemNote:(NSString *)a3 completionHandler:(id)a4
+{
+  v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB943830, &qword_1B63C5100);
+  v8 = *(*(v7 - 8) + 64);
+  MEMORY[0x1EEE9AC00](v7 - 8);
+  v10 = &v18 - v9;
+  v11 = _Block_copy(a4);
+  v12 = swift_allocObject();
+  v12[2] = a3;
+  v12[3] = v11;
+  v12[4] = self;
+  v13 = sub_1B63BED34();
+  (*(*(v13 - 8) + 56))(v10, 1, 1, v13);
+  v14 = swift_allocObject();
+  v14[2] = 0;
+  v14[3] = 0;
+  v14[4] = &unk_1B63C7708;
+  v14[5] = v12;
+  v15 = swift_allocObject();
+  v15[2] = 0;
+  v15[3] = 0;
+  v15[4] = &unk_1B63C5510;
+  v15[5] = v14;
+  v16 = a3;
+  v17 = self;
+  sub_1B63BBE9C(0, 0, v10, &unk_1B63C5120, v15);
+}
+
+@end

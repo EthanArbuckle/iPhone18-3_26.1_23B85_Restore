@@ -1,0 +1,90 @@
+@interface MOAppCategoryUsage
+- (NSString)category;
+- (_TtC8momentsd18MOAppCategoryUsage)init;
+- (_TtC8momentsd18MOAppCategoryUsage)initWithCategory:(id)a3 totalDuration:(double)a4;
+- (double)getTotalDuration;
+- (double)totalDuration;
+- (id)getCategory;
+- (void)setCategory:(id)a3;
+- (void)setTotalDuration:(double)a3;
+@end
+
+@implementation MOAppCategoryUsage
+
+- (NSString)category
+{
+  v2 = (self + OBJC_IVAR____TtC8momentsd18MOAppCategoryUsage_category);
+  swift_beginAccess();
+  v4 = *v2;
+  v3 = v2[1];
+
+  v5 = String._bridgeToObjectiveC()();
+
+  return v5;
+}
+
+- (void)setCategory:(id)a3
+{
+  v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+  v6 = v5;
+  v7 = (self + OBJC_IVAR____TtC8momentsd18MOAppCategoryUsage_category);
+  swift_beginAccess();
+  v8 = v7[1];
+  *v7 = v4;
+  v7[1] = v6;
+}
+
+- (double)totalDuration
+{
+  v3 = OBJC_IVAR____TtC8momentsd18MOAppCategoryUsage_totalDuration;
+  swift_beginAccess();
+  return *(self + v3);
+}
+
+- (void)setTotalDuration:(double)a3
+{
+  v5 = OBJC_IVAR____TtC8momentsd18MOAppCategoryUsage_totalDuration;
+  swift_beginAccess();
+  *(self + v5) = a3;
+}
+
+- (_TtC8momentsd18MOAppCategoryUsage)initWithCategory:(id)a3 totalDuration:(double)a4
+{
+  v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+  v7 = (self + OBJC_IVAR____TtC8momentsd18MOAppCategoryUsage_category);
+  *v7 = v6;
+  v7[1] = v8;
+  *(self + OBJC_IVAR____TtC8momentsd18MOAppCategoryUsage_totalDuration) = a4;
+  v10.receiver = self;
+  v10.super_class = type metadata accessor for MOAppCategoryUsage();
+  return [(MOAppCategoryUsage *)&v10 init];
+}
+
+- (id)getCategory
+{
+  v2 = *((swift_isaMask & *self) + 0x60);
+  v3 = self;
+  v2();
+
+  v4 = String._bridgeToObjectiveC()();
+
+  return v4;
+}
+
+- (double)getTotalDuration
+{
+  v2 = *((swift_isaMask & *self) + 0x78);
+  v3 = self;
+  v4 = v2();
+
+  return v4;
+}
+
+- (_TtC8momentsd18MOAppCategoryUsage)init
+{
+  result = _swift_stdlib_reportUnimplementedInitializer();
+  __break(1u);
+  return result;
+}
+
+@end

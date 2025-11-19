@@ -1,0 +1,123 @@
+@interface MFComposeSendAccessoryButton
++ (id)buttonWithType:(int64_t)a3;
+- (id)_pointerShapeForTargetedPreview:(id)a3;
+- (id)_preview;
+- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (void)traitCollectionDidChange:(id)a3;
+@end
+
+@implementation MFComposeSendAccessoryButton
+
++ (id)buttonWithType:(int64_t)a3
+{
+  v13.receiver = a1;
+  v13.super_class = &OBJC_METACLASS___MFComposeSendAccessoryButton;
+  v3 = objc_msgSendSuper2(&v13, sel_buttonWithType_, a3);
+  v4 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"arrow.up.circle.fill"];
+  v5 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  v6 = [MEMORY[0x1E69DCAB8] mf_symbolConfigurationForView:15];
+  [v5 setPreferredSymbolConfigurationForImage:v6];
+
+  [v5 setImage:v4];
+  [v5 setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
+  v7 = [MEMORY[0x1E69DC888] clearColor];
+  v8 = [v5 background];
+  [v8 setBackgroundColor:v7];
+
+  [v3 setConfiguration:v5];
+  [v3 setLargeContentImage:v4];
+  v9 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
+  v10 = [v9 localizedStringForKey:@"SEND" value:&stru_1F3CF3758 table:@"Main"];
+  [v3 setLargeContentTitle:v10];
+
+  [v3 setShowsLargeContentViewer:1];
+  [v3 setScalesLargeContentImage:1];
+  [v3 setAccessibilityIdentifier:*MEMORY[0x1E69ADB90]];
+  v11 = [objc_alloc(MEMORY[0x1E69DCDB0]) initWithDelegate:v3];
+  [v3 addInteraction:v11];
+
+  return v3;
+}
+
+- (void)traitCollectionDidChange:(id)a3
+{
+  v4 = a3;
+  v10.receiver = self;
+  v10.super_class = MFComposeSendAccessoryButton;
+  [(MFComposeSendAccessoryButton *)&v10 traitCollectionDidChange:v4];
+  if (!v4 || (-[MFComposeSendAccessoryButton traitCollection](self, "traitCollection"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 userInterfaceStyle], v7 = objc_msgSend(v4, "userInterfaceStyle"), v5, v6 != v7))
+  {
+    v8 = [(MFComposeSendAccessoryButton *)self window];
+    v9 = [v8 tintColor];
+    [(MFComposeSendAccessoryButton *)self setTintColor:v9];
+  }
+}
+
+- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+{
+  v5 = [(MFComposeSendAccessoryButton *)self _preview:a3];
+  v6 = [MEMORY[0x1E69DCDB8] effectWithPreview:v5];
+  v7 = [(MFComposeSendAccessoryButton *)self _pointerShapeForTargetedPreview:v5];
+  v8 = [MEMORY[0x1E69DCDD0] styleWithEffect:v6 shape:v7];
+
+  return v8;
+}
+
+- (id)_preview
+{
+  v3 = [(MFComposeSendAccessoryButton *)self window];
+  if (v3)
+  {
+    [(MFComposeSendAccessoryButton *)self bounds];
+    UIRectGetCenter();
+    [(MFComposeSendAccessoryButton *)self convertPoint:v3 toView:?];
+    v6 = [objc_alloc(MEMORY[0x1E69DCE38]) initWithContainer:v3 center:{v4, v5}];
+    v7 = objc_alloc_init(MEMORY[0x1E69DCE28]);
+    v8 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:self parameters:v7 target:v6];
+  }
+
+  else
+  {
+    v8 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:self];
+  }
+
+  return v8;
+}
+
+- (id)_pointerShapeForTargetedPreview:(id)a3
+{
+  v4 = a3;
+  [(MFComposeSendAccessoryButton *)self bounds];
+  v6 = v5;
+  v8 = v7;
+  v10 = v9;
+  v12 = v11;
+  v13 = [v4 target];
+  v14 = [v13 container];
+  [(MFComposeSendAccessoryButton *)self convertRect:v14 toView:v6, v8, v10, v12];
+  v16 = v15;
+  v18 = v17;
+  v20 = v19;
+  v22 = v21;
+
+  v28.origin.x = v16;
+  v28.origin.y = v18;
+  v28.size.width = v20;
+  v28.size.height = v22;
+  Width = CGRectGetWidth(v28);
+  v29.origin.x = v16;
+  v29.origin.y = v18;
+  v29.size.width = v20;
+  v29.size.height = v22;
+  Height = CGRectGetHeight(v29);
+  if (Width >= Height)
+  {
+    Height = Width;
+  }
+
+  v25 = [MEMORY[0x1E69DCDC8] shapeWithRoundedRect:v16 cornerRadius:{v18, v20, v22, Height * 0.5}];
+
+  return v25;
+}
+
+@end

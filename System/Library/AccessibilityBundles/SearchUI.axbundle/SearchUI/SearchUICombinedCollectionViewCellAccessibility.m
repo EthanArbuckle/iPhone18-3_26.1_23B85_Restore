@@ -1,0 +1,71 @@
+@interface SearchUICombinedCollectionViewCellAccessibility
++ (void)_accessibilityPerformValidations:(id)a3;
+- (id)accessibilityLabel;
+- (unint64_t)accessibilityTraits;
+@end
+
+@implementation SearchUICombinedCollectionViewCellAccessibility
+
++ (void)_accessibilityPerformValidations:(id)a3
+{
+  v3 = a3;
+  [v3 validateClass:@"SearchUICardSectionView"];
+  [v3 validateClass:@"SearchUICircleButtonItemView"];
+}
+
+- (id)accessibilityLabel
+{
+  v3 = [(SearchUICombinedCollectionViewCellAccessibility *)self safeValueForKey:@"rowModel"];
+
+  if (v3)
+  {
+    v4 = UIAXStringForAllChildren();
+  }
+
+  else
+  {
+    v6.receiver = self;
+    v6.super_class = SearchUICombinedCollectionViewCellAccessibility;
+    v4 = [(SearchUICombinedCollectionViewCellAccessibility *)&v6 accessibilityLabel];
+  }
+
+  return v4;
+}
+
+- (unint64_t)accessibilityTraits
+{
+  v6.receiver = self;
+  v6.super_class = SearchUICombinedCollectionViewCellAccessibility;
+  v3 = [(SearchUICombinedCollectionViewCellAccessibility *)&v6 accessibilityTraits];
+  if ([(SearchUICombinedCollectionViewCellAccessibility *)self safeBoolForKey:@"isSelected"])
+  {
+    v4 = ~*MEMORY[0x29EDC7FC0];
+  }
+
+  else
+  {
+    v4 = -1;
+  }
+
+  return v4 & v3;
+}
+
+uint64_t __72__SearchUICombinedCollectionViewCellAccessibility_accessibilityElements__block_invoke(uint64_t a1, void *a2)
+{
+  v2 = a2;
+  NSClassFromString(&cfstr_Searchuicardse_0.isa);
+  isKindOfClass = objc_opt_isKindOfClass();
+
+  return isKindOfClass & 1;
+}
+
+uint64_t __89__SearchUICombinedCollectionViewCellAccessibility__accessibilitySupplementaryFooterViews__block_invoke(uint64_t a1, void *a2)
+{
+  v2 = a2;
+  NSClassFromString(&cfstr_Searchuicircle.isa);
+  isKindOfClass = objc_opt_isKindOfClass();
+
+  return isKindOfClass & 1;
+}
+
+@end

@@ -1,0 +1,130 @@
+@interface CLGpsPosition
+- ($FE0CC061C8DCDB9119F02F95D6E19FCC)gpsLocation;
+- (CLGpsPosition)init;
+- (CLGpsPosition)initWithCoder:(id)a3;
+- (CLGpsPosition)initWithLocation:(id *)a3 andPrivateLocation:(id *)a4;
+- (id)description;
+- (void)encodeWithCoder:(id)a3;
+@end
+
+@implementation CLGpsPosition
+
+- (CLGpsPosition)init
+{
+  [(CLGpsPosition *)self doesNotRecognizeSelector:a2];
+
+  return 0;
+}
+
+- (CLGpsPosition)initWithLocation:(id *)a3 andPrivateLocation:(id *)a4
+{
+  v18.receiver = self;
+  v18.super_class = CLGpsPosition;
+  v6 = [(CLGpsPosition *)&v18 init];
+  if (v6)
+  {
+    v7.__d_.__rep_ = std::chrono::steady_clock::now().__d_.__rep_;
+    v8 = *&a3->var1.var1;
+    *(v6 + 1) = *&a3->var0;
+    *(v6 + 2) = v8;
+    v9 = *&a3->var3;
+    v10 = *&a3->var5;
+    v11 = *&a3->var9;
+    *(v6 + 5) = *&a3->var7;
+    *(v6 + 6) = v11;
+    *(v6 + 3) = v9;
+    *(v6 + 4) = v10;
+    v12 = *&a3->var11;
+    var13 = a3->var13;
+    v14 = *&a3->var14;
+    *(v6 + 156) = *&a3->var16;
+    *(v6 + 8) = var13;
+    *(v6 + 9) = v14;
+    *(v6 + 7) = v12;
+    *&v12 = *&a3->var10;
+    v15 = v7.__d_.__rep_ + (*&v12 * 1000000000.0);
+    if (*&v12 < 0.0)
+    {
+      v15 = 0x7FFFFFFFFFFFFFFFLL;
+    }
+
+    *(v6 + 1) = v15;
+    memcpy(v6 + 176, a4, 0x230uLL);
+    v16 = v6;
+  }
+
+  return v6;
+}
+
+- (CLGpsPosition)initWithCoder:(id)a3
+{
+  v4 = a3;
+  v16.receiver = self;
+  v16.super_class = CLGpsPosition;
+  v5 = [(CLGpsPosition *)&v16 init];
+  if (v5)
+  {
+    sub_1001718AC(v4, v15);
+    v6 = *(&v15[8] + 12);
+    v8 = v15[7];
+    v7 = v15[8];
+    *(v5 + 7) = v15[6];
+    *(v5 + 8) = v8;
+    *(v5 + 9) = v7;
+    *(v5 + 156) = v6;
+    v10 = v15[4];
+    v9 = v15[5];
+    v11 = v15[3];
+    *(v5 + 3) = v15[2];
+    *(v5 + 4) = v11;
+    *(v5 + 5) = v10;
+    *(v5 + 6) = v9;
+    v12 = v15[1];
+    *(v5 + 1) = v15[0];
+    *(v5 + 2) = v12;
+    sub_100171954(v4, v15);
+    memcpy(v5 + 176, v15, 0x230uLL);
+    *(v5 + 1) = sub_100171AA4(v4);
+    v13 = v5;
+  }
+
+  return v5;
+}
+
+- (void)encodeWithCoder:(id)a3
+{
+  v4 = a3;
+  sub_100171940(v4, &self->_gpsLocation);
+  sub_1001719E8(v4, &self->_gpsLocation.ellipsoidalAltitude);
+  sub_100171AEC(v4, &self->_expiry);
+}
+
+- (id)description
+{
+  [(CLGpsPosition *)self gpsLocation];
+  [(CLGpsPosition *)self gpsLocation];
+  v3 = [NSString stringWithFormat:@"lat/lon=[%lf, %lf]", v6, v5];
+
+  return v3;
+}
+
+- ($FE0CC061C8DCDB9119F02F95D6E19FCC)gpsLocation
+{
+  v3 = *&self->var14;
+  *&retstr->var11 = self->var13;
+  retstr->var13 = v3;
+  *&retstr->var14 = *&self->var17;
+  *&retstr->var16 = *(&self->var19 + 1);
+  v4 = *&self->var7;
+  *&retstr->var3 = *&self->var5;
+  *&retstr->var5 = v4;
+  v5 = *&self->var11;
+  *&retstr->var7 = *&self->var9;
+  *&retstr->var9 = v5;
+  v6 = *&self->var3;
+  *&retstr->var0 = *&self->var1.var1;
+  *&retstr->var1.var1 = v6;
+  return self;
+}
+
+@end

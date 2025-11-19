@@ -1,0 +1,376 @@
+@interface _CPRankingFeedback
+- (BOOL)isEqual:(id)a3;
+- (_CPRankingFeedback)init;
+- (_CPRankingFeedback)initWithFacade:(id)a3;
+- (unint64_t)hash;
+- (void)addHiddenResults:(id)a3;
+- (void)addSections:(id)a3;
+- (void)setHiddenResults:(id)a3;
+- (void)setSections:(id)a3;
+- (void)writeTo:(id)a3;
+@end
+
+@implementation _CPRankingFeedback
+
+- (unint64_t)hash
+{
+  blendingDuration = self->_blendingDuration;
+  if (blendingDuration < 0.0)
+  {
+    blendingDuration = -blendingDuration;
+  }
+
+  *v2.i64 = round(blendingDuration);
+  *v3.i64 = *v2.i64 - trunc(*v2.i64 * 5.42101086e-20) * 1.84467441e19;
+  v6.f64[0] = NAN;
+  v6.f64[1] = NAN;
+  v7 = 2654435761u * self->_timestamp;
+  v8 = (*vbslq_s8(vnegq_f64(v6), v3, v2).i64 * 2654435760.0) + vcvtd_n_u64_f64(blendingDuration - *v2.i64, 0x40uLL);
+  v9 = [(NSArray *)self->_sections hash];
+  return v9 ^ [(NSArray *)self->_hiddenResults hash]^ v7 ^ (2654435761 * self->_spotlightQueryIntent) ^ v8;
+}
+
+- (BOOL)isEqual:(id)a3
+{
+  v4 = a3;
+  if (![v4 isMemberOfClass:objc_opt_class()])
+  {
+    goto LABEL_14;
+  }
+
+  timestamp = self->_timestamp;
+  if (timestamp != [v4 timestamp])
+  {
+    goto LABEL_14;
+  }
+
+  blendingDuration = self->_blendingDuration;
+  [v4 blendingDuration];
+  if (blendingDuration != v7)
+  {
+    goto LABEL_14;
+  }
+
+  v8 = [(_CPRankingFeedback *)self sections];
+  v9 = [v4 sections];
+  if ((v8 != 0) == (v9 == 0))
+  {
+    goto LABEL_13;
+  }
+
+  v10 = [(_CPRankingFeedback *)self sections];
+  if (v10)
+  {
+    v11 = v10;
+    v12 = [(_CPRankingFeedback *)self sections];
+    v13 = [v4 sections];
+    v14 = [v12 isEqual:v13];
+
+    if (!v14)
+    {
+      goto LABEL_14;
+    }
+  }
+
+  else
+  {
+  }
+
+  v8 = [(_CPRankingFeedback *)self hiddenResults];
+  v9 = [v4 hiddenResults];
+  if ((v8 != 0) != (v9 == 0))
+  {
+    v15 = [(_CPRankingFeedback *)self hiddenResults];
+    if (!v15)
+    {
+
+LABEL_17:
+      spotlightQueryIntent = self->_spotlightQueryIntent;
+      v20 = spotlightQueryIntent == [v4 spotlightQueryIntent];
+      goto LABEL_15;
+    }
+
+    v16 = v15;
+    v17 = [(_CPRankingFeedback *)self hiddenResults];
+    v18 = [v4 hiddenResults];
+    v19 = [v17 isEqual:v18];
+
+    if (v19)
+    {
+      goto LABEL_17;
+    }
+  }
+
+  else
+  {
+LABEL_13:
+  }
+
+LABEL_14:
+  v20 = 0;
+LABEL_15:
+
+  return v20;
+}
+
+- (void)writeTo:(id)a3
+{
+  v32 = *MEMORY[0x1E69E9840];
+  v4 = a3;
+  if ([(_CPRankingFeedback *)self timestamp])
+  {
+    timestamp = self->_timestamp;
+    PBDataWriterWriteUint64Field();
+  }
+
+  [(_CPRankingFeedback *)self blendingDuration];
+  if (v6 != 0.0)
+  {
+    blendingDuration = self->_blendingDuration;
+    PBDataWriterWriteDoubleField();
+  }
+
+  v28 = 0u;
+  v29 = 0u;
+  v26 = 0u;
+  v27 = 0u;
+  v8 = self->_sections;
+  v9 = [(NSArray *)v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  if (v9)
+  {
+    v10 = v9;
+    v11 = *v27;
+    do
+    {
+      v12 = 0;
+      do
+      {
+        if (*v27 != v11)
+        {
+          objc_enumerationMutation(v8);
+        }
+
+        v13 = *(*(&v26 + 1) + 8 * v12);
+        PBDataWriterWriteSubmessage();
+        ++v12;
+      }
+
+      while (v10 != v12);
+      v10 = [(NSArray *)v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
+    }
+
+    while (v10);
+  }
+
+  v24 = 0u;
+  v25 = 0u;
+  v22 = 0u;
+  v23 = 0u;
+  v14 = self->_hiddenResults;
+  v15 = [(NSArray *)v14 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  if (v15)
+  {
+    v16 = v15;
+    v17 = *v23;
+    do
+    {
+      v18 = 0;
+      do
+      {
+        if (*v23 != v17)
+        {
+          objc_enumerationMutation(v14);
+        }
+
+        v19 = *(*(&v22 + 1) + 8 * v18);
+        PBDataWriterWriteSubmessage();
+        ++v18;
+      }
+
+      while (v16 != v18);
+      v16 = [(NSArray *)v14 countByEnumeratingWithState:&v22 objects:v30 count:16];
+    }
+
+    while (v16);
+  }
+
+  if ([(_CPRankingFeedback *)self spotlightQueryIntent])
+  {
+    spotlightQueryIntent = self->_spotlightQueryIntent;
+    PBDataWriterWriteInt32Field();
+  }
+
+  v21 = *MEMORY[0x1E69E9840];
+}
+
+- (void)addHiddenResults:(id)a3
+{
+  v4 = a3;
+  hiddenResults = self->_hiddenResults;
+  v8 = v4;
+  if (!hiddenResults)
+  {
+    v6 = [MEMORY[0x1E695DF70] array];
+    v7 = self->_hiddenResults;
+    self->_hiddenResults = v6;
+
+    v4 = v8;
+    hiddenResults = self->_hiddenResults;
+  }
+
+  [(NSArray *)hiddenResults addObject:v4];
+}
+
+- (void)setHiddenResults:(id)a3
+{
+  v4 = [a3 mutableCopy];
+  hiddenResults = self->_hiddenResults;
+  self->_hiddenResults = v4;
+
+  MEMORY[0x1EEE66BB8]();
+}
+
+- (void)addSections:(id)a3
+{
+  v4 = a3;
+  sections = self->_sections;
+  v8 = v4;
+  if (!sections)
+  {
+    v6 = [MEMORY[0x1E695DF70] array];
+    v7 = self->_sections;
+    self->_sections = v6;
+
+    v4 = v8;
+    sections = self->_sections;
+  }
+
+  [(NSArray *)sections addObject:v4];
+}
+
+- (void)setSections:(id)a3
+{
+  v4 = [a3 mutableCopy];
+  sections = self->_sections;
+  self->_sections = v4;
+
+  MEMORY[0x1EEE66BB8]();
+}
+
+- (_CPRankingFeedback)init
+{
+  v5.receiver = self;
+  v5.super_class = _CPRankingFeedback;
+  v2 = [(_CPRankingFeedback *)&v5 init];
+  if (v2)
+  {
+    [(_CPRankingFeedback *)v2 setTimestamp:mach_absolute_time()];
+    v3 = v2;
+  }
+
+  return v2;
+}
+
+- (_CPRankingFeedback)initWithFacade:(id)a3
+{
+  v36 = *MEMORY[0x1E69E9840];
+  v4 = a3;
+  v33.receiver = self;
+  v33.super_class = _CPRankingFeedback;
+  v5 = [(_CPRankingFeedback *)&v33 init];
+  if (v5)
+  {
+    -[_CPRankingFeedback setTimestamp:](v5, "setTimestamp:", [v4 timestamp]);
+    [v4 blendingDuration];
+    [(_CPRankingFeedback *)v5 setBlendingDuration:?];
+    v6 = [v4 sections];
+    if (v6)
+    {
+      v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
+    }
+
+    else
+    {
+      v7 = 0;
+    }
+
+    v31 = 0u;
+    v32 = 0u;
+    v29 = 0u;
+    v30 = 0u;
+    v8 = [v4 sections];
+    v9 = [v8 countByEnumeratingWithState:&v29 objects:v35 count:16];
+    if (v9)
+    {
+      v10 = v9;
+      v11 = *v30;
+      do
+      {
+        for (i = 0; i != v10; ++i)
+        {
+          if (*v30 != v11)
+          {
+            objc_enumerationMutation(v8);
+          }
+
+          v13 = [[_CPSectionRankingFeedback alloc] initWithFacade:*(*(&v29 + 1) + 8 * i)];
+          [v7 addObject:v13];
+        }
+
+        v10 = [v8 countByEnumeratingWithState:&v29 objects:v35 count:16];
+      }
+
+      while (v10);
+    }
+
+    [(_CPRankingFeedback *)v5 setSections:v7];
+    v14 = [v4 hiddenResults];
+    if (v14)
+    {
+      v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
+    }
+
+    else
+    {
+      v15 = 0;
+    }
+
+    v27 = 0u;
+    v28 = 0u;
+    v25 = 0u;
+    v26 = 0u;
+    v16 = [v4 hiddenResults];
+    v17 = [v16 countByEnumeratingWithState:&v25 objects:v34 count:16];
+    if (v17)
+    {
+      v18 = v17;
+      v19 = *v26;
+      do
+      {
+        for (j = 0; j != v18; ++j)
+        {
+          if (*v26 != v19)
+          {
+            objc_enumerationMutation(v16);
+          }
+
+          v21 = [[_CPSearchResultForFeedback alloc] initWithFacade:*(*(&v25 + 1) + 8 * j)];
+          [v15 addObject:v21];
+        }
+
+        v18 = [v16 countByEnumeratingWithState:&v25 objects:v34 count:16];
+      }
+
+      while (v18);
+    }
+
+    [(_CPRankingFeedback *)v5 setHiddenResults:v15];
+    -[_CPRankingFeedback setSpotlightQueryIntent:](v5, "setSpotlightQueryIntent:", [v4 spotlightQueryIntent]);
+    v22 = v5;
+  }
+
+  v23 = *MEMORY[0x1E69E9840];
+  return v5;
+}
+
+@end

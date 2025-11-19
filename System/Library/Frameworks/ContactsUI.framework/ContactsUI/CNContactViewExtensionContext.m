@@ -1,0 +1,404 @@
+@interface CNContactViewExtensionContext
++ (id)_extensionAuxiliaryHostProtocol;
++ (id)_extensionAuxiliaryVendorProtocol;
+- (BOOL)shouldPerformDefaultActionForContact:(id)a3 propertyKey:(id)a4 propertyIdentifier:(id)a5;
+- (id)host;
+- (void)asyncShouldPerformDefaultActionForContact:(id)a3 propertyKey:(id)a4 propertyIdentifier:(id)a5;
+- (void)asyncShouldPerformDefaultActionResponse:(BOOL)a3;
+- (void)didChangePreferredContentSize:(CGSize)a3;
+- (void)didChangeToEditMode:(BOOL)a3;
+- (void)didChangeToShowTitle:(BOOL)a3;
+- (void)didCompleteWithContact:(id)a3;
+- (void)didDeleteContact:(id)a3;
+- (void)didExecuteClearRecentsDataAction;
+- (void)didExecuteDeleteFromDowntimeWhitelistAction;
+- (void)editCancel;
+- (void)isPresentingEditingController:(BOOL)a3;
+- (void)isPresentingFullscreen:(BOOL)a3;
+- (void)performConfirmedCancel;
+- (void)presentCancelConfirmationAlert;
+- (void)setupWithOptions:(id)a3 readyBlock:(id)a4;
+- (void)toggleEditing;
+- (void)updateEditing:(BOOL)a3 doneButtonEnabled:(BOOL)a4 doneButtonText:(id)a5;
+- (void)viewDidAppear;
+@end
+
+@implementation CNContactViewExtensionContext
+
++ (id)_extensionAuxiliaryHostProtocol
+{
+  if (_extensionAuxiliaryHostProtocol_onceToken != -1)
+  {
+    dispatch_once(&_extensionAuxiliaryHostProtocol_onceToken, &__block_literal_global_111);
+  }
+
+  v3 = _extensionAuxiliaryHostProtocol___interface;
+
+  return v3;
+}
+
+uint64_t __64__CNContactViewExtensionContext__extensionAuxiliaryHostProtocol__block_invoke()
+{
+  _extensionAuxiliaryHostProtocol___interface = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F0D69688];
+
+  return MEMORY[0x1EEE66BB8]();
+}
+
++ (id)_extensionAuxiliaryVendorProtocol
+{
+  if (_extensionAuxiliaryVendorProtocol_onceToken != -1)
+  {
+    dispatch_once(&_extensionAuxiliaryVendorProtocol_onceToken, &__block_literal_global);
+  }
+
+  v3 = _extensionAuxiliaryVendorProtocol___interface;
+
+  return v3;
+}
+
+void __66__CNContactViewExtensionContext__extensionAuxiliaryVendorProtocol__block_invoke()
+{
+  v0 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F0E28D08];
+  v1 = _extensionAuxiliaryVendorProtocol___interface;
+  _extensionAuxiliaryVendorProtocol___interface = v0;
+
+  v13 = MEMORY[0x1E695DFD8];
+  v15 = _extensionAuxiliaryVendorProtocol___interface;
+  v12 = objc_opt_class();
+  v2 = objc_opt_class();
+  v3 = objc_opt_class();
+  v4 = objc_opt_class();
+  v5 = objc_opt_class();
+  v6 = objc_opt_class();
+  v7 = objc_opt_class();
+  v8 = objc_opt_class();
+  v9 = objc_opt_class();
+  v10 = objc_opt_class();
+  v11 = objc_opt_class();
+  v14 = [v13 setWithObjects:{v12, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, objc_opt_class(), 0}];
+  [v15 setClasses:v14 forSelector:sel_setupWithOptions_readyBlock_ argumentIndex:0 ofReply:0];
+}
+
+- (void)asyncShouldPerformDefaultActionForContact:(id)a3 propertyKey:(id)a4 propertyIdentifier:(id)a5
+{
+  v5 = CNUILogViewService();
+  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  {
+    *v6 = 0;
+    _os_log_error_impl(&dword_199A75000, v5, OS_LOG_TYPE_ERROR, "Out of process [CNContactViewExtensionContext asyncShouldPerformDefaultActionForContact] should not be invoked.", v6, 2u);
+  }
+}
+
+- (void)presentCancelConfirmationAlert
+{
+  v2 = [(CNContactViewExtensionContext *)self host];
+  [v2 presentCancelConfirmationAlert];
+}
+
+- (void)didExecuteDeleteFromDowntimeWhitelistAction
+{
+  v2 = [(CNContactViewExtensionContext *)self host];
+  [v2 didExecuteDeleteFromDowntimeWhitelistAction];
+}
+
+- (void)didExecuteClearRecentsDataAction
+{
+  v2 = [(CNContactViewExtensionContext *)self host];
+  [v2 didExecuteClearRecentsDataAction];
+}
+
+- (void)viewDidAppear
+{
+  v2 = [(CNContactViewExtensionContext *)self host];
+  [v2 viewDidAppear];
+}
+
+- (void)didChangePreferredContentSize:(CGSize)a3
+{
+  height = a3.height;
+  width = a3.width;
+  v5 = [(CNContactViewExtensionContext *)self host];
+  [v5 didChangePreferredContentSize:{width, height}];
+}
+
+- (void)isPresentingEditingController:(BOOL)a3
+{
+  v3 = a3;
+  v4 = [(CNContactViewExtensionContext *)self host];
+  [v4 isPresentingEditingController:v3];
+}
+
+- (void)isPresentingFullscreen:(BOOL)a3
+{
+  v3 = a3;
+  v4 = [(CNContactViewExtensionContext *)self host];
+  [v4 isPresentingFullscreen:v3];
+}
+
+- (void)didDeleteContact:(id)a3
+{
+  v4 = a3;
+  v5 = [(CNContactViewExtensionContext *)self host];
+  [v5 didDeleteContact:v4];
+}
+
+- (void)didCompleteWithContact:(id)a3
+{
+  v4 = a3;
+  v5 = [(CNContactViewExtensionContext *)self host];
+  [v5 didCompleteWithContact:v4];
+}
+
+- (void)updateEditing:(BOOL)a3 doneButtonEnabled:(BOOL)a4 doneButtonText:(id)a5
+{
+  v5 = a4;
+  v6 = a3;
+  v8 = a5;
+  v9 = [(CNContactViewExtensionContext *)self host];
+  [v9 updateEditing:v6 doneButtonEnabled:v5 doneButtonText:v8];
+}
+
+- (BOOL)shouldPerformDefaultActionForContact:(id)a3 propertyKey:(id)a4 propertyIdentifier:(id)a5
+{
+  v29 = *MEMORY[0x1E69E9840];
+  v8 = a5;
+  v9 = a4;
+  v10 = a3;
+  v11 = dispatch_semaphore_create(0);
+  [(CNContactViewExtensionContext *)self setAsyncShouldPerformSemaphore:v11];
+
+  [(CNContactViewExtensionContext *)self setAsyncShouldPerformResponse:1];
+  v12 = [(CNContactViewExtensionContext *)self host];
+  [v12 asyncShouldPerformDefaultActionForContact:v10 propertyKey:v9 propertyIdentifier:v8];
+
+  v13 = [(CNContactViewExtensionContext *)self asyncShouldPerformSemaphore];
+
+  if (v13)
+  {
+    v14 = [MEMORY[0x1E69966E8] currentEnvironment];
+    v15 = [v14 timeProvider];
+    [v15 timestamp];
+    v17 = v16;
+
+    v18 = [(CNContactViewExtensionContext *)self asyncShouldPerformSemaphore];
+    LOBYTE(v15) = CNDispatchSemaphoreWait();
+
+    if ((v15 & 1) == 0)
+    {
+      v24 = CNUILogViewService();
+      if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
+      {
+        LOWORD(v27) = 0;
+        _os_log_fault_impl(&dword_199A75000, v24, OS_LOG_TYPE_FAULT, "OOP [CNContactViewExtensionContext shouldPerformDefaultActionForContact:propertyKey:propertyIdentifier:] call timed out", &v27, 2u);
+      }
+
+      goto LABEL_8;
+    }
+
+    v19 = [MEMORY[0x1E69966E8] currentEnvironment];
+    v20 = [v19 timeProvider];
+    [v20 timestamp];
+    v22 = v21;
+
+    v23 = v22 - v17;
+    if (v23 > 0.1)
+    {
+      v24 = CNUILogViewService();
+      if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
+      {
+        v25 = [MEMORY[0x1E6996858] stringForTimeInterval:v23];
+        v27 = 138412290;
+        v28 = v25;
+        _os_log_fault_impl(&dword_199A75000, v24, OS_LOG_TYPE_FAULT, "OOP [CNContactViewExtensionContext shouldPerformDefaultActionForContact:propertyKey:propertyIdentifier:] call took longer than desired: %@", &v27, 0xCu);
+      }
+
+LABEL_8:
+    }
+  }
+
+  return [(CNContactViewExtensionContext *)self asyncShouldPerformResponse];
+}
+
+- (void)asyncShouldPerformDefaultActionResponse:(BOOL)a3
+{
+  [(CNContactViewExtensionContext *)self setAsyncShouldPerformResponse:a3];
+  v4 = [(CNContactViewExtensionContext *)self asyncShouldPerformSemaphore];
+
+  if (v4)
+  {
+    v5 = [(CNContactViewExtensionContext *)self asyncShouldPerformSemaphore];
+    dispatch_semaphore_signal(v5);
+  }
+}
+
+- (void)performConfirmedCancel
+{
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __55__CNContactViewExtensionContext_performConfirmedCancel__block_invoke;
+  block[3] = &unk_1E74E6A88;
+  block[4] = self;
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+}
+
+void __55__CNContactViewExtensionContext_performConfirmedCancel__block_invoke(uint64_t a1)
+{
+  v2 = [*(a1 + 32) _principalObject];
+  v1 = [v2 contactContentVC];
+  [v1 performConfirmedCancel];
+}
+
+- (void)toggleEditing
+{
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __46__CNContactViewExtensionContext_toggleEditing__block_invoke;
+  block[3] = &unk_1E74E6A88;
+  block[4] = self;
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+}
+
+void __46__CNContactViewExtensionContext_toggleEditing__block_invoke(uint64_t a1)
+{
+  v2 = [*(a1 + 32) _principalObject];
+  v1 = [v2 contactContentVC];
+  [v1 toggleEditing];
+}
+
+- (void)editCancel
+{
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __43__CNContactViewExtensionContext_editCancel__block_invoke;
+  block[3] = &unk_1E74E6A88;
+  block[4] = self;
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+}
+
+void __43__CNContactViewExtensionContext_editCancel__block_invoke(uint64_t a1)
+{
+  v2 = [*(a1 + 32) _principalObject];
+  v1 = [v2 contactContentVC];
+  [v1 editCancel];
+}
+
+- (void)didChangeToShowTitle:(BOOL)a3
+{
+  v3[0] = MEMORY[0x1E69E9820];
+  v3[1] = 3221225472;
+  v3[2] = __54__CNContactViewExtensionContext_didChangeToShowTitle___block_invoke;
+  v3[3] = &unk_1E74E4768;
+  v3[4] = self;
+  v4 = a3;
+  dispatch_async(MEMORY[0x1E69E96A0], v3);
+}
+
+void __54__CNContactViewExtensionContext_didChangeToShowTitle___block_invoke(uint64_t a1)
+{
+  v3 = [*(a1 + 32) _principalObject];
+  v2 = [v3 contactContentVC];
+  [v2 didChangeToShowTitle:*(a1 + 40)];
+}
+
+- (void)didChangeToEditMode:(BOOL)a3
+{
+  v3[0] = MEMORY[0x1E69E9820];
+  v3[1] = 3221225472;
+  v3[2] = __53__CNContactViewExtensionContext_didChangeToEditMode___block_invoke;
+  v3[3] = &unk_1E74E4768;
+  v3[4] = self;
+  v4 = a3;
+  dispatch_async(MEMORY[0x1E69E96A0], v3);
+}
+
+void __53__CNContactViewExtensionContext_didChangeToEditMode___block_invoke(uint64_t a1)
+{
+  v3 = [*(a1 + 32) _principalObject];
+  v2 = [v3 contactContentVC];
+  [v2 didChangeToEditMode:*(a1 + 40)];
+}
+
+- (void)setupWithOptions:(id)a3 readyBlock:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __61__CNContactViewExtensionContext_setupWithOptions_readyBlock___block_invoke;
+  block[3] = &unk_1E74E6650;
+  block[4] = self;
+  v11 = v6;
+  v12 = v7;
+  v8 = v7;
+  v9 = v6;
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+}
+
+void __61__CNContactViewExtensionContext_setupWithOptions_readyBlock___block_invoke(uint64_t a1)
+{
+  v16 = 0u;
+  v17 = 0u;
+  v2 = [*(a1 + 32) _auxiliaryConnection];
+  v3 = v2;
+  if (v2)
+  {
+    [v2 auditToken];
+  }
+
+  else
+  {
+    v16 = 0u;
+    v17 = 0u;
+  }
+
+  v14 = v16;
+  v15 = v17;
+  v4 = [MEMORY[0x1E6996638] auditToken:&v14];
+  v5 = [objc_alloc(MEMORY[0x1E6996648]) initWithAuditToken:v4 assumedIdentity:0];
+  v6 = +[CNUIContactsEnvironment currentEnvironment];
+  [v6 setAuthorizationContext:v5];
+
+  v7 = objc_alloc(MEMORY[0x1E6996760]);
+  v8 = [MEMORY[0x1E6996768] sharedConnection];
+  v14 = v16;
+  v15 = v17;
+  v9 = [v7 initWithAuditToken:&v14 managedProfileConnection:v8];
+
+  v10 = [*(a1 + 32) _principalObject];
+  v11 = [v10 contactContentVC];
+  [v11 setManagedConfiguration:v9];
+
+  v12 = [*(a1 + 32) _principalObject];
+  v13 = [v12 contactContentVC];
+  [v13 setupWithOptions:*(a1 + 40) readyBlock:*(a1 + 48)];
+}
+
+- (id)host
+{
+  v4 = [(CNContactViewExtensionContext *)self _auxiliaryConnection];
+  v5 = [v4 remoteObjectProxyWithErrorHandler:&__block_literal_global_118];
+
+  if (!v5)
+  {
+    v7 = [MEMORY[0x1E696AAA8] currentHandler];
+    [v7 handleFailureInMethod:a2 object:self file:@"CNContactViewServiceViewController.m" lineNumber:193 description:@"host object is nil!"];
+  }
+
+  return v5;
+}
+
+void __37__CNContactViewExtensionContext_host__block_invoke(uint64_t a1, void *a2)
+{
+  v7 = *MEMORY[0x1E69E9840];
+  v2 = a2;
+  v3 = CNUILogViewService();
+  if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+  {
+    v4 = [v2 localizedDescription];
+    v5 = 138412290;
+    v6 = v4;
+    _os_log_error_impl(&dword_199A75000, v3, OS_LOG_TYPE_ERROR, "error calling host - %@", &v5, 0xCu);
+  }
+}
+
+@end

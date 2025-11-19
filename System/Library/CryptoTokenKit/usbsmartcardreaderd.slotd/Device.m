@@ -1,0 +1,745 @@
+@interface Device
++ (NSMutableDictionary)devices;
++ (Synchronize)synchronize;
++ (void)registerService:(id)a3;
+- (Device)initWithService:(id)a3;
+- (NSNumber)locationId;
+- (NSNumber)productId;
+- (NSNumber)vendorId;
+- (NSString)interfaceName;
+- (NSString)productName;
+- (NSString)vendorName;
+- (id)description;
+- (id)deviceAccessBlock:(id)a3;
+- (unint64_t)handleEANotification;
+- (void)terminate;
+- (void)watchInterruptPipe:(id)a3;
+@end
+
+@implementation Device
+
++ (NSMutableDictionary)devices
+{
+  if (qword_10002C008 != -1)
+  {
+    sub_100017174();
+  }
+
+  v3 = qword_10002C000;
+
+  return v3;
+}
+
++ (Synchronize)synchronize
+{
+  if (qword_10002C018 != -1)
+  {
+    sub_100017188();
+  }
+
+  v3 = qword_10002C010;
+
+  return v3;
+}
+
+- (NSString)productName
+{
+  v3 = [(IOUSBHostInterface *)self->_interface properties];
+  v4 = [v3 get:@"kUSBProductString"];
+
+  if (!v4)
+  {
+    v5 = [(IOUSBHostInterface *)self->_interface properties];
+    v4 = [v5 get:@"USB Product Name"];
+
+    if (!v4)
+    {
+      v6 = [(Device *)self productId];
+      v4 = [v6 stringValue];
+    }
+  }
+
+  return v4;
+}
+
+- (NSString)vendorName
+{
+  v3 = [(IOUSBHostInterface *)self->_interface properties];
+  v4 = [v3 get:@"kUSBVendorString"];
+
+  if (!v4)
+  {
+    v5 = [(IOUSBHostInterface *)self->_interface properties];
+    v4 = [v5 get:@"USB Vendor Name"];
+
+    if (!v4)
+    {
+      v6 = [(Device *)self vendorId];
+      v4 = [v6 stringValue];
+    }
+  }
+
+  return v4;
+}
+
+- (NSString)interfaceName
+{
+  v2 = [(IOUSBHostInterface *)self->_interface properties];
+  v3 = [v2 get:@"kUSBString"];
+
+  return v3;
+}
+
+- (NSNumber)productId
+{
+  v2 = [(IOUSBHostInterface *)self->_interface properties];
+  v3 = [v2 get:@"idProduct"];
+
+  return v3;
+}
+
+- (NSNumber)vendorId
+{
+  v2 = [(IOUSBHostInterface *)self->_interface properties];
+  v3 = [v2 get:@"idVendor"];
+
+  return v3;
+}
+
+- (NSNumber)locationId
+{
+  v2 = [(IOUSBHostInterface *)self->_interface properties];
+  v3 = [v2 get:@"locationID"];
+
+  return v3;
+}
+
+- (id)description
+{
+  v3 = +[NSMutableString string];
+  [v3 appendString:@"{\n"];
+  v4 = [(Device *)self productName];
+  [v3 appendFormat:@"    productName: %@\n", v4];
+
+  v5 = [(Device *)self interfaceName];
+
+  if (v5)
+  {
+    v6 = [(Device *)self interfaceName];
+    [v3 appendFormat:@"    interfaceName: %@\n\n", v6];
+  }
+
+  v7 = [(Device *)self vendorName];
+  [v3 appendFormat:@"    vendorName: %@\n", v7];
+
+  v8 = [(Device *)self productId];
+  [v3 appendFormat:@"    productId: %@\n", v8];
+
+  v9 = [(Device *)self vendorId];
+  [v3 appendFormat:@"    vendorId: %@\n}", v9];
+
+  return v3;
+}
+
+- (void)terminate
+{
+  v3 = sub_10000D560();
+  if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
+  {
+    *buf = 0;
+    _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Device terminate", buf, 2u);
+  }
+
+  if (self->_notificationDispatchToken)
+  {
+    v4 = sub_10000D560();
+    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+    {
+      sub_10001724C();
+    }
+
+    notify_cancel(self->_notificationDispatchToken);
+    self->_notificationDispatchToken = 0;
+  }
+
+  if (self->_notificationToken)
+  {
+    v5 = sub_10000D560();
+    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+    {
+      sub_100017288();
+    }
+
+    notify_cancel(self->_notificationToken);
+    self->_notificationToken = 0;
+  }
+
+  v25 = 0u;
+  v26 = 0u;
+  v23 = 0u;
+  v24 = 0u;
+  v6 = self->_slots;
+  v7 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v23 objects:v29 count:16];
+  if (v7)
+  {
+    v8 = v7;
+    v9 = *v24;
+    do
+    {
+      v10 = 0;
+      do
+      {
+        if (*v24 != v9)
+        {
+          objc_enumerationMutation(v6);
+        }
+
+        [*(*(&v23 + 1) + 8 * v10) terminate];
+        v10 = v10 + 1;
+      }
+
+      while (v8 != v10);
+      v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v23 objects:v29 count:16];
+    }
+
+    while (v8);
+  }
+
+  v11 = sub_10000D560();
+  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+  {
+    sub_1000172C4();
+  }
+
+  v21 = 0u;
+  v22 = 0u;
+  v19 = 0u;
+  v20 = 0u;
+  v12 = [(IOUSBHostInterface *)self->_interface pipes];
+  v13 = [v12 countByEnumeratingWithState:&v19 objects:v28 count:16];
+  if (v13)
+  {
+    v14 = v13;
+    v15 = *v20;
+    do
+    {
+      v16 = 0;
+      do
+      {
+        if (*v20 != v15)
+        {
+          objc_enumerationMutation(v12);
+        }
+
+        [*(*(&v19 + 1) + 8 * v16) abortWithOption:1 error:0];
+        v16 = v16 + 1;
+      }
+
+      while (v14 != v16);
+      v14 = [v12 countByEnumeratingWithState:&v19 objects:v28 count:16];
+    }
+
+    while (v14);
+  }
+
+  v17 = +[Device devices];
+  v18 = [NSNumber numberWithUnsignedLongLong:[(Device *)self entryID]];
+  [v17 removeObjectForKey:v18];
+}
+
+- (unint64_t)handleEANotification
+{
+  if (notify_register_check("com.apple.accessories.ea.sessionStatusChanged", &self->_notificationToken))
+  {
+    v3 = sub_10000D560();
+    if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+    {
+      sub_100017300();
+    }
+
+    return 0;
+  }
+
+  else
+  {
+    objc_initWeak(&location, self);
+    v12[0] = _NSConcreteStackBlock;
+    v12[1] = 3221225472;
+    v12[2] = sub_10000E780;
+    v12[3] = &unk_100024968;
+    v12[4] = self;
+    v5 = objc_retainBlock(v12);
+    v4 = (v5[2])();
+    if (!v4)
+    {
+      v6 = +[Device synchronize];
+      v7 = [v6 queue];
+      v9[0] = _NSConcreteStackBlock;
+      v9[1] = 3221225472;
+      v9[2] = sub_10000E820;
+      v9[3] = &unk_100024990;
+      v10 = v5;
+      objc_copyWeak(&v11, &location);
+      notify_register_dispatch("com.apple.accessories.ea.sessionStatusChanged", &self->_notificationDispatchToken, v7, v9);
+
+      objc_destroyWeak(&v11);
+    }
+
+    objc_destroyWeak(&location);
+  }
+
+  return v4;
+}
+
+- (Device)initWithService:(id)a3
+{
+  v82 = a3;
+  v94.receiver = self;
+  v94.super_class = Device;
+  v6 = [(Device *)&v94 init];
+  val = v6;
+  if (v6)
+  {
+    *&v6->_notificationToken = 0;
+    v7 = [[Synchronize alloc] initWithQueueName:@"com.apple.ctk.ccid.interruption"];
+    interruptionSync = val->_interruptionSync;
+    val->_interruptionSync = v7;
+
+    v77 = [[Properties alloc] initWithService:v82];
+    v76 = [(Properties *)v77 get:@"idProduct"];
+    v75 = [(Properties *)v77 get:@"idVendor"];
+    v9 = sub_10000D560();
+    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+    {
+      sub_1000173A4(v76, v75);
+    }
+
+    AnalyticsSendEventLazy();
+    val->_entryID = sub_100001BA8(v82);
+    objc_initWeak(&location, val);
+    v10 = [IOUSBHostInterface alloc];
+    v11 = [v82 holder];
+    v92 = 0;
+    v90[0] = _NSConcreteStackBlock;
+    v90[1] = 3221225472;
+    v90[2] = sub_10000F39C;
+    v90[3] = &unk_1000249F8;
+    objc_copyWeak(&v91, &location);
+    v12 = [v10 initWithIOService:v11 options:0 queue:0 error:&v92 interestHandler:v90];
+    v74 = v92;
+    interface = val->_interface;
+    val->_interface = v12;
+
+    if ([(Device *)val handleEANotification])
+    {
+      [(Device *)val terminate];
+LABEL_6:
+      objc_destroyWeak(&v91);
+      objc_destroyWeak(&location);
+
+      goto LABEL_7;
+    }
+
+    v15 = val->_interface;
+    v16 = sub_10000D560();
+    v17 = v16;
+    if (!v15)
+    {
+      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      {
+        sub_100017520(v74, v17);
+      }
+
+      goto LABEL_6;
+    }
+
+    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
+    {
+      v67 = [(Device *)val productId];
+      v84 = [v67 unsignedIntValue];
+      v68 = [(Device *)val vendorId];
+      v4 = [v68 unsignedIntValue];
+      v3 = [(Device *)val locationId];
+      v69 = [v3 unsignedIntValue];
+      v70 = [(Device *)val entryID];
+      v71 = [(Device *)val vendorName];
+      v72 = [(Device *)val productName];
+      v73 = [(Device *)val interfaceName];
+      *buf = 67110658;
+      v97 = v84;
+      v98 = 1024;
+      v99 = v4;
+      v100 = 1024;
+      v101 = v69;
+      v102 = 2048;
+      v103 = v70;
+      v104 = 2114;
+      v105 = v71;
+      v106 = 2114;
+      v107 = v72;
+      v108 = 2114;
+      v109 = v73;
+      _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "new device arrival: %04x:%04x %x (entryId=%llx) (%{public}@ %{public}@ %{public}@)", buf, 0x3Cu);
+    }
+
+    v18 = [(IOUSBHostInterface *)val->_interface CCIDDescriptor];
+    CCIDDescriptor = val->_CCIDDescriptor;
+    val->_CCIDDescriptor = v18;
+
+    v20 = objc_opt_new();
+    slots = val->_slots;
+    val->_slots = v20;
+
+    p_isa = &val->super.isa;
+    if ([(CCIDDescriptorView *)val->_CCIDDescriptor bMaxSlotIndex])
+    {
+      LODWORD(v23) = [(CCIDDescriptorView *)val->_CCIDDescriptor bMaxCCIDBusySlots];
+      v23 = v23 <= 1 ? 1 : v23;
+      v24 = dispatch_semaphore_create(v23);
+      slotSemaphore = val->_slotSemaphore;
+      val->_slotSemaphore = v24;
+
+      p_isa = &val->super.isa;
+      if (!val->_slotSemaphore)
+      {
+        v59 = sub_10000D560();
+        if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
+        {
+          sub_100017450();
+        }
+
+        objc_destroyWeak(&v91);
+        objc_destroyWeak(&location);
+
+        goto LABEL_7;
+      }
+    }
+
+    v88 = 0u;
+    v89 = 0u;
+    v86 = 0u;
+    v87 = 0u;
+    v26 = [p_isa[2] pipes];
+    v27 = 0;
+    v28 = [v26 countByEnumeratingWithState:&v86 objects:v95 count:16];
+    if (v28)
+    {
+      v83 = 0;
+      v29 = 0;
+      v3 = *v87;
+      do
+      {
+        for (i = 0; i != v28; i = i + 1)
+        {
+          if (*v87 != v3)
+          {
+            objc_enumerationMutation(v26);
+          }
+
+          v31 = *(*(&v86 + 1) + 8 * i);
+          if ([v31 endpointType] == 2 && objc_msgSend(v31, "endpointDirection") == 1)
+          {
+            v32 = v31;
+            v33 = v29;
+            v29 = v32;
+          }
+
+          else if ([v31 endpointType] == 2 && !objc_msgSend(v31, "endpointDirection"))
+          {
+            v35 = v31;
+            v33 = v83;
+            v83 = v35;
+          }
+
+          else if ([v31 endpointType] == 3 && objc_msgSend(v31, "endpointDirection") == 1)
+          {
+            v34 = v31;
+            v33 = v27;
+            v27 = v34;
+          }
+
+          else
+          {
+            v33 = sub_10000D560();
+            if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
+            {
+              sub_100017484(buf, &buf[1], v33);
+            }
+          }
+        }
+
+        v28 = [v26 countByEnumeratingWithState:&v86 objects:v95 count:16];
+      }
+
+      while (v28);
+    }
+
+    else
+    {
+      v83 = 0;
+      v29 = 0;
+    }
+
+    v36 = 0;
+    v37 = *([(IOUSBHostInterface *)val->_interface interfaceDescriptor]+ 7);
+    if (v29)
+    {
+      v38 = v83 == 0;
+    }
+
+    else
+    {
+      v38 = 1;
+    }
+
+    v40 = v38 || v37 != 0;
+    LODWORD(v81) = v40;
+    while (1)
+    {
+      v41 = [(Device *)val CCIDDescriptor];
+      v42 = v36 > [v41 bMaxSlotIndex];
+
+      if (v42)
+      {
+        break;
+      }
+
+      v43 = [(Device *)val vendorName];
+      v44 = [(Device *)val interfaceName];
+      if (v44)
+      {
+        v3 = [(Device *)val interfaceName];
+        v26 = [(Device *)val productName];
+        if ([v3 containsString:v26])
+        {
+          v45 = [(Device *)val interfaceName];
+          v4 = 0;
+          v46 = 1;
+          v79 = v45;
+        }
+
+        else
+        {
+          v45 = [(Device *)val productName];
+          v46 = 0;
+          v4 = 1;
+          v80 = v45;
+        }
+      }
+
+      else
+      {
+        v45 = [(Device *)val productName];
+        v46 = 0;
+        v4 = 0;
+        v78 = v45;
+      }
+
+      v47 = [NSMutableString stringWithFormat:@"%@ %@", v43, v45];
+      if (!v44)
+      {
+      }
+
+      if (v4)
+      {
+      }
+
+      if (v46)
+      {
+      }
+
+      if (v44)
+      {
+      }
+
+      if (qword_10002C038 != -1)
+      {
+        sub_1000174C4();
+      }
+
+      if (byte_10002C030 == 1)
+      {
+        v48 = [(Device *)val locationId];
+        [v47 appendFormat:@"[%@]", v48];
+      }
+
+      v49 = [(Device *)val CCIDDescriptor];
+      v50 = [v49 bMaxSlotIndex] == 0;
+
+      if (!v50)
+      {
+        [v47 appendFormat:@"(%d)", v36 + 1];
+      }
+
+      if (v81)
+      {
+        v51 = 0;
+      }
+
+      else
+      {
+        v51 = [[CCIDSlot alloc] initWithDevice:val slotName:v47 slotNumber:v36 pipeIn:v29 pipeOut:v83];
+        if (v51)
+        {
+          [(NSMutableArray *)val->_slots addObject:v51];
+        }
+      }
+
+      ++v36;
+    }
+
+    v52 = [(NSMutableArray *)val->_slots count];
+    if (v52)
+    {
+      if (v27)
+      {
+        [(Device *)val watchInterruptPipe:v27];
+      }
+
+      v53 = [(Device *)val vendorName];
+      v54 = [(Device *)val interfaceName];
+      if (v54)
+      {
+        v4 = [(Device *)val interfaceName];
+        v81 = [(Device *)val productName];
+        if ([v4 containsString:v81])
+        {
+          v55 = [(Device *)val interfaceName];
+          v56 = 0;
+          v57 = 1;
+        }
+
+        else
+        {
+          v55 = [(Device *)val productName];
+          v57 = 0;
+          v56 = 1;
+        }
+      }
+
+      else
+      {
+        v55 = [(Device *)val productName];
+        v57 = 0;
+        v56 = 0;
+      }
+
+      v58 = [NSMutableString stringWithFormat:@"%@ %@", v53, v55];
+      if (!v54)
+      {
+      }
+
+      if (v56)
+      {
+      }
+
+      if (v57)
+      {
+      }
+
+      if (v54)
+      {
+      }
+
+      v60 = [NSString stringWithFormat:@"com.apple.ccid:%@", v58];
+      v61 = v60;
+      [v60 UTF8String];
+      v62 = os_transaction_create();
+      transaction = val->_transaction;
+      val->_transaction = v62;
+    }
+
+    else
+    {
+      v58 = sub_10000D560();
+      if (os_log_type_enabled(v58, OS_LOG_TYPE_FAULT))
+      {
+        sub_1000174EC();
+      }
+    }
+
+    objc_destroyWeak(&v91);
+    objc_destroyWeak(&location);
+
+    if (!v52)
+    {
+LABEL_7:
+      v14 = 0;
+      goto LABEL_102;
+    }
+  }
+
+  v64 = sub_10000D560();
+  if (os_log_type_enabled(v64, OS_LOG_TYPE_DEBUG))
+  {
+    sub_100017598();
+  }
+
+  v65 = sub_10000D560();
+  if (os_log_type_enabled(v65, OS_LOG_TYPE_DEBUG))
+  {
+    sub_10001760C(val);
+  }
+
+  v14 = val;
+LABEL_102:
+
+  return v14;
+}
+
+- (void)watchInterruptPipe:(id)a3
+{
+  v4 = a3;
+  objc_initWeak(&location, self);
+  v5 = [(Device *)self interruptionSync];
+  v6 = [v5 queue];
+  v8[0] = _NSConcreteStackBlock;
+  v8[1] = 3221225472;
+  v8[2] = sub_10000F5E8;
+  v8[3] = &unk_100024A48;
+  objc_copyWeak(&v11, &location);
+  v9 = v4;
+  v10 = self;
+  v7 = v4;
+  dispatch_async(v6, v8);
+
+  objc_destroyWeak(&v11);
+  objc_destroyWeak(&location);
+}
+
++ (void)registerService:(id)a3
+{
+  v3 = a3;
+  v4 = +[Device synchronize];
+  v6[0] = _NSConcreteStackBlock;
+  v6[1] = 3221225472;
+  v6[2] = sub_10000F8A0;
+  v6[3] = &unk_1000244F0;
+  v7 = v3;
+  v5 = v3;
+  [v4 sync:v6];
+}
+
+- (id)deviceAccessBlock:(id)a3
+{
+  slotSemaphore = self->_slotSemaphore;
+  if (slotSemaphore)
+  {
+    v5 = a3;
+    dispatch_semaphore_wait(slotSemaphore, 0xFFFFFFFFFFFFFFFFLL);
+    v6 = v5[2](v5);
+
+    dispatch_semaphore_signal(self->_slotSemaphore);
+  }
+
+  else
+  {
+    v7 = *(a3 + 2);
+    v8 = a3;
+    v6 = v7();
+  }
+
+  return v6;
+}
+
+@end

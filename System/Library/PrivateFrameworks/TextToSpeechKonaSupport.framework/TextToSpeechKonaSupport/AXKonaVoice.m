@@ -1,0 +1,17 @@
+@interface AXKonaVoice
+- (NSString)identifier;
+@end
+
+@implementation AXKonaVoice
+
+- (NSString)identifier
+{
+  v3 = MEMORY[0x277CCACA8];
+  v4 = [(AXKonaVoice *)self languageCode];
+  v5 = [(AXKonaVoice *)self name];
+  v6 = [v3 stringWithFormat:@"%@%@.%@", @"com.apple.eloquence.", v4, v5];
+
+  return v6;
+}
+
+@end

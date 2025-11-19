@@ -1,0 +1,34 @@
+@interface ICTrackedParagraphImageInfo
+- (CGRect)boundingRect;
+- (CGRect)rect;
+@end
+
+@implementation ICTrackedParagraphImageInfo
+
+- (CGRect)boundingRect
+{
+  x = self->_boundingRect.origin.x;
+  y = self->_boundingRect.origin.y;
+  width = self->_boundingRect.size.width;
+  height = self->_boundingRect.size.height;
+  result.size.height = height;
+  result.size.width = width;
+  result.origin.y = y;
+  result.origin.x = x;
+  return result;
+}
+
+- (CGRect)rect
+{
+  x = self->_rect.origin.x;
+  y = self->_rect.origin.y;
+  width = self->_rect.size.width;
+  height = self->_rect.size.height;
+  result.size.height = height;
+  result.size.width = width;
+  result.origin.y = y;
+  result.origin.x = x;
+  return result;
+}
+
+@end

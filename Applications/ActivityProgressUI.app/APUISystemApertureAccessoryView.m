@@ -1,0 +1,69 @@
+@interface APUISystemApertureAccessoryView
+- (CGRect)frame;
+- (CGSize)sizeThatFits:(CGSize)a3;
+- (_TtC18ActivityProgressUI31APUISystemApertureAccessoryView)initWithCoder:(id)a3;
+- (_TtC18ActivityProgressUI31APUISystemApertureAccessoryView)initWithFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)a3;
+@end
+
+@implementation APUISystemApertureAccessoryView
+
+- (_TtC18ActivityProgressUI31APUISystemApertureAccessoryView)initWithCoder:(id)a3
+{
+  result = _assertionFailure(_:_:file:line:flags:)();
+  __break(1u);
+  return result;
+}
+
+- (CGRect)frame
+{
+  v6.receiver = self;
+  v6.super_class = type metadata accessor for APUISystemApertureAccessoryView();
+  [(APUISystemApertureAccessoryView *)&v6 frame];
+  result.size.height = v5;
+  result.size.width = v4;
+  result.origin.y = v3;
+  result.origin.x = v2;
+  return result;
+}
+
+- (void)setFrame:(CGRect)a3
+{
+  height = a3.size.height;
+  width = a3.size.width;
+  y = a3.origin.y;
+  x = a3.origin.x;
+  v10.receiver = self;
+  v10.super_class = type metadata accessor for APUISystemApertureAccessoryView();
+  v7 = v10.receiver;
+  [(APUISystemApertureAccessoryView *)&v10 setFrame:x, y, width, height];
+  v8 = [*&v7[OBJC_IVAR____TtC18ActivityProgressUI31APUISystemApertureAccessoryView_hostingController] view];
+  if (v8)
+  {
+    v9 = v8;
+    [v7 bounds];
+    [v9 setFrame:?];
+  }
+
+  else
+  {
+    __break(1u);
+  }
+}
+
+- (CGSize)sizeThatFits:(CGSize)a3
+{
+  [*(&self->super.super.super.isa + OBJC_IVAR____TtC18ActivityProgressUI31APUISystemApertureAccessoryView_hostingController) preferredContentSize];
+  result.height = v4;
+  result.width = v3;
+  return result;
+}
+
+- (_TtC18ActivityProgressUI31APUISystemApertureAccessoryView)initWithFrame:(CGRect)a3
+{
+  result = _swift_stdlib_reportUnimplementedInitializer();
+  __break(1u);
+  return result;
+}
+
+@end

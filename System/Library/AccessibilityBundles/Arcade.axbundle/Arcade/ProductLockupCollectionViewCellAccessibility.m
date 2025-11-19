@@ -1,0 +1,172 @@
+@interface ProductLockupCollectionViewCellAccessibility
++ (void)_accessibilityPerformValidations:(id)a3;
+- (ProductLockupCollectionViewCellAccessibility)initWithFrame:(CGRect)a3;
+- (id)accessibilityElements;
+- (void)_accessibilityLoadAccessibilityInformation;
+- (void)layoutSubviews;
+@end
+
+@implementation ProductLockupCollectionViewCellAccessibility
+
++ (void)_accessibilityPerformValidations:(id)a3
+{
+  v3 = a3;
+  [v3 validateClass:@"Arcade.ProductLockupCollectionViewCell" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [v3 validateClass:@"Arcade.ProductLockupCollectionViewCell" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  [v3 validateClass:@"Arcade.ProductLockupCollectionViewCell" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
+  [v3 validateClass:@"Arcade.ProductLockupCollectionViewCell" hasInstanceMethod:@"accessibilityArtworkView" withFullSignature:{"@", 0}];
+  [v3 validateClass:@"Arcade.ProductLockupCollectionViewCell" hasInstanceMethod:@"accessibilityOfferButton" withFullSignature:{"@", 0}];
+  [v3 validateClass:@"Arcade.ProductLockupCollectionViewCell" hasInstanceMethod:@"accessibilityOfferSubtitleLabel" withFullSignature:{"@", 0}];
+  [v3 validateClass:@"Arcade.ProductLockupCollectionViewCell" hasInstanceMethod:@"accessibilityDownloadProgressLabel" withFullSignature:{"@", 0}];
+  [v3 validateClass:@"Arcade.ProductLockupCollectionViewCell" hasSwiftField:@"expandedOfferTitleLabel" withSwiftType:"Optional<DynamicTypeLabel>"];
+  [v3 validateClass:@"Arcade.ProductLockupCollectionViewCell" hasSwiftField:@"expandedOfferSubtitleLabel" withSwiftType:"Optional<DynamicTypeLabel>"];
+  [v3 validateClass:@"Arcade.ProductLockupCollectionViewCell" hasInstanceMethod:@"accessibilityOfferTopLabel" withFullSignature:{"@", 0}];
+  [v3 validateClass:@"Arcade.ProductLockupCollectionViewCell" hasInstanceMethod:@"accessibilityDescriptionHeaderLabel" withFullSignature:{"@", 0}];
+  [v3 validateClass:@"Arcade.ProductLockupCollectionViewCell" hasInstanceMethod:@"accessibilityTextualBadges" withFullSignature:{"@", 0}];
+  [v3 validateClass:@"Arcade.ProductLockupCollectionViewCell" hasInstanceMethod:@"accessibilityStandardBadges" withFullSignature:{"@", 0}];
+}
+
+- (id)accessibilityElements
+{
+  v3 = [(ProductLockupCollectionViewCellAccessibility *)self _accessibilityProductLockupCollectionViewCellElements];
+  if (!v3)
+  {
+    v3 = [MEMORY[0x29EDB8DE8] array];
+    v4 = [(ProductLockupCollectionViewCellAccessibility *)self safeValueForKey:@"accessibilityVideoView"];
+    v5 = [v4 safeValueForKey:@"accessibilityPlayerViewController"];
+    v6 = [v5 safeUIViewForKey:@"view"];
+
+    v7 = [v4 safeBoolForKey:@"accessibilityIsPlaying"];
+    v8 = [v4 safeBoolForKey:@"accessibilityShouldBePlaying"];
+    if ([v6 _accessibilityViewIsVisible] && v7 && v8)
+    {
+      [v3 axSafelyAddObject:v6];
+    }
+
+    v9 = [v4 safeValueForKey:@"accessibilityPlayButton"];
+    if ([v9 _accessibilityViewIsVisible])
+    {
+      [v3 axSafelyAddObject:v9];
+    }
+
+    objc_opt_class();
+    v10 = [(ProductLockupCollectionViewCellAccessibility *)self safeValueForKey:@"accessibilityTitleLabel"];
+    v11 = __UIAccessibilityCastAsClass();
+
+    [v11 setAccessibilityRespondsToUserInteraction:1];
+    v12 = [v11 accessibilityTraits];
+    [v11 setAccessibilityTraits:*MEMORY[0x29EDC7F80] | v12];
+    v13 = [(ProductLockupCollectionViewCellAccessibility *)self safeValueForKey:@"accessibilityArtworkView"];
+    v14 = [v11 accessibilityLabel];
+    [v13 setAccessibilityValue:v14];
+
+    [v3 axSafelyAddObject:v13];
+    [v3 axSafelyAddObject:v11];
+    objc_opt_class();
+    v15 = [(ProductLockupCollectionViewCellAccessibility *)self safeValueForKey:@"accessibilityDeveloperLabel"];
+    v16 = __UIAccessibilityCastAsClass();
+
+    v29 = v13;
+    v30 = v11;
+    v31 = v9;
+    v32 = v6;
+    v33 = v4;
+    [v16 setAccessibilityRespondsToUserInteraction:1];
+    v28 = v16;
+    [v3 axSafelyAddObject:v16];
+    objc_opt_class();
+    v17 = [(ProductLockupCollectionViewCellAccessibility *)self safeValueForKey:@"accessibilityTaglineLabel"];
+    v18 = __UIAccessibilityCastAsClass();
+
+    [v18 setAccessibilityRespondsToUserInteraction:0];
+    [v18 setAccessibilityTraits:*MEMORY[0x29EDC7FD0]];
+    [v3 axSafelyAddObject:v18];
+    v19 = [(ProductLockupCollectionViewCellAccessibility *)self safeUIViewForKey:@"accessibilityBannerView"];
+    [v19 setAccessibilityRespondsToUserInteraction:1];
+    [v3 axSafelyAddObject:v19];
+    v20 = [(ProductLockupCollectionViewCellAccessibility *)self safeUIViewForKey:@"accessibilitySecondaryBannerView"];
+    [v20 setAccessibilityRespondsToUserInteraction:1];
+    [v3 axSafelyAddObject:v20];
+    v21 = [(ProductLockupCollectionViewCellAccessibility *)self safeSwiftValueForKey:@"expandedOfferTitleLabel"];
+    [v21 setAccessibilityRespondsToUserInteraction:1];
+    [v3 axSafelyAddObject:v21];
+    v22 = [(ProductLockupCollectionViewCellAccessibility *)self safeSwiftValueForKey:@"expandedOfferSubtitleLabel"];
+    [v22 setAccessibilityRespondsToUserInteraction:1];
+    [v3 axSafelyAddObject:v22];
+    v23 = [(ProductLockupCollectionViewCellAccessibility *)self safeValueForKey:@"accessibilityOfferButton"];
+    [v3 axSafelyAddObject:v23];
+    objc_opt_class();
+    v24 = [(ProductLockupCollectionViewCellAccessibility *)self safeValueForKey:@"accessibilityOfferSubtitleLabel"];
+    v25 = __UIAccessibilityCastAsClass();
+
+    [v25 setAccessibilityRespondsToUserInteraction:1];
+    [v3 axSafelyAddObject:v25];
+    v26 = [(ProductLockupCollectionViewCellAccessibility *)self safeValueForKey:@"accessibilityDownloadProgressLabel"];
+    [v26 setAccessibilityRespondsToUserInteraction:1];
+    [v26 setAccessibilityTraits:*MEMORY[0x29EDC7FF0]];
+    [v3 axSafelyAddObject:v26];
+    [(ProductLockupCollectionViewCellAccessibility *)self _setAccessibilityProductLockupCollectionViewCellElements:v3];
+  }
+
+  return v3;
+}
+
+- (ProductLockupCollectionViewCellAccessibility)initWithFrame:(CGRect)a3
+{
+  v5.receiver = self;
+  v5.super_class = ProductLockupCollectionViewCellAccessibility;
+  v3 = [(ProductLockupCollectionViewCellAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(ProductLockupCollectionViewCellAccessibility *)v3 _setAccessibilityProductLockupCollectionViewCellElements:0];
+
+  return v3;
+}
+
+- (void)layoutSubviews
+{
+  v3.receiver = self;
+  v3.super_class = ProductLockupCollectionViewCellAccessibility;
+  [(ProductLockupCollectionViewCellAccessibility *)&v3 layoutSubviews];
+  [(ProductLockupCollectionViewCellAccessibility *)self _setAccessibilityProductLockupCollectionViewCellElements:0];
+}
+
+- (void)_accessibilityLoadAccessibilityInformation
+{
+  v16 = *MEMORY[0x29EDCA608];
+  v14.receiver = self;
+  v14.super_class = ProductLockupCollectionViewCellAccessibility;
+  [(ProductLockupCollectionViewCellAccessibility *)&v14 _accessibilityLoadAccessibilityInformation];
+  v12 = 0u;
+  v13 = 0u;
+  v10 = 0u;
+  v11 = 0u;
+  v3 = [(ProductLockupCollectionViewCellAccessibility *)self accessibilityHeaderElements];
+  v4 = [v3 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  if (v4)
+  {
+    v5 = v4;
+    v6 = *v11;
+    v7 = *MEMORY[0x29EDC7F80];
+    do
+    {
+      v8 = 0;
+      do
+      {
+        if (*v11 != v6)
+        {
+          objc_enumerationMutation(v3);
+        }
+
+        [*(*(&v10 + 1) + 8 * v8++) setAccessibilityTraits:v7];
+      }
+
+      while (v5 != v8);
+      v5 = [v3 countByEnumeratingWithState:&v10 objects:v15 count:16];
+    }
+
+    while (v5);
+  }
+
+  v9 = *MEMORY[0x29EDCA608];
+}
+
+@end

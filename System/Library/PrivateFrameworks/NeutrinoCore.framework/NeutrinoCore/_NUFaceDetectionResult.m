@@ -1,0 +1,17 @@
+@interface _NUFaceDetectionResult
+- ($0AC6E346AE4835514AAA8AC86D8F4844)imageSize;
+@end
+
+@implementation _NUFaceDetectionResult
+
+- ($0AC6E346AE4835514AAA8AC86D8F4844)imageSize
+{
+  objc_copyStruct(v4, &self->_imageSize, 16, 1, 0);
+  v2 = v4[0];
+  v3 = v4[1];
+  result.var1 = v3;
+  result.var0 = v2;
+  return result;
+}
+
+@end

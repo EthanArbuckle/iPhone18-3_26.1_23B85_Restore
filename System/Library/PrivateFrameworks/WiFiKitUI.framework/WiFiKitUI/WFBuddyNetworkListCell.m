@@ -1,0 +1,84 @@
+@interface WFBuddyNetworkListCell
+- (NSLayoutConstraint)bottomLabelConstraint;
+- (NSLayoutConstraint)topLabelConstraint;
+- (NSLayoutConstraint)trailingImageViewConstraint;
+- (void)awakeFromNib;
+- (void)layoutSubviews;
+@end
+
+@implementation WFBuddyNetworkListCell
+
+- (void)awakeFromNib
+{
+  v17[2] = *MEMORY[0x277D85DE8];
+  v15.receiver = self;
+  v15.super_class = WFBuddyNetworkListCell;
+  [(WFNetworkListCell *)&v15 awakeFromNib];
+  v16[0] = *MEMORY[0x277D740C0];
+  v3 = [MEMORY[0x277D75348] systemBlueColor];
+  v17[0] = v3;
+  v16[1] = *MEMORY[0x277D740A8];
+  v4 = [MEMORY[0x277D4DAA8] sharedStyle];
+  v5 = [v4 tableCellFont];
+  v17[1] = v5;
+  v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
+
+  [@"A" sizeWithAttributes:v6];
+  v8 = v7;
+  WeakRetained = objc_loadWeakRetained(&self->_topLabelConstraint);
+  [WeakRetained setConstant:v8];
+
+  v10 = objc_loadWeakRetained(&self->_bottomLabelConstraint);
+  [v10 setConstant:v8];
+
+  v11 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+  [(WFBuddyNetworkListCell *)self setBackgroundColor:v11];
+
+  v12 = [MEMORY[0x277D75348] defaultTextColor];
+  v13 = [(WFBuddyNetworkListCell *)self textLabel];
+  [v13 setTextColor:v12];
+
+  v14 = *MEMORY[0x277D85DE8];
+}
+
+- (void)layoutSubviews
+{
+  v5.receiver = self;
+  v5.super_class = WFBuddyNetworkListCell;
+  [(WFBuddyNetworkListCell *)&v5 layoutSubviews];
+  if ([(WFBuddyNetworkListCell *)self accessoryType]== 4)
+  {
+    v3 = 0.0;
+  }
+
+  else
+  {
+    v3 = 8.0;
+  }
+
+  v4 = [(WFBuddyNetworkListCell *)self trailingImageViewConstraint];
+  [v4 setConstant:v3];
+}
+
+- (NSLayoutConstraint)trailingImageViewConstraint
+{
+  WeakRetained = objc_loadWeakRetained(&self->_trailingImageViewConstraint);
+
+  return WeakRetained;
+}
+
+- (NSLayoutConstraint)topLabelConstraint
+{
+  WeakRetained = objc_loadWeakRetained(&self->_topLabelConstraint);
+
+  return WeakRetained;
+}
+
+- (NSLayoutConstraint)bottomLabelConstraint
+{
+  WeakRetained = objc_loadWeakRetained(&self->_bottomLabelConstraint);
+
+  return WeakRetained;
+}
+
+@end

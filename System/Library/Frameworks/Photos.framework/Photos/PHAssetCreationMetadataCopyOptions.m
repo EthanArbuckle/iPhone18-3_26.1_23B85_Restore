@@ -1,0 +1,138 @@
+@interface PHAssetCreationMetadataCopyOptions
++ (id)metadataCopyOptionsForPublishingOriginals;
+- (PHAssetCreationMetadataCopyOptions)init;
+- (PHAssetCreationMetadataCopyOptions)initWithCoder:(id)a3;
+- (PHAssetCreationMetadataCopyOptions)initWithXPCDict:(id)a3;
+- (id)copyWithZone:(_NSZone *)a3;
+- (id)description;
+- (id)plRepresentation;
+- (void)encodeToXPCDict:(id)a3;
+- (void)encodeWithCoder:(id)a3;
+@end
+
+@implementation PHAssetCreationMetadataCopyOptions
+
+- (PHAssetCreationMetadataCopyOptions)initWithCoder:(id)a3
+{
+  v4 = a3;
+  v10.receiver = self;
+  v10.super_class = PHAssetCreationMetadataCopyOptions;
+  v5 = [(PHAssetCreationMetadataCopyOptions *)&v10 init];
+  if (v5)
+  {
+    v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"titleDescriptionAndKeywords"];
+    v5->_shouldCopyTitleDescriptionAndKeywords = [v4 decodeBoolForKey:v6];
+
+    v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"spatialOverCaptureResources"];
+    v5->_shouldCopySpatialOverCaptureResources = [v4 decodeBoolForKey:v7];
+
+    v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"shouldCopyLocationData"];
+    v5->_shouldCopyLocationData = [v4 decodeBoolForKey:v8];
+  }
+
+  return v5;
+}
+
+- (void)encodeWithCoder:(id)a3
+{
+  shouldCopyTitleDescriptionAndKeywords = self->_shouldCopyTitleDescriptionAndKeywords;
+  v5 = MEMORY[0x1E696AEC0];
+  v6 = a3;
+  v7 = [v5 stringWithUTF8String:"titleDescriptionAndKeywords"];
+  [v6 encodeBool:shouldCopyTitleDescriptionAndKeywords forKey:v7];
+
+  shouldCopySpatialOverCaptureResources = self->_shouldCopySpatialOverCaptureResources;
+  v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"spatialOverCaptureResources"];
+  [v6 encodeBool:shouldCopySpatialOverCaptureResources forKey:v9];
+
+  shouldCopyLocationData = self->_shouldCopyLocationData;
+  v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"shouldCopyLocationData"];
+  [v6 encodeBool:shouldCopyLocationData forKey:v11];
+}
+
+- (id)plRepresentation
+{
+  v3 = objc_alloc_init(MEMORY[0x1E69BE550]);
+  copyPropertiesFromObjectAToObjectB(self, v3);
+
+  return v3;
+}
+
+- (id)description
+{
+  v8.receiver = self;
+  v8.super_class = PHAssetCreationMetadataCopyOptions;
+  v3 = [(PHAssetCreationMetadataCopyOptions *)&v8 description];
+  v4 = [v3 stringByAppendingFormat:@" shouldCopyTitleDescriptionAndKeywords=%d", self->_shouldCopyTitleDescriptionAndKeywords];
+
+  v5 = [v4 stringByAppendingFormat:@" shouldCopySpatialOverCaptureResources=%d", self->_shouldCopySpatialOverCaptureResources];
+
+  v6 = [v5 stringByAppendingFormat:@" shouldCopyLocationData=%d", self->_shouldCopyLocationData];
+
+  return v6;
+}
+
+- (void)encodeToXPCDict:(id)a3
+{
+  v4 = a3;
+  xdict = xpc_dictionary_create(0, 0, 0);
+  xpc_dictionary_set_value(v4, "metadataCopyOptions", xdict);
+
+  xpc_dictionary_set_BOOL(xdict, "titleDescriptionAndKeywords", self->_shouldCopyTitleDescriptionAndKeywords);
+  xpc_dictionary_set_BOOL(xdict, "spatialOverCaptureResources", self->_shouldCopySpatialOverCaptureResources);
+  xpc_dictionary_set_BOOL(xdict, "shouldCopyLocationData", self->_shouldCopyLocationData);
+}
+
+- (id)copyWithZone:(_NSZone *)a3
+{
+  v4 = objc_alloc_init(PHAssetCreationMetadataCopyOptions);
+  [(PHAssetCreationMetadataCopyOptions *)v4 setShouldCopyTitleDescriptionAndKeywords:self->_shouldCopyTitleDescriptionAndKeywords];
+  [(PHAssetCreationMetadataCopyOptions *)v4 setShouldCopySpatialOverCaptureResources:self->_shouldCopySpatialOverCaptureResources];
+  [(PHAssetCreationMetadataCopyOptions *)v4 setShouldCopyLocationData:self->_shouldCopyLocationData];
+  return v4;
+}
+
+- (PHAssetCreationMetadataCopyOptions)initWithXPCDict:(id)a3
+{
+  v4 = a3;
+  v5 = [(PHAssetCreationMetadataCopyOptions *)self init];
+  if (v5)
+  {
+    v6 = xpc_dictionary_get_value(v4, "metadataCopyOptions");
+    v7 = v6;
+    if (v6)
+    {
+      v5->_shouldCopyTitleDescriptionAndKeywords = xpc_dictionary_get_BOOL(v6, "titleDescriptionAndKeywords");
+      v5->_shouldCopySpatialOverCaptureResources = xpc_dictionary_get_BOOL(v7, "spatialOverCaptureResources");
+      v5->_shouldCopyLocationData = xpc_dictionary_get_BOOL(v7, "shouldCopyLocationData");
+    }
+  }
+
+  return v5;
+}
+
+- (PHAssetCreationMetadataCopyOptions)init
+{
+  v3.receiver = self;
+  v3.super_class = PHAssetCreationMetadataCopyOptions;
+  result = [(PHAssetCreationMetadataCopyOptions *)&v3 init];
+  if (result)
+  {
+    *&result->_shouldCopyTitleDescriptionAndKeywords = 0;
+    result->_shouldCopyLocationData = 1;
+  }
+
+  return result;
+}
+
++ (id)metadataCopyOptionsForPublishingOriginals
+{
+  v2 = objc_alloc_init(PHAssetCreationMetadataCopyOptions);
+  [(PHAssetCreationMetadataCopyOptions *)v2 setShouldCopyTitleDescriptionAndKeywords:1];
+  [(PHAssetCreationMetadataCopyOptions *)v2 setShouldCopySpatialOverCaptureResources:1];
+  [(PHAssetCreationMetadataCopyOptions *)v2 setShouldCopyLocationData:1];
+
+  return v2;
+}
+
+@end

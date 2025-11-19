@@ -1,0 +1,1633 @@
+@interface UIMenu
++ (UIMenu)menuWithTitle:(NSString *)title children:(NSArray *)children;
++ (UIMenu)menuWithTitle:(NSString *)title image:(UIImage *)image identifier:(UIMenuIdentifier)identifier options:(UIMenuOptions)options children:(NSArray *)children;
++ (UIMenu)menuWithTitle:(id)a3 imageName:(id)a4 identifier:(id)a5 options:(unint64_t)a6 children:(id)a7;
++ (id)_defaultMenuImageNames;
++ (id)_defaultMenuTitles;
++ (id)_defaultMenuWithIdentifier:(id)a3 options:(unint64_t)a4 children:(id)a5;
+- (BOOL)_acceptBoolMenuVisit:(id)a3 commandVisit:(id)a4 actionVisit:(id)a5;
+- (BOOL)_acceptBoolMenuVisit:(id)a3 leafVisit:(id)a4;
+- (BOOL)_hasGlobalHeader;
+- (BOOL)_hasVisibleChildren;
+- (BOOL)_shouldShowSelectionState;
+- (BOOL)isEqual:(id)a3;
+- (NSArray)selectedElements;
+- (NSString)description;
+- (UIMenu)initWithCoder:(NSCoder *)coder;
+- (UIMenu)initWithMenu:(id)a3 overrideChildren:(id)a4 additionalOptions:(unint64_t)a5;
+- (UIMenu)initWithTitle:(id)a3 image:(id)a4 imageName:(id)a5 identifier:(id)a6 options:(unint64_t)a7 children:(id)a8;
+- (UIMenu)menuByReplacingChildren:(NSArray *)newChildren;
+- (UIMenuForcedAutomaticSelectionDelegate)forcedAutomaticSelectionDelegate;
+- (UIView)headerView;
+- (id)_copyPreservingMetadataAndSharingLeafObservers:(BOOL)a3;
+- (id)_copyPreservingMetadataAndSharingLeafObserversIfNeeded;
+- (id)_copyWithOptions:(unint64_t)a3;
+- (id)_menuByReplacingChildren:(id)a3 additionalOptions:(unint64_t)a4;
+- (id)_safeCopy;
+- (id)childElementForElement:(id)a3;
+- (id)copyWithZone:(_NSZone *)a3;
+- (id)recursiveDescription;
+- (id)recursivelySelectDefaultForcedSelection:(BOOL)a3;
+- (int64_t)_resolvedElementSize;
+- (uint64_t)_hasVisibleChild;
+- (uint64_t)_shouldAlwaysShowCommandsWithoutTargets;
+- (uint64_t)_shouldShowAlternatesInContextMenus;
+- (void)_acceptMenuVisit:(id)a3 commandVisit:(id)a4 actionVisit:(id)a5 deferredElementVisit:(id)a6;
+- (void)_acceptMenuVisit:(id)a3 leafVisit:(id)a4;
+- (void)_addRecursiveDescriptionForElement:(id)a3 toString:(id)a4 level:(unint64_t)a5;
+- (void)_elementStateDidChange:(id)a3;
+- (void)_elementWillPerformAction:(id)a3;
+- (void)_resolveElementSizeWithContext:(id)a3;
+- (void)_setPinnedFooterElement:(id)a3;
+- (void)_setResolvedElementSize:(int64_t)a3;
+- (void)_setSurfacesSelectionState:(BOOL)a3;
+- (void)encodeWithCoder:(id)a3;
+- (void)establishInitialDefaultSingleSelection;
+- (void)setForceAutomaticSelection:(BOOL)a3;
+- (void)updateChildrenForSingleSelectedElement:(id)a3;
+@end
+
+@implementation UIMenu
+
+- (void)establishInitialDefaultSingleSelection
+{
+  v12 = a2;
+  v26 = *MEMORY[0x1E69E9840];
+  v19 = 0;
+  v20 = &v19;
+  v21 = 0x3032000000;
+  v22 = __Block_byref_object_copy__37;
+  v23 = __Block_byref_object_dispose__37;
+  v24 = 0;
+  aBlock[0] = MEMORY[0x1E69E9820];
+  aBlock[1] = 3221225472;
+  aBlock[2] = __48__UIMenu_establishInitialDefaultSingleSelection__block_invoke;
+  aBlock[3] = &unk_1E70FE780;
+  aBlock[4] = &v19;
+  v3 = _Block_copy(aBlock);
+  v16 = 0u;
+  v17 = 0u;
+  v14 = 0u;
+  v15 = 0u;
+  v4 = [(UIMenu *)self children];
+  v5 = [v4 countByEnumeratingWithState:&v14 objects:v25 count:16];
+  if (v5)
+  {
+    v6 = *v15;
+    do
+    {
+      v7 = 0;
+      do
+      {
+        if (*v15 != v6)
+        {
+          objc_enumerationMutation(v4);
+        }
+
+        v8 = *(*(&v14 + 1) + 8 * v7);
+        v13[0] = MEMORY[0x1E69E9820];
+        v13[1] = 3221225472;
+        v13[2] = __48__UIMenu_establishInitialDefaultSingleSelection__block_invoke_2;
+        v13[3] = &unk_1E70FE7A8;
+        v13[4] = &v19;
+        [v8 _acceptMenuVisit:v13 commandVisit:v3 actionVisit:v3 deferredElementVisit:{0, v12}];
+        ++v7;
+      }
+
+      while (v5 != v7);
+      v5 = [v4 countByEnumeratingWithState:&v14 objects:v25 count:16];
+    }
+
+    while (v5);
+  }
+
+  if ([(UIMenu *)self forceAutomaticSelection])
+  {
+    if (!v20[5])
+    {
+      v9 = [(UIMenu *)self recursivelySelectDefaultForcedSelection:1];
+      v10 = v20[5];
+      v20[5] = v9;
+
+      if (!v20[5])
+      {
+        v11 = [MEMORY[0x1E696AAA8] currentHandler];
+        [v11 handleFailureInMethod:v12 object:self file:@"UIMenu.m" lineNumber:706 description:@"Menu does not have a valid element for default selection"];
+      }
+    }
+  }
+
+  _Block_object_dispose(&v19, 8);
+}
+
+void __48__UIMenu_establishInitialDefaultSingleSelection__block_invoke_2(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  v6 = v3;
+  if (*(*(*(a1 + 32) + 8) + 40))
+  {
+    [v3 updateChildrenForSingleSelectedElement:0];
+  }
+
+  else
+  {
+    v4 = [v3 selectedElements];
+    v5 = [v4 firstObject];
+
+    if (v5)
+    {
+      [v6 updateChildrenForSingleSelectedElement:v5];
+      objc_storeStrong((*(*(a1 + 32) + 8) + 40), v5);
+    }
+  }
+}
+
+- (NSArray)selectedElements
+{
+  v3 = objc_opt_new();
+  recursivelyPopulateSelectedElements(self, v3);
+  v4 = [v3 array];
+
+  return v4;
+}
+
+void __48__UIMenu_establishInitialDefaultSingleSelection__block_invoke(uint64_t a1, void *a2)
+{
+  v7 = a2;
+  if ([v7 state] == 1)
+  {
+    v4 = *(*(a1 + 32) + 8);
+    v6 = *(v4 + 40);
+    v5 = (v4 + 40);
+    if (v6)
+    {
+      [v7 _setState:0 notifyingObservers:0];
+    }
+
+    else
+    {
+      objc_storeStrong(v5, a2);
+    }
+  }
+}
+
+- (UIView)headerView
+{
+  headerView = self->_headerView;
+  if (!headerView)
+  {
+    headerView = self->_headerViewProvider;
+    if (headerView)
+    {
+      v4 = headerView[2](headerView, self);
+      v5 = self->_headerView;
+      self->_headerView = v4;
+
+      headerView = self->_headerView;
+    }
+  }
+
+  return headerView;
+}
+
+- (BOOL)_hasGlobalHeader
+{
+  v3 = [(UIMenuElement *)self title];
+  if ([v3 length])
+  {
+    v4 = 1;
+  }
+
+  else
+  {
+    v5 = [(UIMenu *)self headerView];
+    v4 = v5 != 0;
+  }
+
+  return v4;
+}
+
+- (int64_t)_resolvedElementSize
+{
+  result = self->_resolvedElementSize;
+  if (result == -1)
+  {
+    v5 = [MEMORY[0x1E696AAA8] currentHandler];
+    [v5 handleFailureInMethod:a2 object:self file:@"UIMenu.m" lineNumber:323 description:@"UIMenu._resolvedElementSize cannot be called before the menu has been prepared for display"];
+
+    return self->_resolvedElementSize;
+  }
+
+  return result;
+}
+
++ (UIMenu)menuWithTitle:(NSString *)title children:(NSArray *)children
+{
+  v5 = children;
+  v6 = title;
+  v7 = [[UIMenu alloc] initWithTitle:v6 image:0 imageName:0 identifier:0 options:0 children:v5];
+
+  return v7;
+}
+
++ (UIMenu)menuWithTitle:(id)a3 imageName:(id)a4 identifier:(id)a5 options:(unint64_t)a6 children:(id)a7
+{
+  v11 = a7;
+  v12 = a5;
+  v13 = a4;
+  v14 = a3;
+  v15 = [[UIMenu alloc] initWithTitle:v14 image:0 imageName:v13 identifier:v12 options:a6 children:v11];
+
+  return v15;
+}
+
++ (UIMenu)menuWithTitle:(NSString *)title image:(UIImage *)image identifier:(UIMenuIdentifier)identifier options:(UIMenuOptions)options children:(NSArray *)children
+{
+  v11 = children;
+  v12 = identifier;
+  v13 = image;
+  v14 = title;
+  v15 = [[UIMenu alloc] initWithTitle:v14 image:v13 imageName:0 identifier:v12 options:options children:v11];
+
+  return v15;
+}
+
+- (UIMenu)initWithTitle:(id)a3 image:(id)a4 imageName:(id)a5 identifier:(id)a6 options:(unint64_t)a7 children:(id)a8
+{
+  v14 = a6;
+  v15 = a8;
+  v26.receiver = self;
+  v26.super_class = UIMenu;
+  v16 = [(UIMenuElement *)&v26 initWithTitle:a3 image:a4 imageName:a5];
+  if (v16)
+  {
+    if (v14)
+    {
+      v17 = [v14 copy];
+    }
+
+    else
+    {
+      v18 = MEMORY[0x1E696AEC0];
+      a4 = [MEMORY[0x1E696AFB0] UUID];
+      v17 = [v18 stringWithFormat:@"com.apple.menu.dynamic.%@", a4];
+    }
+
+    objc_storeStrong(&v16->_identifier, v17);
+    if (!v14)
+    {
+
+      v17 = a4;
+    }
+
+    v16->_options = a7;
+    v19 = [v15 copy];
+    children = v16->_children;
+    v16->_children = v19;
+
+    v21 = ((v16->_options >> 2) & 1) - 1;
+    v16->_preferredElementSize = v21;
+    v16->_resolvedElementSize = v21;
+    if ((v16->_options & 0x20) != 0)
+    {
+      [(UIMenu *)v16 addAsStateObserver];
+      [(UIMenu *)v16 establishInitialDefaultSingleSelection];
+    }
+
+    v22 = objc_opt_new();
+    v23 = v22;
+    if ((a7 & 8) != 0)
+    {
+      v16->_hasCustomizedDisplayPreferences = 1;
+      [(UIMenuDisplayPreferences *)v22 setMaximumNumberOfTitleLines:1];
+    }
+
+    if ((a7 & 0x40) != 0)
+    {
+      v16->_hasCustomizedDisplayPreferences = 1;
+      [(UIMenuDisplayPreferences *)v23 setMaximumNumberOfTitleLines:0];
+    }
+
+    displayPreferences = v16->_displayPreferences;
+    v16->_displayPreferences = v23;
+  }
+
+  return v16;
+}
+
+- (UIMenu)initWithMenu:(id)a3 overrideChildren:(id)a4 additionalOptions:(unint64_t)a5
+{
+  v8 = a3;
+  v9 = a4;
+  v10 = [v8 _imageOrName];
+  v11 = [v8 title];
+  v12 = [v10 _asMenuElementImage];
+  v13 = [v10 _asMenuElementImageName];
+  v32.receiver = self;
+  v32.super_class = UIMenu;
+  v14 = [(UIMenuElement *)&v32 initWithTitle:v11 image:v12 imageName:v13];
+
+  if (v14)
+  {
+    v15 = [v8 attributedTitle];
+    attributedTitle = v14->super._attributedTitle;
+    v14->super._attributedTitle = v15;
+
+    v17 = [v8 subtitle];
+    subtitle = v14->super._subtitle;
+    v14->super._subtitle = v17;
+
+    v19 = [v8 identifier];
+    identifier = v14->_identifier;
+    v14->_identifier = v19;
+
+    v14->_options = [v8 options] | a5;
+    v21 = v9;
+    if (!v9)
+    {
+      v21 = [v8 children];
+    }
+
+    objc_storeStrong(&v14->_children, v21);
+    if (!v9)
+    {
+    }
+
+    v22 = [v8 accessibilityIdentifier];
+    accessibilityIdentifier = v14->super._accessibilityIdentifier;
+    v14->super._accessibilityIdentifier = v22;
+
+    v14->_forceAutomaticSelection = [v8 forceAutomaticSelection];
+    v14->_behaviorOptions = [v8 behaviorOptions];
+    v24 = [v8 headerViewProvider];
+    headerViewProvider = v14->_headerViewProvider;
+    v14->_headerViewProvider = v24;
+
+    v26 = [v8 _pinnedFooterElement];
+    pinnedFooterElement = v14->_pinnedFooterElement;
+    v14->_pinnedFooterElement = v26;
+
+    v14->_preferredElementSize = [v8 preferredElementSize];
+    v14->_resolvedElementSize = v8[11];
+    v14->super.__preferredDisplayMode = [v8 _preferredDisplayMode];
+    v14->__surfacesSelectionState = [v8 _surfacesSelectionState];
+    v28 = [v8 _internalIdentifier];
+    [(UIMenuElement *)v14 set_internalIdentifier:v28];
+
+    v29 = [v8 displayPreferences];
+    [(UIMenu *)v14 setDisplayPreferences:v29];
+
+    v30 = [v8 _accessoryAction];
+    [(UIMenuElement *)v14 set_accessoryAction:v30];
+
+    if ((v14->_options & 0x20) != 0 || v14->_forceAutomaticSelection)
+    {
+      [(UIMenu *)v14 addAsStateObserver];
+      [(UIMenu *)v14 establishInitialDefaultSingleSelection];
+    }
+  }
+
+  return v14;
+}
+
+- (UIMenu)menuByReplacingChildren:(NSArray *)newChildren
+{
+  v4 = newChildren;
+  v5 = objc_alloc(objc_opt_class());
+  v6 = [(NSArray *)v4 copy];
+
+  v7 = [v5 initWithMenu:self overrideChildren:v6];
+
+  return v7;
+}
+
+- (id)_menuByReplacingChildren:(id)a3 additionalOptions:(unint64_t)a4
+{
+  v7 = a3;
+  if ((_UIApplicationProcessIsSpringBoard() & 1) == 0 && (_UIApplicationProcessIsOverlayUI() & 1) == 0 && (_UIApplicationProcessIsUIKitester() & 1) == 0)
+  {
+    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    [v12 handleFailureInMethod:a2 object:self file:@"UIMenu.m" lineNumber:253 description:@"This may only be used by SpringBoard."];
+  }
+
+  v8 = objc_alloc(objc_opt_class());
+  v9 = [v7 copy];
+
+  v10 = [v8 initWithMenu:self overrideChildren:v9 additionalOptions:a4];
+
+  return v10;
+}
+
+- (void)_setSurfacesSelectionState:(BOOL)a3
+{
+  v3 = a3;
+  if ((_UIApplicationProcessIsSpringBoard() & 1) == 0)
+  {
+    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    [v6 handleFailureInMethod:a2 object:self file:@"UIMenu.m" lineNumber:259 description:@"This may only be used by SpringBoard."];
+  }
+
+  if (self->__surfacesSelectionState != v3)
+  {
+    self->__surfacesSelectionState = v3;
+  }
+}
+
+- (uint64_t)_shouldAlwaysShowCommandsWithoutTargets
+{
+  if (a1 && (*(a1 + 113) & 2) != 0)
+  {
+    if (qword_1ED49A8C0 != -1)
+    {
+      dispatch_once(&qword_1ED49A8C0, &__block_literal_global_112);
+    }
+
+    v1 = _MergedGlobals_11_3;
+  }
+
+  else
+  {
+    v1 = 0;
+  }
+
+  return v1 & 1;
+}
+
+void __49__UIMenu__shouldAlwaysShowCommandsWithoutTargets__block_invoke()
+{
+  if (_UIApplicationProcessIsSpringBoard() & 1) != 0 || (_UIApplicationProcessIsOverlayUI())
+  {
+    _MergedGlobals_11_3 = 1;
+  }
+
+  else
+  {
+    _MergedGlobals_11_3 = _UIApplicationProcessIsUIKitester();
+    if ((_MergedGlobals_11_3 & 1) == 0 && os_variant_has_internal_diagnostics())
+    {
+      v0 = *(__UILogGetCategoryCachedImpl("UIMenu", &qword_1ED49A8C8) + 8);
+      if (os_log_type_enabled(v0, OS_LOG_TYPE_ERROR))
+      {
+        *v1 = 0;
+        _os_log_impl(&dword_188A29000, v0, OS_LOG_TYPE_ERROR, "Process is not approved to use the UIMenuOptionsPrivateAlwaysShowCommandsWithoutTargets SPI. Ignoring.", v1, 2u);
+      }
+    }
+  }
+}
+
+- (uint64_t)_shouldShowAlternatesInContextMenus
+{
+  if (a1 && (*(a1 + 113) & 4) != 0)
+  {
+    if (qword_1ED49A8D0 != -1)
+    {
+      dispatch_once(&qword_1ED49A8D0, &__block_literal_global_228);
+    }
+
+    v1 = byte_1ED49A8B9;
+  }
+
+  else
+  {
+    v1 = 0;
+  }
+
+  return v1 & 1;
+}
+
+void __45__UIMenu__shouldShowAlternatesInContextMenus__block_invoke()
+{
+  if (_UIApplicationProcessIsSpringBoard() & 1) != 0 || (_UIApplicationProcessIsOverlayUI())
+  {
+    byte_1ED49A8B9 = 1;
+  }
+
+  else
+  {
+    byte_1ED49A8B9 = _UIApplicationProcessIsUIKitester();
+    if ((byte_1ED49A8B9 & 1) == 0 && os_variant_has_internal_diagnostics())
+    {
+      v0 = *(__UILogGetCategoryCachedImpl("UIMenu", &qword_1ED49A8D8) + 8);
+      if (os_log_type_enabled(v0, OS_LOG_TYPE_ERROR))
+      {
+        *v1 = 0;
+        _os_log_impl(&dword_188A29000, v0, OS_LOG_TYPE_ERROR, "Process is not approved to use the UIMenuOptionsPrivateShowAlternates SPI. Ignoring.", v1, 2u);
+      }
+    }
+  }
+}
+
+- (void)_setResolvedElementSize:(int64_t)a3
+{
+  if (a3 == -1)
+  {
+    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    [v6 handleFailureInMethod:a2 object:self file:@"UIMenu.m" lineNumber:317 description:@"Cannot set the resolved element size to be .automatic"];
+  }
+
+  self->_resolvedElementSize = a3;
+}
+
+- (void)_setPinnedFooterElement:(id)a3
+{
+  v5 = a3;
+  if ((_UIApplicationProcessIsSpringBoard() & 1) == 0 && (_UIApplicationProcessIsControlCenterHostApp() & 1) == 0 && (_UIApplicationProcessIsUIKitester() & 1) == 0)
+  {
+    v7 = [MEMORY[0x1E696AAA8] currentHandler];
+    [v7 handleFailureInMethod:a2 object:self file:@"UIMenu.m" lineNumber:330 description:@"This may only be used by SpringBoard."];
+  }
+
+  pinnedFooterElement = self->_pinnedFooterElement;
+  self->_pinnedFooterElement = v5;
+}
+
+- (BOOL)_hasVisibleChildren
+{
+  if ((_UIApplicationProcessIsSpringBoard() & 1) == 0 && (_UIApplicationProcessIsOverlayUI() & 1) == 0 && (_UIApplicationProcessIsUIKitester() & 1) == 0)
+  {
+    v5 = [MEMORY[0x1E696AAA8] currentHandler];
+    [v5 handleFailureInMethod:a2 object:self file:@"UIMenu.m" lineNumber:337 description:@"This may only be used by SpringBoard."];
+  }
+
+  return [(UIMenu *)self _hasVisibleChild];
+}
+
+- (uint64_t)_hasVisibleChild
+{
+  v14 = *MEMORY[0x1E69E9840];
+  if (!a1)
+  {
+    return 0;
+  }
+
+  v11 = 0u;
+  v12 = 0u;
+  v9 = 0u;
+  v10 = 0u;
+  v1 = [a1 children];
+  v2 = [v1 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  if (!v2)
+  {
+    goto LABEL_17;
+  }
+
+  v3 = *v10;
+  while (2)
+  {
+    for (i = 0; i != v2; ++i)
+    {
+      if (*v10 != v3)
+      {
+        objc_enumerationMutation(v1);
+      }
+
+      v5 = *(*(&v9 + 1) + 8 * i);
+      v6 = objc_opt_self();
+      isKindOfClass = objc_opt_isKindOfClass();
+
+      if (isKindOfClass)
+      {
+        if (([(UIMenu *)v5 _hasVisibleChild]& 1) != 0)
+        {
+          goto LABEL_16;
+        }
+      }
+
+      else
+      {
+        if (![v5 _isLeaf])
+        {
+          continue;
+        }
+
+        if (([v5 attributes] & 4) == 0)
+        {
+LABEL_16:
+
+          v2 = 1;
+          goto LABEL_17;
+        }
+      }
+    }
+
+    v2 = [v1 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    if (v2)
+    {
+      continue;
+    }
+
+    break;
+  }
+
+LABEL_17:
+
+  return v2;
+}
+
+- (void)encodeWithCoder:(id)a3
+{
+  v4 = a3;
+  v7.receiver = self;
+  v7.super_class = UIMenu;
+  [(UIMenuElement *)&v7 encodeWithCoder:v4];
+  [v4 encodeObject:self->_identifier forKey:@"identifier"];
+  [v4 encodeInteger:self->_options forKey:@"options"];
+  [v4 encodeInteger:self->_preferredElementSize forKey:@"preferredElementSize"];
+  [v4 encodeInteger:self->_resolvedElementSize forKey:@"resolvedElementSize"];
+  [v4 encodeObject:self->_children forKey:@"children"];
+  [v4 encodeObject:self->_displayPreferences forKey:@"displayPreferences"];
+  if (self->_forceAutomaticSelection)
+  {
+    [v4 encodeBool:1 forKey:@"automaticSelection"];
+  }
+
+  behaviorOptions = self->_behaviorOptions;
+  if (behaviorOptions)
+  {
+    [v4 encodeInteger:behaviorOptions forKey:@"behaviorOptions"];
+  }
+
+  if (self->__surfacesSelectionState)
+  {
+    [v4 encodeBool:1 forKey:@"surfacesSelectionState"];
+  }
+
+  p_metadata = &self->_metadata;
+  if (p_metadata->isPreparedForDisplay)
+  {
+    [v4 encodeBool:1 forKey:@"metadata.isPreparedForDisplay"];
+  }
+
+  if (p_metadata->hasVisibleSelectedItem)
+  {
+    [v4 encodeBool:1 forKey:@"metadata.hasVisibleSelectedItem"];
+  }
+
+  if (p_metadata->hasDeepHierarchy)
+  {
+    [v4 encodeBool:1 forKey:@"metadata.hasDeepHierarchy"];
+  }
+
+  if (p_metadata->hasAtLeastOneVisibleItem)
+  {
+    [v4 encodeBool:1 forKey:@"metadata.hasAtLeastOneVisibleItem"];
+  }
+}
+
+- (UIMenu)initWithCoder:(NSCoder *)coder
+{
+  v4 = coder;
+  v16.receiver = self;
+  v16.super_class = UIMenu;
+  v5 = [(UIMenuElement *)&v16 initWithCoder:v4];
+  if (v5)
+  {
+    v6 = [(NSCoder *)v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    identifier = v5->_identifier;
+    v5->_identifier = v6;
+
+    v5->_options = [(NSCoder *)v4 decodeIntegerForKey:@"options"];
+    v5->_preferredElementSize = [(NSCoder *)v4 decodeIntegerForKey:@"preferredElementSize"];
+    v5->_resolvedElementSize = [(NSCoder *)v4 decodeIntegerForKey:@"resolvedElementSize"];
+    v8 = MEMORY[0x1E695DFD8];
+    v9 = objc_opt_class();
+    v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
+    v11 = [(NSCoder *)v4 decodeObjectOfClasses:v10 forKey:@"children"];
+    children = v5->_children;
+    v5->_children = v11;
+
+    v5->_forceAutomaticSelection = [(NSCoder *)v4 decodeBoolForKey:@"automaticSelection"];
+    v5->_behaviorOptions = [(NSCoder *)v4 decodeIntegerForKey:@"behaviorOptions"];
+    v5->__surfacesSelectionState = [(NSCoder *)v4 decodeBoolForKey:@"surfacesSelectionState"];
+    v13 = [(NSCoder *)v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayPreferences"];
+    displayPreferences = v5->_displayPreferences;
+    v5->_displayPreferences = v13;
+
+    v5->_metadata.isPreparedForDisplay = [(NSCoder *)v4 decodeBoolForKey:@"metadata.isPreparedForDisplay"];
+    v5->_metadata.hasVisibleSelectedItem = [(NSCoder *)v4 decodeBoolForKey:@"metadata.hasVisibleSelectedItem"];
+    v5->_metadata.hasDeepHierarchy = [(NSCoder *)v4 decodeBoolForKey:@"metadata.hasDeepHierarchy"];
+    v5->_metadata.hasAtLeastOneVisibleItem = [(NSCoder *)v4 decodeBoolForKey:@"metadata.hasAtLeastOneVisibleItem"];
+    if ((v5->_options & 0x20) != 0 || v5->_forceAutomaticSelection)
+    {
+      [(UIMenu *)v5 addAsStateObserver];
+      [(UIMenu *)v5 establishInitialDefaultSingleSelection];
+    }
+  }
+
+  return v5;
+}
+
+- (id)copyWithZone:(_NSZone *)a3
+{
+  v19 = *MEMORY[0x1E69E9840];
+  v4 = [(UIMenu *)self children];
+  v5 = [MEMORY[0x1E695DF70] array];
+  v14 = 0u;
+  v15 = 0u;
+  v16 = 0u;
+  v17 = 0u;
+  v6 = v4;
+  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  if (v7)
+  {
+    v8 = v7;
+    v9 = *v15;
+    do
+    {
+      v10 = 0;
+      do
+      {
+        if (*v15 != v9)
+        {
+          objc_enumerationMutation(v6);
+        }
+
+        v11 = [*(*(&v14 + 1) + 8 * v10) copy];
+        [v5 addObject:v11];
+
+        ++v10;
+      }
+
+      while (v8 != v10);
+      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    }
+
+    while (v8);
+  }
+
+  v12 = [(UIMenu *)self menuByReplacingChildren:v5];
+
+  return v12;
+}
+
+- (id)_safeCopy
+{
+  v17 = *MEMORY[0x1E69E9840];
+  v3 = [MEMORY[0x1E695DF70] array];
+  v12 = 0u;
+  v13 = 0u;
+  v14 = 0u;
+  v15 = 0u;
+  v4 = [(UIMenu *)self children];
+  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  if (v5)
+  {
+    v6 = v5;
+    v7 = *v13;
+    do
+    {
+      for (i = 0; i != v6; ++i)
+      {
+        if (*v13 != v7)
+        {
+          objc_enumerationMutation(v4);
+        }
+
+        v9 = [*(*(&v12 + 1) + 8 * i) _safeCopy];
+        [v3 addObject:v9];
+      }
+
+      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    }
+
+    while (v6);
+  }
+
+  v10 = [[UIMenu alloc] initWithMenu:self overrideChildren:v3];
+
+  return v10;
+}
+
+- (void)_acceptMenuVisit:(id)a3 commandVisit:(id)a4 actionVisit:(id)a5 deferredElementVisit:(id)a6
+{
+  if (a3)
+  {
+    (*(a3 + 2))(a3, self);
+  }
+}
+
+- (BOOL)_acceptBoolMenuVisit:(id)a3 commandVisit:(id)a4 actionVisit:(id)a5
+{
+  if (a3)
+  {
+    return (*(a3 + 2))(a3, self);
+  }
+
+  else
+  {
+    return 0;
+  }
+}
+
+- (void)_acceptMenuVisit:(id)a3 leafVisit:(id)a4
+{
+  if (a3)
+  {
+    (*(a3 + 2))(a3, self);
+  }
+}
+
+- (BOOL)_acceptBoolMenuVisit:(id)a3 leafVisit:(id)a4
+{
+  if (a3)
+  {
+    return (*(a3 + 2))(a3, self);
+  }
+
+  else
+  {
+    return 0;
+  }
+}
+
+- (id)_copyPreservingMetadataAndSharingLeafObserversIfNeeded
+{
+  v3 = ([(UIMenu *)self options]& 0x20) != 0 || [(UIMenu *)self forceAutomaticSelection];
+
+  return [(UIMenu *)self _copyPreservingMetadataAndSharingLeafObservers:v3];
+}
+
+- (id)_copyPreservingMetadataAndSharingLeafObservers:(BOOL)a3
+{
+  v3 = a3;
+  v4 = self;
+  v34 = *MEMORY[0x1E69E9840];
+  v5 = [(UIMenu *)self children];
+  v29 = 0u;
+  v30 = 0u;
+  v31 = 0u;
+  v32 = 0u;
+  v6 = [v5 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  if (!v6)
+  {
+    goto LABEL_24;
+  }
+
+  v7 = v6;
+  v25 = v4;
+  v8 = 0;
+  v9 = 0;
+  v10 = *v30;
+  v11 = off_1E70EA000;
+  v26 = v3;
+  do
+  {
+    v12 = 0;
+    do
+    {
+      if (*v30 != v10)
+      {
+        objc_enumerationMutation(v5);
+      }
+
+      v13 = *(*(&v29 + 1) + 8 * v12);
+      if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+      {
+        v14 = [v13 _copyPreservingMetadataAndSharingLeafObservers:1];
+      }
+
+      else
+      {
+        objc_opt_class();
+        if (objc_opt_isKindOfClass())
+        {
+          v14 = [v13 _copyPreservingMetadataAndSharingLeafObserversIfNeeded];
+        }
+
+        else
+        {
+          v14 = [v13 copy];
+        }
+      }
+
+      v15 = v14;
+      if (v14 != v13)
+      {
+        if (v9)
+        {
+          if (v3)
+          {
+            goto LABEL_15;
+          }
+        }
+
+        else
+        {
+          v9 = [v5 mutableCopy];
+          if (v3)
+          {
+LABEL_15:
+            aBlock[0] = MEMORY[0x1E69E9820];
+            aBlock[1] = 3221225472;
+            aBlock[2] = __57__UIMenu__copyPreservingMetadataAndSharingLeafObservers___block_invoke;
+            aBlock[3] = &unk_1E70FE758;
+            v28 = v15;
+            v16 = v9;
+            v17 = v7;
+            v18 = v10;
+            v19 = v11;
+            v20 = v5;
+            v21 = _Block_copy(aBlock);
+            [v13 _acceptMenuVisit:0 commandVisit:v21 actionVisit:v21 deferredElementVisit:0];
+
+            v5 = v20;
+            v11 = v19;
+            v10 = v18;
+            v7 = v17;
+            v9 = v16;
+            v3 = v26;
+          }
+        }
+
+        [v9 setObject:v15 atIndexedSubscript:{v8, v25}];
+      }
+
+      ++v8;
+
+      ++v12;
+    }
+
+    while (v7 != v12);
+    v22 = [v5 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    v7 = v22;
+  }
+
+  while (v22);
+  v4 = v25;
+  if (!v9)
+  {
+LABEL_24:
+    v23 = v4;
+    v9 = 0;
+    goto LABEL_25;
+  }
+
+  v23 = [(UIMenu *)v25 menuByReplacingChildren:v9];
+  [(UIMenu *)v23 setMetadata:[(UIMenu *)v25 metadata]& 0xFFFFFFFFFFLL];
+LABEL_25:
+
+  return v23;
+}
+
+void __57__UIMenu__copyPreservingMetadataAndSharingLeafObservers___block_invoke(uint64_t a1, void *a2)
+{
+  v3 = *(a1 + 32);
+  v4 = [a2 _getStateObservers];
+  [v3 _setStateObservers:v4];
+}
+
+- (id)_copyWithOptions:(unint64_t)a3
+{
+  result = [objc_alloc(objc_opt_class()) initWithMenu:self overrideChildren:0];
+  *(result + 14) = a3;
+  return result;
+}
+
+- (NSString)description
+{
+  v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p", objc_opt_class(), self];
+  v4 = [(UIMenuElement *)self title];
+  v5 = [v4 length];
+
+  if (v5)
+  {
+    v6 = [(UIMenuElement *)self title];
+    [v3 appendFormat:@"; title = %@", v6];
+  }
+
+  v7 = [(UIMenu *)self identifier];
+  [v3 appendFormat:@"; identifier = %@", v7];
+
+  v8 = [(UIMenuElement *)self image];
+  if (v8)
+  {
+    [v3 appendFormat:@"; image = <%@: %p", objc_opt_class(), v8];
+    if ([v8 isSymbolImage])
+    {
+      v9 = _UIImageName(v8);
+      [v3 appendFormat:@"; symbol = (%@)", v9];
+    }
+
+    [v3 appendString:@">"];
+  }
+
+  if ([(UIMenu *)self options])
+  {
+    v10 = [MEMORY[0x1E695DF70] array];
+    if (([(UIMenu *)self options]& 1) != 0)
+    {
+      [v10 addObject:@"Inline"];
+    }
+
+    if (([(UIMenu *)self options]& 2) != 0)
+    {
+      [v10 addObject:@"Destructive"];
+    }
+
+    if (([(UIMenu *)self options]& 4) != 0)
+    {
+      [v10 addObject:@"Compact"];
+    }
+
+    if (([(UIMenu *)self options]& 0x10) != 0)
+    {
+      [v10 addObject:@"AlwaysDisplayChildImages"];
+    }
+
+    if (([(UIMenu *)self options]& 0x20) != 0)
+    {
+      [v10 addObject:@"SingleSelection"];
+    }
+
+    if (([(UIMenu *)self options]& 0x80) != 0)
+    {
+      [v10 addObject:@"Palette"];
+    }
+
+    v11 = [v10 componentsJoinedByString:@"|"];
+    [v3 appendFormat:@"; options = (%@)", v11];
+  }
+
+  if ([(UIMenu *)self forceAutomaticSelection])
+  {
+    [v3 appendString:@"; forcesAutomaticSelection"];
+  }
+
+  v12 = [(UIMenu *)self selectedElements];
+  v13 = [v12 count];
+
+  if (v13)
+  {
+    v14 = [(UIMenu *)self selectedElements];
+    [v3 appendFormat:@"; currentSelection = <NSArray: %p>", v14];
+  }
+
+  if (self->_hasCustomizedDisplayPreferences)
+  {
+    v15 = [(UIMenu *)self displayPreferences];
+    v16 = objc_opt_class();
+    v17 = [(UIMenu *)self displayPreferences];
+    [v3 appendFormat:@"; displayPreferences = <%@: %p>", v16, v17];
+  }
+
+  v18 = [(UIMenu *)self preferredElementSize];
+  if (v18 <= UIMenuElementSizeLarge)
+  {
+    [v3 appendString:off_1E70FE908[v18]];
+  }
+
+  v19 = [(UIMenu *)self children];
+  [v3 appendFormat:@"; children = <NSArray: %p>>", v19];
+
+  return v3;
+}
+
+- (BOOL)isEqual:(id)a3
+{
+  v4 = a3;
+  objc_opt_class();
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSString *)self->_identifier isEqualToString:v4[13]];
+
+  return v5;
+}
+
+- (id)childElementForElement:(id)a3
+{
+  v29 = *MEMORY[0x1E69E9840];
+  v4 = a3;
+  v22 = 0;
+  v23 = &v22;
+  v24 = 0x3032000000;
+  v25 = __Block_byref_object_copy__37;
+  v26 = __Block_byref_object_dispose__37;
+  v27 = 0;
+  v18 = 0u;
+  v19 = 0u;
+  v20 = 0u;
+  v21 = 0u;
+  v5 = [(UIMenu *)self children];
+  v6 = [v5 countByEnumeratingWithState:&v18 objects:v28 count:16];
+  if (v6)
+  {
+    v7 = *v19;
+LABEL_3:
+    v8 = 0;
+    while (1)
+    {
+      if (*v19 != v7)
+      {
+        objc_enumerationMutation(v5);
+      }
+
+      v9 = *(*(&v18 + 1) + 8 * v8);
+      v15[0] = MEMORY[0x1E69E9820];
+      v15[1] = 3221225472;
+      v15[2] = __33__UIMenu_childElementForElement___block_invoke;
+      v15[3] = &unk_1E70FE7D0;
+      v16 = v4;
+      v17 = &v22;
+      v12[0] = MEMORY[0x1E69E9820];
+      v12[1] = 3221225472;
+      v12[2] = __33__UIMenu_childElementForElement___block_invoke_2;
+      v12[3] = &unk_1E70FE7F8;
+      v13 = v16;
+      v14 = &v22;
+      [v9 _acceptMenuVisit:v15 leafVisit:v12];
+      LOBYTE(v9) = v23[5] == 0;
+
+      if ((v9 & 1) == 0)
+      {
+        break;
+      }
+
+      if (v6 == ++v8)
+      {
+        v6 = [v5 countByEnumeratingWithState:&v18 objects:v28 count:16];
+        if (v6)
+        {
+          goto LABEL_3;
+        }
+
+        break;
+      }
+    }
+  }
+
+  v10 = v23[5];
+  _Block_object_dispose(&v22, 8);
+
+  return v10;
+}
+
+void __33__UIMenu_childElementForElement___block_invoke(uint64_t a1, void *a2)
+{
+  v3 = [a2 childElementForElement:*(a1 + 32)];
+  if (v3)
+  {
+    v4 = v3;
+    objc_storeStrong((*(*(a1 + 40) + 8) + 40), v3);
+    v3 = v4;
+  }
+}
+
+void __33__UIMenu_childElementForElement___block_invoke_2(uint64_t a1, void *a2)
+{
+  v4 = a2;
+  if ([v4 isEqual:*(a1 + 32)])
+  {
+    objc_storeStrong((*(*(a1 + 40) + 8) + 40), a2);
+  }
+}
+
+- (void)_elementWillPerformAction:(id)a3
+{
+  v3 = a3;
+  if ([v3 state] != 1)
+  {
+    [v3 _setState:1 notifyingObservers:1];
+  }
+}
+
+- (void)_elementStateDidChange:(id)a3
+{
+  v11 = a3;
+  if (([(UIMenu *)self options]& 0x20) != 0 || [(UIMenu *)self forceAutomaticSelection])
+  {
+    v5 = [(UIMenu *)self childElementForElement:v11];
+    v6 = v5;
+    if (v5 != v11)
+    {
+      [v5 _setState:objc_msgSend(v11 notifyingObservers:{"state"), 0}];
+    }
+
+    [(UIMenu *)self updateChildrenForSingleSelectedElement:v6];
+    if ([(UIMenu *)self forceAutomaticSelection])
+    {
+      if ([v6 state] != 1)
+      {
+        v7 = [(UIMenu *)self recursivelySelectDefaultForcedSelection:0];
+
+        v6 = v7;
+        if (!v7)
+        {
+          v10 = [MEMORY[0x1E696AAA8] currentHandler];
+          [v10 handleFailureInMethod:a2 object:self file:@"UIMenu.m" lineNumber:785 description:@"Menu does not have a valid element for default selection"];
+
+          v6 = 0;
+        }
+      }
+
+      v8 = [(UIMenu *)self forcedAutomaticSelectionDelegate];
+
+      if (v8)
+      {
+        v9 = [(UIMenu *)self forcedAutomaticSelectionDelegate];
+        [v9 forcedSelectionOfMenu:self willChangeTo:v6];
+      }
+    }
+  }
+}
+
+- (void)setForceAutomaticSelection:(BOOL)a3
+{
+  if (self->_forceAutomaticSelection != a3)
+  {
+    v3 = a3;
+    self->_forceAutomaticSelection = a3;
+    v5 = [(UIMenu *)self options];
+    if (v3)
+    {
+      if ((v5 & 0x20) == 0)
+      {
+        [(UIMenu *)self addAsStateObserver];
+      }
+
+      [(UIMenu *)self establishInitialDefaultSingleSelection];
+    }
+
+    else if ((v5 & 0x20) == 0)
+    {
+
+      [(UIMenu *)self removeAsStateObserver];
+    }
+  }
+}
+
+- (void)updateChildrenForSingleSelectedElement:(id)a3
+{
+  v22 = *MEMORY[0x1E69E9840];
+  v4 = a3;
+  aBlock[0] = MEMORY[0x1E69E9820];
+  aBlock[1] = 3221225472;
+  aBlock[2] = __49__UIMenu_updateChildrenForSingleSelectedElement___block_invoke;
+  aBlock[3] = &unk_1E70FE758;
+  v5 = v4;
+  v20 = v5;
+  v6 = _Block_copy(aBlock);
+  v15 = 0u;
+  v16 = 0u;
+  v17 = 0u;
+  v18 = 0u;
+  v7 = [(UIMenu *)self children];
+  v8 = [v7 countByEnumeratingWithState:&v15 objects:v21 count:16];
+  if (v8)
+  {
+    v9 = v8;
+    v10 = *v16;
+    do
+    {
+      v11 = 0;
+      do
+      {
+        if (*v16 != v10)
+        {
+          objc_enumerationMutation(v7);
+        }
+
+        v12 = *(*(&v15 + 1) + 8 * v11);
+        v13[0] = MEMORY[0x1E69E9820];
+        v13[1] = 3221225472;
+        v13[2] = __49__UIMenu_updateChildrenForSingleSelectedElement___block_invoke_2;
+        v13[3] = &unk_1E70FE820;
+        v14 = v5;
+        [v12 _acceptMenuVisit:v13 commandVisit:v6 actionVisit:v6 deferredElementVisit:0];
+
+        ++v11;
+      }
+
+      while (v9 != v11);
+      v9 = [v7 countByEnumeratingWithState:&v15 objects:v21 count:16];
+    }
+
+    while (v9);
+  }
+}
+
+void __49__UIMenu_updateChildrenForSingleSelectedElement___block_invoke(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  if (([v3 isEqual:*(a1 + 32)] & 1) == 0 && objc_msgSend(v3, "state") == 1)
+  {
+    [v3 _setState:0 notifyingObservers:0];
+  }
+}
+
+- (id)recursivelySelectDefaultForcedSelection:(BOOL)a3
+{
+  v28 = *MEMORY[0x1E69E9840];
+  v21 = 0;
+  v22 = &v21;
+  v23 = 0x3032000000;
+  v24 = __Block_byref_object_copy__37;
+  v25 = __Block_byref_object_dispose__37;
+  v26 = 0;
+  aBlock[0] = MEMORY[0x1E69E9820];
+  aBlock[1] = 3221225472;
+  aBlock[2] = __50__UIMenu_recursivelySelectDefaultForcedSelection___block_invoke;
+  aBlock[3] = &unk_1E70FE848;
+  v20 = a3;
+  aBlock[4] = &v21;
+  v5 = _Block_copy(aBlock);
+  v17 = 0u;
+  v18 = 0u;
+  v15 = 0u;
+  v16 = 0u;
+  v6 = [(UIMenu *)self children];
+  v7 = [v6 countByEnumeratingWithState:&v15 objects:v27 count:16];
+  if (v7)
+  {
+    v8 = *v16;
+LABEL_3:
+    v9 = 0;
+    while (1)
+    {
+      if (*v16 != v8)
+      {
+        objc_enumerationMutation(v6);
+      }
+
+      v10 = *(*(&v15 + 1) + 8 * v9);
+      v13[0] = MEMORY[0x1E69E9820];
+      v13[1] = 3221225472;
+      v13[2] = __50__UIMenu_recursivelySelectDefaultForcedSelection___block_invoke_2;
+      v13[3] = &unk_1E70FE870;
+      v13[4] = &v21;
+      v14 = a3;
+      [v10 _acceptMenuVisit:v13 commandVisit:v5 actionVisit:v5 deferredElementVisit:0];
+      if (v22[5])
+      {
+        break;
+      }
+
+      if (v7 == ++v9)
+      {
+        v7 = [v6 countByEnumeratingWithState:&v15 objects:v27 count:16];
+        if (v7)
+        {
+          goto LABEL_3;
+        }
+
+        break;
+      }
+    }
+  }
+
+  v11 = v22[5];
+  _Block_object_dispose(&v21, 8);
+
+  return v11;
+}
+
+void __50__UIMenu_recursivelySelectDefaultForcedSelection___block_invoke(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  [v3 _setState:1 notifyingObservers:*(a1 + 40)];
+  v4 = *(*(a1 + 32) + 8);
+  v5 = *(v4 + 40);
+  *(v4 + 40) = v3;
+}
+
+void __50__UIMenu_recursivelySelectDefaultForcedSelection___block_invoke_2(uint64_t a1, void *a2)
+{
+  v3 = [a2 recursivelySelectDefaultForcedSelection:*(a1 + 40)];
+  v4 = *(*(a1 + 32) + 8);
+  v5 = *(v4 + 40);
+  *(v4 + 40) = v3;
+}
+
+- (id)recursiveDescription
+{
+  v3 = [MEMORY[0x1E696AD60] string];
+  [(UIMenu *)self _addRecursiveDescriptionForElement:self toString:v3 level:0];
+  v4 = [v3 copy];
+
+  return v4;
+}
+
+- (void)_addRecursiveDescriptionForElement:(id)a3 toString:(id)a4 level:(unint64_t)a5
+{
+  v23 = *MEMORY[0x1E69E9840];
+  v8 = a3;
+  v9 = a4;
+  if (a5)
+  {
+    v10 = a5;
+    do
+    {
+      [v9 appendString:@"|"];
+      --v10;
+    }
+
+    while (v10);
+  }
+
+  [v9 appendFormat:@"%@\n", v8];
+  v11 = objc_opt_self();
+  isKindOfClass = objc_opt_isKindOfClass();
+
+  if (isKindOfClass)
+  {
+    v20 = 0u;
+    v21 = 0u;
+    v18 = 0u;
+    v19 = 0u;
+    v13 = [v8 children];
+    v14 = [v13 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    if (v14)
+    {
+      v15 = v14;
+      v16 = *v19;
+      do
+      {
+        v17 = 0;
+        do
+        {
+          if (*v19 != v16)
+          {
+            objc_enumerationMutation(v13);
+          }
+
+          [(UIMenu *)self _addRecursiveDescriptionForElement:*(*(&v18 + 1) + 8 * v17++) toString:v9 level:a5 + 1];
+        }
+
+        while (v15 != v17);
+        v15 = [v13 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      }
+
+      while (v15);
+    }
+  }
+}
+
+- (UIMenuForcedAutomaticSelectionDelegate)forcedAutomaticSelectionDelegate
+{
+  WeakRetained = objc_loadWeakRetained(&self->_forcedAutomaticSelectionDelegate);
+
+  return WeakRetained;
+}
+
+- (BOOL)_shouldShowSelectionState
+{
+  if (![(UIMenu *)self _surfacesSelectionState])
+  {
+    return 0;
+  }
+
+  v3 = [(UIMenu *)self selectedElements];
+  v4 = [v3 count] != 0;
+
+  return v4;
+}
+
++ (id)_defaultMenuTitles
+{
+  if (_MergedGlobals_1342 != -1)
+  {
+    dispatch_once(&_MergedGlobals_1342, &__block_literal_global_639);
+  }
+
+  v3 = qword_1ED4A2508;
+
+  return v3;
+}
+
+void __42__UIMenu_DefaultMenus___defaultMenuTitles__block_invoke()
+{
+  v21[18] = *MEMORY[0x1E69E9840];
+  v20[0] = @"com.apple.menu.services";
+  v19 = _UINSLocalizedStringWithDefaultValue(@"KEYSHORTCUTHUDITEM_APP_SERVICES", @"Services");
+  v21[0] = v19;
+  v20[1] = @"com.apple.menu.file";
+  v18 = _UINSLocalizedStringWithDefaultValue(@"KEYSHORTCUTHUD_FILE", @"File");
+  v21[1] = v18;
+  v20[2] = @"com.apple.menu.open-recent";
+  v17 = _UINSLocalizedStringWithDefaultValue(@"KEYSHORTCUTHUDITEM_FILE_OPEN_RECENT", @"Open Recent");
+  v21[2] = v17;
+  v20[3] = @"com.apple.menu.edit";
+  v16 = _UINSLocalizedStringWithDefaultValue(@"KEYSHORTCUTHUD_EDIT", @"Edit");
+  v21[3] = v16;
+  v20[4] = @"com.apple.menu.find";
+  v15 = _UINSLocalizedStringWithDefaultValue(@"KEYSHORTCUTHUDITEM_EDIT_FIND_MENU", @"Find");
+  v21[4] = v15;
+  v20[5] = @"com.apple.menu.spelling";
+  v14 = _UINSLocalizedStringWithDefaultValue(@"KEYSHORTCUTHUDITEM_EDIT_SPELLING_AND_GRAMMAR", @"Spelling and Grammar");
+  v21[5] = v14;
+  v20[6] = @"com.apple.menu.substitutions";
+  v13 = _UINSLocalizedStringWithDefaultValue(@"KEYSHORTCUTHUDITEM_EDIT_SUBSTITUTIONS", @"Substitutions");
+  v21[6] = v13;
+  v20[7] = @"com.apple.menu.transformations";
+  v12 = _UINSLocalizedStringWithDefaultValue(@"KEYSHORTCUTHUDITEM_EDIT_TRANSFORMATIONS", @"Transformations");
+  v21[7] = v12;
+  v20[8] = @"com.apple.command.speech";
+  v0 = _UINSLocalizedStringWithDefaultValue(@"KEYSHORTCUTHUDITEM_EDIT_SPEECH", @"Speech");
+  v21[8] = v0;
+  v20[9] = @"com.apple.menu.format";
+  v1 = _UINSLocalizedStringWithDefaultValue(@"KEYSHORTCUTHUD_FORMAT", @"Format");
+  v21[9] = v1;
+  v20[10] = @"com.apple.menu.font";
+  v2 = _UINSLocalizedStringWithDefaultValue(@"KEYSHORTCUTHUDITEM_FORMAT_FONT", @"Font");
+  v21[10] = v2;
+  v20[11] = @"com.apple.menu.text";
+  v3 = _UINSLocalizedStringWithDefaultValue(@"KEYSHORTCUTHUDITEM_FORMAT_TEXT", @"Text");
+  v21[11] = v3;
+  v20[12] = @"com.apple.menu.writing-direction";
+  v4 = _UINSLocalizedStringWithDefaultValue(@"KEYSHORTCUTHUDITEM_FORMAT_TEXT_WRITING_DIRECTION", @"Writing Direction");
+  v21[12] = v4;
+  v20[13] = @"com.apple.menu.view";
+  v5 = _UINSLocalizedStringWithDefaultValue(@"KEYSHORTCUTHUD_VIEW", @"View");
+  v21[13] = v5;
+  v20[14] = @"com.apple.menu.window";
+  v6 = _UINSLocalizedStringWithDefaultValue(@"KEYSHORTCUTHUD_WINDOW", @"Window");
+  v21[14] = v6;
+  v20[15] = @"com.apple.menu.help";
+  v7 = _UINSLocalizedStringWithDefaultValue(@"KEYSHORTCUTHUD_HELP", @"Help");
+  v21[15] = v7;
+  v20[16] = @"com.apple.menu.text-style";
+  v8 = _UINSLocalizedStringWithDefaultValue(@"KEYSHORTCUTHUDITEM_FORMAT_TEXT_STYLE", @"Text Style");
+  v21[16] = v8;
+  v20[17] = @"com.apple.menu.autofill";
+  v9 = _UINSLocalizedStringWithDefaultValue(@"KEYSHORTCUTHUD_AUTOFILL", @"AutoFill");
+  v21[17] = v9;
+  v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:18];
+  v11 = qword_1ED4A2508;
+  qword_1ED4A2508 = v10;
+}
+
++ (id)_defaultMenuImageNames
+{
+  if (qword_1ED4A2510 != -1)
+  {
+    dispatch_once(&qword_1ED4A2510, &__block_literal_global_112_0);
+  }
+
+  v3 = qword_1ED4A2518;
+
+  return v3;
+}
+
+void __46__UIMenu_DefaultMenus___defaultMenuImageNames__block_invoke()
+{
+  v3[11] = *MEMORY[0x1E69E9840];
+  v2[0] = @"com.apple.menu.font";
+  v2[1] = @"com.apple.menu.text";
+  v3[0] = @"textformat";
+  v3[1] = @"text.alignleft";
+  v2[2] = @"com.apple.menu.writing-direction";
+  v2[3] = @"com.apple.menu.find";
+  v3[2] = @"arrow.left.arrow.right";
+  v3[3] = @"text.page.badge.magnifyingglass";
+  v2[4] = @"com.apple.menu.autofill";
+  v2[5] = @"com.apple.menu.spelling";
+  v3[4] = @"rectangle.and.pencil.and.ellipsis";
+  v3[5] = @"textformat.characters.dottedunderline";
+  v2[6] = @"com.apple.menu.substitutions";
+  v2[7] = @"com.apple.menu.transformations";
+  v3[6] = @"arrow.trianglehead.2.clockwise";
+  v3[7] = @"textformat.characters";
+  v2[8] = @"com.apple.command.speech";
+  v2[9] = @"com.apple.menu.open-recent";
+  v3[8] = @"text.bubble";
+  v3[9] = @"clock";
+  v2[10] = @"com.apple.menu.format";
+  v3[10] = @"bold.italic.underline";
+  v0 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v3 forKeys:v2 count:11];
+  v1 = qword_1ED4A2518;
+  qword_1ED4A2518 = v0;
+}
+
++ (id)_defaultMenuWithIdentifier:(id)a3 options:(unint64_t)a4 children:(id)a5
+{
+  v8 = a5;
+  v9 = a3;
+  v10 = [objc_opt_self() _defaultMenuTitles];
+  v11 = [v10 objectForKeyedSubscript:v9];
+
+  if (!v11)
+  {
+    if ([v9 isEqualToString:@"com.apple.menu.application"] && (+[UIApplication _applicationNameForMenus](UIApplication, "_applicationNameForMenus"), (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+    {
+      v11 = v12;
+    }
+
+    else
+    {
+      v11 = &stru_1EFB14550;
+    }
+  }
+
+  v13 = [a1 _defaultMenuImageNames];
+  v14 = [v13 objectForKeyedSubscript:v9];
+  v15 = [a1 menuWithTitle:v11 imageName:v14 identifier:v9 options:a4 children:v8];
+
+  [v15 setBehaviorOptions:1];
+
+  return v15;
+}
+
+- (void)_resolveElementSizeWithContext:(id)a3
+{
+  v4 = [a3 elementSizeSolver];
+  [(UIMenu *)self _setResolvedElementSize:v4[2](v4, self)];
+}
+
+@end

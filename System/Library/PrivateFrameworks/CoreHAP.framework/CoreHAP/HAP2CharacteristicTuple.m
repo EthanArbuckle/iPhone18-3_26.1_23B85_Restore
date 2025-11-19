@@ -1,0 +1,25 @@
+@interface HAP2CharacteristicTuple
+- (HAP2CharacteristicTuple)initWithAccessory:(id)a3;
+@end
+
+@implementation HAP2CharacteristicTuple
+
+- (HAP2CharacteristicTuple)initWithAccessory:(id)a3
+{
+  v5 = a3;
+  v11.receiver = self;
+  v11.super_class = HAP2CharacteristicTuple;
+  v6 = [(HAP2CharacteristicTuple *)&v11 init];
+  v7 = v6;
+  if (v6)
+  {
+    objc_storeStrong(&v6->_accessory, a3);
+    v8 = [MEMORY[0x277CBEB18] array];
+    values = v7->_values;
+    v7->_values = v8;
+  }
+
+  return v7;
+}
+
+@end

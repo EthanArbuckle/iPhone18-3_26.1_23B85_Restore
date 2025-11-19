@@ -1,0 +1,2176 @@
+@interface PSExecutionSession
++ (PSExecutionSession)sessionWithName:(id)a3;
++ (PSExecutionSession)sharedInstance;
++ (id)nameForExecutionSessionKey:(int)a3;
++ (id)sessionRegistrationDict;
++ (id)sharedInstanceWithProvider:(id)a3;
++ (id)uniqueSessionWithName:(id)a3;
++ (os_unfair_lock_s)sessionRegistrationLock;
++ (void)removeSessionWithName:(id)a3;
++ (void)setSession:(id)a3 forName:(id)a4;
+- (BOOL)createWorkgroupInterval:(const char *)a3 workloadID:(const char *)a4 type:(unsigned __int16)a5 graphTag:(id)a6;
+- (BOOL)destroyWorkgroupForGraphTag:(id)a3;
+- (BOOL)requestSystemReplayEnd;
+- (BOOL)requestSystemReplayStart;
+- (PSExecutionSession)initWithName:(id)a3 isUniqueSession:(BOOL)a4;
+- (id)initForLocalReplay;
+- (id)initForLocalReplayWithSystemPulseRate:(id)a3 telemetryEnabled:(BOOL)a4;
+- (id)initForLocalReplayWithTelemetryEnabled;
+- (uint64_t)deleteSession;
+- (uint64_t)publishContext;
+- (unint64_t)getRetainedBufferCountForKey:(id)a3;
+- (unint64_t)getRetainedBufferCountForStream:(id)a3;
+- (unsigned)copyWorkgroupPortForGraphTag:(id)a3;
+- (void)dealloc;
+- (void)deleteSession;
+- (void)deregisterFromResourceAvailabilityUpdates:(id)a3;
+- (void)enteringSleep;
+- (void)exitingSleep;
+- (void)failedToProcessNotificationsOfResourcesNoLongerWanted:(id)a3 reason:(unint64_t)a4;
+- (void)failedToProcessPauseRequests:(id)a3 reason:(unint64_t)a4;
+- (void)failedToProcessResourceRequests:(id)a3 reason:(unint64_t)a4;
+- (void)failedToProcessSetupRequests:(id)a3 reason:(unint64_t)a4;
+- (void)pauseRequestsAreComplete:(id)a3;
+- (void)producedStridesWillChangeTo:(id)a3 atFrameID:(id)a4 isPhysicalFrameID:(BOOL)a5 forBaseMSGSyncID:(id)a6;
+- (void)producedStridesWillChangeTo:(id)a3 atPhysicalFrameID:(id)a4;
+- (void)producibleStridesHaveChangedTo:(id)a3;
+- (void)publishContext;
+- (void)publishContext:(id)a3;
+- (void)publishContextForLocalReplay;
+- (void)registerForContextUpdatesFromResourcesWithCategory:(unint64_t)a3;
+- (void)registerForResourceAvailabilityUpdates:(id)a3;
+- (void)requestedResourcesAreBeingProduced:(id)a3;
+- (void)resourceAvailabilityHasChangedTo:(id)a3;
+- (void)resourceRequestsAreComplete:(id)a3;
+- (void)resourcesNoLongerWantedProcessed:(id)a3;
+- (void)resumedProducingRequestedResources:(id)a3 reason:(unint64_t)a4;
+- (void)setupRequestsAreComplete:(id)a3;
+- (void)waitForContextFromExecutionSessionsProvidingResources:(id)a3;
+- (void)willStopProducingRequestedResources:(id)a3 reason:(unint64_t)a4;
+@end
+
+@implementation PSExecutionSession
+
++ (id)uniqueSessionWithName:(id)a3
+{
+  v3 = a3;
+  v4 = MEMORY[0x277CCACA8];
+  v5 = [MEMORY[0x277CCAC38] processInfo];
+  v6 = [v5 processName];
+  v7 = [MEMORY[0x277CCAD78] UUID];
+  v8 = [v7 UUIDString];
+  v9 = v8;
+  if (v3)
+  {
+    [v4 stringWithFormat:@"%@-%@-%@", v6, v3, v8];
+  }
+
+  else
+  {
+    [v4 stringWithFormat:@"%@-%@", v6, v8, v13];
+  }
+  v10 = ;
+
+  v11 = [[PSExecutionSession alloc] initWithName:v10 isUniqueSession:1];
+
+  return v11;
+}
+
++ (PSExecutionSession)sharedInstance
+{
+  v2 = +[PSExecutionSessionWorkarounds sharedInstance];
+  v3 = [v2 keyForProviderName:0];
+
+  if (v3 == 28)
+  {
+    v4 = __PLSLogSharedInstance();
+    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    {
+      *v8 = 0;
+      _os_log_impl(&dword_25EA3A000, v4, OS_LOG_TYPE_ERROR, "Deprecated API +[PSExecutionSession sharedInstance] was called and the current process was not grandfathered in. Please use +[PSExecutionSession sharedInstanceForExecutionSessionKey] instead", v8, 2u);
+    }
+  }
+
+  v5 = +[PSExecutionSessionWorkarounds sharedInstance];
+  [v5 setIsUsingLegacyAPI:1];
+
+  v6 = [PSExecutionSession sharedInstanceForExecutionSessionKey:v3];
+
+  return v6;
+}
+
++ (id)sharedInstanceWithProvider:(id)a3
+{
+  v13 = *MEMORY[0x277D85DE8];
+  v3 = a3;
+  v4 = +[PSExecutionSessionWorkarounds sharedInstance];
+  v5 = [v4 keyForProviderName:v3];
+
+  if (v5 == 28)
+  {
+    v6 = __PLSLogSharedInstance();
+    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    {
+      v11 = 136315138;
+      v12 = [v3 UTF8String];
+      _os_log_impl(&dword_25EA3A000, v6, OS_LOG_TYPE_ERROR, "Deprecated API +[PSExecutionSession sharedInstanceWithProvider:] was called and the given providerName (%s) was not grandfathered in. Please use +[PSExecutionSession sharedInstanceForExecutionSessionKey] instead", &v11, 0xCu);
+    }
+  }
+
+  v7 = +[PSExecutionSessionWorkarounds sharedInstance];
+  [v7 setIsUsingLegacyAPI:1];
+
+  v8 = [PSExecutionSession sharedInstanceForExecutionSessionKey:v5];
+
+  v9 = *MEMORY[0x277D85DE8];
+
+  return v8;
+}
+
+- (void)deleteSession
+{
+  v20 = *MEMORY[0x277D85DE8];
+  if (!self->_name)
+  {
+LABEL_22:
+    v17 = *MEMORY[0x277D85DE8];
+    return;
+  }
+
+  v3 = __PLSLogSharedInstance();
+  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  {
+    v4 = [(NSString *)self->_name UTF8String];
+    v18 = 136315138;
+    v19 = v4;
+    _os_log_impl(&dword_25EA3A000, v3, OS_LOG_TYPE_DEFAULT, "Deleting execution session for key %s", &v18, 0xCu);
+  }
+
+  v5 = [(PSExecutionDashboard *)self->_dashboard getRunningGraphs];
+  v6 = [v5 count] == 0;
+
+  if (v6)
+  {
+    transitionManager = self->_transitionManager;
+    if (transitionManager)
+    {
+      v8 = [(PSTransitionManager *)transitionManager compiler];
+      [v8 destroyAllThreadPools];
+
+      v9 = self->_transitionManager;
+      self->_transitionManager = 0;
+    }
+
+    prm_mgr = self->_prm_mgr;
+    if (prm_mgr)
+    {
+      ps_prm_delete_manager(prm_mgr);
+      self->_prm_mgr = 0;
+    }
+
+    gsm = self->_gsm;
+    if (gsm)
+    {
+      ps_gsm_remove_gsm(&gsm->var0);
+      self->_gsm = 0;
+    }
+
+    if (self->_isLivenessEnabled)
+    {
+      ps_frame_history_client_handle_deinit(self->_frameHistoryClientHandle);
+      ps_liveness_destroy([(NSString *)self->_name UTF8String]);
+      self->_isLivenessEnabled = 0;
+    }
+
+    if (self->_isCoreAnalyticsEnabled)
+    {
+      ps_ca_client_deinit();
+    }
+
+    systemGraph = self->_systemGraph;
+    if (systemGraph)
+    {
+      [(PSSystemGraphClientInterface *)systemGraph deregister];
+      v13 = self->_systemGraph;
+      self->_systemGraph = 0;
+    }
+
+    systemGraphSession = self->_systemGraphSession;
+    if (systemGraphSession)
+    {
+      xpc_session_cancel(systemGraphSession);
+      v15 = self->_systemGraphSession;
+      self->_systemGraphSession = 0;
+    }
+
+    if (![(PSExecutionDashboard *)self->_dashboard isLocalReplaySession])
+    {
+      v16 = +[PSExecutionSession sessionRegistrationLock];
+      os_unfair_lock_lock(v16);
+      [PSExecutionSession removeSessionWithName:self->_name];
+      os_unfair_lock_unlock(v16);
+    }
+
+    pbs_ringbufferlogger_enable_for_process();
+    goto LABEL_22;
+  }
+
+  [(PSExecutionSession *)&v18 deleteSession];
+  __break(1u);
+}
+
+- (void)dealloc
+{
+  [(PSExecutionSession *)self deleteSession];
+  v3.receiver = self;
+  v3.super_class = PSExecutionSession;
+  [(PSExecutionSession *)&v3 dealloc];
+}
+
++ (os_unfair_lock_s)sessionRegistrationLock
+{
+  if (sessionRegistrationLock_onceToken != -1)
+  {
+    +[PSExecutionSession sessionRegistrationLock];
+  }
+
+  return &sessionRegistrationLock_lock;
+}
+
++ (id)sessionRegistrationDict
+{
+  if (sessionRegistrationDict_onceToken != -1)
+  {
+    +[PSExecutionSession sessionRegistrationDict];
+  }
+
+  v3 = sessionRegistrationDict_sessionDict;
+
+  return v3;
+}
+
+uint64_t __45__PSExecutionSession_sessionRegistrationDict__block_invoke()
+{
+  sessionRegistrationDict_sessionDict = objc_alloc_init(MEMORY[0x277CBEB38]);
+
+  return MEMORY[0x2821F96F8]();
+}
+
++ (PSExecutionSession)sessionWithName:(id)a3
+{
+  v3 = a3;
+  v4 = +[PSExecutionSession sessionRegistrationDict];
+  v5 = [v4 objectForKey:v3];
+
+  return v5;
+}
+
++ (void)setSession:(id)a3 forName:(id)a4
+{
+  v5 = a4;
+  v6 = a3;
+  v7 = +[PSExecutionSession sessionRegistrationDict];
+  [v7 setObject:v6 forKey:v5];
+}
+
++ (void)removeSessionWithName:(id)a3
+{
+  v3 = a3;
+  v4 = +[PSExecutionSession sessionRegistrationDict];
+  [v4 removeObjectForKey:v3];
+}
+
++ (id)nameForExecutionSessionKey:(int)a3
+{
+  if (a3 < 0x1C)
+  {
+    goto LABEL_2;
+  }
+
+  if (a3 > 32)
+  {
+    if (a3 == 33)
+    {
+LABEL_13:
+      v5 = [MEMORY[0x277CCAD78] UUID];
+      v6 = [v5 UUIDString];
+      goto LABEL_14;
+    }
+
+    if (a3 != 34)
+    {
+LABEL_12:
+      [(PSExecutionSession *)&v7 nameForExecutionSessionKey:a3];
+      goto LABEL_13;
+    }
+
+LABEL_2:
+    v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:PSExecutionSessionKeyDescription[a3]];
+    goto LABEL_3;
+  }
+
+  if ((a3 - 29) < 4)
+  {
+    goto LABEL_2;
+  }
+
+  if (a3 != 28)
+  {
+    goto LABEL_12;
+  }
+
+  v5 = [MEMORY[0x277CCAC38] processInfo];
+  v6 = [v5 processName];
+LABEL_14:
+  v3 = v6;
+
+LABEL_3:
+
+  return v3;
+}
+
+- (PSExecutionSession)initWithName:(id)a3 isUniqueSession:(BOOL)a4
+{
+  v52 = *MEMORY[0x277D85DE8];
+  v6 = a3;
+  v49.receiver = self;
+  v49.super_class = PSExecutionSession;
+  v7 = [(PSExecutionSession *)&v49 init];
+  v8 = v7;
+  if (v7)
+  {
+    [(PSExecutionSession *)v7 setName:v6];
+    v8->_isUniqueSession = a4;
+    v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
+    resourceCategorySubscriptions = v8->_resourceCategorySubscriptions;
+    v8->_resourceCategorySubscriptions = v9;
+
+    v11 = +[PLSSettings currentSettings];
+    v12 = [v11 enableEntitlementChecks];
+
+    if (!v12 || (ps_util_check_process_entitlements() & 1) != 0)
+    {
+      v13 = MEMORY[0x277CCABB0];
+      v14 = +[PLSSettings currentSettings];
+      v15 = [v13 numberWithUnsignedLongLong:{objc_msgSend(v14, "systemPulseRate")}];
+      [(PSExecutionSession *)v8 setSystemPulseRate:v15];
+
+      if (ps_util_init_mach_time_factor() != 0.0)
+      {
+        ps_util_is_internal_build();
+        v16 = [[PSSystemGraphClientInterface alloc] initWithSession:v8];
+        systemGraph = v8->_systemGraph;
+        v8->_systemGraph = v16;
+
+        v18 = +[PLSSettings currentSettings];
+        v19 = [v18 enableFastTransition];
+
+        if (v19)
+        {
+          error_out = 0;
+          v20 = xpc_session_create_mach_service("com.apple.polaris.systemgraph_v2", 0, XPC_SESSION_CREATE_NONE, &error_out);
+          v21 = error_out;
+          systemGraphSession = v8->_systemGraphSession;
+          v8->_systemGraphSession = v20;
+
+          if (v21)
+          {
+            v23 = xpc_rich_error_copy_description(v21);
+            v24 = __PLSLogSharedInstance();
+            if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+            {
+              *buf = 136315138;
+              v51 = v23;
+              _os_log_impl(&dword_25EA3A000, v24, OS_LOG_TYPE_ERROR, "Encountered an error while connecting to sysgraph xpc service : error = %s", buf, 0xCu);
+            }
+
+            free(v23);
+          }
+
+          else
+          {
+            v25 = __PLSLogSharedInstance();
+            if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+            {
+              v26 = getpid();
+              *buf = 67109120;
+              LODWORD(v51) = v26;
+              _os_log_impl(&dword_25EA3A000, v25, OS_LOG_TYPE_DEFAULT, "Client %d was able to establish connection with PS_POLARISD_SYSGRAPH_XPC_SERVICE", buf, 8u);
+            }
+          }
+        }
+
+        v8->_isCoreAnalyticsEnabled = 1;
+        v27 = +[PSExecutionSessionWorkarounds sharedInstance];
+        v28 = [v27 shouldDisableCoreAnalytics];
+
+        if (v28)
+        {
+          v29 = __PLSLogSharedInstance();
+          if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+          {
+            *buf = 0;
+            _os_log_impl(&dword_25EA3A000, v29, OS_LOG_TYPE_DEFAULT, "Polaris CoreAnalytics is disabled for this process...", buf, 2u);
+          }
+
+          v8->_isCoreAnalyticsEnabled = 0;
+        }
+
+        else if (v8->_isCoreAnalyticsEnabled)
+        {
+          ps_ca_client_init();
+        }
+
+        v30 = objc_alloc(MEMORY[0x277D3E688]);
+        v31 = [(PSExecutionSession *)v8 name];
+        v32 = [v30 initForExecutionSession:v31];
+        context = v8->_context;
+        v8->_context = v32;
+
+        v34 = [[PLSDevice alloc] initWithContext:v8->_context];
+        device = v8->_device;
+        v8->_device = v34;
+
+        v36 = objc_alloc_init(PSExecutionDashboard);
+        dashboard = v8->_dashboard;
+        v8->_dashboard = v36;
+
+        v38 = objc_alloc_init(PSComputeDevices);
+        computeDevices = v8->_computeDevices;
+        v8->_computeDevices = v38;
+
+        v8->_gsm = ps_gsm_map_shared();
+        if (v8->_systemGraphSession)
+        {
+          v40 = +[PLSSettings currentSettings];
+          v41 = [v40 enableFastTransition];
+
+          if (v41)
+          {
+            ps_gsm_assign_system_graph_session(v8->_gsm, v8->_systemGraphSession);
+          }
+        }
+
+        [(PSExecutionSession *)v8 name];
+        [objc_claimAutoreleasedReturnValue() UTF8String];
+        ps_prm_create_manager();
+      }
+
+      [PSExecutionSession initWithName:buf isUniqueSession:?];
+    }
+
+    v46 = [PSExecutionSession initWithName:buf isUniqueSession:?];
+    return [(PSExecutionSession *)v46 initForLocalReplay];
+  }
+
+  else
+  {
+    if (ps_util_check_sandbox_for_syscall_threadself())
+    {
+      v42 = __PLSLogSharedInstance();
+      if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
+      {
+        *buf = 0;
+        _os_log_impl(&dword_25EA3A000, v42, OS_LOG_TYPE_DEFAULT, "Process is allowed to call thread_self APIs", buf, 2u);
+      }
+    }
+
+    v43 = __PLSLogSharedInstance();
+    if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
+    {
+      *buf = 138412290;
+      v51 = v6;
+      _os_log_impl(&dword_25EA3A000, v43, OS_LOG_TYPE_DEFAULT, "Created execution session with name %@", buf, 0xCu);
+    }
+
+    v44 = *MEMORY[0x277D85DE8];
+    return 0;
+  }
+}
+
+- (id)initForLocalReplay
+{
+  v3 = [[PSExecutionSession alloc] initForLocalReplayWithSystemPulseRate:0 telemetryEnabled:0];
+
+  return v3;
+}
+
+- (id)initForLocalReplayWithSystemPulseRate:(id)a3 telemetryEnabled:(BOOL)a4
+{
+  v34 = *MEMORY[0x277D85DE8];
+  v5 = a3;
+  v27.receiver = self;
+  v27.super_class = PSExecutionSession;
+  v6 = [(PSExecutionSession *)&v27 init];
+  v7 = v6;
+  if (v6)
+  {
+    name = v6->_name;
+    v6->_name = @"LocalReplaySession";
+
+    v9 = [objc_alloc(MEMORY[0x277D3E688]) initForLocalResources];
+    context = v7->_context;
+    v7->_context = v9;
+
+    v11 = [[PLSDevice alloc] initWithContext:v7->_context isLocalReplay:1];
+    device = v7->_device;
+    v7->_device = v11;
+
+    v13 = objc_alloc_init(PSExecutionDashboard);
+    dashboard = v7->_dashboard;
+    v7->_dashboard = v13;
+
+    v15 = objc_alloc_init(PSComputeDevices);
+    computeDevices = v7->_computeDevices;
+    v7->_computeDevices = v15;
+
+    v7->_gsm = ps_gsm_create_local();
+    [(PSExecutionSession *)v7 setSystemPulseRate:&unk_2870CABF0];
+    if (v5)
+    {
+      if (([v5 isEqual:&unk_2870CAC08] & 1) != 0 || objc_msgSend(v5, "isEqual:", &unk_2870CABF0))
+      {
+        [(PSExecutionSession *)v7 setSystemPulseRate:v5];
+      }
+
+      else
+      {
+        v17 = __PLSLogSharedInstance();
+        if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+        {
+          v18 = [v5 intValue];
+          *buf = 67175425;
+          *v29 = v18;
+          *&v29[4] = 1025;
+          *&v29[6] = 90;
+          v30 = 1025;
+          v31 = 360;
+          v32 = 1025;
+          v33 = 90;
+          _os_log_impl(&dword_25EA3A000, v17, OS_LOG_TYPE_ERROR, "initForLocalReplayWithSystemPulseRate invalid pulse rate %{private}d, must be either %{private}d or %{private}d -- initializing to %{private}d", buf, 0x1Au);
+        }
+      }
+    }
+
+    [(PSExecutionDashboard *)v7->_dashboard setIsLocalReplaySession:1];
+    v26 = 0;
+    pthread_threadid_np(0, &v26);
+    v19 = MEMORY[0x277CCACA8];
+    v20 = v26;
+    v21 = [MEMORY[0x277CCAD78] UUID];
+    v22 = [v21 UUIDString];
+    v23 = [v19 stringWithFormat:@"LocalReplayFactory-%llu-%@", v20, v22];
+
+    [v23 UTF8String];
+    ps_prm_create_manager_for_replay_session();
+  }
+
+  v24 = *MEMORY[0x277D85DE8];
+  return 0;
+}
+
+- (id)initForLocalReplayWithTelemetryEnabled
+{
+  v3 = [[PSExecutionSession alloc] initForLocalReplayWithSystemPulseRate:0 telemetryEnabled:1];
+
+  return v3;
+}
+
+void __45__PSExecutionSession_setDeterministicReplay___block_invoke(uint64_t a1)
+{
+  v2 = objc_autoreleasePoolPush();
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  v4 = [WeakRetained transitionManager];
+  [v4 callTransitionCallback:3 retainedContext:0];
+
+  objc_autoreleasePoolPop(v2);
+}
+
+- (void)publishContext:(id)a3
+{
+  v25 = *MEMORY[0x277D85DE8];
+  v4 = a3;
+  v5 = [(PSExecutionSession *)self context];
+
+  if (v5 == v4)
+  {
+    [(PSExecutionSession *)self publishContext];
+  }
+
+  else
+  {
+    v6 = [v4 resourceStreamsForExecutionSession:&stru_2870BCDD8];
+    v19 = [MEMORY[0x277CBEB58] set];
+    v20 = 0u;
+    v21 = 0u;
+    v22 = 0u;
+    v23 = 0u;
+    v7 = v6;
+    v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    if (v8)
+    {
+      v9 = v8;
+      v10 = *v21;
+      do
+      {
+        for (i = 0; i != v9; ++i)
+        {
+          if (*v21 != v10)
+          {
+            objc_enumerationMutation(v7);
+          }
+
+          v12 = *(*(&v20 + 1) + 8 * i);
+          v13 = +[PSExecutionSessionWorkarounds sharedInstance];
+          v14 = [(PSExecutionSession *)self name];
+          v15 = [v13 shouldOverrideCameraStreamProviderType:v14];
+
+          if (v15)
+          {
+            [(PLSDevice *)self->_device populateProviderTypeForStream:v12];
+          }
+
+          if ([v12 options] == 2)
+          {
+            v16 = [v12 key];
+            [v19 addObject:v16];
+          }
+        }
+
+        v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      }
+
+      while (v9);
+    }
+
+    v17 = [(PSExecutionSession *)self systemGraph];
+    [v17 publishResourceStreamsForKeys:v19 fromContext:v4 withDevice:self->_device];
+  }
+
+  v18 = *MEMORY[0x277D85DE8];
+}
+
+- (void)publishContextForLocalReplay
+{
+  v29 = *MEMORY[0x277D85DE8];
+  v3 = [(PSExecutionSession *)self context];
+  v4 = [(PSExecutionSession *)self name];
+  v5 = [v3 resourceStreamsForExecutionSession:v4];
+
+  v6 = createSupportedStridesInfo();
+  v22 = 0u;
+  v23 = 0u;
+  v24 = 0u;
+  v25 = 0u;
+  v7 = v5;
+  v8 = [v7 countByEnumeratingWithState:&v22 objects:v28 count:16];
+  if (v8)
+  {
+    v9 = v8;
+    v10 = *v23;
+    do
+    {
+      v11 = 0;
+      do
+      {
+        if (*v23 != v10)
+        {
+          objc_enumerationMutation(v7);
+        }
+
+        v12 = [*(*(&v22 + 1) + 8 * v11) key];
+        v13 = [(PSExecutionSession *)self context];
+        v14 = [v13 resourceStreamForKey:v12];
+
+        v15 = [v14 supportedStrides];
+        v16 = [v14 defaultStride];
+        populateSupportedStridesInfo(v6, v12, v15, v16);
+
+        ++v11;
+      }
+
+      while (v9 != v11);
+      v9 = [v7 countByEnumeratingWithState:&v22 objects:v28 count:16];
+    }
+
+    while (v9);
+  }
+
+  v17 = [(PSExecutionSession *)self systemGraphSession];
+  v18 = xpc_session_send_message(v17, v6);
+
+  if (v18)
+  {
+    v19 = __PLSLogSharedInstance();
+    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    {
+      v20 = xpc_rich_error_copy_description(v18);
+      *buf = 136315138;
+      v27 = v20;
+      _os_log_impl(&dword_25EA3A000, v19, OS_LOG_TYPE_ERROR, "Failed to send an XPC message for supportedStrides! Error = %s", buf, 0xCu);
+    }
+  }
+
+  v21 = *MEMORY[0x277D85DE8];
+}
+
+- (void)publishContext
+{
+  v61 = *MEMORY[0x277D85DE8];
+  v3 = [(PSExecutionSession *)self context];
+  v4 = [(PSExecutionSession *)self name];
+  v5 = [v3 resourceStreamsForExecutionSession:v4];
+
+  v6 = +[PSExecutionSessionWorkarounds sharedInstance];
+  LODWORD(v4) = [v6 shouldOverrideCameraStreamDomains];
+
+  if (v4)
+  {
+    v56 = 0u;
+    v57 = 0u;
+    v54 = 0u;
+    v55 = 0u;
+    v7 = v5;
+    v8 = v5;
+    v9 = [v8 countByEnumeratingWithState:&v54 objects:v60 count:16];
+    if (v9)
+    {
+      v10 = v9;
+      v11 = *v55;
+      do
+      {
+        for (i = 0; i != v10; ++i)
+        {
+          if (*v55 != v11)
+          {
+            objc_enumerationMutation(v8);
+          }
+
+          v13 = *(*(&v54 + 1) + 8 * i);
+          v14 = [v13 domain];
+
+          if (!v14)
+          {
+            device = self->_device;
+            v16 = [v13 key];
+            v17 = [(PLSDevice *)device propertiesForKey:v16];
+
+            if (v17 && [v17 type] == 4)
+            {
+              v18 = self->_device;
+              v19 = [v13 key];
+              v20 = [(PLSDevice *)v18 getDomainForCameraKey:v19];
+
+              if (!v20)
+              {
+                [(PSExecutionSession *)&v53 publishContext];
+              }
+
+              [v13 setDomain:v20];
+            }
+          }
+        }
+
+        v10 = [v8 countByEnumeratingWithState:&v54 objects:v60 count:16];
+      }
+
+      while (v10);
+    }
+
+    v5 = v7;
+  }
+
+  v21 = [MEMORY[0x277CBEB58] set];
+  v49 = 0u;
+  v50 = 0u;
+  v51 = 0u;
+  v52 = 0u;
+  obj = v5;
+  v22 = [obj countByEnumeratingWithState:&v49 objects:v59 count:16];
+  if (v22)
+  {
+    v23 = v22;
+    v24 = *v50;
+    do
+    {
+      for (j = 0; j != v23; ++j)
+      {
+        if (*v50 != v24)
+        {
+          objc_enumerationMutation(obj);
+        }
+
+        v26 = *(*(&v49 + 1) + 8 * j);
+        v27 = +[PSExecutionSessionWorkarounds sharedInstance];
+        v28 = [(PSExecutionSession *)self name];
+        v29 = [v27 shouldOverrideCameraStreamProviderType:v28];
+
+        if (v29)
+        {
+          [(PLSDevice *)self->_device populateProviderTypeForStream:v26];
+        }
+
+        if ([v26 options] == 2 || -[PSExecutionDashboard isLocalReplaySession](self->_dashboard, "isLocalReplaySession"))
+        {
+          v30 = [v26 key];
+          [v21 addObject:v30];
+        }
+      }
+
+      v23 = [obj countByEnumeratingWithState:&v49 objects:v59 count:16];
+    }
+
+    while (v23);
+  }
+
+  v31 = [(PSExecutionSession *)self systemGraph];
+  v32 = [(PSExecutionSession *)self context];
+  [v31 publishResourceStreamsForKeys:v21 fromContext:v32 withDevice:self->_device];
+
+  v33 = [MEMORY[0x277CBEB18] array];
+  v45 = 0u;
+  v46 = 0u;
+  v47 = 0u;
+  v48 = 0u;
+  v34 = v21;
+  v35 = [v34 countByEnumeratingWithState:&v45 objects:v58 count:16];
+  if (v35)
+  {
+    v36 = v35;
+    v37 = *v46;
+    do
+    {
+      for (k = 0; k != v36; ++k)
+      {
+        if (*v46 != v37)
+        {
+          objc_enumerationMutation(v34);
+        }
+
+        v39 = *(*(&v45 + 1) + 8 * k);
+        v40 = [PSExecutionSessionResourceAvailability alloc];
+        v41 = [(PSExecutionSession *)self context];
+        v42 = -[PSExecutionSessionResourceAvailability initWithResourceKey:availability:](v40, "initWithResourceKey:availability:", v39, [v41 availabilityForResource:v39]);
+        [v33 addObject:v42];
+      }
+
+      v36 = [v34 countByEnumeratingWithState:&v45 objects:v58 count:16];
+    }
+
+    while (v36);
+  }
+
+  [(PSExecutionSession *)self resourceAvailabilityHasChangedTo:v33];
+  v43 = *MEMORY[0x277D85DE8];
+}
+
+- (void)waitForContextFromExecutionSessionsProvidingResources:(id)a3
+{
+  v9 = [MEMORY[0x277CBEB58] setWithSet:a3];
+  v4 = MEMORY[0x277CBEB98];
+  v5 = [(PSExecutionSession *)self context];
+  v6 = [v5 allResourceKeys];
+  v7 = [v4 setWithArray:v6];
+
+  [v9 minusSet:v7];
+  if ([v9 count])
+  {
+    v8 = [(PSExecutionSession *)self systemGraph];
+    [v8 addResourceStreamsForResourceKeys:v9 toContext:self->_context];
+  }
+}
+
+- (void)enteringSleep
+{
+  v2 = [(PSExecutionSession *)self systemGraph];
+  [v2 enteringSleep];
+}
+
+- (void)exitingSleep
+{
+  v2 = [(PSExecutionSession *)self systemGraph];
+  [v2 exitingSleep];
+}
+
+- (unint64_t)getRetainedBufferCountForKey:(id)a3
+{
+  v3 = a3;
+  if ([PSRCConstants checkBufferConfigExistsForKey:v3])
+  {
+    v4 = [PSRCConstants getCameraDepthForKey:v3];
+    v5 = [PSRCConstants getReaderDepthForKey:v3]+ v4;
+    v6 = v5 + [PSRCConstants getWriterDepthForKey:v3];
+  }
+
+  else
+  {
+    v6 = 0;
+  }
+
+  return v6;
+}
+
+- (unint64_t)getRetainedBufferCountForStream:(id)a3
+{
+  v3 = a3;
+  v4 = [v3 resourceClass];
+  v5 = [v3 key];
+  if ([PSRCConstants checkBufferConfigExistsForKey:v5])
+  {
+    v6 = v4 == 9;
+    v7 = [v3 key];
+    v8 = [PSRCConstants getCameraDepthForKey:v7];
+    v9 = [v3 key];
+    v10 = [PSRCConstants getReaderDepthForKey:v9];
+    v11 = [v3 key];
+    v12 = (([PSRCConstants getWriterDepthForKey:v11]+ v10) << (2 * v6)) + v8;
+  }
+
+  else
+  {
+    v12 = 0;
+  }
+
+  return v12;
+}
+
+- (void)resumedProducingRequestedResources:(id)a3 reason:(unint64_t)a4
+{
+  v21 = *MEMORY[0x277D85DE8];
+  v6 = a3;
+  if (a4 > 1)
+  {
+    [PSExecutionSession resumedProducingRequestedResources:a4 reason:?];
+  }
+
+  v7 = v6;
+  v18 = 0u;
+  v19 = 0u;
+  v16 = 0u;
+  v17 = 0u;
+  v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  if (v8)
+  {
+    v9 = v8;
+    v10 = *v17;
+    do
+    {
+      v11 = 0;
+      do
+      {
+        if (*v17 != v10)
+        {
+          objc_enumerationMutation(v7);
+        }
+
+        v12 = *(*(&v16 + 1) + 8 * v11);
+        v13 = [(PSTransitionManager *)self->_transitionManager compiler];
+        [v13 withWriterForKey:v12 perform:&__block_literal_global_53];
+
+        ++v11;
+      }
+
+      while (v9 != v11);
+      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    }
+
+    while (v9);
+  }
+
+  v14 = *MEMORY[0x277D85DE8];
+}
+
+void __64__PSExecutionSession_resumedProducingRequestedResources_reason___block_invoke(uint64_t a1, void *a2)
+{
+  if (a2)
+  {
+    v2 = [a2 context];
+
+    MEMORY[0x28219F878](v2);
+  }
+}
+
+- (void)producedStridesWillChangeTo:(id)a3 atFrameID:(id)a4 isPhysicalFrameID:(BOOL)a5 forBaseMSGSyncID:(id)a6
+{
+  v31 = *MEMORY[0x277D85DE8];
+  v10 = a3;
+  v11 = a4;
+  v12 = a6;
+  v13 = +[PLSSettings currentSettings];
+  v14 = [v13 enableFastTransition];
+
+  if (v14)
+  {
+    v15 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v10, "count")}];
+    v27[0] = MEMORY[0x277D85DD0];
+    v27[1] = 3221225472;
+    v27[2] = __95__PSExecutionSession_producedStridesWillChangeTo_atFrameID_isPhysicalFrameID_forBaseMSGSyncID___block_invoke;
+    v27[3] = &unk_279A482E0;
+    v16 = v15;
+    v28 = v16;
+    [v10 enumerateObjectsUsingBlock:v27];
+    v26 = 0;
+    v17 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v16 requiringSecureCoding:1 error:&v26];
+    v18 = v26;
+    if (v18)
+    {
+      v19 = __PLSLogSharedInstance();
+      if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+      {
+LABEL_13:
+
+        goto LABEL_14;
+      }
+
+      v20 = [v18 localizedDescription];
+      v21 = [v20 cStringUsingEncoding:134217984];
+      *buf = 136315138;
+      v30 = v21;
+      _os_log_impl(&dword_25EA3A000, v19, OS_LOG_TYPE_ERROR, "Error encoding array: %s", buf, 0xCu);
+    }
+
+    else
+    {
+      if (!v17)
+      {
+        v19 = __PLSLogSharedInstance();
+        if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+        {
+          *buf = 0;
+          _os_log_impl(&dword_25EA3A000, v19, OS_LOG_TYPE_ERROR, "Error encoding array", buf, 2u);
+        }
+
+        goto LABEL_13;
+      }
+
+      v19 = xpc_dictionary_create(0, 0, 0);
+      populateProducedStridesWillChange(v19, v17, [v11 integerValue], a5, v12);
+      v22 = [(PSExecutionSession *)self systemGraphSession];
+      v20 = xpc_session_send_message(v22, v19);
+
+      if (v20)
+      {
+        v23 = xpc_rich_error_copy_description(v20);
+        v24 = __PLSLogSharedInstance();
+        if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+        {
+          *buf = 136315138;
+          v30 = v23;
+          _os_log_impl(&dword_25EA3A000, v24, OS_LOG_TYPE_ERROR, "Could not send producedStrides to xpc listener. Error = %s", buf, 0xCu);
+        }
+
+        free(v23);
+      }
+    }
+
+    goto LABEL_13;
+  }
+
+  v16 = __PLSLogSharedInstance();
+  if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+  {
+    *buf = 136315138;
+    v30 = "[PSExecutionSession producedStridesWillChangeTo:atFrameID:isPhysicalFrameID:forBaseMSGSyncID:]";
+    _os_log_impl(&dword_25EA3A000, v16, OS_LOG_TYPE_ERROR, "%s: ignoring, enableFastTransition is not set.", buf, 0xCu);
+  }
+
+LABEL_14:
+
+  v25 = *MEMORY[0x277D85DE8];
+}
+
+void __95__PSExecutionSession_producedStridesWillChangeTo_atFrameID_isPhysicalFrameID_forBaseMSGSyncID___block_invoke(uint64_t a1, void *a2)
+{
+  v2 = *(a1 + 32);
+  v3 = a2;
+  v4 = [PSExecutionSessionResourceWithStride alloc];
+  v7 = [v3 resourceKey];
+  v5 = [v3 stride];
+
+  v6 = [(PSExecutionSessionResourceWithStride *)v4 initWithResourceKey:v7 stride:v5];
+  [v2 addObject:v6];
+}
+
+- (void)producedStridesWillChangeTo:(id)a3 atPhysicalFrameID:(id)a4
+{
+  v42 = *MEMORY[0x277D85DE8];
+  v6 = a3;
+  v7 = a4;
+  if (![v6 count])
+  {
+    goto LABEL_26;
+  }
+
+  v29 = 0u;
+  v30 = 0u;
+  v27 = 0u;
+  v28 = 0u;
+  v8 = v6;
+  v9 = [v8 countByEnumeratingWithState:&v27 objects:v41 count:16];
+  if (v9)
+  {
+    v10 = v9;
+    v11 = 0;
+    v12 = *v28;
+    while (1)
+    {
+      for (i = 0; i != v10; ++i)
+      {
+        if (*v28 != v12)
+        {
+          objc_enumerationMutation(v8);
+        }
+
+        v14 = [*(*(&v27 + 1) + 8 * i) resourceKey];
+        v15 = [(PSExecutionSession *)self context];
+        v16 = [v15 resourceStreamForKey:v14];
+
+        v17 = [v16 baseMSGSyncID];
+        if (!v17)
+        {
+          [PSExecutionSession producedStridesWillChangeTo:buf atPhysicalFrameID:v14];
+LABEL_18:
+          v26 = 0;
+          asprintf(&v26, "All resources must have the same MSG sync id: %s (%u != %u)", [v14 UTF8String], objc_msgSend(v15, "unsignedIntValue"), objc_msgSend(v11, "unsignedIntValue"));
+          v19 = __PLSLogSharedInstance();
+          if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
+          {
+            v20 = [v14 UTF8String];
+            v21 = [v15 unsignedIntValue];
+            v22 = [v11 unsignedIntValue];
+            *buf = 136316162;
+            v32 = "[PSExecutionSession producedStridesWillChangeTo:atPhysicalFrameID:]";
+            v33 = 1024;
+            v34 = 953;
+            v35 = 2080;
+            v36 = v20;
+            v37 = 1024;
+            v38 = v21;
+            v39 = 1024;
+            v40 = v22;
+            _os_log_impl(&dword_25EA3A000, v19, OS_LOG_TYPE_FAULT, "%s:%d All resources must have the same MSG sync id: %s (%u != %u)", buf, 0x28u);
+          }
+
+          v23 = OSLogFlushBuffers();
+          if (v23)
+          {
+            v24 = v23;
+            v25 = __PLSLogSharedInstance();
+            if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+            {
+              *buf = 136315394;
+              v32 = "[PSExecutionSession producedStridesWillChangeTo:atPhysicalFrameID:]";
+              v33 = 1024;
+              v34 = v24;
+              _os_log_impl(&dword_25EA3A000, v25, OS_LOG_TYPE_ERROR, "%s() failed to flush buffers with error code: %d", buf, 0x12u);
+            }
+          }
+
+          else
+          {
+            usleep(0x1E8480u);
+          }
+
+          abort_with_reason();
+LABEL_26:
+          [PSExecutionSession producedStridesWillChangeTo:buf atPhysicalFrameID:?];
+        }
+
+        v15 = v17;
+        if (v11)
+        {
+          if (([v11 isEqualToNumber:v17] & 1) == 0)
+          {
+            goto LABEL_18;
+          }
+        }
+
+        else
+        {
+          v11 = v17;
+        }
+      }
+
+      v10 = [v8 countByEnumeratingWithState:&v27 objects:v41 count:16];
+      if (!v10)
+      {
+        goto LABEL_16;
+      }
+    }
+  }
+
+  v11 = 0;
+LABEL_16:
+
+  [(PSExecutionSession *)self producedStridesWillChangeTo:v8 atFrameID:v7 isPhysicalFrameID:1 forBaseMSGSyncID:v11];
+  v18 = *MEMORY[0x277D85DE8];
+}
+
+- (void)requestedResourcesAreBeingProduced:(id)a3
+{
+  v18 = *MEMORY[0x277D85DE8];
+  v4 = a3;
+  v5 = [MEMORY[0x277CBEB18] array];
+  v13 = 0u;
+  v14 = 0u;
+  v15 = 0u;
+  v16 = 0u;
+  v6 = v4;
+  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  if (v7)
+  {
+    v8 = v7;
+    v9 = *v14;
+    do
+    {
+      v10 = 0;
+      do
+      {
+        if (*v14 != v9)
+        {
+          objc_enumerationMutation(v6);
+        }
+
+        v11 = [MEMORY[0x277D3E828] entryWithKey:*(*(&v13 + 1) + 8 * v10) stride:{0, v13}];
+        [v5 addObject:v11];
+
+        ++v10;
+      }
+
+      while (v8 != v10);
+      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    }
+
+    while (v8);
+  }
+
+  [(PSExecutionSession *)self resourceRequestsAreComplete:v5];
+  v12 = *MEMORY[0x277D85DE8];
+}
+
+- (void)resourceRequestsAreComplete:(id)a3
+{
+  v20 = *MEMORY[0x277D85DE8];
+  v4 = a3;
+  v5 = objc_alloc_init(MEMORY[0x277D3E820]);
+  [v5 setResourcesNoLongerWanted:0];
+  [v5 setResourcesWantedWithStrides:v4];
+  v17 = 0u;
+  v18 = 0u;
+  v15 = 0u;
+  v16 = 0u;
+  v6 = [v5 resourcesWantedWithStrides];
+  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  if (v7)
+  {
+    v8 = v7;
+    v9 = *v16;
+    do
+    {
+      v10 = 0;
+      do
+      {
+        if (*v16 != v9)
+        {
+          objc_enumerationMutation(v6);
+        }
+
+        v11 = [*(*(&v15 + 1) + 8 * v10) resourceKey];
+        v12 = [(PSTransitionManager *)self->_transitionManager compiler];
+        [v12 withWriterForKey:v11 perform:&__block_literal_global_268];
+
+        ++v10;
+      }
+
+      while (v8 != v10);
+      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    }
+
+    while (v8);
+  }
+
+  v13 = [(PSExecutionSession *)self systemGraph];
+  [v13 resourceRequestWithStridesCompleted:v5];
+
+  v14 = *MEMORY[0x277D85DE8];
+}
+
+void __68__PSExecutionSession_ResourceProvider__resourceRequestsAreComplete___block_invoke(uint64_t a1, void *a2)
+{
+  if (a2)
+  {
+    v2 = [a2 context];
+
+    MEMORY[0x28219F878](v2);
+  }
+}
+
+- (void)willStopProducingRequestedResources:(id)a3 reason:(unint64_t)a4
+{
+  v22 = *MEMORY[0x277D85DE8];
+  v17 = 0u;
+  v18 = 0u;
+  v19 = 0u;
+  v20 = 0u;
+  v6 = a3;
+  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  if (v7)
+  {
+    v8 = v7;
+    v9 = *v18;
+    do
+    {
+      v10 = 0;
+      do
+      {
+        if (*v18 != v9)
+        {
+          objc_enumerationMutation(v6);
+        }
+
+        v11 = *(*(&v17 + 1) + 8 * v10);
+        v12 = [(PSTransitionManager *)self->_transitionManager compiler];
+        [v12 withWriterForKey:v11 perform:&__block_literal_global_270];
+
+        ++v10;
+      }
+
+      while (v8 != v10);
+      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    }
+
+    while (v8);
+  }
+
+  if (a4 - 1 < 2)
+  {
+    v13 = __PLSLogSharedInstance();
+    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    {
+      LOWORD(v16[0]) = 0;
+      _os_log_impl(&dword_25EA3A000, v13, OS_LOG_TYPE_DEFAULT, "OysterID transition", v16, 2u);
+    }
+
+    goto LABEL_13;
+  }
+
+  if (!a4)
+  {
+    v13 = [(PSExecutionSession *)self systemGraph];
+    [v13 resourcesAreStopped:v6 reason:0];
+LABEL_13:
+
+    v14 = *MEMORY[0x277D85DE8];
+    return;
+  }
+
+  v15 = [PSExecutionSession(ResourceProvider) willStopProducingRequestedResources:v16 reason:a4];
+  __83__PSExecutionSession_ResourceProvider__willStopProducingRequestedResources_reason___block_invoke(v15);
+}
+
+void __83__PSExecutionSession_ResourceProvider__willStopProducingRequestedResources_reason___block_invoke(uint64_t a1, void *a2)
+{
+  if (a2)
+  {
+    v2 = [a2 context];
+
+    MEMORY[0x28219F860](v2);
+  }
+}
+
+- (void)failedToProcessResourceRequests:(id)a3 reason:(unint64_t)a4
+{
+  v22 = *MEMORY[0x277D85DE8];
+  v5 = a3;
+  v6 = objc_alloc_init(MEMORY[0x277D3E820]);
+  [v6 setResourcesNoLongerWanted:0];
+  [v6 setResourcesWantedWithStrides:v5];
+  v19 = 0u;
+  v20 = 0u;
+  v17 = 0u;
+  v18 = 0u;
+  v7 = [v6 resourcesWantedWithStrides];
+  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  if (v8)
+  {
+    v9 = v8;
+    v10 = *v18;
+    do
+    {
+      v11 = 0;
+      do
+      {
+        if (*v18 != v10)
+        {
+          objc_enumerationMutation(v7);
+        }
+
+        v12 = [*(*(&v17 + 1) + 8 * v11) resourceKey];
+        v13 = [(PSTransitionManager *)self->_transitionManager compiler];
+        [v13 withWriterForKey:v12 perform:&__block_literal_global_273];
+
+        ++v11;
+      }
+
+      while (v9 != v11);
+      v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    }
+
+    while (v9);
+  }
+
+  v14 = [(PSExecutionSession *)self systemGraph];
+  [v14 resourceRequestsFailed:v6 reason:a4];
+
+  v15 = *MEMORY[0x277D85DE8];
+}
+
+void __79__PSExecutionSession_ResourceProvider__failedToProcessResourceRequests_reason___block_invoke(uint64_t a1, void *a2)
+{
+  if (a2)
+  {
+    v2 = [a2 context];
+
+    MEMORY[0x28219F860](v2);
+  }
+}
+
+- (void)failedToProcessNotificationsOfResourcesNoLongerWanted:(id)a3 reason:(unint64_t)a4
+{
+  v6 = a3;
+  v7 = [(PSExecutionSession *)self systemGraph];
+  [v7 resourcesNoLongerWantedFailed:v6 reason:a4];
+}
+
+- (void)producibleStridesHaveChangedTo:(id)a3
+{
+  v23 = *MEMORY[0x277D85DE8];
+  v4 = a3;
+  v5 = +[PLSSettings currentSettings];
+  v6 = [v5 enableFastTransition];
+
+  if (v6)
+  {
+    v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v19[0] = MEMORY[0x277D85DD0];
+    v19[1] = 3221225472;
+    v19[2] = __71__PSExecutionSession_ResourceProvider__producibleStridesHaveChangedTo___block_invoke;
+    v19[3] = &unk_279A48308;
+    v8 = v7;
+    v20 = v8;
+    [v4 enumerateObjectsUsingBlock:v19];
+    v18 = 0;
+    v9 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v18];
+    v10 = v18;
+    if (v10)
+    {
+      v11 = __PLSLogSharedInstance();
+      if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+      {
+LABEL_13:
+
+        goto LABEL_14;
+      }
+
+      v12 = [v10 localizedDescription];
+      v13 = [v12 cStringUsingEncoding:134217984];
+      *buf = 136315138;
+      v22 = v13;
+      _os_log_impl(&dword_25EA3A000, v11, OS_LOG_TYPE_ERROR, "Error encoding array: %s", buf, 0xCu);
+    }
+
+    else
+    {
+      if (!v9)
+      {
+        v11 = __PLSLogSharedInstance();
+        if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+        {
+          *buf = 0;
+          _os_log_impl(&dword_25EA3A000, v11, OS_LOG_TYPE_ERROR, "Error encoding array", buf, 2u);
+        }
+
+        goto LABEL_13;
+      }
+
+      v11 = xpc_dictionary_create(0, 0, 0);
+      populateProducibleStridesHaveChangedTo(v11, v9);
+      v14 = [(PSExecutionSession *)self systemGraphSession];
+      v12 = xpc_session_send_message(v14, v11);
+
+      if (v12)
+      {
+        v15 = xpc_rich_error_copy_description(v12);
+        v16 = __PLSLogSharedInstance();
+        if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+        {
+          *buf = 136315138;
+          v22 = v15;
+          _os_log_impl(&dword_25EA3A000, v16, OS_LOG_TYPE_ERROR, "Could not send producibleStrides to polarisd. Aborting. Error = %s", buf, 0xCu);
+        }
+
+        free(v15);
+      }
+    }
+
+    goto LABEL_13;
+  }
+
+  v8 = __PLSLogSharedInstance();
+  if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  {
+    *buf = 136315138;
+    v22 = "[PSExecutionSession(ResourceProvider) producibleStridesHaveChangedTo:]";
+    _os_log_impl(&dword_25EA3A000, v8, OS_LOG_TYPE_ERROR, "%s: ignoring, enableFastTransition is not set.", buf, 0xCu);
+  }
+
+LABEL_14:
+
+  v17 = *MEMORY[0x277D85DE8];
+}
+
+void __71__PSExecutionSession_ResourceProvider__producibleStridesHaveChangedTo___block_invoke(uint64_t a1, void *a2)
+{
+  v2 = *(a1 + 32);
+  v3 = a2;
+  v4 = [PSExecutionSessionResourceWithStrides alloc];
+  v7 = [v3 resourceKey];
+  v5 = [v3 strides];
+
+  v6 = [(PSExecutionSessionResourceWithStrides *)v4 initWithResourceKey:v7 strides:v5];
+  [v2 addObject:v6];
+}
+
+- (void)resourceAvailabilityHasChangedTo:(id)a3
+{
+  v4 = a3;
+  v5 = [(PSExecutionSession *)self systemGraph];
+  [v5 resourceAvailabilityHasChangedTo:v4];
+}
+
+- (void)resourcesNoLongerWantedProcessed:(id)a3
+{
+  v4 = a3;
+  v5 = [(PSExecutionSession *)self systemGraph];
+  [v5 resourcesNoLongerWantedProcessed:v4];
+}
+
+- (void)setupRequestsAreComplete:(id)a3
+{
+  v4 = MEMORY[0x277D3E820];
+  v5 = a3;
+  v7 = objc_alloc_init(v4);
+  [v7 setResourcesNoLongerWanted:0];
+  [v7 setResourcesWantedWithStrides:v5];
+
+  v6 = [(PSExecutionSession *)self systemGraph];
+  [v6 setupRequestsAreComplete:v7];
+}
+
+- (void)failedToProcessSetupRequests:(id)a3 reason:(unint64_t)a4
+{
+  v6 = a3;
+  v7 = [(PSExecutionSession *)self systemGraph];
+  [v7 failedToProcessSetupRequests:v6 reason:a4];
+}
+
+- (void)pauseRequestsAreComplete:(id)a3
+{
+  v4 = a3;
+  v5 = [(PSExecutionSession *)self systemGraph];
+  [v5 pauseRequestsAreComplete:v4];
+}
+
+- (void)failedToProcessPauseRequests:(id)a3 reason:(unint64_t)a4
+{
+  v20 = *MEMORY[0x277D85DE8];
+  v6 = a3;
+  v15 = 0u;
+  v16 = 0u;
+  v17 = 0u;
+  v18 = 0u;
+  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  if (v7)
+  {
+    v8 = v7;
+    v9 = *v16;
+    do
+    {
+      v10 = 0;
+      do
+      {
+        if (*v16 != v9)
+        {
+          objc_enumerationMutation(v6);
+        }
+
+        v11 = *(*(&v15 + 1) + 8 * v10);
+        v12 = [(PSTransitionManager *)self->_transitionManager compiler];
+        [v12 withWriterForKey:v11 perform:&__block_literal_global_286];
+
+        ++v10;
+      }
+
+      while (v8 != v10);
+      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    }
+
+    while (v8);
+  }
+
+  v13 = [(PSExecutionSession *)self systemGraph];
+  [v13 failedToProcessPauseRequests:v6 reason:a4];
+
+  v14 = *MEMORY[0x277D85DE8];
+}
+
+void __77__PSExecutionSession_PauseSetupSupport__failedToProcessPauseRequests_reason___block_invoke(uint64_t a1, void *a2)
+{
+  if (a2)
+  {
+    v2 = [a2 context];
+
+    MEMORY[0x28219F878](v2);
+  }
+}
+
+- (BOOL)createWorkgroupInterval:(const char *)a3 workloadID:(const char *)a4 type:(unsigned __int16)a5 graphTag:(id)a6
+{
+  v37 = *MEMORY[0x277D85DE8];
+  v8 = a6;
+  v9 = [(PSExecutionSession *)self transitionManager];
+  v10 = [v9 compiler];
+
+  os_unfair_lock_lock(v10 + 2);
+  v11 = [(PSExecutionSession *)self transitionManager];
+  v12 = [v11 compiler];
+  v13 = [v12 taggedWorkgroups];
+  v14 = [v13 objectForKeyedSubscript:v8];
+
+  if (!v14)
+  {
+    memset(v36, 0, sizeof(v36));
+    v35 = 0u;
+    v34 = 0u;
+    *buf = 799564724;
+    if (os_workgroup_attr_set_interval_type())
+    {
+      v17 = __PLSLogSharedInstance();
+      if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+      {
+        *v29 = 0;
+        v18 = "Couldn't set workgroup attributes from interval type";
+        v19 = v17;
+        v20 = 2;
+LABEL_11:
+        _os_log_impl(&dword_25EA3A000, v19, OS_LOG_TYPE_ERROR, v18, v29, v20);
+      }
+    }
+
+    else
+    {
+      v21 = os_workgroup_attr_set_telemetry_flavor();
+      if (!v21)
+      {
+        if (a4)
+        {
+          v17 = os_workgroup_interval_create_with_workload_id();
+        }
+
+        else
+        {
+          v17 = os_workgroup_interval_create();
+        }
+
+        v24 = __error();
+        v16 = v17 != 0;
+        if (v17)
+        {
+          v25 = [(PSExecutionSession *)self transitionManager];
+          v26 = [v25 compiler];
+          v27 = [v26 taggedWorkgroups];
+          [v27 setObject:v17 forKeyedSubscript:v8];
+        }
+
+        else
+        {
+          v28 = *v24;
+          v25 = __PLSLogSharedInstance();
+          if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+          {
+            *v29 = 136315394;
+            v30 = strerror(v28);
+            v31 = 1024;
+            v32 = v28;
+            _os_log_impl(&dword_25EA3A000, v25, OS_LOG_TYPE_ERROR, "Couldn't create workgroup interval: %s (%d)", v29, 0x12u);
+          }
+        }
+
+        goto LABEL_13;
+      }
+
+      v17 = __PLSLogSharedInstance();
+      if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+      {
+        *v29 = 67109120;
+        LODWORD(v30) = v21;
+        v18 = "Couldn't set telemetry flavor on workgroup attributes: error %d";
+        v19 = v17;
+        v20 = 8;
+        goto LABEL_11;
+      }
+    }
+
+    v16 = 0;
+LABEL_13:
+
+    goto LABEL_14;
+  }
+
+  v15 = __PLSLogSharedInstance();
+  if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+  {
+    *buf = 138412290;
+    *&v34 = v8;
+    _os_log_impl(&dword_25EA3A000, v15, OS_LOG_TYPE_ERROR, "Workgroup interval already exists for graph tag %@", buf, 0xCu);
+  }
+
+  v16 = 0;
+LABEL_14:
+  os_unfair_lock_unlock(v10 + 2);
+
+  v22 = *MEMORY[0x277D85DE8];
+  return v16;
+}
+
+- (unsigned)copyWorkgroupPortForGraphTag:(id)a3
+{
+  v4 = a3;
+  v5 = [(PSExecutionSession *)self transitionManager];
+  v6 = [v5 compiler];
+
+  os_unfair_lock_lock(v6 + 2);
+  v7 = [(PSExecutionSession *)self transitionManager];
+  v8 = [v7 compiler];
+  v9 = [v8 taggedWorkgroups];
+  v10 = [v9 objectForKeyedSubscript:v4];
+
+  os_unfair_lock_unlock(v6 + 2);
+  if (v10)
+  {
+    mach_port_out = 0;
+    if (os_workgroup_copy_port(v10, &mach_port_out))
+    {
+      v11 = 0;
+    }
+
+    else
+    {
+      v11 = mach_port_out;
+    }
+  }
+
+  else
+  {
+    v11 = 0;
+  }
+
+  return v11;
+}
+
+- (BOOL)destroyWorkgroupForGraphTag:(id)a3
+{
+  v4 = a3;
+  v5 = [(PSExecutionSession *)self transitionManager];
+  v6 = [v5 compiler];
+
+  os_unfair_lock_lock(v6 + 2);
+  v7 = [(PSExecutionSession *)self transitionManager];
+  v8 = [v7 compiler];
+  v9 = [v8 taggedWorkgroups];
+  v10 = [v9 objectForKeyedSubscript:v4];
+
+  if (v10)
+  {
+    v11 = [(PSExecutionSession *)self transitionManager];
+    v12 = [v11 compiler];
+    v13 = [v12 taggedWorkgroups];
+    [v13 removeObjectForKey:v4];
+
+    os_unfair_lock_unlock(v6 + 2);
+    os_workgroup_cancel(v10);
+  }
+
+  else
+  {
+    os_unfair_lock_unlock(v6 + 2);
+  }
+
+  return v10 != 0;
+}
+
+- (BOOL)requestSystemReplayStart
+{
+  v2 = [(PSExecutionSession *)self systemGraph];
+  [v2 startSystemReplay];
+
+  return 1;
+}
+
+- (BOOL)requestSystemReplayEnd
+{
+  v2 = [(PSExecutionSession *)self systemGraph];
+  [v2 stopSystemReplay];
+
+  return 1;
+}
+
+- (void)registerForContextUpdatesFromResourcesWithCategory:(unint64_t)a3
+{
+  resourceCategorySubscriptions = self->_resourceCategorySubscriptions;
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:?];
+  [(NSMutableSet *)resourceCategorySubscriptions addObject:v6];
+
+  if (a3 == 1 && ![(PSExecutionDashboard *)self->_dashboard isLocalReplaySession])
+  {
+    block[0] = MEMORY[0x277D85DD0];
+    block[1] = 3221225472;
+    block[2] = __91__PSExecutionSession_ResourceConsumer__registerForContextUpdatesFromResourcesWithCategory___block_invoke;
+    block[3] = &unk_279A48330;
+    block[4] = self;
+    if (registerForContextUpdatesFromResourcesWithCategory__onceToken_0 != -1)
+    {
+      dispatch_once(&registerForContextUpdatesFromResourcesWithCategory__onceToken_0, block);
+    }
+  }
+
+  else
+  {
+    v8 = [(PSContext *)self->_context resourceKeysForCategory:a3];
+    if ([v8 count])
+    {
+      v7 = [(PSExecutionSession *)self transitionManager];
+      [v7 deliverDynamicResourcesAvailableNotification:v8];
+    }
+  }
+}
+
+void __91__PSExecutionSession_ResourceConsumer__registerForContextUpdatesFromResourcesWithCategory___block_invoke(uint64_t a1)
+{
+  v10 = *MEMORY[0x277D85DE8];
+  v2 = +[PSDeviceManager sharedInstance];
+  v3 = *(a1 + 32);
+  v4 = *(v3 + 136);
+  *(v3 + 136) = v2;
+
+  [*(*(a1 + 32) + 136) setExecutionSession:*(a1 + 32) withTransitionManager:*(*(a1 + 32) + 96)];
+  v5 = [*(*(a1 + 32) + 136) startServiceMatching];
+  if (v5)
+  {
+    v6 = v5;
+    v7 = __PLSLogSharedInstance();
+    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    {
+      v9[0] = 67109120;
+      v9[1] = v6;
+      _os_log_impl(&dword_25EA3A000, v7, OS_LOG_TYPE_ERROR, "Failed to start PSDeviceManager service matching with err:0x%x", v9, 8u);
+    }
+  }
+
+  v8 = *MEMORY[0x277D85DE8];
+}
+
+- (void)registerForResourceAvailabilityUpdates:(id)a3
+{
+  v4 = a3;
+  v5 = [(PSExecutionSession *)self systemGraph];
+  [v5 registerForResourceAvailabilityUpdates:v4 context:self->_context];
+}
+
+- (void)deregisterFromResourceAvailabilityUpdates:(id)a3
+{
+  v4 = a3;
+  v5 = [(PSExecutionSession *)self systemGraph];
+  [v5 deregisterFromResourceAvailabilityUpdates:v4];
+}
+
+- (uint64_t)deleteSession
+{
+  v18 = *MEMORY[0x277D85DE8];
+  *a1 = 0;
+  asprintf(a1, "Execution session was deallocated while graphs were still running.");
+  v3 = __PLSLogSharedInstance();
+  if (OUTLINED_FUNCTION_5(v3))
+  {
+    OUTLINED_FUNCTION_14();
+    v17 = 191;
+    OUTLINED_FUNCTION_1_0(&dword_25EA3A000, v4, v5, "%s:%d Execution session was deallocated while graphs were still running.", v6, v7, v8, v9, v16[0]);
+  }
+
+  v10 = OSLogFlushBuffers();
+  if (v10)
+  {
+    v11 = __PLSLogSharedInstance();
+    if (OUTLINED_FUNCTION_6(v11))
+    {
+      OUTLINED_FUNCTION_14();
+      v17 = v10;
+      OUTLINED_FUNCTION_3_0(&dword_25EA3A000, v12, v13, "%s() failed to flush buffers with error code: %d", v16);
+    }
+  }
+
+  else
+  {
+    OUTLINED_FUNCTION_7();
+  }
+
+  v14 = *a1;
+  result = abort_with_reason();
+  __break(1u);
+  return result;
+}
+
++ (uint64_t)nameForExecutionSessionKey:(char *)a1 .cold.1(char **a1, int a2)
+{
+  v21 = *MEMORY[0x277D85DE8];
+  *a1 = 0;
+  asprintf(a1, "Unrecognized PSExecutionSessionKey: %d", a2);
+  v4 = __PLSLogSharedInstance();
+  if (OUTLINED_FUNCTION_5(v4))
+  {
+    OUTLINED_FUNCTION_11();
+    v18 = 330;
+    v19 = v5;
+    v20 = a2;
+    _os_log_impl(&dword_25EA3A000, v2, OS_LOG_TYPE_FAULT, "%s:%d Unrecognized PSExecutionSessionKey: %d", buf, 0x18u);
+  }
+
+  if (OSLogFlushBuffers())
+  {
+    v6 = __PLSLogSharedInstance();
+    if (OUTLINED_FUNCTION_6(v6))
+    {
+      OUTLINED_FUNCTION_4();
+      OUTLINED_FUNCTION_2(&dword_25EA3A000, v7, v8, "%s() failed to flush buffers with error code: %d", v9, v10, v11, v12, v15, v16, buf[0]);
+    }
+  }
+
+  else
+  {
+    OUTLINED_FUNCTION_7();
+  }
+
+  v13 = OUTLINED_FUNCTION_0();
+  return [PSExecutionSession initWithName:v13 isUniqueSession:?];
+}
+
+- (uint64_t)initWithName:(char *)a1 isUniqueSession:.cold.1(char **a1)
+{
+  v25 = *MEMORY[0x277D85DE8];
+  *a1 = 0;
+  v2 = getprogname();
+  v3 = getpid();
+  asprintf(a1, "Client (procname:%s pid:%d) does not have the necessary entitlements or Polaris was unable to get the entitlements for the client. Aborting!", v2, v3);
+  v4 = __PLSLogSharedInstance();
+  if (OUTLINED_FUNCTION_5(v4))
+  {
+    v5 = getprogname();
+    getpid();
+    OUTLINED_FUNCTION_11();
+    v20 = 357;
+    v21 = 2080;
+    v22 = v5;
+    v23 = v6;
+    v24 = v7;
+    _os_log_impl(&dword_25EA3A000, v2, OS_LOG_TYPE_FAULT, "%s:%d Client (procname:%s pid:%d) does not have the necessary entitlements or Polaris was unable to get the entitlements for the client. Aborting!", buf, 0x22u);
+  }
+
+  if (OSLogFlushBuffers())
+  {
+    v8 = __PLSLogSharedInstance();
+    if (OUTLINED_FUNCTION_6(v8))
+    {
+      OUTLINED_FUNCTION_4();
+      OUTLINED_FUNCTION_2(&dword_25EA3A000, v9, v10, "%s() failed to flush buffers with error code: %d", v11, v12, v13, v14, v17, v18, buf[0]);
+    }
+  }
+
+  else
+  {
+    OUTLINED_FUNCTION_7();
+  }
+
+  v15 = OUTLINED_FUNCTION_0();
+  return [PSExecutionSession initWithName:v15 isUniqueSession:?];
+}
+
+- (uint64_t)initWithName:(char *)a1 isUniqueSession:.cold.2(char **a1)
+{
+  v18 = *MEMORY[0x277D85DE8];
+  *a1 = 0;
+  asprintf(a1, "Failed to initialize mach timebase factor. This will cause incorrect conversions from mach ticks to nanoseconds which will probably cause wrong timestamps and algorithms to fail");
+  v2 = __PLSLogSharedInstance();
+  if (OUTLINED_FUNCTION_5(v2))
+  {
+    OUTLINED_FUNCTION_14();
+    v17 = 367;
+    OUTLINED_FUNCTION_1_0(&dword_25EA3A000, v3, v4, "%s:%d Failed to initialize mach timebase factor. This will cause incorrect conversions from mach ticks to nanoseconds which will probably cause wrong timestamps and algorithms to fail", v5, v6, v7, v8, v16[0]);
+  }
+
+  v9 = OSLogFlushBuffers();
+  if (v9)
+  {
+    v10 = v9;
+    v11 = __PLSLogSharedInstance();
+    if (OUTLINED_FUNCTION_6(v11))
+    {
+      OUTLINED_FUNCTION_14();
+      v17 = v10;
+      OUTLINED_FUNCTION_3_0(&dword_25EA3A000, v12, v13, "%s() failed to flush buffers with error code: %d", v16);
+    }
+  }
+
+  else
+  {
+    OUTLINED_FUNCTION_7();
+  }
+
+  v14 = OUTLINED_FUNCTION_0();
+  return [(PSExecutionSession *)v14 publishContext];
+}
+
+- (uint64_t)publishContext
+{
+  v26 = *MEMORY[0x277D85DE8];
+  *a1 = 0;
+  v4 = [a2 key];
+  asprintf(a1, "Unable to populate domain from RC for camera key %s", [v4 UTF8String]);
+
+  v5 = __PLSLogSharedInstance();
+  if (OUTLINED_FUNCTION_5(v5))
+  {
+    v6 = [a2 key];
+    [v6 UTF8String];
+    OUTLINED_FUNCTION_11();
+    OUTLINED_FUNCTION_4_0(&dword_25EA3A000, v7, v8, "%s:%d Unable to populate domain from RC for camera key %s", v9, v10, v11, v12, v23, v24, v25);
+  }
+
+  if (OSLogFlushBuffers())
+  {
+    v13 = __PLSLogSharedInstance();
+    if (OUTLINED_FUNCTION_6(v13))
+    {
+      OUTLINED_FUNCTION_4();
+      OUTLINED_FUNCTION_2(&dword_25EA3A000, v14, v15, "%s() failed to flush buffers with error code: %d", v16, v17, v18, v19, v23, v24, v25);
+    }
+  }
+
+  else
+  {
+    OUTLINED_FUNCTION_7();
+  }
+
+  v20 = OUTLINED_FUNCTION_0();
+  return [PSExecutionSession resumedProducingRequestedResources:v20 reason:v21];
+}
+
+- (uint64_t)resumedProducingRequestedResources:(char *)a1 reason:(uint64_t)a2 .cold.1(char **a1, uint64_t a2)
+{
+  v23 = *MEMORY[0x277D85DE8];
+  *a1 = 0;
+  asprintf(a1, "Invalid reason %llu for PSESResourcesResumedReason", a2);
+  v3 = __PLSLogSharedInstance();
+  if (OUTLINED_FUNCTION_5(v3))
+  {
+    OUTLINED_FUNCTION_11();
+    OUTLINED_FUNCTION_4_0(&dword_25EA3A000, v4, v5, "%s:%d Invalid reason %llu for PSESResourcesResumedReason", v6, v7, v8, v9, v20, v21, v22);
+  }
+
+  if (OSLogFlushBuffers())
+  {
+    v10 = __PLSLogSharedInstance();
+    if (OUTLINED_FUNCTION_6(v10))
+    {
+      OUTLINED_FUNCTION_4();
+      OUTLINED_FUNCTION_2(&dword_25EA3A000, v11, v12, "%s() failed to flush buffers with error code: %d", v13, v14, v15, v16, v20, v21, v22);
+    }
+  }
+
+  else
+  {
+    OUTLINED_FUNCTION_7();
+  }
+
+  v17 = OUTLINED_FUNCTION_0();
+  return [PSExecutionSession producedStridesWillChangeTo:v17 atPhysicalFrameID:v18];
+}
+
+- (uint64_t)producedStridesWillChangeTo:(char *)a1 atPhysicalFrameID:(id)a2 .cold.1(char **a1, id a2)
+{
+  v25 = *MEMORY[0x277D85DE8];
+  *a1 = 0;
+  v5 = a2;
+  asprintf(a1, "Did not provide MSG sync ID for resource: %s", [a2 UTF8String]);
+  v6 = __PLSLogSharedInstance();
+  if (OUTLINED_FUNCTION_5(v6))
+  {
+    [a2 UTF8String];
+    OUTLINED_FUNCTION_11();
+    OUTLINED_FUNCTION_4_0(&dword_25EA3A000, v7, v8, "%s:%d Did not provide MSG sync ID for resource: %s", v9, v10, v11, v12, v22, v23, v24);
+  }
+
+  if (OSLogFlushBuffers())
+  {
+    v13 = __PLSLogSharedInstance();
+    if (OUTLINED_FUNCTION_6(v13))
+    {
+      OUTLINED_FUNCTION_4();
+      OUTLINED_FUNCTION_2(&dword_25EA3A000, v14, v15, "%s() failed to flush buffers with error code: %d", v16, v17, v18, v19, v22, v23, v24);
+    }
+  }
+
+  else
+  {
+    OUTLINED_FUNCTION_7();
+  }
+
+  v20 = OUTLINED_FUNCTION_0();
+  return [PSExecutionSession producedStridesWillChangeTo:v20 atPhysicalFrameID:?];
+}
+
+- (uint64_t)producedStridesWillChangeTo:(char *)a1 atPhysicalFrameID:.cold.2(char **a1)
+{
+  v19 = *MEMORY[0x277D85DE8];
+  *a1 = 0;
+  asprintf(a1, "Produced strides array cannot be empty.");
+  v2 = __PLSLogSharedInstance();
+  if (OUTLINED_FUNCTION_5(v2))
+  {
+    OUTLINED_FUNCTION_14();
+    v18 = 931;
+    OUTLINED_FUNCTION_1_0(&dword_25EA3A000, v3, v4, "%s:%d Produced strides array cannot be empty.", v5, v6, v7, v8, v17[0]);
+  }
+
+  v9 = OSLogFlushBuffers();
+  if (v9)
+  {
+    v10 = v9;
+    v11 = __PLSLogSharedInstance();
+    if (OUTLINED_FUNCTION_6(v11))
+    {
+      OUTLINED_FUNCTION_14();
+      v18 = v10;
+      OUTLINED_FUNCTION_3_0(&dword_25EA3A000, v12, v13, "%s() failed to flush buffers with error code: %d", v17);
+    }
+  }
+
+  else
+  {
+    OUTLINED_FUNCTION_7();
+  }
+
+  v14 = OUTLINED_FUNCTION_0();
+  return [PSExecutionSession(ResourceProvider) willStopProducingRequestedResources:v14 reason:v15];
+}
+
+@end

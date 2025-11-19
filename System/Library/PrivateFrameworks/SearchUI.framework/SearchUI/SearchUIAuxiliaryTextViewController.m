@@ -1,0 +1,85 @@
+@interface SearchUIAuxiliaryTextViewController
++ (BOOL)supportsRowModel:(id)a3;
+- (id)setupView;
+- (void)updateWithRowModel:(id)a3;
+@end
+
+@implementation SearchUIAuxiliaryTextViewController
+
++ (BOOL)supportsRowModel:(id)a3
+{
+  v3 = a3;
+  v4 = [v3 trailingTopText];
+  v5 = [SearchUITLKMultilineTextConverter richTextForSearchUIText:v4];
+  if ([v5 hasContent])
+  {
+    v6 = 1;
+  }
+
+  else
+  {
+    v7 = [v3 trailingMiddleText];
+    v8 = [SearchUITLKMultilineTextConverter richTextForSearchUIText:v7];
+    if ([v8 hasContent])
+    {
+      v6 = 1;
+    }
+
+    else
+    {
+      v9 = [v3 trailingBottomText];
+      v10 = [SearchUITLKMultilineTextConverter richTextForSearchUIText:v9];
+      v6 = [v10 hasContent];
+    }
+  }
+
+  return v6;
+}
+
+- (id)setupView
+{
+  v2 = objc_opt_new();
+
+  return v2;
+}
+
+- (void)updateWithRowModel:(id)a3
+{
+  v4 = a3;
+  v9.receiver = self;
+  v9.super_class = SearchUIAuxiliaryTextViewController;
+  [(SearchUIAccessoryViewController *)&v9 updateWithRowModel:v4];
+  v5 = [(SearchUIAccessoryViewController *)self view];
+  v7[0] = MEMORY[0x1E69E9820];
+  v7[1] = 3221225472;
+  v7[2] = __58__SearchUIAuxiliaryTextViewController_updateWithRowModel___block_invoke;
+  v7[3] = &unk_1E85B2540;
+  v7[4] = self;
+  v8 = v4;
+  v6 = v4;
+  [v5 performBatchUpdates:v7];
+}
+
+void __58__SearchUIAuxiliaryTextViewController_updateWithRowModel___block_invoke(uint64_t a1)
+{
+  v2 = [*(a1 + 40) useCompactVersionOfUI];
+  v3 = [*(a1 + 32) view];
+  [v3 setUseCompactMode:v2];
+
+  v4 = [*(a1 + 40) trailingTopText];
+  v5 = [SearchUITLKMultilineTextConverter richTextForSearchUIText:v4];
+  v6 = [*(a1 + 32) view];
+  [v6 setTopText:v5];
+
+  v7 = [*(a1 + 40) trailingMiddleText];
+  v8 = [SearchUITLKMultilineTextConverter richTextForSearchUIText:v7];
+  v9 = [*(a1 + 32) view];
+  [v9 setMiddleText:v8];
+
+  v12 = [*(a1 + 40) trailingBottomText];
+  v10 = [SearchUITLKMultilineTextConverter richTextForSearchUIText:v12];
+  v11 = [*(a1 + 32) view];
+  [v11 setBottomText:v10];
+}
+
+@end

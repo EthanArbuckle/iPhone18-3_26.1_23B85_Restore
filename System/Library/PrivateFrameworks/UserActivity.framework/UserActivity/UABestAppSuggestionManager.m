@@ -1,0 +1,1129 @@
+@interface UABestAppSuggestionManager
+- (BOOL)determineBestAppWithDelay:(double)a3 withBlock:(id)a4;
+- (BOOL)fetchAllNearbyAppSuggestions;
+- (BOOL)isActivityInfo:(id)a3 atTime:(id)a4 similarToAppSuggestion:(id)a5;
+- (UABestAppSuggestionManager)init;
+- (UABestAppSuggestionManagerDelegate)delegate;
+- (id)bestAppSuggestion;
+- (id)bestAppSuggestions:(int64_t)a3;
+- (id)createAppSuggestionFromActivityInfo:(id)a3 atTime:(id)a4;
+- (void)bestAppSuggestionLaunchWasCancelled:(id)a3;
+- (void)bestAppSuggestionWasLaunched:(id)a3 withInteractionType:(unint64_t)a4;
+- (void)dealloc;
+- (void)invalidate;
+- (void)launchAppWithBundleIdentifier:(id)a3 taskContinuationIdentifier:(id)a4;
+- (void)notifyBestAppsChanged:(id)a3 when:(id)a4 confidence:(double)a5;
+- (void)queueFetchOfPayloadForBestAppSuggestion:(id)a3;
+- (void)removeBestApp:(id)a3 options:(id)a4;
+- (void)removeBestAppByUUID:(id)a3 options:(id)a4;
+- (void)startListeningForBestAppSuggestions;
+- (void)stopListeningForBestAppSuggestions;
+@end
+
+@implementation UABestAppSuggestionManager
+
+- (void)startListeningForBestAppSuggestions
+{
+  v2 = self;
+  objc_sync_enter(v2);
+  listeningForBestAppSuggestions = v2->_listeningForBestAppSuggestions;
+  v2->_listeningForBestAppSuggestions = 1;
+  objc_sync_exit(v2);
+
+  if (!listeningForBestAppSuggestions)
+  {
+    v4 = _uaGetLogForCategory(0);
+    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+    {
+      *v10 = 0;
+      _os_log_impl(&dword_226A4E000, v4, OS_LOG_TYPE_DEBUG, "-- Registering with useractivityd to receive bestAppSuggestion", v10, 2u);
+    }
+
+    v5 = [(UABestAppSuggestionManager *)v2 connection];
+    v6 = [v5 remoteObjectProxyWithErrorHandler:&__block_literal_global_20];
+
+    if (v6)
+    {
+      v2->_listeningForBestAppSuggestions = 1;
+      v7 = [(UABestAppSuggestionManager *)v2 delegate];
+      v8 = v7;
+      if (v2->_lastBestAppSuggestion && v7)
+      {
+        if (objc_opt_respondsToSelector())
+        {
+          [v8 bestAppSuggestionChanged:0 withAdditionalSuggestions:0];
+        }
+
+        else if (objc_opt_respondsToSelector())
+        {
+          [v8 bestAppSuggestionChanged:0];
+        }
+
+        lastBestAppSuggestion = v2->_lastBestAppSuggestion;
+        v2->_lastBestAppSuggestion = 0;
+      }
+
+      [v6 doRegisterForBestAppChangeNotification];
+    }
+  }
+}
+
+- (void)stopListeningForBestAppSuggestions
+{
+  v2 = self;
+  objc_sync_enter(v2);
+  listeningForBestAppSuggestions = v2->_listeningForBestAppSuggestions;
+  v2->_listeningForBestAppSuggestions = 0;
+  objc_sync_exit(v2);
+
+  if (listeningForBestAppSuggestions)
+  {
+    v4 = _uaGetLogForCategory(0);
+    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+    {
+      *v7 = 0;
+      _os_log_impl(&dword_226A4E000, v4, OS_LOG_TYPE_DEBUG, "-- Unregistering with useractivityd to receive bestAppSuggestion", v7, 2u);
+    }
+
+    v5 = [(UABestAppSuggestionManager *)v2 connection];
+    v6 = [v5 remoteObjectProxyWithErrorHandler:&__block_literal_global_26];
+
+    if (v6)
+    {
+      [v6 doUnregisterForBestAppChangeNotification];
+    }
+  }
+}
+
+- (UABestAppSuggestionManagerDelegate)delegate
+{
+  WeakRetained = objc_loadWeakRetained(&self->_delegate);
+
+  return WeakRetained;
+}
+
+- (UABestAppSuggestionManager)init
+{
+  v20.receiver = self;
+  v20.super_class = UABestAppSuggestionManager;
+  v2 = [(UABestAppSuggestionManager *)&v20 init];
+  if (v2)
+  {
+    objc_initWeak(&location, v2);
+    objc_copyWeak(&to, &v2->_delegate);
+    v3 = objc_alloc_init(UABestAppSuggestionManagerProxy);
+    proxyManager = v2->_proxyManager;
+    v2->_proxyManager = v3;
+
+    [(UABestAppSuggestionManagerProxy *)v2->_proxyManager setWeakManager:v2];
+    v5 = objc_alloc(MEMORY[0x277CCAE80]);
+    v6 = UABestAppSuggestionManagerServiceName();
+    v7 = [v5 initWithMachServiceName:v6 options:0];
+    connection = v2->_connection;
+    v2->_connection = v7;
+
+    v9 = _LSGetBestAppSuggestionManagerProtocolInterface();
+    [(NSXPCConnection *)v2->_connection setRemoteObjectInterface:v9];
+
+    v10 = [(UABestAppSuggestionManager *)v2 proxyManager];
+    [(NSXPCConnection *)v2->_connection setExportedObject:v10];
+
+    v11 = _LSGetBestAppSuggestionManagerResponseProtocolInterface();
+    [(NSXPCConnection *)v2->_connection setExportedInterface:v11];
+
+    v15[0] = MEMORY[0x277D85DD0];
+    v15[1] = 3221225472;
+    v15[2] = __34__UABestAppSuggestionManager_init__block_invoke;
+    v15[3] = &unk_2785C46D0;
+    objc_copyWeak(&v16, &location);
+    objc_copyWeak(&v17, &to);
+    [(NSXPCConnection *)v2->_connection setInterruptionHandler:v15];
+    v13[0] = MEMORY[0x277D85DD0];
+    v13[1] = 3221225472;
+    v13[2] = __34__UABestAppSuggestionManager_init__block_invoke_15;
+    v13[3] = &unk_2785C4020;
+    objc_copyWeak(&v14, &location);
+    [(NSXPCConnection *)v2->_connection setInvalidationHandler:v13];
+    [(NSXPCConnection *)v2->_connection resume];
+    objc_destroyWeak(&v14);
+    objc_destroyWeak(&v17);
+    objc_destroyWeak(&v16);
+    objc_destroyWeak(&to);
+    objc_destroyWeak(&location);
+  }
+
+  return v2;
+}
+
+void __34__UABestAppSuggestionManager_init__block_invoke(uint64_t a1)
+{
+  v2 = _uaGetLogForCategory(0);
+  if (os_log_type_enabled(v2, OS_LOG_TYPE_INFO))
+  {
+    *buf = 0;
+    _os_log_impl(&dword_226A4E000, v2, OS_LOG_TYPE_INFO, "-- connection to useractivityd interrupted.", buf, 2u);
+  }
+
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  v4 = WeakRetained;
+  if (WeakRetained)
+  {
+    v5 = WeakRetained;
+    objc_sync_enter(v5);
+    v6 = v5[16];
+    v5[16] = 0;
+    objc_sync_exit(v5);
+
+    v7 = objc_loadWeakRetained((a1 + 40));
+    if (v7 && (v8 = v7, v9 = objc_loadWeakRetained((a1 + 40)), v10 = objc_opt_respondsToSelector(), v9, v8, (v10 & 1) != 0))
+    {
+      v11 = _uaGetLogForCategory(0);
+      if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+      {
+        *v15 = 0;
+        _os_log_impl(&dword_226A4E000, v11, OS_LOG_TYPE_INFO, "-- calling .delegate with -(void) connectionInterrupted to tell client that the server has gone away.", v15, 2u);
+      }
+
+      v12 = objc_loadWeakRetained((a1 + 40));
+      [v12 connectionInterrupted];
+    }
+
+    else if (v6)
+    {
+      v13 = _uaGetLogForCategory(0);
+      if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+      {
+        *v14 = 0;
+        _os_log_impl(&dword_226A4E000, v13, OS_LOG_TYPE_INFO, "-- reestablishing connection to server because it was interrupted but the client has a delegate for us to call.", v14, 2u);
+      }
+
+      [v5 startListeningForBestAppSuggestions];
+    }
+  }
+}
+
+void __34__UABestAppSuggestionManager_init__block_invoke_15(uint64_t a1)
+{
+  v2 = _uaGetLogForCategory(0);
+  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
+  {
+    *v4 = 0;
+    _os_log_impl(&dword_226A4E000, v2, OS_LOG_TYPE_DEBUG, "-- Connection to useractivityd invalidated; this object won't work anymore.", v4, 2u);
+  }
+
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  [WeakRetained stopListeningForBestAppSuggestions];
+}
+
+- (void)dealloc
+{
+  objc_storeWeak(&self->_delegate, 0);
+  v3 = [(UABestAppSuggestionManager *)self connection];
+  [v3 invalidate];
+
+  v4.receiver = self;
+  v4.super_class = UABestAppSuggestionManager;
+  [(UABestAppSuggestionManager *)&v4 dealloc];
+}
+
+- (void)removeBestAppByUUID:(id)a3 options:(id)a4
+{
+  v19 = *MEMORY[0x277D85DE8];
+  v6 = a3;
+  v7 = a4;
+  v8 = _uaGetLogForCategory(0);
+  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+  {
+    v9 = [v6 UUIDString];
+    v10 = [v7 description];
+    v11 = stringRemovingNewlines(v10);
+    v15 = 138543618;
+    v16 = v9;
+    v17 = 2114;
+    v18 = v11;
+    _os_log_impl(&dword_226A4E000, v8, OS_LOG_TYPE_DEBUG, "removeBestAppByUUID:%{public}@ opts=%{public}@", &v15, 0x16u);
+  }
+
+  v12 = [(UABestAppSuggestionManager *)self connection];
+  v13 = [v12 remoteObjectProxyWithErrorHandler:&__block_literal_global_11];
+
+  if (v13)
+  {
+    [v13 doRemoveBestAppSuggestion:v6 options:v7];
+  }
+
+  v14 = *MEMORY[0x277D85DE8];
+}
+
+void __58__UABestAppSuggestionManager_removeBestAppByUUID_options___block_invoke(uint64_t a1, void *a2)
+{
+  v7 = *MEMORY[0x277D85DE8];
+  v2 = a2;
+  v3 = _uaGetLogForCategory(0);
+  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  {
+    v5 = 138543362;
+    v6 = v2;
+    _os_log_impl(&dword_226A4E000, v3, OS_LOG_TYPE_DEFAULT, "error from xpc request to server, %{public}@", &v5, 0xCu);
+  }
+
+  v4 = *MEMORY[0x277D85DE8];
+}
+
+- (void)removeBestApp:(id)a3 options:(id)a4
+{
+  v21 = *MEMORY[0x277D85DE8];
+  v6 = a3;
+  v7 = a4;
+  v8 = _uaGetLogForCategory(0);
+  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+  {
+    v9 = [v6 uniqueIdentifier];
+    v10 = [v9 UUIDString];
+    v11 = [v7 description];
+    v12 = stringRemovingNewlines(v11);
+    v15 = 138543875;
+    v16 = v10;
+    v17 = 2113;
+    v18 = v6;
+    v19 = 2114;
+    v20 = v12;
+    _os_log_impl(&dword_226A4E000, v8, OS_LOG_TYPE_DEBUG, "removeBestApp:%{public}@/%{private}@ opts=%{public}@", &v15, 0x20u);
+  }
+
+  v13 = [v6 uniqueIdentifier];
+  [(UABestAppSuggestionManager *)self removeBestAppByUUID:v13 options:v7];
+
+  v14 = *MEMORY[0x277D85DE8];
+}
+
+- (void)invalidate
+{
+  v3 = _uaGetLogForCategory(0);
+  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
+  {
+    *v7 = 0;
+    _os_log_impl(&dword_226A4E000, v3, OS_LOG_TYPE_DEBUG, "invalidate", v7, 2u);
+  }
+
+  v4 = self;
+  objc_sync_enter(v4);
+  v5 = [(UABestAppSuggestionManager *)v4 connection];
+
+  if (v5)
+  {
+    v6 = [(UABestAppSuggestionManager *)v4 connection];
+    [v6 invalidate];
+
+    [(UABestAppSuggestionManager *)v4 setConnection:0];
+  }
+
+  objc_sync_exit(v4);
+}
+
+void __65__UABestAppSuggestionManager_startListeningForBestAppSuggestions__block_invoke(uint64_t a1, void *a2)
+{
+  v7 = *MEMORY[0x277D85DE8];
+  v2 = a2;
+  v3 = _uaGetLogForCategory(0);
+  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  {
+    v5 = 138543362;
+    v6 = v2;
+    _os_log_impl(&dword_226A4E000, v3, OS_LOG_TYPE_DEFAULT, "error from xpc request to server, %{public}@", &v5, 0xCu);
+  }
+
+  v4 = *MEMORY[0x277D85DE8];
+}
+
+void __64__UABestAppSuggestionManager_stopListeningForBestAppSuggestions__block_invoke(uint64_t a1, void *a2)
+{
+  v7 = *MEMORY[0x277D85DE8];
+  v2 = a2;
+  v3 = _uaGetLogForCategory(0);
+  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  {
+    v5 = 138543362;
+    v6 = v2;
+    _os_log_impl(&dword_226A4E000, v3, OS_LOG_TYPE_DEFAULT, "error from xpc request to server, %{public}@", &v5, 0xCu);
+  }
+
+  v4 = *MEMORY[0x277D85DE8];
+}
+
+- (id)bestAppSuggestion
+{
+  v2 = [(UABestAppSuggestionManager *)self bestAppSuggestions:0];
+  v3 = v2;
+  if (v2)
+  {
+    v4 = [v2 firstObject];
+  }
+
+  else
+  {
+    v4 = 0;
+  }
+
+  return v4;
+}
+
+- (BOOL)determineBestAppWithDelay:(double)a3 withBlock:(id)a4
+{
+  v6 = a4;
+  v7 = [(UABestAppSuggestionManager *)self bestAppSuggestion];
+  if (v7)
+  {
+    v8 = dispatch_time(0, (a3 * 1000000000.0));
+    v10[0] = MEMORY[0x277D85DD0];
+    v10[1] = 3221225472;
+    v10[2] = __66__UABestAppSuggestionManager_determineBestAppWithDelay_withBlock___block_invoke;
+    v10[3] = &unk_2785C46F8;
+    v12 = v6;
+    v11 = v7;
+    dispatch_after(v8, MEMORY[0x277D85CD0], v10);
+  }
+
+  return 0;
+}
+
+- (id)bestAppSuggestions:(int64_t)a3
+{
+  v18 = 0;
+  v19 = &v18;
+  v20 = 0x3032000000;
+  v21 = __Block_byref_object_copy__3;
+  v22 = __Block_byref_object_dispose__3;
+  v23 = 0;
+  v5 = dispatch_semaphore_create(0);
+  v6 = [(UABestAppSuggestionManager *)self connection];
+  v16[0] = MEMORY[0x277D85DD0];
+  v16[1] = 3221225472;
+  v16[2] = __49__UABestAppSuggestionManager_bestAppSuggestions___block_invoke;
+  v16[3] = &unk_2785C43D0;
+  v7 = v5;
+  v17 = v7;
+  v8 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v16];
+
+  if (v8)
+  {
+    objc_initWeak(&location, self);
+    v13[0] = MEMORY[0x277D85DD0];
+    v13[1] = 3221225472;
+    v13[2] = __49__UABestAppSuggestionManager_bestAppSuggestions___block_invoke_27;
+    v13[3] = &unk_2785C4720;
+    v13[4] = &v18;
+    objc_copyWeak(&v14, &location);
+    [v8 doDetermineBestAppSuggestionWithCompletionHandler:v13];
+    objc_destroyWeak(&v14);
+    objc_destroyWeak(&location);
+  }
+
+  v9 = v19[5];
+  if (v9 && [v9 count])
+  {
+    if (a3 && [v19[5] count] > a3)
+    {
+      v10 = [v19[5] subarrayWithRange:{0, a3}];
+    }
+
+    else
+    {
+      v10 = v19[5];
+    }
+
+    v11 = v10;
+  }
+
+  else
+  {
+    v11 = 0;
+  }
+
+  _Block_object_dispose(&v18, 8);
+
+  return v11;
+}
+
+void __49__UABestAppSuggestionManager_bestAppSuggestions___block_invoke(uint64_t a1, void *a2)
+{
+  v8 = *MEMORY[0x277D85DE8];
+  v3 = a2;
+  v4 = _uaGetLogForCategory(0);
+  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  {
+    v6 = 138543362;
+    v7 = v3;
+    _os_log_impl(&dword_226A4E000, v4, OS_LOG_TYPE_DEFAULT, "error from xpc request to server, %{public}@", &v6, 0xCu);
+  }
+
+  dispatch_semaphore_signal(*(a1 + 32));
+  v5 = *MEMORY[0x277D85DE8];
+}
+
+void __49__UABestAppSuggestionManager_bestAppSuggestions___block_invoke_27(uint64_t a1, void *a2, void *a3, double a4)
+{
+  v61 = *MEMORY[0x277D85DE8];
+  v7 = a2;
+  v8 = a3;
+  v9 = [v7 firstObject];
+  v10 = _uaGetLogForCategory(0);
+  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+  {
+    v34 = [v9 uuid];
+    v30 = [v34 UUIDString];
+    suggestedActionTypeString([v9 type]);
+    v11 = v35 = v7;
+    v29 = [v9 bundleIdentifier];
+    v12 = [v9 activityType];
+    v32 = [v9 peerDevice];
+    v13 = [v32 name];
+    v31 = [v9 peerDevice];
+    v14 = [v31 uniqueID];
+    [v9 peerDeviceType];
+    v15 = v33 = v9;
+    *buf = 138545667;
+    v42 = v30;
+    v43 = 2114;
+    v44 = v11;
+    v45 = 2113;
+    v46 = v29;
+    v47 = 2113;
+    v48 = v12;
+    v49 = 2114;
+    v50 = v8;
+    v51 = 2048;
+    v52 = a4;
+    v53 = 2113;
+    v54 = v13;
+    v55 = 2113;
+    v56 = v14;
+    v57 = 2113;
+    v58 = v15;
+    v59 = 2048;
+    v60 = [v35 count] - 1;
+    _os_log_impl(&dword_226A4E000, v10, OS_LOG_TYPE_DEBUG, "%{public}@ %{public}@ %{private}@ %{private}@ %{public}@ %g %{private}@ %{private}@ %{private}@ (and %lu more app suggestions)", buf, 0x66u);
+
+    v9 = v33;
+    v7 = v35;
+  }
+
+  v16 = [MEMORY[0x277CBEB18] array];
+  v17 = *(*(a1 + 32) + 8);
+  v18 = *(v17 + 40);
+  *(v17 + 40) = v16;
+
+  v38 = 0u;
+  v39 = 0u;
+  v36 = 0u;
+  v37 = 0u;
+  v19 = v7;
+  v20 = [v19 countByEnumeratingWithState:&v36 objects:v40 count:16];
+  if (v20)
+  {
+    v21 = v20;
+    v22 = *v37;
+    do
+    {
+      for (i = 0; i != v21; ++i)
+      {
+        if (*v37 != v22)
+        {
+          objc_enumerationMutation(v19);
+        }
+
+        v24 = *(*(&v36 + 1) + 8 * i);
+        v25 = [v24 uuid];
+
+        if (v25)
+        {
+          WeakRetained = objc_loadWeakRetained((a1 + 40));
+          v27 = [WeakRetained createAppSuggestionFromActivityInfo:v24 atTime:v8];
+
+          if (v27)
+          {
+            [*(*(*(a1 + 32) + 8) + 40) addObject:v27];
+          }
+        }
+      }
+
+      v21 = [v19 countByEnumeratingWithState:&v36 objects:v40 count:16];
+    }
+
+    while (v21);
+  }
+
+  v28 = *MEMORY[0x277D85DE8];
+}
+
+- (BOOL)fetchAllNearbyAppSuggestions
+{
+  v3 = _uaGetLogForCategory(@"multi-handoff");
+  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  {
+    *buf = 0;
+    _os_log_impl(&dword_226A4E000, v3, OS_LOG_TYPE_DEFAULT, "fetchAllNearbyAppSuggestions called", buf, 2u);
+  }
+
+  v4 = [(UABestAppSuggestionManager *)self connection];
+  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_34_0];
+
+  *buf = 0;
+  v9 = buf;
+  v10 = 0x2020000000;
+  v11 = 0;
+  v7[0] = MEMORY[0x277D85DD0];
+  v7[1] = 3221225472;
+  v7[2] = __58__UABestAppSuggestionManager_fetchAllNearbyAppSuggestions__block_invoke_35;
+  v7[3] = &unk_2785C4250;
+  v7[4] = buf;
+  [v5 fetchAllNearbyAppSuggestions:v7];
+  LOBYTE(v4) = v9[24];
+  _Block_object_dispose(buf, 8);
+
+  return v4;
+}
+
+void __58__UABestAppSuggestionManager_fetchAllNearbyAppSuggestions__block_invoke(uint64_t a1, void *a2)
+{
+  v7 = *MEMORY[0x277D85DE8];
+  v2 = a2;
+  v3 = _uaGetLogForCategory(0);
+  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  {
+    v5 = 138543362;
+    v6 = v2;
+    _os_log_impl(&dword_226A4E000, v3, OS_LOG_TYPE_DEFAULT, "Error from xpc request to server, %{public}@", &v5, 0xCu);
+  }
+
+  v4 = *MEMORY[0x277D85DE8];
+}
+
+void __58__UABestAppSuggestionManager_fetchAllNearbyAppSuggestions__block_invoke_35(uint64_t a1, char a2)
+{
+  v9 = *MEMORY[0x277D85DE8];
+  v4 = _uaGetLogForCategory(@"multi-handoff");
+  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  {
+    v5 = [MEMORY[0x277CCABB0] numberWithBool:*(*(*(a1 + 32) + 8) + 24)];
+    v7 = 138412290;
+    v8 = v5;
+    _os_log_impl(&dword_226A4E000, v4, OS_LOG_TYPE_DEFAULT, "expectResults: %@", &v7, 0xCu);
+  }
+
+  *(*(*(a1 + 32) + 8) + 24) = a2;
+  v6 = *MEMORY[0x277D85DE8];
+}
+
+- (void)queueFetchOfPayloadForBestAppSuggestion:(id)a3
+{
+  v19 = *MEMORY[0x277D85DE8];
+  v4 = a3;
+  v5 = _uaGetLogForCategory(0);
+  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  {
+    v6 = [v4 uniqueIdentifier];
+    v7 = [v6 UUIDString];
+    LODWORD(v18) = 138543362;
+    *(&v18 + 4) = v7;
+    _os_log_impl(&dword_226A4E000, v5, OS_LOG_TYPE_INFO, "queueFetchOfPayloadForBestAppSuggestion:%{public}@", &v18, 0xCu);
+  }
+
+  v8 = [(UABestAppSuggestionManager *)self connection];
+  v9 = [v8 remoteObjectProxyWithErrorHandler:&__block_literal_global_39];
+
+  if (v9)
+  {
+    v10 = _uaGetLogForCategory(@"signposts");
+    v11 = [v4 uniqueIdentifier];
+    if (v11)
+    {
+      v12 = v11;
+      v18 = 0uLL;
+      [v11 getUUIDBytes:&v18];
+      v13 = 0;
+      v14 = 0;
+      do
+      {
+        v14 = (*(&v18 + v13 + 1) ^ *(&v18 + v13)) | (v14 << 8);
+        v13 += 2;
+      }
+
+      while (v13 != 16);
+
+      if (v14 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
+      {
+        v15 = [v4 uniqueIdentifier];
+        LODWORD(v18) = 138543362;
+        *(&v18 + 4) = v15;
+        _os_signpost_emit_with_name_impl(&dword_226A4E000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v14, "fetchUserActivityQueued", "Fetching handoff payload:%{public}@", &v18, 0xCu);
+      }
+    }
+
+    v16 = [v4 uniqueIdentifier];
+    [v9 doQueueFetchOfPayloadForBestAppSuggestion:v16 completionHandler:&__block_literal_global_42_0];
+  }
+
+  v17 = *MEMORY[0x277D85DE8];
+}
+
+void __70__UABestAppSuggestionManager_queueFetchOfPayloadForBestAppSuggestion___block_invoke(uint64_t a1, void *a2)
+{
+  v7 = *MEMORY[0x277D85DE8];
+  v2 = a2;
+  v3 = _uaGetLogForCategory(0);
+  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  {
+    v5 = 138543362;
+    v6 = v2;
+    _os_log_impl(&dword_226A4E000, v3, OS_LOG_TYPE_DEFAULT, "Error from xpc request to server, %{public}@", &v5, 0xCu);
+  }
+
+  v4 = *MEMORY[0x277D85DE8];
+}
+
+- (void)bestAppSuggestionWasLaunched:(id)a3 withInteractionType:(unint64_t)a4
+{
+  v6 = a3;
+  if (v6)
+  {
+    v10 = v6;
+    v7 = [(UABestAppSuggestionManager *)self connection];
+    v8 = [v7 remoteObjectProxy];
+
+    if (v8)
+    {
+      v9 = [v10 uniqueIdentifier];
+      [v8 doLaunchFollowUp:v9 interactionType:a4 cancelled:0];
+    }
+
+    v6 = v10;
+  }
+}
+
+- (void)bestAppSuggestionLaunchWasCancelled:(id)a3
+{
+  v4 = a3;
+  if (v4)
+  {
+    v8 = v4;
+    v5 = [(UABestAppSuggestionManager *)self connection];
+    v6 = [v5 remoteObjectProxy];
+
+    if (v6)
+    {
+      v7 = [v8 uniqueIdentifier];
+      [v6 doLaunchFollowUp:v7 interactionType:0 cancelled:1];
+    }
+
+    v4 = v8;
+  }
+}
+
+- (id)createAppSuggestionFromActivityInfo:(id)a3 atTime:(id)a4
+{
+  v22 = a4;
+  v5 = a3;
+  v6 = [UABestAppSuggestion alloc];
+  v7 = [v5 bundleIdentifier];
+  v21 = [v5 uuid];
+  v20 = [v5 activityType];
+  v19 = [v5 dynamicActivityType];
+  v18 = [v5 when];
+  v8 = [v5 type];
+  v23 = [v5 peerDevice];
+  v16 = [v23 name];
+  v9 = [v5 peerDevice];
+  v10 = [v9 uniqueID];
+  v11 = [v5 peerDeviceType];
+  v12 = [v5 options];
+  v13 = [v5 active];
+
+  LOBYTE(v15) = v13;
+  v17 = [(UABestAppSuggestion *)v6 initWithBundleIdentifier:v7 uuid:v21 activityType:v20 dynamicIdentifier:v19 lastUpdateTime:v22 lastActiveTime:v18 type:v8 deviceName:v16 deviceIdentifier:v10 deviceType:v11 options:v12 isActive:v15];
+
+  return v17;
+}
+
+- (BOOL)isActivityInfo:(id)a3 atTime:(id)a4 similarToAppSuggestion:(id)a5
+{
+  v9 = a3;
+  v10 = a4;
+  v11 = a5;
+  if (v11)
+  {
+    v12 = [v9 type];
+    if (v12 == [v11 type])
+    {
+      v13 = [v9 uuid];
+      v14 = [v11 uniqueIdentifier];
+      if (![v13 isEqual:v14])
+      {
+        v16 = 0;
+LABEL_30:
+
+        goto LABEL_31;
+      }
+
+      v15 = [v9 bundleIdentifier];
+      if (v15)
+      {
+        v5 = [v9 bundleIdentifier];
+        v6 = [v11 bundleIdentifier];
+        v36 = v5;
+        if (![v5 isEqual:v6])
+        {
+          v16 = 0;
+          goto LABEL_28;
+        }
+      }
+
+      v17 = [v9 activityType];
+      if (v17)
+      {
+        v18 = [v9 activityType];
+        v34 = [v11 activityType];
+        v35 = v18;
+        if (![v18 isEqual:?])
+        {
+          v16 = 0;
+          goto LABEL_25;
+        }
+      }
+
+      v19 = [v9 options];
+      if (v19)
+      {
+        v5 = [v9 options];
+        v31 = [v11 options];
+        v32 = v5;
+        if (![v5 isEqual:?])
+        {
+          v20 = v19;
+          v16 = 0;
+          goto LABEL_22;
+        }
+      }
+
+      v33 = v19;
+      if (!v10 || ([v11 when], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "compare:", v5) == -1))
+      {
+        v21 = [v9 peerDevice];
+        v22 = [v21 uniqueID];
+        if (v22)
+        {
+          v28 = v22;
+          v27 = [v9 peerDevice];
+          [v27 uniqueID];
+          v23 = v30 = v6;
+          [v11 originatingDeviceIdentifier];
+          v24 = v29 = v5;
+          v26 = v21;
+          v16 = [v23 isEqual:v24];
+
+          v5 = v29;
+          v6 = v30;
+
+          if (!v10)
+          {
+            goto LABEL_21;
+          }
+        }
+
+        else
+        {
+
+          v16 = 1;
+          if (!v10)
+          {
+LABEL_21:
+            v20 = v33;
+            if (!v33)
+            {
+              if (!v17)
+              {
+LABEL_26:
+
+                goto LABEL_27;
+              }
+
+LABEL_25:
+
+              goto LABEL_26;
+            }
+
+LABEL_22:
+
+            if (!v17)
+            {
+LABEL_27:
+              if (!v15)
+              {
+LABEL_29:
+
+                goto LABEL_30;
+              }
+
+LABEL_28:
+
+              goto LABEL_29;
+            }
+
+            goto LABEL_25;
+          }
+        }
+      }
+
+      else
+      {
+        v16 = 0;
+      }
+
+      goto LABEL_21;
+    }
+  }
+
+  v16 = 0;
+LABEL_31:
+
+  return v16;
+}
+
+- (void)notifyBestAppsChanged:(id)a3 when:(id)a4 confidence:(double)a5
+{
+  v82 = *MEMORY[0x277D85DE8];
+  v7 = a3;
+  v54 = a4;
+  v55 = v7;
+  v57 = [v7 firstObject];
+  v8 = _uaGetLogForCategory(0);
+  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  {
+    v9 = [v57 uuid];
+    v53 = [v9 UUIDString];
+    v51 = suggestedActionTypeString([v57 type]);
+    v52 = [v57 bundleIdentifier];
+    v10 = [v57 activityType];
+    v11 = [v57 options];
+    v12 = [v11 description];
+    v50 = stringRemovingNewlines(v12);
+    v13 = [v57 peerDevice];
+    v14 = [v13 name];
+    v15 = [v57 peerDevice];
+    v16 = [v15 uniqueID];
+    *buf = 138545667;
+    v63 = v53;
+    v64 = 2114;
+    v65 = v51;
+    v66 = 2113;
+    v67 = v52;
+    v68 = 2113;
+    v69 = v10;
+    v70 = 2114;
+    v71 = v50;
+    v72 = 2114;
+    v73 = v54;
+    v74 = 2048;
+    v75 = a5;
+    v76 = 2113;
+    v77 = v14;
+    v78 = 2113;
+    v79 = v16;
+    v80 = 2048;
+    v81 = [v55 count] - 1;
+    _os_log_impl(&dword_226A4E000, v8, OS_LOG_TYPE_DEFAULT, "notifyBestAppsChanged:%{public}@ %{public}@ %{private}@/%{private}@ opts=%{public}@ when=%{public}@ confidence=%g from=%{private}@/%{private}@  (and %lu more best app suggestions)", buf, 0x66u);
+  }
+
+  WeakRetained = objc_loadWeakRetained(&self->_delegate);
+  v18 = WeakRetained == 0;
+
+  if (!v18)
+  {
+    v19 = objc_loadWeakRetained(&self->_delegate);
+    if (v19)
+    {
+      v20 = objc_loadWeakRetained(&self->_delegate);
+      v21 = objc_opt_respondsToSelector();
+
+      if (v21)
+      {
+        v22 = 1;
+        goto LABEL_10;
+      }
+    }
+
+    v23 = objc_loadWeakRetained(&self->_delegate);
+    if (!v23 || (v24 = objc_loadWeakRetained(&self->_delegate), v25 = objc_opt_respondsToSelector(), v24, v23, (v25 & 1) != 0))
+    {
+      v22 = 0;
+LABEL_10:
+      v26 = [v57 activityType];
+      if (v26)
+      {
+        v27 = [v57 activityType];
+        if ([v27 length])
+        {
+          v28 = [v57 active];
+
+          if (v28)
+          {
+            v29 = self;
+            objc_sync_enter(v29);
+            ++v29->_bestAppNotificationCount;
+            if ((v22 & 1) != 0 || ![(UABestAppSuggestionManager *)v29 isActivityInfo:v57 atTime:v54 similarToAppSuggestion:v29->_lastBestAppSuggestion])
+            {
+              v38 = [(UABestAppSuggestionManager *)v29 createAppSuggestionFromActivityInfo:v57 atTime:v54];
+              objc_storeStrong(&v29->_lastBestAppSuggestion, v38);
+              objc_sync_exit(v29);
+
+              if (v22)
+              {
+                v39 = [MEMORY[0x277CBEB58] set];
+                v40 = v39;
+                if (v38)
+                {
+                  [v39 addObject:v38];
+                }
+
+                if ([v55 count] >= 2)
+                {
+                  v41 = 1;
+                  do
+                  {
+                    v42 = [v55 objectAtIndex:v41];
+                    v43 = [MEMORY[0x277CBEAA8] date];
+                    v44 = [v42 when];
+                    [v43 timeIntervalSinceDate:v44];
+                    v46 = v45 > 600.0;
+
+                    if (!v46)
+                    {
+                      v47 = [(UABestAppSuggestionManager *)v29 createAppSuggestionFromActivityInfo:v42 atTime:v54];
+                      if (v47)
+                      {
+                        [v40 addObject:v47];
+                      }
+                    }
+
+                    ++v41;
+                  }
+
+                  while (v41 < [v55 count]);
+                }
+
+                v48 = objc_loadWeakRetained(&self->_delegate);
+                [v48 bestAppSuggestionChanged:v38 withAdditionalSuggestions:v40];
+              }
+
+              else
+              {
+                if (!v38)
+                {
+                  goto LABEL_21;
+                }
+
+                v49 = objc_loadWeakRetained(&self->_delegate);
+                [v49 bestAppSuggestionChanged:v38];
+              }
+
+              v29 = v38;
+            }
+
+            else
+            {
+              v30 = _uaGetLogForCategory(0);
+              if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
+              {
+                v31 = [v57 uuid];
+                v32 = [v31 UUIDString];
+                v33 = [v57 bundleIdentifier];
+                *buf = 138543619;
+                v63 = v32;
+                v64 = 2113;
+                v65 = v33;
+                _os_log_impl(&dword_226A4E000, v30, OS_LOG_TYPE_DEBUG, " -- ignoring delivery of %{public}@ %{private}@ because it matches the last bestApp we got told about.", buf, 0x16u);
+              }
+
+              objc_sync_exit(v29);
+            }
+
+            goto LABEL_20;
+          }
+        }
+
+        else
+        {
+        }
+      }
+
+      bestAppNotificationCount = self->_bestAppNotificationCount;
+      v35 = objc_loadWeakRetained(&self->_delegate);
+      v36 = dispatch_time(0, 750000000);
+      block[0] = MEMORY[0x277D85DD0];
+      block[1] = 3221225472;
+      block[2] = __68__UABestAppSuggestionManager_notifyBestAppsChanged_when_confidence___block_invoke;
+      block[3] = &unk_2785C4748;
+      v60 = bestAppNotificationCount;
+      v61 = v22;
+      block[4] = self;
+      v59 = v35;
+      v29 = v35;
+      dispatch_after(v36, MEMORY[0x277D85CD0], block);
+
+LABEL_20:
+    }
+  }
+
+LABEL_21:
+
+  v37 = *MEMORY[0x277D85DE8];
+}
+
+void __68__UABestAppSuggestionManager_notifyBestAppsChanged_when_confidence___block_invoke(uint64_t a1)
+{
+  obj = *(a1 + 32);
+  objc_sync_enter(obj);
+  v2 = *(a1 + 32);
+  if (*(v2 + 20) == *(a1 + 48))
+  {
+    v3 = *(v2 + 24);
+    if (v3)
+    {
+      *(v2 + 24) = 0;
+    }
+
+    v4 = *(a1 + 40);
+    if (*(a1 + 52) == 1)
+    {
+      [v4 bestAppSuggestionChanged:0 withAdditionalSuggestions:0];
+    }
+
+    else
+    {
+      [v4 bestAppSuggestionChanged:0];
+    }
+  }
+
+  objc_sync_exit(obj);
+}
+
+- (void)launchAppWithBundleIdentifier:(id)a3 taskContinuationIdentifier:(id)a4
+{
+  v14 = *MEMORY[0x277D85DE8];
+  v6 = a3;
+  v7 = a4;
+  v8 = _uaGetLogForCategory(0);
+  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+  {
+    v10 = 138543619;
+    v11 = v7;
+    v12 = 2113;
+    v13 = v6;
+    _os_log_impl(&dword_226A4E000, v8, OS_LOG_TYPE_DEBUG, "%{public}@ %{private}@", &v10, 0x16u);
+  }
+
+  [(UABestAppSuggestionManager *)self launchAppWithBundleIdentifier:v6 userActivityUniqueIdentifier:v7 userActivityTypeIdentifier:0];
+  v9 = *MEMORY[0x277D85DE8];
+}
+
+@end

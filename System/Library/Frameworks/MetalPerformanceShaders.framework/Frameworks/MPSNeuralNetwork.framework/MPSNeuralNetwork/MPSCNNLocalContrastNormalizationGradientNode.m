@@ -1,0 +1,80 @@
+@interface MPSCNNLocalContrastNormalizationGradientNode
++ (MPSCNNLocalContrastNormalizationGradientNode)nodeWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState kernelWidth:(NSUInteger)kernelWidth kernelHeight:(NSUInteger)kernelHeight;
+- (MPSCNNLocalContrastNormalizationGradientNode)initWithGradientImages:(id)a3 forwardFilter:(id)a4;
+- (MPSCNNLocalContrastNormalizationGradientNode)initWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState kernelWidth:(NSUInteger)kernelWidth kernelHeight:(NSUInteger)kernelHeight;
+@end
+
+@implementation MPSCNNLocalContrastNormalizationGradientNode
+
++ (MPSCNNLocalContrastNormalizationGradientNode)nodeWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState kernelWidth:(NSUInteger)kernelWidth kernelHeight:(NSUInteger)kernelHeight
+{
+  v12 = [a1 alloc];
+  v15 = objc_msgSend_initWithSourceGradient_sourceImage_gradientState_kernelWidth_kernelHeight_(v12, v13, sourceGradient, sourceImage, gradientState, kernelWidth, kernelHeight, v14);
+
+  return v15;
+}
+
+- (MPSCNNLocalContrastNormalizationGradientNode)initWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState kernelWidth:(NSUInteger)kernelWidth kernelHeight:(NSUInteger)kernelHeight
+{
+  v23[1] = *MEMORY[0x277D85DE8];
+  v23[0] = sourceGradient;
+  v13 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], a2, v23, 1, gradientState, kernelWidth, kernelHeight, v7);
+  v22 = sourceImage;
+  v19 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v14, &v22, 1, v15, v16, v17, v18);
+  v21.receiver = self;
+  v21.super_class = MPSCNNLocalContrastNormalizationGradientNode;
+  result = [(MPSNNGradientFilterNode *)&v21 initWithGradientImages:v13 sourceImages:v19 gradientState:gradientState paddingPolicy:0];
+  if (result)
+  {
+    result->_kernelWidth = kernelWidth;
+    result->_kernelHeight = kernelHeight;
+    result->_alpha = 1.0;
+    result->_beta = 0.5;
+    result->_delta = 0.00097656;
+    result->_ps = 1.0;
+    result->_pm = 1.0;
+    result->_p0 = 1.0;
+  }
+
+  return result;
+}
+
+- (MPSCNNLocalContrastNormalizationGradientNode)initWithGradientImages:(id)a3 forwardFilter:(id)a4
+{
+  objc_opt_class();
+  objc_opt_isKindOfClass();
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    v9.receiver = self;
+    v9.super_class = MPSCNNLocalContrastNormalizationGradientNode;
+    result = [(MPSNNGradientFilterNode *)&v9 initWithGradientImages:a3 forwardFilter:a4];
+    if (result)
+    {
+      result->_kernelWidth = *(a4 + 10);
+      result->_kernelHeight = *(a4 + 11);
+      result->_alpha = *(a4 + 14);
+      result->_beta = *(a4 + 15);
+      result->_delta = *(a4 + 16);
+      result->_p0 = *(a4 + 19);
+      result->_pm = *(a4 + 17);
+      result->_ps = *(a4 + 18);
+    }
+  }
+
+  else
+  {
+    if (MTLReportFailureTypeEnabled())
+    {
+      v8 = objc_opt_class();
+      NSStringFromClass(v8);
+      MTLReportFailure();
+    }
+
+    return 0;
+  }
+
+  return result;
+}
+
+@end

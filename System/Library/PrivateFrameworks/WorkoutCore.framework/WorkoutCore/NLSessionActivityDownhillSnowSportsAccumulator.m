@@ -1,0 +1,182 @@
+@interface NLSessionActivityDownhillSnowSportsAccumulator
+- (BOOL)isPaceAvailable;
+- (NSDate)distanceEndDate;
+- (double)averagePaceInMetersPerSecond;
+- (double)descent;
+- (double)distance;
+- (double)fastestPaceInMetersPerSecond;
+- (unint64_t)downhillRunCount;
+- (void)accumulatorDidStartWithStartDate:(id)a3 handler:(id)a4;
+- (void)downhillRunDidComplete:(id)a3;
+- (void)recoverWithDownhillRunEvents:(NSArray *)a3 pauseResumeEvents:(NSArray *)a4 healthStore:(HKHealthStore *)a5 completionHandler:(id)a6;
+- (void)setDescent:(double)a3;
+- (void)setDistance:(double)a3;
+- (void)setDownhillRunCount:(unint64_t)a3;
+@end
+
+@implementation NLSessionActivityDownhillSnowSportsAccumulator
+
+- (NSDate)distanceEndDate
+{
+  v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation4DateVSgMd, &_s10Foundation4DateVSgMR);
+  v4 = *(*(v3 - 8) + 64);
+  MEMORY[0x28223BE20](v3 - 8);
+  v6 = &v14 - v5;
+  v7 = OBJC_IVAR___NLSessionActivityDownhillSnowSportsAccumulator_lastUpdated;
+  swift_beginAccess();
+  _s10Foundation4DateVSgWOcTm_8(self + v7, v6, &_s10Foundation4DateVSgMd, &_s10Foundation4DateVSgMR);
+  v8 = type metadata accessor for Date();
+  v9 = *(v8 - 8);
+  v10 = (*(v9 + 48))(v6, 1, v8);
+  v11 = 0;
+  if (v10 != 1)
+  {
+    isa = Date._bridgeToObjectiveC()().super.isa;
+    (*(v9 + 8))(v6, v8);
+    v11 = isa;
+  }
+
+  return v11;
+}
+
+- (double)distance
+{
+  v3 = OBJC_IVAR___NLSessionActivityDownhillSnowSportsAccumulator_distance;
+  swift_beginAccess();
+  return *(&self->super.super.isa + v3);
+}
+
+- (void)setDistance:(double)a3
+{
+  v5 = OBJC_IVAR___NLSessionActivityDownhillSnowSportsAccumulator_distance;
+  swift_beginAccess();
+  *(&self->super.super.isa + v5) = a3;
+}
+
+- (double)descent
+{
+  v3 = OBJC_IVAR___NLSessionActivityDownhillSnowSportsAccumulator_descent;
+  swift_beginAccess();
+  return *(&self->super.super.isa + v3);
+}
+
+- (void)setDescent:(double)a3
+{
+  v5 = OBJC_IVAR___NLSessionActivityDownhillSnowSportsAccumulator_descent;
+  swift_beginAccess();
+  *(&self->super.super.isa + v5) = a3;
+}
+
+- (unint64_t)downhillRunCount
+{
+  v3 = OBJC_IVAR___NLSessionActivityDownhillSnowSportsAccumulator_downhillRunCount;
+  swift_beginAccess();
+  return *(&self->super.super.isa + v3);
+}
+
+- (void)setDownhillRunCount:(unint64_t)a3
+{
+  v5 = OBJC_IVAR___NLSessionActivityDownhillSnowSportsAccumulator_downhillRunCount;
+  swift_beginAccess();
+  *(&self->super.super.isa + v5) = a3;
+}
+
+- (void)accumulatorDidStartWithStartDate:(id)a3 handler:(id)a4
+{
+  v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation4DateVSgMd, &_s10Foundation4DateVSgMR);
+  v8 = *(*(v7 - 8) + 64);
+  MEMORY[0x28223BE20](v7 - 8);
+  v10 = &v15 - v9;
+  v11 = _Block_copy(a4);
+  if (a3)
+  {
+    static Date._unconditionallyBridgeFromObjectiveC(_:)();
+    v12 = type metadata accessor for Date();
+    (*(*(v12 - 8) + 56))(v10, 0, 1, v12);
+  }
+
+  else
+  {
+    v13 = type metadata accessor for Date();
+    (*(*(v13 - 8) + 56))(v10, 1, 1, v13);
+  }
+
+  if (v11)
+  {
+    *(swift_allocObject() + 16) = v11;
+    v11 = _sIeyB_Ieg_TRTA_7;
+  }
+
+  v14 = self;
+  specialized DownhillSnowSportsAccumulator.accumulatorDidStart(withStart:handler:)();
+  outlined consume of (@escaping @callee_guaranteed () -> ())?(v11);
+
+  _sSo8NSObjectCSgWOhTm_16(v10, &_s10Foundation4DateVSgMd, &_s10Foundation4DateVSgMR);
+}
+
+- (void)downhillRunDidComplete:(id)a3
+{
+  v4 = a3;
+  v5 = self;
+  DownhillSnowSportsAccumulator.downhillRunDidComplete(_:)(v4);
+}
+
+- (void)recoverWithDownhillRunEvents:(NSArray *)a3 pauseResumeEvents:(NSArray *)a4 healthStore:(HKHealthStore *)a5 completionHandler:(id)a6
+{
+  v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
+  v12 = *(*(v11 - 8) + 64);
+  MEMORY[0x28223BE20](v11 - 8);
+  v14 = &v24 - v13;
+  v15 = _Block_copy(a6);
+  v16 = swift_allocObject();
+  v16[2] = a3;
+  v16[3] = a4;
+  v16[4] = a5;
+  v16[5] = v15;
+  v16[6] = self;
+  v17 = type metadata accessor for TaskPriority();
+  (*(*(v17 - 8) + 56))(v14, 1, 1, v17);
+  v18 = swift_allocObject();
+  v18[2] = 0;
+  v18[3] = 0;
+  v18[4] = &async function pointer to partial apply for @objc closure #1 in DownhillSnowSportsAccumulator.recover(downhillRunEvents:pauseResumeEvents:healthStore:);
+  v18[5] = v16;
+  v19 = swift_allocObject();
+  v19[2] = 0;
+  v19[3] = 0;
+  v19[4] = &_sIeghH_IeAgH_TRTATu;
+  v19[5] = v18;
+  v20 = a3;
+  v21 = a4;
+  v22 = a5;
+  v23 = self;
+  _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v14, &_sIeAgH_ytIeAgHr_TRTATu, v19);
+}
+
+- (BOOL)isPaceAvailable
+{
+  if (*(&self->super.super.isa + OBJC_IVAR___NLSessionActivityDownhillSnowSportsAccumulator_fakeDownhillRuns))
+  {
+    return 1;
+  }
+
+  v4 = objc_opt_self();
+
+  return [v4 isAvailable];
+}
+
+- (double)averagePaceInMetersPerSecond
+{
+  v3 = OBJC_IVAR___NLSessionActivityDownhillSnowSportsAccumulator_averageSpeed;
+  swift_beginAccess();
+  return *(&self->super.super.isa + v3);
+}
+
+- (double)fastestPaceInMetersPerSecond
+{
+  v3 = OBJC_IVAR___NLSessionActivityDownhillSnowSportsAccumulator_maximumSpeed;
+  swift_beginAccess();
+  return *(&self->super.super.isa + v3);
+}
+
+@end

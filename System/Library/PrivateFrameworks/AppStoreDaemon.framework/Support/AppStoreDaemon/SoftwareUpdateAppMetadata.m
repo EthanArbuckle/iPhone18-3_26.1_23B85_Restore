@@ -1,0 +1,15 @@
+@interface SoftwareUpdateAppMetadata
+- (id)copyWithZone:(_NSZone *)a3;
+@end
+
+@implementation SoftwareUpdateAppMetadata
+
+- (id)copyWithZone:(_NSZone *)a3
+{
+  v4 = [[SoftwareUpdateAppMetadata allocWithZone:?]];
+  objc_storeStrong(&v4->_itemID, self->_itemID);
+  objc_storeStrong(&v4->_externalVersionID, self->_externalVersionID);
+  return v4;
+}
+
+@end

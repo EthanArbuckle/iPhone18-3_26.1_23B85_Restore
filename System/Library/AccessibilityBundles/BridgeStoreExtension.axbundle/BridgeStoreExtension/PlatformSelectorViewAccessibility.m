@@ -1,0 +1,60 @@
+@interface PlatformSelectorViewAccessibility
++ (void)_accessibilityPerformValidations:(id)a3;
+- (id)accessibilityLabel;
+- (unint64_t)accessibilityTraits;
+@end
+
+@implementation PlatformSelectorViewAccessibility
+
++ (void)_accessibilityPerformValidations:(id)a3
+{
+  v3 = a3;
+  [v3 validateClass:@"BridgeStoreExtension.PlatformSelectorView" hasSwiftField:@"text" withSwiftType:"Optional<String>"];
+  [v3 validateClass:@"BridgeStoreExtension.PlatformSelectorView" hasInstanceMethod:@"accessibilityDescriptionLabel" withFullSignature:{"@", 0}];
+  [v3 validateClass:@"BridgeStoreExtension.PlatformSelectorView" hasSwiftField:@"accessoryImageView" withSwiftType:"UIImageView"];
+  [v3 validateClass:@"AppStoreKit.DynamicTypeLabel" isKindOfClass:@"UILabel"];
+}
+
+- (id)accessibilityLabel
+{
+  v3 = [(PlatformSelectorViewAccessibility *)self safeSwiftValueForKey:@"text"];
+  v4 = v3;
+  if (v3)
+  {
+    v5 = v3;
+  }
+
+  else
+  {
+    v6 = [(PlatformSelectorViewAccessibility *)self safeValueForKey:@"accessibilityDescriptionLabel"];
+    v5 = [v6 safeValueForKey:@"text"];
+  }
+
+  return v5;
+}
+
+- (unint64_t)accessibilityTraits
+{
+  v10 = 0;
+  objc_opt_class();
+  v3 = [(PlatformSelectorViewAccessibility *)self safeSwiftValueForKey:@"accessoryImageView"];
+  v4 = __UIAccessibilityCastAsClass();
+
+  if (v4 && ([v4 image], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  {
+    v9.receiver = self;
+    v9.super_class = PlatformSelectorViewAccessibility;
+    v6 = *MEMORY[0x29EDC7F70] | [(PlatformSelectorViewAccessibility *)&v9 accessibilityTraits];
+  }
+
+  else
+  {
+    v8.receiver = self;
+    v8.super_class = PlatformSelectorViewAccessibility;
+    v6 = [(PlatformSelectorViewAccessibility *)&v8 accessibilityTraits];
+  }
+
+  return v6;
+}
+
+@end

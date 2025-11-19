@@ -1,0 +1,323 @@
+@interface PHAssetComment
++ (id)entityKeyMap;
++ (id)fetchCommentsForAsset:(id)a3 options:(id)a4;
++ (id)fetchCommentsForCloudFeedEntry:(id)a3 options:(id)a4;
++ (id)fetchCommentsWithLocalIdentifiers:(id)a3 options:(id)a4;
++ (id)fetchLikesForAsset:(id)a3 options:(id)a4;
++ (id)fetchLikesForCloudFeedEntry:(id)a3 options:(id)a4;
++ (id)propertiesToFetchWithHint:(unint64_t)a3;
+- (BOOL)_isInterestingToUser:(id)a3 cloudSharedProperties:(id)a4;
+- (BOOL)isInterestingForAlbumsSorting;
+- (PHAssetComment)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5;
+@end
+
+@implementation PHAssetComment
+
+- (BOOL)isInterestingForAlbumsSorting
+{
+  if ([(PHAssetComment *)self isMyComment])
+  {
+    return 1;
+  }
+
+  return [(PHAssetComment *)self isInterestingToUser];
+}
+
+- (BOOL)_isInterestingToUser:(id)a3 cloudSharedProperties:(id)a4
+{
+  v18 = *MEMORY[0x1E69E9840];
+  v6 = a3;
+  v7 = a4;
+  if (![v6 isCloudSharedAsset])
+  {
+    v9 = PLPhotoSharingGetLog();
+    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    {
+      v16 = 138412290;
+      v17 = v6;
+      v10 = "Comment marked as not interesting because it's not for a cloudSharedAsset: %@.";
+      v11 = v9;
+      v12 = OS_LOG_TYPE_ERROR;
+      v13 = 12;
+      goto LABEL_7;
+    }
+
+LABEL_8:
+
+    goto LABEL_9;
+  }
+
+  v8 = [v7 cloudIsMyAsset];
+  if ([(PHAssetComment *)self isMyComment])
+  {
+    v9 = PLPhotoSharingGetLog();
+    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    {
+      LOWORD(v16) = 0;
+      v10 = "Ignoring comment notification because it's my comment";
+      v11 = v9;
+      v12 = OS_LOG_TYPE_DEFAULT;
+      v13 = 2;
+LABEL_7:
+      _os_log_impl(&dword_19C86F000, v11, v12, v10, &v16, v13);
+      goto LABEL_8;
+    }
+
+    goto LABEL_8;
+  }
+
+  if (v8)
+  {
+    LOBYTE(v14) = 1;
+    goto LABEL_10;
+  }
+
+  if ([v7 cloudHasCommentsByMe])
+  {
+    v14 = ![(PHAssetComment *)self isLike];
+    goto LABEL_10;
+  }
+
+LABEL_9:
+  LOBYTE(v14) = 0;
+LABEL_10:
+
+  return v14;
+}
+
+- (PHAssetComment)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5
+{
+  v40[1] = *MEMORY[0x1E69E9840];
+  v8 = a3;
+  v9 = a5;
+  v38.receiver = self;
+  v38.super_class = PHAssetComment;
+  v10 = [(PHObject *)&v38 initWithFetchDictionary:v8 propertyHint:a4 photoLibrary:v9];
+  if (v10)
+  {
+    v11 = [v8 objectForKeyedSubscript:@"cloudGUID"];
+    uuid = v10->super._uuid;
+    v10->super._uuid = v11;
+
+    v13 = [v8 objectForKeyedSubscript:@"isCaption"];
+    v10->_isCaption = [v13 BOOLValue];
+
+    v14 = [v8 objectForKeyedSubscript:@"isBatchComment"];
+    v10->_isBatchComment = [v14 BOOLValue];
+
+    v15 = [v8 objectForKeyedSubscript:@"isDeletable"];
+    v10->_isDeletable = [v15 BOOLValue];
+
+    v16 = [v8 objectForKeyedSubscript:@"isLike"];
+    v10->_isLike = [v16 BOOLValue];
+
+    v17 = [v8 objectForKeyedSubscript:@"isMyComment"];
+    v10->_isMyComment = [v17 BOOLValue];
+
+    v18 = [v8 objectForKeyedSubscript:@"commentClientDate"];
+    commentClientDate = v10->_commentClientDate;
+    v10->_commentClientDate = v18;
+
+    v20 = [v8 objectForKeyedSubscript:@"commentDate"];
+    commentDate = v10->_commentDate;
+    v10->_commentDate = v20;
+
+    v22 = [v8 objectForKeyedSubscript:@"commentText"];
+    commentText = v10->_commentText;
+    v10->_commentText = v22;
+
+    v24 = [v8 objectForKeyedSubscript:@"cloudGUID"];
+    cloudGUID = v10->_cloudGUID;
+    v10->_cloudGUID = v24;
+
+    v26 = [v8 objectForKeyedSubscript:@"commenterHashedPersonID"];
+    commenterHashedPersonID = v10->_commenterHashedPersonID;
+    v10->_commenterHashedPersonID = v26;
+
+    if (v10->_isLike)
+    {
+      v28 = @"likedAsset";
+    }
+
+    else
+    {
+      v28 = @"commentedAsset";
+    }
+
+    v29 = [v8 objectForKeyedSubscript:v28];
+    v30 = [v9 librarySpecificFetchOptions];
+    v40[0] = @"PHAssetPropertySetCloudShared";
+    v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:1];
+    [v30 setFetchPropertySets:v31];
+
+    v39 = v29;
+    v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v39 count:1];
+    v33 = [PHAsset fetchAssetsWithObjectIDs:v32 options:v30];
+    v34 = [v33 firstObject];
+
+    v35 = [v34 cloudSharedProperties];
+    if (v34)
+    {
+      v10->_isInterestingToUser = [(PHAssetComment *)v10 _isInterestingToUser:v34 cloudSharedProperties:v35];
+    }
+
+    if (-[PHAssetComment isDeletable](v10, "isDeletable") || ([v35 cloudIsMyAsset] & 1) != 0)
+    {
+      v36 = 1;
+    }
+
+    else
+    {
+      v36 = [(PHAssetComment *)v10 isMyComment];
+    }
+
+    v10->_canBeDeletedByUser = v36;
+  }
+
+  return v10;
+}
+
++ (id)fetchLikesForCloudFeedEntry:(id)a3 options:(id)a4
+{
+  v4 = [PHQuery queryForLikesForCloudFeedEntry:a3 options:a4];
+  v5 = [v4 executeQuery];
+
+  return v5;
+}
+
++ (id)fetchLikesForAsset:(id)a3 options:(id)a4
+{
+  v4 = [PHQuery queryForLikesForAsset:a3 options:a4];
+  v5 = [v4 executeQuery];
+
+  return v5;
+}
+
++ (id)fetchCommentsForCloudFeedEntry:(id)a3 options:(id)a4
+{
+  v4 = [PHQuery queryForCommentsForCloudFeedEntry:a3 options:a4];
+  v5 = [v4 executeQuery];
+
+  return v5;
+}
+
++ (id)fetchCommentsForAsset:(id)a3 options:(id)a4
+{
+  v4 = [PHQuery queryForCommentsForAsset:a3 options:a4];
+  v5 = [v4 executeQuery];
+
+  return v5;
+}
+
++ (id)fetchCommentsWithLocalIdentifiers:(id)a3 options:(id)a4
+{
+  v4 = [PHQuery queryForCommentsWithLocalIdentifiers:a3 options:a4];
+  v5 = [v4 executeQuery];
+
+  return v5;
+}
+
++ (id)entityKeyMap
+{
+  pl_dispatch_once();
+  v2 = entityKeyMap_pl_once_object_15_50217;
+
+  return v2;
+}
+
+void __30__PHAssetComment_entityKeyMap__block_invoke()
+{
+  v25[10] = *MEMORY[0x1E69E9840];
+  v12 = [PHEntityKeyMap alloc];
+  v23[1] = @"cloudGUID";
+  v24[0] = @"cloudGUID";
+  v23[0] = @"uuid";
+  v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
+  v25[0] = v13;
+  v24[1] = @"isCaption";
+  v22 = @"isCaption";
+  v0 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v22 count:1];
+  v25[1] = v0;
+  v24[2] = @"isBatchComment";
+  v21 = @"isBatchComment";
+  v1 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
+  v25[2] = v1;
+  v24[3] = @"isDeletable";
+  v20 = @"isDeletable";
+  v2 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1];
+  v25[3] = v2;
+  v24[4] = @"isLike";
+  v19 = @"isLike";
+  v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v19 count:1];
+  v25[4] = v3;
+  v24[5] = @"isMyComment";
+  v18 = @"isMyComment";
+  v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1];
+  v25[5] = v4;
+  v24[6] = @"commentClientDate";
+  v17 = @"commentClientDate";
+  v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v17 count:1];
+  v25[6] = v5;
+  v24[7] = @"commentDate";
+  v16 = @"commentDate";
+  v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1];
+  v25[7] = v6;
+  v24[8] = @"commenterHashedPersonID";
+  v15 = @"commenterHashedPersonID";
+  v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v15 count:1];
+  v25[8] = v7;
+  v24[9] = @"commentText";
+  v14 = @"commentText";
+  v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v14 count:1];
+  v25[9] = v8;
+  v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:10];
+  v10 = [(PHEntityKeyMap *)v12 initWithPropertyKeysByEntityKey:v9];
+  v11 = entityKeyMap_pl_once_object_15_50217;
+  entityKeyMap_pl_once_object_15_50217 = v10;
+}
+
++ (id)propertiesToFetchWithHint:(unint64_t)a3
+{
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __44__PHAssetComment_propertiesToFetchWithHint___block_invoke;
+  block[3] = &__block_descriptor_40_e5_v8__0l;
+  block[4] = a1;
+  if (propertiesToFetchWithHint__onceToken_50229 != -1)
+  {
+    dispatch_once(&propertiesToFetchWithHint__onceToken_50229, block);
+  }
+
+  v3 = propertiesToFetchWithHint__array_50230;
+
+  return v3;
+}
+
+void __44__PHAssetComment_propertiesToFetchWithHint___block_invoke()
+{
+  v4[13] = *MEMORY[0x1E69E9840];
+  v0 = objc_alloc_init(MEMORY[0x1E695D5C8]);
+  [v0 setName:@"objectID"];
+  v1 = [MEMORY[0x1E696ABC8] expressionForEvaluatedObject];
+  [v0 setExpression:v1];
+
+  [v0 setExpressionResultType:2000];
+  v4[0] = v0;
+  v4[1] = @"cloudGUID";
+  v4[2] = @"commentClientDate";
+  v4[3] = @"commentDate";
+  v4[4] = @"commenterHashedPersonID";
+  v4[5] = @"commentText";
+  v4[6] = @"isBatchComment";
+  v4[7] = @"isCaption";
+  v4[8] = @"isDeletable";
+  v4[9] = @"isLike";
+  v4[10] = @"isMyComment";
+  v4[11] = @"likedAsset";
+  v4[12] = @"commentedAsset";
+  v2 = [MEMORY[0x1E695DEC8] arrayWithObjects:v4 count:13];
+  v3 = propertiesToFetchWithHint__array_50230;
+  propertiesToFetchWithHint__array_50230 = v2;
+}
+
+@end

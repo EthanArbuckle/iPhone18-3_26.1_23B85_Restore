@@ -1,0 +1,48 @@
+@interface VFXView(Generative_Playground)
+- (void)_vfx_setColorSpace:()Generative_Playground;
+- (void)vfx_setClearBackground;
+- (void)vfx_setExtendedLinearSRGBColorSpace;
+- (void)vfx_setLinearSRGBColorSpace;
+@end
+
+@implementation VFXView(Generative_Playground)
+
+- (void)vfx_setClearBackground
+{
+  v2 = [MEMORY[0x1E69DC888] clearColor];
+  [a1 setBackgroundColor:v2];
+}
+
+- (void)vfx_setExtendedLinearSRGBColorSpace
+{
+  v2 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F108]);
+  [a1 _vfx_setColorSpace:v2];
+
+  CGColorSpaceRelease(v2);
+}
+
+- (void)vfx_setLinearSRGBColorSpace
+{
+  v2 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F1B0]);
+  [a1 _vfx_setColorSpace:v2];
+
+  CGColorSpaceRelease(v2);
+}
+
+- (void)_vfx_setColorSpace:()Generative_Playground
+{
+  if (objc_opt_respondsToSelector())
+  {
+    [a1 performSelector:sel_setColorSpace_ withObject:a3];
+    v4 = a3;
+  }
+
+  else
+  {
+    v5 = [a1 layer];
+    [v5 setColorspace:a3];
+    v4 = v5;
+  }
+}
+
+@end

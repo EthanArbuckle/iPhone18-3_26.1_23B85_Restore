@@ -1,0 +1,131 @@
+@interface CNOutlineGroupsAndAccountsStyle
+- (id)parentCellConfigurationUpdateHandlerWithText:(id)a3;
+- (id)sectionConfigurationForLayoutEnvironment:(id)a3 withLeadingActionsProvider:(id)a4 withTrailingActionsProvider:(id)a5 hasHeader:(BOOL)a6;
+- (int64_t)buttonBehaviorWithTraitCollection:(id)a3;
+@end
+
+@implementation CNOutlineGroupsAndAccountsStyle
+
+void __65__CNOutlineGroupsAndAccountsStyle_cellConfigurationUpdateHandler__block_invoke(uint64_t a1, void *a2, void *a3)
+{
+  v4 = a2;
+  v5 = a3;
+  objc_opt_class();
+  v20 = v4;
+  if (objc_opt_isKindOfClass())
+  {
+    v6 = v20;
+  }
+
+  else
+  {
+    v6 = 0;
+  }
+
+  v7 = v6;
+
+  if (v7)
+  {
+    v8 = [MEMORY[0x1E69DCC28] accompaniedSidebarCellConfiguration];
+    v9 = [v8 updatedConfigurationForState:v5];
+
+    [v7 setIndentationWidth:10.0];
+    v10 = [v9 textProperties];
+    v11 = [v10 color];
+    [v7 applyTextColor:v11];
+
+    v12 = [v9 imageProperties];
+    v13 = [v12 tintColor];
+    [v7 applyTextViewTintColor:v13];
+
+    v14 = [v9 imageProperties];
+    v15 = [v14 tintColor];
+    v16 = [v9 textProperties];
+    v17 = [v16 color];
+    [v7 applyAccessoryTintColor:v15 leadingAccessoryTintColor:v17];
+
+    v18 = [v9 textProperties];
+    v19 = [v18 font];
+    [v7 applyTextFont:v19];
+  }
+}
+
+- (int64_t)buttonBehaviorWithTraitCollection:(id)a3
+{
+  v3 = a3;
+  v4 = [MEMORY[0x1E69966E8] currentEnvironment];
+  v5 = [v4 featureFlags];
+  v6 = [v5 isFeatureEnabled:29];
+
+  if (v6)
+  {
+    if ([v3 _splitViewControllerContext])
+    {
+      v7 = 3;
+    }
+
+    else
+    {
+      v7 = 2;
+    }
+  }
+
+  else
+  {
+    v7 = 1;
+  }
+
+  return v7;
+}
+
+- (id)parentCellConfigurationUpdateHandlerWithText:(id)a3
+{
+  v3 = a3;
+  aBlock[0] = MEMORY[0x1E69E9820];
+  aBlock[1] = 3221225472;
+  aBlock[2] = __80__CNOutlineGroupsAndAccountsStyle_parentCellConfigurationUpdateHandlerWithText___block_invoke;
+  aBlock[3] = &unk_1E74E2CC8;
+  v8 = v3;
+  v4 = v3;
+  v5 = _Block_copy(aBlock);
+
+  return v5;
+}
+
+void __80__CNOutlineGroupsAndAccountsStyle_parentCellConfigurationUpdateHandlerWithText___block_invoke(uint64_t a1, void *a2, void *a3)
+{
+  v5 = a2;
+  v6 = [a3 traitCollection];
+  v7 = [v6 _splitViewControllerContext];
+
+  if (v7)
+  {
+    [MEMORY[0x1E69DCC28] headerConfiguration];
+  }
+
+  else
+  {
+    [MEMORY[0x1E69DCC28] prominentInsetGroupedHeaderConfiguration];
+  }
+  v8 = ;
+  [v8 setText:*(a1 + 32)];
+  [v5 setContentConfiguration:v8];
+}
+
+- (id)sectionConfigurationForLayoutEnvironment:(id)a3 withLeadingActionsProvider:(id)a4 withTrailingActionsProvider:(id)a5 hasHeader:(BOOL)a6
+{
+  v8 = MEMORY[0x1E69DD3F8];
+  v9 = a5;
+  v10 = a4;
+  v11 = a3;
+  v12 = [[v8 alloc] initWithAppearanceStyle:3 layoutEnvironment:v11];
+  [v12 setSeparatorStyle:0];
+  [v12 setLeadingSwipeActionsConfigurationProvider:v10];
+
+  [v12 setTrailingSwipeActionsConfigurationProvider:v9];
+  v13 = [objc_alloc(MEMORY[0x1E69DD3F0]) initWithConfiguration:v12 layoutEnvironment:v11];
+
+  return v13;
+}
+
+@end

@@ -1,0 +1,62 @@
+@interface FCAppActivationMonitor
+- (FCAppActivationMonitor)init;
+- (FCAppActivationMonitor)initWithAppActivityMonitor:(id)a3;
+- (void)activityObservingApplicationDidBecomeActive;
+- (void)activityObservingApplicationDidEnterBackground;
+@end
+
+@implementation FCAppActivationMonitor
+
+- (void)activityObservingApplicationDidBecomeActive
+{
+  v3 = [MEMORY[0x1E695DF00] date];
+  [(FCAppActivationMonitor *)self setLastActivationDate:v3];
+}
+
+- (FCAppActivationMonitor)init
+{
+  v16 = *MEMORY[0x1E69E9840];
+  if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  {
+    v2 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Do not call method"];
+    *buf = 136315906;
+    v9 = "[FCAppActivationMonitor init]";
+    v10 = 2080;
+    v11 = "FCAppActivationMonitor.m";
+    v12 = 1024;
+    v13 = 21;
+    v14 = 2114;
+    v15 = v2;
+    _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
+  }
+
+  v3 = MEMORY[0x1E695DF30];
+  v4 = *MEMORY[0x1E695D930];
+  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %s", @"Do not call method", "-[FCAppActivationMonitor init]"];
+  v6 = [v3 exceptionWithName:v4 reason:v5 userInfo:0];
+  v7 = v6;
+
+  objc_exception_throw(v6);
+}
+
+- (FCAppActivationMonitor)initWithAppActivityMonitor:(id)a3
+{
+  v4 = a3;
+  v7.receiver = self;
+  v7.super_class = FCAppActivationMonitor;
+  v5 = [(FCAppActivationMonitor *)&v7 init];
+  if (v5)
+  {
+    [v4 addObserver:v5];
+  }
+
+  return v5;
+}
+
+- (void)activityObservingApplicationDidEnterBackground
+{
+  v3 = [MEMORY[0x1E695DF00] date];
+  [(FCAppActivationMonitor *)self setLastBackgroundDate:v3];
+}
+
+@end

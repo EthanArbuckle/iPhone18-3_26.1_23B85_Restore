@@ -1,0 +1,22 @@
+@interface ViewControllerHostingCollectionViewCell
+- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+@end
+
+@implementation ViewControllerHostingCollectionViewCell
+
+- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+{
+  v5 = self;
+  OUTLINED_FUNCTION_6_12();
+  sub_1E3C75380(a4);
+  v7 = v6;
+  v9 = v8;
+
+  v10 = v7;
+  v11 = v9;
+  result.height = v11;
+  result.width = v10;
+  return result;
+}
+
+@end

@@ -1,0 +1,37 @@
+@interface MPSNDArrayDecompositionLU
+- (MPSNDArrayDecompositionLU)initWithDevice:(id)a3;
+- (void)dealloc;
+- (void)encodeToCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceArrays:(id)a5 destinationArrays:(id)a6 status:(id)a7;
+@end
+
+@implementation MPSNDArrayDecompositionLU
+
+- (MPSNDArrayDecompositionLU)initWithDevice:(id)a3
+{
+  v6.receiver = self;
+  v6.super_class = MPSNDArrayDecompositionLU;
+  v4 = [(MPSNDArrayMultiaryMultiDestinationKernel *)&v6 initWithDevice:a3 sourceCount:1 destinationCount:2];
+  v4->super._encode = EncodeDecompositionLU;
+  v4->super.super._encodeData = v4;
+  v4->_mlu = [objc_alloc(MEMORY[0x277CD75D0]) initWithDevice:a3 rows:1 columns:1];
+  v4->_identity = [[MPSNDArrayIdentity alloc] initWithDevice:a3];
+  return v4;
+}
+
+- (void)encodeToCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceArrays:(id)a5 destinationArrays:(id)a6 status:(id)a7
+{
+  v13[3] = *MEMORY[0x277D85DE8];
+  v13[1] = [a6 objectAtIndexedSubscript:{1, objc_msgSend(a6, "objectAtIndexedSubscript:", 0)}];
+  v13[2] = a7;
+  -[MPSNDArrayMultiaryMultiDestinationKernel encodeToCommandEncoder:commandBuffer:sourceArrays:destinationArrays:](self, "encodeToCommandEncoder:commandBuffer:sourceArrays:destinationArrays:", a3, a4, a5, [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:3]);
+  v12 = *MEMORY[0x277D85DE8];
+}
+
+- (void)dealloc
+{
+  v3.receiver = self;
+  v3.super_class = MPSNDArrayDecompositionLU;
+  [(MPSNDArrayMultiaryMultiDestinationBase *)&v3 dealloc];
+}
+
+@end

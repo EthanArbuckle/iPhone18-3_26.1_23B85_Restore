@@ -1,0 +1,132 @@
+@interface PPFixup49995922Tuple
++ (id)tupleWithRowid:(int64_t)a3 record:(id)a4 dkUUID:(id)a5;
+- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqualToTuple:(id)a3;
+- (PPFixup49995922Tuple)initWithRowid:(int64_t)a3 record:(id)a4 dkUUID:(id)a5;
+- (unint64_t)hash;
+@end
+
+@implementation PPFixup49995922Tuple
+
+- (unint64_t)hash
+{
+  rowid = self->_rowid;
+  v4 = [self->_record hash]- rowid + 32 * rowid;
+  return [(NSUUID *)self->_dkUUID hash]- v4 + 32 * v4;
+}
+
+- (BOOL)isEqual:(id)a3
+{
+  v4 = a3;
+  v5 = v4;
+  if (v4 == self)
+  {
+    v6 = 1;
+  }
+
+  else
+  {
+    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPFixup49995922Tuple *)self isEqualToTuple:v5];
+  }
+
+  return v6;
+}
+
+- (BOOL)isEqualToTuple:(id)a3
+{
+  v4 = a3;
+  v5 = v4;
+  if (!v4)
+  {
+    goto LABEL_9;
+  }
+
+  rowid = self->_rowid;
+  if (rowid != [v4 rowid])
+  {
+    goto LABEL_9;
+  }
+
+  v7 = self->_record == 0;
+  v8 = [v5 record];
+  v9 = v8 != 0;
+
+  if (v7 == v9)
+  {
+    goto LABEL_9;
+  }
+
+  record = self->_record;
+  if (record)
+  {
+    v11 = [v5 record];
+    v12 = [record isEqual:v11];
+
+    if (!v12)
+    {
+      goto LABEL_9;
+    }
+  }
+
+  v13 = self->_dkUUID == 0;
+  v14 = [v5 dkUUID];
+  v15 = v14 != 0;
+
+  if (v13 == v15)
+  {
+LABEL_9:
+    v18 = 0;
+  }
+
+  else
+  {
+    dkUUID = self->_dkUUID;
+    if (dkUUID)
+    {
+      v17 = [v5 dkUUID];
+      v18 = [(NSUUID *)dkUUID isEqual:v17];
+    }
+
+    else
+    {
+      v18 = 1;
+    }
+  }
+
+  return v18 & 1;
+}
+
+- (PPFixup49995922Tuple)initWithRowid:(int64_t)a3 record:(id)a4 dkUUID:(id)a5
+{
+  v10 = a4;
+  v11 = a5;
+  if (!v10)
+  {
+    v15 = [MEMORY[0x277CCA890] currentHandler];
+    [v15 handleFailureInMethod:a2 object:self file:@"PPFixup49995922Tuple.m" lineNumber:11 description:{@"Invalid parameter not satisfying: %@", @"record"}];
+  }
+
+  v16.receiver = self;
+  v16.super_class = PPFixup49995922Tuple;
+  v12 = [(PPFixup49995922Tuple *)&v16 init];
+  v13 = v12;
+  if (v12)
+  {
+    v12->_rowid = a3;
+    objc_storeStrong(&v12->_record, a4);
+    objc_storeStrong(&v13->_dkUUID, a5);
+  }
+
+  return v13;
+}
+
++ (id)tupleWithRowid:(int64_t)a3 record:(id)a4 dkUUID:(id)a5
+{
+  v8 = a5;
+  v9 = a4;
+  v10 = [[a1 alloc] initWithRowid:a3 record:v9 dkUUID:v8];
+
+  return v10;
+}
+
+@end

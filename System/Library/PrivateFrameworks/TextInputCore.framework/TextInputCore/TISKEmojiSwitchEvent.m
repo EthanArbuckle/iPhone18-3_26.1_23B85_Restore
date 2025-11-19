@@ -1,0 +1,31 @@
+@interface TISKEmojiSwitchEvent
+- (id)description;
+- (void)reportToSession:(id)a3;
+@end
+
+@implementation TISKEmojiSwitchEvent
+
+- (id)description
+{
+  if ([(TISKEvent *)self emojiSearchMode])
+  {
+    v2 = @"es:1";
+  }
+
+  else
+  {
+    v2 = @"es:0";
+  }
+
+  return v2;
+}
+
+- (void)reportToSession:(id)a3
+{
+  v3 = kTISKNumberOfTappedKeysCounter;
+  v4 = a3;
+  [v4 addSample:&unk_28400BF10 forKey:v3];
+  [v4 addToCounterForRateMetric:1 forKey:kTISKTapTypingSpeed];
+}
+
+@end

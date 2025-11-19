@@ -1,0 +1,35 @@
+@interface CACLocalAXElement
+- (id)description;
+@end
+
+@implementation CACLocalAXElement
+
+- (id)description
+{
+  v4 = MEMORY[0x277CCACA8];
+  v5 = objc_opt_class();
+  v6 = NSStringFromClass(v5);
+  v7 = [(CACLocalAXElement *)self localElement];
+  if (v7)
+  {
+    v2 = [(CACLocalAXElement *)self localElement];
+    v8 = objc_opt_class();
+    v9 = NSStringFromClass(v8);
+  }
+
+  else
+  {
+    v9 = @"none";
+  }
+
+  v10 = [(CACLocalAXElement *)self localElement];
+  v11 = [v4 stringWithFormat:@"<%@: %p> - <%@: %p>", v6, self, v9, v10];
+
+  if (v7)
+  {
+  }
+
+  return v11;
+}
+
+@end

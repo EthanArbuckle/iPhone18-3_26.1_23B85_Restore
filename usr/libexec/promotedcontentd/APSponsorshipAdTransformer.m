@@ -1,0 +1,296 @@
+@interface APSponsorshipAdTransformer
+- (BOOL)copyContentDataId:(id)a3 toNewContentDataId:(id)a4;
+- (BOOL)createContentDataForContextId:(id)a3 contentId:(id)a4 withServerUnfilledReason:(int64_t)a5;
+- (id)_createContentDataInternalFrom:(id)a3 newContentDataId:(id)a4;
+- (id)_createManagedContextWithId:(id)a3;
+@end
+
+@implementation APSponsorshipAdTransformer
+
+- (BOOL)copyContentDataId:(id)a3 toNewContentDataId:(id)a4
+{
+  v6 = a4;
+  v7 = [APManagedContentData findById:a3];
+  v8 = v7;
+  if (v7)
+  {
+    v9 = [v7 contentData];
+    v10 = [v9 contextIdentifier];
+    v11 = [v10 UUIDString];
+
+    v12 = [APManagedContext findManagedContextByFingerprint:v11];
+    if (!v12)
+    {
+      v13 = APLogForCategory();
+      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      {
+        *v20 = 0;
+        _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Failed to find context in the cache", v20, 2u);
+      }
+
+      v15 = 0;
+      goto LABEL_18;
+    }
+
+    v13 = [(APSponsorshipAdTransformer *)self _createContentDataInternalFrom:v8 newContentDataId:v6];
+    if (v13)
+    {
+      v14 = [v12 addContentData:v13];
+      v15 = v14 != 0;
+      if (v14)
+      {
+LABEL_17:
+
+LABEL_18:
+        goto LABEL_19;
+      }
+
+      v16 = APLogForCategory();
+      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      {
+        *v18 = 0;
+        _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Failed to attach new content data to the context", v18, 2u);
+      }
+    }
+
+    else
+    {
+      v14 = APLogForCategory();
+      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      {
+        *v19 = 0;
+        _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Failed to copy content data", v19, 2u);
+      }
+    }
+
+    v15 = 0;
+    goto LABEL_17;
+  }
+
+  v11 = APLogForCategory();
+  if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+  {
+    *buf = 0;
+    _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Failed to find content data in the cache", buf, 2u);
+  }
+
+  v15 = 0;
+LABEL_19:
+
+  return v15;
+}
+
+- (id)_createContentDataInternalFrom:(id)a3 newContentDataId:(id)a4
+{
+  v5 = a3;
+  v6 = a4;
+  [v5 lockObject];
+  v7 = [v5 contentDataPrivate];
+  v8 = [v7 impressionIdentifier];
+  v9 = [v8 length];
+
+  if (v9)
+  {
+    v10 = objc_autoreleasePoolPush();
+    v11 = [v5 contentData];
+    v12 = objc_opt_class();
+    v13 = cloneSecureCodingObject(v11, v12);
+
+    v14 = [v5 contentDataPrivate];
+    v15 = objc_opt_class();
+    v16 = cloneSecureCodingObject(v14, v15);
+
+    v17 = [v5 contentDataTransient];
+    v18 = objc_opt_class();
+    v19 = cloneSecureCodingObject(v17, v18);
+
+    objc_autoreleasePoolPop(v10);
+    [v5 unlockObject];
+    if (v13)
+    {
+      v41 = v19;
+      [v13 setIdentifier:v6];
+      v20 = +[NSUUID UUID];
+      v21 = [v20 UUIDString];
+      [v13 setUniqueIdentifier:v21];
+
+      v44 = 0u;
+      v45 = 0u;
+      v42 = 0u;
+      v43 = 0u;
+      v22 = [v13 representations];
+      v23 = [v22 countByEnumeratingWithState:&v42 objects:v47 count:16];
+      if (v23)
+      {
+        v24 = v23;
+        v25 = *v43;
+        do
+        {
+          for (i = 0; i != v24; i = i + 1)
+          {
+            if (*v43 != v25)
+            {
+              objc_enumerationMutation(v22);
+            }
+
+            v27 = *(*(&v42 + 1) + 8 * i);
+            v28 = [v13 identifier];
+            [v27 setContentDataIdentifier:v28];
+          }
+
+          v24 = [v22 countByEnumeratingWithState:&v42 objects:v47 count:16];
+        }
+
+        while (v24);
+      }
+
+      v29 = [NSString alloc];
+      v30 = [v16 impressionIdentifier];
+      v31 = [v29 initWithData:v30 encoding:4];
+
+      if (v31)
+      {
+        v32 = +[NSUUID UUID];
+        v33 = [v32 UUIDString];
+        v34 = [v31 stringByAppendingFormat:@"_%@", v33];
+
+        v35 = [v34 dataUsingEncoding:4];
+        v36 = [v35 copy];
+        [v16 setImpressionIdentifier:v36];
+
+        v37 = v41;
+        v38 = [[APContentDataInternal alloc] initWithContent:v13 privateContent:v16 andTransientContent:v41];
+      }
+
+      else
+      {
+        v34 = APLogForCategory();
+        if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
+        {
+          *buf = 0;
+          _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_ERROR, "Can't parse impressionIdentifier.", buf, 2u);
+        }
+
+        v38 = 0;
+        v37 = v41;
+      }
+    }
+
+    else
+    {
+      v39 = APLogForCategory();
+      if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
+      {
+        *buf = 0;
+        _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_ERROR, "Failed to clone content data.", buf, 2u);
+      }
+
+      v38 = 0;
+      v13 = v16;
+    }
+  }
+
+  else
+  {
+    [v5 unlockObject];
+    v13 = APLogForCategory();
+    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    {
+      *buf = 0;
+      _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "impressionIdentifier is not set.", buf, 2u);
+    }
+
+    v38 = 0;
+  }
+
+  return v38;
+}
+
+- (BOOL)createContentDataForContextId:(id)a3 contentId:(id)a4 withServerUnfilledReason:(int64_t)a5
+{
+  v8 = a3;
+  v9 = a4;
+  v10 = [APManagedContext findManagedContextByFingerprint:v8];
+  if (v10)
+  {
+    goto LABEL_6;
+  }
+
+  v11 = [(APSponsorshipAdTransformer *)self _createManagedContextWithId:v8];
+  if (v11)
+  {
+    v10 = v11;
+    v12 = APLogForCategory();
+    if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+    {
+      v20 = 138543362;
+      v21 = v8;
+      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Created new context ctx:[%{public}@] for Legacy Interface Sponsorship Ad metric", &v20, 0xCu);
+    }
+
+LABEL_6:
+    v13 = [APContentDataInternal alloc];
+    v14 = [[NSUUID alloc] initWithUUIDString:v8];
+    v15 = [(APContentDataInternal *)v13 initWithUnfilledReason:a5 error:0 contentIdentifier:v9 contextIdentifier:v14 containerSize:7 placementType:0 journeyStartRelayValues:0.0, 0.0];
+
+    if (v15)
+    {
+      v16 = [v10 addContentData:v15];
+      v17 = v16 != 0;
+      if (v16)
+      {
+LABEL_14:
+
+        goto LABEL_15;
+      }
+
+      v18 = APLogForCategory();
+      if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+      {
+        LOWORD(v20) = 0;
+        _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Failed to attach new content data to the context", &v20, 2u);
+      }
+    }
+
+    else
+    {
+      v16 = APLogForCategory();
+      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      {
+        LOWORD(v20) = 0;
+        _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Failed to create content data with server unfilled reason.", &v20, 2u);
+      }
+    }
+
+    v17 = 0;
+    goto LABEL_14;
+  }
+
+  v10 = APLogForCategory();
+  if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+  {
+    v20 = 138543362;
+    v21 = v8;
+    _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Failed to create new managed context ctx:[%{public}@] for Legacy Interface metric.", &v20, 0xCu);
+  }
+
+  v17 = 0;
+LABEL_15:
+
+  return v17;
+}
+
+- (id)_createManagedContextWithId:(id)a3
+{
+  v3 = a3;
+  v4 = [APContext alloc];
+  v5 = [[NSUUID alloc] initWithUUIDString:v3];
+
+  v6 = [v4 initWithIdentifier:v5 maxSize:0 requestedAdIdentifier:0 currentContent:0 adjacentContent:0 supplementalContext:{0.0, 0.0}];
+  v7 = +[APIDAccountProvider privateUserAccount];
+  v8 = [APManagedContext createManagedContextWithContext:v6 idAccount:v7];
+
+  return v8;
+}
+
+@end

@@ -1,0 +1,14 @@
+@interface WBSTemplateIconMonogramGenerator
+@end
+
+@implementation WBSTemplateIconMonogramGenerator
+
+uint64_t __186__WBSTemplateIconMonogramGenerator_monogramWithTitle_url_size_fontSize_fontWeight_fontDesign_baselineOffset_backgroundColor_foregroundColor_cornerRadius_shouldRemoveGrammaticalArticles___block_invoke_cold_1()
+{
+  result = __186__WBSTemplateIconMonogramGenerator_monogramWithTitle_url_size_fontSize_fontWeight_fontDesign_baselineOffset_backgroundColor_foregroundColor_cornerRadius_shouldRemoveGrammaticalArticles___block_invoke_2();
+  qword_1EC1D4DD8 = result;
+  _MergedGlobals = 1;
+  return result;
+}
+
+@end

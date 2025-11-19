@@ -1,0 +1,1443 @@
+@interface PLAssetContainerDataSource
+- (BOOL)hasAssetAtIndexPath:(id)a3;
+- (NSString)description;
+- (PLAssetContainerDataSource)initWithAssetCollectionsFetchResult:(id)a3 collectionsAssetsFetchResults:(id)a4;
+- (id)assetAtGlobalIndex:(unint64_t)a3;
+- (id)assetAtIndexPath:(id)a3;
+- (id)assetContainerForAsset:(id)a3;
+- (id)assetContainerForAssetGlobalIndex:(unint64_t)a3;
+- (id)assetInAssetContainer:(id)a3 atIndex:(unint64_t)a4;
+- (id)assetWithObjectID:(id)a3;
+- (id)assetsInAssetCollectionAtIndex:(unint64_t)a3;
+- (id)decrementAssetIndexPath:(id)a3 insideCurrentAssetContainer:(BOOL)a4 andWrap:(BOOL)a5;
+- (id)findNearestIndexPath:(id)a3 preferNext:(BOOL)a4;
+- (id)firstAssetIndexPath;
+- (id)incrementAssetIndexPath:(id)a3 insideCurrentAssetContainer:(BOOL)a4 andWrap:(BOOL)a5;
+- (id)indexPathForGlobalIndex:(unint64_t)a3;
+- (id)indexPathOfAsset:(id)a3;
+- (id)lastAssetIndexPath;
+- (id)pl_fetchAllAssets;
+- (unint64_t)_indexOfNextNonEmptyAssetContainerAfterContainerIndex:(unint64_t)a3 wrap:(BOOL)a4;
+- (unint64_t)_indexOfPreviousNonEmptyAssetContainerBeforeContainerIndex:(unint64_t)a3 wrap:(BOOL)a4;
+- (unint64_t)allAssetsCount;
+- (unint64_t)assetCountForContainer:(id)a3;
+- (unint64_t)assetCountForContainerAtIndex:(unint64_t)a3;
+- (unint64_t)decrementGlobalIndex:(unint64_t)a3 insideCurrentAssetContainer:(BOOL)a4 andWrap:(BOOL)a5;
+- (unint64_t)globalIndexForIndexPath:(id)a3;
+- (unint64_t)globalIndexOfAsset:(id)a3;
+- (unint64_t)incrementGlobalIndex:(unint64_t)a3 insideCurrentAssetContainer:(BOOL)a4 andWrap:(BOOL)a5;
+- (unint64_t)indexOffsetForAssetContainerAtAssetIndex:(unint64_t)a3;
+- (void)_updateCachedCount:(unint64_t)a3 forContainerAtContainerIndex:(unint64_t)a4;
+- (void)_updateCachedValues;
+- (void)dealloc;
+- (void)viewControllerPhotoLibraryDidChange:(id)a3;
+@end
+
+@implementation PLAssetContainerDataSource
+
+- (NSString)description
+{
+  v18 = *MEMORY[0x277D85DE8];
+  v16.receiver = self;
+  v16.super_class = PLAssetContainerDataSource;
+  v3 = [(NSString *)[(PLAssetContainerDataSource *)&v16 description] mutableCopy];
+  [v3 appendFormat:@" containing %ld containers with %ld total assets (last container index %ld)", -[PHFetchResult count](self->_assetCollectionsFetchResult, "count"), self->_allAssetsCount, self->_lastAssetCollectionIndex];
+  v14 = 0u;
+  v15 = 0u;
+  v12 = 0u;
+  v13 = 0u;
+  assetCollectionsFetchResult = self->_assetCollectionsFetchResult;
+  v5 = [(PHFetchResult *)assetCollectionsFetchResult countByEnumeratingWithState:&v12 objects:v17 count:16];
+  if (v5)
+  {
+    v6 = v5;
+    v7 = 0;
+    v8 = *v13;
+    do
+    {
+      v9 = 0;
+      v10 = v7;
+      do
+      {
+        if (*v13 != v8)
+        {
+          objc_enumerationMutation(assetCollectionsFetchResult);
+        }
+
+        v7 = v10 + 1;
+        [v3 appendFormat:@"\n%@: %ld assets [%ld]", *(*(&v12 + 1) + 8 * v9), objc_msgSend(-[NSMutableDictionary objectForKey:](self->_assetsFetchResultByAssetCollection, "objectForKey:", *(*(&v12 + 1) + 8 * v9)), "count"), self->_containerCounts[v10]];
+        ++v9;
+        ++v10;
+      }
+
+      while (v6 != v9);
+      v6 = [(PHFetchResult *)assetCollectionsFetchResult countByEnumeratingWithState:&v12 objects:v17 count:16];
+    }
+
+    while (v6);
+  }
+
+  return [v3 copy];
+}
+
+- (void)viewControllerPhotoLibraryDidChange:(id)a3
+{
+  v4 = self;
+  v46 = *MEMORY[0x277D85DE8];
+  v5 = [a3 changeDetailsForFetchResult:{-[PLAssetContainerDataSource assetCollectionsFetchResult](self, "assetCollectionsFetchResult")}];
+  v6 = v5 != 0;
+  if (!v5)
+  {
+    v30 = 0;
+LABEL_15:
+    v10 = [(NSMutableDictionary *)v4->_assetsFetchResultByAssetCollection mutableCopy];
+    goto LABEL_16;
+  }
+
+  v7 = v5;
+  v30 = [v5 fetchResultAfterChanges];
+  v8 = [v7 insertedObjects];
+  v9 = [v7 removedObjects];
+  if (![v8 count] && !objc_msgSend(v9, "count"))
+  {
+    if (([v7 hasIncrementalChanges] & 1) == 0)
+    {
+      v23 = v30;
+      v10 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v30, "count")}];
+      v24 = [objc_msgSend(objc_msgSend(v30 "firstObject")];
+      [v24 setIncludeHiddenAssets:1];
+      v37 = 0u;
+      v38 = 0u;
+      v35 = 0u;
+      v36 = 0u;
+      v25 = [v30 countByEnumeratingWithState:&v35 objects:v44 count:16];
+      if (v25)
+      {
+        v26 = v25;
+        v27 = *v36;
+        do
+        {
+          for (i = 0; i != v26; ++i)
+          {
+            if (*v36 != v27)
+            {
+              objc_enumerationMutation(v30);
+            }
+
+            -[NSMutableDictionary setObject:forKey:](v10, "setObject:forKey:", [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:*(*(&v35 + 1) + 8 * i) options:v24], *(*(&v35 + 1) + 8 * i));
+          }
+
+          v26 = [v30 countByEnumeratingWithState:&v35 objects:v44 count:16];
+        }
+
+        while (v26);
+      }
+
+      goto LABEL_27;
+    }
+
+    goto LABEL_15;
+  }
+
+  v10 = [(NSMutableDictionary *)v4->_assetsFetchResultByAssetCollection mutableCopy];
+  [(NSMutableDictionary *)v10 removeObjectsForKeys:v9];
+  v11 = [objc_msgSend(objc_msgSend(v8 "firstObject")];
+  [v11 setIncludeHiddenAssets:1];
+  v41 = 0u;
+  v42 = 0u;
+  v39 = 0u;
+  v40 = 0u;
+  v12 = [v8 countByEnumeratingWithState:&v39 objects:v45 count:16];
+  if (v12)
+  {
+    v13 = v12;
+    v14 = *v40;
+    do
+    {
+      for (j = 0; j != v13; ++j)
+      {
+        if (*v40 != v14)
+        {
+          objc_enumerationMutation(v8);
+        }
+
+        -[NSMutableDictionary setObject:forKey:](v10, "setObject:forKey:", [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:*(*(&v39 + 1) + 8 * j) options:v11], *(*(&v39 + 1) + 8 * j));
+      }
+
+      v13 = [v8 countByEnumeratingWithState:&v39 objects:v45 count:16];
+    }
+
+    while (v13);
+  }
+
+  if (!v10)
+  {
+    v4 = v29;
+    goto LABEL_15;
+  }
+
+  v6 = 1;
+  v4 = v29;
+LABEL_16:
+  v33 = 0u;
+  v34 = 0u;
+  v31 = 0u;
+  v32 = 0u;
+  v16 = [(NSMutableDictionary *)v10 allKeys];
+  v17 = [v16 countByEnumeratingWithState:&v31 objects:v43 count:16];
+  if (v17)
+  {
+    v18 = v17;
+    v19 = *v32;
+    do
+    {
+      for (k = 0; k != v18; ++k)
+      {
+        if (*v32 != v19)
+        {
+          objc_enumerationMutation(v16);
+        }
+
+        v21 = *(*(&v31 + 1) + 8 * k);
+        v22 = [a3 changeDetailsForFetchResult:{-[NSMutableDictionary objectForKey:](v10, "objectForKey:", v21)}];
+        if (v22)
+        {
+          -[NSMutableDictionary setObject:forKey:](v10, "setObject:forKey:", [v22 fetchResultAfterChanges], v21);
+          v6 = 1;
+        }
+      }
+
+      v18 = [v16 countByEnumeratingWithState:&v31 objects:v43 count:16];
+    }
+
+    while (v18);
+  }
+
+  if (!v6)
+  {
+
+    return;
+  }
+
+  v23 = v30;
+LABEL_27:
+  if (v10)
+  {
+
+    v4->_assetsFetchResultByAssetCollection = v10;
+  }
+
+  if (v23)
+  {
+
+    v4->_assetCollectionsFetchResult = v23;
+  }
+
+  [(PLAssetContainerDataSource *)v4 _updateCachedValues];
+}
+
+- (id)pl_fetchAllAssets
+{
+  v16 = *MEMORY[0x277D85DE8];
+  if (self->_cachedValuesNeedUpdate)
+  {
+    [(PLAssetContainerDataSource *)self _updateCachedValues];
+  }
+
+  v3 = [MEMORY[0x277CBEB18] array];
+  v11 = 0u;
+  v12 = 0u;
+  v13 = 0u;
+  v14 = 0u;
+  assetCollectionsFetchResult = self->_assetCollectionsFetchResult;
+  v5 = [(PHFetchResult *)assetCollectionsFetchResult countByEnumeratingWithState:&v11 objects:v15 count:16];
+  if (v5)
+  {
+    v6 = v5;
+    v7 = *v12;
+    do
+    {
+      for (i = 0; i != v6; ++i)
+      {
+        if (*v12 != v7)
+        {
+          objc_enumerationMutation(assetCollectionsFetchResult);
+        }
+
+        v9 = [(NSMutableDictionary *)self->_assetsFetchResultByAssetCollection objectForKey:*(*(&v11 + 1) + 8 * i)];
+        [v3 addObjectsFromArray:{objc_msgSend(MEMORY[0x277CD97A8], "pl_managedAssetsForAssets:", v9)}];
+      }
+
+      v6 = [(PHFetchResult *)assetCollectionsFetchResult countByEnumeratingWithState:&v11 objects:v15 count:16];
+    }
+
+    while (v6);
+  }
+
+  return v3;
+}
+
+- (id)assetInAssetContainer:(id)a3 atIndex:(unint64_t)a4
+{
+  v5 = [(NSMutableDictionary *)self->_assetsFetchResultByAssetCollection objectForKey:a3];
+  if ([v5 count] <= a4)
+  {
+    return 0;
+  }
+
+  return [v5 objectAtIndexedSubscript:a4];
+}
+
+- (unint64_t)assetCountForContainerAtIndex:(unint64_t)a3
+{
+  if (self->_cachedValuesNeedUpdate)
+  {
+    [(PLAssetContainerDataSource *)self _updateCachedValues];
+  }
+
+  return self->_containerCounts[a3];
+}
+
+- (unint64_t)assetCountForContainer:(id)a3
+{
+  if (self->_cachedValuesNeedUpdate)
+  {
+    [(PLAssetContainerDataSource *)self _updateCachedValues];
+  }
+
+  v5 = 0x7FFFFFFFFFFFFFFFLL;
+  if (a3)
+  {
+    v6 = [(PHFetchResult *)self->_assetCollectionsFetchResult indexOfObject:a3];
+    if (v6 != 0x7FFFFFFFFFFFFFFFLL)
+    {
+      return self->_containerCounts[v6];
+    }
+  }
+
+  return v5;
+}
+
+- (id)decrementAssetIndexPath:(id)a3 insideCurrentAssetContainer:(BOOL)a4 andWrap:(BOOL)a5
+{
+  v5 = a5;
+  v6 = a4;
+  if (self->_cachedValuesNeedUpdate)
+  {
+    [(PLAssetContainerDataSource *)self _updateCachedValues];
+  }
+
+  v9 = [a3 section];
+  if ([a3 item])
+  {
+    v10 = [a3 item] - 1;
+  }
+
+  else
+  {
+    v10 = 0x7FFFFFFFFFFFFFFFLL;
+  }
+
+  v11 = [(PLAssetContainerDataSource *)self assetCountForContainerAtIndex:v9];
+  if (!v6)
+  {
+    if ([(PLAssetContainerDataSource *)self allAssetsCount])
+    {
+      if (v10 != 0x7FFFFFFFFFFFFFFFLL)
+      {
+        goto LABEL_17;
+      }
+
+      v12 = [(PLAssetContainerDataSource *)self _indexOfPreviousNonEmptyAssetContainerBeforeContainerIndex:v9 wrap:v5];
+      if (v12 != 0x7FFFFFFFFFFFFFFFLL)
+      {
+        v9 = v12;
+        v11 = [(PLAssetContainerDataSource *)self assetCountForContainerAtIndex:v12];
+        goto LABEL_15;
+      }
+    }
+
+    return 0;
+  }
+
+  if (!v11)
+  {
+    return 0;
+  }
+
+  if (v10 != 0x7FFFFFFFFFFFFFFFLL)
+  {
+    goto LABEL_17;
+  }
+
+  if (!v5)
+  {
+    return 0;
+  }
+
+LABEL_15:
+  v10 = v11 - 1;
+  if (v11 == 0x8000000000000000)
+  {
+    return 0;
+  }
+
+LABEL_17:
+  v14 = MEMORY[0x277CCAA70];
+
+  return [v14 indexPathForItem:v10 inSection:v9];
+}
+
+- (id)incrementAssetIndexPath:(id)a3 insideCurrentAssetContainer:(BOOL)a4 andWrap:(BOOL)a5
+{
+  v5 = a5;
+  v6 = a4;
+  if (self->_cachedValuesNeedUpdate)
+  {
+    [(PLAssetContainerDataSource *)self _updateCachedValues];
+  }
+
+  v9 = [a3 section];
+  v10 = [a3 item] + 1;
+  v11 = [(PLAssetContainerDataSource *)self assetCountForContainerAtIndex:v9];
+  v12 = v11;
+  if (v6)
+  {
+    if (!v11)
+    {
+      return 0;
+    }
+
+    v13 = 0x7FFFFFFFFFFFFFFFLL;
+    if (v5)
+    {
+      v13 = 0;
+    }
+
+    if (v10 >= v11)
+    {
+      v10 = v13;
+    }
+
+LABEL_12:
+    if (v10 != 0x7FFFFFFFFFFFFFFFLL)
+    {
+      goto LABEL_17;
+    }
+
+    return 0;
+  }
+
+  if (![(PLAssetContainerDataSource *)self allAssetsCount])
+  {
+    return 0;
+  }
+
+  if (v10 < v12)
+  {
+    goto LABEL_12;
+  }
+
+  v14 = [(PLAssetContainerDataSource *)self _indexOfNextNonEmptyAssetContainerAfterContainerIndex:v9 wrap:v5];
+  if (v14 == 0x7FFFFFFFFFFFFFFFLL)
+  {
+    return 0;
+  }
+
+  v9 = v14;
+  v10 = 0;
+LABEL_17:
+  v16 = MEMORY[0x277CCAA70];
+
+  return [v16 indexPathForItem:v10 inSection:v9];
+}
+
+- (unint64_t)_indexOfPreviousNonEmptyAssetContainerBeforeContainerIndex:(unint64_t)a3 wrap:(BOOL)a4
+{
+  v4 = a4;
+  v7 = [(PHFetchResult *)self->_assetCollectionsFetchResult count];
+  if (v7 >= 2)
+  {
+    v8 = v7;
+    v9 = a3 - 1;
+    for (i = 1; v8 != i; ++i)
+    {
+      v11 = i >= a3 ? v8 : 0;
+      if (v11 + v9 > a3 && !v4)
+      {
+        break;
+      }
+
+      if ([(PLAssetContainerDataSource *)self assetCountForContainerAtIndex:?])
+      {
+        return v11 + v9;
+      }
+
+      --v9;
+    }
+  }
+
+  return 0x7FFFFFFFFFFFFFFFLL;
+}
+
+- (unint64_t)_indexOfNextNonEmptyAssetContainerAfterContainerIndex:(unint64_t)a3 wrap:(BOOL)a4
+{
+  v4 = a4;
+  v7 = [(PHFetchResult *)self->_assetCollectionsFetchResult count];
+  if (v7 >= 2)
+  {
+    v8 = v7;
+    v9 = a3 + 1;
+    v10 = v7 - 1;
+    do
+    {
+      v11 = v9 % v8;
+      if (v9 % v8 < a3 && !v4)
+      {
+        break;
+      }
+
+      if ([(PLAssetContainerDataSource *)self assetCountForContainerAtIndex:v9 % v8])
+      {
+        return v11;
+      }
+
+      ++v9;
+      --v10;
+    }
+
+    while (v10);
+  }
+
+  return 0x7FFFFFFFFFFFFFFFLL;
+}
+
+- (id)findNearestIndexPath:(id)a3 preferNext:(BOOL)a4
+{
+  v4 = a4;
+  if (self->_cachedValuesNeedUpdate)
+  {
+    [(PLAssetContainerDataSource *)self _updateCachedValues];
+  }
+
+  result = 0;
+  if (!a3 || !self->_allAssetsCount)
+  {
+    return result;
+  }
+
+  v8 = [a3 section];
+  if (v8 >= [(PHFetchResult *)self->_assetCollectionsFetchResult count])
+  {
+    result = [(PLAssetContainerDataSource *)self lastAssetIndexPath];
+    if (result)
+    {
+      return result;
+    }
+
+    goto LABEL_14;
+  }
+
+  if ([a3 row] < self->_containerCounts[v8])
+  {
+    return a3;
+  }
+
+  if (!v4 || (result = [(PLAssetContainerDataSource *)self incrementAssetIndexPath:a3 insideCurrentAssetContainer:0 andWrap:0]) == 0)
+  {
+    result = [(PLAssetContainerDataSource *)self decrementAssetIndexPath:a3 insideCurrentAssetContainer:0 andWrap:0];
+    if (!result)
+    {
+LABEL_14:
+
+      return [(PLAssetContainerDataSource *)self firstAssetIndexPath];
+    }
+  }
+
+  return result;
+}
+
+- (BOOL)hasAssetAtIndexPath:(id)a3
+{
+  if (self->_cachedValuesNeedUpdate)
+  {
+    [(PLAssetContainerDataSource *)self _updateCachedValues];
+  }
+
+  result = 0;
+  if (a3 && self->_allAssetsCount)
+  {
+    v6 = [a3 section];
+    return v6 < -[PHFetchResult count](self->_assetCollectionsFetchResult, "count") && [a3 row] < self->_containerCounts[v6];
+  }
+
+  return result;
+}
+
+- (id)lastAssetIndexPath
+{
+  if (self->_cachedValuesNeedUpdate)
+  {
+    [(PLAssetContainerDataSource *)self _updateCachedValues];
+  }
+
+  if (!self->_allAssetsCount)
+  {
+    return 0;
+  }
+
+  v3 = [(PHFetchResult *)self->_assetCollectionsFetchResult count];
+  if (!v3)
+  {
+    return 0;
+  }
+
+  v4 = v3 - 1;
+  while (1)
+  {
+    v5 = self->_containerCounts[v4];
+    if (v5)
+    {
+      break;
+    }
+
+    if (--v4 == -1)
+    {
+      return 0;
+    }
+  }
+
+  v7 = MEMORY[0x277CCAA70];
+
+  return [v7 indexPathForItem:v5 - 1 inSection:?];
+}
+
+- (id)firstAssetIndexPath
+{
+  if (self->_cachedValuesNeedUpdate)
+  {
+    [(PLAssetContainerDataSource *)self _updateCachedValues];
+  }
+
+  if (!self->_allAssetsCount)
+  {
+    return 0;
+  }
+
+  v3 = [(PHFetchResult *)self->_assetCollectionsFetchResult count];
+  if (!v3)
+  {
+    return 0;
+  }
+
+  v4 = 0;
+  while (!self->_containerCounts[v4])
+  {
+    if (v3 == ++v4)
+    {
+      return 0;
+    }
+  }
+
+  v6 = MEMORY[0x277CCAA70];
+
+  return [v6 indexPathForItem:0 inSection:?];
+}
+
+- (id)indexPathOfAsset:(id)a3
+{
+  v24 = *MEMORY[0x277D85DE8];
+  if (self->_cachedValuesNeedUpdate)
+  {
+    [(PLAssetContainerDataSource *)self _updateCachedValues];
+  }
+
+  result = [(PLAssetContainerDataSource *)self allAssetsCount];
+  if (result)
+  {
+    if (self->_lastAssetCollectionIndex == 0x7FFFFFFFFFFFFFFFLL)
+    {
+      goto LABEL_15;
+    }
+
+    v6 = [-[NSMutableDictionary objectForKey:](self->_assetsFetchResultByAssetCollection objectForKey:{-[PHFetchResult objectAtIndexedSubscript:](self->_assetCollectionsFetchResult, "objectAtIndexedSubscript:")), "indexOfObject:", a3}];
+    if (v6 == 0x7FFFFFFFFFFFFFFFLL || (result = [MEMORY[0x277CCAA70] indexPathForItem:v6 inSection:self->_lastAssetCollectionIndex]) == 0)
+    {
+      lastAssetCollectionIndex = self->_lastAssetCollectionIndex;
+      if (lastAssetCollectionIndex)
+      {
+        v8 = lastAssetCollectionIndex - 1;
+        v9 = [-[NSMutableDictionary objectForKey:](self->_assetsFetchResultByAssetCollection objectForKey:{-[PHFetchResult objectAtIndexedSubscript:](self->_assetCollectionsFetchResult, "objectAtIndexedSubscript:", lastAssetCollectionIndex - 1)), "indexOfObject:", a3}];
+        if (v9 == 0x7FFFFFFFFFFFFFFFLL)
+        {
+          v8 = self->_lastAssetCollectionIndex;
+        }
+
+        else
+        {
+          result = [MEMORY[0x277CCAA70] indexPathForItem:v9 inSection:v8];
+          self->_lastAssetCollectionIndex = v8;
+          if (result)
+          {
+            return result;
+          }
+        }
+      }
+
+      else
+      {
+        v8 = 0;
+      }
+
+      if (v8 >= -[PHFetchResult count](self->_assetCollectionsFetchResult, "count") - 1 || (v10 = self->_lastAssetCollectionIndex + 1, v11 = [-[NSMutableDictionary objectForKey:](self->_assetsFetchResultByAssetCollection objectForKey:{-[PHFetchResult objectAtIndexedSubscript:](self->_assetCollectionsFetchResult, "objectAtIndexedSubscript:", v10)), "indexOfObject:", a3}], v11 == 0x7FFFFFFFFFFFFFFFLL) || (result = objc_msgSend(MEMORY[0x277CCAA70], "indexPathForItem:inSection:", v11, v10), self->_lastAssetCollectionIndex = v10, !result))
+      {
+LABEL_15:
+        v21 = 0u;
+        v22 = 0u;
+        v19 = 0u;
+        v20 = 0u;
+        assetCollectionsFetchResult = self->_assetCollectionsFetchResult;
+        result = [(PHFetchResult *)assetCollectionsFetchResult countByEnumeratingWithState:&v19 objects:v23 count:16];
+        if (result)
+        {
+          v13 = result;
+          v14 = 0;
+          v15 = *v20;
+          while (2)
+          {
+            v16 = 0;
+            v17 = v14;
+            v14 += v13;
+            do
+            {
+              if (*v20 != v15)
+              {
+                objc_enumerationMutation(assetCollectionsFetchResult);
+              }
+
+              v18 = [-[NSMutableDictionary objectForKey:](self->_assetsFetchResultByAssetCollection objectForKey:{*(*(&v19 + 1) + 8 * v16)), "indexOfObject:", a3}];
+              if (v18 != 0x7FFFFFFFFFFFFFFFLL)
+              {
+                result = [MEMORY[0x277CCAA70] indexPathForItem:v18 inSection:v17];
+                self->_lastAssetCollectionIndex = v17;
+                return result;
+              }
+
+              ++v17;
+              ++v16;
+            }
+
+            while (v13 != v16);
+            v13 = [(PHFetchResult *)assetCollectionsFetchResult countByEnumeratingWithState:&v19 objects:v23 count:16];
+            result = 0;
+            if (v13)
+            {
+              continue;
+            }
+
+            break;
+          }
+        }
+      }
+    }
+  }
+
+  return result;
+}
+
+- (id)assetAtIndexPath:(id)a3
+{
+  if (self->_cachedValuesNeedUpdate)
+  {
+    [(PLAssetContainerDataSource *)self _updateCachedValues];
+  }
+
+  v5 = -[PHFetchResult objectAtIndex:](self->_assetCollectionsFetchResult, "objectAtIndex:", [a3 section]);
+  v6 = [a3 item];
+
+  return [(PLAssetContainerDataSource *)self assetInAssetContainer:v5 atIndex:v6];
+}
+
+- (id)assetsInAssetCollectionAtIndex:(unint64_t)a3
+{
+  v4 = [(PHFetchResult *)self->_assetCollectionsFetchResult objectAtIndex:a3];
+  assetsFetchResultByAssetCollection = self->_assetsFetchResultByAssetCollection;
+
+  return [(NSMutableDictionary *)assetsFetchResultByAssetCollection objectForKey:v4];
+}
+
+- (id)assetWithObjectID:(id)a3
+{
+  v7[1] = *MEMORY[0x277D85DE8];
+  if (self->_cachedValuesNeedUpdate)
+  {
+    [(PLAssetContainerDataSource *)self _updateCachedValues];
+  }
+
+  v7[0] = a3;
+  result = [objc_msgSend(pl_appPhotoLibrary() fetchPHObjectsForOIDs:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v7, 1)), "lastObject"}];
+  if (result)
+  {
+    v6 = result;
+    if ([(PLAssetContainerDataSource *)self assetContainerForAsset:result])
+    {
+      return v6;
+    }
+
+    else
+    {
+      return 0;
+    }
+  }
+
+  return result;
+}
+
+- (unint64_t)indexOffsetForAssetContainerAtAssetIndex:(unint64_t)a3
+{
+  if (self->_cachedValuesNeedUpdate)
+  {
+    [(PLAssetContainerDataSource *)self _updateCachedValues];
+  }
+
+  v5 = [(PHFetchResult *)self->_assetCollectionsFetchResult count];
+  if (!v5)
+  {
+    return 0x7FFFFFFFFFFFFFFFLL;
+  }
+
+  v6 = 0;
+  containerCounts = self->_containerCounts;
+  while (1)
+  {
+    v8 = *containerCounts++;
+    v9 = v8 + v6;
+    if (v8 + v6 > a3)
+    {
+      break;
+    }
+
+    v6 = v9;
+    if (!--v5)
+    {
+      return 0x7FFFFFFFFFFFFFFFLL;
+    }
+  }
+
+  return v6;
+}
+
+- (unint64_t)globalIndexOfAsset:(id)a3
+{
+  v28 = *MEMORY[0x277D85DE8];
+  if (self->_cachedValuesNeedUpdate)
+  {
+    [(PLAssetContainerDataSource *)self _updateCachedValues];
+  }
+
+  v5 = [(PLAssetContainerDataSource *)self allAssetsCount];
+  result = 0x7FFFFFFFFFFFFFFFLL;
+  if (v5)
+  {
+    if (self->_lastAssetCollectionIndex == 0x7FFFFFFFFFFFFFFFLL)
+    {
+      goto LABEL_15;
+    }
+
+    v7 = [-[NSMutableDictionary objectForKey:](self->_assetsFetchResultByAssetCollection objectForKey:{-[PHFetchResult objectAtIndexedSubscript:](self->_assetCollectionsFetchResult, "objectAtIndexedSubscript:")), "indexOfObject:", a3}];
+    if (v7 == 0x7FFFFFFFFFFFFFFFLL || (result = -[PLAssetContainerDataSource globalIndexForIndexPath:](self, "globalIndexForIndexPath:", [MEMORY[0x277CCAA70] indexPathForItem:v7 inSection:self->_lastAssetCollectionIndex]), result == 0x7FFFFFFFFFFFFFFFLL))
+    {
+      lastAssetCollectionIndex = self->_lastAssetCollectionIndex;
+      if (lastAssetCollectionIndex)
+      {
+        v9 = lastAssetCollectionIndex - 1;
+        v10 = [-[NSMutableDictionary objectForKey:](self->_assetsFetchResultByAssetCollection objectForKey:{-[PHFetchResult objectAtIndexedSubscript:](self->_assetCollectionsFetchResult, "objectAtIndexedSubscript:", lastAssetCollectionIndex - 1)), "indexOfObject:", a3}];
+        if (v10 == 0x7FFFFFFFFFFFFFFFLL)
+        {
+          v9 = self->_lastAssetCollectionIndex;
+        }
+
+        else
+        {
+          result = -[PLAssetContainerDataSource globalIndexForIndexPath:](self, "globalIndexForIndexPath:", [MEMORY[0x277CCAA70] indexPathForItem:v10 inSection:v9]);
+          self->_lastAssetCollectionIndex = v9;
+          if (result != 0x7FFFFFFFFFFFFFFFLL)
+          {
+            return result;
+          }
+        }
+      }
+
+      else
+      {
+        v9 = 0;
+      }
+
+      if (v9 >= -[PHFetchResult count](self->_assetCollectionsFetchResult, "count") - 1 || (v11 = self->_lastAssetCollectionIndex + 1, v12 = [-[NSMutableDictionary objectForKey:](self->_assetsFetchResultByAssetCollection objectForKey:{-[PHFetchResult objectAtIndexedSubscript:](self->_assetCollectionsFetchResult, "objectAtIndexedSubscript:", v11)), "indexOfObject:", a3}], v12 == 0x7FFFFFFFFFFFFFFFLL) || (result = -[PLAssetContainerDataSource globalIndexForIndexPath:](self, "globalIndexForIndexPath:", objc_msgSend(MEMORY[0x277CCAA70], "indexPathForItem:inSection:", v12, v11)), self->_lastAssetCollectionIndex = v11, result == 0x7FFFFFFFFFFFFFFFLL))
+      {
+LABEL_15:
+        v25 = 0u;
+        v26 = 0u;
+        v23 = 0u;
+        v24 = 0u;
+        assetCollectionsFetchResult = self->_assetCollectionsFetchResult;
+        v14 = [(PHFetchResult *)assetCollectionsFetchResult countByEnumeratingWithState:&v23 objects:v27 count:16];
+        if (v14)
+        {
+          v15 = v14;
+          v16 = 0;
+          v17 = 0;
+          v18 = *v24;
+          while (2)
+          {
+            v19 = 0;
+            v20 = v16;
+            v16 += v15;
+            do
+            {
+              if (*v24 != v18)
+              {
+                objc_enumerationMutation(assetCollectionsFetchResult);
+              }
+
+              v21 = [-[NSMutableDictionary objectForKey:](self->_assetsFetchResultByAssetCollection objectForKey:{*(*(&v23 + 1) + 8 * v19)), "indexOfObject:", a3}];
+              if (v21 != 0x7FFFFFFFFFFFFFFFLL)
+              {
+                result = v21 + v17;
+                self->_lastAssetCollectionIndex = v20;
+                return result;
+              }
+
+              v22 = self->_containerCounts[v20++];
+              v17 += v22;
+              ++v19;
+            }
+
+            while (v15 != v19);
+            v15 = [(PHFetchResult *)assetCollectionsFetchResult countByEnumeratingWithState:&v23 objects:v27 count:16];
+            result = 0x7FFFFFFFFFFFFFFFLL;
+            if (v15)
+            {
+              continue;
+            }
+
+            break;
+          }
+        }
+
+        else
+        {
+          return 0x7FFFFFFFFFFFFFFFLL;
+        }
+      }
+    }
+  }
+
+  return result;
+}
+
+- (id)assetAtGlobalIndex:(unint64_t)a3
+{
+  if (self->_cachedValuesNeedUpdate)
+  {
+    [(PLAssetContainerDataSource *)self _updateCachedValues];
+  }
+
+  v5 = [(PLAssetContainerDataSource *)self allAssetsCount];
+  if (!v5)
+  {
+    return 0;
+  }
+
+  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  {
+    return 0;
+  }
+
+  if (v5 <= a3)
+  {
+    return 0;
+  }
+
+  v6 = [(PLAssetContainerDataSource *)self assetContainerForAssetGlobalIndex:a3];
+  v7 = [(PLAssetContainerDataSource *)self indexOffsetForAssetContainerAtAssetIndex:a3];
+  if (!v6)
+  {
+    return 0;
+  }
+
+  return [(PLAssetContainerDataSource *)self assetInAssetContainer:v6 atIndex:a3 - v7];
+}
+
+- (unint64_t)decrementGlobalIndex:(unint64_t)a3 insideCurrentAssetContainer:(BOOL)a4 andWrap:(BOOL)a5
+{
+  v5 = a5;
+  v6 = a4;
+  if (self->_cachedValuesNeedUpdate)
+  {
+    [(PLAssetContainerDataSource *)self _updateCachedValues];
+  }
+
+  v9 = [(NSMutableDictionary *)self->_assetsFetchResultByAssetCollection objectForKey:[(PLAssetContainerDataSource *)self assetContainerForAssetGlobalIndex:a3]];
+  if (v6)
+  {
+    v10 = [v9 count];
+    if (v10)
+    {
+      v11 = v10;
+      v12 = [(PLAssetContainerDataSource *)self indexOffsetForAssetContainerAtAssetIndex:a3];
+      v13 = v12 + v11;
+      if (v12 == a3)
+      {
+        v14 = v13 - 1;
+        if (v5)
+        {
+          return v14;
+        }
+
+        else
+        {
+          return 0x7FFFFFFFFFFFFFFFLL;
+        }
+      }
+
+      else if (v13 <= a3)
+      {
+        return v13 - 1;
+      }
+
+      else
+      {
+        return a3 - 1;
+      }
+    }
+
+    else
+    {
+      return 0x7FFFFFFFFFFFFFFFLL;
+    }
+  }
+
+  else
+  {
+    v16 = [(PLAssetContainerDataSource *)self allAssetsCount];
+    v17 = a3 - 1;
+    v18 = v16 - 1;
+    if (v16 <= a3)
+    {
+      v17 = v16 - 1;
+    }
+
+    if (!v5)
+    {
+      v18 = 0x7FFFFFFFFFFFFFFFLL;
+    }
+
+    if (!a3)
+    {
+      v17 = v18;
+    }
+
+    if (v16)
+    {
+      return v17;
+    }
+
+    else
+    {
+      return 0x7FFFFFFFFFFFFFFFLL;
+    }
+  }
+}
+
+- (unint64_t)incrementGlobalIndex:(unint64_t)a3 insideCurrentAssetContainer:(BOOL)a4 andWrap:(BOOL)a5
+{
+  v5 = a5;
+  v6 = a4;
+  if (self->_cachedValuesNeedUpdate)
+  {
+    [(PLAssetContainerDataSource *)self _updateCachedValues];
+  }
+
+  v9 = a3 + 1;
+  v10 = [(NSMutableDictionary *)self->_assetsFetchResultByAssetCollection objectForKey:[(PLAssetContainerDataSource *)self assetContainerForAssetGlobalIndex:a3]];
+  if (v6)
+  {
+    v11 = [v10 count];
+    v12 = 0x7FFFFFFFFFFFFFFFLL;
+    if (v11)
+    {
+      v13 = v11;
+      v14 = [(PLAssetContainerDataSource *)self indexOffsetForAssetContainerAtAssetIndex:a3];
+      if (v5)
+      {
+        v15 = v14;
+      }
+
+      else
+      {
+        v15 = 0x7FFFFFFFFFFFFFFFLL;
+      }
+
+      if (v9 >= v14 + v13)
+      {
+        return v15;
+      }
+
+      else
+      {
+        return a3 + 1;
+      }
+    }
+  }
+
+  else
+  {
+    v16 = [(PLAssetContainerDataSource *)self allAssetsCount];
+    if (v5)
+    {
+      v17 = 0;
+    }
+
+    else
+    {
+      v17 = 0x7FFFFFFFFFFFFFFFLL;
+    }
+
+    if (v9 < v16)
+    {
+      v17 = a3 + 1;
+    }
+
+    if (v16)
+    {
+      return v17;
+    }
+
+    else
+    {
+      return 0x7FFFFFFFFFFFFFFFLL;
+    }
+  }
+
+  return v12;
+}
+
+- (id)indexPathForGlobalIndex:(unint64_t)a3
+{
+  if (self->_cachedValuesNeedUpdate)
+  {
+    [(PLAssetContainerDataSource *)self _updateCachedValues];
+  }
+
+  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  {
+    return 0;
+  }
+
+  if (self->_allAssetsCount <= a3)
+  {
+    return 0;
+  }
+
+  v5 = [(PHFetchResult *)self->_assetCollectionsFetchResult count];
+  if (!v5)
+  {
+    return 0;
+  }
+
+  v6 = 0;
+  v7 = 0;
+  while (1)
+  {
+    v8 = self->_containerCounts[v7] + v6;
+    if (v8 > a3)
+    {
+      break;
+    }
+
+    ++v7;
+    v6 = v8;
+    if (v5 == v7)
+    {
+      return 0;
+    }
+  }
+
+  v10 = MEMORY[0x277CCAA70];
+
+  return [v10 indexPathForItem:a3 - v6 inSection:?];
+}
+
+- (unint64_t)globalIndexForIndexPath:(id)a3
+{
+  if (self->_cachedValuesNeedUpdate)
+  {
+    [(PLAssetContainerDataSource *)self _updateCachedValues];
+  }
+
+  if (!a3)
+  {
+    return 0x7FFFFFFFFFFFFFFFLL;
+  }
+
+  v5 = [a3 section];
+  v6 = [a3 item];
+  if (v5 >= [(PHFetchResult *)self->_assetCollectionsFetchResult count])
+  {
+    return 0x7FFFFFFFFFFFFFFFLL;
+  }
+
+  containerCounts = self->_containerCounts;
+  if (v6 >= containerCounts[v5])
+  {
+    return 0x7FFFFFFFFFFFFFFFLL;
+  }
+
+  for (; v5; --v5)
+  {
+    v8 = *containerCounts++;
+    v6 += v8;
+  }
+
+  return v6;
+}
+
+- (id)assetContainerForAssetGlobalIndex:(unint64_t)a3
+{
+  if (self->_cachedValuesNeedUpdate)
+  {
+    [(PLAssetContainerDataSource *)self _updateCachedValues];
+  }
+
+  v5 = [(NSMutableDictionary *)self->_assetsFetchResultByAssetCollection count];
+  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  {
+    return 0;
+  }
+
+  v6 = v5;
+  if (!v5 || [(PLAssetContainerDataSource *)self allAssetsCount]<= a3)
+  {
+    return 0;
+  }
+
+  v7 = 0;
+  v8 = 0;
+  while (1)
+  {
+    v8 += self->_containerCounts[v7];
+    if (v8 > a3)
+    {
+      break;
+    }
+
+    if (v6 == ++v7)
+    {
+      return 0;
+    }
+  }
+
+  assetCollectionsFetchResult = self->_assetCollectionsFetchResult;
+
+  return [(PHFetchResult *)assetCollectionsFetchResult objectAtIndex:?];
+}
+
+- (id)assetContainerForAsset:(id)a3
+{
+  if (self->_cachedValuesNeedUpdate)
+  {
+    [(PLAssetContainerDataSource *)self _updateCachedValues];
+  }
+
+  v5 = [(NSMutableDictionary *)self->_assetsFetchResultByAssetCollection count];
+  result = 0;
+  if (a3 && v5)
+  {
+    if (v5 == 1)
+    {
+      v7 = [(PHFetchResult *)self->_assetCollectionsFetchResult objectAtIndex:0];
+      if ([-[NSMutableDictionary objectForKey:](self->_assetsFetchResultByAssetCollection objectForKey:{v7), "indexOfObject:", a3}] == 0x7FFFFFFFFFFFFFFFLL)
+      {
+        return 0;
+      }
+
+      else
+      {
+        return v7;
+      }
+    }
+
+    else
+    {
+      v8 = [(PLAssetContainerDataSource *)self globalIndexOfAsset:a3];
+      if (v8 == 0x7FFFFFFFFFFFFFFFLL)
+      {
+        return 0;
+      }
+
+      else
+      {
+
+        return [(PLAssetContainerDataSource *)self assetContainerForAssetGlobalIndex:v8];
+      }
+    }
+  }
+
+  return result;
+}
+
+- (unint64_t)allAssetsCount
+{
+  if (self->_cachedValuesNeedUpdate)
+  {
+    [(PLAssetContainerDataSource *)self _updateCachedValues];
+  }
+
+  return self->_allAssetsCount;
+}
+
+- (void)_updateCachedCount:(unint64_t)a3 forContainerAtContainerIndex:(unint64_t)a4
+{
+  containerCounts = self->_containerCounts;
+  v5 = a3 - containerCounts[a4];
+  containerCounts[a4] = a3;
+  self->_allAssetsCount += v5;
+}
+
+- (void)_updateCachedValues
+{
+  v21 = *MEMORY[0x277D85DE8];
+  self->_allAssetsCount = 0;
+  v4 = [(PHFetchResult *)self->_assetCollectionsFetchResult count];
+  if (v4 != [(NSMutableDictionary *)self->_assetsFetchResultByAssetCollection count])
+  {
+    [objc_msgSend(MEMORY[0x277CCA890] "currentHandler")];
+  }
+
+  containerCounts = self->_containerCounts;
+  if (!containerCounts)
+  {
+    if (v4)
+    {
+      v6 = malloc_type_malloc(8 * v4, 0x100004000313F17uLL);
+      goto LABEL_8;
+    }
+
+LABEL_19:
+    v15 = 0x7FFFFFFFFFFFFFFFLL;
+    goto LABEL_20;
+  }
+
+  if (!v4)
+  {
+    free(containerCounts);
+    self->_containerCounts = 0;
+    goto LABEL_19;
+  }
+
+  v6 = malloc_type_realloc(containerCounts, 8 * v4, 0x100004000313F17uLL);
+LABEL_8:
+  self->_containerCounts = v6;
+  if (v6)
+  {
+    v18 = 0u;
+    v19 = 0u;
+    v16 = 0u;
+    v17 = 0u;
+    assetCollectionsFetchResult = self->_assetCollectionsFetchResult;
+    v8 = [(PHFetchResult *)assetCollectionsFetchResult countByEnumeratingWithState:&v16 objects:v20 count:16];
+    if (v8)
+    {
+      v9 = v8;
+      v10 = 0;
+      v11 = *v17;
+      do
+      {
+        v12 = 0;
+        v13 = v10;
+        do
+        {
+          if (*v17 != v11)
+          {
+            objc_enumerationMutation(assetCollectionsFetchResult);
+          }
+
+          v14 = [-[NSMutableDictionary objectForKey:](self->_assetsFetchResultByAssetCollection objectForKey:{*(*(&v16 + 1) + 8 * v12)), "count"}];
+          v10 = v13 + 1;
+          self->_containerCounts[v13] = v14;
+          self->_allAssetsCount += v14;
+          ++v12;
+          ++v13;
+        }
+
+        while (v9 != v12);
+        v9 = [(PHFetchResult *)assetCollectionsFetchResult countByEnumeratingWithState:&v16 objects:v20 count:16];
+      }
+
+      while (v9);
+    }
+  }
+
+  if (self->_lastAssetCollectionIndex >= v4)
+  {
+    v15 = v4 - 1;
+LABEL_20:
+    self->_lastAssetCollectionIndex = v15;
+  }
+
+  self->_cachedValuesNeedUpdate = 0;
+}
+
+- (void)dealloc
+{
+  containerCounts = self->_containerCounts;
+  if (containerCounts)
+  {
+    free(containerCounts);
+  }
+
+  v4.receiver = self;
+  v4.super_class = PLAssetContainerDataSource;
+  [(PLAssetContainerDataSource *)&v4 dealloc];
+}
+
+- (PLAssetContainerDataSource)initWithAssetCollectionsFetchResult:(id)a3 collectionsAssetsFetchResults:(id)a4
+{
+  v14.receiver = self;
+  v14.super_class = PLAssetContainerDataSource;
+  v7 = [(PLAssetContainerDataSource *)&v14 init];
+  if (v7)
+  {
+    v8 = [a3 count];
+    if (v8 != [a4 count])
+    {
+      [objc_msgSend(MEMORY[0x277CCA890] "currentHandler")];
+    }
+
+    v7->_assetCollectionsFetchResult = a3;
+    v7->_assetsFetchResultByAssetCollection = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(a4, "count")}];
+    v9 = [(PHFetchResult *)v7->_assetCollectionsFetchResult count];
+    if (v9)
+    {
+      v10 = v9;
+      for (i = 0; i != v10; ++i)
+      {
+        -[NSMutableDictionary setObject:forKey:](v7->_assetsFetchResultByAssetCollection, "setObject:forKey:", [a4 objectAtIndex:i], -[PHFetchResult objectAtIndex:](v7->_assetCollectionsFetchResult, "objectAtIndex:", i));
+      }
+    }
+
+    v12 = [(NSMutableDictionary *)v7->_assetsFetchResultByAssetCollection count];
+    if (v12 != [(PHFetchResult *)v7->_assetCollectionsFetchResult count])
+    {
+      [objc_msgSend(MEMORY[0x277CCA890] "currentHandler")];
+    }
+
+    v7->_allAssetsCount = 0x7FFFFFFFFFFFFFFFLL;
+    v7->_cachedValuesNeedUpdate = 1;
+  }
+
+  return v7;
+}
+
+@end

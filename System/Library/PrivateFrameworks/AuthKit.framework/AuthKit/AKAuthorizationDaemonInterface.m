@@ -1,0 +1,207 @@
+@interface AKAuthorizationDaemonInterface
++ (id)XPCInterface;
+@end
+
+@implementation AKAuthorizationDaemonInterface
+
++ (id)XPCInterface
+{
+  v5 = &XPCInterface_onceToken_5;
+  location = 0;
+  objc_storeStrong(&location, &__block_literal_global_19);
+  if (*v5 != -1)
+  {
+    dispatch_once(v5, location);
+  }
+
+  objc_storeStrong(&location, 0);
+  v2 = XPCInterface_interface_5;
+
+  return v2;
+}
+
+void __46__AKAuthorizationDaemonInterface_XPCInterface__block_invoke(uint64_t a1)
+{
+  v139[2] = a1;
+  v139[1] = a1;
+  v1 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F07DCD48];
+  p_info = &OBJC_METACLASS___AKAppleIDSession.info;
+  v2 = XPCInterface_interface_5;
+  XPCInterface_interface_5 = v1;
+  MEMORY[0x1E69E5920](v2);
+  v121 = 0x1E695D000uLL;
+  v68 = MEMORY[0x1E695DFD8];
+  v53 = 0x1E73D2000uLL;
+  v67 = objc_opt_class();
+  v3 = objc_opt_class();
+  v4 = objc_opt_class();
+  v5 = objc_opt_class();
+  v6 = objc_opt_class();
+  v7 = objc_opt_class();
+  v8 = objc_opt_class();
+  v9 = objc_opt_class();
+  v10 = objc_opt_class();
+  v11 = objc_opt_class();
+  v54 = objc_opt_class();
+  v55 = objc_opt_class();
+  v56 = objc_opt_class();
+  v57 = objc_opt_class();
+  v125 = 0x1E695D000uLL;
+  v58 = objc_opt_class();
+  v59 = objc_opt_class();
+  v122 = 0x1E696A000uLL;
+  v60 = objc_opt_class();
+  v61 = objc_opt_class();
+  v62 = objc_opt_class();
+  v63 = objc_opt_class();
+  v64 = objc_opt_class();
+  v65 = objc_opt_class();
+  v124 = 0x1E695D000uLL;
+  v66 = objc_opt_class();
+  v123 = 0x1E696A000uLL;
+  v137 = 0;
+  v12 = [v68 setWithObjects:{v67, v3, v4, v5, v6, v7, v8, v9, v10, v11, v54, v55, v56, v57, v58, v59, v60, v61, v62, v63, v64, v65, v66, objc_opt_class(), 0}];
+  v136 = v139;
+  v139[0] = v12;
+  v13 = p_info[73];
+  v69 = 0x1FBDCB000uLL;
+  v131 = 0;
+  v90 = 0;
+  v132 = 1;
+  [__objc2_class_ro setClasses:v13 forSelector:"setClasses:forSelector:argumentIndex:ofReply:" argumentIndex:v139[0] ofReply:0x1FBDCB914uLL];
+  [(__objc2_class_ro *)p_info[73] setClasses:v139[0] forSelector:v69 + 2324 argumentIndex:v131 ofReply:v132 & 1];
+  v14 = p_info[73];
+  v70 = 0x1FB8F8000uLL;
+  [(__objc2_class_ro *)v14 setClasses:v139[0] forSelector:0x1FB8F8B14uLL argumentIndex:v131 ofReply:v90 & 1];
+  v15 = p_info[73];
+  v75 = 1;
+  [__objc2_class_ro setClasses:v15 forSelector:"setClasses:forSelector:argumentIndex:ofReply:" argumentIndex:v139[0] ofReply:v70 + 2836];
+  [(__objc2_class_ro *)p_info[73] setClasses:v139[0] forSelector:v70 + 2836 argumentIndex:v131 ofReply:v132 & 1];
+  v16 = p_info[73];
+  v71 = 0x1FB327000uLL;
+  [(__objc2_class_ro *)v16 setClasses:v139[0] forSelector:0x1FB327878uLL argumentIndex:v131 ofReply:v90 & 1];
+  [(__objc2_class_ro *)p_info[73] setClasses:v139[0] forSelector:v71 + 2168 argumentIndex:v131 ofReply:v132 & 1];
+  v17 = p_info[73];
+  v72 = 0x1FAD7D000uLL;
+  [(__objc2_class_ro *)v17 setClasses:v139[0] forSelector:0x1FAD7D6C3uLL argumentIndex:v131 ofReply:v90 & 1];
+  [(__objc2_class_ro *)p_info[73] setClasses:v139[0] forSelector:v72 + 1731 argumentIndex:v131 ofReply:v132 & 1];
+  v18 = p_info[73];
+  v73 = 0x1FAC61000uLL;
+  [(__objc2_class_ro *)v18 setClasses:v139[0] forSelector:0x1FAC61C8EuLL argumentIndex:v131 ofReply:v90 & 1];
+  [(__objc2_class_ro *)p_info[73] setClasses:v139[0] forSelector:v73 + 3214 argumentIndex:v131 ofReply:v132 & 1];
+  [(__objc2_class_ro *)p_info[73] setClasses:v139[0] forSelector:sel_continueFetchingIconForRequestContext_completion_ argumentIndex:v131 ofReply:v90 & 1];
+  [(__objc2_class_ro *)p_info[73] setClasses:v139[0] forSelector:sel_establishConnectionWithNotificationHandlerEndpoint_completion_ argumentIndex:v131 ofReply:v90 & 1];
+  v19 = p_info[73];
+  v74 = 0x1FAF9E000uLL;
+  [(__objc2_class_ro *)v19 setClasses:v139[0] forSelector:0x1FAF9EA78uLL argumentIndex:v131 ofReply:v90 & 1];
+  [(__objc2_class_ro *)p_info[73] setClasses:v139[0] forSelector:v74 + 2680 argumentIndex:v75 ofReply:v90 & 1];
+  v78 = *(v121 + 4056);
+  v77 = objc_opt_class();
+  v20 = *(v123 + 3008);
+  v76 = objc_opt_class();
+  v21 = *(v122 + 3776);
+  v22 = [v78 setWithObjects:{v77, v76, objc_opt_class(), 0}];
+  v135 = &v138;
+  v138 = v22;
+  v23 = p_info[73];
+  v79 = 0x1FB0ED000uLL;
+  [(__objc2_class_ro *)v23 setClasses:v138 forSelector:0x1FB0EDA0BuLL argumentIndex:v131 ofReply:v90 & 1];
+  [(__objc2_class_ro *)p_info[73] setClasses:v138 forSelector:v79 + 2571 argumentIndex:v131 ofReply:v132 & 1];
+  v82 = p_info[73];
+  v81 = *(v121 + 4056);
+  v24 = *(v122 + 3776);
+  v80 = objc_opt_class();
+  v25 = *(v124 + 4016);
+  v83 = [v81 setWithObjects:{v80, objc_opt_class(), 0}];
+  v87 = 0x1FAE64000uLL;
+  [__objc2_class_ro setClasses:v82 forSelector:"setClasses:forSelector:argumentIndex:ofReply:" argumentIndex:? ofReply:?];
+  MEMORY[0x1E69E5920](v83);
+  v88 = p_info[73];
+  v86 = *(v121 + 4056);
+  v26 = *(v122 + 3776);
+  v85 = objc_opt_class();
+  v27 = *(v123 + 3008);
+  v84 = objc_opt_class();
+  v28 = *(v124 + 4016);
+  v89 = [v86 setWithObjects:{v85, v84, objc_opt_class(), 0}];
+  [__objc2_class_ro setClasses:v88 forSelector:"setClasses:forSelector:argumentIndex:ofReply:" argumentIndex:? ofReply:?];
+  MEMORY[0x1E69E5920](v89);
+  [(__objc2_class_ro *)p_info[73] setClasses:v139[0] forSelector:sel_startDiscoveryWithCompletion_ argumentIndex:v131 ofReply:v132 & 1];
+  [(__objc2_class_ro *)p_info[73] setClasses:v139[0] forSelector:sel_revokeUpgradeWithContext_completion_ argumentIndex:v131 ofReply:v90 & 1];
+  v95 = p_info[73];
+  v94 = *(v121 + 4056);
+  v29 = *(v121 + 4056);
+  v93 = objc_opt_class();
+  v30 = *(v122 + 3776);
+  v91 = objc_opt_class();
+  v31 = *(v123 + 3008);
+  v92 = objc_opt_class();
+  v32 = *(v124 + 4016);
+  v96 = [v94 setWithObjects:{v93, v91, v92, objc_opt_class(), 0}];
+  [__objc2_class_ro setClasses:v95 forSelector:"setClasses:forSelector:argumentIndex:ofReply:" argumentIndex:? ofReply:?];
+  MEMORY[0x1E69E5920](v96);
+  v101 = p_info[73];
+  v100 = *(v121 + 4056);
+  v33 = *(v121 + 4056);
+  v99 = objc_opt_class();
+  v34 = *(v122 + 3776);
+  v97 = objc_opt_class();
+  v35 = *(v123 + 3008);
+  v98 = objc_opt_class();
+  v36 = *(v124 + 4016);
+  v102 = [v100 setWithObjects:{v99, v97, v98, objc_opt_class(), 0}];
+  [__objc2_class_ro setClasses:v101 forSelector:"setClasses:forSelector:argumentIndex:ofReply:" argumentIndex:? ofReply:?];
+  MEMORY[0x1E69E5920](v102);
+  v107 = p_info[73];
+  v106 = *(v121 + 4056);
+  v37 = *(v121 + 4056);
+  v105 = objc_opt_class();
+  v38 = *(v122 + 3776);
+  v103 = objc_opt_class();
+  v39 = *(v123 + 3008);
+  v104 = objc_opt_class();
+  v40 = *(v124 + 4016);
+  v108 = [v106 setWithObjects:{v105, v103, v104, objc_opt_class(), 0}];
+  [__objc2_class_ro setClasses:v107 forSelector:"setClasses:forSelector:argumentIndex:ofReply:" argumentIndex:? ofReply:?];
+  MEMORY[0x1E69E5920](v108);
+  v113 = p_info[73];
+  v112 = *(v121 + 4056);
+  v41 = *(v121 + 4056);
+  v111 = objc_opt_class();
+  v42 = *(v122 + 3776);
+  v109 = objc_opt_class();
+  v43 = *(v123 + 3008);
+  v110 = objc_opt_class();
+  v44 = *(v124 + 4016);
+  v114 = [v112 setWithObjects:{v111, v109, v110, objc_opt_class(), 0}];
+  [__objc2_class_ro setClasses:v113 forSelector:"setClasses:forSelector:argumentIndex:ofReply:" argumentIndex:? ofReply:?];
+  MEMORY[0x1E69E5920](v114);
+  v118 = p_info[73];
+  v117 = *(v121 + 4056);
+  v45 = *(v122 + 3776);
+  v116 = objc_opt_class();
+  v46 = *(v123 + 3008);
+  v115 = objc_opt_class();
+  v47 = *(v124 + 4016);
+  v119 = [v117 setWithObjects:{v116, v115, objc_opt_class(), 0}];
+  [__objc2_class_ro setClasses:v118 forSelector:"setClasses:forSelector:argumentIndex:ofReply:" argumentIndex:? ofReply:?];
+  MEMORY[0x1E69E5920](v119);
+  v133 = p_info[73];
+  v130 = *(v121 + 4056);
+  v48 = *(v121 + 4056);
+  v129 = objc_opt_class();
+  v49 = *(v122 + 3776);
+  v126 = objc_opt_class();
+  v50 = *(v123 + 3008);
+  v127 = objc_opt_class();
+  v51 = *(v124 + 4016);
+  v128 = objc_opt_class();
+  v52 = *(v125 + 3872);
+  v134 = [v130 setWithObjects:{v129, v126, v127, v128, objc_opt_class(), 0}];
+  [__objc2_class_ro setClasses:v133 forSelector:"setClasses:forSelector:argumentIndex:ofReply:" argumentIndex:? ofReply:?];
+  MEMORY[0x1E69E5920](v134);
+  objc_storeStrong(v135, v137);
+  objc_storeStrong(v136, v137);
+}
+
+@end

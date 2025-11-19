@@ -1,0 +1,621 @@
+@interface BMSiriAssistantSuggestionFeaturesTemporalFeatures
++ (id)columns;
++ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)protoFields;
+- (BMSiriAssistantSuggestionFeaturesTemporalFeatures)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (BMSiriAssistantSuggestionFeaturesTemporalFeatures)initWithTimeOfDay:(id)a3 dayOfWeek:(id)a4 timePeriod:(int)a5;
+- (BOOL)isEqual:(id)a3;
+- (NSString)description;
+- (id)initByReadFrom:(id)a3;
+- (id)jsonDictionary;
+- (id)serialize;
+- (void)writeTo:(id)a3;
+@end
+
+@implementation BMSiriAssistantSuggestionFeaturesTemporalFeatures
+
+- (BOOL)isEqual:(id)a3
+{
+  v4 = a3;
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    v5 = v4;
+    if ((!-[BMSiriAssistantSuggestionFeaturesTemporalFeatures hasTimeOfDay](self, "hasTimeOfDay") && ![v5 hasTimeOfDay] || -[BMSiriAssistantSuggestionFeaturesTemporalFeatures hasTimeOfDay](self, "hasTimeOfDay") && objc_msgSend(v5, "hasTimeOfDay") && (v6 = -[BMSiriAssistantSuggestionFeaturesTemporalFeatures timeOfDay](self, "timeOfDay"), v6 == objc_msgSend(v5, "timeOfDay"))) && (!-[BMSiriAssistantSuggestionFeaturesTemporalFeatures hasDayOfWeek](self, "hasDayOfWeek") && !objc_msgSend(v5, "hasDayOfWeek") || -[BMSiriAssistantSuggestionFeaturesTemporalFeatures hasDayOfWeek](self, "hasDayOfWeek") && objc_msgSend(v5, "hasDayOfWeek") && (v7 = -[BMSiriAssistantSuggestionFeaturesTemporalFeatures dayOfWeek](self, "dayOfWeek"), v7 == objc_msgSend(v5, "dayOfWeek"))))
+    {
+      v8 = [(BMSiriAssistantSuggestionFeaturesTemporalFeatures *)self timePeriod];
+      v9 = v8 == [v5 timePeriod];
+    }
+
+    else
+    {
+      v9 = 0;
+    }
+  }
+
+  else
+  {
+    v9 = 0;
+  }
+
+  return v9;
+}
+
+- (id)jsonDictionary
+{
+  v13[3] = *MEMORY[0x1E69E9840];
+  if ([(BMSiriAssistantSuggestionFeaturesTemporalFeatures *)self hasTimeOfDay])
+  {
+    v3 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSiriAssistantSuggestionFeaturesTemporalFeatures timeOfDay](self, "timeOfDay")}];
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  if ([(BMSiriAssistantSuggestionFeaturesTemporalFeatures *)self hasDayOfWeek])
+  {
+    v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSiriAssistantSuggestionFeaturesTemporalFeatures dayOfWeek](self, "dayOfWeek")}];
+  }
+
+  else
+  {
+    v4 = 0;
+  }
+
+  v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSiriAssistantSuggestionFeaturesTemporalFeatures timePeriod](self, "timePeriod")}];
+  v12[0] = @"timeOfDay";
+  v6 = v3;
+  if (!v3)
+  {
+    v6 = [MEMORY[0x1E695DFB0] null];
+  }
+
+  v13[0] = v6;
+  v12[1] = @"dayOfWeek";
+  v7 = v4;
+  if (!v4)
+  {
+    v7 = [MEMORY[0x1E695DFB0] null];
+  }
+
+  v13[1] = v7;
+  v12[2] = @"timePeriod";
+  v8 = v5;
+  if (!v5)
+  {
+    v8 = [MEMORY[0x1E695DFB0] null];
+  }
+
+  v13[2] = v8;
+  v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
+  if (v5)
+  {
+    if (v4)
+    {
+      goto LABEL_15;
+    }
+
+LABEL_20:
+
+    if (v3)
+    {
+      goto LABEL_16;
+    }
+
+    goto LABEL_21;
+  }
+
+  if (!v4)
+  {
+    goto LABEL_20;
+  }
+
+LABEL_15:
+  if (v3)
+  {
+    goto LABEL_16;
+  }
+
+LABEL_21:
+
+LABEL_16:
+  v10 = *MEMORY[0x1E69E9840];
+
+  return v9;
+}
+
+- (BMSiriAssistantSuggestionFeaturesTemporalFeatures)initWithJSONDictionary:(id)a3 error:(id *)a4
+{
+  v31[1] = *MEMORY[0x1E69E9840];
+  v6 = a3;
+  v7 = [v6 objectForKeyedSubscript:@"timeOfDay"];
+  if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  {
+    v8 = 0;
+LABEL_4:
+    v9 = [v6 objectForKeyedSubscript:@"dayOfWeek"];
+    if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+    {
+      objc_opt_class();
+      if ((objc_opt_isKindOfClass() & 1) == 0)
+      {
+        if (!a4)
+        {
+          v10 = 0;
+          v16 = 0;
+          goto LABEL_25;
+        }
+
+        v24 = objc_alloc(MEMORY[0x1E696ABC0]);
+        v17 = *MEMORY[0x1E698F240];
+        v28 = *MEMORY[0x1E696A578];
+        v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"dayOfWeek"];
+        v29 = v12;
+        v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
+        v18 = [v24 initWithDomain:v17 code:2 userInfo:v11];
+        v10 = 0;
+        v16 = 0;
+        *a4 = v18;
+        goto LABEL_24;
+      }
+
+      v10 = v9;
+    }
+
+    else
+    {
+      v10 = 0;
+    }
+
+    v11 = [v6 objectForKeyedSubscript:@"timePeriod"];
+    if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+    {
+      objc_opt_class();
+      if (objc_opt_isKindOfClass())
+      {
+        v13 = v11;
+      }
+
+      else
+      {
+        objc_opt_class();
+        if ((objc_opt_isKindOfClass() & 1) == 0)
+        {
+          if (a4)
+          {
+            v25 = objc_alloc(MEMORY[0x1E696ABC0]);
+            v23 = *MEMORY[0x1E698F240];
+            v26 = *MEMORY[0x1E696A578];
+            v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"timePeriod"];
+            v27 = v21;
+            v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
+            *a4 = [v25 initWithDomain:v23 code:2 userInfo:v22];
+          }
+
+          v12 = 0;
+          v16 = 0;
+          goto LABEL_24;
+        }
+
+        v13 = [MEMORY[0x1E696AD98] numberWithInt:BMSiriAssistantSuggestionFeaturesTemporalFeaturesTimePeriodFromString(v11)];
+      }
+
+      v12 = v13;
+    }
+
+    else
+    {
+      v12 = 0;
+    }
+
+    self = -[BMSiriAssistantSuggestionFeaturesTemporalFeatures initWithTimeOfDay:dayOfWeek:timePeriod:](self, "initWithTimeOfDay:dayOfWeek:timePeriod:", v8, v10, [v12 intValue]);
+    v16 = self;
+LABEL_24:
+
+    goto LABEL_25;
+  }
+
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    v8 = v7;
+    goto LABEL_4;
+  }
+
+  if (!a4)
+  {
+    v8 = 0;
+    v16 = 0;
+    goto LABEL_26;
+  }
+
+  v14 = objc_alloc(MEMORY[0x1E696ABC0]);
+  v15 = *MEMORY[0x1E698F240];
+  v30 = *MEMORY[0x1E696A578];
+  v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"timeOfDay"];
+  v31[0] = v10;
+  v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
+  v8 = 0;
+  v16 = 0;
+  *a4 = [v14 initWithDomain:v15 code:2 userInfo:v9];
+LABEL_25:
+
+LABEL_26:
+  v19 = *MEMORY[0x1E69E9840];
+  return v16;
+}
+
+- (id)serialize
+{
+  v3 = objc_opt_new();
+  [(BMSiriAssistantSuggestionFeaturesTemporalFeatures *)self writeTo:v3];
+  v4 = [v3 immutableData];
+
+  return v4;
+}
+
+- (void)writeTo:(id)a3
+{
+  v7 = a3;
+  if (self->_hasTimeOfDay)
+  {
+    timeOfDay = self->_timeOfDay;
+    PBDataWriterWriteInt32Field();
+  }
+
+  if (self->_hasDayOfWeek)
+  {
+    dayOfWeek = self->_dayOfWeek;
+    PBDataWriterWriteInt32Field();
+  }
+
+  timePeriod = self->_timePeriod;
+  PBDataWriterWriteUint32Field();
+}
+
+- (id)initByReadFrom:(id)a3
+{
+  v4 = a3;
+  v37.receiver = self;
+  v37.super_class = BMSiriAssistantSuggestionFeaturesTemporalFeatures;
+  v5 = [(BMEventBase *)&v37 init];
+  if (!v5)
+  {
+    goto LABEL_64;
+  }
+
+  v6 = [v4 position];
+  if (v6 < [v4 length])
+  {
+    do
+    {
+      if ([v4 hasError])
+      {
+        break;
+      }
+
+      v7 = 0;
+      v8 = 0;
+      v9 = 0;
+      while (1)
+      {
+        v38 = 0;
+        v10 = [v4 position] + 1;
+        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        {
+          v12 = [v4 data];
+          [v12 getBytes:&v38 range:{objc_msgSend(v4, "position"), 1}];
+
+          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+        }
+
+        else
+        {
+          [v4 _setError];
+        }
+
+        v9 |= (v38 & 0x7F) << v7;
+        if ((v38 & 0x80) == 0)
+        {
+          break;
+        }
+
+        v7 += 7;
+        if (v8++ >= 9)
+        {
+          v14 = 0;
+          goto LABEL_16;
+        }
+      }
+
+      v14 = [v4 hasError] ? 0 : v9;
+LABEL_16:
+      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      {
+        break;
+      }
+
+      v15 = v14 >> 3;
+      if ((v14 >> 3) == 1)
+      {
+        v28 = 0;
+        v29 = 0;
+        v18 = 0;
+        v5->_hasTimeOfDay = 1;
+        while (1)
+        {
+          v38 = 0;
+          v30 = [v4 position] + 1;
+          if (v30 >= [v4 position] && (v31 = objc_msgSend(v4, "position") + 1, v31 <= objc_msgSend(v4, "length")))
+          {
+            v32 = [v4 data];
+            [v32 getBytes:&v38 range:{objc_msgSend(v4, "position"), 1}];
+
+            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          }
+
+          else
+          {
+            [v4 _setError];
+          }
+
+          v18 |= (v38 & 0x7F) << v28;
+          if ((v38 & 0x80) == 0)
+          {
+            break;
+          }
+
+          v28 += 7;
+          v22 = v29++ > 8;
+          if (v22)
+          {
+            LODWORD(v18) = 0;
+            goto LABEL_55;
+          }
+        }
+
+        if ([v4 hasError])
+        {
+          LODWORD(v18) = 0;
+        }
+
+LABEL_55:
+        v33 = &OBJC_IVAR___BMSiriAssistantSuggestionFeaturesTemporalFeatures__timeOfDay;
+      }
+
+      else if (v15 == 2)
+      {
+        v23 = 0;
+        v24 = 0;
+        v18 = 0;
+        v5->_hasDayOfWeek = 1;
+        while (1)
+        {
+          v38 = 0;
+          v25 = [v4 position] + 1;
+          if (v25 >= [v4 position] && (v26 = objc_msgSend(v4, "position") + 1, v26 <= objc_msgSend(v4, "length")))
+          {
+            v27 = [v4 data];
+            [v27 getBytes:&v38 range:{objc_msgSend(v4, "position"), 1}];
+
+            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          }
+
+          else
+          {
+            [v4 _setError];
+          }
+
+          v18 |= (v38 & 0x7F) << v23;
+          if ((v38 & 0x80) == 0)
+          {
+            break;
+          }
+
+          v23 += 7;
+          v22 = v24++ > 8;
+          if (v22)
+          {
+            LODWORD(v18) = 0;
+            goto LABEL_52;
+          }
+        }
+
+        if ([v4 hasError])
+        {
+          LODWORD(v18) = 0;
+        }
+
+LABEL_52:
+        v33 = &OBJC_IVAR___BMSiriAssistantSuggestionFeaturesTemporalFeatures__dayOfWeek;
+      }
+
+      else
+      {
+        if (v15 != 3)
+        {
+          if ((PBReaderSkipValueWithTag() & 1) == 0)
+          {
+            goto LABEL_63;
+          }
+
+          goto LABEL_61;
+        }
+
+        v16 = 0;
+        v17 = 0;
+        v18 = 0;
+        while (1)
+        {
+          v38 = 0;
+          v19 = [v4 position] + 1;
+          if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+          {
+            v21 = [v4 data];
+            [v21 getBytes:&v38 range:{objc_msgSend(v4, "position"), 1}];
+
+            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          }
+
+          else
+          {
+            [v4 _setError];
+          }
+
+          v18 |= (v38 & 0x7F) << v16;
+          if ((v38 & 0x80) == 0)
+          {
+            break;
+          }
+
+          v16 += 7;
+          v22 = v17++ > 8;
+          if (v22)
+          {
+            goto LABEL_58;
+          }
+        }
+
+        if (([v4 hasError] & 1) != 0 || v18 > 4)
+        {
+LABEL_58:
+          LODWORD(v18) = 0;
+        }
+
+        v33 = &OBJC_IVAR___BMSiriAssistantSuggestionFeaturesTemporalFeatures__timePeriod;
+      }
+
+      *(&v5->super.super.isa + *v33) = v18;
+LABEL_61:
+      v34 = [v4 position];
+    }
+
+    while (v34 < [v4 length]);
+  }
+
+  if ([v4 hasError])
+  {
+LABEL_63:
+    v35 = 0;
+  }
+
+  else
+  {
+LABEL_64:
+    v35 = v5;
+  }
+
+  return v35;
+}
+
+- (NSString)description
+{
+  v3 = objc_alloc(MEMORY[0x1E696AEC0]);
+  v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSiriAssistantSuggestionFeaturesTemporalFeatures timeOfDay](self, "timeOfDay")}];
+  v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSiriAssistantSuggestionFeaturesTemporalFeatures dayOfWeek](self, "dayOfWeek")}];
+  v6 = BMSiriAssistantSuggestionFeaturesTemporalFeaturesTimePeriodAsString([(BMSiriAssistantSuggestionFeaturesTemporalFeatures *)self timePeriod]);
+  v7 = [v3 initWithFormat:@"BMSiriAssistantSuggestionFeaturesTemporalFeatures with timeOfDay: %@, dayOfWeek: %@, timePeriod: %@", v4, v5, v6];
+
+  return v7;
+}
+
+- (BMSiriAssistantSuggestionFeaturesTemporalFeatures)initWithTimeOfDay:(id)a3 dayOfWeek:(id)a4 timePeriod:(int)a5
+{
+  v8 = a3;
+  v9 = a4;
+  v14.receiver = self;
+  v14.super_class = BMSiriAssistantSuggestionFeaturesTemporalFeatures;
+  v10 = [(BMEventBase *)&v14 init];
+  if (v10)
+  {
+    v10->_dataVersion = [objc_opt_class() latestDataVersion];
+    if (v8)
+    {
+      v10->_hasTimeOfDay = 1;
+      v11 = [v8 intValue];
+    }
+
+    else
+    {
+      v10->_hasTimeOfDay = 0;
+      v11 = -1;
+    }
+
+    v10->_timeOfDay = v11;
+    if (v9)
+    {
+      v10->_hasDayOfWeek = 1;
+      v12 = [v9 intValue];
+    }
+
+    else
+    {
+      v10->_hasDayOfWeek = 0;
+      v12 = -1;
+    }
+
+    v10->_dayOfWeek = v12;
+    v10->_timePeriod = a5;
+  }
+
+  return v10;
+}
+
++ (id)protoFields
+{
+  v8[3] = *MEMORY[0x1E69E9840];
+  v2 = [objc_alloc(MEMORY[0x1E698F2C8]) initWithName:@"timeOfDay" number:1 type:2 subMessageClass:0];
+  v3 = [objc_alloc(MEMORY[0x1E698F2C8]) initWithName:@"dayOfWeek" number:2 type:2 subMessageClass:{0, v2}];
+  v8[1] = v3;
+  v4 = [objc_alloc(MEMORY[0x1E698F2C8]) initWithName:@"timePeriod" number:3 type:4 subMessageClass:0];
+  v8[2] = v4;
+  v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:3];
+
+  v6 = *MEMORY[0x1E69E9840];
+
+  return v5;
+}
+
++ (id)columns
+{
+  v8[3] = *MEMORY[0x1E69E9840];
+  v2 = [objc_alloc(MEMORY[0x1E698F2E8]) initWithName:@"timeOfDay" dataType:0 requestOnly:0 fieldNumber:1 protoDataType:2 convertedType:0];
+  v3 = [objc_alloc(MEMORY[0x1E698F2E8]) initWithName:@"dayOfWeek" dataType:0 requestOnly:0 fieldNumber:2 protoDataType:2 convertedType:0];
+  v4 = [objc_alloc(MEMORY[0x1E698F2E8]) initWithName:@"timePeriod" dataType:0 requestOnly:0 fieldNumber:3 protoDataType:4 convertedType:0];
+  v8[0] = v2;
+  v8[1] = v3;
+  v8[2] = v4;
+  v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:3];
+
+  v6 = *MEMORY[0x1E69E9840];
+
+  return v5;
+}
+
++ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
+{
+  if (a4)
+  {
+    v4 = 0;
+  }
+
+  else
+  {
+    v5 = MEMORY[0x1E69C65B8];
+    v6 = a3;
+    v7 = [[v5 alloc] initWithData:v6];
+
+    v8 = [[BMSiriAssistantSuggestionFeaturesTemporalFeatures alloc] initByReadFrom:v7];
+    v4 = v8;
+    if (v8)
+    {
+      v8[5] = 0;
+    }
+  }
+
+  return v4;
+}
+
+@end

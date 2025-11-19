@@ -1,0 +1,263 @@
+@interface BKLibraryAssetModificationDateManager
+- (BKLibraryAssetModificationDateManager)initWithLibraryManager:(id)a3 annotationProvider:(id)a4;
+- (id)libraryAssetForAssetIDs:(id)a3 inManagedObjectContext:(id)a4;
+- (id)updatesFromLibraryAssets:(id)a3 annotations:(id)a4;
+- (void)annotationsForAssetIDs:(id)a3 completion:(id)a4;
+- (void)consumeUpdates:(id)a3 inManagedObjectContext:(id)a4;
+- (void)resetModificationDateForAssetIDs:(id)a3 completion:(id)a4;
+@end
+
+@implementation BKLibraryAssetModificationDateManager
+
+- (BKLibraryAssetModificationDateManager)initWithLibraryManager:(id)a3 annotationProvider:(id)a4
+{
+  v7 = a3;
+  v8 = a4;
+  v9 = [(BKLibraryAssetModificationDateManager *)self init];
+  v10 = v9;
+  if (v9)
+  {
+    objc_storeStrong(&v9->_libraryManager, a3);
+    objc_storeStrong(&v10->_annotationProvider, a4);
+  }
+
+  return v10;
+}
+
+- (void)resetModificationDateForAssetIDs:(id)a3 completion:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  if (v6 && ![v6 count])
+  {
+    v9 = objc_retainBlock(v7);
+    v10 = v9;
+    if (v9)
+    {
+      (*(v9 + 2))(v9);
+    }
+  }
+
+  else
+  {
+    v8 = dispatch_get_global_queue(-2, 0);
+    block[0] = _NSConcreteStackBlock;
+    block[1] = 3221225472;
+    block[2] = sub_56998;
+    block[3] = &unk_D62F8;
+    block[4] = self;
+    v12 = v6;
+    v13 = v7;
+    dispatch_async(v8, block);
+  }
+}
+
+- (id)libraryAssetForAssetIDs:(id)a3 inManagedObjectContext:(id)a4
+{
+  v5 = a3;
+  v6 = a4;
+  if (v5)
+  {
+    v7 = [BKLibraryManager predicateForAssetIDsTaggedLibraryAssets:v5];
+  }
+
+  else
+  {
+    v7 = 0;
+  }
+
+  v25[0] = @"assetID";
+  v25[1] = @"modificationDate";
+  v25[2] = @"creationDate";
+  v8 = [NSArray arrayWithObjects:v25 count:3];
+  v19 = v6;
+  v9 = [v6 copyEntityPropertiesArray:v8 fromEntityName:@"BKLibraryAsset" withPredicate:v7 sortBy:0 ascending:0];
+
+  v10 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v9, "count")}];
+  v20 = 0u;
+  v21 = 0u;
+  v22 = 0u;
+  v23 = 0u;
+  v11 = v9;
+  v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  if (v12)
+  {
+    v13 = v12;
+    v14 = *v21;
+    do
+    {
+      for (i = 0; i != v13; i = i + 1)
+      {
+        if (*v21 != v14)
+        {
+          objc_enumerationMutation(v11);
+        }
+
+        v16 = *(*(&v20 + 1) + 8 * i);
+        v17 = [v16 objectForKeyedSubscript:@"assetID"];
+        if (v17)
+        {
+          [v10 setObject:v16 forKeyedSubscript:v17];
+        }
+      }
+
+      v13 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    }
+
+    while (v13);
+  }
+
+  return v10;
+}
+
+- (void)annotationsForAssetIDs:(id)a3 completion:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  v13[0] = 0;
+  v13[1] = v13;
+  v13[2] = 0x3032000000;
+  v13[3] = sub_56EC4;
+  v13[4] = sub_56ED4;
+  v14 = 0;
+  if ([v6 count])
+  {
+    v8 = [(BKLibraryAssetModificationDateManager *)self annotationProvider];
+    v9[0] = _NSConcreteStackBlock;
+    v9[1] = 3221225472;
+    v9[2] = sub_56EDC;
+    v9[3] = &unk_D6F90;
+    v10 = v6;
+    v12 = v13;
+    v11 = v7;
+    [v8 performBlockOnUserSideQueue:v9];
+  }
+
+  _Block_object_dispose(v13, 8);
+}
+
+- (id)updatesFromLibraryAssets:(id)a3 annotations:(id)a4
+{
+  v21 = a3;
+  v5 = a4;
+  if ([v5 count])
+  {
+    v19 = objc_alloc_init(NSMutableDictionary);
+    v6 = +[AEAnnotation maxModificationDateColumnName];
+    v22 = 0u;
+    v23 = 0u;
+    v24 = 0u;
+    v25 = 0u;
+    v18 = v5;
+    obj = v5;
+    v7 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
+    if (v7)
+    {
+      v8 = v7;
+      v9 = *v23;
+      do
+      {
+        for (i = 0; i != v8; i = i + 1)
+        {
+          if (*v23 != v9)
+          {
+            objc_enumerationMutation(obj);
+          }
+
+          v11 = *(*(&v22 + 1) + 8 * i);
+          v12 = [v11 objectForKeyedSubscript:{@"annotationAssetID", v18}];
+          if (v12)
+          {
+            v13 = [v21 objectForKeyedSubscript:v12];
+            v14 = [v11 objectForKeyedSubscript:v6];
+            if (v14)
+            {
+              v15 = [v13 objectForKeyedSubscript:@"modificationDate"];
+              v16 = [v13 objectForKeyedSubscript:@"creationDate"];
+              if (!v15 || [v15 compare:v14] == -1 || objc_msgSend(v15, "isEqualToDate:", v16))
+              {
+                [v19 setObject:v14 forKeyedSubscript:v12];
+              }
+            }
+          }
+        }
+
+        v8 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
+      }
+
+      while (v8);
+    }
+
+    v5 = v18;
+  }
+
+  else
+  {
+    v19 = 0;
+  }
+
+  return v19;
+}
+
+- (void)consumeUpdates:(id)a3 inManagedObjectContext:(id)a4
+{
+  v5 = a3;
+  v6 = a4;
+  if ([v5 count])
+  {
+    v7 = [v5 allKeys];
+    v18 = v6;
+    v8 = [BKLibraryManager libraryAssetsWithAssetIDsContainedInList:v7 tempAssetIDs:0 inManagedObjectContext:v6];
+
+    v21 = 0u;
+    v22 = 0u;
+    v19 = 0u;
+    v20 = 0u;
+    v9 = v8;
+    v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    if (v10)
+    {
+      v11 = v10;
+      v12 = *v20;
+      do
+      {
+        v13 = 0;
+        do
+        {
+          if (*v20 != v12)
+          {
+            objc_enumerationMutation(v9);
+          }
+
+          v14 = *(*(&v19 + 1) + 8 * v13);
+          if ([v14 isValid])
+          {
+            v15 = [v14 assetID];
+            if (v15)
+            {
+              v16 = [v5 objectForKeyedSubscript:v15];
+              if (v16)
+              {
+                [v14 setDifferentObject:v16 forKey:@"modificationDate"];
+                v17 = [v14 purchasedAndLocalParent];
+                [v17 setDifferentObject:v16 forKey:@"modificationDate"];
+              }
+            }
+          }
+
+          v13 = v13 + 1;
+        }
+
+        while (v11 != v13);
+        v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      }
+
+      while (v11);
+    }
+
+    v6 = v18;
+    [v18 saveLibrary];
+  }
+}
+
+@end

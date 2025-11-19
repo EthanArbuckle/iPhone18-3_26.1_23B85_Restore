@@ -1,0 +1,27 @@
+@interface LocalizedStringTransformer
++ (NSArray)allowedTopLevelClasses;
+- (_TtC10FinanceKit26LocalizedStringTransformer)init;
+@end
+
+@implementation LocalizedStringTransformer
+
++ (NSArray)allowedTopLevelClasses
+{
+  __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB98FCB8);
+  v2 = swift_allocObject();
+  *(v2 + 16) = xmmword_1B7807CD0;
+  *(v2 + 32) = type metadata accessor for LocalizedString();
+  __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB98FCD0);
+  v3 = sub_1B7800C18();
+
+  return v3;
+}
+
+- (_TtC10FinanceKit26LocalizedStringTransformer)init
+{
+  v3.receiver = self;
+  v3.super_class = swift_getObjectType();
+  return [(LocalizedStringTransformer *)&v3 init];
+}
+
+@end

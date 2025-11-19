@@ -1,0 +1,172 @@
+@interface PISegmentationData
+- (NSDictionary)scores;
+- (PFParallaxAssetRegions)regions;
+- (PFPosterLayout)originalLayout;
+- (PFWallpaperCompoundDeviceConfiguration)layoutConfiguration;
+- (PIParallaxColorAnalysis)colorAnalysis;
+- (PISegmentationData)init;
+- (PISegmentationData)initWithSegmentationItem:(id)a3;
+- (__CVBuffer)segmentationBuffer;
+- (unint64_t)classification;
+@end
+
+@implementation PISegmentationData
+
+- (PIParallaxColorAnalysis)colorAnalysis
+{
+  v2 = [(PISegmentationData *)self item];
+  v3 = [v2 colorAnalysis];
+
+  return v3;
+}
+
+- (NSDictionary)scores
+{
+  v2 = [(PISegmentationData *)self item];
+  v3 = [v2 scores];
+
+  return v3;
+}
+
+- (PFParallaxAssetRegions)regions
+{
+  v2 = [(PISegmentationData *)self item];
+  v3 = [v2 regions];
+
+  return v3;
+}
+
+- (PFWallpaperCompoundDeviceConfiguration)layoutConfiguration
+{
+  v2 = [(PISegmentationData *)self item];
+  v3 = [v2 layoutConfiguration];
+
+  return v3;
+}
+
+- (unint64_t)classification
+{
+  v2 = [(PISegmentationData *)self item];
+  v3 = [v2 classification];
+
+  return v3;
+}
+
+- (PFPosterLayout)originalLayout
+{
+  v2 = [(PISegmentationData *)self item];
+  v3 = [v2 originalLayout];
+
+  return v3;
+}
+
+- (__CVBuffer)segmentationBuffer
+{
+  v2 = [(PISegmentationData *)self item];
+  v3 = [v2 segmentationMatte];
+  v4 = [v3 CVPixelBuffer];
+
+  return v4;
+}
+
+- (PISegmentationData)initWithSegmentationItem:(id)a3
+{
+  v4 = a3;
+  v8.receiver = self;
+  v8.super_class = PISegmentationData;
+  v5 = [(PISegmentationData *)&v8 init];
+  item = v5->_item;
+  v5->_item = v4;
+
+  return v5;
+}
+
+- (PISegmentationData)init
+{
+  v30 = *MEMORY[0x1E69E9840];
+  v3 = MEMORY[0x1E69B3D78];
+  if (*MEMORY[0x1E69B3D78] != -1)
+  {
+    goto LABEL_14;
+  }
+
+  while (1)
+  {
+    v4 = MEMORY[0x1E69B3D70];
+    v5 = *MEMORY[0x1E69B3D70];
+    if (os_log_type_enabled(*MEMORY[0x1E69B3D70], OS_LOG_TYPE_ERROR))
+    {
+      v6 = MEMORY[0x1E696AEC0];
+      v7 = v5;
+      v8 = objc_opt_class();
+      v9 = NSStringFromClass(v8);
+      v10 = NSStringFromSelector(a2);
+      v11 = [v6 stringWithFormat:@"Initializer not available: -[%@ %@], use designated initializer instead.", v9, v10];
+      *buf = 138543362;
+      v27 = v11;
+      _os_log_error_impl(&dword_1C7694000, v7, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
+
+      v12 = *v3;
+      if (dispatch_get_specific(*MEMORY[0x1E69B38E8]))
+      {
+        if (v12 != -1)
+        {
+          dispatch_once(MEMORY[0x1E69B3D78], &__block_literal_global_27024);
+        }
+
+LABEL_11:
+        v18 = *v4;
+        if (os_log_type_enabled(*v4, OS_LOG_TYPE_ERROR))
+        {
+          specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
+          v20 = MEMORY[0x1E696AF00];
+          v21 = specific;
+          v22 = v18;
+          v23 = [v20 callStackSymbols];
+          v24 = [v23 componentsJoinedByString:@"\n"];
+          *buf = 138543618;
+          v27 = specific;
+          v28 = 2114;
+          v29 = v24;
+          _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
+        }
+
+        goto LABEL_13;
+      }
+
+      if (v12 != -1)
+      {
+        dispatch_once(MEMORY[0x1E69B3D78], &__block_literal_global_27024);
+      }
+    }
+
+    else if (dispatch_get_specific(*MEMORY[0x1E69B38E8]))
+    {
+      goto LABEL_11;
+    }
+
+    v13 = *v4;
+    if (os_log_type_enabled(*v4, OS_LOG_TYPE_ERROR))
+    {
+      v14 = MEMORY[0x1E696AF00];
+      v15 = v13;
+      v16 = [v14 callStackSymbols];
+      v17 = [v16 componentsJoinedByString:@"\n"];
+      *buf = 138543362;
+      v27 = v17;
+      _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
+    }
+
+LABEL_13:
+    v25 = objc_opt_class();
+    NSStringFromClass(v25);
+    objc_claimAutoreleasedReturnValue();
+    NSStringFromSelector(a2);
+    objc_claimAutoreleasedReturnValue();
+    _NUAssertFailHandler();
+LABEL_14:
+    dispatch_once(MEMORY[0x1E69B3D78], &__block_literal_global_27024);
+  }
+}
+
+@end

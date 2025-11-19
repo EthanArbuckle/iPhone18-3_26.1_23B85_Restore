@@ -1,0 +1,290 @@
+@interface PXPhotosLayoutAnimationHelperMatchMove
+- (double)animationDuration;
+- (void)_adjustAnimation:(id)a3 geometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 forSpriteIndexRange:(_PXGSpriteIndexRange)a7 appearing:(BOOL)a8;
+- (void)animation:(id)a3 adjustGeometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 forSpriteAppearingIntoRootIndexRange:(_PXGSpriteIndexRange)a7;
+- (void)animation:(id)a3 adjustGeometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 forSpriteDisappearingFromRootIndexRange:(_PXGSpriteIndexRange)a7;
+- (void)animation:(id)a3 adjustPresentedGeometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 count:(unsigned int)a7;
+- (void)animation:(id)a3 updateSpriteTransferMap:(unsigned int *)a4 forSpritesRemovedFromIndexes:(id)a5 presentedGeometries:(id *)a6 styles:(id *)a7 infos:(id *)a8 spritesInsertedToIndexes:(id)a9 targetGeometries:(id *)a10 styles:(id *)a11 infos:(id *)a12 rootLayout:(id)a13;
+@end
+
+@implementation PXPhotosLayoutAnimationHelperMatchMove
+
+- (void)animation:(id)a3 adjustPresentedGeometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 count:(unsigned int)a7
+{
+  if (a7)
+  {
+    v7 = *MEMORY[0x277D73D10];
+    v8 = a7;
+    p_var2 = &a5->var2;
+    do
+    {
+      *p_var2 = v7;
+      p_var2 += 40;
+      --v8;
+    }
+
+    while (v8);
+  }
+}
+
+- (void)_adjustAnimation:(id)a3 geometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 forSpriteIndexRange:(_PXGSpriteIndexRange)a7 appearing:(BOOL)a8
+{
+  v13 = a3;
+  v14 = v13;
+  if (a8)
+  {
+    v15 = [v13 fromSnapshot];
+    [v14 toSnapshot];
+  }
+
+  else
+  {
+    v15 = [v13 toSnapshot];
+    [v14 fromSnapshot];
+  }
+  v16 = ;
+
+  v19[0] = MEMORY[0x277D85DD0];
+  v19[1] = 3221225472;
+  v19[2] = __113__PXPhotosLayoutAnimationHelperMatchMove__adjustAnimation_geometries_styles_infos_forSpriteIndexRange_appearing___block_invoke;
+  v19[3] = &unk_278298280;
+  v22 = a4;
+  v23 = a5;
+  v24 = a6;
+  v20 = v16;
+  v21 = v15;
+  v17 = v15;
+  v18 = v16;
+  [v18 enumerateObjectIdentifiersForInfos:a6 count:HIDWORD(*&a7) usingBlock:v19];
+}
+
+void __113__PXPhotosLayoutAnimationHelperMatchMove__adjustAnimation_geometries_styles_infos_forSpriteIndexRange_appearing___block_invoke(uint64_t a1, void *a2, char a3, unsigned int a4)
+{
+  v7 = a2;
+  v8 = a4;
+  v9 = *(a1 + 48) + 32 * a4;
+  [*(a1 + 32) visibleRect];
+  v10 = *(v9 + 24);
+  v11 = vmul_f32(v10, 0x3F0000003F000000);
+  v22.origin.x = *v9 - v11.f32[0];
+  v22.origin.y = *(v9 + 8) - v11.f32[1];
+  v22.size.width = v10.f32[0];
+  v22.size.height = v10.f32[1];
+  if (CGRectIntersectsRect(v21, v22))
+  {
+    v12 = *(a1 + 56) + 160 * v8;
+    v13 = *(a1 + 64) + 40 * v8;
+    v14 = *(a1 + 40);
+    v15[0] = MEMORY[0x277D85DD0];
+    v15[1] = 3221225472;
+    v15[2] = __113__PXPhotosLayoutAnimationHelperMatchMove__adjustAnimation_geometries_styles_infos_forSpriteIndexRange_appearing___block_invoke_2;
+    v15[3] = &unk_278298258;
+    v17 = v13;
+    v20 = a3;
+    v16 = v14;
+    v18 = v9;
+    v19 = v12;
+    [v16 enumerateSpritesWithObjectIdentifier:v7 usingBlock:v15];
+  }
+}
+
+__n128 __113__PXPhotosLayoutAnimationHelperMatchMove__adjustAnimation_geometries_styles_infos_forSpriteIndexRange_appearing___block_invoke_2(uint64_t a1, uint64_t a2, void *a3, int a4, _BYTE *a5)
+{
+  if (*(a3[3] + 1) == *(*(a1 + 40) + 1) && *(a1 + 64) == a4)
+  {
+    [*(a1 + 32) visibleRect];
+    v8 = a3[1];
+    v9 = *(v8 + 24);
+    v10 = vmul_f32(v9, 0x3F0000003F000000);
+    v15.origin.x = *v8 - v10.f32[0];
+    v15.origin.y = *(v8 + 8) - v10.f32[1];
+    v15.size.width = v9.f32[0];
+    v15.size.height = v9.f32[1];
+    if (CGRectIntersectsRect(v14, v15))
+    {
+      v12 = a3[1];
+      v13 = *(a1 + 48);
+      *v13 = *v12;
+      *(v13 + 16) = *(v12 + 16);
+      *(v13 + 24) = *(v12 + 24);
+      *(*(a1 + 56) + 4) = *(a3[2] + 4);
+      result = *(a3[2] + 36);
+      *(*(a1 + 56) + 36) = result;
+      *a5 = 1;
+    }
+  }
+
+  return result;
+}
+
+- (void)animation:(id)a3 adjustGeometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 forSpriteDisappearingFromRootIndexRange:(_PXGSpriteIndexRange)a7
+{
+  length = a7.length;
+  if (a7.length)
+  {
+    p_var2 = &a4->var0.var2;
+    v9 = a5;
+    do
+    {
+      v9->var0 = 0.0;
+      v9 = (v9 + 160);
+      *p_var2 = *p_var2 + 50.0;
+      p_var2 += 4;
+      --length;
+    }
+
+    while (length);
+  }
+
+  [PXPhotosLayoutAnimationHelperMatchMove _adjustAnimation:"_adjustAnimation:geometries:styles:infos:forSpriteIndexRange:appearing:" geometries:a3 styles:a4 infos:a5 forSpriteIndexRange:a6 appearing:?];
+}
+
+- (void)animation:(id)a3 adjustGeometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 forSpriteAppearingIntoRootIndexRange:(_PXGSpriteIndexRange)a7
+{
+  if (a7.length)
+  {
+    v7 = (a7.length + 3) & 0x1FFFFFFFCLL;
+    v8 = xmmword_21AC7D600;
+    v9 = xmmword_21AC7D610;
+    v10 = vdupq_n_s64(a7.length - 1);
+    v11 = vdupq_n_s64(4uLL);
+    v12 = a5;
+    do
+    {
+      v13 = vmovn_s64(vcgeq_u64(v10, v9));
+      if (vuzp1_s16(v13, *v8.i8).u8[0])
+      {
+        v12->var0 = 0.0;
+      }
+
+      if (vuzp1_s16(v13, *&v8).i8[2])
+      {
+        v12[3].var4 = 0.0;
+      }
+
+      if (vuzp1_s16(*&v8, vmovn_s64(vcgeq_u64(v10, *&v8))).i32[1])
+      {
+        v12[7].var1.var0.var0.var2 = 0.0;
+        v12[10].var8 = 0.0;
+      }
+
+      v8 = vaddq_s64(v8, v11);
+      v9 = vaddq_s64(v9, v11);
+      v12 = (v12 + 640);
+      v7 -= 4;
+    }
+
+    while (v7);
+  }
+
+  [PXPhotosLayoutAnimationHelperMatchMove _adjustAnimation:"_adjustAnimation:geometries:styles:infos:forSpriteIndexRange:appearing:" geometries:a3 styles:a4 infos:a5 forSpriteIndexRange:a6 appearing:?];
+}
+
+- (void)animation:(id)a3 updateSpriteTransferMap:(unsigned int *)a4 forSpritesRemovedFromIndexes:(id)a5 presentedGeometries:(id *)a6 styles:(id *)a7 infos:(id *)a8 spritesInsertedToIndexes:(id)a9 targetGeometries:(id *)a10 styles:(id *)a11 infos:(id *)a12 rootLayout:(id)a13
+{
+  v18 = a9;
+  v19 = a5;
+  v20 = a3;
+  v21 = [v20 fromSnapshot];
+  v22 = [v20 toSnapshot];
+
+  v23 = [v18 mutableCopy];
+  v27[0] = MEMORY[0x277D85DD0];
+  v27[1] = 3221225472;
+  v27[2] = __204__PXPhotosLayoutAnimationHelperMatchMove_animation_updateSpriteTransferMap_forSpritesRemovedFromIndexes_presentedGeometries_styles_infos_spritesInsertedToIndexes_targetGeometries_styles_infos_rootLayout___block_invoke;
+  v27[3] = &unk_278298230;
+  v28 = v21;
+  v29 = v22;
+  v30 = v23;
+  v31 = a6;
+  v32 = a8;
+  v33 = a4;
+  v24 = v23;
+  v25 = v22;
+  v26 = v21;
+  [v26 enumerateObjectIdentifiersForSpriteIndexes:v19 infos:a8 usingBlock:v27];
+}
+
+void __204__PXPhotosLayoutAnimationHelperMatchMove_animation_updateSpriteTransferMap_forSpritesRemovedFromIndexes_presentedGeometries_styles_infos_spritesInsertedToIndexes_targetGeometries_styles_infos_rootLayout___block_invoke(uint64_t a1, uint64_t a2, void *a3, char a4, unsigned int a5)
+{
+  v9 = a3;
+  v10 = *(a1 + 64);
+  v11 = *(a1 + 56) + 32 * a5;
+  [*(a1 + 32) visibleRect];
+  v12 = *(v11 + 24);
+  v13 = vmul_f32(v12, 0x3F0000003F000000);
+  v25.origin.x = *v11 - v13.f32[0];
+  v25.origin.y = *(v11 + 8) - v13.f32[1];
+  v25.size.width = v12.f32[0];
+  v25.size.height = v12.f32[1];
+  if (CGRectIntersectsRect(v24, v25))
+  {
+    v17[0] = MEMORY[0x277D85DD0];
+    v17[1] = 3221225472;
+    v17[2] = __204__PXPhotosLayoutAnimationHelperMatchMove_animation_updateSpriteTransferMap_forSpritesRemovedFromIndexes_presentedGeometries_styles_infos_spritesInsertedToIndexes_targetGeometries_styles_infos_rootLayout___block_invoke_2;
+    v17[3] = &unk_278298208;
+    v20 = v10 + 40 * a5;
+    v23 = a4;
+    v14 = *(a1 + 40);
+    v18 = *(a1 + 48);
+    v15 = *(a1 + 40);
+    v16 = *(a1 + 72);
+    v19 = v15;
+    v21 = v16;
+    v22 = a2;
+    [v14 enumerateSpritesWithObjectIdentifier:v9 usingBlock:v17];
+  }
+}
+
+uint32x2_t __204__PXPhotosLayoutAnimationHelperMatchMove_animation_updateSpriteTransferMap_forSpritesRemovedFromIndexes_presentedGeometries_styles_infos_spritesInsertedToIndexes_targetGeometries_styles_infos_rootLayout___block_invoke_2(uint64_t a1, unsigned int a2, uint64_t a3, int a4, _BYTE *a5)
+{
+  SupportedResize = PXGMediaKindGetSupportedResize();
+  v12 = *(a1 + 48);
+  if (SupportedResize)
+  {
+    v13 = *(a3 + 24);
+  }
+
+  else
+  {
+    v13 = *(a3 + 24);
+    v17 = vceq_f32(v12[1], v13[1]);
+    result = vpmin_u32(v17, v17);
+    if ((result.i32[0] & 0x80000000) == 0)
+    {
+      return result;
+    }
+  }
+
+  if (v12->u8[1] == v13->u8[1] && *(a1 + 72) == a4 && [*(a1 + 32) containsIndex:a2])
+  {
+    [*(a1 + 32) removeIndex:a2];
+    [*(a1 + 40) visibleRect];
+    v14 = *(a3 + 8);
+    v15 = *(v14 + 24);
+    v16 = vmul_f32(v15, 0x3F0000003F000000);
+    v19.origin.x = *v14 - v16.f32[0];
+    v19.origin.y = *(v14 + 8) - v16.f32[1];
+    v19.size.width = v15.f32[0];
+    v19.size.height = v15.f32[1];
+    if (CGRectIntersectsRect(v18, v19))
+    {
+      *(*(a1 + 56) + 4 * *(a1 + 64)) = a2;
+    }
+
+    *a5 = 1;
+  }
+
+  return result;
+}
+
+- (double)animationDuration
+{
+  v2 = +[PXPhotosGridSettings sharedInstance];
+  [v2 matchMoveAnimationDuration];
+  v4 = v3;
+
+  return v4;
+}
+
+@end

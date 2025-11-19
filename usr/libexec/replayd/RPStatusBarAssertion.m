@@ -1,0 +1,149 @@
+@interface RPStatusBarAssertion
+- (id)rpLocalizedStatusStringForPaused:(BOOL)a3;
+- (id)stringWithTimeInterval:(double)a3;
+- (void)invalidateStatusBar;
+- (void)pauseSession;
+- (void)resumeSession;
+- (void)startRepeatingTimer;
+- (void)statusBarCoordinator:(id)a3 invalidatedRegistrationWithError:(id)a4;
+- (void)updateDelegateRecordingTimer:(id)a3;
+@end
+
+@implementation RPStatusBarAssertion
+
+- (void)startRepeatingTimer
+{
+  self->_totalPausedTime = 0.0;
+  block[0] = _NSConcreteStackBlock;
+  block[1] = 3221225472;
+  block[2] = sub_10001D754;
+  block[3] = &unk_1000A1088;
+  block[4] = self;
+  dispatch_async(&_dispatch_main_q, block);
+}
+
+- (void)invalidateStatusBar
+{
+  if (self->_assertion)
+  {
+    if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
+    {
+      *v6 = 0;
+      _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "RPStatusBarAssertion: double height status bar assertion released", v6, 2u);
+    }
+
+    [(SBSStatusBarStyleOverridesAssertion *)self->_assertion invalidate];
+    assertion = self->_assertion;
+    self->_assertion = 0;
+
+    [(SBSStatusBarStyleOverridesCoordinator *)self->_coordinator setRegisteredStyleOverrides:0 reply:&stru_1000A1AD0];
+    coordinator = self->_coordinator;
+    self->_coordinator = 0;
+
+    [(NSTimer *)self->_timer invalidate];
+    timer = self->_timer;
+    self->_timer = 0;
+  }
+
+  self->_totalPausedTime = 0.0;
+}
+
+- (id)stringWithTimeInterval:(double)a3
+{
+  v4 = objc_alloc_init(NSDateComponentsFormatter);
+  [v4 setUnitsStyle:0];
+  [v4 setIncludesApproximationPhrase:0];
+  [v4 setIncludesTimeRemainingPhrase:0];
+  [v4 setMaximumUnitCount:2];
+  if (a3 >= 60.0)
+  {
+    v5 = 240;
+  }
+
+  else
+  {
+    [v4 setZeroFormattingBehavior:0x10000];
+    v5 = 192;
+  }
+
+  [v4 setAllowedUnits:v5];
+  v6 = [v4 stringFromTimeInterval:a3];
+
+  return v6;
+}
+
+- (id)rpLocalizedStatusStringForPaused:(BOOL)a3
+{
+  if (self->_broadcasting)
+  {
+    if (a3)
+    {
+      v4 = @"BROADCASTING_PAUSED_STATUS_BAR_FORMAT";
+    }
+
+    else
+    {
+      v4 = @"BROADCASTING_STATUS_BAR_FORMAT";
+    }
+
+    v6 = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:v4];
+    v7 = [NSString stringWithFormat:v6, self->_broadcastServiceName];
+  }
+
+  else
+  {
+    if (a3)
+    {
+      v5 = @"RECORDING_PAUSED_STATUS_BAR";
+    }
+
+    else
+    {
+      v5 = @"RECORDING_STATUS_BAR";
+    }
+
+    v7 = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:v5];
+  }
+
+  return v7;
+}
+
+- (void)updateDelegateRecordingTimer:(id)a3
+{
+  v4 = +[NSDate date];
+  [v4 timeIntervalSinceDate:self->_timerStartDate];
+  v6 = v5 - self->_totalPausedTime;
+
+  assertionDelegate = self->_assertionDelegate;
+  v8 = [(RPStatusBarAssertion *)self stringWithTimeInterval:v6];
+  [(RPStatusBarAssertionDelegate *)assertionDelegate timerDidUpdate:v8];
+}
+
+- (void)statusBarCoordinator:(id)a3 invalidatedRegistrationWithError:(id)a4
+{
+  if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
+  {
+    v5 = 134217984;
+    v6 = [a4 code];
+    _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "RPStatusBarAssertion: coordinator registartion invalidated with error %li", &v5, 0xCu);
+  }
+}
+
+- (void)pauseSession
+{
+  v3 = +[NSDate date];
+  timerPauseDate = self->_timerPauseDate;
+  self->_timerPauseDate = v3;
+
+  _objc_release_x1();
+}
+
+- (void)resumeSession
+{
+  totalPausedTime = self->_totalPausedTime;
+  v5 = +[NSDate date];
+  [v5 timeIntervalSinceDate:self->_timerPauseDate];
+  self->_totalPausedTime = totalPausedTime + v4;
+}
+
+@end

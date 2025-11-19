@@ -1,0 +1,132 @@
+@interface HRUIClinicalAccountLoginSession
+- (BOOL)startLoginWithGateway:(id)a3 loginCancelledHandler:(id)a4 callbackErrorHandler:(id)a5 error:(id *)a6;
+- (BOOL)startReloginToAccount:(id)a3 viewController:(id)a4 profile:(id)a5 loginCancelledHandler:(id)a6 callbackErrorHandler:(id)a7 error:(id *)a8;
+- (HRUIClinicalAccountLoginSession)init;
+- (HRUIClinicalAccountLoginSession)initWithAccountStore:(id)a3 presentationAnchor:(id)a4 funnelContext:(int64_t)a5;
+@end
+
+@implementation HRUIClinicalAccountLoginSession
+
+- (HRUIClinicalAccountLoginSession)initWithAccountStore:(id)a3 presentationAnchor:(id)a4 funnelContext:(int64_t)a5
+{
+  ObjectType = swift_getObjectType();
+  *(&self->super.isa + OBJC_IVAR___HRUIClinicalAccountLoginSession_authSession) = 0;
+  *(&self->super.isa + OBJC_IVAR___HRUIClinicalAccountLoginSession_accountStore) = a3;
+  *(&self->super.isa + OBJC_IVAR___HRUIClinicalAccountLoginSession_presentationAnchor) = a4;
+  *(&self->super.isa + OBJC_IVAR___HRUIClinicalAccountLoginSession_funnelContext) = a5;
+  v13.receiver = self;
+  v13.super_class = ObjectType;
+  v10 = a3;
+  v11 = a4;
+  return [(HRUIClinicalAccountLoginSession *)&v13 init];
+}
+
+- (BOOL)startLoginWithGateway:(id)a3 loginCancelledHandler:(id)a4 callbackErrorHandler:(id)a5 error:(id *)a6
+{
+  sub_1D10C74B8(0, &qword_1EE06A650, MEMORY[0x1E69E85F0]);
+  MEMORY[0x1EEE9AC00](v10 - 8);
+  v12 = &v25 - v11;
+  v13 = _Block_copy(a4);
+  v14 = _Block_copy(a5);
+  if (v13)
+  {
+    v15 = swift_allocObject();
+    *(v15 + 16) = v13;
+    v13 = sub_1D10C807C;
+  }
+
+  else
+  {
+    v15 = 0;
+  }
+
+  v16 = swift_allocObject();
+  *(v16 + 16) = v14;
+  v17 = sub_1D13905DC();
+  (*(*(v17 - 8) + 56))(v12, 1, 1, v17);
+  sub_1D13905AC();
+  v18 = a3;
+  v19 = self;
+  v20 = v18;
+  sub_1D102CE24(v13);
+
+  v21 = sub_1D139059C();
+  v22 = swift_allocObject();
+  v23 = MEMORY[0x1E69E85E0];
+  v22[2] = v21;
+  v22[3] = v23;
+  v22[4] = v19;
+  v22[5] = v20;
+  v22[6] = v13;
+  v22[7] = v15;
+  v22[8] = sub_1D10C8088;
+  v22[9] = v16;
+  sub_1D10BDAEC(0, 0, v12, &unk_1D139FE20, v22);
+
+  sub_1D102CC60(v13);
+
+  return 1;
+}
+
+- (BOOL)startReloginToAccount:(id)a3 viewController:(id)a4 profile:(id)a5 loginCancelledHandler:(id)a6 callbackErrorHandler:(id)a7 error:(id *)a8
+{
+  v33 = self;
+  sub_1D10C74B8(0, &qword_1EE06A650, MEMORY[0x1E69E85F0]);
+  MEMORY[0x1EEE9AC00](v13 - 8);
+  v15 = &v32 - v14;
+  v16 = _Block_copy(a6);
+  v17 = _Block_copy(a7);
+  if (v16)
+  {
+    v18 = swift_allocObject();
+    *(v18 + 16) = v16;
+    v16 = sub_1D10C7B38;
+  }
+
+  else
+  {
+    v18 = 0;
+  }
+
+  v19 = swift_allocObject();
+  *(v19 + 16) = v17;
+  v20 = sub_1D13905DC();
+  (*(*(v20 - 8) + 56))(v15, 1, 1, v20);
+  sub_1D13905AC();
+  v21 = a3;
+  v22 = a4;
+  v23 = a5;
+  v24 = v33;
+  v25 = v21;
+  v26 = v22;
+  v27 = v23;
+  sub_1D102CE24(v16);
+
+  v28 = sub_1D139059C();
+  v29 = swift_allocObject();
+  v30 = MEMORY[0x1E69E85E0];
+  v29[2] = v28;
+  v29[3] = v30;
+  v29[4] = v24;
+  v29[5] = v25;
+  v29[6] = v26;
+  v29[7] = v27;
+  v29[8] = v16;
+  v29[9] = v18;
+  v29[10] = sub_1D10C7AC4;
+  v29[11] = v19;
+  sub_1D10BDDF8(0, 0, v15, &unk_1D139FE18, v29);
+
+  sub_1D102CC60(v16);
+
+  return 1;
+}
+
+- (HRUIClinicalAccountLoginSession)init
+{
+  result = _swift_stdlib_reportUnimplementedInitializer();
+  __break(1u);
+  return result;
+}
+
+@end

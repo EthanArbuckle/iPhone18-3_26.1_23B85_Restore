@@ -1,0 +1,20 @@
+@interface SCNNode(OZSCNNodeJSExport)
+- (uint64_t)firstChildNodeWithGeometry;
+@end
+
+@implementation SCNNode(OZSCNNodeJSExport)
+
+- (uint64_t)firstChildNodeWithGeometry
+{
+  v1 = [a1 childNodesPassingTest:&__block_literal_global_75];
+  result = [v1 count];
+  if (result)
+  {
+
+    return [v1 objectAtIndexedSubscript:0];
+  }
+
+  return result;
+}
+
+@end

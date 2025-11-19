@@ -1,0 +1,247 @@
+@interface PKPaymentMethodSelectionViewController
+- (PKPaymentMethodSelectionViewController)initWithPaymentRequest:(id)a3 selectedPass:(id)a4 paymentMethodName:(id)a5 paymentMethodIdentifier:(id)a6 allowAppleCashToggle:(BOOL)a7 useAppleCashBalance:(BOOL)a8 viewStyle:(int64_t)a9 delegate:(id)a10;
+- (void)_handlePassUpdate:(id)a3;
+- (void)_openPaymentSetupWithNetworkWhitelist:(id)a3 completion:(id)a4;
+- (void)requestOpenURL:(id)a3;
+- (void)selectedPass:(id)a3;
+- (void)toggledUseAppleCashBalance:(BOOL)a3;
+@end
+
+@implementation PKPaymentMethodSelectionViewController
+
+- (PKPaymentMethodSelectionViewController)initWithPaymentRequest:(id)a3 selectedPass:(id)a4 paymentMethodName:(id)a5 paymentMethodIdentifier:(id)a6 allowAppleCashToggle:(BOOL)a7 useAppleCashBalance:(BOOL)a8 viewStyle:(int64_t)a9 delegate:(id)a10
+{
+  v10 = a8;
+  v11 = a7;
+  v17 = a3;
+  v39 = a4;
+  v18 = a5;
+  v19 = a6;
+  v20 = a10;
+  v40.receiver = self;
+  v40.super_class = PKPaymentMethodSelectionViewController;
+  v21 = [(PKDynamicCollectionViewController *)&v40 init];
+  v22 = v21;
+  if (v21)
+  {
+    objc_storeStrong(&v21->_paymentRequest, a3);
+    objc_storeStrong(&v22->_selectedPass, a4);
+    objc_storeWeak(&v22->_delegate, v20);
+    v23 = [(PKPaymentMethodSelectionViewController *)v22 navigationItem];
+    v24 = PKLocalizedPaymentString(&cfstr_AutoReloadPaym.isa);
+    [v23 setTitle:v24];
+
+    [v23 setLargeTitleDisplayMode:2];
+    v25 = objc_alloc_init(MEMORY[0x1E695DF70]);
+    if (v11)
+    {
+      v26 = [[PKPaymentMethodPeerPaymentSectionController alloc] initWithDelegate:v22 request:v22->_paymentRequest useAppleCashBalance:v10];
+      peerPaymentController = v22->_peerPaymentController;
+      v22->_peerPaymentController = v26;
+
+      [v25 addObject:v22->_peerPaymentController];
+    }
+
+    v28 = [[PKPaymentMethodPassesSectionController alloc] initWithDelegate:v22 request:v22->_paymentRequest selectedPass:v22->_selectedPass];
+    passesController = v22->_passesController;
+    v22->_passesController = v28;
+
+    [v25 addObject:v22->_passesController];
+    if (v18)
+    {
+      if (v19)
+      {
+        v30 = [MEMORY[0x1E69B8A58] sharedInstance];
+        v31 = [v30 passWithFPANIdentifier:v19];
+
+        if (!v31)
+        {
+          v32 = [[PKPaymentMethodRemovedSectionController alloc] initWithPaymentMethodName:v18 paymentMethodIdentifier:v19];
+          [v25 addObject:v32];
+        }
+      }
+    }
+
+    v33 = [[PKPaymentMethodActionSectionController alloc] initWithDelegate:v22];
+    actionsController = v22->_actionsController;
+    v22->_actionsController = v33;
+
+    v35 = [MEMORY[0x1E69DC888] linkColor];
+    if (a9 == 2)
+    {
+      PKBridgeButtonTextColor();
+    }
+
+    else
+    {
+      [MEMORY[0x1E69DC888] linkColor];
+    }
+    v36 = ;
+
+    [(PKPaymentMethodActionSectionController *)v22->_actionsController setLinkTextColor:v36];
+    [v25 addObject:v22->_actionsController];
+    [(PKDynamicCollectionViewController *)v22 setSections:v25 animated:0];
+    v37 = [MEMORY[0x1E696AD88] defaultCenter];
+    [v37 addObserver:v22 selector:sel__handlePassUpdate_ name:*MEMORY[0x1E69BBBD8] object:0];
+  }
+
+  return v22;
+}
+
+- (void)selectedPass:(id)a3
+{
+  v4 = a3;
+  WeakRetained = objc_loadWeakRetained(&self->_delegate);
+  [WeakRetained paymentMethodSelectionViewController:self didSelectPaymentMethod:v4];
+}
+
+- (void)requestOpenURL:(id)a3
+{
+  v4 = MEMORY[0x1E697A838];
+  v5 = a3;
+  v6 = [[v4 alloc] initWithURL:v5];
+
+  [v6 setModalPresentationStyle:2];
+  [(PKPaymentMethodSelectionViewController *)self presentViewController:v6 animated:1 completion:0];
+}
+
+- (void)toggledUseAppleCashBalance:(BOOL)a3
+{
+  v3 = a3;
+  WeakRetained = objc_loadWeakRetained(&self->_delegate);
+  [WeakRetained paymentMethodSelectionViewController:self didToggleUseAppleCashBalance:v3];
+}
+
+- (void)_openPaymentSetupWithNetworkWhitelist:(id)a3 completion:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  objc_initWeak(&location, self);
+  v8 = objc_alloc(MEMORY[0x1E69B8D48]);
+  v9 = [MEMORY[0x1E69B8EF8] sharedService];
+  v10 = [v8 initWithWebService:v9];
+
+  [v10 setAllowedPaymentNetworks:v6];
+  [v10 setAllowedCardTypes:&unk_1F3CC8468];
+  v11 = objc_alloc_init(MEMORY[0x1E695DFD8]);
+  [v10 setAllowedFeatureIdentifiers:v11];
+  v14[0] = MEMORY[0x1E69E9820];
+  v14[1] = 3221225472;
+  v14[2] = __91__PKPaymentMethodSelectionViewController__openPaymentSetupWithNetworkWhitelist_completion___block_invoke;
+  v14[3] = &unk_1E801AA28;
+  objc_copyWeak(&v18, &location);
+  v12 = v7;
+  v17 = v12;
+  v13 = v10;
+  v15 = v13;
+  v16 = self;
+  [v13 preflightWithCompletion:v14];
+
+  objc_destroyWeak(&v18);
+  objc_destroyWeak(&location);
+}
+
+void __91__PKPaymentMethodSelectionViewController__openPaymentSetupWithNetworkWhitelist_completion___block_invoke(uint64_t a1, char a2, void *a3)
+{
+  v5 = a3;
+  v9[0] = MEMORY[0x1E69E9820];
+  v9[1] = 3221225472;
+  v9[2] = __91__PKPaymentMethodSelectionViewController__openPaymentSetupWithNetworkWhitelist_completion___block_invoke_2;
+  v9[3] = &unk_1E801AA00;
+  objc_copyWeak(&v14, (a1 + 56));
+  v15 = a2;
+  v10 = v5;
+  v13 = *(a1 + 48);
+  v6 = *(a1 + 32);
+  v7 = *(a1 + 40);
+  v11 = v6;
+  v12 = v7;
+  v8 = v5;
+  dispatch_async(MEMORY[0x1E69E96A0], v9);
+
+  objc_destroyWeak(&v14);
+}
+
+void __91__PKPaymentMethodSelectionViewController__openPaymentSetupWithNetworkWhitelist_completion___block_invoke_2(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 64));
+  if (WeakRetained)
+  {
+    if (*(a1 + 72))
+    {
+      v3 = [objc_alloc(MEMORY[0x1E69B90E0]) initWithEnvironment:0 provisioningController:*(a1 + 40) groupsController:0];
+      v4 = [[PKPaymentSetupDismissibleNavigationController alloc] initWithContext:0];
+      [(PKNavigationController *)v4 setCustomFormSheetPresentationStyleForiPad];
+      objc_initWeak(&location, *(a1 + 48));
+      v11[0] = MEMORY[0x1E69E9820];
+      v11[1] = 3221225472;
+      v11[2] = __91__PKPaymentMethodSelectionViewController__openPaymentSetupWithNetworkWhitelist_completion___block_invoke_3;
+      v11[3] = &unk_1E80111F8;
+      objc_copyWeak(&v14, &location);
+      v5 = v4;
+      v12 = v5;
+      v13 = *(a1 + 56);
+      v9[0] = MEMORY[0x1E69E9820];
+      v9[1] = 3221225472;
+      v9[2] = __91__PKPaymentMethodSelectionViewController__openPaymentSetupWithNetworkWhitelist_completion___block_invoke_4;
+      v9[3] = &unk_1E8010998;
+      objc_copyWeak(&v10, &location);
+      [PKProvisioningFlowBridge startProvisionToPurchaseFlowWithNavController:v5 context:v3 onFirstViewControllerShown:v11 completion:v9];
+      objc_destroyWeak(&v10);
+
+      objc_destroyWeak(&v14);
+      objc_destroyWeak(&location);
+    }
+
+    else
+    {
+      v6 = *(a1 + 32);
+      if (v6)
+      {
+        v7 = v6;
+      }
+
+      else
+      {
+        v7 = PKDisplayableErrorForCommonType();
+      }
+
+      v3 = v7;
+      v5 = [PKPaymentSetupNavigationController viewControllerForPresentingPaymentError:v7];
+      v8 = [WeakRetained navigationController];
+      [v8 presentViewController:v5 animated:1 completion:*(a1 + 56)];
+    }
+  }
+}
+
+void __91__PKPaymentMethodSelectionViewController__openPaymentSetupWithNetworkWhitelist_completion___block_invoke_3(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 48));
+  if (WeakRetained)
+  {
+    v4 = WeakRetained;
+    v3 = [WeakRetained navigationController];
+    [v3 presentViewController:*(a1 + 32) animated:1 completion:*(a1 + 40)];
+
+    WeakRetained = v4;
+  }
+}
+
+void __91__PKPaymentMethodSelectionViewController__openPaymentSetupWithNetworkWhitelist_completion___block_invoke_4(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  v1 = [WeakRetained navigationController];
+  [v1 dismissViewControllerAnimated:1 completion:0];
+}
+
+- (void)_handlePassUpdate:(id)a3
+{
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __60__PKPaymentMethodSelectionViewController__handlePassUpdate___block_invoke;
+  block[3] = &unk_1E8010970;
+  block[4] = self;
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+}
+
+@end

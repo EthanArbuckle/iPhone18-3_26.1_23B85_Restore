@@ -1,0 +1,44 @@
+@interface SFExternalPasswordCredentialViewController
+@end
+
+@implementation SFExternalPasswordCredentialViewController
+
+void __79___SFExternalPasswordCredentialViewController__connectToServiceWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
+{
+  v6 = a2;
+  v7 = a3;
+  (*(*(a1 + 40) + 16))();
+  if (v6)
+  {
+    objc_storeStrong((*(a1 + 32) + 1008), a2);
+    [*(*(a1 + 32) + 1008) setDelegate:?];
+    v8 = [*(*(a1 + 32) + 1008) serviceViewControllerProxy];
+    [*(*(a1 + 32) + 1016) setTarget:v8];
+
+    if ([*(a1 + 32) isViewLoaded])
+    {
+      [*(a1 + 32) _addRemoteViewAsChild];
+    }
+  }
+
+  else
+  {
+    v9 = WBS_LOG_CHANNEL_PREFIXAppPasswordAutoFill();
+    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    {
+      __79___SFExternalPasswordCredentialViewController__connectToServiceWithCompletion___block_invoke_cold_1(v9, v7);
+    }
+  }
+}
+
+void __79___SFExternalPasswordCredentialViewController__connectToServiceWithCompletion___block_invoke_cold_1(void *a1, void *a2)
+{
+  v7 = *MEMORY[0x1E69E9840];
+  v3 = a1;
+  v4 = [a2 safari_privacyPreservingDescription];
+  v5 = 138543362;
+  v6 = v4;
+  _os_log_error_impl(&dword_1D4644000, v3, OS_LOG_TYPE_ERROR, "Failed to get donated password view controller with error: %{public}@", &v5, 0xCu);
+}
+
+@end

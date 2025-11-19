@@ -1,0 +1,138 @@
+@interface LockScreenViewController
++ (id)_exportedInterface;
++ (id)_remoteViewControllerInterface;
+- (_TtC15SleepLockScreen24LockScreenViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (void)configureWithUserInfo:(id)a3 contentBounds:(id)a4 endpoint:(id)a5;
+- (void)didChangeContentBounds;
+- (void)didDismissForDismissType:(int64_t)a3;
+- (void)getContentPreferencesWithReplyBlock:(id)a3;
+- (void)getInlinePresentationContentFrameWithReplyBlock:(id)a3;
+- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidLoad;
+@end
+
+@implementation LockScreenViewController
+
+- (void)viewDidLoad
+{
+  v2 = self;
+  sub_1000043DC();
+}
+
+- (void)viewDidAppear:(BOOL)a3
+{
+  v4 = self;
+  sub_100004878(a3, &selRef_viewDidAppear_, "[%{public}s] view did appear");
+}
+
+- (void)viewDidDisappear:(BOOL)a3
+{
+  v4 = self;
+  sub_100004878(a3, &selRef_viewDidDisappear_, "[%{public}s] view did disappear");
+}
+
++ (id)_remoteViewControllerInterface
+{
+  v2 = HKSPSleepLockScreenRemoteContentHostInterface();
+
+  return v2;
+}
+
++ (id)_exportedInterface
+{
+  v2 = HKSPSleepLockScreenRemoteContentServiceInterface();
+
+  return v2;
+}
+
+- (void)configureWithUserInfo:(id)a3 contentBounds:(id)a4 endpoint:(id)a5
+{
+  if (a3)
+  {
+    v8 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
+  }
+
+  else
+  {
+    v8 = 0;
+  }
+
+  v9 = type metadata accessor for MainActor();
+  __chkstk_darwin(v9);
+  v11[2] = self;
+  v11[3] = v8;
+  v11[4] = a4;
+  v11[5] = a5;
+  swift_unknownObjectRetain();
+  swift_unknownObjectRetain();
+  v10 = self;
+  sub_100007E00(sub_10000F25C, v11);
+  swift_unknownObjectRelease();
+  swift_unknownObjectRelease();
+}
+
+- (void)didChangeContentBounds
+{
+  v2 = self;
+  sub_1000080A8();
+}
+
+- (void)getInlinePresentationContentFrameWithReplyBlock:(id)a3
+{
+  v4 = _Block_copy(a3);
+  v5 = swift_allocObject();
+  *(v5 + 16) = v4;
+  type metadata accessor for MainActor();
+  v7[2] = self;
+  v7[3] = sub_10000EE4C;
+  v7[4] = v5;
+  v7[5] = 0;
+  v7[6] = 0;
+  v6 = self;
+  sub_100007E00(sub_10000F238, v7);
+}
+
+- (void)getContentPreferencesWithReplyBlock:(id)a3
+{
+  sub_10000FC54(0, &qword_10001D430, &type metadata accessor for TaskPriority, &type metadata accessor for Optional);
+  v6 = *(*(v5 - 8) + 64);
+  __chkstk_darwin(v5 - 8);
+  v8 = &v15 - v7;
+  v9 = _Block_copy(a3);
+  v10 = swift_allocObject();
+  *(v10 + 16) = v9;
+  v11 = type metadata accessor for TaskPriority();
+  (*(*(v11 - 8) + 56))(v8, 1, 1, v11);
+  type metadata accessor for MainActor();
+  v12 = self;
+
+  v13 = static MainActor.shared.getter();
+  v14 = swift_allocObject();
+  v14[2] = v13;
+  v14[3] = &protocol witness table for MainActor;
+  v14[4] = 0;
+  v14[5] = 0;
+  v14[6] = sub_10000EE4C;
+  v14[7] = v10;
+  v14[8] = v12;
+  sub_100008C3C(0, 0, v8, &unk_1000112E0, v14);
+}
+
+- (void)didDismissForDismissType:(int64_t)a3
+{
+  type metadata accessor for MainActor();
+  v6[2] = self;
+  v6[3] = a3;
+  v5 = self;
+  sub_100007E00(sub_10000EDC0, v6);
+}
+
+- (_TtC15SleepLockScreen24LockScreenViewController)initWithNibName:(id)a3 bundle:(id)a4
+{
+  result = _swift_stdlib_reportUnimplementedInitializer();
+  __break(1u);
+  return result;
+}
+
+@end

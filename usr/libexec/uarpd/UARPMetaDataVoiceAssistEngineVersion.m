@@ -1,0 +1,93 @@
+@interface UARPMetaDataVoiceAssistEngineVersion
+- (UARPMetaDataVoiceAssistEngineVersion)init;
+- (UARPMetaDataVoiceAssistEngineVersion)initWithLength:(unint64_t)a3 value:(void *)a4;
+- (UARPMetaDataVoiceAssistEngineVersion)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (id)description;
+- (id)tlvValue;
+@end
+
+@implementation UARPMetaDataVoiceAssistEngineVersion
+
+- (UARPMetaDataVoiceAssistEngineVersion)init
+{
+  v6.receiver = self;
+  v6.super_class = UARPMetaDataVoiceAssistEngineVersion;
+  v2 = [(UARPMetaData *)&v6 init];
+  v3 = v2;
+  if (v2)
+  {
+    v2->super._tlvType = 76079623;
+    v2->super._tlvLength = 16;
+    tlvName = v2->super._tlvName;
+    v2->super._tlvName = @"Voice Assist Engine Version";
+  }
+
+  return v3;
+}
+
+- (UARPMetaDataVoiceAssistEngineVersion)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+{
+  v5 = a3;
+  v6 = [(UARPMetaDataVoiceAssistEngineVersion *)self init];
+  v7 = v6;
+  if (v6)
+  {
+    v13.receiver = v6;
+    v13.super_class = UARPMetaDataVoiceAssistEngineVersion;
+    v8 = [(UARPMetaData *)&v13 stringFromPlistValue:v5];
+    if (v8 && (v9 = [[UARPComponentVersion alloc] initWithVersionString:v8], engineVersion = v7->_engineVersion, v7->_engineVersion = v9, engineVersion, v7->_engineVersion))
+    {
+      v11 = v7;
+    }
+
+    else
+    {
+      v11 = 0;
+    }
+  }
+
+  else
+  {
+    v11 = 0;
+  }
+
+  return v11;
+}
+
+- (UARPMetaDataVoiceAssistEngineVersion)initWithLength:(unint64_t)a3 value:(void *)a4
+{
+  v6 = [(UARPMetaDataVoiceAssistEngineVersion *)self init];
+  v7 = v6;
+  if (v6 && (v12.receiver = v6, v12.super_class = UARPMetaDataVoiceAssistEngineVersion, [(UARPMetaData *)&v12 componentVersionWithLength:a3 value:a4], v8 = objc_claimAutoreleasedReturnValue(), engineVersion = v7->_engineVersion, v7->_engineVersion = v8, engineVersion, v7->_engineVersion))
+  {
+    v10 = v7;
+  }
+
+  else
+  {
+    v10 = 0;
+  }
+
+  return v10;
+}
+
+- (id)tlvValue
+{
+  v3 = [(UARPMetaDataVoiceAssistEngineVersion *)self engineVersion];
+  v6.receiver = self;
+  v6.super_class = UARPMetaDataVoiceAssistEngineVersion;
+  v4 = [(UARPMetaData *)&v6 tlvValueWithComponentVersion:v3];
+
+  return v4;
+}
+
+- (id)description
+{
+  v3 = [(UARPMetaData *)self tlvName];
+  v4 = [(UARPMetaDataVoiceAssistEngineVersion *)self engineVersion];
+  v5 = [NSString stringWithFormat:@"<%@: %@>", v3, v4];
+
+  return v5;
+}
+
+@end

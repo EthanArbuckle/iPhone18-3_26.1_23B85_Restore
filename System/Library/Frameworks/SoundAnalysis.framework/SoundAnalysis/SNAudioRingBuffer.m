@@ -1,0 +1,197 @@
+@interface SNAudioRingBuffer
++ (BOOL)copyRecentFramesFrom:(id)a3 to:(id)a4 error:(id *)a5;
++ (id)copyRecentFramesOfAudioRingBufferToAVAudioBufferFrom:(id)a3 frameCount:(int64_t)a4 ringBufferStartSampleTime:(int64_t *)a5;
++ (id)copyToAVAudioBufferFrom:(id)a3 ringBufferStartSampleTime:(int64_t *)a4 error:(id *)a5;
+- (BOOL)fetch:(AudioBufferList *)a3 frameCount:(unsigned int)a4 frameNumber:(int64_t)a5 error:(id *)a6;
+- (BOOL)getTimeBoundsWithStartTime:(int64_t *)a3 endTime:(int64_t *)a4;
+- (BOOL)resizeWithFormat:(id)a3 newCapacityFrames:(unsigned int)a4 error:(id *)a5;
+- (BOOL)store:(const AudioBufferList *)a3 frameCount:(unsigned int)a4 frameNumber:(int64_t)a5 error:(id *)a6;
+- (SNAudioRingBuffer)initWithFormat:(id)a3 capacityFrames:(int64_t)a4 error:(id *)a5;
+- (id)capacityFramesWithError:(id *)a3;
+- (id)formatWithError:(id *)a3;
+@end
+
+@implementation SNAudioRingBuffer
+
+- (SNAudioRingBuffer)initWithFormat:(id)a3 capacityFrames:(int64_t)a4 error:(id *)a5
+{
+  v8 = a3;
+  v28.receiver = self;
+  v28.super_class = SNAudioRingBuffer;
+  v9 = [(SNAudioRingBuffer *)&v28 init];
+  if (v9)
+  {
+    v21 = 0;
+    v22 = &v21;
+    v23 = 0x3812000000;
+    v24 = sub_1C9A78310;
+    v25 = sub_1C9A78320;
+    v26 = "";
+    v27 = 0;
+    v17[0] = MEMORY[0x1E69E9820];
+    v17[1] = 3221225472;
+    v17[2] = sub_1C9A7832C;
+    v17[3] = &unk_1E83474E0;
+    v19 = &v21;
+    v18 = v8;
+    v20 = a4;
+    if (sub_1C9A74388(SNDSPGraphUtilities, v17, a5))
+    {
+      v10 = v22[6];
+      v22[6] = 0;
+      sub_1C9A78DD8(v9 + 1, v10);
+    }
+
+    else
+    {
+
+      v9 = 0;
+    }
+
+    _Block_object_dispose(&v21, 8);
+    v14 = v27;
+    v27 = 0;
+    if (v14)
+    {
+      v15 = MEMORY[0x1CCA91ED0](v14, v11, v12, v13);
+      MEMORY[0x1CCA92400](v15, 0x1020C4047CAF6D5);
+    }
+  }
+
+  return v9;
+}
+
+- (id)formatWithError:(id *)a3
+{
+  v5[0] = MEMORY[0x1E69E9820];
+  v5[1] = 3221225472;
+  v5[2] = sub_1C9A7844C;
+  v5[3] = &unk_1E8347508;
+  v5[4] = self;
+  v3 = sub_1C9A72EA0(SNDSPGraphUtilities, v5, a3);
+
+  return v3;
+}
+
+- (BOOL)resizeWithFormat:(id)a3 newCapacityFrames:(unsigned int)a4 error:(id *)a5
+{
+  v8 = a3;
+  v11[0] = MEMORY[0x1E69E9820];
+  v11[1] = 3221225472;
+  v11[2] = sub_1C9A78568;
+  v11[3] = &unk_1E8347530;
+  v11[4] = self;
+  v12 = v8;
+  v13 = a4;
+  v9 = v8;
+  LOBYTE(a5) = sub_1C9A74388(SNDSPGraphUtilities, v11, a5);
+
+  return a5;
+}
+
+- (id)capacityFramesWithError:(id *)a3
+{
+  v5[0] = MEMORY[0x1E69E9820];
+  v5[1] = 3221225472;
+  v5[2] = sub_1C9A78700;
+  v5[3] = &unk_1E8346FF8;
+  v5[4] = self;
+  v3 = sub_1C9A72EA0(SNDSPGraphUtilities, v5, a3);
+
+  return v3;
+}
+
+- (BOOL)getTimeBoundsWithStartTime:(int64_t *)a3 endTime:(int64_t *)a4
+{
+  v8 = 0;
+  v9[0] = MEMORY[0x1E69E9820];
+  v9[1] = 3221225472;
+  v9[2] = sub_1C9A787F4;
+  v9[3] = &unk_1E8347558;
+  v9[4] = self;
+  v9[5] = a3;
+  v9[6] = a4;
+  v4 = sub_1C9A72EA0(SNDSPGraphUtilities, v9, &v8);
+  v5 = v8;
+  v6 = [v4 BOOLValue];
+
+  return v6;
+}
+
+- (BOOL)store:(const AudioBufferList *)a3 frameCount:(unsigned int)a4 frameNumber:(int64_t)a5 error:(id *)a6
+{
+  v7[0] = MEMORY[0x1E69E9820];
+  v7[1] = 3221225472;
+  v7[2] = sub_1C9A788CC;
+  v7[3] = &unk_1E8347580;
+  v7[4] = self;
+  v7[5] = a3;
+  v8 = a4;
+  v7[6] = a5;
+  return sub_1C9A74388(SNDSPGraphUtilities, v7, a6);
+}
+
+- (BOOL)fetch:(AudioBufferList *)a3 frameCount:(unsigned int)a4 frameNumber:(int64_t)a5 error:(id *)a6
+{
+  v7[0] = MEMORY[0x1E69E9820];
+  v7[1] = 3221225472;
+  v7[2] = sub_1C9A78984;
+  v7[3] = &unk_1E8347580;
+  v7[4] = self;
+  v7[5] = a3;
+  v8 = a4;
+  v7[6] = a5;
+  return sub_1C9A74388(SNDSPGraphUtilities, v7, a6);
+}
+
++ (id)copyToAVAudioBufferFrom:(id)a3 ringBufferStartSampleTime:(int64_t *)a4 error:(id *)a5
+{
+  v7 = a3;
+  v11[0] = MEMORY[0x1E69E9820];
+  v11[1] = 3221225472;
+  v11[2] = sub_1C9A78A84;
+  v11[3] = &unk_1E83475A8;
+  v12 = v7;
+  v13 = a4;
+  v8 = v7;
+  v9 = sub_1C9A72EA0(SNDSPGraphUtilities, v11, a5);
+
+  return v9;
+}
+
++ (id)copyRecentFramesOfAudioRingBufferToAVAudioBufferFrom:(id)a3 frameCount:(int64_t)a4 ringBufferStartSampleTime:(int64_t *)a5
+{
+  v7 = a3;
+  v12 = 0;
+  v13[0] = MEMORY[0x1E69E9820];
+  v13[1] = 3221225472;
+  v13[2] = sub_1C9A78C88;
+  v13[3] = &unk_1E83475D0;
+  v14 = v7;
+  v15 = a4;
+  v16 = a5;
+  v8 = v7;
+  v9 = sub_1C9A72EA0(SNDSPGraphUtilities, v13, &v12);
+  v10 = v12;
+
+  return v9;
+}
+
++ (BOOL)copyRecentFramesFrom:(id)a3 to:(id)a4 error:(id *)a5
+{
+  v7 = a3;
+  v8 = a4;
+  v12[0] = MEMORY[0x1E69E9820];
+  v12[1] = 3221225472;
+  v12[2] = sub_1C9A78D9C;
+  v12[3] = &unk_1E8347160;
+  v13 = v7;
+  v14 = v8;
+  v9 = v8;
+  v10 = v7;
+  LOBYTE(a5) = sub_1C9A74388(SNDSPGraphUtilities, v12, a5);
+
+  return a5;
+}
+
+@end

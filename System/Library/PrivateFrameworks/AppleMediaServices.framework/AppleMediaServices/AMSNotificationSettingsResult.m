@@ -1,0 +1,63 @@
+@interface AMSNotificationSettingsResult
++ (id)_sectionsFromDictionaryRepresentation:(id)a3;
+- (AMSNotificationSettingsResult)initWithDictionaryRepresentation:(id)a3;
+@end
+
+@implementation AMSNotificationSettingsResult
+
+- (AMSNotificationSettingsResult)initWithDictionaryRepresentation:(id)a3
+{
+  v4 = a3;
+  v9.receiver = self;
+  v9.super_class = AMSNotificationSettingsResult;
+  v5 = [(AMSNotificationSettingsResult *)&v9 init];
+  if (v5)
+  {
+    v6 = [objc_opt_class() _sectionsFromDictionaryRepresentation:v4];
+    sections = v5->_sections;
+    v5->_sections = v6;
+  }
+
+  return v5;
+}
+
++ (id)_sectionsFromDictionaryRepresentation:(id)a3
+{
+  v3 = [a3 objectForKeyedSubscript:@"results"];
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    v4 = v3;
+  }
+
+  else
+  {
+    v4 = 0;
+  }
+
+  v5 = [v4 objectForKeyedSubscript:@"sections"];
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    v6 = v5;
+  }
+
+  else
+  {
+    v6 = 0;
+  }
+
+  v7 = [v6 ams_mapWithTransformIgnoresNil:&__block_literal_global_106];
+
+  return v7;
+}
+
+AMSNotificationSettingsSection *__71__AMSNotificationSettingsResult__sectionsFromDictionaryRepresentation___block_invoke(uint64_t a1, void *a2)
+{
+  v2 = a2;
+  v3 = [[AMSNotificationSettingsSection alloc] initWithDictionaryRepresentation:v2];
+
+  return v3;
+}
+
+@end

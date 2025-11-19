@@ -1,0 +1,22 @@
+@interface ACHBankCredentialPickerViewController.EditCredentialHandler
+- (_TtCC9PassKitUI37ACHBankCredentialPickerViewControllerP33_99E507972D4AF6430472792CEB91E7A221EditCredentialHandler)init;
+- (void)bankAccountInformationViewControllerChangedBankAccountInformation:(id)a3;
+@end
+
+@implementation ACHBankCredentialPickerViewController.EditCredentialHandler
+
+- (void)bankAccountInformationViewControllerChangedBankAccountInformation:(id)a3
+{
+  v4 = a3;
+  v5 = self;
+  sub_1BD619880(&OBJC_IVAR____TtCC9PassKitUI37ACHBankCredentialPickerViewControllerP33_99E507972D4AF6430472792CEB91E7A221EditCredentialHandler_info, &OBJC_IVAR____TtCC9PassKitUI37ACHBankCredentialPickerViewControllerP33_99E507972D4AF6430472792CEB91E7A221EditCredentialHandler_isUpdatingCredential, &unk_1F3BB21E8, &unk_1BE0E8908);
+}
+
+- (_TtCC9PassKitUI37ACHBankCredentialPickerViewControllerP33_99E507972D4AF6430472792CEB91E7A221EditCredentialHandler)init
+{
+  result = _swift_stdlib_reportUnimplementedInitializer();
+  __break(1u);
+  return result;
+}
+
+@end

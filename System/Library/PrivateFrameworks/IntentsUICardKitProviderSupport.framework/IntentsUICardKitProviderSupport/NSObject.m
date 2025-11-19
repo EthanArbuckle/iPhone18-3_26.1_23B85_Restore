@@ -1,0 +1,12 @@
+@interface NSObject
+@end
+
+@implementation NSObject
+
+void __80__NSObject_IntentsUICardKitProvider__inuickp_interactiveBehaviorPrecedenceOrder__block_invoke()
+{
+  v0 = inuickp_interactiveBehaviorPrecedenceOrder_interactiveBehaviorPrecedenceOrder;
+  inuickp_interactiveBehaviorPrecedenceOrder_interactiveBehaviorPrecedenceOrder = &unk_286772A28;
+}
+
+@end

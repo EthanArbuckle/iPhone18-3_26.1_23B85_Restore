@@ -1,0 +1,397 @@
+@interface _SFPBContactImage
+- (BOOL)isEqual:(id)a3;
+- (NSData)jsonData;
+- (_SFPBContactImage)initWithDictionary:(id)a3;
+- (_SFPBContactImage)initWithFacade:(id)a3;
+- (_SFPBContactImage)initWithJSON:(id)a3;
+- (id)dictionaryRepresentation;
+- (unint64_t)hash;
+- (void)addContactIdentifiers:(id)a3;
+- (void)setAppIconBadgeBundleIdentifier:(id)a3;
+- (void)setContactIdentifiers:(id)a3;
+- (void)writeTo:(id)a3;
+@end
+
+@implementation _SFPBContactImage
+
+- (_SFPBContactImage)initWithFacade:(id)a3
+{
+  v23 = *MEMORY[0x1E69E9840];
+  v4 = a3;
+  v5 = [(_SFPBContactImage *)self init];
+  if (v5)
+  {
+    v6 = [v4 contactIdentifiers];
+    if (v6)
+    {
+      v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
+    }
+
+    else
+    {
+      v7 = 0;
+    }
+
+    v20 = 0u;
+    v21 = 0u;
+    v18 = 0u;
+    v19 = 0u;
+    v8 = [v4 contactIdentifiers];
+    v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    if (v9)
+    {
+      v10 = v9;
+      v11 = *v19;
+      do
+      {
+        for (i = 0; i != v10; ++i)
+        {
+          if (*v19 != v11)
+          {
+            objc_enumerationMutation(v8);
+          }
+
+          if (*(*(&v18 + 1) + 8 * i))
+          {
+            [v7 addObject:?];
+          }
+        }
+
+        v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      }
+
+      while (v10);
+    }
+
+    [(_SFPBContactImage *)v5 setContactIdentifiers:v7];
+    if ([v4 hasThreeDTouchEnabled])
+    {
+      -[_SFPBContactImage setThreeDTouchEnabled:](v5, "setThreeDTouchEnabled:", [v4 threeDTouchEnabled]);
+    }
+
+    v13 = [v4 appIconBadgeBundleIdentifier];
+
+    if (v13)
+    {
+      v14 = [v4 appIconBadgeBundleIdentifier];
+      [(_SFPBContactImage *)v5 setAppIconBadgeBundleIdentifier:v14];
+    }
+
+    v15 = v5;
+  }
+
+  v16 = *MEMORY[0x1E69E9840];
+  return v5;
+}
+
+- (_SFPBContactImage)initWithDictionary:(id)a3
+{
+  v26 = *MEMORY[0x1E69E9840];
+  v4 = a3;
+  v24.receiver = self;
+  v24.super_class = _SFPBContactImage;
+  v5 = [(_SFPBContactImage *)&v24 init];
+  if (v5)
+  {
+    v6 = [v4 objectForKeyedSubscript:@"contactIdentifiers"];
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      v22 = 0u;
+      v23 = 0u;
+      v20 = 0u;
+      v21 = 0u;
+      v7 = v6;
+      v8 = [v7 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      if (v8)
+      {
+        v9 = v8;
+        v10 = *v21;
+        do
+        {
+          v11 = 0;
+          do
+          {
+            if (*v21 != v10)
+            {
+              objc_enumerationMutation(v7);
+            }
+
+            v12 = *(*(&v20 + 1) + 8 * v11);
+            objc_opt_class();
+            if (objc_opt_isKindOfClass())
+            {
+              v13 = [v12 copy];
+              [(_SFPBContactImage *)v5 addContactIdentifiers:v13];
+            }
+
+            ++v11;
+          }
+
+          while (v9 != v11);
+          v9 = [v7 countByEnumeratingWithState:&v20 objects:v25 count:16];
+        }
+
+        while (v9);
+      }
+    }
+
+    v14 = [v4 objectForKeyedSubscript:{@"threeDTouchEnabled", v20}];
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      -[_SFPBContactImage setThreeDTouchEnabled:](v5, "setThreeDTouchEnabled:", [v14 BOOLValue]);
+    }
+
+    v15 = [v4 objectForKeyedSubscript:@"appIconBadgeBundleIdentifier"];
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      v16 = [v15 copy];
+      [(_SFPBContactImage *)v5 setAppIconBadgeBundleIdentifier:v16];
+    }
+
+    v17 = v5;
+  }
+
+  v18 = *MEMORY[0x1E69E9840];
+  return v5;
+}
+
+- (_SFPBContactImage)initWithJSON:(id)a3
+{
+  v7 = 0;
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  {
+    v5 = 0;
+  }
+
+  else
+  {
+    self = [(_SFPBContactImage *)self initWithDictionary:v4];
+    v5 = self;
+  }
+
+  return v5;
+}
+
+- (NSData)jsonData
+{
+  v2 = [(_SFPBContactImage *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  {
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  return v3;
+}
+
+- (id)dictionaryRepresentation
+{
+  v3 = [MEMORY[0x1E695DF90] dictionary];
+  if (self->_appIconBadgeBundleIdentifier)
+  {
+    v4 = [(_SFPBContactImage *)self appIconBadgeBundleIdentifier];
+    v5 = [v4 copy];
+    [v3 setObject:v5 forKeyedSubscript:@"appIconBadgeBundleIdentifier"];
+  }
+
+  if (self->_contactIdentifiers)
+  {
+    v6 = [(_SFPBContactImage *)self contactIdentifiers];
+    v7 = [v6 copy];
+    [v3 setObject:v7 forKeyedSubscript:@"contactIdentifiers"];
+  }
+
+  if (self->_threeDTouchEnabled)
+  {
+    v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBContactImage threeDTouchEnabled](self, "threeDTouchEnabled")}];
+    [v3 setObject:v8 forKeyedSubscript:@"threeDTouchEnabled"];
+  }
+
+  return v3;
+}
+
+- (unint64_t)hash
+{
+  v3 = [(NSArray *)self->_contactIdentifiers hash];
+  if (self->_threeDTouchEnabled)
+  {
+    v4 = 2654435761;
+  }
+
+  else
+  {
+    v4 = 0;
+  }
+
+  return v4 ^ v3 ^ [(NSString *)self->_appIconBadgeBundleIdentifier hash];
+}
+
+- (BOOL)isEqual:(id)a3
+{
+  v4 = a3;
+  if (![v4 isMemberOfClass:objc_opt_class()])
+  {
+    goto LABEL_13;
+  }
+
+  v5 = [(_SFPBContactImage *)self contactIdentifiers];
+  v6 = [v4 contactIdentifiers];
+  if ((v5 != 0) == (v6 == 0))
+  {
+    goto LABEL_12;
+  }
+
+  v7 = [(_SFPBContactImage *)self contactIdentifiers];
+  if (v7)
+  {
+    v8 = v7;
+    v9 = [(_SFPBContactImage *)self contactIdentifiers];
+    v10 = [v4 contactIdentifiers];
+    v11 = [v9 isEqual:v10];
+
+    if (!v11)
+    {
+      goto LABEL_13;
+    }
+  }
+
+  else
+  {
+  }
+
+  threeDTouchEnabled = self->_threeDTouchEnabled;
+  if (threeDTouchEnabled != [v4 threeDTouchEnabled])
+  {
+    goto LABEL_13;
+  }
+
+  v5 = [(_SFPBContactImage *)self appIconBadgeBundleIdentifier];
+  v6 = [v4 appIconBadgeBundleIdentifier];
+  if ((v5 != 0) == (v6 == 0))
+  {
+LABEL_12:
+
+    goto LABEL_13;
+  }
+
+  v13 = [(_SFPBContactImage *)self appIconBadgeBundleIdentifier];
+  if (!v13)
+  {
+
+LABEL_16:
+    v18 = 1;
+    goto LABEL_14;
+  }
+
+  v14 = v13;
+  v15 = [(_SFPBContactImage *)self appIconBadgeBundleIdentifier];
+  v16 = [v4 appIconBadgeBundleIdentifier];
+  v17 = [v15 isEqual:v16];
+
+  if (v17)
+  {
+    goto LABEL_16;
+  }
+
+LABEL_13:
+  v18 = 0;
+LABEL_14:
+
+  return v18;
+}
+
+- (void)writeTo:(id)a3
+{
+  v18 = *MEMORY[0x1E69E9840];
+  v4 = a3;
+  v5 = [(_SFPBContactImage *)self contactIdentifiers];
+  v13 = 0u;
+  v14 = 0u;
+  v15 = 0u;
+  v16 = 0u;
+  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  if (v6)
+  {
+    v7 = v6;
+    v8 = *v14;
+    do
+    {
+      v9 = 0;
+      do
+      {
+        if (*v14 != v8)
+        {
+          objc_enumerationMutation(v5);
+        }
+
+        v10 = *(*(&v13 + 1) + 8 * v9);
+        PBDataWriterWriteStringField();
+        ++v9;
+      }
+
+      while (v7 != v9);
+      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    }
+
+    while (v7);
+  }
+
+  if ([(_SFPBContactImage *)self threeDTouchEnabled])
+  {
+    PBDataWriterWriteBOOLField();
+  }
+
+  v11 = [(_SFPBContactImage *)self appIconBadgeBundleIdentifier];
+  if (v11)
+  {
+    PBDataWriterWriteStringField();
+  }
+
+  v12 = *MEMORY[0x1E69E9840];
+}
+
+- (void)setAppIconBadgeBundleIdentifier:(id)a3
+{
+  v4 = [a3 copy];
+  appIconBadgeBundleIdentifier = self->_appIconBadgeBundleIdentifier;
+  self->_appIconBadgeBundleIdentifier = v4;
+
+  MEMORY[0x1EEE66BB8]();
+}
+
+- (void)addContactIdentifiers:(id)a3
+{
+  v4 = a3;
+  contactIdentifiers = self->_contactIdentifiers;
+  v8 = v4;
+  if (!contactIdentifiers)
+  {
+    v6 = [MEMORY[0x1E695DF70] array];
+    v7 = self->_contactIdentifiers;
+    self->_contactIdentifiers = v6;
+
+    v4 = v8;
+    contactIdentifiers = self->_contactIdentifiers;
+  }
+
+  [(NSArray *)contactIdentifiers addObject:v4];
+}
+
+- (void)setContactIdentifiers:(id)a3
+{
+  v4 = [a3 copy];
+  contactIdentifiers = self->_contactIdentifiers;
+  self->_contactIdentifiers = v4;
+
+  MEMORY[0x1EEE66BB8]();
+}
+
+@end

@@ -1,0 +1,136 @@
+@interface BTShareAudioHoldButtonViewController
+- (void)_updateDeviceVisual:(id)a3;
+- (void)eventCancel:(id)a3;
+- (void)viewDidLayoutSubviews;
+@end
+
+@implementation BTShareAudioHoldButtonViewController
+
+void __55__BTShareAudioHoldButtonViewController_viewWillAppear___block_invoke(uint64_t a1, void *a2, void *a3)
+{
+  v9 = a2;
+  v5 = a3;
+  [*(a1 + 32) invalidate];
+  v7 = *(a1 + 40);
+  v6 = (a1 + 40);
+  if (*(v7 + 1016) == 1)
+  {
+    v8 = [v9 assetBundlePath];
+    if (gLogCategory_BTShareAudioViewController <= 30 && (gLogCategory_BTShareAudioViewController != -1 || _LogCategory_Initialize()))
+    {
+      __55__BTShareAudioHoldButtonViewController_viewWillAppear___block_invoke_cold_1(v6);
+    }
+
+    [*v6 _updateDeviceVisual:v8];
+  }
+}
+
+- (void)viewDidLayoutSubviews
+{
+  v14[4] = *MEMORY[0x277D85DE8];
+  v13.receiver = self;
+  v13.super_class = BTShareAudioHoldButtonViewController;
+  [(BTShareAudioHoldButtonViewController *)&v13 viewDidLayoutSubviews];
+  v3 = [(UIView *)self->_productMovieContainerView layer];
+  v4 = [v3 mask];
+  if (v4)
+  {
+    v5 = v4;
+LABEL_5:
+
+    goto LABEL_6;
+  }
+
+  colorCode = self->_colorCode;
+
+  if (colorCode == 8202)
+  {
+    v3 = [MEMORY[0x277CD9EB0] layer];
+    [(UIView *)self->_productMovieContainerView bounds];
+    [v3 setFrame:?];
+    v7 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.0];
+    v14[0] = [v7 CGColor];
+    v8 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:1.0];
+    v14[1] = [v8 CGColor];
+    v9 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:1.0];
+    v14[2] = [v9 CGColor];
+    v10 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.0];
+    v14[3] = [v10 CGColor];
+    v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:4];
+    [v3 setColors:v11];
+
+    [v3 setLocations:&unk_2853D58C8];
+    [v3 setStartPoint:{0.5, 0.0}];
+    [v3 setEndPoint:{0.5, 1.0}];
+    v5 = [(UIView *)self->_productMovieContainerView layer];
+    [v5 setMask:v3];
+    goto LABEL_5;
+  }
+
+LABEL_6:
+  v12 = *MEMORY[0x277D85DE8];
+}
+
+- (void)eventCancel:(id)a3
+{
+  v4 = a3;
+  if (gLogCategory_BTShareAudioViewController <= 30 && (gLogCategory_BTShareAudioViewController != -1 || _LogCategory_Initialize()))
+  {
+    [BTShareAudioHoldButtonViewController eventCancel:];
+  }
+
+  [(BTShareAudioViewController *)self->super._mainController reportUserCancelled];
+}
+
+- (void)_updateDeviceVisual:(id)a3
+{
+  v12 = [(BTShareAudioViewController *)self->super._mainController _moviePathForPID:self->_colorCode colorCode:*(&self->super._viewActive + 1)];
+  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@-Hold", v12];
+  v5 = [(BTShareAudioViewController *)self->super._mainController mainBundle];
+  v6 = [v5 pathForResource:v4 ofType:@"mov"];
+
+  if (v6)
+  {
+    if (gLogCategory_BTShareAudioViewController <= 30 && (gLogCategory_BTShareAudioViewController != -1 || _LogCategory_Initialize()))
+    {
+      [BTShareAudioHoldButtonViewController _updateDeviceVisual:];
+    }
+
+    [(BTMediaPlayerView *)self->_productMovieView startMovieLoopWithPath:v6];
+    [(BTMediaPlayerView *)self->_productMovieView setHidden:0];
+  }
+
+  else
+  {
+    v7 = [(BTShareAudioViewController *)self->super._mainController _imageForPID:self->_colorCode colorCode:*(&self->super._viewActive + 1)];
+    if (v7)
+    {
+      if (gLogCategory_BTShareAudioViewController <= 30 && (gLogCategory_BTShareAudioViewController != -1 || _LogCategory_Initialize()))
+      {
+        [(BTShareAudioHoldButtonViewController *)&self->_colorCode _updateDeviceVisual:?];
+      }
+
+      p_productImageView = &self->_productImageView;
+      [(UIImageView *)*p_productImageView setImage:v7];
+    }
+
+    else
+    {
+      if (gLogCategory_BTShareAudioViewController <= 30 && (gLogCategory_BTShareAudioViewController != -1 || _LogCategory_Initialize()))
+      {
+        [BTShareAudioHoldButtonViewController _updateDeviceVisual:];
+      }
+
+      [(UIImageView *)self->_productImageView setHidden:1];
+      v9 = MEMORY[0x277D755B8];
+      v10 = [(BTShareAudioViewController *)self->super._mainController mainBundle];
+      v11 = [v9 imageNamed:@"ShareAudioAirPods" inBundle:v10 compatibleWithTraitCollection:0];
+      p_productImageView = &self->_shareImageView;
+      [(UIImageView *)*p_productImageView setImage:v11];
+    }
+
+    [(UIImageView *)*p_productImageView setHidden:0];
+  }
+}
+
+@end

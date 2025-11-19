@@ -1,0 +1,467 @@
+@interface HKQuantityDistributionDataSource
++ (id)bucketSizeForBloodGlucoseWithUnit:(id)a3;
++ (id)bucketSizeForDisplayType:(id)a3 preferredUnit:(id)a4;
++ (id)bucketSizeForQuantityType:(id)a3 preferredUnit:(id)a4;
+- (HKQuantityDistributionDataSource)initWithQuantityType:(id)a3 unitController:(id)a4 healthStore:(id)a5 contextStyle:(int64_t)a6 predicate:(id)a7 options:(unint64_t)a8 baseDisplayType:(id)a9 specificStartDate:(id)a10 specificEndDate:(id)a11 userInfoCreationBlock:(id)a12;
+- (id)_bucketDateForHistogramData:(id)a3;
+- (id)_dataBlockFromHistograms:(id)a3;
+- (id)_quickDate:(id)a3;
+- (id)chartPointsFromQueryData:(id)a3 dataIsFromRemoteSource:(BOOL)a4;
+- (id)generateSharableQueryDataForRequest:(id)a3 healthStore:(id)a4 completionHandler:(id)a5;
+- (id)queriesForRequest:(id)a3 completionHandler:(id)a4;
+- (id)queryDescription;
+@end
+
+@implementation HKQuantityDistributionDataSource
+
+- (HKQuantityDistributionDataSource)initWithQuantityType:(id)a3 unitController:(id)a4 healthStore:(id)a5 contextStyle:(int64_t)a6 predicate:(id)a7 options:(unint64_t)a8 baseDisplayType:(id)a9 specificStartDate:(id)a10 specificEndDate:(id)a11 userInfoCreationBlock:(id)a12
+{
+  v35 = a3;
+  v17 = a4;
+  v34 = a7;
+  v18 = a9;
+  v33 = a10;
+  v32 = a11;
+  v19 = a12;
+  v36.receiver = self;
+  v36.super_class = HKQuantityDistributionDataSource;
+  v20 = [(HKHealthQueryChartCacheDataSource *)&v36 initWithDisplayType:v18 healthStore:a5];
+  v21 = v20;
+  if (v20)
+  {
+    objc_storeStrong(&v20->_quantityType, a3);
+    objc_storeStrong(&v21->_unitController, a4);
+    v22 = [v17 unitForDisplayType:v18];
+    v23 = [HKQuantityDistributionDataSource bucketSizeForQuantityType:v35 preferredUnit:v22];
+    [v23 doubleValue];
+    v21->_bucketSize = v24;
+
+    v21->_bucketAnchor = 0.0;
+    v21->_contextStyle = a6;
+    objc_storeStrong(&v21->_predicate, a7);
+    v21->_options = a8;
+    objc_storeStrong(&v21->_specificStartDate, a10);
+    objc_storeStrong(&v21->_specificEndDate, a11);
+    preferredUnit = v21->_preferredUnit;
+    v21->_preferredUnit = v22;
+    v26 = v22;
+
+    v27 = _Block_copy(v19);
+    userInfoCreationBlock = v21->_userInfoCreationBlock;
+    v21->_userInfoCreationBlock = v27;
+  }
+
+  return v21;
+}
+
++ (id)bucketSizeForQuantityType:(id)a3 preferredUnit:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  if ([v6 code] == 15)
+  {
+    [a1 bucketSizeForBloodGlucoseWithUnit:v7];
+  }
+
+  else
+  {
+    HKQuantityDistributionBucketSizeForQuantityType(v6);
+  }
+  v8 = ;
+
+  return v8;
+}
+
++ (id)bucketSizeForDisplayType:(id)a3 preferredUnit:(id)a4
+{
+  v6 = a4;
+  v7 = [a3 objectType];
+  v8 = [a1 bucketSizeForQuantityType:v7 preferredUnit:v6];
+
+  return v8;
+}
+
++ (id)bucketSizeForBloodGlucoseWithUnit:(id)a3
+{
+  v5 = a3;
+  v6 = [MEMORY[0x1E696C510] _milligramsPerDeciliterUnit];
+  v7 = [v5 isEqual:v6];
+
+  v8 = 4.0;
+  if ((v7 & 1) == 0)
+  {
+    v9 = [MEMORY[0x1E696C510] _millimolesBloodGlucosePerLiterUnit];
+    v10 = [v5 isEqual:v9];
+
+    if (v10)
+    {
+      v8 = 0.2;
+    }
+
+    else
+    {
+      v11 = [MEMORY[0x1E696AAA8] currentHandler];
+      v12 = [v5 unitString];
+      [v11 handleFailureInMethod:a2 object:a1 file:@"HKQuantityDistributionDataSource.m" lineNumber:113 description:{@"Unsupported glucose unit: %@", v12}];
+
+      _HKInitializeLogging();
+      v13 = *MEMORY[0x1E696B988];
+      if (os_log_type_enabled(*MEMORY[0x1E696B988], OS_LOG_TYPE_ERROR))
+      {
+        [(HKQuantityDistributionDataSource *)v13 bucketSizeForBloodGlucoseWithUnit:v5];
+      }
+    }
+  }
+
+  v14 = [MEMORY[0x1E696AD98] numberWithDouble:v8];
+
+  return v14;
+}
+
+- (id)_quickDate:(id)a3
+{
+  v3 = MEMORY[0x1E696AB78];
+  v4 = a3;
+  v5 = objc_alloc_init(v3);
+  [v5 setDateFormat:@"MM/dd/YYYY-HH:mm:ss"];
+  v6 = [MEMORY[0x1E695DFE8] localTimeZone];
+  [v5 setTimeZone:v6];
+
+  v7 = [v5 stringFromDate:v4];
+
+  return v7;
+}
+
+- (id)queryDescription
+{
+  v2 = MEMORY[0x1E696AEC0];
+  v3 = [(HKQuantityDistributionDataSource *)self quantityType];
+  v4 = [v3 hk_localizedName];
+  v5 = [v2 stringWithFormat:@"HKQuantityDistribution(%@)", v4];
+
+  return v5;
+}
+
+- (id)queriesForRequest:(id)a3 completionHandler:(id)a4
+{
+  v41[1] = *MEMORY[0x1E69E9840];
+  v6 = a3;
+  v35 = a4;
+  specificStartDate = self->_specificStartDate;
+  if (specificStartDate)
+  {
+    v8 = specificStartDate;
+  }
+
+  else
+  {
+    v8 = [v6 startDate];
+  }
+
+  v38 = v8;
+  specificEndDate = self->_specificEndDate;
+  if (specificEndDate)
+  {
+    v10 = specificEndDate;
+  }
+
+  else
+  {
+    v10 = [v6 endDate];
+  }
+
+  v37 = v10;
+  v11 = [(HKHealthQueryChartCacheDataSource *)self displayType];
+  v12 = [v11 presentation];
+  [v12 adjustedDoubleForClientDouble:self->_bucketSize];
+  v14 = v13;
+
+  v15 = [(HKHealthQueryChartCacheDataSource *)self displayType];
+  v16 = [v15 presentation];
+  [v16 adjustedDoubleForClientDouble:self->_bucketAnchor];
+  v18 = v17;
+
+  v19 = [(HKQuantityDistributionDataSource *)self unitController];
+  v20 = [(HKHealthQueryChartCacheDataSource *)self displayType];
+  v34 = [v19 unitForDisplayType:v20];
+
+  v21 = [MEMORY[0x1E696C348] quantityWithUnit:v34 doubleValue:v14];
+  v22 = [MEMORY[0x1E696C348] quantityWithUnit:v34 doubleValue:v18];
+  v23 = objc_alloc(MEMORY[0x1E696C658]);
+  v24 = [(HKQuantityDistributionDataSource *)self quantityType];
+  contextStyle = self->_contextStyle;
+  predicate = self->_predicate;
+  v27 = [v6 startDate];
+  [v6 statisticsInterval];
+  v28 = v33 = v6;
+  options = self->_options;
+  v39[0] = MEMORY[0x1E69E9820];
+  v39[1] = 3221225472;
+  v39[2] = __72__HKQuantityDistributionDataSource_queriesForRequest_completionHandler___block_invoke;
+  v39[3] = &unk_1E81B7040;
+  v40 = v35;
+  v36 = v35;
+  v30 = [v23 initWithQuantityType:v24 startDate:v38 endDate:v37 contextStyle:contextStyle predicate:predicate anchorDate:v27 intervalComponents:v28 histogramAnchor:v22 histogramBucketSize:v21 options:options completionHandler:v39];
+
+  [v30 setDebugIdentifier:@"charting (distribution)"];
+  v41[0] = v30;
+  v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:1];
+
+  return v31;
+}
+
+- (id)_dataBlockFromHistograms:(id)a3
+{
+  v28 = *MEMORY[0x1E69E9840];
+  v4 = a3;
+  v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
+  v6 = [(HKQuantityDistributionDataSource *)self unitController];
+  v7 = [(HKHealthQueryChartCacheDataSource *)self displayType];
+  v8 = [v6 unitForDisplayType:v7];
+
+  v25 = 0u;
+  v26 = 0u;
+  v23 = 0u;
+  v24 = 0u;
+  obj = v4;
+  v9 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
+  if (v9)
+  {
+    v10 = v9;
+    v11 = *v24;
+    do
+    {
+      for (i = 0; i != v10; ++i)
+      {
+        if (*v24 != v11)
+        {
+          objc_enumerationMutation(obj);
+        }
+
+        v13 = *(*(&v23 + 1) + 8 * i);
+        v14 = [HKQuantityDistributionChartPoint alloc];
+        v15 = [(HKQuantityDistributionDataSource *)self _bucketDateForHistogramData:v13];
+        bucketSize = self->_bucketSize;
+        v17 = [(HKHealthQueryChartCacheDataSource *)self displayType];
+        v18 = [(HKQuantityDistributionChartPoint *)v14 initWithHistogramData:v13 bucketDate:v15 bucketIncrement:v8 unit:v17 displayType:bucketSize];
+
+        v19 = (*(self->_userInfoCreationBlock + 2))();
+        [(HKQuantityDistributionChartPoint *)v18 setUserInfo:v19];
+
+        [v5 addObject:v18];
+      }
+
+      v10 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
+    }
+
+    while (v10);
+  }
+
+  v20 = objc_alloc_init(HKGraphSeriesDataBlock);
+  [(HKGraphSeriesDataBlock *)v20 setChartPoints:v5];
+
+  return v20;
+}
+
+- (id)_bucketDateForHistogramData:(id)a3
+{
+  v4 = MEMORY[0x1E696AB80];
+  v5 = a3;
+  v6 = [v4 alloc];
+  v7 = [v5 startDate];
+  v8 = [v5 endDate];
+
+  v9 = [v6 initWithStartDate:v7 endDate:v8];
+  if ([(HKHealthQueryChartCacheDataSource *)self queryAlignment]== 1)
+  {
+    [v9 duration];
+    v11 = v10;
+    v12 = [MEMORY[0x1E695DF10] hk_oneDay];
+    [v12 hk_approximateDuration];
+    v14 = v13;
+
+    if (v11 >= v14)
+    {
+      v15 = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
+      v16 = [v9 hk_dateIntervalUnshiftedFromQueryAlignment:1 calendar:v15];
+
+      v9 = v16;
+    }
+  }
+
+  v17 = [v9 startDate];
+  v18 = [v9 endDate];
+  v19 = HKUIMidDate(v17, v18);
+
+  return v19;
+}
+
+- (id)generateSharableQueryDataForRequest:(id)a3 healthStore:(id)a4 completionHandler:(id)a5
+{
+  v8 = a3;
+  v9 = a4;
+  v10 = a5;
+  v25[0] = MEMORY[0x1E69E9820];
+  v25[1] = 3221225472;
+  v25[2] = __102__HKQuantityDistributionDataSource_generateSharableQueryDataForRequest_healthStore_completionHandler___block_invoke;
+  v25[3] = &unk_1E81B7088;
+  v26 = v8;
+  v27 = self;
+  v28 = v10;
+  v11 = v10;
+  v12 = v8;
+  v13 = [(HKQuantityDistributionDataSource *)self queriesForRequest:v12 completionHandler:v25];
+  v23[0] = MEMORY[0x1E69E9820];
+  v23[1] = 3221225472;
+  v23[2] = __102__HKQuantityDistributionDataSource_generateSharableQueryDataForRequest_healthStore_completionHandler___block_invoke_2;
+  v23[3] = &unk_1E81B6D60;
+  v14 = v9;
+  v24 = v14;
+  [v13 enumerateObjectsUsingBlock:v23];
+  v20[0] = MEMORY[0x1E69E9820];
+  v20[1] = 3221225472;
+  v20[2] = __102__HKQuantityDistributionDataSource_generateSharableQueryDataForRequest_healthStore_completionHandler___block_invoke_3;
+  v20[3] = &unk_1E81B5AD0;
+  v21 = v13;
+  v22 = v14;
+  v15 = v14;
+  v16 = v13;
+  v17 = _Block_copy(v20);
+  v18 = _Block_copy(v17);
+
+  return v18;
+}
+
+void __102__HKQuantityDistributionDataSource_generateSharableQueryDataForRequest_healthStore_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
+{
+  v30 = *MEMORY[0x1E69E9840];
+  v5 = a2;
+  v6 = a3;
+  v7 = v6;
+  if (v5)
+  {
+    if (v6)
+    {
+      _HKInitializeLogging();
+      v8 = HKLogWellnessDashboard();
+      v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
+
+      if (v9)
+      {
+        v10 = HKLogWellnessDashboard();
+        if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+        {
+          v11 = HKStringForChartDataSourceQueryRequestAudience([*(a1 + 32) audience]);
+          v12 = [*(*(a1 + 40) + 56) identifier];
+          v13 = [v7 localizedDescription];
+          v24 = 138412802;
+          v25 = v11;
+          v26 = 2112;
+          v27 = v12;
+          v28 = 2112;
+          v29 = v13;
+          _os_log_impl(&dword_1C3942000, v10, OS_LOG_TYPE_INFO, "[RemoteCharting]_%@_%@: query returned successfully with error: %@", &v24, 0x20u);
+        }
+      }
+    }
+
+    v14 = [v5 hk_map:&__block_literal_global_332_1];
+    v15 = objc_alloc_init(HKCodableChartQuantityDistributionDataSourceQueryData);
+    v16 = [v14 mutableCopy];
+    [(HKCodableChartQuantityDistributionDataSourceQueryData *)v15 setQuantityDistributionDatas:v16];
+
+    v17 = *(a1 + 40);
+    v18 = [*(a1 + 32) startDate];
+    v19 = [*(a1 + 32) endDate];
+    v20 = [*(a1 + 32) statisticsInterval];
+    v21 = [(HKCodableChartQuantityDistributionDataSourceQueryData *)v15 data];
+    v22 = [v17 codableQueryDataWithType:1 startDate:v18 endDate:v19 statisticsInterval:v20 queryDataObject:v21];
+
+    (*(*(a1 + 48) + 16))();
+  }
+
+  else
+  {
+    _HKInitializeLogging();
+    v23 = HKLogWellnessDashboard();
+    if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+    {
+      __102__HKQuantityDistributionDataSource_generateSharableQueryDataForRequest_healthStore_completionHandler___block_invoke_cold_1(a1, v7, v23);
+    }
+
+    (*(*(a1 + 48) + 16))();
+  }
+}
+
+void __102__HKQuantityDistributionDataSource_generateSharableQueryDataForRequest_healthStore_completionHandler___block_invoke_3(uint64_t a1)
+{
+  v2[0] = MEMORY[0x1E69E9820];
+  v2[1] = 3221225472;
+  v2[2] = __102__HKQuantityDistributionDataSource_generateSharableQueryDataForRequest_healthStore_completionHandler___block_invoke_4;
+  v2[3] = &unk_1E81B6D60;
+  v1 = *(a1 + 32);
+  v3 = *(a1 + 40);
+  [v1 enumerateObjectsUsingBlock:v2];
+}
+
+- (id)chartPointsFromQueryData:(id)a3 dataIsFromRemoteSource:(BOOL)a4
+{
+  v5 = a3;
+  if ([v5 hasTimeZoneName])
+  {
+    v6 = objc_alloc(MEMORY[0x1E695DFE8]);
+    v7 = [v5 timeZoneName];
+    v8 = [v6 initWithName:v7];
+  }
+
+  else
+  {
+    v8 = 0;
+  }
+
+  v9 = self->_preferredUnit;
+  v10 = [HKCodableChartQuantityDistributionDataSourceQueryData alloc];
+  v11 = [v5 queryDataObject];
+  v12 = [(HKCodableChartQuantityDistributionDataSourceQueryData *)v10 initWithData:v11];
+  v13 = [(HKCodableChartQuantityDistributionDataSourceQueryData *)v12 quantityDistributionDatas];
+
+  v19 = MEMORY[0x1E69E9820];
+  v20 = 3221225472;
+  v21 = __84__HKQuantityDistributionDataSource_chartPointsFromQueryData_dataIsFromRemoteSource___block_invoke;
+  v22 = &unk_1E81B70B0;
+  v23 = v8;
+  v24 = v9;
+  v14 = v9;
+  v15 = v8;
+  v16 = [v13 hk_map:&v19];
+  v17 = [(HKQuantityDistributionDataSource *)self _dataBlockFromHistograms:v16, v19, v20, v21, v22];
+
+  return v17;
+}
+
++ (void)bucketSizeForBloodGlucoseWithUnit:(void *)a1 .cold.1(void *a1, void *a2)
+{
+  v7 = *MEMORY[0x1E69E9840];
+  v3 = a1;
+  v4 = [a2 unitString];
+  v5 = 138543362;
+  v6 = v4;
+  _os_log_error_impl(&dword_1C3942000, v3, OS_LOG_TYPE_ERROR, "Unsupported glucose unit: %{public}@", &v5, 0xCu);
+}
+
+void __102__HKQuantityDistributionDataSource_generateSharableQueryDataForRequest_healthStore_completionHandler___block_invoke_cold_1(uint64_t a1, void *a2, NSObject *a3)
+{
+  v15 = *MEMORY[0x1E69E9840];
+  v6 = HKStringForChartDataSourceQueryRequestAudience([*(a1 + 32) audience]);
+  v7 = [*(*(a1 + 40) + 56) identifier];
+  v8 = [a2 localizedDescription];
+  v9 = 138412802;
+  v10 = v6;
+  v11 = 2112;
+  v12 = v7;
+  v13 = 2112;
+  v14 = v8;
+  _os_log_error_impl(&dword_1C3942000, a3, OS_LOG_TYPE_ERROR, "[RemoteCharting]_%@_%@: unable to fetch results from query with error: %@", &v9, 0x20u);
+}
+
+@end

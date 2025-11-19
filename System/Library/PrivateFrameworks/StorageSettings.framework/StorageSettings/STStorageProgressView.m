@@ -1,0 +1,118 @@
+@interface STStorageProgressView
+- (STStorageProgressView)initWithFrame:(CGRect)a3;
+- (void)drawRect:(CGRect)a3;
+- (void)setPercent:(double)a3;
+- (void)traitCollectionDidChange:(id)a3;
+- (void)updateColors;
+@end
+
+@implementation STStorageProgressView
+
+- (void)updateColors
+{
+  v3 = [(STStorageProgressView *)self traitCollection];
+  v4 = [v3 userInterfaceStyle];
+
+  if (v4 == 2)
+  {
+    [MEMORY[0x277D75348] systemDarkGrayColor];
+  }
+
+  else
+  {
+    [MEMORY[0x277D75348] systemLightMidGrayColor];
+  }
+  v5 = ;
+  objc_storeStrong(&self->_grayColor, v5);
+
+  if (v4 == 2)
+  {
+    [MEMORY[0x277D75348] systemDarkLightMidGrayColor];
+  }
+
+  else
+  {
+    [MEMORY[0x277D75348] systemBlueColor];
+  }
+  v6 = ;
+  objc_storeStrong(&self->_blueColor, v6);
+}
+
+- (STStorageProgressView)initWithFrame:(CGRect)a3
+{
+  v6.receiver = self;
+  v6.super_class = STStorageProgressView;
+  v3 = [(STStorageProgressView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  if (v3)
+  {
+    v4 = [MEMORY[0x277D75348] clearColor];
+    [(STStorageProgressView *)v3 setBackgroundColor:v4];
+
+    [(STStorageProgressView *)v3 updateColors];
+  }
+
+  return v3;
+}
+
+- (void)drawRect:(CGRect)a3
+{
+  [(STStorageProgressView *)self bounds:a3.origin.x];
+  v20 = CGRectInset(v19, 2.0, 2.0);
+  x = v20.origin.x;
+  y = v20.origin.y;
+  width = v20.size.width;
+  height = v20.size.height;
+  CurrentContext = UIGraphicsGetCurrentContext();
+  UIGraphicsPushContext(CurrentContext);
+  percent = self->_percent;
+  if (percent > 0.0 && percent < 1.0)
+  {
+    v13 = floor(height * 0.5);
+    v14 = x + width - v13;
+    v15 = y + v13;
+    v16 = percent * 6.28318531 + -1.57079633;
+    v17 = [MEMORY[0x277D75208] bezierPathWithArcCenter:1 radius:v14 startAngle:v15 endAngle:v13 clockwise:?];
+    [v17 setLineWidth:4.0];
+    [(UIColor *)self->_blueColor setStroke];
+    [v17 stroke];
+    v11 = [MEMORY[0x277D75208] bezierPathWithArcCenter:1 radius:v14 startAngle:v15 endAngle:v13 clockwise:{v16, 4.71238898}];
+
+    [v11 setLineWidth:4.0];
+    v12 = &OBJC_IVAR___STStorageProgressView__grayColor;
+  }
+
+  else
+  {
+    v11 = [MEMORY[0x277D75208] bezierPathWithOvalInRect:{x, y, width, height}];
+    [v11 setLineWidth:4.0];
+    v12 = &OBJC_IVAR___STStorageProgressView__grayColor;
+    if (self->_percent > 0.0)
+    {
+      v12 = &OBJC_IVAR___STStorageProgressView__blueColor;
+    }
+  }
+
+  [*(&self->super.super.super.isa + *v12) setStroke];
+  [v11 stroke];
+
+  UIGraphicsPopContext();
+}
+
+- (void)setPercent:(double)a3
+{
+  if (self->_percent != a3)
+  {
+    self->_percent = a3;
+    [(STStorageProgressView *)self setNeedsDisplay];
+  }
+}
+
+- (void)traitCollectionDidChange:(id)a3
+{
+  v4.receiver = self;
+  v4.super_class = STStorageProgressView;
+  [(STStorageProgressView *)&v4 traitCollectionDidChange:a3];
+  [(STStorageProgressView *)self updateColors];
+}
+
+@end

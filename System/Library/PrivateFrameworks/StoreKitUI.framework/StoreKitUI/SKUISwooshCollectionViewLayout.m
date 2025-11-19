@@ -1,0 +1,199 @@
+@interface SKUISwooshCollectionViewLayout
++ (Class)layoutAttributesClass;
++ (float)snapToBoundariesDecelerationRate;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4;
+- (SKUISwooshCollectionViewLayout)init;
+- (id)layoutAttributesForElementsInRect:(CGRect)a3;
+@end
+
+@implementation SKUISwooshCollectionViewLayout
+
+- (SKUISwooshCollectionViewLayout)init
+{
+  if (os_variant_has_internal_content())
+  {
+    if (_os_feature_enabled_impl())
+    {
+      v3 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT);
+      if (v3)
+      {
+        [(SKUISwooshCollectionViewLayout *)v3 init:v4];
+      }
+    }
+  }
+
+  v14.receiver = self;
+  v14.super_class = SKUISwooshCollectionViewLayout;
+  v11 = [(UICollectionViewFlowLayout *)&v14 init];
+  v12 = v11;
+  if (v11)
+  {
+    [(UICollectionViewFlowLayout *)v11 setMinimumLineSpacing:0.0];
+    [(UICollectionViewFlowLayout *)v12 setMinimumInteritemSpacing:0.0];
+    [(UICollectionViewFlowLayout *)v12 setScrollDirection:1];
+  }
+
+  return v12;
+}
+
++ (float)snapToBoundariesDecelerationRate
+{
+  if (os_variant_has_internal_content())
+  {
+    if (_os_feature_enabled_impl())
+    {
+      v2 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT);
+      if (v2)
+      {
+        [(SKUISwooshCollectionViewLayout *)v2 snapToBoundariesDecelerationRate:v3];
+      }
+    }
+  }
+
+  return *"fff?";
+}
+
++ (Class)layoutAttributesClass
+{
+  if (os_variant_has_internal_content())
+  {
+    if (_os_feature_enabled_impl())
+    {
+      v2 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT);
+      if (v2)
+      {
+        [(SKUISwooshCollectionViewLayout *)v2 layoutAttributesClass:v3];
+      }
+    }
+  }
+
+  v10 = objc_opt_class();
+
+  return v10;
+}
+
+- (id)layoutAttributesForElementsInRect:(CGRect)a3
+{
+  v16 = *MEMORY[0x277D85DE8];
+  v14.receiver = self;
+  v14.super_class = SKUISwooshCollectionViewLayout;
+  v4 = [(UICollectionViewFlowLayout *)&v14 layoutAttributesForElementsInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v10 = 0u;
+  v11 = 0u;
+  v12 = 0u;
+  v13 = 0u;
+  v5 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  if (v5)
+  {
+    v6 = v5;
+    v7 = *v11;
+    do
+    {
+      for (i = 0; i != v6; ++i)
+      {
+        if (*v11 != v7)
+        {
+          objc_enumerationMutation(v4);
+        }
+
+        [*(*(&v10 + 1) + 8 * i) setBackgroundColor:self->_backgroundColor];
+      }
+
+      v6 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+    }
+
+    while (v6);
+  }
+
+  return v4;
+}
+
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4
+{
+  x = a4.x;
+  v31.receiver = self;
+  v31.super_class = SKUISwooshCollectionViewLayout;
+  [(SKUISwooshCollectionViewLayout *)&v31 targetContentOffsetForProposedContentOffset:a3.x withScrollingVelocity:a3.y, a4.x, a4.y];
+  v7 = v6;
+  v9 = v8;
+  if (self->_snapsToItemBoundaries || self->_snapsToItemCenters)
+  {
+    v10 = [(SKUISwooshCollectionViewLayout *)self collectionView];
+    v11 = [v10 dataSource];
+    v12 = [v10 delegate];
+    if (objc_opt_respondsToSelector())
+    {
+      [(UICollectionViewFlowLayout *)self minimumInteritemSpacing];
+      v14 = v13;
+      [v10 frame];
+      v16 = v15 + v15;
+      if ([v10 numberOfSections] >= 1)
+      {
+        v17 = 0;
+        v18 = 0.0;
+        do
+        {
+          v19 = [v11 collectionView:v10 numberOfItemsInSection:v17];
+          if (v19 >= 1)
+          {
+            v20 = v19;
+            v21 = 0;
+            while (1)
+            {
+              v22 = [MEMORY[0x277CCAA70] indexPathForItem:v21 inSection:v17];
+              [v12 collectionView:v10 layout:self sizeForItemAtIndexPath:v22];
+              v16 = v23;
+
+              v24 = v18 + v16;
+              if (v7 > v18 && v7 < v24)
+              {
+                break;
+              }
+
+              v18 = v18 + v14 + v16;
+              if (v20 == ++v21)
+              {
+                goto LABEL_19;
+              }
+            }
+
+            if (x > 0.0 || x >= 0.0 && v7 - v18 >= v16 * 0.5)
+            {
+              v7 = v14 + v24;
+            }
+
+            else
+            {
+              v7 = v18;
+            }
+          }
+
+LABEL_19:
+          ++v17;
+        }
+
+        while (v17 < [v10 numberOfSections]);
+      }
+
+      if (self->_snapsToItemCenters)
+      {
+        [v10 frame];
+        v7 = v7 + (v26 - v16) * -0.5;
+        [v10 contentInset];
+        if (v7 < -v27)
+        {
+          [v10 contentInset];
+          v7 = -v28;
+        }
+      }
+    }
+  }
+
+  v29 = v7;
+  v30 = v9;
+  result.y = v30;
+  result.x = v29;
+  return result;
+}
+
+@end

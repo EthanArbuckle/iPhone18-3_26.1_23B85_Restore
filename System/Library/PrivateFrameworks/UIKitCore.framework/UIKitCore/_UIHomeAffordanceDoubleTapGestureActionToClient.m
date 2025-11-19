@@ -1,0 +1,60 @@
+@interface _UIHomeAffordanceDoubleTapGestureActionToClient
++ (id)actionForDoubleTapGestureDidSucceed:(BOOL)a3;
+- (BOOL)didSucceed;
+- (id)debugDescription;
+- (id)succinctDescription;
+- (void)appendDescriptionToStream:(id)a3;
+@end
+
+@implementation _UIHomeAffordanceDoubleTapGestureActionToClient
+
++ (id)actionForDoubleTapGestureDidSucceed:(BOOL)a3
+{
+  v3 = a3;
+  v5 = objc_alloc_init(MEMORY[0x1E698E700]);
+  [v5 setObject:&unk_1EFE305B0 forSetting:0];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  [v5 setObject:v6 forSetting:1];
+
+  v7 = [[a1 alloc] initWithInfo:v5 responder:0];
+
+  return v7;
+}
+
+- (BOOL)didSucceed
+{
+  v2 = [(_UIHomeAffordanceDoubleTapGestureActionToClient *)self info];
+  v3 = [v2 objectForSetting:1];
+  v4 = [v3 BOOLValue];
+
+  return v4;
+}
+
+- (void)appendDescriptionToStream:(id)a3
+{
+  v4 = a3;
+  v6.receiver = self;
+  v6.super_class = _UIHomeAffordanceDoubleTapGestureActionToClient;
+  [(_UIHomeAffordanceBSActionToClient *)&v6 appendDescriptionToStream:v4];
+  v5 = [v4 appendBool:-[_UIHomeAffordanceDoubleTapGestureActionToClient didSucceed](self withName:{"didSucceed"), @"didSucceed"}];
+}
+
+- (id)succinctDescription
+{
+  v3 = MEMORY[0x1E698E688];
+  v4 = [MEMORY[0x1E698E690] succinctStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+
+  return v5;
+}
+
+- (id)debugDescription
+{
+  v3 = MEMORY[0x1E698E688];
+  v4 = [MEMORY[0x1E698E690] debugStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+
+  return v5;
+}
+
+@end

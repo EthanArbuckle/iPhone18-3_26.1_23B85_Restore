@@ -1,0 +1,155 @@
+@interface HUCameraUsageOptionItemProvider
+- (HUCameraUsageOptionItemProvider)init;
+- (HUCameraUsageOptionItemProvider)initWithPresenceEventType:(unint64_t)a3 cameraProfiles:(id)a4;
+- (id)invalidationReasons;
+- (id)reloadItems;
+@end
+
+@implementation HUCameraUsageOptionItemProvider
+
+- (HUCameraUsageOptionItemProvider)initWithPresenceEventType:(unint64_t)a3 cameraProfiles:(id)a4
+{
+  v6 = a4;
+  v14.receiver = self;
+  v14.super_class = HUCameraUsageOptionItemProvider;
+  v7 = [(HFItemProvider *)&v14 init];
+  v8 = v7;
+  if (v7)
+  {
+    v7->_presenceEventType = a3;
+    v9 = [v6 copy];
+    cameraProfiles = v8->_cameraProfiles;
+    v8->_cameraProfiles = v9;
+
+    v11 = objc_opt_new();
+    items = v8->_items;
+    v8->_items = v11;
+  }
+
+  return v8;
+}
+
+- (HUCameraUsageOptionItemProvider)init
+{
+  v4 = [MEMORY[0x277CCA890] currentHandler];
+  v5 = NSStringFromSelector(sel_initWithPresenceEventType_cameraProfiles_);
+  [v4 handleFailureInMethod:a2 object:self file:@"HUCameraUsageOptionItemProvider.m" lineNumber:101 description:{@"%s is unavailable; use %@ instead", "-[HUCameraUsageOptionItemProvider init]", v5}];
+
+  return 0;
+}
+
+- (id)reloadItems
+{
+  objc_initWeak(&location, self);
+  v8[0] = MEMORY[0x277D85DD0];
+  v8[1] = 3221225472;
+  v8[2] = __46__HUCameraUsageOptionItemProvider_reloadItems__block_invoke_3;
+  v8[3] = &unk_277DB93F0;
+  objc_copyWeak(&v9, &location);
+  v3 = [(HFItemProvider *)self reloadItemsWithObjects:&unk_282492CD8 keyAdaptor:&__block_literal_global_260 itemAdaptor:&__block_literal_global_77_2 filter:0 itemMap:v8];
+  v6[0] = MEMORY[0x277D85DD0];
+  v6[1] = 3221225472;
+  v6[2] = __46__HUCameraUsageOptionItemProvider_reloadItems__block_invoke_5;
+  v6[3] = &unk_277DB7FA8;
+  objc_copyWeak(&v7, &location);
+  v4 = [v3 flatMap:v6];
+  objc_destroyWeak(&v7);
+
+  objc_destroyWeak(&v9);
+  objc_destroyWeak(&location);
+
+  return v4;
+}
+
+uint64_t __46__HUCameraUsageOptionItemProvider_reloadItems__block_invoke_2(uint64_t a1, void *a2)
+{
+  v2 = MEMORY[0x277CCABB0];
+  v3 = [a2 usage];
+
+  return [v2 numberWithUnsignedInteger:v3];
+}
+
+HUCameraUsageOptionItem *__46__HUCameraUsageOptionItemProvider_reloadItems__block_invoke_3(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  v5 = [WeakRetained items];
+  v13[0] = MEMORY[0x277D85DD0];
+  v13[1] = 3221225472;
+  v13[2] = __46__HUCameraUsageOptionItemProvider_reloadItems__block_invoke_4;
+  v13[3] = &unk_277DB85D8;
+  v6 = v3;
+  v14 = v6;
+  v7 = [v5 na_firstObjectPassingTest:v13];
+
+  if (!v7)
+  {
+    v8 = [HUCameraUsageOptionItem alloc];
+    v9 = [WeakRetained presenceEventType];
+    v10 = [v6 unsignedIntegerValue];
+    v11 = [WeakRetained cameraProfiles];
+    v7 = [(HUCameraUsageOptionItem *)v8 initWithPresence:v9 cameraUsage:v10 cameraProfiles:v11];
+  }
+
+  return v7;
+}
+
+BOOL __46__HUCameraUsageOptionItemProvider_reloadItems__block_invoke_4(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  objc_opt_class();
+  v4 = v3;
+  if (objc_opt_isKindOfClass())
+  {
+    v5 = v4;
+  }
+
+  else
+  {
+    v5 = 0;
+  }
+
+  v6 = v5;
+
+  if (v6)
+  {
+    v7 = [v6 usage];
+    v8 = v7 == [*(a1 + 32) unsignedIntegerValue];
+  }
+
+  else
+  {
+    v8 = 0;
+  }
+
+  return v8;
+}
+
+id __46__HUCameraUsageOptionItemProvider_reloadItems__block_invoke_5(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  v5 = [WeakRetained items];
+  v6 = [v3 addedItems];
+  [v5 unionSet:v6];
+
+  v7 = [WeakRetained items];
+  v8 = [v3 removedItems];
+  [v7 minusSet:v8];
+
+  v9 = [MEMORY[0x277D2C900] futureWithResult:v3];
+
+  return v9;
+}
+
+- (id)invalidationReasons
+{
+  v5.receiver = self;
+  v5.super_class = HUCameraUsageOptionItemProvider;
+  v2 = [(HFItemProvider *)&v5 invalidationReasons];
+  v3 = [v2 setByAddingObject:*MEMORY[0x277D13B28]];
+
+  return v3;
+}
+
+@end

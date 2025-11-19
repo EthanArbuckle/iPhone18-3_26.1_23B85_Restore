@@ -1,0 +1,111 @@
+@interface HDCodableRoutineLocationResponse
+- (BOOL)isEqual:(id)a3;
+- (id)copyWithZone:(_NSZone *)a3;
+- (id)description;
+- (id)dictionaryRepresentation;
+- (void)copyTo:(id)a3;
+- (void)mergeFrom:(id)a3;
+- (void)writeTo:(id)a3;
+@end
+
+@implementation HDCodableRoutineLocationResponse
+
+- (id)description
+{
+  v3 = MEMORY[0x277CCACA8];
+  v8.receiver = self;
+  v8.super_class = HDCodableRoutineLocationResponse;
+  v4 = [(HDCodableRoutineLocationResponse *)&v8 description];
+  v5 = [(HDCodableRoutineLocationResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+
+  return v6;
+}
+
+- (id)dictionaryRepresentation
+{
+  v3 = [MEMORY[0x277CBEB38] dictionary];
+  locationOfInterest = self->_locationOfInterest;
+  if (locationOfInterest)
+  {
+    v5 = [(HDCodableRoutineLocation *)locationOfInterest dictionaryRepresentation];
+    [v3 setObject:v5 forKey:@"locationOfInterest"];
+  }
+
+  return v3;
+}
+
+- (void)writeTo:(id)a3
+{
+  if (self->_locationOfInterest)
+  {
+    PBDataWriterWriteSubmessage();
+  }
+}
+
+- (void)copyTo:(id)a3
+{
+  locationOfInterest = self->_locationOfInterest;
+  if (locationOfInterest)
+  {
+    [a3 setLocationOfInterest:locationOfInterest];
+  }
+}
+
+- (id)copyWithZone:(_NSZone *)a3
+{
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v6 = [(HDCodableRoutineLocation *)self->_locationOfInterest copyWithZone:a3];
+  v7 = v5[1];
+  v5[1] = v6;
+
+  return v5;
+}
+
+- (BOOL)isEqual:(id)a3
+{
+  v4 = a3;
+  if ([v4 isMemberOfClass:objc_opt_class()])
+  {
+    locationOfInterest = self->_locationOfInterest;
+    if (locationOfInterest | v4[1])
+    {
+      v6 = [(HDCodableRoutineLocation *)locationOfInterest isEqual:?];
+    }
+
+    else
+    {
+      v6 = 1;
+    }
+  }
+
+  else
+  {
+    v6 = 0;
+  }
+
+  return v6;
+}
+
+- (void)mergeFrom:(id)a3
+{
+  v4 = a3;
+  locationOfInterest = self->_locationOfInterest;
+  v6 = v4[1];
+  if (locationOfInterest)
+  {
+    if (v6)
+    {
+      [(HDCodableRoutineLocation *)locationOfInterest mergeFrom:?];
+    }
+  }
+
+  else if (v6)
+  {
+    [(HDCodableRoutineLocationResponse *)self setLocationOfInterest:?];
+  }
+
+  MEMORY[0x2821F96F8]();
+}
+
+@end

@@ -1,0 +1,22 @@
+@interface CBAttribute
+- (CBAttribute)initWithUUID:(id)a3;
+@end
+
+@implementation CBAttribute
+
+- (CBAttribute)initWithUUID:(id)a3
+{
+  v5 = a3;
+  v9.receiver = self;
+  v9.super_class = CBAttribute;
+  v6 = [(CBAttribute *)&v9 init];
+  v7 = v6;
+  if (v6)
+  {
+    objc_storeStrong(&v6->_UUID, a3);
+  }
+
+  return v7;
+}
+
+@end

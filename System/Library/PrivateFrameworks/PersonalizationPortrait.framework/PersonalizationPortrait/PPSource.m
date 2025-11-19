@@ -1,0 +1,598 @@
+@interface PPSource
+- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqualToSource:(id)a3;
+- (NSSet)featureNames;
+- (PPSource)initWithBundleId:(id)a3 groupId:(id)a4 documentId:(id)a5 date:(id)a6;
+- (PPSource)initWithBundleId:(id)a3 groupId:(id)a4 documentId:(id)a5 date:(id)a6 relevanceDate:(id)a7 contactHandles:(id)a8 language:(id)a9 metadata:(id)a10;
+- (PPSource)initWithCoder:(id)a3;
+- (id)description;
+- (id)featureValueForName:(id)a3;
+- (id)sha256;
+- (unint64_t)hash;
+- (void)encodeWithCoder:(id)a3;
+@end
+
+@implementation PPSource
+
+- (id)featureValueForName:(id)a3
+{
+  v4 = a3;
+  if ([v4 isEqualToString:@"bundleId"])
+  {
+    v5 = MEMORY[0x1E695FE60];
+    bundleId = self->_bundleId;
+LABEL_7:
+    v7 = [v5 featureValueWithString:bundleId];
+LABEL_8:
+    v8 = v7;
+    goto LABEL_9;
+  }
+
+  if ([v4 isEqualToString:@"groupId"])
+  {
+    v5 = MEMORY[0x1E695FE60];
+    bundleId = self->_groupId;
+    goto LABEL_7;
+  }
+
+  if ([v4 isEqualToString:@"documentId"])
+  {
+    v5 = MEMORY[0x1E695FE60];
+    bundleId = self->_documentId;
+    goto LABEL_7;
+  }
+
+  if ([v4 isEqualToString:@"date"])
+  {
+    v10 = MEMORY[0x1E695FE60];
+    date = self->_date;
+LABEL_16:
+    [(NSDate *)date timeIntervalSince1970];
+    v12 = v10;
+LABEL_17:
+    v7 = [v12 featureValueWithDouble:?];
+    goto LABEL_8;
+  }
+
+  if ([v4 isEqualToString:@"relevanceDate"])
+  {
+    v10 = MEMORY[0x1E695FE60];
+    date = self->_relevanceDate;
+    goto LABEL_16;
+  }
+
+  if ([v4 isEqualToString:@"contactHandles"])
+  {
+    v13 = MEMORY[0x1E695FE60];
+    v14 = [MEMORY[0x1E695FF10] sequenceWithStringArray:self->_contactHandles];
+    v8 = [v13 featureValueWithSequence:v14];
+  }
+
+  else
+  {
+    if ([v4 isEqualToString:@"language"])
+    {
+      v5 = MEMORY[0x1E695FE60];
+      bundleId = self->_language;
+      goto LABEL_7;
+    }
+
+    if ([v4 hasPrefix:@"meta_"])
+    {
+      metadata = self->_metadata;
+      if (!metadata)
+      {
+        v12 = MEMORY[0x1E695FE60];
+        goto LABEL_17;
+      }
+
+      v16 = [v4 substringFromIndex:{objc_msgSend(@"meta_", "length")}];
+      v8 = [(PPSourceMetadata *)metadata featureValueForName:v16];
+    }
+
+    else
+    {
+      v8 = 0;
+    }
+  }
+
+LABEL_9:
+
+  return v8;
+}
+
+- (NSSet)featureNames
+{
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __24__PPSource_featureNames__block_invoke;
+  block[3] = &unk_1E77F7CC8;
+  block[4] = self;
+  if (featureNames__pasOnceToken12 != -1)
+  {
+    dispatch_once(&featureNames__pasOnceToken12, block);
+  }
+
+  return featureNames__pasExprOnceResult_4146;
+}
+
+void __24__PPSource_featureNames__block_invoke(uint64_t a1)
+{
+  v2 = objc_autoreleasePoolPush();
+  v3 = [*(*(a1 + 32) + 8) featureNames];
+  v4 = [v3 allObjects];
+
+  v5 = [v4 _pas_mappedArrayWithTransform:&__block_literal_global_4147];
+
+  v6 = objc_autoreleasePoolPush();
+  v7 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{@"bundleId", @"groupId", @"documentId", @"date", @"relevanceDate", @"contactHandles", @"language", 0}];
+  objc_autoreleasePoolPop(v6);
+  v8 = [v7 setByAddingObjectsFromArray:v5];
+
+  v9 = featureNames__pasExprOnceResult_4146;
+  featureNames__pasExprOnceResult_4146 = v8;
+
+  objc_autoreleasePoolPop(v2);
+}
+
+- (id)sha256
+{
+  v3 = objc_autoreleasePoolPush();
+  v11 = 0;
+  v12 = &v11;
+  v13 = 0x8810000000;
+  v14 = &unk_1A8044C0E;
+  memset(&v15, 0, sizeof(v15));
+  CC_SHA256_Init(&v15);
+  v10[0] = MEMORY[0x1E69E9820];
+  v10[1] = 3221225472;
+  v10[2] = __18__PPSource_sha256__block_invoke;
+  v10[3] = &unk_1E77F6C80;
+  v10[4] = &v11;
+  v4 = MEMORY[0x1AC568040](v10);
+  (v4)[2](v4, self->_bundleId);
+  (v4)[2](v4, self->_groupId);
+  (v4)[2](v4, self->_documentId);
+  [(NSDate *)self->_date timeIntervalSince1970];
+  if (v5 < 0.0)
+  {
+    v5 = 0.0;
+  }
+
+  data = fmin(v5, 4294967300.0);
+  CC_SHA256_Update((v12 + 4), &data, 4u);
+  v6 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:32];
+  v7 = [v6 mutableBytes];
+  CC_SHA256_Final(v7, (v12 + 4));
+
+  _Block_object_dispose(&v11, 8);
+  objc_autoreleasePoolPop(v3);
+
+  return v6;
+}
+
+void __18__PPSource_sha256__block_invoke(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  if (v3)
+  {
+    v4 = objc_autoreleasePoolPush();
+    v5 = [v3 dataUsingEncoding:4];
+    v6 = v5;
+    if (v5)
+    {
+      CC_SHA256_Update((*(*(a1 + 32) + 8) + 32), [v5 bytes], objc_msgSend(v5, "length"));
+    }
+
+    else
+    {
+      v7 = pp_default_log_handle();
+      if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+      {
+        *v8 = 0;
+        _os_log_impl(&dword_1A7FD3000, v7, OS_LOG_TYPE_DEFAULT, "Unable to hash bad string ivar on PPSource", v8, 2u);
+      }
+    }
+
+    objc_autoreleasePoolPop(v4);
+  }
+}
+
+- (BOOL)isEqual:(id)a3
+{
+  v4 = a3;
+  if (v4 == self)
+  {
+    v5 = 1;
+  }
+
+  else
+  {
+    objc_opt_class();
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PPSource *)self isEqualToSource:v4];
+  }
+
+  return v5;
+}
+
+- (BOOL)isEqualToSource:(id)a3
+{
+  v4 = a3;
+  p_isa = &v4->super.isa;
+  if (v4 == self)
+  {
+    LOBYTE(v16) = 1;
+  }
+
+  else
+  {
+    if (v4)
+    {
+      v6 = self->_bundleId;
+      v7 = p_isa[5];
+      if (v6 | v7)
+      {
+        v15 = v7;
+        LOBYTE(v16) = 0;
+        if (!v6 || !v7)
+        {
+          goto LABEL_45;
+        }
+
+        v16 = [(NSDate *)v6 isEqualToString:v7];
+
+        if (!v16)
+        {
+          goto LABEL_46;
+        }
+      }
+
+      v6 = self->_groupId;
+      v8 = p_isa[6];
+      if (v6 | v8)
+      {
+        v15 = v8;
+        LOBYTE(v16) = 0;
+        if (!v6 || !v8)
+        {
+          goto LABEL_45;
+        }
+
+        v16 = [(NSDate *)v6 isEqualToString:v8];
+
+        if (!v16)
+        {
+          goto LABEL_46;
+        }
+      }
+
+      v6 = self->_documentId;
+      v9 = p_isa[7];
+      if (v6 | v9)
+      {
+        v15 = v9;
+        LOBYTE(v16) = 0;
+        if (!v6 || !v9)
+        {
+          goto LABEL_45;
+        }
+
+        v16 = [(NSDate *)v6 isEqualToString:v9];
+
+        if (!v16)
+        {
+          goto LABEL_46;
+        }
+      }
+
+      v6 = self->_date;
+      v10 = p_isa[8];
+      if (v6 | v10)
+      {
+        v15 = v10;
+        LOBYTE(v16) = 0;
+        if (!v6 || !v10)
+        {
+          goto LABEL_45;
+        }
+
+        v16 = [(NSDate *)v6 isEqualToDate:v10];
+
+        if (!v16)
+        {
+          goto LABEL_46;
+        }
+      }
+
+      v6 = self->_relevanceDate;
+      v11 = p_isa[2];
+      if (v6 | v11)
+      {
+        v15 = v11;
+        LOBYTE(v16) = 0;
+        if (!v6 || !v11)
+        {
+          goto LABEL_45;
+        }
+
+        v16 = [(NSDate *)v6 isEqualToDate:v11];
+
+        if (!v16)
+        {
+          goto LABEL_46;
+        }
+      }
+
+      v6 = self->_contactHandles;
+      v12 = p_isa[3];
+      if (v6 | v12)
+      {
+        v15 = v12;
+        LOBYTE(v16) = 0;
+        if (!v6 || !v12)
+        {
+          goto LABEL_45;
+        }
+
+        v16 = [(NSDate *)v6 isEqualToArray:v12];
+
+        if (!v16)
+        {
+          goto LABEL_46;
+        }
+      }
+
+      v6 = self->_language;
+      v13 = p_isa[4];
+      if (!(v6 | v13))
+      {
+LABEL_10:
+        v6 = self->_metadata;
+        v14 = p_isa[1];
+        if (v6 | v14)
+        {
+          v15 = v14;
+          LOBYTE(v16) = 0;
+          if (v6 && v14)
+          {
+            LOBYTE(v16) = [(NSDate *)v6 isEqualToSourceMetadata:v14];
+          }
+        }
+
+        else
+        {
+          v15 = 0;
+          v6 = 0;
+          LOBYTE(v16) = 1;
+        }
+
+        goto LABEL_45;
+      }
+
+      v15 = v13;
+      LOBYTE(v16) = 0;
+      if (v6 && v13)
+      {
+        v16 = [(NSDate *)v6 isEqualToString:v13];
+
+        if (!v16)
+        {
+          goto LABEL_46;
+        }
+
+        goto LABEL_10;
+      }
+
+LABEL_45:
+
+      goto LABEL_46;
+    }
+
+    LOBYTE(v16) = 0;
+  }
+
+LABEL_46:
+
+  return v16;
+}
+
+- (unint64_t)hash
+{
+  v3 = [(NSString *)self->_bundleId hash];
+  v4 = [(NSString *)self->_groupId hash]^ v3;
+  v5 = [(NSString *)self->_documentId hash];
+  v6 = v4 ^ v5 ^ [(NSDate *)self->_date hash];
+  v7 = [(NSDate *)self->_relevanceDate hash];
+  v8 = v7 ^ [(NSString *)self->_language hash];
+  return v6 ^ v8 ^ [(PPSourceMetadata *)self->_metadata hash];
+}
+
+- (void)encodeWithCoder:(id)a3
+{
+  bundleId = self->_bundleId;
+  v5 = a3;
+  [v5 encodeObject:bundleId forKey:@"bid"];
+  [v5 encodeObject:self->_groupId forKey:@"gid"];
+  [v5 encodeObject:self->_documentId forKey:@"did"];
+  [v5 encodeObject:self->_date forKey:@"date"];
+  [v5 encodeObject:self->_relevanceDate forKey:@"reld"];
+  [v5 encodeObject:self->_contactHandles forKey:@"cnh"];
+  [v5 encodeObject:self->_language forKey:@"lan"];
+  [v5 encodeObject:self->_metadata forKey:@"met"];
+}
+
+- (PPSource)initWithCoder:(id)a3
+{
+  v3 = a3;
+  v4 = objc_opt_class();
+  v5 = [v3 decodeObjectOfClass:v4 forKey:@"bid"];
+  v26 = [v3 decodeObjectOfClass:v4 forKey:@"gid"];
+  v6 = [v3 decodeObjectOfClass:v4 forKey:@"did"];
+  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"reld"];
+  v9 = objc_autoreleasePoolPush();
+  v10 = objc_alloc(MEMORY[0x1E695DFD8]);
+  v11 = objc_opt_class();
+  v12 = [v10 initWithObjects:{v11, objc_opt_class(), 0}];
+  objc_autoreleasePoolPop(v9);
+  v13 = [v3 decodeObjectOfClasses:v12 forKey:@"cnh"];
+
+  v14 = [v3 decodeObjectOfClass:v4 forKey:@"lan"];
+  v15 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"met"];
+  v25 = v5;
+  if (v5 && v6 && v7)
+  {
+    v16 = v15;
+    v17 = v5;
+    v18 = v26;
+    v19 = [(PPSource *)self initWithBundleId:v17 groupId:v26 documentId:v6 date:v7 relevanceDate:v8 contactHandles:v13 language:v14 metadata:v15];
+    v20 = v19;
+  }
+
+  else
+  {
+    v23 = v15;
+    v24 = v13;
+    v21 = pp_default_log_handle();
+    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    {
+      *buf = 0;
+      _os_log_error_impl(&dword_1A7FD3000, v21, OS_LOG_TYPE_ERROR, "PPSource:initWithCoder: decoded illegal nil property", buf, 2u);
+    }
+
+    v20 = 0;
+    v18 = v26;
+    v19 = self;
+    v13 = v24;
+    v16 = v23;
+  }
+
+  return v20;
+}
+
+- (id)description
+{
+  v3 = objc_alloc(MEMORY[0x1E696AEC0]);
+  v4 = [(PPSource *)self bundleId];
+  v5 = [(PPSource *)self groupId];
+  v6 = [(PPSource *)self documentId];
+  v7 = [(PPSource *)self date];
+  v8 = [v3 initWithFormat:@"<PPSource bi:%@ gi:%@ di:%@ da:%@>", v4, v5, v6, v7];
+
+  return v8;
+}
+
+- (PPSource)initWithBundleId:(id)a3 groupId:(id)a4 documentId:(id)a5 date:(id)a6 relevanceDate:(id)a7 contactHandles:(id)a8 language:(id)a9 metadata:(id)a10
+{
+  v23 = a7;
+  v22 = a8;
+  v21 = a9;
+  v17 = a10;
+  v18 = [(PPSource *)self initWithBundleId:a3 groupId:a4 documentId:a5 date:a6];
+  v19 = v18;
+  if (v18)
+  {
+    objc_storeStrong(&v18->_relevanceDate, a7);
+    objc_storeStrong(&v19->_language, a9);
+    objc_storeStrong(&v19->_metadata, a10);
+    objc_storeStrong(&v19->_contactHandles, a8);
+  }
+
+  return v19;
+}
+
+- (PPSource)initWithBundleId:(id)a3 groupId:(id)a4 documentId:(id)a5 date:(id)a6
+{
+  v37 = *MEMORY[0x1E69E9840];
+  v11 = a3;
+  v12 = a4;
+  v13 = a5;
+  v14 = a6;
+  if (v11)
+  {
+    if (v13)
+    {
+      goto LABEL_3;
+    }
+
+LABEL_14:
+    v30 = [MEMORY[0x1E696AAA8] currentHandler];
+    [v30 handleFailureInMethod:a2 object:self file:@"PPSource.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"documentId"}];
+
+    if (v14)
+    {
+      goto LABEL_4;
+    }
+
+    goto LABEL_15;
+  }
+
+  v29 = [MEMORY[0x1E696AAA8] currentHandler];
+  [v29 handleFailureInMethod:a2 object:self file:@"PPSource.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"bundleId"}];
+
+  if (!v13)
+  {
+    goto LABEL_14;
+  }
+
+LABEL_3:
+  if (v14)
+  {
+    goto LABEL_4;
+  }
+
+LABEL_15:
+  v31 = [MEMORY[0x1E696AAA8] currentHandler];
+  [v31 handleFailureInMethod:a2 object:self file:@"PPSource.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"date"}];
+
+LABEL_4:
+  [v14 timeIntervalSinceReferenceDate];
+  if (fabs(v15) == INFINITY)
+  {
+    v16 = pp_default_log_handle();
+    if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
+    {
+      *buf = 138412290;
+      v36 = v11;
+      _os_log_fault_impl(&dword_1A7FD3000, v16, OS_LOG_TYPE_FAULT, "Constructing PPSource with Inf date associated with bundleId: %@", buf, 0xCu);
+    }
+  }
+
+  v34.receiver = self;
+  v34.super_class = PPSource;
+  v17 = [(PPSource *)&v34 init];
+  if (v17)
+  {
+    v33 = v13;
+    v18 = a6;
+    v19 = v12;
+    v20 = PPGetStringInternPool();
+    v21 = v11;
+    v22 = [v20 intern:v11];
+    if (!v22)
+    {
+      v32 = [MEMORY[0x1E696AAA8] currentHandler];
+      [v32 handleFailureInMethod:a2 object:v17 file:@"PPSource.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"internedBundleId"}];
+    }
+
+    bundleId = v17->_bundleId;
+    v17->_bundleId = v22;
+    v24 = v22;
+
+    v12 = v19;
+    v25 = [v20 intern:v19];
+    groupId = v17->_groupId;
+    v17->_groupId = v25;
+
+    objc_storeStrong(&v17->_documentId, a5);
+    objc_storeStrong(&v17->_date, v18);
+
+    v13 = v33;
+    v11 = v21;
+  }
+
+  v27 = *MEMORY[0x1E69E9840];
+  return v17;
+}
+
+@end

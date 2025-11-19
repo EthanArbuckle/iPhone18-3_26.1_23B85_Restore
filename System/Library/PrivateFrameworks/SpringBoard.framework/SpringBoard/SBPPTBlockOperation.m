@@ -1,0 +1,214 @@
+@interface SBPPTBlockOperation
++ (id)operationWithBlock:(id)a3;
++ (id)operationWithName:(id)a3 block:(id)a4;
+- (SBPPTBlockOperation)initWithBlock:(id)a3;
+- (SBPPTBlockOperation)initWithName:(id)a3 block:(id)a4;
+- (id)description;
+- (id)timeoutBlock;
+- (void)cancel;
+- (void)cancelAndFailTestWithReason:(id)a3;
+- (void)finish;
+- (void)main;
+- (void)start;
+@end
+
+@implementation SBPPTBlockOperation
+
++ (id)operationWithBlock:(id)a3
+{
+  v4 = a3;
+  v5 = [[a1 alloc] initWithBlock:v4];
+
+  return v5;
+}
+
++ (id)operationWithName:(id)a3 block:(id)a4
+{
+  v6 = a4;
+  v7 = a3;
+  v8 = [[a1 alloc] initWithName:v7 block:v6];
+
+  return v8;
+}
+
+- (SBPPTBlockOperation)initWithBlock:(id)a3
+{
+  v4 = a3;
+  v10.receiver = self;
+  v10.super_class = SBPPTBlockOperation;
+  v5 = [(SBPPTOperation *)&v10 init];
+  v6 = v5;
+  if (v5)
+  {
+    v5->_timeoutInterval = 15.0;
+    v5->_state = 0;
+    v7 = [v4 copy];
+    block = v6->_block;
+    v6->_block = v7;
+  }
+
+  return v6;
+}
+
+- (SBPPTBlockOperation)initWithName:(id)a3 block:(id)a4
+{
+  v6 = a3;
+  v7 = [(SBPPTBlockOperation *)self initWithBlock:a4];
+  v8 = v7;
+  if (v7)
+  {
+    [(SBPPTOperation *)v7 setOperationName:v6];
+  }
+
+  return v8;
+}
+
+- (id)description
+{
+  v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
+  v4 = [(SBPPTBlockOperation *)self state];
+  v5 = @"Pending";
+  if (v4 == 2)
+  {
+    v5 = @"Finished";
+  }
+
+  if (v4 == 1)
+  {
+    v6 = @"Executing";
+  }
+
+  else
+  {
+    v6 = v5;
+  }
+
+  [v3 appendString:v6 withName:@"state"];
+  v7 = [v3 appendFloat:@"timeoutInterval" withName:self->_timeoutInterval];
+  v8 = [(SBPPTOperation *)self operationName];
+  [v3 appendString:v8 withName:@"operationName"];
+
+  v9 = [v3 build];
+
+  return v9;
+}
+
+__CFString *__34__SBPPTBlockOperation_description__block_invoke(uint64_t a1)
+{
+  v1 = [*(a1 + 32) state];
+  v2 = @"Pending";
+  if (v1 == 2)
+  {
+    v2 = @"Finished";
+  }
+
+  if (v1 == 1)
+  {
+    return @"Executing";
+  }
+
+  else
+  {
+    return v2;
+  }
+}
+
+- (void)finish
+{
+  block = [(SBPPTBlockOperation *)self timeoutBlock];
+  if (block)
+  {
+    dispatch_block_cancel(block);
+    [(SBPPTBlockOperation *)self setTimeoutBlock:0];
+  }
+
+  [(SBPPTBlockOperation *)self setState:2];
+  [(SBPPTOperation *)self operationDidFinish];
+}
+
+- (void)cancel
+{
+  v3.receiver = self;
+  v3.super_class = SBPPTBlockOperation;
+  [(SBPPTBlockOperation *)&v3 cancel];
+  self->_cancelled = 1;
+  [(SBPPTBlockOperation *)self finish];
+}
+
+- (void)cancelAndFailTestWithReason:(id)a3
+{
+  v16 = *MEMORY[0x277D85DE8];
+  v4 = a3;
+  v5 = +[SBApplicationTestingManager sharedInstance];
+  v6 = [v5 currentTestName];
+
+  [*MEMORY[0x277D76620] failedTest:v6 withFailure:v4];
+  v11.receiver = self;
+  v11.super_class = SBPPTBlockOperation;
+  [(SBPPTBlockOperation *)&v11 cancel];
+  self->_cancelled = 1;
+  v7 = SBLogPPT();
+  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  {
+    v8 = [(SBPPTOperation *)self operationName];
+    v9 = v8;
+    if (v8)
+    {
+      v10 = v8;
+    }
+
+    else
+    {
+      v10 = self;
+    }
+
+    *buf = 138412546;
+    v13 = v10;
+    v14 = 2112;
+    v15 = v4;
+    _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "PPT Operation '%@' cancelled for reason: %@", buf, 0x16u);
+  }
+
+  [(SBPPTBlockOperation *)self finish];
+}
+
+- (void)start
+{
+  v1 = [a1 operationName];
+  OUTLINED_FUNCTION_7(&dword_21ED4E000, v2, v3, "Skipping '%@' because it's already executing", v4, v5, v6, v7, 2u);
+}
+
+- (void)main
+{
+  [(SBPPTBlockOperation *)self timeoutInterval];
+  v4 = v3;
+  v8[0] = MEMORY[0x277D85DD0];
+  v8[1] = 3221225472;
+  v8[2] = __27__SBPPTBlockOperation_main__block_invoke;
+  v8[3] = &unk_2783A8BC8;
+  v8[4] = self;
+  *&v8[5] = v3;
+  v5 = dispatch_block_create(0, v8);
+  [(SBPPTBlockOperation *)self setTimeoutBlock:v5];
+  v6 = dispatch_time(0, (v4 * 1000000000.0));
+  dispatch_after(v6, MEMORY[0x277D85CD0], v5);
+  [(SBPPTOperation *)self operationWillStart];
+  v7 = [(SBPPTBlockOperation *)self block];
+  (v7)[2](v7, self);
+}
+
+void __27__SBPPTBlockOperation_main__block_invoke(uint64_t a1)
+{
+  v1 = *(a1 + 32);
+  v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Operation didn't complete within %f seconds", *(a1 + 40)];
+  [v1 cancelAndFailTestWithReason:v2];
+}
+
+- (id)timeoutBlock
+{
+  WeakRetained = objc_loadWeakRetained(&self->_timeoutBlock);
+
+  return WeakRetained;
+}
+
+@end

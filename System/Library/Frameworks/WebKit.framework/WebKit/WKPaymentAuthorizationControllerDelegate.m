@@ -1,0 +1,50 @@
+@interface WKPaymentAuthorizationControllerDelegate
+- (WKPaymentAuthorizationControllerDelegate)initWithRequest:(id)a3 presenter:(void *)a4;
+- (void)_getPaymentServicesMerchantURL:(id)a3;
+@end
+
+@implementation WKPaymentAuthorizationControllerDelegate
+
+- (WKPaymentAuthorizationControllerDelegate)initWithRequest:(id)a3 presenter:(void *)a4
+{
+  v10.receiver = self;
+  v10.super_class = WKPaymentAuthorizationControllerDelegate;
+  v5 = [(WKPaymentAuthorizationDelegate *)&v10 _initWithRequest:a3 presenter:?];
+  if (v5)
+  {
+    v6 = *(a4 + 3);
+    if (v6 && (v7 = *(v6 + 8)) != 0)
+    {
+      (**v7)(v7);
+      v8 = (*(*v7 + 88))(v7, a4);
+      objc_storeWeak(&v5->_presentingWindow, v8);
+      (*(*v7 + 8))(v7);
+    }
+
+    else
+    {
+      return 0;
+    }
+  }
+
+  return v5;
+}
+
+- (void)_getPaymentServicesMerchantURL:(id)a3
+{
+  v5 = MEMORY[0x1E69E2410];
+  (*MEMORY[0x1E69E2410])(self, a2);
+  v6 = objc_opt_respondsToSelector();
+  v7 = MEMORY[0x1E69E2440];
+  if (v6)
+  {
+    v7 = v5;
+  }
+
+  v8 = (*v7)();
+  v9 = [(PKPaymentRequest *)self->super._request.m_ptr APIType];
+
+  [v8 paymentServicesMerchantURLForAPIType:v9 completion:a3];
+}
+
+@end

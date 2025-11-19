@@ -1,0 +1,77 @@
+@interface NUFadeViewAnimator
+- (NUFadeViewAnimator)init;
+- (void)fadeFromView:(id)a3 toView:(id)a4 completion:(id)a5;
+@end
+
+@implementation NUFadeViewAnimator
+
+- (NUFadeViewAnimator)init
+{
+  v3.receiver = self;
+  v3.super_class = NUFadeViewAnimator;
+  result = [(NUFadeViewAnimator *)&v3 init];
+  if (result)
+  {
+    *&result->_fadeOutDuration = vdupq_n_s64(0x3FC70A3D70A3D70AuLL);
+    result->_fadeInDelay = 0.15;
+  }
+
+  return result;
+}
+
+- (void)fadeFromView:(id)a3 toView:(id)a4 completion:(id)a5
+{
+  v8 = a3;
+  v9 = a4;
+  v10 = a5;
+  [MEMORY[0x277CCACC8] isMainThread];
+  if (v8)
+  {
+    v11 = MEMORY[0x277D75D18];
+    [(NUFadeViewAnimator *)self fadeOutDuration];
+    v13 = v12;
+    v25[0] = MEMORY[0x277D85DD0];
+    v25[1] = 3221225472;
+    v25[2] = __53__NUFadeViewAnimator_fadeFromView_toView_completion___block_invoke;
+    v25[3] = &unk_2799A3498;
+    v26 = v8;
+    [v11 animateWithDuration:0 delay:v25 options:&__block_literal_global_8 animations:v13 completion:0.0];
+    [(NUFadeViewAnimator *)self fadeInDelay];
+    v15 = v14;
+  }
+
+  else
+  {
+    v15 = 0.0;
+  }
+
+  v16 = MEMORY[0x277D75D18];
+  [(NUFadeViewAnimator *)self fadeInDuration];
+  v18 = v17;
+  v22 = v10;
+  v23[0] = MEMORY[0x277D85DD0];
+  v23[1] = 3221225472;
+  v23[2] = __53__NUFadeViewAnimator_fadeFromView_toView_completion___block_invoke_3;
+  v23[3] = &unk_2799A3498;
+  v24 = v9;
+  v21[0] = MEMORY[0x277D85DD0];
+  v21[1] = 3221225472;
+  v21[2] = __53__NUFadeViewAnimator_fadeFromView_toView_completion___block_invoke_4;
+  v21[3] = &unk_2799A3C58;
+  v19 = v10;
+  v20 = v9;
+  [v16 animateWithDuration:0 delay:v23 options:v21 animations:v18 completion:v15];
+}
+
+uint64_t __53__NUFadeViewAnimator_fadeFromView_toView_completion___block_invoke_4(uint64_t a1)
+{
+  result = *(a1 + 32);
+  if (result)
+  {
+    return (*(result + 16))();
+  }
+
+  return result;
+}
+
+@end

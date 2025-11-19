@@ -1,0 +1,14 @@
+@interface HMDWidgetTimelineRefresher.WidgetAccessoryReachabilityMonitorDelegateAdaptor
+- (_TtCE13HomeKitDaemonCSo26HMDWidgetTimelineRefresherP33_E4AFB2A25343A8F5063AD1A14CCEA93749WidgetAccessoryReachabilityMonitorDelegateAdaptor)init;
+@end
+
+@implementation HMDWidgetTimelineRefresher.WidgetAccessoryReachabilityMonitorDelegateAdaptor
+
+- (_TtCE13HomeKitDaemonCSo26HMDWidgetTimelineRefresherP33_E4AFB2A25343A8F5063AD1A14CCEA93749WidgetAccessoryReachabilityMonitorDelegateAdaptor)init
+{
+  result = _swift_stdlib_reportUnimplementedInitializer();
+  __break(1u);
+  return result;
+}
+
+@end

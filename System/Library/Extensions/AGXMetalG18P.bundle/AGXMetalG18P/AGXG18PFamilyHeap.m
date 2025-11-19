@@ -1,0 +1,300 @@
+@interface AGXG18PFamilyHeap
+- (AGXG18PFamilyHeap)initWithDevice:(id)a3 descriptor:(id)a4;
+- (id)newAccelerationStructureWithDescriptor:(id)a3;
+- (id)newAccelerationStructureWithDescriptor:(id)a3 offset:(unint64_t)a4;
+- (id)newAccelerationStructureWithSize:(unint64_t)a3 offset:(unint64_t)a4 resourceIndex:(unint64_t)a5;
+- (id)newAccelerationStructureWithSize:(unint64_t)a3 resourceIndex:(unint64_t)a4;
+- (id)newBufferWithDescriptor:(id)a3;
+- (id)newBufferWithDescriptor:(id)a3 offset:(unint64_t)a4;
+- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4;
+- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4 atOffset:(unint64_t)a5;
+- (id)newTextureWithDescriptor:(id)a3;
+- (id)newTextureWithDescriptor:(id)a3 atOffset:(unint64_t)a4;
+- (void)dealloc;
+- (void)emitHeapResourceInfoSignpost:(id)a3;
+@end
+
+@implementation AGXG18PFamilyHeap
+
+- (void)dealloc
+{
+  [(AGXG18PFamilyHeap *)self emitHeapResourceInfoSignpost:@"Destroy"];
+  v3.receiver = self;
+  v3.super_class = AGXG18PFamilyHeap;
+  [(IOGPUMetalHeap *)&v3 dealloc];
+}
+
+- (void)emitHeapResourceInfoSignpost:(id)a3
+{
+  v34 = *MEMORY[0x29EDCA608];
+  {
+    {
+      v6 = *MEMORY[0x29EDC5618];
+      v7 = MEMORY[0x29EDC5638];
+      v8 = *(&self->super.super.super.super.super.isa + v6) + *MEMORY[0x29EDC5638];
+      v9 = *(v8 + 12);
+      v10 = [*(v8 + 11) UTF8String];
+      v11 = *(&self->super.super.super.super.super.isa + *MEMORY[0x29EDC5620]);
+      v12 = *(&self->super.super.super.super.super.isa + v6) + *v7;
+      v13 = (*(v12 + 19) << 48) | (*(v12 + 18) << 32);
+      v14 = v13 & 0xFFFFFFFF00000000 | [*(v12 + 10) registryID];
+      v15 = *(&self->super.super.super.super.super.isa + v6);
+      v16 = [a3 UTF8String];
+      v17 = *(*(&self->super.super.super.super.super.isa + v6) + *v7 + 72);
+      v18 = 134350850;
+      v19 = v9;
+      v20 = 2082;
+      v21 = v10;
+      v22 = 2050;
+      v23 = v11;
+      v24 = 2050;
+      v25 = v14;
+      v26 = 2050;
+      v27 = 0;
+      v28 = 2050;
+      v29 = v15;
+      v30 = 2082;
+      v31 = v16;
+      v32 = 2050;
+      v33 = v17;
+      _os_signpost_emit_with_name_impl(&dword_29CA13000, v3, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "Metal Heap Resource", "GlobalID=%{public,signpost.description:attribute}llu \t\t\t\t\t\t\t  Label=%{public,signpost.description:attribute}s \t\t\t\t\t\t\t  Size=%{public,signpost.description:attribute}llu \t\t\t\t\t\t\t  HeapInfoPacked1=%{public,signpost.description:attribute}llu \t\t\t\t\t\t\t  HeapInfoPacked2=%{public,signpost.description:attribute}llu \t\t\t\t\t\t\t  ObjectPtr=%{public,signpost.description:attribute}llu \t\t\t\t\t\t\t  Action=%{public,signpost.description:attribute}s \t\t\t\t\t\t\t  GPUVA=%{public,signpost.description:attribute}llu", &v18, 0x52u);
+    }
+  }
+}
+
+- (id)newAccelerationStructureWithSize:(unint64_t)a3 offset:(unint64_t)a4 resourceIndex:(unint64_t)a5
+{
+  if ([(_MTLHeap *)self storageMode]!= 2)
+  {
+    return 0;
+  }
+
+  v9 = [(IOGPUMetalHeap *)self device];
+  [(MTLDevice *)v9 heapAccelerationStructureSizeAndAlignWithSize:a3];
+  result = [(AGXBuffer *)[AGXG18PFamilyBuffer alloc] initWithHeap:self length:a3 alignment:v10 options:[(_MTLHeap *)self resourceOptions] atOffset:a4];
+  if (result)
+  {
+    v12 = result;
+    if (([(MTLDevice *)v9 buildBVHForRIA]& 1) != 0)
+    {
+      v13 = [[AGXG18PFamilyRayTracingAccelerationStructure alloc] initWithBuffer:v12 device:v9 length:a3 resourceIndex:a5];
+    }
+
+    else
+    {
+      v13 = [[AGXG18PFamilyRayTracingAccelerationStructureSW alloc] initWithBuffer:v12 offset:0 device:v9 resourceIndex:a5];
+    }
+
+    v14 = v13;
+
+    return v14;
+  }
+
+  return result;
+}
+
+- (id)newAccelerationStructureWithDescriptor:(id)a3 offset:(unint64_t)a4
+{
+  v7 = [(IOGPUMetalHeap *)self device];
+  if (v7)
+  {
+    [(MTLDevice *)v7 accelerationStructureSizesWithDescriptor:a3];
+  }
+
+  return [(AGXG18PFamilyHeap *)self newAccelerationStructureWithSize:0 offset:a4 resourceIndex:0];
+}
+
+- (id)newAccelerationStructureWithDescriptor:(id)a3
+{
+  v5 = [(IOGPUMetalHeap *)self device];
+  if (v5)
+  {
+    [(MTLDevice *)v5 accelerationStructureSizesWithDescriptor:a3];
+  }
+
+  return [(AGXG18PFamilyHeap *)self newAccelerationStructureWithSize:0 resourceIndex:0];
+}
+
+- (id)newAccelerationStructureWithSize:(unint64_t)a3 resourceIndex:(unint64_t)a4
+{
+  if ([(_MTLHeap *)self storageMode]!= 2)
+  {
+    return 0;
+  }
+
+  v7 = [(IOGPUMetalHeap *)self device];
+  [(MTLDevice *)v7 heapAccelerationStructureSizeAndAlignWithSize:a3];
+  result = [(AGXBuffer *)[AGXG18PFamilyBuffer alloc] initWithHeap:self length:a3 alignment:v8 options:[(_MTLHeap *)self resourceOptions]];
+  if (result)
+  {
+    v10 = result;
+    if (([(MTLDevice *)v7 buildBVHForRIA]& 1) != 0)
+    {
+      v11 = [[AGXG18PFamilyRayTracingAccelerationStructure alloc] initWithBuffer:v10 device:v7 length:a3 resourceIndex:a4];
+    }
+
+    else
+    {
+      v11 = [[AGXG18PFamilyRayTracingAccelerationStructureSW alloc] initWithBuffer:v10 offset:0 device:v7 resourceIndex:a4];
+    }
+
+    v12 = v11;
+
+    return v12;
+  }
+
+  return result;
+}
+
+- (id)newBufferWithDescriptor:(id)a3 offset:(unint64_t)a4
+{
+  v7 = [a3 length];
+  v8 = [a3 alignment];
+  v9 = [a3 pointerTag];
+  v10 = [AGXG18PFamilyBuffer alloc];
+  v11 = [(_MTLHeap *)self resourceOptions];
+
+  return [(AGXBuffer *)v10 initWithHeap:self length:v7 alignment:v8 pointerTag:v9 options:v11 atOffset:a4];
+}
+
+- (id)newBufferWithDescriptor:(id)a3
+{
+  v5 = [a3 length];
+  v6 = [a3 alignment];
+  v7 = [a3 pointerTag];
+  v8 = [AGXG18PFamilyBuffer alloc];
+  v9 = [(_MTLHeap *)self resourceOptions];
+
+  return [(AGXBuffer *)v8 initWithHeap:self length:v5 alignment:v6 pointerTag:v7 options:v9];
+}
+
+- (id)newTextureWithDescriptor:(id)a3 atOffset:(unint64_t)a4
+{
+  v7 = [AGXG18PFamilyTexture alloc];
+
+  return [(AGXTexture *)v7 initWithHeap:self desc:a3 atOffset:a4];
+}
+
+- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4 atOffset:(unint64_t)a5
+{
+  v9 = [AGXG18PFamilyBuffer alloc];
+
+  return [(AGXBuffer *)v9 initWithHeap:self length:a3 options:a4 atOffset:a5];
+}
+
+- (id)newTextureWithDescriptor:(id)a3
+{
+  v5 = [AGXG18PFamilyTexture alloc];
+
+  return [(AGXTexture *)v5 initWithHeap:self desc:a3];
+}
+
+- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4
+{
+  v7 = [AGXG18PFamilyBuffer alloc];
+
+  return [(AGXBuffer *)v7 initWithHeap:self length:a3 options:a4];
+}
+
+- (AGXG18PFamilyHeap)initWithDevice:(id)a3 descriptor:(id)a4
+{
+  if ([a4 validateWithDevice:?])
+  {
+    v7 = [a4 descriptorPrivate];
+    v8 = v7;
+    v9 = v7[10];
+    if (v9 == 102)
+    {
+      v10 = 0x10000;
+    }
+
+    else
+    {
+      v10 = 0x4000;
+    }
+
+    if (v9 == 103)
+    {
+      v10 = 0x40000;
+    }
+
+    if (v9)
+    {
+      v11 = v10;
+    }
+
+    else
+    {
+      v11 = *MEMORY[0x29EDCA6D0];
+    }
+
+    v12 = *v7;
+    v13 = (v11 + *v7 - 1) / v11;
+    v24[0] = 0;
+    HIDWORD(v24[0]) = (v7[2] != 0) << 10;
+    v24[1] = 0x100010001;
+    v25 = 16777473;
+    v14 = v13 * v11;
+    v26 = 0;
+    v27 = 0;
+    v28 = [a4 pinnedGPUAddress];
+    v29 = v12;
+    v30 = v11;
+    v32 = 0u;
+    v31 = 0u;
+    v33 = 0;
+    *(&v32 + 4) = v14;
+    v34 = 0;
+    v35 = 0;
+    v15 = v8[1] == 2;
+    v16 = v8[2] != 0;
+    v17 = ([a4 hazardTrackingMode] & 3) << 8;
+    if ((*(*(a3 + 106) + 16456) & 0x10) != 0)
+    {
+      v17 = 512;
+    }
+
+    v18 = (v16 || 32 * v15) | v17;
+    v19 = v8[6];
+    if ((v19 & 0x600000) != 0)
+    {
+      if ((v19 & 0x200000) != 0)
+      {
+        v20 = 393216;
+      }
+
+      else
+      {
+        v20 = 0x40000;
+      }
+
+      if ((v19 & 0x400000) == 0)
+      {
+        v20 = 0x20000;
+      }
+
+      v26 = v20;
+    }
+
+    v23.receiver = self;
+    v23.super_class = AGXG18PFamilyHeap;
+    result = [(IOGPUMetalHeap *)&v23 initWithDevice:a3 size:v14 options:v18 | v19 & 0x1600000 args:v24 argsSize:104 desc:a4];
+    if (result)
+    {
+      v22 = result;
+      [(AGXG18PFamilyHeap *)result emitHeapResourceInfoSignpost:@"Create"];
+      [*(&v22->super.super.super.super.super.isa + *MEMORY[0x29EDC5618]) setAttachedResourceInfoTraceEmitter:v22];
+      return v22;
+    }
+  }
+
+  else
+  {
+    [(AGXG18PFamilyHeap *)self dealloc];
+    return 0;
+  }
+
+  return result;
+}
+
+@end

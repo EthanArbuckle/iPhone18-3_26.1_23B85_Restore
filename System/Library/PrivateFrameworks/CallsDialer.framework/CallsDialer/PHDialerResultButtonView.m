@@ -1,0 +1,123 @@
+@interface PHDialerResultButtonView
+- (NSString)largeContentTitle;
+- (PHDialerResultButtonView)initWithFrame:(CGRect)a3;
+- (UILabel)primaryLabel;
+- (void)configureWithPrimaryTitle:(id)a3 image:(id)a4 buttonType:(int64_t)a5;
+- (void)configureWithPrimaryTitle:(id)a3 secondaryTitle:(id)a4 buttonType:(int64_t)a5;
+- (void)configureWithPrimaryTitle:(id)a3 secondaryTitle:(id)a4 searchString:(id)a5 isNumberPriority:(BOOL)a6 buttonType:(int64_t)a7;
+- (void)handleContentSizeCategoryDidChange:(id)a3;
+- (void)handlePress;
+- (void)setPrimaryLabel:(id)a3;
+@end
+
+@implementation PHDialerResultButtonView
+
+- (UILabel)primaryLabel
+{
+  v2 = self;
+  v3 = sub_2429E5378();
+
+  return v3;
+}
+
+- (void)setPrimaryLabel:(id)a3
+{
+  v4 = *(&self->super.super.super.isa + OBJC_IVAR___PHDialerResultButtonView____lazy_storage___primaryLabel);
+  *(&self->super.super.super.isa + OBJC_IVAR___PHDialerResultButtonView____lazy_storage___primaryLabel) = a3;
+  v3 = a3;
+}
+
+- (void)configureWithPrimaryTitle:(id)a3 secondaryTitle:(id)a4 buttonType:(int64_t)a5
+{
+  v9 = a3;
+  v10 = a4;
+  v11 = self;
+  DialerResultButtonView.configure(primaryTitle:secondaryTitle:buttonType:)(a3, a4, a5);
+}
+
+- (void)configureWithPrimaryTitle:(id)a3 image:(id)a4 buttonType:(int64_t)a5
+{
+  v9 = a3;
+  v10 = a4;
+  v11 = self;
+  DialerResultButtonView.configure(primaryTitle:image:buttonType:)(a3, a4, a5);
+}
+
+- (void)configureWithPrimaryTitle:(id)a3 secondaryTitle:(id)a4 searchString:(id)a5 isNumberPriority:(BOOL)a6 buttonType:(int64_t)a7
+{
+  if (a5)
+  {
+    v12 = sub_2429E97C8();
+    v14 = v13;
+  }
+
+  else
+  {
+    v12 = 0;
+    v14 = 0;
+  }
+
+  v15 = a3;
+  v16 = a4;
+  v17 = self;
+  DialerResultButtonView.configure(primaryTitle:secondaryTitle:searchString:isNumberPriority:buttonType:)(a3, a4, v12, v14, a6, a7);
+}
+
+- (void)handlePress
+{
+  v2 = self;
+  DialerResultButtonView.handlePress()();
+}
+
+- (void)handleContentSizeCategoryDidChange:(id)a3
+{
+  v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27ECD7FC0, &qword_2429ED890);
+  v6 = *(*(v5 - 8) + 64);
+  MEMORY[0x28223BE20](v5 - 8);
+  v8 = &v12 - v7;
+  if (a3)
+  {
+    sub_2429E9588();
+    v9 = sub_2429E95A8();
+    (*(*(v9 - 8) + 56))(v8, 0, 1, v9);
+  }
+
+  else
+  {
+    v10 = sub_2429E95A8();
+    (*(*(v10 - 8) + 56))(v8, 1, 1, v10);
+  }
+
+  v11 = self;
+  sub_2429E6D04(v8);
+
+  sub_2429E7B6C(v8, &qword_27ECD7FC0, &qword_2429ED890);
+}
+
+- (NSString)largeContentTitle
+{
+  v2 = self;
+  DialerResultButtonView.largeContentTitle.getter();
+  v4 = v3;
+
+  if (v4)
+  {
+    v5 = sub_2429E9798();
+  }
+
+  else
+  {
+    v5 = 0;
+  }
+
+  return v5;
+}
+
+- (PHDialerResultButtonView)initWithFrame:(CGRect)a3
+{
+  result = _swift_stdlib_reportUnimplementedInitializer();
+  __break(1u);
+  return result;
+}
+
+@end

@@ -1,0 +1,77 @@
+@interface MUPassthroughView
+- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+@end
+
+@implementation MUPassthroughView
+
+- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+{
+  y = a3.y;
+  x = a3.x;
+  v29 = *MEMORY[0x1E69E9840];
+  v7 = a4;
+  v24 = 0u;
+  v25 = 0u;
+  v26 = 0u;
+  v27 = 0u;
+  v8 = [(MUPassthroughView *)self subviews];
+  v9 = [v8 reverseObjectEnumerator];
+
+  v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  if (v10)
+  {
+    v11 = v10;
+    v12 = *v25;
+    while (2)
+    {
+      for (i = 0; i != v11; ++i)
+      {
+        if (*v25 != v12)
+        {
+          objc_enumerationMutation(v9);
+        }
+
+        v14 = *(*(&v24 + 1) + 8 * i);
+        if ([v14 isUserInteractionEnabled])
+        {
+          if (([v14 isHidden] & 1) == 0)
+          {
+            [v14 alpha];
+            if (v15 >= 0.01)
+            {
+              [v14 convertPoint:self fromView:{x, y}];
+              v17 = v16;
+              v19 = v18;
+              if ([v14 pointInside:v7 withEvent:?])
+              {
+                v20 = [v14 hitTest:v7 withEvent:{v17, v19}];
+                if (v20)
+                {
+                  v21 = v20;
+                  goto LABEL_15;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      v11 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      if (v11)
+      {
+        continue;
+      }
+
+      break;
+    }
+  }
+
+  v21 = 0;
+LABEL_15:
+
+  v22 = *MEMORY[0x1E69E9840];
+
+  return v21;
+}
+
+@end

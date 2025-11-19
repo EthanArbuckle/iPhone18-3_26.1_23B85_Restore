@@ -1,0 +1,46 @@
+@interface HUCCRemoteDashboardViewController
++ (id)requestViewControllerWithConnectionHandler:(id)a3;
+- (HUCCRemoteDashboardDelegate)delegate;
+- (void)authorizeIfLocked;
+- (void)requestDismissal;
+- (void)viewServiceDidTerminateWithError:(id)a3;
+@end
+
+@implementation HUCCRemoteDashboardViewController
+
++ (id)requestViewControllerWithConnectionHandler:(id)a3
+{
+  v3 = a3;
+  v4 = objc_opt_class();
+  v6 = objc_msgSend_requestViewController_fromServiceWithBundleIdentifier_connectionHandler_(v4, v5, @"HCSRemoteViewController", @"com.apple.Home.HomeControlService", v3);
+
+  return v6;
+}
+
+- (void)viewServiceDidTerminateWithError:(id)a3
+{
+  v4 = a3;
+  v8 = objc_msgSend_delegate(self, v5, v6);
+  objc_msgSend_remoteDashboard_viewServiceDidTerminateWithError_(v8, v7, self, v4);
+}
+
+- (void)authorizeIfLocked
+{
+  v5 = objc_msgSend_delegate(self, a2, v2);
+  objc_msgSend_requestLockAuthenticationForRemoteDashboard_(v5, v4, self);
+}
+
+- (void)requestDismissal
+{
+  v5 = objc_msgSend_delegate(self, a2, v2);
+  objc_msgSend_requestDismissal(v5, v3, v4);
+}
+
+- (HUCCRemoteDashboardDelegate)delegate
+{
+  WeakRetained = objc_loadWeakRetained(&self->_delegate);
+
+  return WeakRetained;
+}
+
+@end

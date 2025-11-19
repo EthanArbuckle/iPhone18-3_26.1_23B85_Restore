@@ -1,0 +1,74 @@
+@interface VKMapView
+- ($1AB5FA073B851C12C2339EC22442E995)_mapstest_jumpToBayArea;
+- ($1AB5FA073B851C12C2339EC22442E995)_mapstest_jumpToCupertino;
+- ($1AB5FA073B851C12C2339EC22442E995)_mapstest_jumpToTokyo;
+- (void)_mapstest_jumpToCoords:(id)a3 pitch:(double)a4 yaw:(double)a5 altitudeIsRegionSize:(BOOL)a6;
+@end
+
+@implementation VKMapView
+
+- ($1AB5FA073B851C12C2339EC22442E995)_mapstest_jumpToCupertino
+{
+  VKLocationCoordinate3DMake();
+  v4 = v3;
+  v6 = v5;
+  v8 = v7;
+  [VKMapView _mapstest_jumpToCoords:"_mapstest_jumpToCoords:pitch:yaw:altitudeIsRegionSize:" pitch:1 yaw:? altitudeIsRegionSize:?];
+  v9 = v4;
+  v10 = v6;
+  v11 = v8;
+  result.var2 = v11;
+  result.var1 = v10;
+  result.var0 = v9;
+  return result;
+}
+
+- ($1AB5FA073B851C12C2339EC22442E995)_mapstest_jumpToTokyo
+{
+  VKLocationCoordinate3DMake();
+  v4 = v3;
+  v6 = v5;
+  v8 = v7;
+  [VKMapView _mapstest_jumpToCoords:"_mapstest_jumpToCoords:pitch:yaw:altitudeIsRegionSize:" pitch:1 yaw:? altitudeIsRegionSize:?];
+  v9 = v4;
+  v10 = v6;
+  v11 = v8;
+  result.var2 = v11;
+  result.var1 = v10;
+  result.var0 = v9;
+  return result;
+}
+
+- ($1AB5FA073B851C12C2339EC22442E995)_mapstest_jumpToBayArea
+{
+  VKLocationCoordinate3DMake();
+  v4 = v3;
+  v6 = v5;
+  v8 = v7;
+  [VKMapView _mapstest_jumpToCoords:"_mapstest_jumpToCoords:pitch:yaw:altitudeIsRegionSize:" pitch:1 yaw:? altitudeIsRegionSize:?];
+  v9 = v4;
+  v10 = v6;
+  v11 = v8;
+  result.var2 = v11;
+  result.var1 = v10;
+  result.var0 = v9;
+  return result;
+}
+
+- (void)_mapstest_jumpToCoords:(id)a3 pitch:(double)a4 yaw:(double)a5 altitudeIsRegionSize:(BOOL)a6
+{
+  if (a6)
+  {
+    v9 = [GEOMapRegion _mapstest_mapRegionAtCenterLocation:a3.var0, a3.var1, a3.var2];
+    [(VKMapView *)self setMapRegion:v9 pitch:a4 yaw:a5];
+  }
+
+  else
+  {
+    VKLocationCoordinate2DMake();
+
+    [VKMapView setCenterCoordinate:"setCenterCoordinate:altitude:yaw:pitch:duration:timingCurve:completion:" altitude:0 yaw:0 pitch:? duration:? timingCurve:? completion:?];
+  }
+}
+
+@end

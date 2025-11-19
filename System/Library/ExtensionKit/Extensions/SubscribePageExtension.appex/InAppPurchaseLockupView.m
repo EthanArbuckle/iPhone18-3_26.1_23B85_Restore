@@ -1,0 +1,66 @@
+@interface InAppPurchaseLockupView
+- (CGSize)sizeThatFits:(CGSize)a3;
+- (_TtC22SubscribePageExtension23InAppPurchaseLockupView)initWithCoder:(id)a3;
+- (_TtC22SubscribePageExtension23InAppPurchaseLockupView)initWithFrame:(CGRect)a3;
+- (void)layoutSubviews;
+- (void)tintColorDidChange;
+@end
+
+@implementation InAppPurchaseLockupView
+
+- (_TtC22SubscribePageExtension23InAppPurchaseLockupView)initWithCoder:(id)a3
+{
+  v4 = OBJC_IVAR____TtC22SubscribePageExtension23InAppPurchaseLockupView_theme;
+  v5 = enum case for InAppPurchaseTheme.infer(_:);
+  v6 = sub_100741C54();
+  (*(*(v6 - 8) + 104))(self + v4, v5, v6);
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension23InAppPurchaseLockupView_isHeightConstrained) = 0;
+  result = sub_100754644();
+  __break(1u);
+  return result;
+}
+
+- (void)tintColorDidChange
+{
+  v2 = self;
+  sub_1005AC3A4();
+}
+
+- (void)layoutSubviews
+{
+  v2 = self;
+  sub_1005AC70C();
+}
+
+- (CGSize)sizeThatFits:(CGSize)a3
+{
+  v3 = qword_100921958;
+  v4 = self;
+  if (v3 != -1)
+  {
+    swift_once();
+  }
+
+  v5 = sub_100741FA4();
+  sub_10000D0FC(v5, qword_100982728);
+  sub_100741FC4();
+  sub_1005AD424(&qword_1009336D0, &type metadata accessor for InAppPurchaseLockupViewLayout);
+  sub_100750D34();
+  v7 = v6;
+  v9 = v8;
+
+  v10 = v7;
+  v11 = v9;
+  result.height = v11;
+  result.width = v10;
+  return result;
+}
+
+- (_TtC22SubscribePageExtension23InAppPurchaseLockupView)initWithFrame:(CGRect)a3
+{
+  result = _swift_stdlib_reportUnimplementedInitializer();
+  __break(1u);
+  return result;
+}
+
+@end

@@ -1,0 +1,415 @@
+@interface SSAppIntent
++ (id)sharedInstance;
+- (BOOL)filterEvent:(id)a3;
+- (SSAppIntent)init;
+- (id)_attributesUpdatesForEvent:(id)a3;
+- (id)_extractIdentifiersForIndex:(id)a3 interaction:(id)a4;
+- (id)_getInteraction:(id)a3;
+- (id)_itemUpdatesForEvent:(id)a3 itemIdentifiers:(id)a4 bundleToUpdate:(id)a5;
+- (id)stream;
+- (void)handleEvent:(id)a3;
+@end
+
+@implementation SSAppIntent
+
+- (id)stream
+{
+  v2 = BiomeLibrary();
+  v3 = [v2 App];
+  v4 = [v3 Intent];
+
+  return v4;
+}
+
++ (id)sharedInstance
+{
+  if (sharedInstance_onceToken_5 != -1)
+  {
+    +[SSAppIntent sharedInstance];
+  }
+
+  v3 = sharedInstance_sharedInstance_2;
+
+  return v3;
+}
+
+uint64_t __29__SSAppIntent_sharedInstance__block_invoke()
+{
+  sharedInstance_sharedInstance_2 = objc_alloc_init(SSAppIntent);
+
+  return MEMORY[0x1EEE66BB8]();
+}
+
+- (SSAppIntent)init
+{
+  v6.receiver = self;
+  v6.super_class = SSAppIntent;
+  v2 = [(SSBaseConsumer *)&v6 init];
+  v3 = v2;
+  if (v2)
+  {
+    v4 = v2;
+  }
+
+  return v3;
+}
+
+- (BOOL)filterEvent:(id)a3
+{
+  v3 = [a3 intentClass];
+  v4 = [objc_opt_class() description];
+  if ([v3 isEqualToString:v4])
+  {
+    v5 = 0;
+  }
+
+  else
+  {
+    v6 = [objc_opt_class() description];
+    if ([v3 isEqualToString:v6])
+    {
+      v5 = 0;
+    }
+
+    else
+    {
+      v7 = [objc_opt_class() description];
+      v8 = [v3 isEqualToString:v7];
+
+      v5 = v8 ^ 1;
+    }
+  }
+
+  return v5;
+}
+
+- (void)handleEvent:(id)a3
+{
+  v28 = *MEMORY[0x1E69E9840];
+  v4 = a3;
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    v5 = v4;
+    v6 = [v5 bundleID];
+    if (!v6)
+    {
+      goto LABEL_21;
+    }
+
+    v7 = v6;
+    v8 = [v5 bundleID];
+    v9 = [v8 length];
+
+    if (!v9 || [(SSAppIntent *)self filterEvent:v5])
+    {
+      goto LABEL_21;
+    }
+
+    v10 = [(SSAppIntent *)self _getInteraction:v5];
+    v11 = [v10 intent];
+    v12 = [(SSAppIntent *)self _extractIdentifiersForIndex:v5 interaction:v10];
+    v13 = [v5 bundleID];
+    v14 = SSRedactString(v13, 1);
+
+    if (v14)
+    {
+      v15 = SSGeneralLog();
+      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+      {
+        v16 = [(SSBaseConsumer *)self identifier];
+        v22 = 138412802;
+        v23 = v16;
+        v24 = 2112;
+        v25 = v14;
+        v26 = 2112;
+        v27 = objc_opt_class();
+        _os_log_impl(&dword_1D9F69000, v15, OS_LOG_TYPE_DEFAULT, "%@: processing event for bundle %@ with intent: %@", &v22, 0x20u);
+      }
+    }
+
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      v17 = SSShortcutsBundleIdentifier;
+    }
+
+    else
+    {
+      objc_opt_class();
+      if ((objc_opt_isKindOfClass() & 1) == 0)
+      {
+        objc_opt_class();
+        if ((objc_opt_isKindOfClass() & 1) == 0)
+        {
+          v19 = 0;
+LABEL_20:
+
+LABEL_21:
+          goto LABEL_22;
+        }
+      }
+
+      v17 = SSContactsBundleIdentifier;
+    }
+
+    v18 = *v17;
+    v19 = v18;
+    if (v18 && [(__CFString *)v18 length])
+    {
+      v20 = [(SSAppIntent *)self _itemUpdatesForEvent:v5 itemIdentifiers:v12 bundleToUpdate:v19];
+      if ([v20 count])
+      {
+        [(SSBaseConsumer *)self indexItems:v20 protectionClass:@"Priority" bundleID:v19];
+      }
+    }
+
+    goto LABEL_20;
+  }
+
+LABEL_22:
+
+  v21 = *MEMORY[0x1E69E9840];
+}
+
+- (id)_attributesUpdatesForEvent:(id)a3
+{
+  v11[2] = *MEMORY[0x1E69E9840];
+  v3 = a3;
+  v4 = [v3 absoluteTimestamp];
+
+  if (v4)
+  {
+    v10[0] = @"_kMDItemLastOutOfSpotlightEngagementDate";
+    v5 = [v3 absoluteTimestamp];
+    v11[0] = v5;
+    v10[1] = *MEMORY[0x1E6964548];
+    v6 = [v3 absoluteTimestamp];
+    v11[1] = v6;
+    v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
+  }
+
+  else
+  {
+    v7 = MEMORY[0x1E695E0F8];
+  }
+
+  v8 = *MEMORY[0x1E69E9840];
+
+  return v7;
+}
+
+- (id)_itemUpdatesForEvent:(id)a3 itemIdentifiers:(id)a4 bundleToUpdate:(id)a5
+{
+  v29 = *MEMORY[0x1E69E9840];
+  v8 = a3;
+  v9 = a4;
+  v10 = a5;
+  v23 = [MEMORY[0x1E695DF70] array];
+  v24 = 0u;
+  v25 = 0u;
+  v26 = 0u;
+  v27 = 0u;
+  v11 = v9;
+  v12 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  if (v12)
+  {
+    v13 = v12;
+    v14 = *v25;
+    do
+    {
+      for (i = 0; i != v13; ++i)
+      {
+        if (*v25 != v14)
+        {
+          objc_enumerationMutation(v11);
+        }
+
+        v16 = *(*(&v24 + 1) + 8 * i);
+        v17 = [(SSAppIntent *)self _attributesUpdatesForEvent:v8];
+        v18 = v17;
+        if (v17 && [v17 count])
+        {
+          v19 = objc_alloc_init(MEMORY[0x1E6964E80]);
+          [v19 setUniqueIdentifier:v16];
+          [v19 setBundleID:v10];
+          [v19 setIsUpdate:1];
+          v20 = [objc_alloc(MEMORY[0x1E6964E90]) initWithAttributes:v18];
+          [v19 setAttributeSet:v20];
+
+          [v23 addObject:v19];
+        }
+      }
+
+      v13 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    }
+
+    while (v13);
+  }
+
+  v21 = *MEMORY[0x1E69E9840];
+
+  return v23;
+}
+
+- (id)_getInteraction:(id)a3
+{
+  v4 = MEMORY[0x1E696ACD0];
+  v5 = a3;
+  v6 = objc_opt_class();
+  v7 = [v5 interaction];
+
+  v13 = 0;
+  v8 = [v4 unarchivedObjectOfClass:v6 fromData:v7 error:&v13];
+  v9 = v13;
+
+  if (v8)
+  {
+    v10 = v8;
+  }
+
+  else if (v9)
+  {
+    v11 = SSGeneralLog();
+    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    {
+      [(SSAppIntent *)self _getInteraction:v9, v11];
+    }
+  }
+
+  return v8;
+}
+
+- (id)_extractIdentifiersForIndex:(id)a3 interaction:(id)a4
+{
+  v43[1] = *MEMORY[0x1E69E9840];
+  v5 = a3;
+  v6 = a4;
+  v7 = [MEMORY[0x1E695DF70] array];
+  v8 = [v6 intent];
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    v9 = [v5 groupIdentifier];
+    v10 = [v9 length];
+
+    if (!v10)
+    {
+      goto LABEL_31;
+    }
+
+    v11 = [v5 groupIdentifier];
+    [v7 addObject:v11];
+    goto LABEL_4;
+  }
+
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    v12 = v8;
+    v32 = v12;
+    if ([v6 direction] == 2)
+    {
+      v13 = [v12 sender];
+
+      if (v13)
+      {
+        v14 = [v12 sender];
+        v43[0] = v14;
+        v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:1];
+      }
+    }
+
+    else
+    {
+      v13 = [v12 recipients];
+    }
+
+    v39 = 0u;
+    v40 = 0u;
+    v37 = 0u;
+    v38 = 0u;
+    v22 = v13;
+    v23 = [v22 countByEnumeratingWithState:&v37 objects:v42 count:16];
+    if (v23)
+    {
+      v24 = v23;
+      v25 = *v38;
+      do
+      {
+        for (i = 0; i != v24; ++i)
+        {
+          if (*v38 != v25)
+          {
+            objc_enumerationMutation(v22);
+          }
+
+          v27 = *(*(&v37 + 1) + 8 * i);
+          v28 = [v27 contactIdentifier];
+
+          if (v28)
+          {
+            v29 = [v27 contactIdentifier];
+            [v7 addObject:v29];
+          }
+        }
+
+        v24 = [v22 countByEnumeratingWithState:&v37 objects:v42 count:16];
+      }
+
+      while (v24);
+    }
+  }
+
+  else
+  {
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      v35 = 0u;
+      v36 = 0u;
+      v33 = 0u;
+      v34 = 0u;
+      v11 = [v8 contacts];
+      v15 = [v11 countByEnumeratingWithState:&v33 objects:v41 count:16];
+      if (v15)
+      {
+        v16 = v15;
+        v17 = *v34;
+        do
+        {
+          for (j = 0; j != v16; ++j)
+          {
+            if (*v34 != v17)
+            {
+              objc_enumerationMutation(v11);
+            }
+
+            v19 = *(*(&v33 + 1) + 8 * j);
+            v20 = [v19 contactIdentifier];
+
+            if (v20)
+            {
+              v21 = [v19 contactIdentifier];
+              [v7 addObject:v21];
+            }
+          }
+
+          v16 = [v11 countByEnumeratingWithState:&v33 objects:v41 count:16];
+        }
+
+        while (v16);
+      }
+
+LABEL_4:
+    }
+  }
+
+LABEL_31:
+
+  v30 = *MEMORY[0x1E69E9840];
+
+  return v7;
+}
+
+@end

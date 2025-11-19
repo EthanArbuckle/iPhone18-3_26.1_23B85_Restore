@@ -1,0 +1,14 @@
+@interface STOrganizationSettingsRestrictionUtilityImplementation
+- (_TtC14ScreenTimeCoreP33_85746A119BB273F4CF13C31ED127C55054STOrganizationSettingsRestrictionUtilityImplementation)init;
+@end
+
+@implementation STOrganizationSettingsRestrictionUtilityImplementation
+
+- (_TtC14ScreenTimeCoreP33_85746A119BB273F4CF13C31ED127C55054STOrganizationSettingsRestrictionUtilityImplementation)init
+{
+  result = _swift_stdlib_reportUnimplementedInitializer();
+  __break(1u);
+  return result;
+}
+
+@end

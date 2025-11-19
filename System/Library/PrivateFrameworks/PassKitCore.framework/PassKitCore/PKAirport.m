@@ -1,0 +1,338 @@
+@interface PKAirport
+- (BOOL)isEqual:(id)a3;
+- (CLLocationCoordinate2D)location;
+- (PKAirport)initWithAirportCode:(id)a3 name:(id)a4 city:(id)a5 timeZone:(id)a6 location:(CLLocationCoordinate2D)a7;
+- (PKAirport)initWithCoder:(id)a3;
+- (PKAirport)initWithMockAirportDictionary:(id)a3;
+- (id)asDictionary;
+- (id)copyWithZone:(_NSZone *)a3;
+- (id)description;
+- (unint64_t)hash;
+- (void)encodeWithCoder:(id)a3;
+@end
+
+@implementation PKAirport
+
+- (PKAirport)initWithAirportCode:(id)a3 name:(id)a4 city:(id)a5 timeZone:(id)a6 location:(CLLocationCoordinate2D)a7
+{
+  longitude = a7.longitude;
+  latitude = a7.latitude;
+  v14 = a3;
+  v15 = a4;
+  v16 = a5;
+  v17 = a6;
+  v21.receiver = self;
+  v21.super_class = PKAirport;
+  v18 = [(PKAirport *)&v21 init];
+  v19 = v18;
+  if (v18)
+  {
+    objc_storeStrong(&v18->_code, a3);
+    objc_storeStrong(&v19->_name, a4);
+    objc_storeStrong(&v19->_city, a5);
+    objc_storeStrong(&v19->_timeZone, a6);
+    v19->_latitude = latitude;
+    v19->_longitude = longitude;
+  }
+
+  if (![(PKAirport *)v19 isValid])
+  {
+
+    v19 = 0;
+  }
+
+  return v19;
+}
+
+- (PKAirport)initWithMockAirportDictionary:(id)a3
+{
+  v4 = a3;
+  v18.receiver = self;
+  v18.super_class = PKAirport;
+  v5 = [(PKAirport *)&v18 init];
+  if (v5)
+  {
+    v6 = [v4 PKStringForKey:@"code"];
+    code = v5->_code;
+    v5->_code = v6;
+
+    v8 = [v4 PKStringForKey:@"name"];
+    name = v5->_name;
+    v5->_name = v8;
+
+    v10 = [v4 PKStringForKey:@"city"];
+    city = v5->_city;
+    v5->_city = v10;
+
+    v12 = [v4 PKStringForKey:@"timeZoneName"];
+    v13 = [objc_alloc(MEMORY[0x1E695DFE8]) initWithName:v12];
+    timeZone = v5->_timeZone;
+    v5->_timeZone = v13;
+
+    [v4 PKDoubleForKey:@"latitude"];
+    v5->_latitude = v15;
+    [v4 PKDoubleForKey:@"longitude"];
+    v5->_longitude = v16;
+  }
+
+  if (![(PKAirport *)v5 isValid])
+  {
+
+    v5 = 0;
+  }
+
+  return v5;
+}
+
+- (id)asDictionary
+{
+  v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
+  [v3 setObject:self->_code forKeyedSubscript:@"code"];
+  [v3 setObject:self->_name forKeyedSubscript:@"name"];
+  [v3 setObject:self->_city forKeyedSubscript:@"city"];
+  v4 = [(NSTimeZone *)self->_timeZone name];
+  [v3 setObject:v4 forKeyedSubscript:@"timeZoneName"];
+
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_latitude];
+  [v3 setObject:v5 forKeyedSubscript:@"latitude"];
+
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:self->_longitude];
+  [v3 setObject:v6 forKeyedSubscript:@"longitude"];
+
+  v7 = [v3 copy];
+
+  return v7;
+}
+
+- (CLLocationCoordinate2D)location
+{
+  v4 = CLLocationCoordinate2DMake(self->_latitude, self->_longitude);
+  longitude = v4.longitude;
+  latitude = v4.latitude;
+  result.longitude = longitude;
+  result.latitude = latitude;
+  return result;
+}
+
+- (PKAirport)initWithCoder:(id)a3
+{
+  v4 = a3;
+  v18.receiver = self;
+  v18.super_class = PKAirport;
+  v5 = [(PKAirport *)&v18 init];
+  if (v5)
+  {
+    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"code"];
+    code = v5->_code;
+    v5->_code = v6;
+
+    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    name = v5->_name;
+    v5->_name = v8;
+
+    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"city"];
+    city = v5->_city;
+    v5->_city = v10;
+
+    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeZoneName"];
+    v13 = [objc_alloc(MEMORY[0x1E695DFE8]) initWithName:v12];
+    timeZone = v5->_timeZone;
+    v5->_timeZone = v13;
+
+    [v4 decodeDoubleForKey:@"location.latitude"];
+    v5->_latitude = v15;
+    [v4 decodeDoubleForKey:@"location.longitude"];
+    v5->_longitude = v16;
+  }
+
+  return v5;
+}
+
+- (void)encodeWithCoder:(id)a3
+{
+  code = self->_code;
+  v6 = a3;
+  [v6 encodeObject:code forKey:@"code"];
+  [v6 encodeObject:self->_name forKey:@"name"];
+  [v6 encodeObject:self->_city forKey:@"city"];
+  v5 = [(NSTimeZone *)self->_timeZone name];
+  [v6 encodeObject:v5 forKey:@"timeZoneName"];
+
+  [v6 encodeDouble:@"location.latitude" forKey:self->_latitude];
+  [v6 encodeDouble:@"location.longitude" forKey:self->_longitude];
+}
+
+- (id)description
+{
+  v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
+  [v3 appendFormat:@"<%@: %p; ", objc_opt_class(), self];
+  [v3 appendFormat:@"code: '%@'; ", self->_code];
+  [v3 appendFormat:@"name: '%@'; ", self->_name];
+  [v3 appendFormat:@"city: '%@'; ", self->_city];
+  [v3 appendFormat:@"timeZone: '%@'; ", self->_timeZone];
+  [v3 appendFormat:@"location: '[%f, %f]'; ", *&self->_latitude, *&self->_longitude];
+  [v3 appendFormat:@">"];
+
+  return v3;
+}
+
+- (BOOL)isEqual:(id)a3
+{
+  v4 = a3;
+  v5 = v4;
+  if (self == v4)
+  {
+    v12 = 1;
+  }
+
+  else
+  {
+    if (v4)
+    {
+      objc_opt_class();
+      if (objc_opt_isKindOfClass())
+      {
+        v6 = v5;
+        code = v6->_code;
+        v8 = self->_code;
+        v9 = code;
+        v10 = v9;
+        if (v8 == v9)
+        {
+        }
+
+        else
+        {
+          if (!v8 || !v9)
+          {
+            goto LABEL_23;
+          }
+
+          v11 = [(NSString *)v8 isEqualToString:v9];
+
+          if (!v11)
+          {
+            goto LABEL_24;
+          }
+        }
+
+        name = v6->_name;
+        v8 = self->_name;
+        v14 = name;
+        v10 = v14;
+        if (v8 == v14)
+        {
+        }
+
+        else
+        {
+          if (!v8 || !v14)
+          {
+            goto LABEL_23;
+          }
+
+          v15 = [(NSString *)v8 isEqualToString:v14];
+
+          if (!v15)
+          {
+            goto LABEL_24;
+          }
+        }
+
+        city = v6->_city;
+        v8 = self->_city;
+        v17 = city;
+        v10 = v17;
+        if (v8 == v17)
+        {
+
+LABEL_28:
+          timeZone = self->_timeZone;
+          v21 = v6->_timeZone;
+          if (timeZone && v21)
+          {
+            if (([(NSTimeZone *)timeZone isEqual:?]& 1) == 0)
+            {
+              goto LABEL_24;
+            }
+          }
+
+          else if (timeZone != v21)
+          {
+            goto LABEL_24;
+          }
+
+          if (self->_latitude == v6->_latitude)
+          {
+            v12 = self->_longitude == v6->_longitude;
+            goto LABEL_25;
+          }
+
+LABEL_24:
+          v12 = 0;
+LABEL_25:
+
+          goto LABEL_26;
+        }
+
+        if (v8 && v17)
+        {
+          v18 = [(NSString *)v8 isEqualToString:v17];
+
+          if (!v18)
+          {
+            goto LABEL_24;
+          }
+
+          goto LABEL_28;
+        }
+
+LABEL_23:
+
+        goto LABEL_24;
+      }
+    }
+
+    v12 = 0;
+  }
+
+LABEL_26:
+
+  return v12;
+}
+
+- (unint64_t)hash
+{
+  [(NSString *)self->_name hash];
+  [(NSString *)self->_city hash];
+  [(NSTimeZone *)self->_timeZone hash];
+  v3 = SipHash();
+  v4 = self->_latitude - v3 + 32 * v3;
+  return self->_longitude - v4 + 32 * v4;
+}
+
+- (id)copyWithZone:(_NSZone *)a3
+{
+  v5 = [+[PKAirport allocWithZone:](PKAirport init];
+  v6 = [(NSString *)self->_code copyWithZone:a3];
+  code = v5->_code;
+  v5->_code = v6;
+
+  v8 = [(NSString *)self->_name copyWithZone:a3];
+  name = v5->_name;
+  v5->_name = v8;
+
+  v10 = [(NSString *)self->_city copyWithZone:a3];
+  city = v5->_city;
+  v5->_city = v10;
+
+  v12 = [(NSTimeZone *)self->_timeZone copyWithZone:a3];
+  timeZone = v5->_timeZone;
+  v5->_timeZone = v12;
+
+  v5->_latitude = self->_latitude;
+  v5->_longitude = self->_longitude;
+  return v5;
+}
+
+@end

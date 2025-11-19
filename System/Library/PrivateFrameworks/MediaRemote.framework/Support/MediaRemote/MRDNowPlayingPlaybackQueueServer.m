@@ -1,0 +1,325 @@
+@interface MRDNowPlayingPlaybackQueueServer
+- (id)_resolveRequest:(id)a3 withCapabilities:(unint64_t)a4;
+- (unsigned)_cachingPolicyForRequest:(id)a3;
+- (void)handlePlaybackQueueRequest:(id)a3 fromClient:(id)a4;
+- (void)relayArtworkRequest:(id)a3 forContentItems:(id)a4 withMessage:(id)a5 fromNowPlayingClient:(id)a6 andNotifyXPCClient:(id)a7;
+- (void)relayPlaybackQueueRequest:(id)a3 withMessage:(id)a4 toNowPlayingClient:(id)a5 backToXpcClient:(id)a6 completion:(id)a7;
+- (void)sendPlaybackQueueResponse:(id)a3 forRequest:(id)a4 withMessage:(id)a5 fromNowPlayingClient:(id)a6 toXpcClient:(id)a7;
+@end
+
+@implementation MRDNowPlayingPlaybackQueueServer
+
+- (void)handlePlaybackQueueRequest:(id)a3 fromClient:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  v8 = MRCreatePlaybackQueueRequestFromXPCMessage();
+  v9 = +[NSDate now];
+  v10 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"handlePlaybackQueueRequest", v8];
+  v11 = _MRLogForCategory();
+  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  {
+    *buf = 138543362;
+    v46 = v10;
+    _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Request: %{public}@", buf, 0xCu);
+  }
+
+  v43[0] = _NSConcreteStackBlock;
+  v43[1] = 3221225472;
+  v43[2] = sub_1000E5550;
+  v43[3] = &unk_1004BC070;
+  v12 = v9;
+  v44 = v12;
+  v13 = objc_retainBlock(v43);
+  v14 = +[MRDMediaRemoteServer server];
+  v15 = [v14 nowPlayingServer];
+  v16 = [v15 queryExistingPlayerPathForXPCMessage:v6 forClient:v7];
+
+  if ([v16 error])
+  {
+    v41[0] = _NSConcreteStackBlock;
+    v41[1] = 3221225472;
+    v41[2] = sub_1000E596C;
+    v41[3] = &unk_1004B6E08;
+    v17 = v16;
+    v42 = v17;
+    sub_100008278(v6, v41);
+    v18 = [[NSError alloc] initWithMRError:{objc_msgSend(v17, "error")}];
+    v19 = [v17 unresolvedPlayerPath];
+    (v13[2])(v13, v8, v19, 0, @"now playing result", v18);
+
+    v20 = v42;
+  }
+
+  else
+  {
+    v34 = v12;
+    v21 = [v16 playerClient];
+    v33 = v8;
+    v20 = -[MRDNowPlayingPlaybackQueueServer _resolveRequest:withCapabilities:](self, "_resolveRequest:withCapabilities:", v8, [v21 playbackQueueCapabilities]);
+
+    [v7 setHasRequestedLegacyNowPlayingInfo:{objc_msgSend(v20, "isLegacyNowPlayingInfoRequest") | objc_msgSend(v7, "hasRequestedLegacyNowPlayingInfo")}];
+    v22 = [v7 playbackQueueRequests];
+    [v16 playerPath];
+    v24 = v23 = self;
+    v25 = [v22 subscriptionControllerForPlayerPath:v24];
+
+    [v25 addRequest:v20];
+    v26 = [v16 playerClient];
+    v27 = [v26 playerPath];
+
+    v32 = v23;
+    v28 = [(MRDNowPlayingPlaybackQueueServer *)v23 _cachingPolicyForRequest:v20];
+    v29 = [v16 playerClient];
+    v40 = 0;
+    v30 = [v29 playbackQueueForRequest:v20 cachingPolicy:v28 playerPath:v27 partiallyCachedItems:&v40];
+    v31 = v40;
+
+    if (v30)
+    {
+      [(MRDNowPlayingPlaybackQueueServer *)v32 sendPlaybackQueueResponse:v30 forRequest:v20 withMessage:v6 fromNowPlayingClient:v16 toXpcClient:v7];
+      (v13[2])(v13, v20, v27, v30, @"playback queue cache", 0);
+      if ([v31 count])
+      {
+        [(MRDNowPlayingPlaybackQueueServer *)v32 relayArtworkRequest:v20 forContentItems:v31 withMessage:v6 fromNowPlayingClient:v16 andNotifyXPCClient:v7];
+      }
+    }
+
+    else
+    {
+      v35[0] = _NSConcreteStackBlock;
+      v35[1] = 3221225472;
+      v35[2] = sub_1000E59C4;
+      v35[3] = &unk_1004BC098;
+      v36 = v25;
+      v37 = v20;
+      v39 = v13;
+      v38 = v27;
+      [(MRDNowPlayingPlaybackQueueServer *)v32 relayPlaybackQueueRequest:v37 withMessage:v6 toNowPlayingClient:v16 backToXpcClient:v7 completion:v35];
+    }
+
+    v12 = v34;
+    v8 = v33;
+  }
+}
+
+- (void)sendPlaybackQueueResponse:(id)a3 forRequest:(id)a4 withMessage:(id)a5 fromNowPlayingClient:(id)a6 toXpcClient:(id)a7
+{
+  v11 = a3;
+  v12 = a6;
+  v13 = a5;
+  v14 = a4;
+  v15 = [a7 playbackQueueRequests];
+  v16 = [v12 playerPath];
+
+  v17 = [v15 subscriptionControllerForPlayerPath:v16];
+
+  [v17 subscribeToPlaybackQueue:v11 forRequest:v14];
+  v19[0] = _NSConcreteStackBlock;
+  v19[1] = 3221225472;
+  v19[2] = sub_1000E5B78;
+  v19[3] = &unk_1004B6E08;
+  v20 = v11;
+  v18 = v11;
+  sub_100008278(v13, v19);
+}
+
+- (void)relayPlaybackQueueRequest:(id)a3 withMessage:(id)a4 toNowPlayingClient:(id)a5 backToXpcClient:(id)a6 completion:(id)a7
+{
+  v11 = a3;
+  v12 = a5;
+  v13 = a7;
+  v14 = a6;
+  v15 = a4;
+  v16 = +[NSDate now];
+  v17 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"relayPlaybackQueueRequest", v11];
+  v18 = [v12 xpcClient];
+  v19 = [v18 displayName];
+
+  if (v19)
+  {
+    v20 = [v12 xpcClient];
+    v21 = [v20 displayName];
+    [v17 appendFormat:@" for %@", v21];
+  }
+
+  v22 = _MRLogForCategory();
+  if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+  {
+    *buf = 138543362;
+    v47 = v17;
+    _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Request: %{public}@", buf, 0xCu);
+  }
+
+  v41[0] = _NSConcreteStackBlock;
+  v41[1] = 3221225472;
+  v41[2] = sub_1000E5F08;
+  v41[3] = &unk_1004BC0C0;
+  v23 = v12;
+  v42 = v23;
+  v24 = v11;
+  v43 = v24;
+  v44 = v16;
+  v45 = v13;
+  v35 = v13;
+  v25 = v16;
+  v26 = objc_retainBlock(v41);
+  v27 = [v23 playerPath];
+  v28 = [v14 playbackQueueRequests];
+
+  v29 = [v28 subscriptionControllerForPlayerPath:v27];
+
+  xpc_dictionary_set_uint64(v15, "MRXPC_MESSAGE_ID_KEY", 0x700000000000002uLL);
+  MRAddPlayerPathToXPCMessage();
+  MRAddPlaybackQueueRequestToXPCMessage();
+  v30 = [v23 xpcClient];
+  v36[0] = _NSConcreteStackBlock;
+  v36[1] = 3221225472;
+  v36[2] = sub_1000E6330;
+  v36[3] = &unk_1004BC0E8;
+  v37 = v29;
+  v38 = v24;
+  v39 = v23;
+  v40 = v26;
+  v31 = v26;
+  v32 = v23;
+  v33 = v24;
+  v34 = v29;
+  [v30 relayXPCMessage:v15 andReply:1 resultCallback:v36];
+}
+
+- (void)relayArtworkRequest:(id)a3 forContentItems:(id)a4 withMessage:(id)a5 fromNowPlayingClient:(id)a6 andNotifyXPCClient:(id)a7
+{
+  v11 = a3;
+  v34 = a5;
+  v12 = a6;
+  v33 = a7;
+  v13 = a4;
+  v14 = +[NSDate now];
+  [v12 playerPath];
+  v39[0] = _NSConcreteStackBlock;
+  v39[1] = 3221225472;
+  v39[2] = sub_1000E67CC;
+  v15 = v39[3] = &unk_1004BC110;
+  v40 = v15;
+  v16 = v11;
+  v41 = v16;
+  v17 = v14;
+  v42 = v17;
+  v18 = objc_retainBlock(v39);
+  v19 = [v13 msv_map:&stru_1004BC150];
+
+  v20 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"requestArtworkForContentItems", v16];
+  v21 = v20;
+  if (v15)
+  {
+    [v20 appendFormat:@" for %@", v15];
+  }
+
+  if (v19)
+  {
+    [v21 appendFormat:@" because %@", v19];
+  }
+
+  v22 = _MRLogForCategory();
+  if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+  {
+    *buf = 138543362;
+    v44 = v21;
+    _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Request: %{public}@", buf, 0xCu);
+  }
+
+  if ([v19 count])
+  {
+    v23 = [[MRPlaybackQueueRequest alloc] initWithIdentifiers:v19];
+    [v16 artworkWidth];
+    [v23 setArtworkWidth:?];
+    [v16 artworkHeight];
+    [v23 setArtworkHeight:?];
+    v24 = +[NSUUID UUID];
+    v25 = [v24 UUIDString];
+    [v23 setRequestIdentifier:v25];
+
+    v26 = [NSString alloc];
+    v27 = [v16 label];
+    v28 = [v16 requestIdentifier];
+    v29 = [v26 initWithFormat:@"ArtworkRequest for %@<%@>", v27, v28];
+    [v23 setLabel:v29];
+
+    v35[0] = _NSConcreteStackBlock;
+    v35[1] = 3221225472;
+    v35[2] = sub_1000E6B50;
+    v35[3] = &unk_1004BC1B8;
+    v36 = v15;
+    v30 = v33;
+    v37 = v33;
+    v38 = v18;
+    v31 = v34;
+    [(MRDNowPlayingPlaybackQueueServer *)self relayPlaybackQueueRequest:v23 withMessage:v34 toNowPlayingClient:v12 backToXpcClient:v37 completion:v35];
+  }
+
+  else
+  {
+    (v18[2])(v18, 0, 0);
+    v30 = v33;
+    v31 = v34;
+  }
+}
+
+- (unsigned)_cachingPolicyForRequest:(id)a3
+{
+  result = [a3 cachingPolicy];
+  if (result <= 1)
+  {
+    return 1;
+  }
+
+  return result;
+}
+
+- (id)_resolveRequest:(id)a3 withCapabilities:(unint64_t)a4
+{
+  v5 = a3;
+  v6 = v5;
+  v7 = v5;
+  if (!a4)
+  {
+    v7 = [v5 copy];
+    if ([v7 rangeContainsNowPlayingItem])
+    {
+      if ([v7 location])
+      {
+        [v7 setLocation:0];
+      }
+
+      if (![v7 length])
+      {
+        goto LABEL_12;
+      }
+
+      v8 = 1;
+    }
+
+    else
+    {
+      if ([v7 hasLocation])
+      {
+        [v7 setLocation:0];
+      }
+
+      if (![v7 hasLength])
+      {
+        goto LABEL_12;
+      }
+
+      v8 = 0;
+    }
+
+    [v7 setLength:v8];
+LABEL_12:
+  }
+
+  return v7;
+}
+
+@end

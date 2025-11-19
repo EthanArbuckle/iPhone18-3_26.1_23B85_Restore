@@ -1,0 +1,236 @@
+@interface InAppReceiptDatabaseStore
++ (BOOL)createOrMigrateStoreUsingSchema:(id)a3;
++ (id)storeDescriptor;
+- (void)clearTransactionsForBundleID:(id)a3;
+@end
+
+@implementation InAppReceiptDatabaseStore
+
++ (id)storeDescriptor
+{
+  v2 = objc_alloc_init(SQLiteDatabaseStoreDescriptor);
+  [(SQLiteDatabaseStoreDescriptor *)v2 setSchemaName:@"storekit_receipts"];
+  [(SQLiteDatabaseStoreDescriptor *)v2 setSessionClass:objc_opt_class()];
+  [(SQLiteDatabaseStoreDescriptor *)v2 setTransactionClass:objc_opt_class()];
+
+  return v2;
+}
+
++ (BOOL)createOrMigrateStoreUsingSchema:(id)a3
+{
+  v3 = a3;
+  *&v4 = 138543874;
+  v19 = v4;
+  do
+  {
+    v5 = [v3 currentSchemaVersion];
+    if (v5 > 18401)
+    {
+      break;
+    }
+
+    v6 = [v3 currentSchemaVersion];
+    v7 = v6;
+    if (v6 <= 15399)
+    {
+      if ((v6 - 15000) >= 5 && v6)
+      {
+        if (v6 != 15005)
+        {
+          goto LABEL_36;
+        }
+
+        v8 = v3;
+        v9 = 15400;
+        v10 = &stru_100381E70;
+      }
+
+      else
+      {
+        v8 = v3;
+        v9 = 16200;
+        v10 = &stru_100381E50;
+      }
+
+      goto LABEL_11;
+    }
+
+    if (v6 <= 17999)
+    {
+      if (v6 > 16000)
+      {
+        if (v6 == 16001)
+        {
+          v8 = v3;
+          v9 = 16200;
+          v10 = &stru_100381F10;
+        }
+
+        else
+        {
+          if (v6 != 16200)
+          {
+            goto LABEL_36;
+          }
+
+          v8 = v3;
+          v9 = 18000;
+          v10 = &stru_100381F30;
+        }
+      }
+
+      else if (v6 == 15400)
+      {
+        v8 = v3;
+        v9 = 16000;
+        v10 = &stru_100381ED0;
+      }
+
+      else
+      {
+        if (v6 != 16000)
+        {
+          goto LABEL_36;
+        }
+
+        v8 = v3;
+        v9 = 16001;
+        v10 = &stru_100381EF0;
+      }
+
+      goto LABEL_11;
+    }
+
+    if (v6 <= 18400)
+    {
+      if (v6 == 18000)
+      {
+        v8 = v3;
+        v9 = 18401;
+        v10 = &stru_100381F50;
+      }
+
+      else
+      {
+        if (v6 != 18400)
+        {
+          goto LABEL_36;
+        }
+
+        v8 = v3;
+        v9 = 18401;
+        v10 = &stru_100381F70;
+      }
+
+      goto LABEL_11;
+    }
+
+    if (v6 == 18401)
+    {
+      v8 = v3;
+      v9 = 18402;
+      v10 = &stru_100381F90;
+LABEL_11:
+      v11 = [v8 migrateToVersion:v9 usingBlock:v10];
+      goto LABEL_12;
+    }
+
+    if (v6 != 18402)
+    {
+LABEL_36:
+      if (qword_1003D42E0 != -1)
+      {
+        sub_1002CDA50();
+      }
+
+      v17 = qword_1003D4298;
+      if (os_log_type_enabled(qword_1003D4298, OS_LOG_TYPE_ERROR))
+      {
+        *buf = v19;
+        v22 = a1;
+        v23 = 2048;
+        v24 = v7;
+        v25 = 2048;
+        v26 = 18402;
+        _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "[%{public}@]: No StoreKit In App Receipt Database migration function for %li => %li", buf, 0x20u);
+      }
+
+      v11 = 0;
+      goto LABEL_12;
+    }
+
+    v11 = 1;
+LABEL_12:
+    if (qword_1003D42E0 != -1)
+    {
+      sub_1002CDA50();
+    }
+
+    v12 = qword_1003D4298;
+    if (v11)
+    {
+      v13 = OS_LOG_TYPE_DEFAULT;
+    }
+
+    else
+    {
+      v13 = OS_LOG_TYPE_ERROR;
+    }
+
+    if (os_log_type_enabled(qword_1003D4298, v13))
+    {
+      v14 = v12;
+      v15 = [v3 currentSchemaVersion];
+      *buf = 138544130;
+      v16 = @"FAIL";
+      if (v11)
+      {
+        v16 = @"SUCCESS";
+      }
+
+      v22 = a1;
+      v23 = 2048;
+      v24 = v7;
+      v25 = 2048;
+      v26 = v15;
+      v27 = 2114;
+      v28 = v16;
+      _os_log_impl(&_mh_execute_header, v14, v13, "[%{public}@]: Transaction database migration from %li => %li %{public}@", buf, 0x2Au);
+    }
+  }
+
+  while ((v11 & 1) != 0);
+
+  return v5 > 18401;
+}
+
+- (void)clearTransactionsForBundleID:(id)a3
+{
+  v4 = a3;
+  if (qword_1003D42E0 != -1)
+  {
+    sub_1002CDA78();
+  }
+
+  v5 = qword_1003D42C0;
+  if (os_log_type_enabled(qword_1003D42C0, OS_LOG_TYPE_DEFAULT))
+  {
+    v6 = v5;
+    *buf = 138543618;
+    v12 = objc_opt_class();
+    v13 = 2114;
+    v14 = v4;
+    v7 = v12;
+    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Clearing transactions for %{public}@", buf, 0x16u);
+  }
+
+  v9[0] = _NSConcreteStackBlock;
+  v9[1] = 3221225472;
+  v9[2] = sub_10004BF1C;
+  v9[3] = &unk_100381FB8;
+  v10 = v4;
+  v8 = v4;
+  [(SQLiteDatabaseStore *)self modifyUsingTransaction:v9];
+}
+
+@end

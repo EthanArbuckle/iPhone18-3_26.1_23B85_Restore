@@ -1,0 +1,91 @@
+@interface DIClient2IODaemonXPCHandler
+- (BOOL)addToRefCountWithError:(id *)a3;
+- (DIClient2IODaemonXPCHandler)initWithEndpoint:(id)a3;
+- (void)createConnection;
+@end
+
+@implementation DIClient2IODaemonXPCHandler
+
+- (DIClient2IODaemonXPCHandler)initWithEndpoint:(id)a3
+{
+  v5 = a3;
+  v9.receiver = self;
+  v9.super_class = DIClient2IODaemonXPCHandler;
+  v6 = [(DIBaseXPCHandler *)&v9 init];
+  v7 = v6;
+  if (v6)
+  {
+    objc_storeStrong(&v6->_xpcListenerEndpoint, a3);
+  }
+
+  return v7;
+}
+
+- (void)createConnection
+{
+  v3 = *__error();
+  if (sub_1000E044C())
+  {
+    v4 = sub_1000E03D8();
+    os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
+    *buf = 68157954;
+    v15 = 47;
+    v16 = 2080;
+    v17 = "[DIClient2IODaemonXPCHandler createConnection]";
+    v5 = _os_log_send_and_compose_impl();
+
+    if (v5)
+    {
+      fprintf(__stderrp, "%s\n", v5);
+      free(v5);
+    }
+  }
+
+  else
+  {
+    v6 = sub_1000E03D8();
+    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    {
+      *buf = 68157954;
+      v15 = 47;
+      v16 = 2080;
+      v17 = "[DIClient2IODaemonXPCHandler createConnection]";
+      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%.*s: Creating connection to IO daemon clients listener", buf, 0x12u);
+    }
+  }
+
+  *__error() = v3;
+  v7 = [NSXPCConnection alloc];
+  v8 = [(DIClient2IODaemonXPCHandler *)self xpcListenerEndpoint];
+  v9 = [v7 initWithListenerEndpoint:v8];
+  [(DIBaseXPCHandler *)self setConnection:v9];
+
+  v10 = [(DIClient2IODaemonXPCHandler *)self remoteObjectInterface];
+  v11 = [(DIBaseXPCHandler *)self connection];
+  [v11 setRemoteObjectInterface:v10];
+
+  v12 = [(DIBaseXPCHandler *)self connection];
+  [v12 setInvalidationHandler:&stru_100226738];
+
+  v13 = [(DIBaseXPCHandler *)self connection];
+  [v13 setInterruptionHandler:&stru_100226758];
+}
+
+- (BOOL)addToRefCountWithError:(id *)a3
+{
+  objc_initWeak(&location, self);
+  v5 = [(DIBaseXPCHandler *)self remoteProxy];
+  v7 = _NSConcreteStackBlock;
+  v8 = 3221225472;
+  v9 = sub_100139C24;
+  v10 = &unk_100208458;
+  objc_copyWeak(&v11, &location);
+  [v5 addToRefCountWithReply:&v7];
+
+  LOBYTE(a3) = [(DIBaseXPCHandler *)self completeCommandWithError:a3, v7, v8, v9, v10];
+  objc_destroyWeak(&v11);
+  objc_destroyWeak(&location);
+  return a3;
+}
+
+@end

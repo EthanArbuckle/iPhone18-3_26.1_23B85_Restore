@@ -1,0 +1,148 @@
+@interface CRXCAppClipCodePayload
+- (CRXCAppClipCodePayload)init;
+- (CRXCAppClipCodePayload)initWithVersion:(unint64_t)a3 lensType:(int64_t)a4 left:(id)a5 right:(id)a6 lensColorCode:(unint64_t)a7 secret:(id)a8 randomBits:(unsigned int)a9;
+- (CRXCPrescriptionInfo)left;
+- (CRXCPrescriptionInfo)right;
+- (NSData)secret;
+- (int64_t)lensType;
+- (unint64_t)lensColorCode;
+- (unint64_t)version;
+- (unsigned)randomBits;
+- (void)encodeWithCoder:(id)a3;
+- (void)setLensColorCode:(unint64_t)a3;
+- (void)setLensType:(int64_t)a3;
+- (void)setRandomBits:(unsigned int)a3;
+- (void)setSecret:(id)a3;
+- (void)setVersion:(unint64_t)a3;
+@end
+
+@implementation CRXCAppClipCodePayload
+
+- (unint64_t)version
+{
+  v3 = OBJC_IVAR___CRXCAppClipCodePayload_version;
+  swift_beginAccess();
+  return *(self + v3);
+}
+
+- (void)setVersion:(unint64_t)a3
+{
+  v5 = OBJC_IVAR___CRXCAppClipCodePayload_version;
+  swift_beginAccess();
+  *(self + v5) = a3;
+}
+
+- (int64_t)lensType
+{
+  v3 = OBJC_IVAR___CRXCAppClipCodePayload_lensType;
+  swift_beginAccess();
+  return *(self + v3);
+}
+
+- (void)setLensType:(int64_t)a3
+{
+  v5 = OBJC_IVAR___CRXCAppClipCodePayload_lensType;
+  swift_beginAccess();
+  *(self + v5) = a3;
+}
+
+- (CRXCPrescriptionInfo)left
+{
+  v3 = OBJC_IVAR___CRXCAppClipCodePayload_left;
+  swift_beginAccess();
+  return *(self + v3);
+}
+
+- (CRXCPrescriptionInfo)right
+{
+  v3 = OBJC_IVAR___CRXCAppClipCodePayload_right;
+  swift_beginAccess();
+  return *(self + v3);
+}
+
+- (unint64_t)lensColorCode
+{
+  v3 = OBJC_IVAR___CRXCAppClipCodePayload_lensColorCode;
+  swift_beginAccess();
+  return *(self + v3);
+}
+
+- (void)setLensColorCode:(unint64_t)a3
+{
+  v5 = OBJC_IVAR___CRXCAppClipCodePayload_lensColorCode;
+  swift_beginAccess();
+  *(self + v5) = a3;
+}
+
+- (NSData)secret
+{
+  v2 = (self + OBJC_IVAR___CRXCAppClipCodePayload_secret);
+  swift_beginAccess();
+  v4 = *v2;
+  v3 = v2[1];
+  sub_24734782C(v4, v3);
+  v5 = sub_247365B24();
+  sub_247347880(v4, v3);
+
+  return v5;
+}
+
+- (void)setSecret:(id)a3
+{
+  v4 = a3;
+  v5 = self;
+  v6 = sub_247365B44();
+  v8 = v7;
+
+  v9 = (v5 + OBJC_IVAR___CRXCAppClipCodePayload_secret);
+  swift_beginAccess();
+  v10 = *v9;
+  v11 = v9[1];
+  *v9 = v6;
+  v9[1] = v8;
+  sub_247347880(v10, v11);
+}
+
+- (unsigned)randomBits
+{
+  v3 = OBJC_IVAR___CRXCAppClipCodePayload_randomBits;
+  swift_beginAccess();
+  return *(self + v3);
+}
+
+- (void)setRandomBits:(unsigned int)a3
+{
+  v5 = OBJC_IVAR___CRXCAppClipCodePayload_randomBits;
+  swift_beginAccess();
+  *(self + v5) = a3;
+}
+
+- (CRXCAppClipCodePayload)initWithVersion:(unint64_t)a3 lensType:(int64_t)a4 left:(id)a5 right:(id)a6 lensColorCode:(unint64_t)a7 secret:(id)a8 randomBits:(unsigned int)a9
+{
+  v22 = a5;
+  v21 = a6;
+  v15 = a8;
+  v16 = sub_247365B44();
+  v18 = v17;
+
+  v19 = sub_2473478D4(a3, a4, a5, a6, a7, v16, v18, a9);
+  sub_247347880(v16, v18);
+
+  return v19;
+}
+
+- (void)encodeWithCoder:(id)a3
+{
+  v4 = a3;
+  v5 = self;
+  sub_2473460E4(v4);
+}
+
+- (CRXCAppClipCodePayload)init
+{
+  result = _swift_stdlib_reportUnimplementedInitializer();
+  __break(1u);
+  return result;
+}
+
+@end

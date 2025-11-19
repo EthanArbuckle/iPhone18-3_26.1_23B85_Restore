@@ -1,0 +1,330 @@
+@interface SNTestRun
+- (BOOL)waitForCommitToFinish;
+- (SNTestRun)initWithTestCase:(id)a3 testSuite:(id)a4;
+- (int64_t)orientation;
+- (void)runTestWithContext:(id)a3 testCoordinator:(id)a4 completion:(id)a5;
+- (void)runTestWithContext:(id)a3 testName:(id)a4 testCoordinator:(id)a5 completion:(id)a6;
+- (void)setupWithContext:(id)a3 completion:(id)a4;
+@end
+
+@implementation SNTestRun
+
+- (int64_t)orientation
+{
+  v3 = [(SNTestRun *)self testCase];
+  v4 = [v3 conformsToProtocol:&unk_287E95B68];
+
+  if (!v4)
+  {
+    return 1;
+  }
+
+  v5 = [(SNTestRun *)self testCase];
+  v6 = [v5 orientation];
+
+  return v6;
+}
+
+- (BOOL)waitForCommitToFinish
+{
+  v3 = [(SNTestRun *)self testCase];
+  v4 = [v3 conformsToProtocol:&unk_287E95B68];
+
+  if (!v4)
+  {
+    return 0;
+  }
+
+  v5 = [(SNTestRun *)self testCase];
+  v6 = [v5 waitForCommitToFinish];
+
+  return v6;
+}
+
+- (SNTestRun)initWithTestCase:(id)a3 testSuite:(id)a4
+{
+  v7 = a3;
+  v8 = a4;
+  v12.receiver = self;
+  v12.super_class = SNTestRun;
+  v9 = [(SNTestRun *)&v12 init];
+  v10 = v9;
+  if (v9)
+  {
+    objc_storeStrong(&v9->_testCase, a3);
+    objc_storeStrong(&v10->_testSuite, a4);
+  }
+
+  return v10;
+}
+
+- (void)setupWithContext:(id)a3 completion:(id)a4
+{
+  v30 = *MEMORY[0x277D85DE8];
+  v6 = a3;
+  v7 = a4;
+  v8 = objc_alloc_init(SNTestChain);
+  v9 = [(SNTestRun *)self testSuite];
+
+  if (v9)
+  {
+    v20 = v7;
+    v27 = 0u;
+    v28 = 0u;
+    v25 = 0u;
+    v26 = 0u;
+    v10 = [(SNTestRun *)self testSuite];
+    v11 = [v10 testSetupList];
+
+    v12 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    if (v12)
+    {
+      v13 = v12;
+      v14 = *v26;
+      do
+      {
+        v15 = 0;
+        do
+        {
+          if (*v26 != v14)
+          {
+            objc_enumerationMutation(v11);
+          }
+
+          v16 = *(*(&v25 + 1) + 8 * v15);
+          v23[0] = MEMORY[0x277D85DD0];
+          v23[1] = 3221225472;
+          v23[2] = __41__SNTestRun_setupWithContext_completion___block_invoke;
+          v23[3] = &unk_279D94118;
+          v23[4] = v16;
+          v24 = v6;
+          [(SNTestChain *)v8 addLink:v23];
+
+          ++v15;
+        }
+
+        while (v13 != v15);
+        v13 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      }
+
+      while (v13);
+    }
+
+    v7 = v20;
+  }
+
+  v17 = [(SNTestRun *)self testCase];
+  v18 = objc_opt_respondsToSelector();
+
+  if (v18)
+  {
+    v21[0] = MEMORY[0x277D85DD0];
+    v21[1] = 3221225472;
+    v21[2] = __41__SNTestRun_setupWithContext_completion___block_invoke_2;
+    v21[3] = &unk_279D94118;
+    v21[4] = self;
+    v22 = v6;
+    [(SNTestChain *)v8 addLink:v21];
+  }
+
+  [(SNTestChain *)v8 runWithCompletion:v7];
+
+  v19 = *MEMORY[0x277D85DE8];
+}
+
+void __41__SNTestRun_setupWithContext_completion___block_invoke_2(uint64_t a1, void *a2)
+{
+  v3 = *(a1 + 32);
+  v4 = a2;
+  v5 = [v3 testCase];
+  [v5 setupTestWithContext:*(a1 + 40) completion:v4];
+}
+
+- (void)runTestWithContext:(id)a3 testCoordinator:(id)a4 completion:(id)a5
+{
+  v8 = a5;
+  v9 = a4;
+  v10 = a3;
+  v12 = [(SNTestRun *)self testCase];
+  v11 = [v12 testName];
+  [(SNTestRun *)self runTestWithContext:v10 testName:v11 testCoordinator:v9 completion:v8];
+}
+
+- (void)runTestWithContext:(id)a3 testName:(id)a4 testCoordinator:(id)a5 completion:(id)a6
+{
+  v10 = a3;
+  v11 = a4;
+  v12 = a5;
+  v13 = a6;
+  v14 = objc_alloc_init(SNTestChain);
+  v18 = MEMORY[0x277D85DD0];
+  v19 = 3221225472;
+  v20 = __68__SNTestRun_runTestWithContext_testName_testCoordinator_completion___block_invoke;
+  v21 = &unk_279D941B8;
+  v22 = self;
+  v23 = v10;
+  v24 = v12;
+  v25 = v11;
+  v15 = v11;
+  v16 = v12;
+  v17 = v10;
+  [(SNTestChain *)v14 addLink:&v18];
+  [(SNTestChain *)v14 runWithCompletion:v13, v18, v19, v20, v21, v22];
+}
+
+void __68__SNTestRun_runTestWithContext_testName_testCoordinator_completion___block_invoke(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  v4 = [*(a1 + 32) testCase];
+  v5 = [v4 conformsToProtocol:&unk_287E96AC0];
+
+  v6 = [*(a1 + 32) testCase];
+  v7 = v6;
+  if (v5)
+  {
+    v8 = [v6 scrollViewWithContext:*(a1 + 40)];
+    if (v8)
+    {
+      if (objc_opt_respondsToSelector())
+      {
+        v9 = [v7 scrollDirection];
+      }
+
+      else
+      {
+        v9 = 0;
+      }
+
+      if ([MEMORY[0x277D44368] isRecapAvailable])
+      {
+        [*(a1 + 48) recapScrollTestWithTestName:*(a1 + 56) scrollView:v8];
+      }
+
+      else
+      {
+        v22 = objc_opt_respondsToSelector();
+        v24 = *(a1 + 48);
+        v23 = *(a1 + 56);
+        v25 = [v7 iterations];
+        v26 = [v7 offset];
+        if (v22)
+        {
+          [v24 scrollTestWithTestName:v23 scrollView:v8 iterations:v25 offset:v26 numberOfScreens:objc_msgSend(v7 direction:{"numberOfScreens"), v9}];
+        }
+
+        else
+        {
+          [v24 scrollTestWithTestName:v23 scrollView:v8 iterations:v25 offset:v26 direction:v9];
+        }
+      }
+
+      v3[2](v3, 0);
+    }
+
+    else
+    {
+      v21 = [[SNTestFailure alloc] initWithMessage:@"Failed to retrieve UIScrollView for test"];
+      (v3)[2](v3, v21);
+    }
+
+    goto LABEL_20;
+  }
+
+  v10 = [v6 conformsToProtocol:&unk_287E96B90];
+
+  v11 = [*(a1 + 32) testCase];
+  v7 = v11;
+  if (v10)
+  {
+    v12 = *(a1 + 48);
+    v13 = [v11 rotateOrientation];
+    v38[0] = MEMORY[0x277D85DD0];
+    v38[1] = 3221225472;
+    v38[2] = __68__SNTestRun_runTestWithContext_testName_testCoordinator_completion___block_invoke_2;
+    v38[3] = &unk_279D94140;
+    v39 = *(a1 + 48);
+    v40 = *(a1 + 56);
+    v33[0] = MEMORY[0x277D85DD0];
+    v33[1] = 3221225472;
+    v33[2] = __68__SNTestRun_runTestWithContext_testName_testCoordinator_completion___block_invoke_3;
+    v33[3] = &unk_279D94168;
+    v34 = *(a1 + 48);
+    v14 = *(a1 + 56);
+    v15 = *(a1 + 32);
+    v35 = v14;
+    v36 = v15;
+    v37 = v3;
+    [v12 rotateToOrientation:v13 beforeRotation:v38 afterRotation:v33];
+
+    v16 = v39;
+LABEL_9:
+
+LABEL_20:
+    goto LABEL_21;
+  }
+
+  v17 = [v11 conformsToProtocol:&unk_287E96C28];
+
+  if (v17)
+  {
+    v7 = [*(a1 + 32) testCase];
+    [*(a1 + 48) startedTestWithTestName:*(a1 + 56)];
+    v28[0] = MEMORY[0x277D85DD0];
+    v28[1] = 3221225472;
+    v28[2] = __68__SNTestRun_runTestWithContext_testName_testCoordinator_completion___block_invoke_4;
+    v28[3] = &unk_279D94190;
+    v18 = *(a1 + 40);
+    v29 = *(a1 + 48);
+    v19 = *(a1 + 56);
+    v20 = *(a1 + 32);
+    v30 = v19;
+    v31 = v20;
+    v32 = v3;
+    [v7 runTestWithContext:v18 completion:v28];
+
+    v16 = v29;
+    goto LABEL_9;
+  }
+
+  v27 = [[SNTestFailure alloc] initWithMessage:@"Unsupported test case; Requires specific SNTestCase type"];
+  (v3)[2](v3, v27);
+
+LABEL_21:
+}
+
+void __68__SNTestRun_runTestWithContext_testName_testCoordinator_completion___block_invoke_3(uint64_t a1, int a2)
+{
+  if (a2)
+  {
+    [*(a1 + 32) finishedTestWithTestName:*(a1 + 40) waitForCommit:{objc_msgSend(*(a1 + 48), "waitForCommitToFinish")}];
+    v3 = *(*(a1 + 56) + 16);
+
+    v3();
+  }
+
+  else
+  {
+    v4 = *(a1 + 56);
+    v5 = [[SNTestFailure alloc] initWithMessage:@"Failed to rotate to expected orientation"];
+    (*(v4 + 16))(v4, v5);
+  }
+}
+
+uint64_t __68__SNTestRun_runTestWithContext_testName_testCoordinator_completion___block_invoke_4(uint64_t a1, uint64_t a2)
+{
+  if (a2)
+  {
+    v3 = *(a1 + 56);
+  }
+
+  else
+  {
+    [*(a1 + 32) finishedTestWithTestName:*(a1 + 40) waitForCommit:{objc_msgSend(*(a1 + 48), "waitForCommitToFinish")}];
+  }
+
+  v4 = *(*(a1 + 56) + 16);
+
+  return v4();
+}
+
+@end

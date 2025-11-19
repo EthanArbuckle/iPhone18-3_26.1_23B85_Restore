@@ -1,0 +1,132 @@
+@interface SMBClientdKeychainUtilities
++ (BOOL)addItem:(id)a3 forIdentifier:(id)a4 error:(id *)a5;
++ (BOOL)removeItemForIdentifier:(id)a3 error:(id *)a4;
++ (id)defaultItemAttributesWithIdentifier:(id)a3;
++ (id)getItemForIdentifier:(id)a3 error:(id *)a4;
+@end
+
+@implementation SMBClientdKeychainUtilities
+
++ (id)defaultItemAttributesWithIdentifier:(id)a3
+{
+  v3 = a3;
+  if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  {
+    sub_1000592B0();
+  }
+
+  v7[0] = kSecClass;
+  v7[1] = kSecUseDataProtectionKeychain;
+  v8[0] = kSecClassGenericPassword;
+  v8[1] = &__kCFBooleanTrue;
+  v7[2] = kSecAttrIsInvisible;
+  v7[3] = kSecAttrService;
+  v8[2] = &__kCFBooleanTrue;
+  v8[3] = @"com.apple.filesystems.smbclientd";
+  v4 = [NSDictionary dictionaryWithObjects:v8 forKeys:v7 count:4];
+  v5 = [v4 mutableCopy];
+
+  if (v3)
+  {
+    [v5 setObject:v3 forKeyedSubscript:kSecAttrAccount];
+  }
+
+  return v5;
+}
+
++ (BOOL)addItem:(id)a3 forIdentifier:(id)a4 error:(id *)a5
+{
+  v7 = a3;
+  v8 = [SMBClientdKeychainUtilities defaultItemAttributesWithIdentifier:a4];
+  v9 = objc_opt_new();
+  [v9 setObject:v7 forKeyedSubscript:kSecValueData];
+
+  [v9 setObject:&__kCFBooleanFalse forKeyedSubscript:kSecAttrSynchronizable];
+  v10 = SecItemUpdate(v8, v9);
+  if (v10 == -25300)
+  {
+    [(__CFDictionary *)v8 addEntriesFromDictionary:v9];
+    v10 = SecItemAdd(v8, 0);
+  }
+
+  if (a5)
+  {
+    *a5 = 0;
+    if (v10)
+    {
+      [NSError errorWithDomain:NSOSStatusErrorDomain code:v10 userInfo:0];
+      *a5 = v11 = 0;
+    }
+
+    else
+    {
+      v11 = 1;
+    }
+  }
+
+  else
+  {
+    v11 = v10 == 0;
+  }
+
+  return v11;
+}
+
++ (id)getItemForIdentifier:(id)a3 error:(id *)a4
+{
+  v5 = [SMBClientdKeychainUtilities defaultItemAttributesWithIdentifier:a3];
+  [v5 setObject:&__kCFBooleanTrue forKeyedSubscript:kSecReturnData];
+  [v5 setObject:kSecMatchLimitOne forKeyedSubscript:kSecMatchLimit];
+  result = 0;
+  if (a4)
+  {
+    *a4 = 0;
+    v6 = SecItemCopyMatching(v5, &result);
+    if (v6)
+    {
+      [NSError errorWithDomain:NSOSStatusErrorDomain code:v6 userInfo:0];
+      *a4 = v7 = 0;
+      goto LABEL_7;
+    }
+  }
+
+  else if (SecItemCopyMatching(v5, &result))
+  {
+    v7 = 0;
+    goto LABEL_7;
+  }
+
+  v7 = result;
+LABEL_7:
+
+  return v7;
+}
+
++ (BOOL)removeItemForIdentifier:(id)a3 error:(id *)a4
+{
+  v5 = [SMBClientdKeychainUtilities defaultItemAttributesWithIdentifier:a3];
+  v6 = SecItemDelete(v5);
+  if (a4)
+  {
+    *a4 = 0;
+    if (v6)
+    {
+      [NSError errorWithDomain:NSOSStatusErrorDomain code:v6 userInfo:0];
+      *a4 = v7 = 0;
+    }
+
+    else
+    {
+      v7 = 1;
+    }
+  }
+
+  else
+  {
+    v7 = v6 == 0;
+  }
+
+  return v7;
+}
+
+@end

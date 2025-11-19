@@ -1,0 +1,70 @@
+@interface ADJasperPearlTriggeringTelemetryData
+- (ADJasperPearlTriggeringTelemetryData)init;
+- (void)notifyNewFrameArrived:(double)a3 temperature:(float)a4;
+- (void)notifyTriggeringSessionEnded;
+- (void)setTriggeringEndReason:(BOOL)a3 triggerEndReasonIsMaxFrameCount:(BOOL)a4 triggerEndReasonIsValidationMetricIncreased:(BOOL)a5;
+@end
+
+@implementation ADJasperPearlTriggeringTelemetryData
+
+- (void)notifyTriggeringSessionEnded
+{
+  [(ADJasperPearlTriggeringTelemetryData *)self caCurrentTriggerLastFrameTimestamp];
+  [(ADJasperPearlTriggeringTelemetryData *)self setCaLastTriggerLastFrameTimestamp:?];
+  [(ADJasperPearlTriggeringTelemetryData *)self caCurrentTriggerLastFrameTemperature];
+  [(ADJasperPearlTriggeringTelemetryData *)self setCaLastTriggerLastFrameTemperature:?];
+  [(ADJasperPearlTriggeringTelemetryData *)self setCaCurrentTriggerFirstFrameTimestamp:NAN];
+  LODWORD(v3) = 2143289344;
+  [(ADJasperPearlTriggeringTelemetryData *)self setCaCurrentTriggerFirstFrameTemperature:v3];
+  [(ADJasperPearlTriggeringTelemetryData *)self setCaCurrentTriggerLastFrameTimestamp:NAN];
+  LODWORD(v4) = 2143289344;
+  [(ADJasperPearlTriggeringTelemetryData *)self setCaCurrentTriggerLastFrameTemperature:v4];
+  [(ADJasperPearlTriggeringTelemetryData *)self setCaCurrentTriggerFrameCount:0];
+  [(ADJasperPearlTriggeringTelemetryData *)self setCaCurrentTriggerEndReasonIsConvergence:0];
+  [(ADJasperPearlTriggeringTelemetryData *)self setCaCurrentTriggerEndReasonIsMaxFrameCount:0];
+
+  [(ADJasperPearlTriggeringTelemetryData *)self setCaCurrentTriggerEndReasonIsOutputValidationMetricIncreased:0];
+}
+
+- (void)setTriggeringEndReason:(BOOL)a3 triggerEndReasonIsMaxFrameCount:(BOOL)a4 triggerEndReasonIsValidationMetricIncreased:(BOOL)a5
+{
+  v5 = a5;
+  v6 = a4;
+  [(ADJasperPearlTriggeringTelemetryData *)self setCaCurrentTriggerEndReasonIsConvergence:a3];
+  [(ADJasperPearlTriggeringTelemetryData *)self setCaCurrentTriggerEndReasonIsMaxFrameCount:v6];
+
+  [(ADJasperPearlTriggeringTelemetryData *)self setCaCurrentTriggerEndReasonIsOutputValidationMetricIncreased:v5];
+}
+
+- (void)notifyNewFrameArrived:(double)a3 temperature:(float)a4
+{
+  [(ADJasperPearlTriggeringTelemetryData *)self caCurrentTriggerFirstFrameTimestamp];
+  [(ADJasperPearlTriggeringTelemetryData *)self caCurrentTriggerFirstFrameTemperature];
+  [(ADJasperPearlTriggeringTelemetryData *)self setCaCurrentTriggerLastFrameTimestamp:a3];
+  *&v7 = a4;
+  [(ADJasperPearlTriggeringTelemetryData *)self setCaCurrentTriggerLastFrameTemperature:v7];
+  v8 = [(ADJasperPearlTriggeringTelemetryData *)self caCurrentTriggerFrameCount]+ 1;
+
+  [(ADJasperPearlTriggeringTelemetryData *)self setCaCurrentTriggerFrameCount:v8];
+}
+
+- (ADJasperPearlTriggeringTelemetryData)init
+{
+  v3.receiver = self;
+  v3.super_class = ADJasperPearlTriggeringTelemetryData;
+  result = [(ADJasperPearlTriggeringTelemetryData *)&v3 init];
+  if (result)
+  {
+    *&result->_caLastTriggerLastFrameTimestamp = vdupq_n_s64(0x7FF8000000000000uLL);
+    *&result->_caLastTriggerLastFrameTemperature = vneg_f32(0x3F0000003FLL);
+    result->_caCurrentTriggerLastFrameTemperature = NAN;
+    result->_caCurrentTriggerLastFrameTimestamp = NAN;
+    result->_caCurrentTriggerFrameCount = 0;
+    *&result->_caCurrentTriggerEndReasonIsConvergence = 0;
+    result->_caCurrentTriggerEndReasonIsOutputValidationMetricIncreased = 0;
+  }
+
+  return result;
+}
+
+@end

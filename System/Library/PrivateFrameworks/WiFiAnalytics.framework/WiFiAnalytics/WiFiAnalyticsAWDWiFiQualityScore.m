@@ -1,0 +1,583 @@
+@interface WiFiAnalyticsAWDWiFiQualityScore
+- (BOOL)isEqual:(id)a3;
+- (id)copyWithZone:(_NSZone *)a3;
+- (id)description;
+- (id)dictionaryRepresentation;
+- (unint64_t)hash;
+- (void)copyTo:(id)a3;
+- (void)mergeFrom:(id)a3;
+- (void)setHasRxLatency:(BOOL)a3;
+- (void)setHasRxLoss:(BOOL)a3;
+- (void)setHasTxLatency:(BOOL)a3;
+- (void)setHasTxLoss:(BOOL)a3;
+- (void)writeTo:(id)a3;
+@end
+
+@implementation WiFiAnalyticsAWDWiFiQualityScore
+
+- (void)setHasTxLoss:(BOOL)a3
+{
+  if (a3)
+  {
+    v3 = 16;
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  *&self->_has = *&self->_has & 0xEF | v3;
+}
+
+- (void)setHasRxLoss:(BOOL)a3
+{
+  if (a3)
+  {
+    v3 = 4;
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  *&self->_has = *&self->_has & 0xFB | v3;
+}
+
+- (void)setHasTxLatency:(BOOL)a3
+{
+  if (a3)
+  {
+    v3 = 8;
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  *&self->_has = *&self->_has & 0xF7 | v3;
+}
+
+- (void)setHasRxLatency:(BOOL)a3
+{
+  if (a3)
+  {
+    v3 = 2;
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  *&self->_has = *&self->_has & 0xFD | v3;
+}
+
+- (id)description
+{
+  v3 = MEMORY[0x1E696AEC0];
+  v8.receiver = self;
+  v8.super_class = WiFiAnalyticsAWDWiFiQualityScore;
+  v4 = [(WiFiAnalyticsAWDWiFiQualityScore *)&v8 description];
+  v5 = [(WiFiAnalyticsAWDWiFiQualityScore *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+
+  return v6;
+}
+
+- (id)dictionaryRepresentation
+{
+  v3 = [MEMORY[0x1E695DF90] dictionary];
+  has = self->_has;
+  if (has)
+  {
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_channelQuality];
+    [v3 setObject:v7 forKey:@"channelQuality"];
+
+    has = self->_has;
+    if ((has & 0x10) == 0)
+    {
+LABEL_3:
+      if ((has & 4) == 0)
+      {
+        goto LABEL_4;
+      }
+
+      goto LABEL_12;
+    }
+  }
+
+  else if ((*&self->_has & 0x10) == 0)
+  {
+    goto LABEL_3;
+  }
+
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_txLoss];
+  [v3 setObject:v8 forKey:@"txLoss"];
+
+  has = self->_has;
+  if ((has & 4) == 0)
+  {
+LABEL_4:
+    if ((has & 8) == 0)
+    {
+      goto LABEL_5;
+    }
+
+    goto LABEL_13;
+  }
+
+LABEL_12:
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_rxLoss];
+  [v3 setObject:v9 forKey:@"rxLoss"];
+
+  has = self->_has;
+  if ((has & 8) == 0)
+  {
+LABEL_5:
+    if ((has & 2) == 0)
+    {
+      goto LABEL_7;
+    }
+
+    goto LABEL_6;
+  }
+
+LABEL_13:
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_txLatency];
+  [v3 setObject:v10 forKey:@"txLatency"];
+
+  if ((*&self->_has & 2) != 0)
+  {
+LABEL_6:
+    v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_rxLatency];
+    [v3 setObject:v5 forKey:@"rxLatency"];
+  }
+
+LABEL_7:
+
+  return v3;
+}
+
+- (void)writeTo:(id)a3
+{
+  v10 = a3;
+  has = self->_has;
+  if (has)
+  {
+    channelQuality = self->_channelQuality;
+    PBDataWriterWriteUint32Field();
+    has = self->_has;
+    if ((has & 0x10) == 0)
+    {
+LABEL_3:
+      if ((has & 4) == 0)
+      {
+        goto LABEL_4;
+      }
+
+      goto LABEL_12;
+    }
+  }
+
+  else if ((*&self->_has & 0x10) == 0)
+  {
+    goto LABEL_3;
+  }
+
+  txLoss = self->_txLoss;
+  PBDataWriterWriteUint32Field();
+  has = self->_has;
+  if ((has & 4) == 0)
+  {
+LABEL_4:
+    if ((has & 8) == 0)
+    {
+      goto LABEL_5;
+    }
+
+    goto LABEL_13;
+  }
+
+LABEL_12:
+  rxLoss = self->_rxLoss;
+  PBDataWriterWriteUint32Field();
+  has = self->_has;
+  if ((has & 8) == 0)
+  {
+LABEL_5:
+    if ((has & 2) == 0)
+    {
+      goto LABEL_7;
+    }
+
+    goto LABEL_6;
+  }
+
+LABEL_13:
+  txLatency = self->_txLatency;
+  PBDataWriterWriteUint32Field();
+  if ((*&self->_has & 2) != 0)
+  {
+LABEL_6:
+    rxLatency = self->_rxLatency;
+    PBDataWriterWriteUint32Field();
+  }
+
+LABEL_7:
+}
+
+- (void)copyTo:(id)a3
+{
+  v4 = a3;
+  has = self->_has;
+  if (has)
+  {
+    v4[2] = self->_channelQuality;
+    *(v4 + 28) |= 1u;
+    has = self->_has;
+    if ((has & 0x10) == 0)
+    {
+LABEL_3:
+      if ((has & 4) == 0)
+      {
+        goto LABEL_4;
+      }
+
+      goto LABEL_12;
+    }
+  }
+
+  else if ((*&self->_has & 0x10) == 0)
+  {
+    goto LABEL_3;
+  }
+
+  v4[6] = self->_txLoss;
+  *(v4 + 28) |= 0x10u;
+  has = self->_has;
+  if ((has & 4) == 0)
+  {
+LABEL_4:
+    if ((has & 8) == 0)
+    {
+      goto LABEL_5;
+    }
+
+    goto LABEL_13;
+  }
+
+LABEL_12:
+  v4[4] = self->_rxLoss;
+  *(v4 + 28) |= 4u;
+  has = self->_has;
+  if ((has & 8) == 0)
+  {
+LABEL_5:
+    if ((has & 2) == 0)
+    {
+      goto LABEL_7;
+    }
+
+    goto LABEL_6;
+  }
+
+LABEL_13:
+  v4[5] = self->_txLatency;
+  *(v4 + 28) |= 8u;
+  if ((*&self->_has & 2) != 0)
+  {
+LABEL_6:
+    v4[3] = self->_rxLatency;
+    *(v4 + 28) |= 2u;
+  }
+
+LABEL_7:
+}
+
+- (id)copyWithZone:(_NSZone *)a3
+{
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  has = self->_has;
+  if (has)
+  {
+    *(result + 2) = self->_channelQuality;
+    *(result + 28) |= 1u;
+    has = self->_has;
+    if ((has & 0x10) == 0)
+    {
+LABEL_3:
+      if ((has & 4) == 0)
+      {
+        goto LABEL_4;
+      }
+
+      goto LABEL_10;
+    }
+  }
+
+  else if ((*&self->_has & 0x10) == 0)
+  {
+    goto LABEL_3;
+  }
+
+  *(result + 6) = self->_txLoss;
+  *(result + 28) |= 0x10u;
+  has = self->_has;
+  if ((has & 4) == 0)
+  {
+LABEL_4:
+    if ((has & 8) == 0)
+    {
+      goto LABEL_5;
+    }
+
+    goto LABEL_11;
+  }
+
+LABEL_10:
+  *(result + 4) = self->_rxLoss;
+  *(result + 28) |= 4u;
+  has = self->_has;
+  if ((has & 8) == 0)
+  {
+LABEL_5:
+    if ((has & 2) == 0)
+    {
+      return result;
+    }
+
+    goto LABEL_6;
+  }
+
+LABEL_11:
+  *(result + 5) = self->_txLatency;
+  *(result + 28) |= 8u;
+  if ((*&self->_has & 2) == 0)
+  {
+    return result;
+  }
+
+LABEL_6:
+  *(result + 3) = self->_rxLatency;
+  *(result + 28) |= 2u;
+  return result;
+}
+
+- (BOOL)isEqual:(id)a3
+{
+  v4 = a3;
+  if (![v4 isMemberOfClass:objc_opt_class()])
+  {
+    goto LABEL_26;
+  }
+
+  if (*&self->_has)
+  {
+    if ((*(v4 + 28) & 1) == 0 || self->_channelQuality != *(v4 + 2))
+    {
+      goto LABEL_26;
+    }
+  }
+
+  else if (*(v4 + 28))
+  {
+LABEL_26:
+    v5 = 0;
+    goto LABEL_27;
+  }
+
+  if ((*&self->_has & 0x10) != 0)
+  {
+    if ((*(v4 + 28) & 0x10) == 0 || self->_txLoss != *(v4 + 6))
+    {
+      goto LABEL_26;
+    }
+  }
+
+  else if ((*(v4 + 28) & 0x10) != 0)
+  {
+    goto LABEL_26;
+  }
+
+  if ((*&self->_has & 4) != 0)
+  {
+    if ((*(v4 + 28) & 4) == 0 || self->_rxLoss != *(v4 + 4))
+    {
+      goto LABEL_26;
+    }
+  }
+
+  else if ((*(v4 + 28) & 4) != 0)
+  {
+    goto LABEL_26;
+  }
+
+  if ((*&self->_has & 8) != 0)
+  {
+    if ((*(v4 + 28) & 8) == 0 || self->_txLatency != *(v4 + 5))
+    {
+      goto LABEL_26;
+    }
+  }
+
+  else if ((*(v4 + 28) & 8) != 0)
+  {
+    goto LABEL_26;
+  }
+
+  v5 = (*(v4 + 28) & 2) == 0;
+  if ((*&self->_has & 2) != 0)
+  {
+    if ((*(v4 + 28) & 2) == 0 || self->_rxLatency != *(v4 + 3))
+    {
+      goto LABEL_26;
+    }
+
+    v5 = 1;
+  }
+
+LABEL_27:
+
+  return v5;
+}
+
+- (unint64_t)hash
+{
+  if (*&self->_has)
+  {
+    v2 = 2654435761 * self->_channelQuality;
+    if ((*&self->_has & 0x10) != 0)
+    {
+LABEL_3:
+      v3 = 2654435761 * self->_txLoss;
+      if ((*&self->_has & 4) != 0)
+      {
+        goto LABEL_4;
+      }
+
+      goto LABEL_9;
+    }
+  }
+
+  else
+  {
+    v2 = 0;
+    if ((*&self->_has & 0x10) != 0)
+    {
+      goto LABEL_3;
+    }
+  }
+
+  v3 = 0;
+  if ((*&self->_has & 4) != 0)
+  {
+LABEL_4:
+    v4 = 2654435761 * self->_rxLoss;
+    if ((*&self->_has & 8) != 0)
+    {
+      goto LABEL_5;
+    }
+
+LABEL_10:
+    v5 = 0;
+    if ((*&self->_has & 2) != 0)
+    {
+      goto LABEL_6;
+    }
+
+LABEL_11:
+    v6 = 0;
+    return v3 ^ v2 ^ v4 ^ v5 ^ v6;
+  }
+
+LABEL_9:
+  v4 = 0;
+  if ((*&self->_has & 8) == 0)
+  {
+    goto LABEL_10;
+  }
+
+LABEL_5:
+  v5 = 2654435761 * self->_txLatency;
+  if ((*&self->_has & 2) == 0)
+  {
+    goto LABEL_11;
+  }
+
+LABEL_6:
+  v6 = 2654435761 * self->_rxLatency;
+  return v3 ^ v2 ^ v4 ^ v5 ^ v6;
+}
+
+- (void)mergeFrom:(id)a3
+{
+  v4 = a3;
+  v5 = *(v4 + 28);
+  if (v5)
+  {
+    self->_channelQuality = *(v4 + 2);
+    *&self->_has |= 1u;
+    v5 = *(v4 + 28);
+    if ((v5 & 0x10) == 0)
+    {
+LABEL_3:
+      if ((v5 & 4) == 0)
+      {
+        goto LABEL_4;
+      }
+
+      goto LABEL_12;
+    }
+  }
+
+  else if ((*(v4 + 28) & 0x10) == 0)
+  {
+    goto LABEL_3;
+  }
+
+  self->_txLoss = *(v4 + 6);
+  *&self->_has |= 0x10u;
+  v5 = *(v4 + 28);
+  if ((v5 & 4) == 0)
+  {
+LABEL_4:
+    if ((v5 & 8) == 0)
+    {
+      goto LABEL_5;
+    }
+
+    goto LABEL_13;
+  }
+
+LABEL_12:
+  self->_rxLoss = *(v4 + 4);
+  *&self->_has |= 4u;
+  v5 = *(v4 + 28);
+  if ((v5 & 8) == 0)
+  {
+LABEL_5:
+    if ((v5 & 2) == 0)
+    {
+      goto LABEL_7;
+    }
+
+    goto LABEL_6;
+  }
+
+LABEL_13:
+  self->_txLatency = *(v4 + 5);
+  *&self->_has |= 8u;
+  if ((*(v4 + 28) & 2) != 0)
+  {
+LABEL_6:
+    self->_rxLatency = *(v4 + 3);
+    *&self->_has |= 2u;
+  }
+
+LABEL_7:
+}
+
+@end

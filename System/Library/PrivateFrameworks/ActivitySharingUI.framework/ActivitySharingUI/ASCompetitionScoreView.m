@@ -1,0 +1,469 @@
+@interface ASCompetitionScoreView
++ (double)preferredHeightForConfiguration:(id)a3 friend:(id)a4;
+- (ASCompetitionScoreView)initWithConfiguration:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)a3;
+- (double)lastBaselineY;
+- (double)participantScoreViewWidthForParticipant:(int64_t)a3 maximumWidth:(double)a4;
+- (void)layoutForWidth:(double)a3;
+- (void)layoutSubviews;
+- (void)setFriend:(id)a3 competition:(id)a4;
+@end
+
+@implementation ASCompetitionScoreView
+
+- (ASCompetitionScoreView)initWithConfiguration:(id)a3
+{
+  v5 = a3;
+  v29.receiver = self;
+  v29.super_class = ASCompetitionScoreView;
+  v6 = *MEMORY[0x277CBF3A0];
+  v7 = *(MEMORY[0x277CBF3A0] + 8);
+  v8 = *(MEMORY[0x277CBF3A0] + 16);
+  v9 = *(MEMORY[0x277CBF3A0] + 24);
+  v10 = [(ASCompetitionScoreView *)&v29 initWithFrame:*MEMORY[0x277CBF3A0], v7, v8, v9];
+  v11 = v10;
+  if (v10)
+  {
+    objc_storeStrong(&v10->_configuration, a3);
+    v11->_isRTLLayout = [MEMORY[0x277D75D18] userInterfaceLayoutDirectionForSemanticContentAttribute:0] == 1;
+    v12 = [[ASCompetitionParticipantScoreView alloc] initWithConfiguration:v5];
+    myScoreView = v11->_myScoreView;
+    v11->_myScoreView = v12;
+
+    [(ASCompetitionScoreView *)v11 addSubview:v11->_myScoreView];
+    v14 = [[ASCompetitionParticipantScoreView alloc] initWithConfiguration:v5];
+    opponentScoreView = v11->_opponentScoreView;
+    v11->_opponentScoreView = v14;
+
+    [(ASCompetitionScoreView *)v11 addSubview:v11->_opponentScoreView];
+    if ([v5 showsScoreTypeHeader])
+    {
+      v16 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v6, v7, v8, v9}];
+      scoreTypeHeaderLabel = v11->_scoreTypeHeaderLabel;
+      v11->_scoreTypeHeaderLabel = v16;
+
+      v18 = [v5 headerFont];
+      [(UILabel *)v11->_scoreTypeHeaderLabel setFont:v18];
+
+      v19 = [v5 primaryScoreSource];
+      if (v19 <= 2)
+      {
+        v20 = off_278C532D0[v19];
+        v21 = ActivitySharingBundle();
+        v18 = [v21 localizedStringForKey:v20 value:&stru_2850F6650 table:@"Localizable"];
+      }
+
+      v22 = [v18 localizedUppercaseString];
+      [(UILabel *)v11->_scoreTypeHeaderLabel setText:v22];
+
+      v23 = [MEMORY[0x277D75348] whiteColor];
+      [(UILabel *)v11->_scoreTypeHeaderLabel setTextColor:v23];
+
+      [(UILabel *)v11->_scoreTypeHeaderLabel setTextAlignment:1];
+      [(ASCompetitionScoreView *)v11 addSubview:v11->_scoreTypeHeaderLabel];
+    }
+
+    if ([v5 showsAchievementThumbnail])
+    {
+      v24 = [objc_alloc(MEMORY[0x277D755E8]) initWithFrame:{v6, v7, v8, v9}];
+      achievementThumbnailView = v11->_achievementThumbnailView;
+      v11->_achievementThumbnailView = v24;
+
+      [(UIImageView *)v11->_achievementThumbnailView setContentMode:2];
+      [(UIImageView *)v11->_achievementThumbnailView setClipsToBounds:0];
+      [(ASCompetitionScoreView *)v11 addSubview:v11->_achievementThumbnailView];
+      if (![v5 achievementThumbnailAlignment])
+      {
+        [v5 achievementThumbnailSize];
+        v27 = v26 * 0.5;
+        [(ASCompetitionParticipantScoreView *)v11->_myScoreView setScoreLeftMargin:v26 * 0.5];
+        [(ASCompetitionParticipantScoreView *)v11->_opponentScoreView setScoreRightMargin:v27];
+      }
+    }
+  }
+
+  return v11;
+}
+
+- (double)participantScoreViewWidthForParticipant:(int64_t)a3 maximumWidth:(double)a4
+{
+  [(ASCompetitionScoreViewConfiguration *)self->_configuration sideMargin];
+  v8 = a4 + v7 * -2.0;
+  [(ASCompetitionScoreViewConfiguration *)self->_configuration minimumMiddleMargin];
+  v10 = v8 - v9;
+  v11 = [(ASCompetitionScoreViewConfiguration *)self->_configuration division];
+  if (v11)
+  {
+    if (v11 == 2)
+    {
+      [(ASCompetitionScoreViewConfiguration *)self->_configuration minimumMiddleMargin];
+      v14 = (v10 + v13) * 0.5;
+      [(ASCompetitionScoreViewConfiguration *)self->_configuration minimumMiddleMargin];
+      result = (v10 - v15) * 0.5;
+      if (a3)
+      {
+        if (self->_isRTLLayout)
+        {
+          return v14;
+        }
+      }
+
+      else if (!self->_isRTLLayout)
+      {
+        return v14;
+      }
+    }
+
+    else if (v11 == 1)
+    {
+      return v10 * 0.5;
+    }
+  }
+
+  else
+  {
+    isRTLLayout = self->_isRTLLayout;
+    [(ASCompetitionScoreViewConfiguration *)self->_configuration opponentScoreViewWidth];
+    if (a3)
+    {
+      if (isRTLLayout)
+      {
+        return v10 - result;
+      }
+    }
+
+    else if (!isRTLLayout)
+    {
+      return v10 - result;
+    }
+  }
+
+  return result;
+}
+
+- (CGSize)sizeThatFits:(CGSize)a3
+{
+  height = a3.height;
+  width = a3.width;
+  [(ASCompetitionScoreView *)self layoutForWidth:?];
+  [(ASCompetitionParticipantScoreView *)self->_myScoreView sizeThatFits:width, height];
+  v7 = v6;
+  [(ASCompetitionScoreViewConfiguration *)self->_configuration bottomMargin];
+  v9 = v7 + v8;
+  if ([(ASCompetitionScoreViewConfiguration *)self->_configuration showsScoreTypeHeader])
+  {
+    [(UILabel *)self->_scoreTypeHeaderLabel _lastLineBaselineFrameOriginY];
+    v9 = v9 + v10;
+  }
+
+  v11 = width;
+  v12 = v9;
+  result.height = v12;
+  result.width = v11;
+  return result;
+}
+
+- (void)layoutSubviews
+{
+  v4.receiver = self;
+  v4.super_class = ASCompetitionScoreView;
+  [(ASCompetitionScoreView *)&v4 layoutSubviews];
+  [(ASCompetitionScoreView *)self bounds];
+  [(ASCompetitionScoreView *)self layoutForWidth:v3];
+}
+
+- (void)layoutForWidth:(double)a3
+{
+  scoreTypeHeaderLabel = self->_scoreTypeHeaderLabel;
+  if (scoreTypeHeaderLabel)
+  {
+    [(UILabel *)scoreTypeHeaderLabel sizeToFit];
+    [(UILabel *)self->_scoreTypeHeaderLabel bounds];
+    [(UILabel *)self->_scoreTypeHeaderLabel setFrame:0.0, 0.0, a3, CGRectGetHeight(v51)];
+    [(ASCompetitionScoreViewConfiguration *)self->_configuration headerBaselineOffset];
+    [(UILabel *)self->_scoreTypeHeaderLabel _setFirstLineBaselineFrameOriginY:?];
+  }
+
+  [(ASCompetitionScoreViewConfiguration *)self->_configuration sideMargin];
+  v7 = v6;
+  [(UILabel *)self->_scoreTypeHeaderLabel _lastLineBaselineFrameOriginY];
+  v9 = v8;
+  [(ASCompetitionScoreView *)self participantScoreViewWidthForParticipant:1 maximumWidth:a3];
+  v11 = v10;
+  [(ASCompetitionScoreView *)self participantScoreViewWidthForParticipant:0 maximumWidth:a3];
+  v13 = v12;
+  [(ASCompetitionParticipantScoreView *)self->_opponentScoreView sizeThatFits:a3, 1.79769313e308];
+  v15 = v14;
+  [(ASCompetitionParticipantScoreView *)self->_opponentScoreView setFrame:v7, v9, v11, v14];
+  [(ASCompetitionParticipantScoreView *)self->_opponentScoreView frame];
+  MaxX = CGRectGetMaxX(v52);
+  [(ASCompetitionScoreViewConfiguration *)self->_configuration minimumMiddleMargin];
+  [(ASCompetitionParticipantScoreView *)self->_myScoreView setFrame:MaxX + v17, v9, v13, v15];
+  if (self->_isRTLLayout)
+  {
+    [(ASCompetitionParticipantScoreView *)self->_opponentScoreView frame];
+    v19 = v18;
+    v21 = v20;
+    v23 = v22;
+    v25 = v24;
+    [(ASCompetitionParticipantScoreView *)self->_myScoreView frame];
+    [(ASCompetitionParticipantScoreView *)self->_opponentScoreView setFrame:?];
+    [(ASCompetitionParticipantScoreView *)self->_myScoreView setFrame:v19, v21, v23, v25];
+  }
+
+  if (self->_achievementThumbnailView)
+  {
+    [(ASCompetitionScoreViewConfiguration *)self->_configuration achievementThumbnailSize];
+    v27 = v26;
+    [(ASCompetitionScoreViewConfiguration *)self->_configuration achievementThumbnailSize];
+    v29 = v28;
+    v30 = [(ASCompetitionScoreViewConfiguration *)self->_configuration achievementThumbnailAlignment];
+    if (v30 == 1)
+    {
+      [(ASCompetitionParticipantScoreView *)self->_myScoreView frame];
+      v34 = CGRectGetMaxY(v53) - v29 + 2.5;
+      v37 = 0.0;
+      if (!self->_isRTLLayout)
+      {
+        [(ASCompetitionScoreViewConfiguration *)self->_configuration achievementThumbnailSize];
+        v37 = a3 - v38;
+      }
+    }
+
+    else
+    {
+      if (v30)
+      {
+        goto LABEL_14;
+      }
+
+      [(UILabel *)self->_scoreTypeHeaderLabel _lastLineBaselineFrameOriginY];
+      v32 = v31;
+      [(ASCompetitionScoreViewConfiguration *)self->_configuration achievementThumbnailTopMargin];
+      v34 = v32 + v33;
+      if ([(ASCompetitionScoreViewConfiguration *)self->_configuration showsNames])
+      {
+        [(ASCompetitionParticipantScoreView *)self->_myScoreView nameBaselineY];
+        v34 = v34 + v35;
+      }
+
+      [(ASCompetitionScoreViewConfiguration *)self->_configuration achievementThumbnailSize];
+      v37 = (a3 - v36) * 0.5;
+    }
+
+    [(UIImageView *)self->_achievementThumbnailView setFrame:v37, v34, v27, v29];
+  }
+
+LABEL_14:
+  [(ASCompetitionParticipantScoreView *)self->_myScoreView computeNameFontSizeReductionForWidth:v13];
+  v40 = v39;
+  [(ASCompetitionParticipantScoreView *)self->_opponentScoreView computeNameFontSizeReductionForWidth:v11];
+  v41 = v40;
+  *&v42 = v42;
+  v43 = fmaxf(v41, *&v42);
+  [(ASCompetitionParticipantScoreView *)self->_myScoreView setNameFontSizeReduction:v43];
+  [(ASCompetitionParticipantScoreView *)self->_opponentScoreView setNameFontSizeReduction:v43];
+  [(ASCompetitionParticipantScoreView *)self->_myScoreView computePrimaryScoreFontSizeReductionForWidth:v13];
+  v45 = v44;
+  [(ASCompetitionParticipantScoreView *)self->_opponentScoreView computePrimaryScoreFontSizeReductionForWidth:v11];
+  v46 = v45;
+  *&v47 = v47;
+  v48 = fmaxf(v46, *&v47);
+  [(ASCompetitionParticipantScoreView *)self->_myScoreView setPrimaryScoreFontSizeReduction:v48];
+  opponentScoreView = self->_opponentScoreView;
+
+  [(ASCompetitionParticipantScoreView *)opponentScoreView setPrimaryScoreFontSizeReduction:v48];
+}
+
+- (double)lastBaselineY
+{
+  [(ASCompetitionParticipantScoreView *)self->_myScoreView frame];
+
+  return CGRectGetMaxY(*&v2);
+}
+
+- (void)setFriend:(id)a3 competition:(id)a4
+{
+  v37 = a3;
+  v6 = a4;
+  if (v6)
+  {
+    v7 = [MEMORY[0x277D75348] as_colorForParticipant:1 competition:v6];
+    [(ASCompetitionParticipantScoreView *)self->_opponentScoreView setScoreColor:v7];
+
+    v8 = [MEMORY[0x277D75348] as_colorForParticipant:0 competition:v6];
+LABEL_5:
+    v12 = v8;
+    goto LABEL_6;
+  }
+
+  v9 = [v37 numberOfCompetitionWinsByMe];
+  v10 = [v37 numberOfCompetitionWinsAgainstMe];
+  if (v9 > v10)
+  {
+    v11 = [MEMORY[0x277D75348] as_darkCompetitionGold];
+    [(ASCompetitionParticipantScoreView *)self->_opponentScoreView setScoreColor:v11];
+
+    v8 = [MEMORY[0x277D75348] as_lightCompetitionGold];
+    goto LABEL_5;
+  }
+
+  v35 = v10;
+  v36 = [MEMORY[0x277D75348] as_lightCompetitionGold];
+  [(ASCompetitionParticipantScoreView *)self->_opponentScoreView setScoreColor:v36];
+
+  if (v35 <= v9)
+  {
+    [MEMORY[0x277D75348] as_lightCompetitionGold];
+  }
+
+  else
+  {
+    [MEMORY[0x277D75348] as_darkCompetitionGold];
+  }
+  v12 = ;
+LABEL_6:
+  [(ASCompetitionParticipantScoreView *)self->_myScoreView setScoreColor:v12];
+
+  v13 = [(ASCompetitionScoreViewConfiguration *)self->_configuration uppercaseNames];
+  v14 = [v37 displayName];
+  v15 = v14;
+  if (v13)
+  {
+    v16 = [v14 uppercaseString];
+
+    v15 = v16;
+  }
+
+  v17 = [(ASCompetitionScoreViewConfiguration *)self->_configuration uppercaseNames];
+  v18 = ActivitySharingBundle();
+  v19 = v18;
+  if (v17)
+  {
+    v20 = @"UPPERCASE_ME";
+  }
+
+  else
+  {
+    v20 = @"ME";
+  }
+
+  v21 = [v18 localizedStringForKey:v20 value:&stru_2850F6650 table:@"Localizable"];
+
+  [(ASCompetitionParticipantScoreView *)self->_opponentScoreView setName:v15];
+  [(ASCompetitionParticipantScoreView *)self->_myScoreView setName:v21];
+  v22 = [MEMORY[0x277CBEAA8] date];
+  v23 = [v6 dailyScoreForParticipant:0 onDate:v22];
+
+  v24 = [MEMORY[0x277CBEAA8] date];
+  v25 = [v6 dailyScoreForParticipant:1 onDate:v24];
+
+  v26 = [(ASCompetitionScoreViewConfiguration *)self->_configuration primaryScoreSource];
+  switch(v26)
+  {
+    case 2:
+      -[ASCompetitionParticipantScoreView setPrimaryScore:](self->_opponentScoreView, "setPrimaryScore:", [v37 numberOfCompetitionWinsAgainstMe]);
+      v28 = [v37 numberOfCompetitionWinsByMe];
+      myScoreView = self->_myScoreView;
+      goto LABEL_18;
+    case 1:
+      [(ASCompetitionParticipantScoreView *)self->_opponentScoreView setPrimaryScore:v25];
+      myScoreView = self->_myScoreView;
+      v28 = v23;
+LABEL_18:
+      [(ASCompetitionParticipantScoreView *)myScoreView setPrimaryScore:v28];
+      break;
+    case 0:
+      -[ASCompetitionParticipantScoreView setPrimaryScore:](self->_opponentScoreView, "setPrimaryScore:", [v6 opponentTotalScore]);
+      -[ASCompetitionParticipantScoreView setPrimaryScore:](self->_myScoreView, "setPrimaryScore:", [v6 myTotalScore]);
+      if ([(ASCompetitionScoreViewConfiguration *)self->_configuration showsTodaySecondaryScore])
+      {
+        -[ASCompetitionParticipantScoreView setSecondaryScoreEnabled:](self->_opponentScoreView, "setSecondaryScoreEnabled:", [v37 hasCompletedFirstDayOfCurrentCompetition]);
+        -[ASCompetitionParticipantScoreView setSecondaryScoreEnabled:](self->_myScoreView, "setSecondaryScoreEnabled:", [v37 hasCompletedFirstDayOfCurrentCompetition]);
+        [(ASCompetitionParticipantScoreView *)self->_opponentScoreView setSecondaryScore:v25];
+        [(ASCompetitionParticipantScoreView *)self->_myScoreView setSecondaryScore:v23];
+      }
+
+      break;
+  }
+
+  if (v6)
+  {
+    v29 = v6;
+  }
+
+  else
+  {
+    v29 = [v37 currentOrMostRecentCompetition];
+  }
+
+  v30 = v29;
+  achievementThumbnailView = self->_achievementThumbnailView;
+  if (achievementThumbnailView && v30)
+  {
+    [v30 victoryBadgeStyle];
+    [(ASCompetitionScoreViewConfiguration *)self->_configuration achievementThumbnailQuality];
+    v32 = ASAchievementThumbnailPathForStyle();
+    v33 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v32 options:0 error:0];
+    v34 = [MEMORY[0x277D755B8] imageWithData:v33];
+    [(UIImageView *)self->_achievementThumbnailView setImage:v34];
+  }
+
+  else
+  {
+    [(UIImageView *)achievementThumbnailView setImage:0];
+  }
+
+  [(ASCompetitionScoreView *)self setNeedsLayout];
+}
+
++ (double)preferredHeightForConfiguration:(id)a3 friend:(id)a4
+{
+  v5 = a3;
+  v6 = a4;
+  [v5 bottomMargin];
+  v8 = v7;
+  if ([v5 wantsScaledBaselineAlignment])
+  {
+    v9 = [v5 primaryScoreFont];
+    [v5 primaryScoreBaselineOffset];
+    [v9 _scaledValueForValue:?];
+    v11 = v10;
+  }
+
+  else
+  {
+    [v5 primaryScoreBaselineOffset];
+    v11 = v12;
+  }
+
+  v13 = v8 + v11;
+  if ([v5 showsNames])
+  {
+    if ([v5 wantsScaledBaselineAlignment])
+    {
+      v14 = [v5 nameFont];
+      [v5 nameBaselineOffset];
+      [v14 _scaledValueForValue:?];
+      v13 = v13 + v15;
+    }
+
+    else
+    {
+      [v5 nameBaselineOffset];
+      v13 = v13 + v16;
+    }
+  }
+
+  if ([v5 showsTodaySecondaryScore] && objc_msgSend(v6, "hasCompletedFirstDayOfCurrentCompetition"))
+  {
+    v17 = [v5 secondaryScoreFont];
+    [v5 secondaryScoreBaselineOffset];
+    [v17 _scaledValueForValue:?];
+    v13 = v13 + v18;
+  }
+
+  return v13;
+}
+
+@end

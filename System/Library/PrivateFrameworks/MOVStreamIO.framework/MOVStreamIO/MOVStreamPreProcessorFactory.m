@@ -1,0 +1,58 @@
+@interface MOVStreamPreProcessorFactory
++ (id)defaultFactory;
+- (id)preProcessorForFormat:(opaqueCMFormatDescription *)a3 recordingConfiguration:(id)a4;
+@end
+
+@implementation MOVStreamPreProcessorFactory
+
++ (id)defaultFactory
+{
+  if (+[MOVStreamPreProcessorFactory defaultFactory]::onceToken != -1)
+  {
+    +[MOVStreamPreProcessorFactory defaultFactory];
+  }
+
+  v3 = +[MOVStreamPreProcessorFactory defaultFactory]::factory;
+
+  return v3;
+}
+
+uint64_t __46__MOVStreamPreProcessorFactory_defaultFactory__block_invoke()
+{
+  +[MOVStreamPreProcessorFactory defaultFactory]::factory = objc_opt_new();
+
+  return MEMORY[0x2821F96F8]();
+}
+
+- (id)preProcessorForFormat:(opaqueCMFormatDescription *)a3 recordingConfiguration:(id)a4
+{
+  v5 = a4;
+  v6 = [v5 objectForKey:@"StreamEncoderType"];
+  v7 = [v6 intValue];
+
+  MediaSubType = CMFormatDescriptionGetMediaSubType(a3);
+  v9 = MediaSubType;
+  v10 = (v7 & 0xFFFFFFFE) != 6 || MediaSubType == 1278226488;
+  if (v10 || ([v5 objectForKey:@"StreamConvertNonPlanarBuffersTo8bitMonochrome"], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "BOOLValue"), v11, (v12 & 1) == 0))
+  {
+    if (v9 != 1919365992 || ([v5 objectForKey:@"StreamConvertRGBPlanarHalfToRGBAHalf"], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "BOOLValue"), v13, !v14))
+    {
+      if ([MIOPixelBufferUtility isPixelFormatRawBayer:v9])
+      {
+        v15 = [v5 objectForKey:@"RawBayerRearrangeTypeKey"];
+        [v15 intValue];
+      }
+
+      else
+      {
+        [MIOPixelBufferUtility isPixelFormatCompandedRawBayer:v9];
+      }
+    }
+  }
+
+  v16 = objc_opt_new();
+
+  return v16;
+}
+
+@end

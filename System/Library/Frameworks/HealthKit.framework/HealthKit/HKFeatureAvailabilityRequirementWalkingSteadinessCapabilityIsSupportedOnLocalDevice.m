@@ -1,0 +1,14 @@
+@interface HKFeatureAvailabilityRequirementWalkingSteadinessCapabilityIsSupportedOnLocalDevice
+- (HKFeatureAvailabilityRequirementWalkingSteadinessCapabilityIsSupportedOnLocalDevice)init;
+@end
+
+@implementation HKFeatureAvailabilityRequirementWalkingSteadinessCapabilityIsSupportedOnLocalDevice
+
+- (HKFeatureAvailabilityRequirementWalkingSteadinessCapabilityIsSupportedOnLocalDevice)init
+{
+  v3.receiver = self;
+  v3.super_class = HKFeatureAvailabilityRequirementWalkingSteadinessCapabilityIsSupportedOnLocalDevice;
+  return -[HKFeatureAvailabilityMustBeTrueRequirement initWithWhatMustBeTrue:](&v3, sel_initWithWhatMustBeTrue_, [MEMORY[0x1E6963520] isWalkingSteadinessAvailable]);
+}
+
+@end

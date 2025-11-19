@@ -1,0 +1,54 @@
+@interface UIBarButtonItem(IC)
++ (id)ic_itemWithFixedWidth:()IC;
+- (id)ic_view;
+- (void)ic_setTitleTextAttributesForAllStates:()IC;
+- (void)setIc_titleAndAccessibilityLabel:()IC;
+@end
+
+@implementation UIBarButtonItem(IC)
+
+- (id)ic_view
+{
+  if ((objc_opt_respondsToSelector() & 1) == 0)
+  {
+    [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"[self respondsToSelector:@selector(view)]" functionName:"-[UIBarButtonItem(IC) ic_view]" simulateCrash:1 showAlert:0 format:@"UIBarButtonItem expected to respond to selector: view"];
+  }
+
+  if (objc_opt_respondsToSelector())
+  {
+    v2 = [a1 performSelector:sel_view];
+  }
+
+  else
+  {
+    v2 = 0;
+  }
+
+  return v2;
+}
+
+- (void)ic_setTitleTextAttributesForAllStates:()IC
+{
+  v4 = a3;
+  [a1 setTitleTextAttributes:v4 forState:0];
+  [a1 setTitleTextAttributes:v4 forState:2];
+  [a1 setTitleTextAttributes:v4 forState:1];
+  [a1 setTitleTextAttributes:v4 forState:8];
+}
+
+- (void)setIc_titleAndAccessibilityLabel:()IC
+{
+  [a1 setTitle:?];
+  v2 = [a1 accessibilityLabel];
+  [a1 setAccessibilityLabel:v2];
+}
+
++ (id)ic_itemWithFixedWidth:()IC
+{
+  v2 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:6 target:0 action:0];
+  [v2 setWidth:a1];
+
+  return v2;
+}
+
+@end

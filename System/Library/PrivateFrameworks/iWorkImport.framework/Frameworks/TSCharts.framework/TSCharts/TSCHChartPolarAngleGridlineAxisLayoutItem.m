@@ -1,0 +1,42 @@
+@interface TSCHChartPolarAngleGridlineAxisLayoutItem
+- (id)renderersWithRep:(id)a3;
+- (void)buildSubTree;
+@end
+
+@implementation TSCHChartPolarAngleGridlineAxisLayoutItem
+
+- (void)buildSubTree
+{
+  v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
+  v4 = [TSCHChartAxisTickMarksLayoutItem alloc];
+  v9 = objc_msgSend_initWithParent_(v4, v5, v6, v7, v8, self);
+  tickMarks = self->super._tickMarks;
+  self->super._tickMarks = v9;
+
+  if (self->super._tickMarks)
+  {
+    objc_msgSend_addObject_(v3, v11, v12, v13, v14);
+  }
+
+  v15 = objc_msgSend_arrayWithArray_(MEMORY[0x277CBEA60], v11, v12, v13, v14, v3);
+  objc_msgSend_setChildren_(self, v16, v17, v18, v19, v15);
+
+  v20.receiver = self;
+  v20.super_class = TSCHChartPolarAngleGridlineAxisLayoutItem;
+  [(TSCHChartLayoutItem *)&v20 buildSubTree];
+}
+
+- (id)renderersWithRep:(id)a3
+{
+  v17[1] = *MEMORY[0x277D85DE8];
+  v4 = a3;
+  v5 = [TSCHChartPolarAngleGridlineAxisRenderer alloc];
+  v10 = objc_msgSend_initWithChartRep_layoutItem_(v5, v6, v7, v8, v9, v4, self);
+
+  v17[0] = v10;
+  v15 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v11, v12, v13, v14, v17, 1);
+
+  return v15;
+}
+
+@end

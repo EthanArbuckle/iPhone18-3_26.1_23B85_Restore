@@ -1,0 +1,30 @@
+@interface UIImage(VideosExtras)
++ (id)imageForPlaceholderURL:()VideosExtras;
+@end
+
+@implementation UIImage(VideosExtras)
+
++ (id)imageForPlaceholderURL:()VideosExtras
+{
+  v3 = [a3 absoluteString];
+  v4 = [v3 lastPathComponent];
+  if (imageForPlaceholderURL__onceToken != -1)
+  {
+    +[UIImage(VideosExtras) imageForPlaceholderURL:];
+  }
+
+  v5 = [imageForPlaceholderURL____resourceNameMapping objectForKey:v4];
+  if (v5)
+  {
+    v6 = [MEMORY[0x1E69DCAB8] vui_videosUIImageNamed:v5];
+  }
+
+  else
+  {
+    v6 = 0;
+  }
+
+  return v6;
+}
+
+@end

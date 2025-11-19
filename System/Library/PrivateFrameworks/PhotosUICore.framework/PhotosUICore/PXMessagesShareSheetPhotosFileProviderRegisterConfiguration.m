@@ -1,0 +1,13 @@
+@interface PXMessagesShareSheetPhotosFileProviderRegisterConfiguration
+@end
+
+@implementation PXMessagesShareSheetPhotosFileProviderRegisterConfiguration
+
+void ___PXMessagesShareSheetPhotosFileProviderRegisterConfiguration_block_invoke()
+{
+  v0 = [[PXPhotosFileProviderRegisterConfiguration alloc] initWithUsage:3];
+  v1 = _PXMessagesShareSheetPhotosFileProviderRegisterConfiguration_configuration;
+  _PXMessagesShareSheetPhotosFileProviderRegisterConfiguration_configuration = v0;
+}
+
+@end

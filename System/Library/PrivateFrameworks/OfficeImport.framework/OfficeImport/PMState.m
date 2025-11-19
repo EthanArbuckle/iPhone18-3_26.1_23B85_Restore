@@ -1,0 +1,34 @@
+@interface PMState
+- (PMState)init;
+- (void)setCurrentRowStyle:(id)a3;
+@end
+
+@implementation PMState
+
+- (PMState)init
+{
+  v6.receiver = self;
+  v6.super_class = PMState;
+  v2 = [(CMState *)&v6 init];
+  if (v2)
+  {
+    v3 = objc_alloc_init(CMOutlineState);
+    mListState = v2->mListState;
+    v2->mListState = v3;
+  }
+
+  return v2;
+}
+
+- (void)setCurrentRowStyle:(id)a3
+{
+  v5 = a3;
+  if (self->mCurrentRowStyle != v5)
+  {
+    v6 = v5;
+    objc_storeStrong(&self->mCurrentRowStyle, a3);
+    v5 = v6;
+  }
+}
+
+@end

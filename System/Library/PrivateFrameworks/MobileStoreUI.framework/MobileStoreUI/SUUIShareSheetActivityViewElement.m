@@ -1,0 +1,115 @@
+@interface SUUIShareSheetActivityViewElement
+- (SUUILabelViewElement)message;
+- (SUUILabelViewElement)title;
+- (SUUIShareSheetActivityViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (id)applyUpdatesWithElement:(id)a3;
+@end
+
+@implementation SUUIShareSheetActivityViewElement
+
+- (SUUIShareSheetActivityViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+{
+  v8 = a3;
+  v16.receiver = self;
+  v16.super_class = SUUIShareSheetActivityViewElement;
+  v9 = [(SUUIViewElement *)&v16 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  if (v9)
+  {
+    v10 = [v8 getAttribute:@"type"];
+    activityType = v9->_activityType;
+    v9->_activityType = v10;
+
+    v12 = [v8 getAttribute:@"src"];
+    if ([v12 length])
+    {
+      v13 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v12];
+      contentSourceURL = v9->_contentSourceURL;
+      v9->_contentSourceURL = v13;
+    }
+  }
+
+  return v9;
+}
+
+- (SUUILabelViewElement)message
+{
+  v5 = 0;
+  v6 = &v5;
+  v7 = 0x3032000000;
+  v8 = __Block_byref_object_copy__69;
+  v9 = __Block_byref_object_dispose__69;
+  v10 = 0;
+  v4[0] = MEMORY[0x277D85DD0];
+  v4[1] = 3221225472;
+  v4[2] = __44__SUUIShareSheetActivityViewElement_message__block_invoke;
+  v4[3] = &unk_2798F5FB8;
+  v4[4] = &v5;
+  [(SUUIViewElement *)self enumerateChildrenUsingBlock:v4];
+  v2 = v6[5];
+  _Block_object_dispose(&v5, 8);
+
+  return v2;
+}
+
+void __44__SUUIShareSheetActivityViewElement_message__block_invoke(uint64_t a1, void *a2, _BYTE *a3)
+{
+  v6 = a2;
+  if ([v6 elementType] == 138 && objc_msgSend(v6, "labelViewStyle") != 5)
+  {
+    objc_storeStrong((*(*(a1 + 32) + 8) + 40), a2);
+    *a3 = 1;
+  }
+}
+
+- (SUUILabelViewElement)title
+{
+  v5 = 0;
+  v6 = &v5;
+  v7 = 0x3032000000;
+  v8 = __Block_byref_object_copy__69;
+  v9 = __Block_byref_object_dispose__69;
+  v10 = 0;
+  v4[0] = MEMORY[0x277D85DD0];
+  v4[1] = 3221225472;
+  v4[2] = __42__SUUIShareSheetActivityViewElement_title__block_invoke;
+  v4[3] = &unk_2798F5FB8;
+  v4[4] = &v5;
+  [(SUUIViewElement *)self enumerateChildrenUsingBlock:v4];
+  v2 = v6[5];
+  _Block_object_dispose(&v5, 8);
+
+  return v2;
+}
+
+void __42__SUUIShareSheetActivityViewElement_title__block_invoke(uint64_t a1, void *a2, _BYTE *a3)
+{
+  v6 = a2;
+  if ([v6 elementType] == 138 && objc_msgSend(v6, "labelViewStyle") == 5)
+  {
+    objc_storeStrong((*(*(a1 + 32) + 8) + 40), a2);
+    *a3 = 1;
+  }
+}
+
+- (id)applyUpdatesWithElement:(id)a3
+{
+  v4 = a3;
+  v12.receiver = self;
+  v12.super_class = SUUIShareSheetActivityViewElement;
+  v5 = [(SUUIViewElement *)&v12 applyUpdatesWithElement:v4];
+  v6 = v5;
+  if (v4 != self || [v5 updateType])
+  {
+    v7 = [(SUUIShareSheetActivityViewElement *)v4 activityType];
+    activityType = self->_activityType;
+    self->_activityType = v7;
+
+    v9 = [(SUUIShareSheetActivityViewElement *)v4 contentSourceURL];
+    contentSourceURL = self->_contentSourceURL;
+    self->_contentSourceURL = v9;
+  }
+
+  return v6;
+}
+
+@end

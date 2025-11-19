@@ -1,0 +1,284 @@
+@interface PKExpressBannerLabelView
+- (CGSize)sizeThatFits:(CGSize)a3;
+- (void)_updateLabelAnimated:(uint64_t)a1;
+- (void)layoutSubviews;
+- (void)traitCollectionDidChange:(id)a3;
+@end
+
+@implementation PKExpressBannerLabelView
+
+- (void)traitCollectionDidChange:(id)a3
+{
+  v4 = a3;
+  v9.receiver = self;
+  v9.super_class = PKExpressBannerLabelView;
+  [(PKExpressBannerLabelView *)&v9 traitCollectionDidChange:v4];
+  v5 = [(PKExpressBannerLabelView *)self traitCollection];
+  if (!v4 || ([v4 preferredContentSizeCategory], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "preferredContentSizeCategory"), v7 = objc_claimAutoreleasedReturnValue(), v8 = UIContentSizeCategoryCompareToCategory(v6, v7), v7, v6, v8))
+  {
+    [PKExpressBannerLabelView _updateLabelAnimated:?];
+  }
+}
+
+- (void)_updateLabelAnimated:(uint64_t)a1
+{
+  v47 = *MEMORY[0x1E69E9840];
+  if (a1)
+  {
+    v2 = [a1 isHidden];
+    v4 = *(a1 + 424);
+    v3 = *(a1 + 432);
+    v5 = *(a1 + 440);
+    if (v5)
+    {
+      if (v2)
+      {
+        [v5 removeFromSuperview];
+        v6 = *(a1 + 448);
+        v7 = *(a1 + 448);
+        *(a1 + 448) = 0;
+
+        v39 = 0u;
+        v40 = 0u;
+        v37 = 0u;
+        v38 = 0u;
+        v8 = v6;
+        v9 = [v8 countByEnumeratingWithState:&v37 objects:v46 count:16];
+        if (v9)
+        {
+          v10 = *v38;
+          do
+          {
+            for (i = 0; i != v9; ++i)
+            {
+              if (*v38 != v10)
+              {
+                objc_enumerationMutation(v8);
+              }
+
+              [*(*(&v37 + 1) + 8 * i) removeFromSuperview];
+            }
+
+            v9 = [v8 countByEnumeratingWithState:&v37 objects:v46 count:16];
+          }
+
+          while (v9);
+        }
+
+        v12 = v8;
+      }
+
+      else
+      {
+        if (!*(a1 + 448))
+        {
+          v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
+          v14 = *(a1 + 448);
+          *(a1 + 448) = v13;
+
+          v5 = *(a1 + 440);
+        }
+
+        v15 = v5;
+        [*(a1 + 448) addObject:v15];
+        v8 = [v15 layer];
+        [v8 setValue:&unk_1F3CC6D18 forKeyPath:@"filters.blur.inputRadius"];
+        v16 = [MEMORY[0x1E69B92B0] springAnimationWithKeyPath:@"filters.blur.inputRadius"];
+        [v16 pkui_updateForAdditiveAnimationFromScalar:0.0 toScalar:8.33333333];
+        v17 = [v8 pkui_addAdditiveAnimation:v16];
+        objc_initWeak(&location, a1);
+        v41[0] = MEMORY[0x1E69E9820];
+        v41[1] = 3221225472;
+        v41[2] = __49__PKExpressBannerLabelView__updateLabelAnimated___block_invoke;
+        v41[3] = &unk_1E80113B0;
+        objc_copyWeak(&v43, &location);
+        v12 = v15;
+        v42 = v12;
+        [v12 pkui_setAlpha:1 animated:v41 withCompletion:0.0];
+
+        objc_destroyWeak(&v43);
+        objc_destroyWeak(&location);
+      }
+
+      v18 = *(a1 + 440);
+      *(a1 + 440) = 0;
+
+      *(a1 + 424) = *MEMORY[0x1E695F060];
+    }
+
+    if (*(a1 + 416))
+    {
+      v19 = [a1 traitCollection];
+      if (v19)
+      {
+        v20 = objc_alloc_init(MEMORY[0x1E69DCC10]);
+        v21 = *(a1 + 440);
+        *(a1 + 440) = v20;
+
+        [*(a1 + 440) setNumberOfLines:1];
+        v22 = *(a1 + 440);
+        v23 = [MEMORY[0x1E69DB878] sbui_systemAperturePreferredFontForTextStyle:4 compatibleWithTraitCollection:v19];
+        [v22 setFont:v23];
+
+        [*(a1 + 440) setLineBreakMode:4];
+        [*(a1 + 440) setAdjustsFontSizeToFitWidth:1];
+        [*(a1 + 440) setMinimumScaleFactor:0.8];
+        [*(a1 + 440) setText:*(a1 + 416)];
+        [*(a1 + 440) sizeToFit];
+        v24 = *(a1 + 408);
+        if (v24 >= 4)
+        {
+          __break(1u);
+          return;
+        }
+
+        [*(a1 + 440) setAnchorPoint:{dbl_1BE1170B8[v24], dbl_1BE117098[v24]}];
+        v25 = [*(a1 + 440) layer];
+        v26 = objc_alloc(MEMORY[0x1E6979378]);
+        v27 = [v26 initWithType:*MEMORY[0x1E6979928]];
+        [v27 setName:@"blur"];
+        v45 = v27;
+        v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v45 count:1];
+        [v25 setFilters:v28];
+
+        [a1 addSubview:*(a1 + 440)];
+        [*(a1 + 440) frame];
+        *(a1 + 424) = v29;
+        *(a1 + 432) = v30;
+        [a1 setNeedsLayout];
+        v35[0] = MEMORY[0x1E69E9820];
+        v35[1] = 3221225472;
+        v35[2] = __49__PKExpressBannerLabelView__updateLabelAnimated___block_invoke_2;
+        v35[3] = &unk_1E8013F80;
+        v36 = v2 ^ 1;
+        v35[4] = a1;
+        [MEMORY[0x1E69DD250] performWithoutAnimation:v35];
+        if ((v2 & 1) == 0)
+        {
+          [*(a1 + 440) pkui_setAlpha:1 animated:1.0];
+          v31 = [MEMORY[0x1E69B92B0] springAnimationWithKeyPath:@"filters.blur.inputRadius"];
+          [v31 pkui_updateForAdditiveAnimationFromScalar:8.33333333 toScalar:0.0];
+          v32 = [v25 pkui_addAdditiveAnimation:v31];
+        }
+
+        if (v4 != *(a1 + 424) || v3 != *(a1 + 432))
+        {
+          WeakRetained = objc_loadWeakRetained((a1 + 456));
+          [WeakRetained expressLabelViewDidChangeSize:a1];
+        }
+
+        goto LABEL_30;
+      }
+    }
+
+    if (v4 != *(a1 + 424) || v3 != *(a1 + 432))
+    {
+      v19 = objc_loadWeakRetained((a1 + 456));
+      [v19 expressLabelViewDidChangeSize:a1];
+LABEL_30:
+    }
+  }
+}
+
+- (CGSize)sizeThatFits:(CGSize)a3
+{
+  if (self->_label)
+  {
+    p_height = &self->_size.height;
+    v4 = fmin(self->_size.width, a3.width);
+  }
+
+  else
+  {
+    p_height = (MEMORY[0x1E695F060] + 8);
+    v4 = *MEMORY[0x1E695F060];
+  }
+
+  v5 = *p_height;
+  result.height = v5;
+  result.width = v4;
+  return result;
+}
+
+- (void)layoutSubviews
+{
+  v16 = *MEMORY[0x1E69E9840];
+  v14.receiver = self;
+  v14.super_class = PKExpressBannerLabelView;
+  [(PKExpressBannerLabelView *)&v14 layoutSubviews];
+  [(PKExpressBannerLabelView *)self bounds];
+  if (self && self->_alignmentEdge >= 4)
+  {
+    __break(1u);
+  }
+
+  label = self->_label;
+  if (label)
+  {
+    PKSizeAlignedInRect();
+    [(UILabel *)label setFrame:?];
+  }
+
+  v12 = 0u;
+  v13 = 0u;
+  v10 = 0u;
+  v11 = 0u;
+  v4 = self->_obsoleteLabels;
+  v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  if (v5)
+  {
+    v6 = v5;
+    v7 = *v11;
+    do
+    {
+      for (i = 0; i != v6; ++i)
+      {
+        if (*v11 != v7)
+        {
+          objc_enumerationMutation(v4);
+        }
+
+        v9 = *(*(&v10 + 1) + 8 * i);
+        [v9 frame];
+        PKSizeAlignedInRect();
+        [v9 setFrame:?];
+      }
+
+      v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+    }
+
+    while (v6);
+  }
+}
+
+void __49__PKExpressBannerLabelView__updateLabelAnimated___block_invoke(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 40));
+  if (WeakRetained)
+  {
+    v4 = WeakRetained;
+    v3 = [*(a1 + 32) superview];
+
+    WeakRetained = v4;
+    if (v3)
+    {
+      [v4[56] removeObjectIdenticalTo:*(a1 + 32)];
+      [*(a1 + 32) removeFromSuperview];
+      WeakRetained = v4;
+    }
+  }
+}
+
+uint64_t __49__PKExpressBannerLabelView__updateLabelAnimated___block_invoke_2(uint64_t a1)
+{
+  if (*(a1 + 40) == 1)
+  {
+    [*(*(a1 + 32) + 440) setAlpha:0.0];
+  }
+
+  v2 = *(a1 + 32);
+
+  return [v2 layoutIfNeeded];
+}
+
+@end

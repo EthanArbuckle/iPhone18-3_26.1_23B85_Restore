@@ -1,0 +1,117 @@
+@interface ADIDRecord
+- (ADIDRecord)init;
+- (ADIDRecord)initWithID:(id)a3;
+- (BOOL)isEqual:(id)a3;
+- (NSData)encryptedID;
+- (id)dictionaryRepresentation;
+- (void)setID:(id)a3;
+@end
+
+@implementation ADIDRecord
+
+- (ADIDRecord)init
+{
+  v7.receiver = self;
+  v7.super_class = ADIDRecord;
+  v2 = [(ADIDRecord *)&v7 init];
+  if (v2)
+  {
+    v3 = [MEMORY[0x277CCAD78] UUID];
+    v4 = [v3 UUIDString];
+    ID = v2->_ID;
+    v2->_ID = v4;
+
+    v2->_dirty = 1;
+  }
+
+  return v2;
+}
+
+- (ADIDRecord)initWithID:(id)a3
+{
+  v4 = a3;
+  v9.receiver = self;
+  v9.super_class = ADIDRecord;
+  v5 = [(ADIDRecord *)&v9 init];
+  if (v5)
+  {
+    v6 = [v4 copy];
+    ID = v5->_ID;
+    v5->_ID = v6;
+
+    v5->_dirty = 1;
+  }
+
+  return v5;
+}
+
+- (void)setID:(id)a3
+{
+  v5 = a3;
+  if (![(NSString *)self->_ID isEqualToString:?])
+  {
+    objc_storeStrong(&self->_ID, a3);
+    self->_dirty = 1;
+  }
+}
+
+- (NSData)encryptedID
+{
+  encryptedID = self->_encryptedID;
+  if (!encryptedID)
+  {
+    v4 = ADEncryptString(self->_ID);
+    v5 = self->_encryptedID;
+    self->_encryptedID = v4;
+
+    encryptedID = self->_encryptedID;
+  }
+
+  return encryptedID;
+}
+
+- (id)dictionaryRepresentation
+{
+  v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
+  [v3 setObject:self->_ID forKeyedSubscript:@"kADiAdIDRecord_iAdIDKey"];
+
+  return v3;
+}
+
+- (BOOL)isEqual:(id)a3
+{
+  v4 = a3;
+  v5 = v4;
+  if (!v4)
+  {
+    goto LABEL_5;
+  }
+
+  if (v4 == self)
+  {
+    v9 = 1;
+    goto LABEL_7;
+  }
+
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    v6 = v5;
+    v7 = [(ADIDRecord *)self ID];
+    v8 = [(ADIDRecord *)v6 ID];
+
+    v9 = [v7 isEqualToString:v8];
+  }
+
+  else
+  {
+LABEL_5:
+    v9 = 0;
+  }
+
+LABEL_7:
+
+  return v9;
+}
+
+@end

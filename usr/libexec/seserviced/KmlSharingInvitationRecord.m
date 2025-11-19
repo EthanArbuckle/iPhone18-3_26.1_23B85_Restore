@@ -1,0 +1,291 @@
+@interface KmlSharingInvitationRecord
+- (KmlSharingInvitationRecord)init;
+- (KmlSharingInvitationRecord)initWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)a3;
+- (id)description;
+- (void)encodeWithCoder:(id)a3;
+@end
+
+@implementation KmlSharingInvitationRecord
+
+- (void)encodeWithCoder:(id)a3
+{
+  v16 = a3;
+  if (self)
+  {
+    [v16 encodeObject:self->_uuid forKey:@"uuid"];
+    ownerIdsIdentifier = self->_ownerIdsIdentifier;
+  }
+
+  else
+  {
+    sub_100378F80(v16, v4);
+    ownerIdsIdentifier = 0;
+  }
+
+  [v16 encodeObject:ownerIdsIdentifier forKey:@"ownerIdsIdentifier"];
+  if (self)
+  {
+    [v16 encodeObject:self->_crossPlatformMailboxIdentifier forKey:@"crossPlatformMailboxIdentifier"];
+    [v16 encodeInteger:self->_sharingFlow forKey:@"sharingFlow"];
+    invitationFromOwner = self->_invitationFromOwner;
+  }
+
+  else
+  {
+    sub_100378F8C(v16);
+    invitationFromOwner = 0;
+  }
+
+  [v16 encodeObject:invitationFromOwner forKey:@"invitationFromOwner"];
+  if (self)
+  {
+    [v16 encodeObject:self->_bindingAttestation forKey:@"bindingAttestation"];
+    signingRequest = self->_signingRequest;
+  }
+
+  else
+  {
+    sub_100378FDC(v16, v7);
+    signingRequest = 0;
+  }
+
+  [v16 encodeObject:signingRequest forKey:@"signingRequest"];
+  if (self)
+  {
+    [v16 encodeObject:self->_ppidEncryptionEphemeralPublicKey forKey:@"ppidEncryptionEphemeralPublicKey"];
+    ppidEncryptionEphemeralSecretKey = self->_ppidEncryptionEphemeralSecretKey;
+  }
+
+  else
+  {
+    sub_100378FE8(v16, v9);
+    ppidEncryptionEphemeralSecretKey = 0;
+  }
+
+  [v16 encodeObject:ppidEncryptionEphemeralSecretKey forKey:@"ppidEncryptionEphemeralSecretKey"];
+  if (self)
+  {
+    [v16 encodeObject:self->_ppidFetchRequest forKey:@"ppidFetchRequest"];
+    preTrackRequest = self->_preTrackRequest;
+  }
+
+  else
+  {
+    sub_100378FF4(v16, v11);
+    preTrackRequest = 0;
+  }
+
+  [v16 encodeObject:preTrackRequest forKey:@"preTrackRequest"];
+  if (self)
+  {
+    [v16 encodeInteger:self->_friendSideState forKey:@"friendSideState"];
+    friendKeyIdentifier = self->_friendKeyIdentifier;
+  }
+
+  else
+  {
+    sub_100379000(v16, v13);
+    friendKeyIdentifier = 0;
+  }
+
+  [v16 encodeObject:friendKeyIdentifier forKey:@"friendKeyIdentifier"];
+  if (self)
+  {
+    [v16 encodeObject:self->_invitationIdentifier forKey:@"invitationIdentifier"];
+    [v16 encodeInteger:self->_numberOfPinAttempts forKey:@"numberOfPinAttempts"];
+    [v16 encodeInteger:self->_numberOfOSPAttempts forKey:@"numberOfOSPAttempts"];
+    secondFactorEntitlementForV3 = self->_secondFactorEntitlementForV3;
+  }
+
+  else
+  {
+    sub_100379010(v16);
+    secondFactorEntitlementForV3 = 0;
+  }
+
+  [v16 encodeInteger:secondFactorEntitlementForV3 forKey:@"secondFactorEntitlementForV3"];
+}
+
+- (KmlSharingInvitationRecord)initWithCoder:(id)a3
+{
+  v4 = a3;
+  v33.receiver = self;
+  v33.super_class = KmlSharingInvitationRecord;
+  v5 = [(KmlSharingInvitationRecord *)&v33 init];
+  v6 = v5;
+  if (v5)
+  {
+    v5->_dirty = 0;
+    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    uuid = v6->_uuid;
+    v6->_uuid = v7;
+
+    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ownerIdsIdentifier"];
+    ownerIdsIdentifier = v6->_ownerIdsIdentifier;
+    v6->_ownerIdsIdentifier = v9;
+
+    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"crossPlatformMailboxIdentifier"];
+    crossPlatformMailboxIdentifier = v6->_crossPlatformMailboxIdentifier;
+    v6->_crossPlatformMailboxIdentifier = v11;
+
+    v6->_sharingFlow = [v4 decodeIntegerForKey:@"sharingFlow"];
+    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"invitationFromOwner"];
+    invitationFromOwner = v6->_invitationFromOwner;
+    v6->_invitationFromOwner = v13;
+
+    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bindingAttestation"];
+    bindingAttestation = v6->_bindingAttestation;
+    v6->_bindingAttestation = v15;
+
+    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signingRequest"];
+    signingRequest = v6->_signingRequest;
+    v6->_signingRequest = v17;
+
+    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ppidEncryptionEphemeralPublicKey"];
+    ppidEncryptionEphemeralPublicKey = v6->_ppidEncryptionEphemeralPublicKey;
+    v6->_ppidEncryptionEphemeralPublicKey = v19;
+
+    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ppidEncryptionEphemeralSecretKey"];
+    ppidEncryptionEphemeralSecretKey = v6->_ppidEncryptionEphemeralSecretKey;
+    v6->_ppidEncryptionEphemeralSecretKey = v21;
+
+    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ppidFetchRequest"];
+    ppidFetchRequest = v6->_ppidFetchRequest;
+    v6->_ppidFetchRequest = v23;
+
+    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preTrackRequest"];
+    preTrackRequest = v6->_preTrackRequest;
+    v6->_preTrackRequest = v25;
+
+    v6->_friendSideState = [v4 decodeIntegerForKey:@"friendSideState"];
+    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"friendKeyIdentifier"];
+    v28 = [v27 uppercaseString];
+    friendKeyIdentifier = v6->_friendKeyIdentifier;
+    v6->_friendKeyIdentifier = v28;
+
+    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"invitationIdentifier"];
+    invitationIdentifier = v6->_invitationIdentifier;
+    v6->_invitationIdentifier = v30;
+
+    v6->_numberOfPinAttempts = [v4 decodeIntegerForKey:@"numberOfPinAttempts"];
+    v6->_numberOfOSPAttempts = [v4 decodeIntegerForKey:@"numberOfOSPAttempts"];
+    v6->_secondFactorEntitlementForV3 = [v4 decodeIntegerForKey:@"secondFactorEntitlementForV3"];
+  }
+
+  return v6;
+}
+
+- (KmlSharingInvitationRecord)init
+{
+  v3.receiver = self;
+  v3.super_class = KmlSharingInvitationRecord;
+  result = [(KmlSharingInvitationRecord *)&v3 init];
+  if (result)
+  {
+    result->_dirty = 0;
+  }
+
+  return result;
+}
+
+- (id)copyWithZone:(_NSZone *)a3
+{
+  v5 = [+[KmlSharingInvitationRecord allocWithZone:](KmlSharingInvitationRecord init];
+  if (v5)
+  {
+    v6 = [(NSUUID *)self->_uuid copyWithZone:a3];
+    uuid = v5->_uuid;
+    v5->_uuid = v6;
+
+    v8 = [(NSString *)self->_ownerIdsIdentifier copyWithZone:a3];
+    ownerIdsIdentifier = v5->_ownerIdsIdentifier;
+    v5->_ownerIdsIdentifier = v8;
+
+    v10 = [(NSString *)self->_crossPlatformMailboxIdentifier copyWithZone:a3];
+    crossPlatformMailboxIdentifier = v5->_crossPlatformMailboxIdentifier;
+    v5->_crossPlatformMailboxIdentifier = v10;
+
+    v5->_sharingFlow = self->_sharingFlow;
+    v12 = [(NSData *)self->_invitationFromOwner copyWithZone:a3];
+    invitationFromOwner = v5->_invitationFromOwner;
+    v5->_invitationFromOwner = v12;
+
+    v5->_friendSideState = self->_friendSideState;
+    v14 = [(NSString *)self->_friendKeyIdentifier copyWithZone:a3];
+    friendKeyIdentifier = v5->_friendKeyIdentifier;
+    v5->_friendKeyIdentifier = v14;
+
+    v16 = [(NSString *)self->_invitationIdentifier copyWithZone:a3];
+    invitationIdentifier = v5->_invitationIdentifier;
+    v5->_invitationIdentifier = v16;
+
+    v18 = [(NSData *)self->_bindingAttestation copyWithZone:a3];
+    bindingAttestation = v5->_bindingAttestation;
+    v5->_bindingAttestation = v18;
+
+    v20 = [(NSData *)self->_signingRequest copyWithZone:a3];
+    signingRequest = v5->_signingRequest;
+    v5->_signingRequest = v20;
+
+    v22 = [(NSData *)self->_ppidEncryptionEphemeralPublicKey copyWithZone:a3];
+    ppidEncryptionEphemeralPublicKey = v5->_ppidEncryptionEphemeralPublicKey;
+    v5->_ppidEncryptionEphemeralPublicKey = v22;
+
+    v24 = [(NSData *)self->_ppidEncryptionEphemeralSecretKey copyWithZone:a3];
+    ppidEncryptionEphemeralSecretKey = v5->_ppidEncryptionEphemeralSecretKey;
+    v5->_ppidEncryptionEphemeralSecretKey = v24;
+
+    v26 = [(NSData *)self->_ppidFetchRequest copyWithZone:a3];
+    ppidFetchRequest = v5->_ppidFetchRequest;
+    v5->_ppidFetchRequest = v26;
+
+    v28 = [(NSData *)self->_preTrackRequest copyWithZone:a3];
+    preTrackRequest = v5->_preTrackRequest;
+    v5->_preTrackRequest = v28;
+
+    v5->_numberOfPinAttempts = self->_numberOfPinAttempts;
+    v5->_numberOfOSPAttempts = self->_numberOfOSPAttempts;
+    v5->_secondFactorEntitlementForV3 = self->_secondFactorEntitlementForV3;
+  }
+
+  return v5;
+}
+
+- (id)description
+{
+  v3 = +[NSMutableString string];
+  v4 = [NSString stringWithFormat:@"UUID                  : %@\n", self->_uuid];
+  [v3 appendString:v4];
+
+  v5 = [NSString stringWithFormat:@"OwnerIdsIdentifier    : %@\n", self->_ownerIdsIdentifier];
+  [v3 appendString:v5];
+
+  v6 = [(NSString *)self->_crossPlatformMailboxIdentifier length];
+  if (v6 < 9)
+  {
+    v7 = &stru_1004D9380;
+  }
+
+  else
+  {
+    v7 = [(NSString *)self->_crossPlatformMailboxIdentifier substringToIndex:4];
+  }
+
+  v8 = [NSString stringWithFormat:@"MailboxIdentifier     : %@\n", v7];
+  [v3 appendString:v8];
+
+  if (v6 >= 9)
+  {
+  }
+
+  v9 = [NSString stringWithFormat:@"InvitationIdentifier  : %@\n", self->_invitationIdentifier];
+  [v3 appendString:v9];
+
+  v10 = [NSString stringWithFormat:@"FriendKeyIdentifier   : %@", self->_friendKeyIdentifier];
+  [v3 appendString:v10];
+
+  return v3;
+}
+
+@end

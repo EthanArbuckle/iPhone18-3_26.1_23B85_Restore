@@ -1,0 +1,119 @@
+@interface UARPTLVPersonalizationTicketNeedsLogicalUnitNumberBackDeploy
++ (id)metaDataTableEntry;
++ (id)tlvFromPropertyListValue:(id)a3;
++ (id)tlvWithLength:(unint64_t)a3 value:(void *)a4;
+- (UARPTLVPersonalizationTicketNeedsLogicalUnitNumberBackDeploy)init;
+- (id)description;
+- (id)generateTLV;
+- (id)tlvValue;
+- (void)setTicketNeedsLogicalUnitNumber:(unsigned __int8)a3;
+@end
+
+@implementation UARPTLVPersonalizationTicketNeedsLogicalUnitNumberBackDeploy
+
+- (UARPTLVPersonalizationTicketNeedsLogicalUnitNumberBackDeploy)init
+{
+  v3.receiver = self;
+  v3.super_class = UARPTLVPersonalizationTicketNeedsLogicalUnitNumberBackDeploy;
+  return [(UARPMetaDataTLV8BackDeploy *)&v3 init];
+}
+
+- (void)setTicketNeedsLogicalUnitNumber:(unsigned __int8)a3
+{
+  v4 = self;
+  objc_sync_enter(v4);
+  *(&v4->super.super._tlvLength + 4) = a3;
+  objc_sync_exit(v4);
+}
+
+- (id)description
+{
+  v3 = +[UARPTLVPersonalizationTicketNeedsLogicalUnitNumberBackDeploy metaDataTableEntry];
+  v4 = [v3 objectForKeyedSubscript:@"Name"];
+  v5 = v4;
+  if (*(&self->super.super._tlvLength + 4))
+  {
+    v6 = @"YES";
+  }
+
+  else
+  {
+    v6 = @"NO";
+  }
+
+  v7 = [NSString stringWithFormat:@"<%@: %@>", v4, v6];
+
+  return v7;
+}
+
+- (id)generateTLV
+{
+  v3 = +[UARPTLVPersonalizationTicketNeedsLogicalUnitNumberBackDeploy tlvType];
+  v4 = *(&self->super.super._tlvLength + 4);
+  v7.receiver = self;
+  v7.super_class = UARPTLVPersonalizationTicketNeedsLogicalUnitNumberBackDeploy;
+  v5 = [(UARPMetaDataTLV8BackDeploy *)&v7 generateTLV:v3 tlvValue:v4];
+
+  return v5;
+}
+
+- (id)tlvValue
+{
+  v2 = *(&self->super.super._tlvLength + 4);
+  v5.receiver = self;
+  v5.super_class = UARPTLVPersonalizationTicketNeedsLogicalUnitNumberBackDeploy;
+  v3 = [(UARPMetaDataTLV8BackDeploy *)&v5 tlvValue:v2];
+
+  return v3;
+}
+
++ (id)metaDataTableEntry
+{
+  v6[0] = @"Personalization Ticket Needs Logical Unit Number";
+  v5[0] = @"Name";
+  v5[1] = @"Value";
+  v2 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", +[UARPTLVPersonalizationTicketNeedsLogicalUnitNumberBackDeploy tlvType]);
+  v6[1] = v2;
+  v3 = [NSDictionary dictionaryWithObjects:v6 forKeys:v5 count:2];
+
+  return v3;
+}
+
++ (id)tlvFromPropertyListValue:(id)a3
+{
+  v3 = a3;
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    v4 = v3;
+    v5 = objc_opt_new();
+    v6 = [v4 unsignedCharValue];
+
+    [v5 setTicketNeedsLogicalUnitNumber:v6];
+  }
+
+  else
+  {
+    v5 = 0;
+  }
+
+  return v5;
+}
+
++ (id)tlvWithLength:(unint64_t)a3 value:(void *)a4
+{
+  if (a3 == 1)
+  {
+    v5 = objc_opt_new();
+    [v5 setTicketNeedsLogicalUnitNumber:*a4];
+  }
+
+  else
+  {
+    v5 = 0;
+  }
+
+  return v5;
+}
+
+@end

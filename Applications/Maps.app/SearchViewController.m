@@ -1,0 +1,6768 @@
+@interface SearchViewController
+- (BOOL)shouldInjectVenueSearchResult:(id)a3;
+- (BOOL)shouldQuickActionMenuPresenter:(id)a3 showDirectionsToPlace:(id)a4;
+- (BOOL)shouldShowSearchOverlay;
+- (BOOL)supportsFullTextSearch;
+- (BOOL)textFieldShouldBeginEditing:(id)a3;
+- (BOOL)textFieldShouldClear:(id)a3;
+- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)useSingleColumnLayout;
+- (Class)viewClass;
+- (MapsDragDestinationHandler)mapsDragDestinationHandler;
+- (MenuContaineeViewController)menuController;
+- (NavActionCoordination)navContaineeDelegate;
+- (ParkedCarActionDelegate)homeParkedCarActionDelegate;
+- (PersonalizedItemManager)personalizedItemManager;
+- (PersonalizedItemSource)suggestionsItemSource;
+- (SearchViewController)init;
+- (SearchViewController)initWithHomeActionDelegate:(id)a3 searchDataSourceDelegate:(id)a4;
+- (SearchViewController)initWithSearchAlongRoute:(BOOL)a3;
+- (ShareDelegate)homeShareDelegate;
+- (UIEdgeInsets)_calculateAccessoryTouchInsets;
+- (UIEdgeInsets)_calculateSearchBarInsets;
+- (UIScrollView)pptTestScrollView;
+- (VKVenueFeatureMarker)venueWithFocus;
+- (VisitedPlacesCommonActionsHandlingDelegate)visitedPlacesCommonActionsHandlingDelegate;
+- (double)_contentAlphaForCurrentLayout;
+- (double)_searchBarAccessoryWidth;
+- (double)heightForContaineeLayoutMedium;
+- (double)heightForLayout:(unint64_t)a3;
+- (double)topSpaceForScrollPocket;
+- (id)_homeViewController;
+- (id)browseModeHeaderView;
+- (id)browseOfflineMapsString;
+- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5;
+- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
+- (id)createConstraintsForSearchBarAccessoryView:(id)a3;
+- (id)currentSearchSession;
+- (id)defaultSearchQueryToRetain;
+- (id)keyCommands;
+- (id)lastViewportChangeDate;
+- (id)localSearchViewController;
+- (id)mapServiceTraitsForQuickActionPresenter:(id)a3;
+- (id)newTraits;
+- (id)offlinePlaceholderKey;
+- (id)offlinePlaceholderQueue;
+- (id)recentAutocompleteSessionData;
+- (id)searchDataSource;
+- (id)searchHomeDataSource;
+- (id)searchResultsViewController;
+- (id)targetForAction:(SEL)a3 withSender:(id)a4;
+- (id)textDroppableView:(id)a3 proposalForDrop:(id)a4;
+- (int)currentMapViewTargetForAnalytics;
+- (int)currentUITargetForAnalytics;
+- (int)listForDataSource:(id)a3;
+- (int64_t)currentDataSourceType;
+- (int64_t)floatingControlsOptions;
+- (void)_addRecentPlaceForSearchResult:(id)a3;
+- (void)_addVenueObserver;
+- (void)_configureForceTouchIfNeeded;
+- (void)_configureSearchBarIfNeeded;
+- (void)_continueUpdateSearchFieldWithUpdatingSearchText:(BOOL)a3;
+- (void)_enableTextFieldNotification:(BOOL)a3;
+- (void)_hideSearchHereControl;
+- (void)_initOfflinePlaceHolderWithCompletion:(id)a3;
+- (void)_initPlaceholderWithSubmitTicketIfNeeded:(BOOL)a3;
+- (void)_internalViewDidAppear;
+- (void)_internalViewDidDisappear;
+- (void)_internalViewWillAppear;
+- (void)_internalViewWillDisappear;
+- (void)_invalidateSearchSession:(id)a3;
+- (void)_offlineSettingChangeHandler;
+- (void)_popToHomeWithCompletion:(id)a3;
+- (void)_preventAutoPresentingKeyboard_rdar_126940251;
+- (void)_restoreRetainedQueryIfNeeded;
+- (void)_setPlaceHolder;
+- (void)_setupOfflinePlaceholder;
+- (void)_setupOnlinePlaceholder;
+- (void)_shouldHideOfflineHeaderView:(BOOL)a3;
+- (void)_startMonitoringCoreRoutine;
+- (void)_textFieldDidChange:(id)a3;
+- (void)_textFieldDidChange:(id)a3 tappedQuerySuggestionCompletion:(id)a4;
+- (void)_updateDefaultLayoutWithContainerStyle:(unint64_t)a3;
+- (void)_updateHeaderHairlineAlphaWithContentAlpha:(double)a3 animated:(BOOL)a4;
+- (void)_updateSearchFieldText;
+- (void)_updateSearchFieldWithItem:(id)a3 updatingSearchText:(BOOL)a4;
+- (void)_updateUserProfileEntryPointButton;
+- (void)_updateUserProfileEntryPointImage;
+- (void)addCloseSearchResultsButtonBesidesSearchBar;
+- (void)addRefreshFooter:(BOOL)a3 animated:(BOOL)a4;
+- (void)addSupportedChildActionToTraits:(id)a3;
+- (void)applyAlphaToContent:(double)a3;
+- (void)cleanSearch;
+- (void)closeSearchResultsButtonAction:(id)a3;
+- (void)dataSource:(id)a3 itemTapped:(id)a4 childItemParent:(id)a5;
+- (void)dataSourceUpdated:(id)a3;
+- (void)didBecomeCurrent;
+- (void)didChangeFocusedVenue:(id)a3 focusedBuilding:(id)a4 displayedFloorOrdinal:(signed __int16)a5;
+- (void)didChangeLayout:(unint64_t)a3;
+- (void)didResignCurrent;
+- (void)didSelectBrowseCategoryAtIndex:(unint64_t)a3;
+- (void)didSelectCompactGuideModelAtIndex:(unint64_t)a3;
+- (void)didSelectGuideModelAtIndex:(unint64_t)a3 sectionIndex:(int64_t)a4;
+- (void)didSelectRecentAtIndex:(unint64_t)a3;
+- (void)didStartDownloadFromAutocomplete;
+- (void)didTapOnCuratedGuide:(id)a3;
+- (void)didTapOnCuratedGuides:(id)a3;
+- (void)didTapOnHomePinnedLibraryItem:(id)a3;
+- (void)didTapOnUserGeneratedGuide:(id)a3;
+- (void)didTapToUnpinLibraryItem:(id)a3;
+- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateSearchResults;
+- (void)displaySearchResultsWithViewController:(id)a3 searchBar:(id)a4;
+- (void)editCollection:(id)a3;
+- (void)endEditing;
+- (void)endSearch;
+- (void)endSearchForTesting;
+- (void)fetchMapItemWithIdentifier:(id)a3 completion:(id)a4;
+- (void)fetchSearchCompletion:(id)a3 completion:(id)a4;
+- (void)handleDismissAction:(id)a3;
+- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4;
+- (void)homeContentDidUpdate;
+- (void)homeDidTapMarkMyLocation;
+- (void)homeDidTapOnContainment:(id)a3 forResults:(id)a4;
+- (void)homeDidTapPinnedPlaces;
+- (void)homeDidTapPlaces;
+- (void)homeDidTapRecentlyAdded;
+- (void)homeDidTapReportAProblem;
+- (void)homeDidTapSavedRoutes;
+- (void)homeDidTapSeeAllUserGuides;
+- (void)homeDidTapShareMyLocation;
+- (void)homeDidTapTermsAndConditions;
+- (void)homeDidTapVisitedPlaces;
+- (void)homeSectionHeaderButtonTapped:(int64_t)a3;
+- (void)invalidateSearchSession;
+- (void)localSearchViewControllerSizeDidChange:(id)a3;
+- (void)localSearchViewShouldBeVisibleDidChange:(id)a3;
+- (void)logOfflineBrowseMode:(BOOL)a3;
+- (void)macMenuPresentationControllerDidDismiss:(id)a3;
+- (void)mapView:(id)a3 didChangeMapType:(unint64_t)a4;
+- (void)mapView:(id)a3 didChangeUserTrackingMode:(int64_t)a4 animated:(BOOL)a5 fromTrackingButton:(BOOL)a6;
+- (void)mapView:(id)a3 didStopRespondingToGesture:(int64_t)a4 zoomDirection:(int64_t)a5 zoomGestureType:(int64_t)a6 didDecelerate:(BOOL)a7 tiltDirection:(int64_t)a8;
+- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4;
+- (void)mapView:(id)a3 willStartRespondingToGesture:(int64_t)a4 animated:(BOOL)a5;
+- (void)mapViewDidChangeVisibleRegion:(id)a3;
+- (void)popoverDismissed:(id)a3;
+- (void)pptSearchBarShouldProvideTextChangeNotification;
+- (void)pptSelectACSuggestionMatchingAddress:(id)a3;
+- (void)pptSelectFirstCuratedCollection;
+- (void)pptSelectFirstGuidePublisher;
+- (void)pptSelectSeeAllCuratedCollections;
+- (void)pptSetSearchDataSource;
+- (void)preferredContentSizeChanged:(id)a3;
+- (void)presentUserProfile;
+- (void)quickActionMenuPresenter:(id)a3 selectedCall:(id)a4;
+- (void)quickActionMenuPresenter:(id)a3 selectedDirectionsTo:(id)a4;
+- (void)quickActionMenuPresenter:(id)a3 selectedRemoveDroppedPinOf:(id)a4;
+- (void)quickActionMenuPresenter:(id)a3 selectedShareLocationOf:(id)a4;
+- (void)quickActionMenuPresenter:(id)a3 selectedShowPlaceCard:(id)a4;
+- (void)quickActionMenuPresenter:(id)a3 selectedViewWebsiteFor:(id)a4;
+- (void)refreshCurrentSearch;
+- (void)reloadContentTableView;
+- (void)resetMapServiceTicket;
+- (void)resetOfflineTextSearchSupport;
+- (void)restoreSearchItem:(id)a3;
+- (void)retainSearchQuery;
+- (void)retainSearchQueryForSelectedAutocompleteItem:(id)a3 forTimeInterval:(double)a4;
+- (void)retainSearchQueryForSelectedSearchResult:(id)a3;
+- (void)scrollViewDidScroll:(id)a3;
+- (void)scrollViewWillBeginDragging:(id)a3;
+- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
+- (void)searchBar:(id)a3 didPasteMapsLink:(id)a4;
+- (void)searchBarBecomeFirstResponder;
+- (void)searchBarCancelButtonClicked:(id)a3;
+- (void)searchBarTextDidBeginEditing:(id)a3;
+- (void)searchDataSource:(id)a3 replaceQueryWithItem:(id)a4;
+- (void)seeAllTappedForCollections;
+- (void)seeAllTappedForRecents;
+- (void)seeAllTappedForUserGuides;
+- (void)selectNearbyCategoryAtIndex:(unint64_t)a3;
+- (void)sendACRequestWithTappedQuerySuggestionCompletion:(id)a3 retainQueryMetadata:(id)a4;
+- (void)sendSearchRequest;
+- (void)setCurrentDataSource:(id)a3;
+- (void)setNeedsUpdateContentState;
+- (void)setPersonalizedItemManager:(id)a3;
+- (void)shareCollection:(id)a3 collection:(id)a4;
+- (void)showCitySelector;
+- (void)showCollection:(id)a3;
+- (void)showDropDownIfNeeded:(BOOL)a3;
+- (void)showGuidesHomeFromExploreGuides:(id)a3;
+- (void)showRegionSelectorForMapItem:(id)a3;
+- (void)showSearchResults:(id)a3;
+- (void)showSearchingHereIfNeeded:(BOOL)a3;
+- (void)showTitleBarSeparatorWhenScrolling:(BOOL)a3;
+- (void)textDroppableView:(id)a3 dropSessionDidEnd:(id)a4;
+- (void)textDroppableView:(id)a3 willPerformDrop:(id)a4;
+- (void)textFieldDidBeginEditing:(id)a3;
+- (void)textFieldDidEndEditing:(id)a3;
+- (void)triggerAutocompleteByReplacingQueryWithCompletion:(id)a3;
+- (void)updateCloseSearchResultEntryPointButton;
+- (void)updateConstraintsForHideableFooterForWasVisible:(BOOL)a3 isVisible:(BOOL)a4;
+- (void)updateContentState;
+- (void)updateDataSource;
+- (void)updateIsTouristHereValue;
+- (void)updateRefreshFooterAnimated:(BOOL)a3;
+- (void)updateRowHeightForCurrentDataSource;
+- (void)updateSearchBarContentInsets;
+- (void)updateSearchFieldWithItem:(id)a3;
+- (void)updateTheme;
+- (void)viewControllerDidSelectBrowseVenue:(id)a3;
+- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidLayoutSubviews;
+- (void)viewDidLoad;
+- (void)viewLayoutMarginsDidChange;
+- (void)viewSafeAreaInsetsDidChange;
+- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)a3;
+- (void)willBecomeCurrent:(BOOL)a3;
+- (void)willBecomeCurrentByGesture;
+- (void)willChangeContainerStyle:(unint64_t)a3;
+- (void)willChangeLayout:(unint64_t)a3;
+- (void)willResignCurrent:(BOOL)a3;
+@end
+
+@implementation SearchViewController
+
+- (SearchViewController)init
+{
+  v4.receiver = self;
+  v4.super_class = SearchViewController;
+  v2 = [(SearchViewController *)&v4 init];
+  if (v2)
+  {
+    v2->_isSearchAndDiscoveryEnabled = MapsFeature_IsEnabled_SearchAndDiscovery();
+    [(SearchViewController *)v2 initializeCachedTelephonyValue];
+  }
+
+  return v2;
+}
+
+- (id)searchResultsViewController
+{
+  if ((_UISolariumEnabled() & 1) != 0 || sub_10000FA08(self) != 5)
+  {
+    v4 = [(SearchViewController *)self childViewControllers];
+    v7 = 0;
+    v8 = &v7;
+    v9 = 0x3032000000;
+    v10 = sub_100E30278;
+    v11 = sub_100E30288;
+    v12 = 0;
+    v6[0] = _NSConcreteStackBlock;
+    v6[1] = 3221225472;
+    v6[2] = sub_10003FFE4;
+    v6[3] = &unk_101655CC0;
+    v6[4] = &v7;
+    [v4 enumerateObjectsUsingBlock:v6];
+    v3 = v8[5];
+    _Block_object_dispose(&v7, 8);
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  return v3;
+}
+
+- (double)heightForContaineeLayoutMedium
+{
+  result = self->_cachedMediumHeight;
+  if (result == 0.0)
+  {
+    [(ContaineeViewController *)self headerHeight];
+    v5 = v4;
+    sub_100068BB8();
+    v7 = v6;
+    v8 = [(ContaineeViewController *)self cardPresentationController];
+    v9 = [v8 containerStyle];
+
+    if (v9 == 6)
+    {
+      if (self->_currentDataSource)
+      {
+        if (+[UIFont accessibilityTextEnabled])
+        {
+          v10 = UITableViewAutomaticDimension;
+        }
+
+        else
+        {
+          v12 = +[UIFont system15];
+          +[TwoLinesTableViewCell estimatedCellHeight];
+          [v12 _mapkit_scaledValueForValue:?];
+          v10 = v13;
+        }
+
+        v7 = v10 * 3.0 + -1.0;
+      }
+
+      else
+      {
+        [(HomeViewController *)self->_homeViewController mediumContentHeight];
+        v7 = v11;
+      }
+    }
+
+    else if (v7 + v5 > v7)
+    {
+      v7 = v7 - v5;
+    }
+
+    result = v7 + v5;
+    self->_cachedMediumHeight = v7 + v5;
+  }
+
+  return result;
+}
+
+- (void)viewDidLoad
+{
+  v138.receiver = self;
+  v138.super_class = SearchViewController;
+  [(ContaineeViewController *)&v138 viewDidLoad];
+  v3 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
+  v4 = dispatch_queue_create("com.apple.Maps.search.mapsSuggestions", v3);
+  mapsSuggestionsLoadingSearchQueue = self->_mapsSuggestionsLoadingSearchQueue;
+  self->_mapsSuggestionsLoadingSearchQueue = v4;
+
+  self->_isConfigured = 0;
+  v6 = [(SearchViewController *)self isSearchingAlongTheRoute];
+  v7 = [(ContaineeViewController *)self cardPresentationController];
+  v8 = v7;
+  if (v6)
+  {
+    [v7 setBlurInCardView:0];
+
+    v9 = [UIColor colorNamed:@"NavigationMaterialColor"];
+    v10 = [(ContaineeViewController *)self cardPresentationController];
+    [v10 setCardColor:v9];
+  }
+
+  else
+  {
+    [v7 setAllowResizeInFloatingStyle:1];
+
+    v9 = [(ContaineeViewController *)self cardPresentationController];
+    [v9 setFirstCard:1];
+  }
+
+  v11 = objc_alloc_init(RetainedQueryController);
+  retainedQueryController = self->_retainedQueryController;
+  self->_retainedQueryController = v11;
+
+  v13 = [[PassthruSearchBar alloc] initWithStyle:[(SearchViewController *)self isSearchingAlongTheRoute]];
+  searchBar = self->_searchBar;
+  self->_searchBar = v13;
+
+  [(PassthruSearchBar *)self->_searchBar setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(PassthruSearchBar *)self->_searchBar setDelegate:self];
+  [(PassthruSearchBar *)self->_searchBar setTextFieldDelegate:self];
+  v15 = [(ContaineeViewController *)self headerView];
+  v16 = [v15 heightAnchor];
+  v17 = [v16 constraintEqualToConstant:0.0];
+  collapsedHeaderHeightConstraint = self->_collapsedHeaderHeightConstraint;
+  self->_collapsedHeaderHeightConstraint = v17;
+
+  v136 = sub_10000FA08(self);
+  v19 = [(ContaineeViewController *)self headerView];
+  [v19 addSubview:self->_searchBar];
+
+  v20 = [(PassthruSearchBar *)self->_searchBar searchTextField];
+  searchField = self->_searchField;
+  self->_searchField = v20;
+
+  self->_isOfflineBrowseRecordedAlready = 0;
+  v22 = +[MapsOfflineUIHelper sharedHelper];
+  v23 = [v22 isUsingOfflineMaps];
+
+  if (v23)
+  {
+    [(SearchViewController *)self _setupOfflinePlaceholder];
+    [(SearchViewController *)self _initOfflinePlaceHolderWithCompletion:0];
+  }
+
+  self->_isOfflineServiceRunning = 0;
+  if (sub_10000FA08(self) == 5)
+  {
+    [(UITextField *)self->_searchField setFocusGroupIdentifier:@"DropDownFocusGroupName"];
+  }
+
+  [(UITextField *)self->_searchField setTextDropDelegate:self];
+  v24 = [(SearchViewController *)self theme];
+  v25 = [v24 searchBarPlaceHolderColor];
+  v26 = [(UITextField *)self->_searchField _placeholderLabel];
+  [v26 setTextColor:v25];
+
+  self->_searchFieldWantsFocus = 1;
+  if (sub_10000FA08(self) == 5)
+  {
+    [(UITextField *)self->_searchField setControlSize:2];
+    [(SearchViewController *)self updateSearchBarContentInsets];
+  }
+
+  if (sub_10000FA08(self) != 5 && ![(SearchViewController *)self isSearchingAlongTheRoute])
+  {
+    [(SearchViewController *)self updateSearchBarContentInsets];
+    v27 = [UIButton buttonWithType:0];
+    userProfileButton = self->_userProfileButton;
+    self->_userProfileButton = v27;
+
+    [(UIButton *)self->_userProfileButton setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(UIButton *)self->_userProfileButton setAccessibilityIdentifier:@"userProfileButton"];
+    v29 = [(UIButton *)self->_userProfileButton imageView];
+    v30 = +[UIColor systemGrayColor];
+    [v29 setTintColor:v30];
+
+    v31 = [(UIButton *)self->_userProfileButton imageView];
+    v32 = [UIImageSymbolConfiguration configurationWithPointSize:UIFontWeightRegular weight:44.0];
+    [v31 setPreferredSymbolConfiguration:v32];
+
+    [(UIButton *)self->_userProfileButton addTarget:self action:"presentUserProfile" forControlEvents:64];
+    [(SearchViewController *)self _calculateAccessoryTouchInsets];
+    [(UIButton *)self->_userProfileButton _setTouchInsets:?];
+    v33 = [(ContaineeViewController *)self headerView];
+    [v33 addSubview:self->_userProfileButton];
+
+    [(SearchViewController *)self _updateUserProfileEntryPointImage];
+    v34 = objc_alloc_init(NSMutableArray);
+    v35 = [(UIButton *)self->_userProfileButton widthAnchor];
+    v36 = [v35 constraintEqualToConstant:44.0];
+    v148[0] = v36;
+    v37 = [(UIButton *)self->_userProfileButton heightAnchor];
+    v38 = [(UIButton *)self->_userProfileButton widthAnchor];
+    v39 = [v37 constraintEqualToAnchor:v38];
+    v148[1] = v39;
+    v40 = [NSArray arrayWithObjects:v148 count:2];
+    [v34 addObjectsFromArray:v40];
+
+    v41 = [(SearchViewController *)self createConstraintsForSearchBarAccessoryView:self->_userProfileButton];
+    [v34 addObjectsFromArray:v41];
+
+    v42 = [v34 copy];
+    [NSLayoutConstraint activateConstraints:v42];
+  }
+
+  if ([(SearchViewController *)self isShowingOmnipresentSearchBar])
+  {
+    [(SearchViewController *)self addCloseSearchResultsButtonBesidesSearchBar];
+  }
+
+  v43 = objc_alloc_init(UILayoutGuide);
+  searchFieldLayoutGuide = self->_searchFieldLayoutGuide;
+  self->_searchFieldLayoutGuide = v43;
+
+  v45 = [(SearchViewController *)self view];
+  [v45 addLayoutGuide:self->_searchFieldLayoutGuide];
+
+  v46 = objc_opt_new();
+  if (v136 == 5)
+  {
+    top = -4.0;
+    bottom = 7.0;
+    right = 0.0;
+LABEL_23:
+    left = 0.0;
+    goto LABEL_25;
+  }
+
+  if ([(SearchViewController *)self isSearchingAlongTheRoute])
+  {
+    v50 = [(SearchViewController *)self traitCollection];
+    v51 = [v50 preferredContentSizeCategory];
+
+    bottom = 5.0;
+    right = 0.0;
+    v52 = _UISolariumEnabled();
+    v53 = 54.0;
+    if (v51 > UIContentSizeCategoryExtraLarge)
+    {
+      v53 = 72.0;
+    }
+
+    if (v52)
+    {
+      top = v53;
+    }
+
+    else
+    {
+      top = 0.0;
+    }
+
+    goto LABEL_23;
+  }
+
+  bottom = UIEdgeInsetsZero.bottom;
+  right = UIEdgeInsetsZero.right;
+  top = UIEdgeInsetsZero.top;
+  left = UIEdgeInsetsZero.left;
+LABEL_25:
+  v55 = [(PassthruSearchBar *)self->_searchBar superview];
+
+  if (!v55)
+  {
+    v129 = sub_10006D178();
+    if (os_log_type_enabled(v129, OS_LOG_TYPE_ERROR))
+    {
+      *buf = 136315906;
+      v141 = "[SearchViewController viewDidLoad]";
+      v142 = 2080;
+      v143 = "SearchViewController.m";
+      v144 = 1024;
+      v145 = 757;
+      v146 = 2080;
+      v147 = "_searchBar.superview != nil";
+      _os_log_impl(&_mh_execute_header, v129, OS_LOG_TYPE_ERROR, "%s [%s:%d] Assertion: (%s)", buf, 0x26u);
+    }
+
+    if (sub_100E03634())
+    {
+      v130 = sub_10006D178();
+      if (os_log_type_enabled(v130, OS_LOG_TYPE_ERROR))
+      {
+        v131 = +[NSThread callStackSymbols];
+        *buf = 138412290;
+        v141 = v131;
+        _os_log_impl(&_mh_execute_header, v130, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
+      }
+    }
+  }
+
+  v56 = self->_searchBar;
+  v57 = [(ContaineeViewController *)self headerView];
+  LODWORD(v58) = 1148846080;
+  v59 = [(PassthruSearchBar *)v56 _maps_constraintsEqualToEdgesOfView:v57 insets:top priority:left, bottom, right, v58];
+  searchBarEdgeConstraints = self->_searchBarEdgeConstraints;
+  self->_searchBarEdgeConstraints = v59;
+
+  v61 = [(MapsEdgeConstraints *)self->_searchBarEdgeConstraints allConstraints];
+  [v46 addObjectsFromArray:v61];
+
+  if ([(SearchViewController *)self _showsContentInDropDownMenu])
+  {
+    v62 = [(PassthruSearchBar *)self->_searchBar superview];
+
+    if (!v62)
+    {
+      v132 = sub_10006D178();
+      if (os_log_type_enabled(v132, OS_LOG_TYPE_ERROR))
+      {
+        *buf = 136315906;
+        v141 = "[SearchViewController viewDidLoad]";
+        v142 = 2080;
+        v143 = "SearchViewController.m";
+        v144 = 1024;
+        v145 = 762;
+        v146 = 2080;
+        v147 = "_searchBar.superview != nil";
+        _os_log_impl(&_mh_execute_header, v132, OS_LOG_TYPE_ERROR, "%s [%s:%d] Assertion: (%s)", buf, 0x26u);
+      }
+
+      if (sub_100E03634())
+      {
+        v133 = sub_10006D178();
+        if (os_log_type_enabled(v133, OS_LOG_TYPE_ERROR))
+        {
+          v134 = +[NSThread callStackSymbols];
+          *buf = 138412290;
+          v141 = v134;
+          _os_log_impl(&_mh_execute_header, v133, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
+        }
+      }
+    }
+
+    v63 = [(UILayoutGuide *)self->_searchFieldLayoutGuide widthAnchor];
+    v64 = [v63 constraintGreaterThanOrEqualToConstant:282.0];
+    [v46 addObject:v64];
+
+    v65 = [(UILayoutGuide *)self->_searchFieldLayoutGuide widthAnchor];
+    v66 = [(UITextField *)self->_searchField widthAnchor];
+    v67 = [v65 constraintEqualToAnchor:v66];
+
+    LODWORD(v68) = 1148829696;
+    [v67 setPriority:v68];
+    [v46 addObject:v67];
+    v69 = [(UILayoutGuide *)self->_searchFieldLayoutGuide leadingAnchor];
+    v70 = [(UITextField *)self->_searchField leadingAnchor];
+    v71 = [v69 constraintEqualToAnchor:v70];
+    [v46 addObject:v71];
+
+    v72 = [(UILayoutGuide *)self->_searchFieldLayoutGuide topAnchor];
+    v73 = [(UITextField *)self->_searchField bottomAnchor];
+    v74 = [v72 constraintEqualToAnchor:v73];
+  }
+
+  else
+  {
+    v75 = [(UILayoutGuide *)self->_searchFieldLayoutGuide widthAnchor];
+    v76 = [v75 constraintEqualToConstant:282.0];
+    [v46 addObject:v76];
+
+    v67 = [(UILayoutGuide *)self->_searchFieldLayoutGuide leadingAnchor];
+    v72 = [(ContaineeViewController *)self headerView];
+    v73 = [v72 leadingAnchor];
+    v74 = [v67 constraintEqualToAnchor:v73 constant:left];
+  }
+
+  v77 = v74;
+  [v46 addObject:{v74, v46}];
+
+  [(SearchViewController *)self _initPlaceholderWithSubmitTicketIfNeeded:0];
+  if (v136 != 5)
+  {
+    v78 = [(ContaineeViewController *)self headerView];
+    v79 = [v78 _maps_addHairlineAtBottomWithMargin:0.0];
+    bottomHeaderHairline = self->_bottomHeaderHairline;
+    self->_bottomHeaderHairline = v79;
+  }
+
+  v81 = [(UIView *)self->_hideableFooterView bottomAnchor];
+  v82 = [(SearchViewController *)self view];
+  v83 = [v82 bottomAnchor];
+  v84 = [v81 constraintEqualToAnchor:v83];
+  bottomHideableFooterConstraint = self->_bottomHideableFooterConstraint;
+  self->_bottomHideableFooterConstraint = v84;
+
+  if ([(SearchViewController *)self _showsContentInDropDownMenu])
+  {
+    v86 = objc_alloc_init(UIView);
+    dropDownView = self->_dropDownView;
+    self->_dropDownView = v86;
+  }
+
+  v88 = [UICollectionView alloc];
+  v89 = objc_alloc_init(UICollectionViewFlowLayout);
+  y = CGRectZero.origin.y;
+  width = CGRectZero.size.width;
+  height = CGRectZero.size.height;
+  v93 = [v88 initWithFrame:v89 collectionViewLayout:{CGRectZero.origin.x, y, width, height}];
+  collectionView = self->_collectionView;
+  self->_collectionView = v93;
+
+  [(UICollectionView *)self->_collectionView setTranslatesAutoresizingMaskIntoConstraints:0];
+  v95 = +[UIColor clearColor];
+  [(UICollectionView *)self->_collectionView setBackgroundColor:v95];
+
+  [(UICollectionView *)self->_collectionView setAlwaysBounceVertical:1];
+  [(UICollectionView *)self->_collectionView setAccessibilityIdentifier:@"SearchHomeView"];
+  [(UICollectionView *)self->_collectionView setPreservesSuperviewLayoutMargins:1];
+  if (sub_10000FA08(self) == 5)
+  {
+    [(UICollectionView *)self->_collectionView setContentInset:0.0, 0.0, 10.0, 0.0];
+    [(UICollectionView *)self->_collectionView setFocusGroupIdentifier:@"DropDownFocusGroupName"];
+  }
+
+  if (_UISolariumEnabled())
+  {
+    v96 = 2;
+  }
+
+  else
+  {
+    v96 = 0;
+  }
+
+  v97 = [[MapsThemeTableView alloc] initWithFrame:v96 style:CGRectZero.origin.x, y, width, height];
+  contentTableView = self->_contentTableView;
+  self->_contentTableView = &v97->super;
+
+  [(UITableView *)self->_contentTableView setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(UITableView *)self->_contentTableView setEstimatedSectionHeaderHeight:0.0];
+  v99 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
+  [(UITableView *)self->_contentTableView setTableFooterView:v99];
+
+  [(UITableView *)self->_contentTableView _setHeaderAndFooterViewsFloat:0];
+  v100 = +[UIColor clearColor];
+  [(UITableView *)self->_contentTableView setBackgroundColor:v100];
+
+  v101 = [(UITableView *)self->_contentTableView layer];
+  [v101 setAllowsGroupOpacity:0];
+
+  if (sub_10000FA08(self) == 5)
+  {
+    [(UITableView *)self->_contentTableView setFocusGroupIdentifier:@"DropDownFocusGroupName"];
+  }
+
+  [(UITableView *)self->_contentTableView setSectionHeaderTopPadding:0.0];
+  if (_UISolariumEnabled())
+  {
+    v102 = [[UIView alloc] initWithFrame:{0.0, 0.0, 0.0, 2.22507386e-308}];
+    [(UITableView *)self->_contentTableView setTableHeaderView:v102];
+
+    [(UITableView *)self->_contentTableView setSectionHeaderHeight:20.0];
+    [(UITableView *)self->_contentTableView setSectionFooterHeight:0.0];
+  }
+
+  [(UITableView *)self->_contentTableView setPreservesSuperviewLayoutMargins:1];
+  +[_TtC4Maps23MapsDesignConstantsShim contentHorizontalPadding];
+  [(UITableView *)self->_contentTableView layoutMargins];
+  [(UITableView *)self->_contentTableView setLayoutMargins:?];
+  [(UITableView *)self->_contentTableView setAccessibilityIdentifier:@"SearchAutocompleteView"];
+  v103 = objc_alloc_init(UIView);
+  hideableFooterView = self->_hideableFooterView;
+  self->_hideableFooterView = v103;
+
+  [(UIView *)self->_hideableFooterView setTranslatesAutoresizingMaskIntoConstraints:0];
+  if (v136 != 5)
+  {
+    v105 = [(UIView *)self->_hideableFooterView _maps_addHairlineAtTopWithMargin:0.0];
+  }
+
+  v106 = [(SearchViewController *)self view];
+  v107 = self->_hideableFooterView;
+  v108 = [(ContaineeViewController *)self headerView];
+  [v106 insertSubview:v107 belowSubview:v108];
+
+  v109 = [(UIView *)self->_hideableFooterView bottomAnchor];
+  v110 = [(SearchViewController *)self view];
+  v111 = [v110 bottomAnchor];
+  v112 = [v109 constraintEqualToAnchor:v111];
+  v113 = self->_bottomHideableFooterConstraint;
+  self->_bottomHideableFooterConstraint = v112;
+
+  v137 = [(UIView *)self->_hideableFooterView trailingAnchor];
+  v114 = [(SearchViewController *)self view];
+  v115 = [v114 trailingAnchor];
+  v116 = [v137 constraintEqualToAnchor:v115];
+  v117 = self->_bottomHideableFooterConstraint;
+  v139[0] = v116;
+  v139[1] = v117;
+  v118 = [(UIView *)self->_hideableFooterView leadingAnchor];
+  v119 = [(SearchViewController *)self view];
+  v120 = [v119 leadingAnchor];
+  v121 = [v118 constraintEqualToAnchor:v120];
+  v139[2] = v121;
+  v122 = [NSArray arrayWithObjects:v139 count:3];
+  [v135 addObjectsFromArray:v122];
+
+  [NSLayoutConstraint activateConstraints:v135];
+  v123 = [(PassthruSearchBar *)self->_searchBar searchTextField];
+  [v123 addTarget:self action:"didSelectSearchBar:" forControlEvents:1];
+
+  v124 = +[NSNotificationCenter defaultCenter];
+  [v124 addObserver:self selector:"preferredContentSizeChanged:" name:UIContentSizeCategoryDidChangeNotification object:0];
+
+  v125 = +[NSNotificationCenter defaultCenter];
+  [v125 addObserver:self selector:"popoverPresented:" name:@"MacPopoverPresentationControllerDidPresentPopover" object:0];
+
+  v126 = +[NSNotificationCenter defaultCenter];
+  [v126 addObserver:self selector:"popoverDismissed:" name:@"MacPopoverPresentationControllerDidDismissPopover" object:0];
+
+  v127 = +[NSNotificationCenter defaultCenter];
+  [v127 addObserver:self selector:"_offlineSettingChangeHandler" name:@"UsingOfflineMapsStateChangedNotification" object:0];
+
+  v128 = +[NSNotificationCenter defaultCenter];
+  [v128 addObserver:self selector:"_preventAutoPresentingKeyboard_rdar_126940251" name:@"SearchViewPreventAutoPresentingKeyboard_rdar_126940251" object:0];
+
+  [(SearchViewController *)self _startMonitoringCoreRoutine];
+  +[KeyboardAvoidingView startObservingKeyboard];
+  [(SearchViewController *)self _contentAlphaForCurrentLayout];
+  [(SearchViewController *)self _updateHeaderHairlineAlphaWithContentAlpha:0 animated:?];
+}
+
+- (void)viewLayoutMarginsDidChange
+{
+  v4.receiver = self;
+  v4.super_class = SearchViewController;
+  [(SearchViewController *)&v4 viewLayoutMarginsDidChange];
+  v3 = [(ContaineeViewController *)self cardPresentationController];
+  [v3 bottomSafeOffset];
+  [(LocalSearchViewController *)self->_localSearchViewController setBottomInset:?];
+}
+
+- (void)_updateUserProfileEntryPointImage
+{
+  v5 = +[UserInformationManager sharedInstance];
+  userProfileButton = self->_userProfileButton;
+  v4 = [v5 userIcon];
+  [(UIButton *)userProfileButton setImage:v4 forState:0];
+}
+
+- (void)_setPlaceHolder
+{
+  if ((+[UIApplication shouldMakeUIForDefaultPNG]& 1) != 0)
+  {
+    v3 = sub_100067540();
+    if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
+    {
+      *buf = 0;
+      _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "UIApplication shouldMakeUIForDefaultPNG true. The search bar placeholder string will not changed in this case.", buf, 2u);
+    }
+  }
+
+  else
+  {
+    [(SearchViewController *)self _setupOnlinePlaceholder];
+    v4 = [(UITextField *)self->_searchField _placeholderLabel];
+    [v4 setAllowsDefaultTighteningForTruncation:1];
+  }
+}
+
+- (void)_setupOnlinePlaceholder
+{
+  v3 = +[NSLocale preferredLanguages];
+  v4 = [v3 firstObject];
+  v10 = [NSString stringWithFormat:@"%@-%@", @"__internal__searchBarPlaceholderV2", v4];
+
+  v5 = +[NSUserDefaults standardUserDefaults];
+  v6 = [v5 objectForKey:v10];
+
+  searchField = self->_searchField;
+  if (v6)
+  {
+    [(UITextField *)searchField setPlaceholder:v6];
+  }
+
+  else
+  {
+    v8 = +[NSBundle mainBundle];
+    v9 = [v8 localizedStringForKey:@"Search for a place or address" value:@"localized string not found" table:0];
+    [(UITextField *)searchField setPlaceholder:v9];
+  }
+}
+
+- (void)_startMonitoringCoreRoutine
+{
+  v3 = +[CoreRoutineLocationOfInterestManager sharedManager];
+  v2 = [NSSet setWithArray:&off_1016ED160];
+  [v3 monitorLOIsOfTypes:v2];
+}
+
+- (double)_contentAlphaForCurrentLayout
+{
+  v2 = [(ContaineeViewController *)self cardPresentationController];
+  [v2 contentAlpha];
+  v4 = v3;
+
+  return v4;
+}
+
+- (void)_internalViewWillAppear
+{
+  [(SearchViewController *)self updateDataSource];
+  [(SearchViewController *)self _restoreRetainedQueryIfNeeded];
+  [(SearchViewController *)self _configureSearchBarIfNeeded];
+  [(SearchViewController *)self _configureForceTouchIfNeeded];
+  [(SearchViewController *)self _addVenueObserver];
+  if (!self->_currentDataSource)
+  {
+    [(HomeViewController *)self->_homeViewController scrollContentToOriginalPosition];
+  }
+
+  v4 = +[UserInformationManager sharedInstance];
+  v3 = [v4 observers];
+  [v3 registerObserver:self queue:&_dispatch_main_q];
+}
+
+- (void)updateDataSource
+{
+  if (![(SearchViewController *)self isViewLoaded])
+  {
+    return;
+  }
+
+  v3 = [(UITextField *)self->_searchField text];
+  v4 = [v3 _maps_stringByTrimmingLeadingWhitespace];
+  if ([v4 length])
+  {
+    v5 = 1;
+  }
+
+  else if (sub_10000FA08(self) == 5)
+  {
+    v5 = 0;
+  }
+
+  else
+  {
+    v6 = [(SearchViewController *)self searchResultsViewController];
+    v5 = v6 != 0;
+  }
+
+  if (([(UITextField *)self->_searchField isFirstResponder]& 1) != 0 || ([(PassthruSearchBar *)self->_searchBar showsCancelButton]& 1) != 0)
+  {
+    v7 = 1;
+  }
+
+  else
+  {
+    v7 = [(SearchViewController *)self isSearchingAlongTheRoute];
+  }
+
+  if (sub_10000FA08(self) == 5)
+  {
+    if ([(SearchViewController *)self _showsContentInDropDownMenu])
+    {
+      if (v5)
+      {
+        v8 = [(SearchViewController *)self menuController];
+        v9 = [v8 macMenuPresentationController];
+        v10 = [v9 isPresented];
+      }
+
+      else
+      {
+        v10 = 0;
+      }
+
+      v12 = [(SearchViewController *)self menuController];
+      v13 = [v12 macMenuPresentationController];
+      v7 = [v13 isPresented];
+
+      if ((v10 & 1) == 0)
+      {
+        goto LABEL_21;
+      }
+
+LABEL_18:
+      v11 = [(SearchViewController *)self searchDataSource];
+      goto LABEL_23;
+    }
+
+    v7 = 0;
+  }
+
+  if (v5)
+  {
+    goto LABEL_18;
+  }
+
+LABEL_21:
+  if (!v7)
+  {
+    v15 = +[MapsOfflineUIHelper sharedHelper];
+    if ([v15 isUsingOfflineMaps])
+    {
+      supportsFullTextSearch = self->_supportsFullTextSearch;
+
+      if (!supportsFullTextSearch)
+      {
+        [(SearchViewController *)self _shouldHideOfflineHeaderView:1];
+        [(UITextField *)self->_searchField resignFirstResponder];
+      }
+    }
+
+    else
+    {
+    }
+
+    v14 = 0;
+    goto LABEL_29;
+  }
+
+  v11 = [(SearchViewController *)self searchHomeDataSource];
+LABEL_23:
+  v14 = v11;
+LABEL_29:
+  v19 = v14;
+  [(SearchViewController *)self setCurrentDataSource:v14];
+  v17 = +[MapsOfflineUIHelper sharedHelper];
+  if ([v17 isUsingOfflineMaps])
+  {
+    v18 = self->_supportsFullTextSearch;
+
+    if (!v18)
+    {
+      [(UITextField *)self->_searchField resignFirstResponder];
+    }
+  }
+
+  else
+  {
+  }
+}
+
+- (void)_updateUserProfileEntryPointButton
+{
+  if (sub_10000FA08(self) != 5 && ![(SearchViewController *)self isSearchingAlongTheRoute])
+  {
+    v3 = [(SearchViewController *)self searchResultsViewController];
+
+    if (!v3)
+    {
+
+      [(SearchViewController *)self updateSearchBarContentInsets];
+    }
+  }
+}
+
+- (void)updateIsTouristHereValue
+{
+  mapsSuggestionsLoadingSearchQueue = self->_mapsSuggestionsLoadingSearchQueue;
+  block[0] = _NSConcreteStackBlock;
+  block[1] = 3221225472;
+  block[2] = sub_1000543DC;
+  block[3] = &unk_101661B18;
+  block[4] = self;
+  dispatch_async(mapsSuggestionsLoadingSearchQueue, block);
+}
+
+- (id)_homeViewController
+{
+  if ([(SearchViewController *)self isViewLoaded])
+  {
+    homeViewController = self->_homeViewController;
+    if (!homeViewController)
+    {
+      v4 = [HomeViewController alloc];
+      WeakRetained = objc_loadWeakRetained(&self->_deferredHomeActionDelegate);
+      v6 = WeakRetained;
+      if (WeakRetained)
+      {
+        v7 = WeakRetained;
+      }
+
+      else
+      {
+        v7 = self;
+      }
+
+      v8 = [(HomeViewController *)v4 initWithDelegate:v7];
+      v9 = self->_homeViewController;
+      self->_homeViewController = v8;
+
+      objc_storeWeak(&self->_deferredHomeActionDelegate, 0);
+      homeViewController = self->_homeViewController;
+    }
+
+    v10 = homeViewController;
+  }
+
+  else
+  {
+    v10 = 0;
+  }
+
+  return v10;
+}
+
+- (id)newTraits
+{
+  v2 = [(ControlContaineeViewController *)self delegate];
+  v3 = [v2 newTraits];
+
+  return v3;
+}
+
+- (void)_restoreRetainedQueryIfNeeded
+{
+  v3 = [(SearchViewController *)self currentSearchSession];
+
+  if (!v3)
+  {
+    objc_initWeak(&location, self);
+    retainedQueryController = self->_retainedQueryController;
+    v5[0] = _NSConcreteStackBlock;
+    v5[1] = 3221225472;
+    v5[2] = sub_1000675D8;
+    v5[3] = &unk_101630610;
+    objc_copyWeak(&v6, &location);
+    [(RetainedQueryController *)retainedQueryController restoreIfNeededWithBlock:v5];
+    objc_destroyWeak(&v6);
+    objc_destroyWeak(&location);
+  }
+}
+
+- (id)currentSearchSession
+{
+  v2 = [(ControlContaineeViewController *)self delegate];
+  v3 = [v2 currentSearchSession];
+
+  return v3;
+}
+
+- (void)cleanSearch
+{
+  v7 = [(SearchViewController *)self searchResultsViewController];
+  if (v7)
+  {
+    [v7 willMoveToParentViewController:0];
+    v3 = [v7 view];
+    [v3 removeFromSuperview];
+
+    [v7 removeFromParentViewController];
+    v4 = [(SearchViewController *)self closeSearchResultsButton];
+    [v4 setHidden:1];
+  }
+
+  [(SearchDataSource *)self->_searchDataSource reset];
+  v5 = objc_alloc_init(SearchFieldItem);
+  [(SearchViewController *)self updateSearchFieldWithItem:v5];
+
+  userTypedSearchString = self->_userTypedSearchString;
+  self->_userTypedSearchString = 0;
+
+  [(SearchViewController *)self _hideSearchHereControl];
+}
+
+- (void)_updateSearchFieldText
+{
+  v3 = [(SearchViewController *)self currentSearchSession];
+  v4 = [v3 suggestion];
+  v10 = [v4 searchBarDisplayToken];
+
+  if (v10)
+  {
+    v5 = v10;
+  }
+
+  else
+  {
+    v5 = [(SearchFieldItem *)self->_searchItem searchString];
+  }
+
+  v6 = v5;
+  v7 = [(PassthruSearchBar *)self->_searchBar searchField];
+  v8 = [v7 text];
+  if (![v8 isEqualToString:v6])
+  {
+
+    goto LABEL_8;
+  }
+
+  v9 = [v7 isFirstResponder];
+
+  if ((v9 & 1) == 0)
+  {
+LABEL_8:
+    [CATransaction setFrameStallSkipRequest:1];
+    [v7 setText:v6];
+  }
+}
+
+- (void)setNeedsUpdateContentState
+{
+  if (!self->_needsUpdateContentState)
+  {
+    self->_needsUpdateContentState = 1;
+    block[0] = _NSConcreteStackBlock;
+    block[1] = 3221225472;
+    block[2] = sub_10099B498;
+    block[3] = &unk_101661B18;
+    block[4] = self;
+    dispatch_async(&_dispatch_main_q, block);
+  }
+}
+
+- (void)_hideSearchHereControl
+{
+  v2 = [(ControlContaineeViewController *)self delegate];
+  v3 = [v2 containerViewController];
+  v5 = [v3 chromeViewController];
+
+  [v5 setNeedsUpdateComponent:@"floatingSearchButton" animated:1];
+  v4 = [v5 redoSearchOverlay];
+  [v4 shouldHideFloatingControl:1 animated:0];
+}
+
+- (void)_configureSearchBarIfNeeded
+{
+  if (!self->_isConfigured)
+  {
+    self->_isConfigured = 1;
+    [(SearchViewController *)self _initPlaceholderWithSubmitTicketIfNeeded:1];
+  }
+}
+
+- (void)_configureForceTouchIfNeeded
+{
+  if (!self->_quickActionMenuPresenter)
+  {
+    v3 = [[SearchResultQuickActionMenuPresenter alloc] initWithTableView:self->_contentTableView];
+    quickActionMenuPresenter = self->_quickActionMenuPresenter;
+    self->_quickActionMenuPresenter = v3;
+
+    v5 = self->_quickActionMenuPresenter;
+
+    [(QuickActionMenuPresenter *)v5 setDelegate:self];
+  }
+}
+
+- (void)_addVenueObserver
+{
+  v3 = [(ControlContaineeViewController *)self delegate];
+  v4 = [v3 venuesManager];
+  [v4 addChangeObserver:self];
+
+  v8 = [(LocalSearchViewController *)self->_localSearchViewController browseVenueBusinessController];
+  v5 = [(ControlContaineeViewController *)self delegate];
+  v6 = [v5 venuesManager];
+  v7 = [v6 venueWithFocus];
+  [v8 handleVenueWithFocusDidChange:v7];
+}
+
+- (VisitedPlacesCommonActionsHandlingDelegate)visitedPlacesCommonActionsHandlingDelegate
+{
+  WeakRetained = objc_loadWeakRetained(&self->_visitedPlacesCommonActionsHandlingDelegate);
+
+  return WeakRetained;
+}
+
+- (PersonalizedItemManager)personalizedItemManager
+{
+  WeakRetained = objc_loadWeakRetained(&self->_personalizedItemManager);
+
+  return WeakRetained;
+}
+
+- (NavActionCoordination)navContaineeDelegate
+{
+  WeakRetained = objc_loadWeakRetained(&self->_navContaineeDelegate);
+
+  return WeakRetained;
+}
+
+- (BOOL)shouldShowSearchOverlay
+{
+  v3 = [(SearchViewController *)self searchResultsViewController];
+  if ([v3 isPresentingAddStopResultsFromWaypointEditor] && (GEOConfigGetBOOL() & 1) != 0)
+  {
+    LOBYTE(v4) = 0;
+  }
+
+  else if (self->_didTriggerAutoRedoSearch)
+  {
+    LOBYTE(v4) = 1;
+  }
+
+  else
+  {
+    v5 = [(ControlContaineeViewController *)self delegate];
+    v6 = [v5 currentSearchSession];
+    v7 = [v6 searchInfo];
+
+    if (v7 && ([v7 searchRedoButtonThreshold], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+    {
+      v9 = [(SearchViewController *)self localSearchViewController];
+      v10 = [v9 refreshSearchHereBusinessController];
+      v11 = [v10 shouldShowManualRedoButton];
+
+      v4 = v11 & [v7 shouldAllowManualRedoButton];
+    }
+
+    else
+    {
+      LOBYTE(v4) = 0;
+    }
+  }
+
+  return v4;
+}
+
+- (BOOL)supportsFullTextSearch
+{
+  v3 = +[MapsOfflineUIHelper sharedHelper];
+  v4 = [v3 isUsingOfflineMaps];
+
+  return v4 && self->_supportsFullTextSearch;
+}
+
+- (void)didStartDownloadFromAutocomplete
+{
+  if (self->_downloadedSearchResult)
+  {
+    [(SearchViewController *)self endSearch];
+    v3 = [(ControlContaineeViewController *)self delegate];
+    [v3 viewController:self selectSearchResult:self->_downloadedSearchResult addToHistory:1 source:2 saveSelectionState:1 replaceCurrentCard:1];
+
+    downloadedSearchResult = self->_downloadedSearchResult;
+    self->_downloadedSearchResult = 0;
+  }
+
+  else
+  {
+    v5 = sub_100067540();
+    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    {
+      *v6 = 0;
+    }
+  }
+}
+
+- (void)pptSelectACSuggestionMatchingAddress:(id)a3
+{
+  v21 = a3;
+  v3 = [(SearchViewController *)self currentDataSource];
+  v4 = [v3 objectsForAnalytics];
+  v5 = [v4 firstObject];
+  v6 = [v5 items];
+
+  v25 = 0u;
+  v26 = 0u;
+  v23 = 0u;
+  v24 = 0u;
+  v7 = v6;
+  v8 = [v7 countByEnumeratingWithState:&v23 objects:v29 count:16];
+  if (v8)
+  {
+    v9 = v8;
+    v10 = *v24;
+    while (2)
+    {
+      for (i = 0; i != v9; i = i + 1)
+      {
+        if (*v24 != v10)
+        {
+          objc_enumerationMutation(v7);
+        }
+
+        v12 = *(*(&v23 + 1) + 8 * i);
+        objc_opt_class();
+        if (objc_opt_isKindOfClass())
+        {
+          v13 = [v12 autocompleteObject];
+          if (objc_opt_respondsToSelector())
+          {
+            v14 = [v13 mapItem];
+            if (v14)
+            {
+              v15 = v14;
+              v16 = [v13 mapItem];
+              v17 = [v16 _shortAddress];
+              v22 = [v17 isEqualToString:v21];
+
+              if (v22)
+              {
+                v18 = sub_100067540();
+                if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+                {
+                  *buf = 138412290;
+                  v28 = v21;
+                  _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "PPT: Found map item matching address: %@", buf, 0xCu);
+                }
+
+                [(SearchViewController *)self dataSource:self->_searchDataSource itemTapped:v13];
+                goto LABEL_18;
+              }
+            }
+          }
+        }
+
+        else
+        {
+          v13 = 0;
+        }
+      }
+
+      v9 = [v7 countByEnumeratingWithState:&v23 objects:v29 count:16];
+      if (v9)
+      {
+        continue;
+      }
+
+      break;
+    }
+  }
+
+LABEL_18:
+}
+
+- (void)pptSelectFirstCuratedCollection
+{
+  v2 = [(SearchViewController *)self searchHomeDataSource];
+  [v2 _ppt_selectFirstCuratedGuide];
+}
+
+- (void)pptSelectFirstGuidePublisher
+{
+  v2 = [(SearchViewController *)self searchHomeDataSource];
+  [v2 _ppt_selectFirstGuidePublisher];
+}
+
+- (void)pptSelectSeeAllCuratedCollections
+{
+  v2 = [(SearchViewController *)self searchHomeDataSource];
+  [v2 _ppt_selectSeeAllCuratedCollections];
+}
+
+- (void)pptSetSearchDataSource
+{
+  v3 = [(SearchViewController *)self searchDataSource];
+  [(SearchViewController *)self setCurrentDataSource:v3];
+}
+
+- (void)pptSearchBarShouldProvideTextChangeNotification
+{
+  v3 = +[NSNotificationCenter defaultCenter];
+  [v3 addObserver:self selector:"_textFieldDidChange:" name:@"PPTShouldSendTextChangeNotification" object:self->_searchField];
+}
+
+- (UIScrollView)pptTestScrollView
+{
+  v3 = [(SearchViewController *)self searchResultsViewController];
+  if ([(SearchViewController *)self isShowingOmnipresentSearchBar]&& v3)
+  {
+    v4 = v3;
+    if (objc_opt_respondsToSelector())
+    {
+      v5 = [v4 pptTestScrollView];
+
+      goto LABEL_14;
+    }
+  }
+
+  if (self->_currentDataSource)
+  {
+    v5 = [(SearchViewController *)self currentDataSource];
+    v6 = [v5 presentationStyle];
+
+    if (v6 == 1)
+    {
+      v7 = 240;
+    }
+
+    else
+    {
+      if (v6)
+      {
+        goto LABEL_14;
+      }
+
+      v7 = 232;
+    }
+
+    v8 = *(&self->super.super.super.super.super.super.isa + v7);
+  }
+
+  else
+  {
+    v8 = [(HomeViewController *)self->_homeViewController scrollView];
+  }
+
+  v5 = v8;
+LABEL_14:
+
+  return v5;
+}
+
+- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4
+{
+  if ([(SearchViewController *)self isSearchingAlongTheRoute:a3])
+  {
+    v5 = [(SearchViewController *)self navContaineeDelegate];
+    [v5 dismissAddStop];
+
+    v6 = +[MKMapService sharedService];
+    [v6 captureUserAction:4 onTarget:-[SearchViewController currentUITargetForAnalytics](self eventValue:{"currentUITargetForAnalytics"), 0}];
+  }
+
+  v7 = [(SearchViewController *)self browseModeHeaderView];
+  v8 = [v7 isHidden];
+
+  if ((v8 & 1) == 0)
+  {
+    [(SearchViewController *)self endSearch];
+
+    [(SearchViewController *)self _shouldHideOfflineHeaderView:1];
+  }
+}
+
+- (void)macMenuPresentationControllerDidDismiss:(id)a3
+{
+  v7[0] = _NSConcreteStackBlock;
+  v7[1] = 3221225472;
+  v7[2] = sub_10098EB30;
+  v7[3] = &unk_101661B18;
+  v7[4] = self;
+  [UIView animateWithDuration:v7 animations:0.25];
+  v4 = [(SearchViewController *)self homeActionCoordinator];
+  objc_opt_class();
+  isKindOfClass = objc_opt_isKindOfClass();
+
+  if (isKindOfClass)
+  {
+    v6 = [(SearchViewController *)self homeActionCoordinator];
+    [v6 makeMapViewFirstResponder];
+  }
+
+  [(SearchViewController *)self updateDataSource];
+}
+
+- (int)currentMapViewTargetForAnalytics
+{
+  v3 = [(SearchViewController *)self searchResultsViewController];
+  v4 = [(SearchViewController *)self isShowingOmnipresentSearchBar];
+  v5 = 502;
+  if (v4 && v3 && sub_100010C34(v3, &OBJC_PROTOCOL___GEOLogContextDelegate))
+  {
+    v6 = v3;
+    if (objc_opt_respondsToSelector())
+    {
+      v5 = [v6 currentMapViewTargetForAnalytics];
+    }
+  }
+
+  return v5;
+}
+
+- (BOOL)shouldQuickActionMenuPresenter:(id)a3 showDirectionsToPlace:(id)a4
+{
+  v5 = a4;
+  v6 = [(ControlContaineeViewController *)self delegate];
+  v7 = [v6 venuesManager];
+  v8 = [v5 mapItem];
+
+  LOBYTE(v5) = [v7 isUserAtSameVenueAsMapItem:v8];
+  return v5 ^ 1;
+}
+
+- (void)quickActionMenuPresenter:(id)a3 selectedRemoveDroppedPinOf:(id)a4
+{
+  v5 = [a3 searchResult];
+  if (v5)
+  {
+    v7 = v5;
+    v6 = [(ControlContaineeViewController *)self delegate];
+    [v6 viewController:0 removeDroppedPin:v7];
+
+    v5 = v7;
+  }
+}
+
+- (id)mapServiceTraitsForQuickActionPresenter:(id)a3
+{
+  v3 = [(ControlContaineeViewController *)self delegate];
+  v4 = [v3 newTraits];
+
+  return v4;
+}
+
+- (void)quickActionMenuPresenter:(id)a3 selectedShowPlaceCard:(id)a4
+{
+  v5 = [(SearchResultQuickActionMenuPresenter *)self->_quickActionMenuPresenter indexPath:a3];
+  if (v5)
+  {
+    v10 = v5;
+    v6 = [(SearchViewController *)self currentDataSource];
+    v7 = [(SearchResultQuickActionMenuPresenter *)self->_quickActionMenuPresenter indexPath];
+    v8 = [v6 objectAtIndexPath:v7];
+
+    v9 = [(SearchViewController *)self currentDataSource];
+    [(SearchViewController *)self dataSource:v9 itemTapped:v8];
+
+    v5 = v10;
+  }
+}
+
+- (void)quickActionMenuPresenter:(id)a3 selectedShareLocationOf:(id)a4
+{
+  v5 = [a3 searchResult];
+  v6 = v5;
+  if (v5)
+  {
+    v7 = [v5 contactForSharingToMessages];
+    v8 = [ShareItem shareItemWithSearchResult:v6 contact:v7 includePrintActivity:0];
+
+    self->_maintainSearchStateWhenDisappearing = 1;
+    v9 = [(ControlContaineeViewController *)self delegate];
+    v10[0] = _NSConcreteStackBlock;
+    v10[1] = 3221225472;
+    v10[2] = sub_10098EF4C;
+    v10[3] = &unk_101661B18;
+    v10[4] = self;
+    [v9 viewController:0 doShareSheetForShareItem:v8 completion:v10];
+
+    [(SearchViewController *)self _addRecentPlaceForSearchResult:v6];
+  }
+}
+
+- (void)quickActionMenuPresenter:(id)a3 selectedViewWebsiteFor:(id)a4
+{
+  v5 = [a3 searchResult];
+  if (v5)
+  {
+    v7 = v5;
+    v6 = [(ControlContaineeViewController *)self delegate];
+    [v6 viewController:0 openWebsiteForSearchResult:v7];
+
+    [(SearchViewController *)self _addRecentPlaceForSearchResult:v7];
+    v5 = v7;
+  }
+}
+
+- (void)quickActionMenuPresenter:(id)a3 selectedCall:(id)a4
+{
+  v5 = [a3 searchResult];
+  if (v5)
+  {
+    v7 = v5;
+    v6 = [(ControlContaineeViewController *)self delegate];
+    [v6 viewController:0 doAudioCallToSearchResult:v7];
+
+    [(SearchViewController *)self _addRecentPlaceForSearchResult:v7];
+    v5 = v7;
+  }
+}
+
+- (void)quickActionMenuPresenter:(id)a3 selectedDirectionsTo:(id)a4
+{
+  v5 = [a3 searchResult];
+  if (v5)
+  {
+    v6 = objc_alloc_init(SearchFieldItem);
+    v7 = +[SearchResult currentLocationSearchResult];
+    [(SearchFieldItem *)v6 setSearchResult:v7];
+
+    v8 = objc_alloc_init(SearchFieldItem);
+    [(SearchFieldItem *)v8 setSearchResult:v5];
+    v9 = [DirectionItem alloc];
+    v16[0] = v6;
+    v16[1] = v8;
+    v10 = [NSArray arrayWithObjects:v16 count:2];
+    v11 = [(DirectionItem *)v9 initWithItems:v10 transportType:0];
+
+    v14 = @"DirectionsSessionInitiatorKey";
+    v15 = &off_1016E7DF0;
+    v12 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
+    v13 = [(ControlContaineeViewController *)self delegate];
+    [v13 viewController:0 doDirectionItem:v11 withUserInfo:v12];
+
+    [(SearchViewController *)self _addRecentPlaceForSearchResult:v5];
+  }
+}
+
+- (void)_addRecentPlaceForSearchResult:(id)a3
+{
+  v3 = a3;
+  v4 = v3;
+  if (v3)
+  {
+    v8 = v3;
+    v5 = [v3 isHomeOrWork];
+    v4 = v8;
+    if ((v5 & 1) == 0)
+    {
+      v6 = [v8 mapItem];
+      v7 = [v8 searchToSupersedeIfRecordedInHistory];
+      [HistoryEntryRecentsItem saveMapItem:v6 superseedUUID:v7];
+
+      v4 = v8;
+    }
+  }
+}
+
+- (int)currentUITargetForAnalytics
+{
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    v3 = 11;
+  }
+
+  else
+  {
+    objc_opt_class();
+    if ((objc_opt_isKindOfClass() & 1) == 0)
+    {
+      return 8;
+    }
+
+    v3 = 13;
+  }
+
+  if ([(SearchViewController *)self isSearchingAlongTheRoute])
+  {
+    return 59;
+  }
+
+  else
+  {
+    return v3;
+  }
+}
+
+- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+{
+  y = a4.y;
+  v9.receiver = self;
+  v9.super_class = SearchViewController;
+  [(ContaineeViewController *)&v9 scrollViewWillEndDragging:a3 withVelocity:a5 targetContentOffset:a4.x];
+  if (y <= 0.0)
+  {
+    v7 = 7;
+  }
+
+  else
+  {
+    v7 = 8;
+  }
+
+  v8 = +[MKMapService sharedService];
+  [v8 captureUserAction:v7 onTarget:-[SearchViewController currentUITargetForAnalytics](self eventValue:{"currentUITargetForAnalytics"), 0}];
+}
+
+- (void)scrollViewWillBeginDragging:(id)a3
+{
+  v3.receiver = self;
+  v3.super_class = SearchViewController;
+  [(ContaineeViewController *)&v3 scrollViewWillBeginDragging:a3];
+}
+
+- (void)scrollViewDidScroll:(id)a3
+{
+  v4.receiver = self;
+  v4.super_class = SearchViewController;
+  [(ContaineeViewController *)&v4 scrollViewDidScroll:a3];
+  [(SearchViewController *)self _contentAlphaForCurrentLayout];
+  [(SearchViewController *)self _updateHeaderHairlineAlphaWithContentAlpha:1 animated:?];
+}
+
+- (void)_updateHeaderHairlineAlphaWithContentAlpha:(double)a3 animated:(BOOL)a4
+{
+  v4 = a4;
+  v7 = 0.0;
+  if (sub_10000FA08(self) == 5)
+  {
+    goto LABEL_16;
+  }
+
+  currentDataSource = self->_currentDataSource;
+  if (currentDataSource)
+  {
+    searchHomeDataSource = self->_searchHomeDataSource;
+    if (currentDataSource == searchHomeDataSource && [(SearchHomeDataSource *)searchHomeDataSource shouldHideHairLine])
+    {
+      goto LABEL_16;
+    }
+
+    v10 = [(SearchViewController *)self currentDataSource];
+    v11 = [v10 presentationStyle];
+
+    if (v11 == 1)
+    {
+      v12 = 240;
+LABEL_13:
+      if ([*(&self->super.super.super.super.super.super.isa + v12) _maps_shouldShowTopHairline])
+      {
+        v7 = a3;
+      }
+
+      else
+      {
+        v7 = 0.0;
+      }
+
+      goto LABEL_16;
+    }
+
+    if (!v11)
+    {
+      v12 = 232;
+      goto LABEL_13;
+    }
+  }
+
+  else
+  {
+    v13 = [(HomeViewController *)self->_homeViewController shouldShowTopHairline];
+    if (v13)
+    {
+      v7 = a3;
+    }
+
+    else
+    {
+      v7 = 0.0;
+    }
+
+    v14 = [(HomeViewController *)self->_homeViewController scrollView];
+    [v14 setClipsToBounds:v13];
+  }
+
+LABEL_16:
+  if (_UISolariumEnabled())
+  {
+    v15 = 0.0;
+  }
+
+  else
+  {
+    v15 = v7;
+  }
+
+  v17[0] = _NSConcreteStackBlock;
+  v17[1] = 3221225472;
+  v17[2] = sub_10098F608;
+  v17[3] = &unk_101638450;
+  v17[4] = self;
+  v16[0] = _NSConcreteStackBlock;
+  v16[1] = 3221225472;
+  v16[2] = sub_10098F61C;
+  v16[3] = &unk_101638478;
+  v16[4] = self;
+  [UIScrollView _maps_updateTopHairlineAlpha:v4 animated:v17 getter:v16 setter:v15];
+}
+
+- (void)refreshCurrentSearch
+{
+  if (!self->_isSearchAndDiscoveryEnabled)
+  {
+    goto LABEL_8;
+  }
+
+  v8 = [(SearchViewController *)self searchResultsViewController];
+  if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  {
+
+LABEL_8:
+    v3 = [(ControlContaineeViewController *)self delegate];
+    v4 = [(ControlContaineeViewController *)self delegate];
+    v5 = [v4 currentSearchSession];
+    v6 = [v5 searchFieldItem];
+    v9 = @"SearchSessionIsAutoRedoSearch";
+    v10 = &__kCFBooleanTrue;
+    v7 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
+    [v3 viewController:self doSearchItem:v6 withUserInfo:v7];
+
+    return;
+  }
+
+  [v8 refreshCurrentSearch];
+}
+
+- (void)selectNearbyCategoryAtIndex:(unint64_t)a3
+{
+  v4 = [(SearchViewController *)self searchHomeDataSource];
+  [v4 _ppt_selectCategoryAtIndex:a3];
+}
+
+- (void)textDroppableView:(id)a3 dropSessionDidEnd:(id)a4
+{
+  v5 = a4;
+  v6 = [(SearchViewController *)self mapsDragDestinationHandler];
+  [v6 endDrop:v5];
+}
+
+- (void)textDroppableView:(id)a3 willPerformDrop:(id)a4
+{
+  v6 = a4;
+  v7 = a3;
+  [v7 bounds];
+  v10 = v8 + v9 * 0.5;
+  v13 = v11 + v12 * 0.5;
+  v15 = [(SearchViewController *)self mapsDragDestinationHandler];
+  v14 = [v6 dropSession];
+
+  [v15 performDrop:v14 finishingAtLocation:v7 inView:{v10, v13}];
+}
+
+- (id)textDroppableView:(id)a3 proposalForDrop:(id)a4
+{
+  v5 = a4;
+  [0 setDropPerformer:1];
+  v6 = [v5 dropSession];
+  v7 = [v6 localDragSession];
+
+  v8 = [UITextDropProposal alloc];
+  if (v7)
+  {
+    v9 = [v8 initWithDropOperation:0];
+  }
+
+  else
+  {
+    v9 = [v8 initWithDropOperation:2];
+    v10 = [(SearchViewController *)self mapsDragDestinationHandler];
+    v11 = [v5 dropSession];
+    [v10 beginDrop:v11];
+  }
+
+  return v9;
+}
+
+- (void)_textFieldDidChange:(id)a3 tappedQuerySuggestionCompletion:(id)a4
+{
+  v11 = a4;
+  v5 = [(UITextField *)self->_searchField text];
+  v6 = [v5 _maps_stringByTrimmingLeadingWhitespace];
+
+  if ([v6 length] == 1 && !self->_noTypingSent && self->_currentDataSource == &self->_searchHomeDataSource->super)
+  {
+    self->_noTypingSent = 1;
+    [(SearchHomeDataSource *)self->_searchHomeDataSource sendNoTypingACAnalytics];
+  }
+
+  self->_hasEdited = 1;
+  if ([v6 length])
+  {
+    v7 = v6;
+  }
+
+  else
+  {
+    v7 = 0;
+  }
+
+  objc_storeStrong(&self->_userTypedSearchString, v7);
+  v8 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
+  v9 = [v6 stringByTrimmingCharactersInSet:v8];
+  v10 = [v9 length];
+
+  if (!v10)
+  {
+    [(SearchViewController *)self clearRetainedSearchQuery];
+  }
+
+  [(SearchViewController *)self sendACRequestWithTappedQuerySuggestionCompletion:v11 retainQueryMetadata:0];
+}
+
+- (void)_textFieldDidChange:(id)a3
+{
+  v4 = a3;
+  v5 = sub_100067540();
+  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  {
+    v6 = [(UITextField *)self->_searchField text];
+    v14 = 138412290;
+    v15 = v6;
+    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Processing autocomplete query: %@", &v14, 0xCu);
+  }
+
+  [(SearchViewController *)self _textFieldDidChange:v4 tappedQuerySuggestionCompletion:0];
+  v7 = +[UIKeyboardInputModeController sharedInputModeController];
+  v8 = [v7 currentInputMode];
+
+  v9 = [v8 identifier];
+  v10 = UIKeyboardInputModeGetBaseLanguage();
+  v11 = [v10 isEqualToString:@"ja"];
+
+  if (v11)
+  {
+    v12 = [(UITextField *)self->_searchField markedTextRange];
+
+    if (!v12)
+    {
+      v13 = +[MKMapService sharedService];
+      [v13 captureUserAction:458 onTarget:127 eventValue:0];
+    }
+  }
+}
+
+- (BOOL)textFieldShouldReturn:(id)a3
+{
+  v4 = a3;
+  v5 = sub_100067540();
+  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  {
+    *v11 = 0;
+    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Keyboard search button pressed", v11, 2u);
+  }
+
+  v6 = [v4 text];
+
+  v7 = [v6 _maps_stringByTrimmingLeadingWhitespace];
+  v8 = [v7 length];
+
+  if (v8)
+  {
+    if (sub_10000FA08(self) == 5)
+    {
+      v9 = [(ControlContaineeViewController *)self delegate];
+      [v9 clearSearchPins];
+    }
+
+    [(SearchViewController *)self sendSearchRequest];
+    [(UITextField *)self->_searchField resignFirstResponder];
+  }
+
+  return v8 != 0;
+}
+
+- (BOOL)textFieldShouldClear:(id)a3
+{
+  v4 = sub_100067540();
+  if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
+  {
+    *v9 = 0;
+    _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Clearing text field", v9, 2u);
+  }
+
+  v5 = +[MKMapService sharedService];
+  [v5 captureUserAction:2002 onTarget:-[SearchViewController currentUITargetForAnalytics](self eventValue:{"currentUITargetForAnalytics"), 0}];
+
+  [(SearchViewController *)self clearRetainedSearchQuery];
+  v6 = [(SearchDataSource *)self->_searchDataSource searchDataProvider];
+  [v6 clearMKLocalSearchCompleterQueryState];
+
+  v7 = [(ControlContaineeViewController *)self delegate];
+  [v7 clearSearch];
+
+  [(SearchDataSource *)self->_searchDataSource clearAutocompleteResults];
+  if (sub_10000FA08(self) != 5)
+  {
+    [(SearchViewController *)self searchBarBecomeFirstResponder];
+  }
+
+  return 1;
+}
+
+- (void)textFieldDidEndEditing:(id)a3
+{
+  [(SearchViewController *)self setNeedsUpdateContentState];
+  v4 = +[NSNotificationCenter defaultCenter];
+  [v4 postNotificationName:@"SearchTextFieldDidEndEditingNotification" object:self];
+}
+
+- (void)textFieldDidBeginEditing:(id)a3
+{
+  v4 = a3;
+  v5 = sub_100067540();
+  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  {
+    *buf = 0;
+    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Search bar selected", buf, 2u);
+  }
+
+  v6 = [(ContaineeViewController *)self cardPresentationController];
+  if ([v6 containeeLayout] == 1)
+  {
+  }
+
+  else
+  {
+    v7 = [(ContaineeViewController *)self cardPresentationController];
+    v8 = [v7 containeeLayout];
+
+    if (v8 != 2)
+    {
+      goto LABEL_7;
+    }
+  }
+
+  v9 = [(ContaineeViewController *)self cardPresentationController];
+  [v9 wantsLayout:3];
+
+LABEL_7:
+  if (!self->_searchItem)
+  {
+    v10 = objc_alloc_init(SearchFieldItem);
+    searchItem = self->_searchItem;
+    self->_searchItem = v10;
+  }
+
+  self->_hasEdited = 0;
+  v21[0] = _NSConcreteStackBlock;
+  v21[1] = 3221225472;
+  v21[2] = sub_1009901D0;
+  v21[3] = &unk_101661B18;
+  v21[4] = self;
+  v12 = objc_retainBlock(v21);
+  if (sub_10000FA08(self) == 5)
+  {
+    (v12[2])(v12);
+  }
+
+  else
+  {
+    v13 = [(ContaineeViewController *)self cardPresentationController];
+    [v13 applyWithAnimations:v12 completion:&stru_101630738];
+  }
+
+  [(SearchViewController *)self updateDataSource];
+  if (sub_10000FA08(self) == 5)
+  {
+    v14 = [v4 text];
+    v15 = [v14 length];
+
+    if (v15)
+    {
+      v16 = [(SearchViewController *)self currentDataSource];
+      v17 = [v16 conformsToProtocol:&OBJC_PROTOCOL___SearchDataProviding];
+
+      if (v17)
+      {
+        v18 = [(SearchViewController *)self currentDataSource];
+        v19 = [v18 hasResults];
+
+        if ((v19 & 1) == 0)
+        {
+          [(SearchViewController *)self _textFieldDidChange:0];
+        }
+      }
+    }
+  }
+
+  v20 = +[NSNotificationCenter defaultCenter];
+  [v20 postNotificationName:@"SearchTextFieldDidBeginEditingNotification" object:self];
+}
+
+- (BOOL)textFieldShouldBeginEditing:(id)a3
+{
+  self->_noTypingSent = 0;
+  v4 = +[MKMapService sharedService];
+  [v4 captureUserAction:2001 onTarget:-[SearchViewController currentUITargetForAnalytics](self eventValue:{"currentUITargetForAnalytics"), 0}];
+
+  v5 = [(ControlContaineeViewController *)self delegate];
+  v6 = [v5 newTraits];
+  v7 = +[BrowseManager sharedManager];
+  [v7 setTraits:v6];
+
+  return 1;
+}
+
+- (void)searchBar:(id)a3 didPasteMapsLink:(id)a4
+{
+  v5 = a4;
+  v13 = [(SearchViewController *)self _maps_platformController];
+  v6 = [v13 entryPointsCoordinator];
+  v7 = [(SearchViewController *)self _maps_uiScene];
+  v8 = [v7 session];
+  v9 = [(SearchViewController *)self view];
+  v10 = [v9 window];
+  [v10 bounds];
+  [v6 openURL:v5 session:v8 sceneOptions:0 mkOptions:0 windowSize:{v11, v12}];
+}
+
+- (void)searchBarCancelButtonClicked:(id)a3
+{
+  v4 = +[MKMapService sharedService];
+  [v4 captureUserAction:2003 onTarget:-[SearchViewController currentUITargetForAnalytics](self eventValue:{"currentUITargetForAnalytics"), 0}];
+
+  [(SearchViewController *)self endSearch];
+}
+
+- (ParkedCarActionDelegate)homeParkedCarActionDelegate
+{
+  v2 = [(ControlContaineeViewController *)self delegate];
+  v3 = [v2 appCoordinator];
+
+  return v3;
+}
+
+- (ShareDelegate)homeShareDelegate
+{
+  v2 = [(ControlContaineeViewController *)self delegate];
+  v3 = [v2 appCoordinator];
+
+  return v3;
+}
+
+- (void)homeDidTapTermsAndConditions
+{
+  v3 = GEOConfigGetString();
+  v5 = [NSURL URLWithString:v3];
+
+  v4 = [(SearchViewController *)self homeActionCoordinator];
+  [v4 viewController:self openURL:v5];
+}
+
+- (void)homeDidTapReportAProblem
+{
+  v3 = [(ControlContaineeViewController *)self delegate];
+  [v3 viewControllerShowReports:self];
+}
+
+- (void)homeDidTapMarkMyLocation
+{
+  v3 = +[NSBundle mainBundle];
+  v7 = [v3 localizedStringForKey:@"Mark My Location [App Delegate]" value:@"localized string not found" table:0];
+
+  v4 = [[UIApplicationShortcutItem alloc] initWithType:@"com.apple.Maps.action.mark-my-location-from-app-delegate" localizedTitle:v7 localizedSubtitle:0 icon:0 userInfo:0];
+  v5 = [(SearchViewController *)self _maps_mapsSceneDelegate];
+  v6 = [v5 entryPointsCoordinator];
+  [v6 openShortcutItem:v4];
+}
+
+- (void)homeDidTapShareMyLocation
+{
+  v3 = +[NSBundle mainBundle];
+  v7 = [v3 localizedStringForKey:@"Share My Location [App Delegate]" value:@"localized string not found" table:0];
+
+  v4 = [[UIApplicationShortcutItem alloc] initWithType:@"com.apple.Maps.action.share-location-from-app-delegate" localizedTitle:v7 localizedSubtitle:0 icon:0 userInfo:0];
+  v5 = [(SearchViewController *)self _maps_mapsSceneDelegate];
+  v6 = [v5 entryPointsCoordinator];
+  [v6 openShortcutItem:v4];
+}
+
+- (void)homeDidTapOnContainment:(id)a3 forResults:(id)a4
+{
+  v6 = a4;
+  v7 = a3;
+  v11 = [[SearchResult alloc] initWithMapItem:v7];
+
+  v8 = [v6 arrayByAddingObject:v11];
+
+  v9 = [(ControlContaineeViewController *)self delegate];
+  v10 = [v9 searchPinsManager];
+  [v10 setSearchPins:v8 selectedPin:v11 animated:1];
+}
+
+- (void)homeContentDidUpdate
+{
+  [(SearchViewController *)self _contentAlphaForCurrentLayout];
+  [(SearchViewController *)self _updateHeaderHairlineAlphaWithContentAlpha:0 animated:?];
+  [(SearchViewController *)self _invalidateMediumHeightCache];
+  v3 = [(ContaineeViewController *)self cardPresentationController];
+  v4 = [v3 containerStyle];
+
+  if (v4 == 6)
+  {
+    v5 = [(ContaineeViewController *)self cardPresentationController];
+    [v5 updateHeightForCurrentLayout];
+  }
+}
+
+- (void)homeSectionHeaderButtonTapped:(int64_t)a3
+{
+  switch(a3)
+  {
+    case 5:
+      v6 = [(ControlContaineeViewController *)self delegate];
+      [v6 viewControllerShowMyRecents:self includeRecentSearches:0];
+      break;
+    case 3:
+      v6 = [(ControlContaineeViewController *)self delegate];
+      [v6 viewControllerShowCollections:self];
+      break;
+    case 2:
+      v4 = _UISolariumEnabled();
+      v5 = [(ControlContaineeViewController *)self delegate];
+      v6 = v5;
+      if (v4)
+      {
+        [v5 viewControllerShowLibraryRootView:self];
+      }
+
+      else
+      {
+        [v5 viewControllerShowMyShortcuts:self];
+      }
+
+      break;
+    default:
+      return;
+  }
+}
+
+- (void)homeDidTapRecentlyAdded
+{
+  v2 = [(ControlContaineeViewController *)self delegate];
+  [v2 toggleTopLevelRecentlyAdded];
+}
+
+- (void)homeDidTapVisitedPlaces
+{
+  v2 = [(ControlContaineeViewController *)self delegate];
+  [v2 toggleTopLevelVisitedPlaces];
+}
+
+- (void)homeDidTapSavedRoutes
+{
+  v2 = [(ControlContaineeViewController *)self delegate];
+  [v2 toggleTopLevelSavedRoutes];
+}
+
+- (void)homeDidTapSeeAllUserGuides
+{
+  v2 = [(ControlContaineeViewController *)self delegate];
+  [v2 toggleTopLevelGuides];
+}
+
+- (void)homeDidTapPlaces
+{
+  v2 = [(ControlContaineeViewController *)self delegate];
+  [v2 toggleTopLevelPlaces];
+}
+
+- (void)homeDidTapPinnedPlaces
+{
+  v2 = [(ControlContaineeViewController *)self delegate];
+  [v2 toggleTopLevelPinned];
+}
+
+- (void)showGuidesHomeFromExploreGuides:(id)a3
+{
+  v4 = a3;
+  v6 = [(ControlContaineeViewController *)self delegate];
+  v5 = [v4 guideLocation];
+
+  [v6 viewController:self showGuidesHome:v5];
+}
+
+- (void)showCitySelector
+{
+  v2 = [(ControlContaineeViewController *)self delegate];
+  [v2 viewControllerShowCitySelectorFromGuideLocation:0];
+}
+
+- (void)shareCollection:(id)a3 collection:(id)a4
+{
+  v6 = a4;
+  v7 = a3;
+  v11 = [[PersonalCollectionShareItemSource alloc] initWithCollectionHandlerInfo:v6];
+
+  v8 = [MUPresentationOptions optionsWithSender:v7];
+
+  v9 = [(ControlContaineeViewController *)self delegate];
+  v10 = [v9 appCoordinator];
+  [v10 shareItem:v11 presentationOptions:v8 completion:0];
+}
+
+- (void)seeAllTappedForUserGuides
+{
+  v2 = [(ControlContaineeViewController *)self delegate];
+  [v2 viewControllerShowCollections:0];
+}
+
+- (void)seeAllTappedForRecents
+{
+  v3 = [(ControlContaineeViewController *)self delegate];
+  [v3 viewControllerShowMyRecents:self includeRecentSearches:1];
+
+  if (sub_10000FA08(self) == 5)
+  {
+    [(SearchViewController *)self showDropDownIfNeeded:0];
+    v4 = [(SearchViewController *)self view];
+    [v4 endEditing:1];
+  }
+}
+
+- (void)seeAllTappedForCollections
+{
+  if (sub_10000FA08(self) == 5)
+  {
+    [(SearchViewController *)self showDropDownIfNeeded:0];
+    v3 = [(SearchViewController *)self view];
+    [v3 endEditing:1];
+  }
+
+  v4 = [(ControlContaineeViewController *)self delegate];
+  [v4 viewControllerShowAllCollections];
+}
+
+- (id)recentAutocompleteSessionData
+{
+  v2 = [(SearchDataSource *)self->_searchDataSource searchDataProvider];
+  v3 = [v2 _recentAutocompleteSessionData];
+
+  return v3;
+}
+
+- (void)didSelectRecentAtIndex:(unint64_t)a3
+{
+  v4 = [(SearchViewController *)self searchHomeDataSource];
+  [v4 didSelectRecentAtIndex:a3];
+}
+
+- (void)didSelectCompactGuideModelAtIndex:(unint64_t)a3
+{
+  v4 = [(SearchViewController *)self searchHomeDataSource];
+  [v4 didSelectCompactGuideModelAtIndex:a3];
+}
+
+- (BOOL)useSingleColumnLayout
+{
+  v2 = [(SearchViewController *)self searchHomeDataSource];
+  v3 = [v2 useSingleColumnLayout];
+
+  return v3;
+}
+
+- (void)didSelectBrowseCategoryAtIndex:(unint64_t)a3
+{
+  v4 = [(SearchViewController *)self searchHomeDataSource];
+  [v4 didSelectBrowseCategoryAtIndex:a3];
+}
+
+- (void)didSelectGuideModelAtIndex:(unint64_t)a3 sectionIndex:(int64_t)a4
+{
+  v6 = [(SearchViewController *)self searchHomeDataSource];
+  [v6 didSelectGuideModelAtIndex:a3 sectionIndex:a4];
+}
+
+- (void)didTapOnCuratedGuides:(id)a3
+{
+  v4 = a3;
+  v5 = [(SearchViewController *)self view];
+  [v5 endEditing:1];
+
+  if (sub_10000FA08(self) == 5)
+  {
+    [(SearchViewController *)self showDropDownIfNeeded:0];
+  }
+
+  self->_maintainSearchStateWhenDisappearing = 1;
+  v6 = [(ControlContaineeViewController *)self delegate];
+  [v6 viewController:self showCuratedCollectionsList:v4 usingTitle:0 usingCollectionIds:0 completion:0];
+}
+
+- (void)didTapOnCuratedGuide:(id)a3
+{
+  v4 = a3;
+  v5 = [(SearchViewController *)self view];
+  [v5 endEditing:1];
+
+  self->_maintainSearchStateWhenDisappearing = 1;
+  v6 = [(ControlContaineeViewController *)self delegate];
+  [v6 viewController:self showCuratedCollection:v4];
+}
+
+- (void)didTapOnUserGeneratedGuide:(id)a3
+{
+  v4 = a3;
+  v5 = [(SearchViewController *)self view];
+  [v5 endEditing:1];
+
+  self->_maintainSearchStateWhenDisappearing = 1;
+  v6 = [(ControlContaineeViewController *)self delegate];
+  [v6 viewController:self showCollection:v4];
+}
+
+- (void)fetchMapItemWithIdentifier:(id)a3 completion:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  [(SearchViewController *)self resetMapServiceTicket];
+  v8 = [[MKMapItemIdentifier alloc] initWithGEOMapItemIdentifier:v6];
+  objc_initWeak(&location, self);
+  v9 = +[MKMapService sharedService];
+  v21 = v8;
+  v10 = [NSArray arrayWithObjects:&v21 count:1];
+  v11 = [(ControlContaineeViewController *)self delegate];
+  v12 = [v11 newTraits];
+  v13 = [v9 ticketForIdentifiers:v10 traits:v12];
+  mapServiceTicket = self->_mapServiceTicket;
+  self->_mapServiceTicket = v13;
+
+  v15 = self->_mapServiceTicket;
+  v17[0] = _NSConcreteStackBlock;
+  v17[1] = 3221225472;
+  v17[2] = sub_1009913E8;
+  v17[3] = &unk_10165E308;
+  objc_copyWeak(&v19, &location);
+  v16 = v7;
+  v18 = v16;
+  [(MKMapServiceTicket *)v15 submitWithHandler:v17 networkActivity:0];
+
+  objc_destroyWeak(&v19);
+  objc_destroyWeak(&location);
+}
+
+- (void)fetchSearchCompletion:(id)a3 completion:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  [(SearchViewController *)self resetMapServiceTicket];
+  objc_initWeak(&location, self);
+  v8 = [(ControlContaineeViewController *)self delegate];
+  v9 = [v8 newTraits];
+
+  if (self->_currentDataSource == &self->_searchDataSource->super)
+  {
+    [v9 setSource:7];
+  }
+
+  v10 = +[MKMapService sharedService];
+  v11 = [v6 queryLine];
+  v12 = [v6 geoCompletionItem];
+  v13 = [v10 ticketForSearchQuery:v11 completionItem:v12 traits:v9 searchSessionData:0];
+  mapServiceTicket = self->_mapServiceTicket;
+  self->_mapServiceTicket = v13;
+
+  v15 = self->_mapServiceTicket;
+  v17[0] = _NSConcreteStackBlock;
+  v17[1] = 3221225472;
+  v17[2] = sub_10099166C;
+  v17[3] = &unk_101630718;
+  objc_copyWeak(&v19, &location);
+  v16 = v7;
+  v18 = v16;
+  [(MKMapServiceTicket *)v15 submitWithRefinedHandler:v17 networkActivity:0];
+
+  objc_destroyWeak(&v19);
+  objc_destroyWeak(&location);
+}
+
+- (void)showRegionSelectorForMapItem:(id)a3
+{
+  v4 = a3;
+  v16[0] = _NSConcreteStackBlock;
+  v16[1] = 3221225472;
+  v16[2] = sub_100991958;
+  v16[3] = &unk_10165D2D8;
+  v16[4] = self;
+  v5 = objc_retainBlock(v16);
+  v6 = v4;
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    v7 = v6;
+  }
+
+  else
+  {
+    v7 = 0;
+  }
+
+  v8 = v7;
+
+  if (v8)
+  {
+    v14[0] = _NSConcreteStackBlock;
+    v14[1] = 3221225472;
+    v14[2] = sub_100991A30;
+    v14[3] = &unk_1016306F0;
+    v14[4] = self;
+    v15 = v5;
+    [(SearchViewController *)self fetchSearchCompletion:v8 completion:v14];
+  }
+
+  else
+  {
+    v9 = v6;
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      v10 = v9;
+    }
+
+    else
+    {
+      v10 = 0;
+    }
+
+    v11 = v10;
+
+    v12 = [v11 mapItem];
+
+    if (v12)
+    {
+      v13 = [v11 mapItem];
+      (v5[2])(v5, v13);
+    }
+
+    else
+    {
+      v13 = sub_100067540();
+      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+      {
+        *buf = 138412290;
+        v18 = v9;
+        _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "Offline: This type of poi item is not handled :%@.", buf, 0xCu);
+      }
+    }
+  }
+}
+
+- (void)searchDataSource:(id)a3 replaceQueryWithItem:(id)a4
+{
+  v5 = a4;
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    [(SearchViewController *)self triggerAutocompleteByReplacingQueryWithCompletion:v5];
+  }
+}
+
+- (void)didTapToUnpinLibraryItem:(id)a3
+{
+  v4 = a3;
+  v6 = [(ControlContaineeViewController *)self delegate];
+  v5 = [ShortcutEditSession editSessionWithShortcut:v4];
+
+  [v6 viewController:self removeShortcut:v5];
+}
+
+- (void)didTapOnHomePinnedLibraryItem:(id)a3
+{
+  v4 = a3;
+  v6 = [(ControlContaineeViewController *)self delegate];
+  v5 = [ShortcutEditSession editSessionWithShortcut:v4];
+
+  [v6 viewController:self editShortcut:v5];
+}
+
+- (void)dataSource:(id)a3 itemTapped:(id)a4 childItemParent:(id)a5
+{
+  v209 = a3;
+  v7 = a4;
+  v210 = a5;
+  v8 = sub_1000410AC();
+  if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  {
+    *buf = 138412802;
+    v247 = v209;
+    v248 = 2112;
+    v249 = v7;
+    v250 = 2112;
+    v251 = v210;
+    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "dataSource: %@ itemTapped: %@ childItemParent: %@", buf, 0x20u);
+  }
+
+  [(SearchViewController *)self resetMapServiceTicket];
+  if (v210)
+  {
+    v9 = v210;
+  }
+
+  else
+  {
+    v9 = v7;
+  }
+
+  [(SearchViewController *)self retainSearchQueryForSelectedAutocompleteItem:v9 forTimeInterval:0.0];
+  if (sub_10000FA08(self) == 5)
+  {
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      v10 = [(DirectionItem *)v7 historyEntry];
+      objc_opt_class();
+      isKindOfClass = objc_opt_isKindOfClass();
+
+      if (isKindOfClass)
+      {
+        [(HomeViewController *)self->_homeViewController scrollContentToOriginalPosition];
+      }
+    }
+  }
+
+  objc_opt_class();
+  if ((objc_opt_isKindOfClass() & 1) == 0 || [(DirectionItem *)v7 entryTapBehavior]!= 1)
+  {
+    objc_opt_class();
+    if ((objc_opt_isKindOfClass() & 1) == 0)
+    {
+      v13 = v7;
+      goto LABEL_48;
+    }
+
+    v7 = v7;
+    v12 = [(DirectionItem *)v7 childItemType];
+    if (v12 == 3)
+    {
+      v13 = v210;
+
+LABEL_47:
+LABEL_48:
+      objc_opt_class();
+      if (objc_opt_isKindOfClass())
+      {
+        v208 = v210;
+        objc_opt_class();
+        if (objc_opt_isKindOfClass())
+        {
+          v22 = v208;
+        }
+
+        else
+        {
+          v22 = 0;
+        }
+
+        v207 = v22;
+
+        if (!v207)
+        {
+          goto LABEL_95;
+        }
+
+        v223 = v13;
+        v216 = objc_alloc_init(GEOPDResultRefinementQuery);
+        [v216 setResultRefinementOriginType:3];
+        v230 = 0u;
+        v231 = 0u;
+        v228 = 0u;
+        v229 = 0u;
+        obj = [(DirectionItem *)v207 resultRefinements];
+        v217 = [obj countByEnumeratingWithState:&v228 objects:v245 count:16];
+        if (v217)
+        {
+          v215 = *v229;
+          do
+          {
+            for (i = 0; i != v217; i = i + 1)
+            {
+              if (*v229 != v215)
+              {
+                objc_enumerationMutation(obj);
+              }
+
+              v24 = *(*(&v228 + 1) + 8 * i);
+              if ([v24 isEqual:v223])
+              {
+                v214 = [GEOResultRefinementToggle alloc];
+                v222 = [(DirectionItem *)v223 toggle];
+                v219 = [v222 displayName];
+                v221 = [(DirectionItem *)v223 toggle];
+                v213 = [v221 isSelected];
+                v220 = [(DirectionItem *)v223 toggle];
+                v218 = [v220 metadata];
+                v25 = [(DirectionItem *)v223 toggle];
+                v26 = [v25 toggleType];
+                v27 = [(DirectionItem *)v223 toggle];
+                v28 = [v27 evChargingConnectorType];
+                v29 = [(DirectionItem *)v223 toggle];
+                v30 = [v29 selectionFromView];
+                v31 = [(DirectionItem *)v223 toggle];
+                v32 = [v31 refinementKey];
+                v33 = [(DirectionItem *)v223 toggle];
+                LOBYTE(v206) = [v33 showAsSelected];
+                LOBYTE(v205) = v30;
+                v34 = [v214 initWithDisplayName:v219 isSelected:v213 ^ 1 metadata:v218 toggleType:v26 evChargingConnectorType:v28 selectionSequenceNumber:&off_1016E7DD8 selectionFromView:v205 refinementKey:v32 showAsSelected:v206];
+
+                v35 = [[GEOResultRefinement alloc] initWithToggle:v34];
+                v36 = [v35 convertToGEOPDResultRefinement];
+                [v216 addRefinement:v36];
+              }
+
+              else
+              {
+                v34 = [v24 convertToGEOPDResultRefinement];
+                [v216 addRefinement:v34];
+              }
+            }
+
+            v217 = [obj countByEnumeratingWithState:&v228 objects:v245 count:16];
+          }
+
+          while (v217);
+        }
+
+        v37 = v207;
+        v13 = v208;
+      }
+
+      else
+      {
+        v216 = 0;
+      }
+
+      objc_opt_class();
+      if (objc_opt_isKindOfClass())
+      {
+        objc_initWeak(buf, self);
+        v226[0] = _NSConcreteStackBlock;
+        v226[1] = 3221225472;
+        v226[2] = sub_100993DE8;
+        v226[3] = &unk_101630688;
+        objc_copyWeak(&v227, buf);
+        [(SearchViewController *)self fetchMapItemWithIdentifier:v13 completion:v226];
+        objc_destroyWeak(&v227);
+        objc_destroyWeak(buf);
+LABEL_94:
+
+LABEL_95:
+        v7 = v13;
+        goto LABEL_96;
+      }
+
+      [(SearchViewController *)self showDropDownIfNeeded:0];
+      v38 = [(SearchViewController *)self view];
+      [v38 endEditing:1];
+
+      v39 = +[NSMutableDictionary dictionary];
+      v40 = [NSNumber numberWithBool:[(SearchViewController *)self isSearchingAlongTheRoute]];
+      [v39 setObject:v40 forKeyedSubscript:@"SearchSessionIsSearchAlongRoute"];
+
+      objc_opt_class();
+      if (objc_opt_isKindOfClass())
+      {
+        v41 = v13;
+        [v39 setObject:&__kCFBooleanTrue forKeyedSubscript:@"SearchSessionSuppressHistoryEntry"];
+        v42 = [(SearchViewController *)self currentDataSource];
+        objc_opt_class();
+        v43 = [NSNumber numberWithBool:objc_opt_isKindOfClass() & 1];
+        [v39 setObject:v43 forKeyedSubscript:@"MSGEntryForceShowPlacecardOnTap"];
+
+        if ([(DirectionItem *)v41 isShortcut])
+        {
+          v44 = [(DirectionItem *)v41 shortcutIdentifier];
+          [v39 setObject:v44 forKeyedSubscript:@"ShortcutIdentifier"];
+        }
+
+        v45 = [(ControlContaineeViewController *)self delegate];
+        [v45 viewController:self openMapsSuggestionEntry:v41 withUserInfo:v39];
+
+        goto LABEL_93;
+      }
+
+      objc_opt_class();
+      if (objc_opt_isKindOfClass())
+      {
+        v46 = [(ControlContaineeViewController *)self delegate];
+        [v46 viewControllerShowVisitHistoryHome:0];
+
+LABEL_93:
+        goto LABEL_94;
+      }
+
+      objc_opt_class();
+      if (objc_opt_isKindOfClass())
+      {
+        v47 = v13;
+        [v39 setObject:&__kCFBooleanTrue forKeyedSubscript:@"SearchSessionSuppressHistoryEntry"];
+        v48 = [(SearchViewController *)self currentDataSource];
+        objc_opt_class();
+        v49 = [NSNumber numberWithBool:objc_opt_isKindOfClass() & 1];
+        [v39 setObject:v49 forKeyedSubscript:@"MSGEntryForceShowPlacecardOnTap"];
+
+        v50 = [(DirectionItem *)v47 identifier];
+        [v39 setObject:v50 forKeyedSubscript:@"ShortcutIdentifier"];
+
+        v51 = [(ControlContaineeViewController *)self delegate];
+        [v51 viewController:self openFavoriteItem:v47 withUserInfo:v39];
+
+        goto LABEL_93;
+      }
+
+      objc_opt_class();
+      if ((objc_opt_isKindOfClass() & 1) != 0 && [(DirectionItem *)v13 isEqualToString:@"FavoritesEntry"])
+      {
+        v52 = [(ControlContaineeViewController *)self delegate];
+        [v52 viewControllerShowCollections:self];
+
+        goto LABEL_93;
+      }
+
+      objc_opt_class();
+      if ((objc_opt_isKindOfClass() & 1) != 0 && [(DirectionItem *)v13 isEqualToString:@"newShortcutEntry"])
+      {
+        v53 = [(ControlContaineeViewController *)self delegate];
+        v54 = +[ShortcutEditSession addSession];
+        [v53 viewController:self showAddShortcut:v54];
+
+        goto LABEL_93;
+      }
+
+      objc_opt_class();
+      if (objc_opt_isKindOfClass())
+      {
+        v55 = v13;
+        v56 = [(DirectionItem *)v55 sharedTrips];
+        v57 = [v56 count] == 1;
+
+        v58 = [(ControlContaineeViewController *)self delegate];
+        v59 = v58;
+        if (v57)
+        {
+          v60 = [(DirectionItem *)v55 sharedTrips];
+          v61 = [v60 firstObject];
+          [v59 presentSharedTrip:v61];
+        }
+
+        else
+        {
+          [v58 presentSharedTrips];
+        }
+
+        goto LABEL_93;
+      }
+
+      objc_opt_class();
+      if (objc_opt_isKindOfClass())
+      {
+        [v39 setObject:&off_1016E7DF0 forKeyedSubscript:@"DirectionsSessionInitiatorKey"];
+        v62 = self;
+        if (self->_currentDataSource == &self->_searchDataSource->super)
+        {
+          [v39 setObject:&off_1016E7E08 forKeyedSubscript:@"SearchSessionTraitsSource"];
+          v62 = self;
+        }
+
+        v63 = [(ControlContaineeViewController *)v62 delegate];
+        [v63 viewController:self doDirectionItem:v13 withUserInfo:v39];
+
+        goto LABEL_93;
+      }
+
+      objc_opt_class();
+      if (objc_opt_isKindOfClass())
+      {
+        v64 = v13;
+        v65 = [(DirectionItem *)v64 directionIntent];
+
+        if (v65)
+        {
+          v66 = [(ControlContaineeViewController *)self delegate];
+          [v66 viewController:self doDirectionIntentWithLocalSearchCompletion:v64];
+
+          goto LABEL_93;
+        }
+      }
+
+      objc_opt_class();
+      if (objc_opt_isKindOfClass())
+      {
+        v67 = [(ControlContaineeViewController *)self delegate];
+        [v67 viewControllerShowLibraryRootView:self];
+
+        goto LABEL_93;
+      }
+
+      objc_opt_class();
+      if (objc_opt_isKindOfClass())
+      {
+        v68 = v13;
+        v69 = &OBJC_PROTOCOL___MSPHistoryEntryRoute;
+        objc_opt_class();
+        v70 = v68;
+        if (objc_opt_isKindOfClass())
+        {
+          v71 = v70;
+        }
+
+        else
+        {
+          v71 = 0;
+        }
+
+        v72 = v71;
+
+        if (v72 && (-[DirectionItem historyEntry](v72, "historyEntry"), v73 = objc_claimAutoreleasedReturnValue(), v74 = [v73 conformsToProtocol:v69], v73, v74))
+        {
+          v75 = v70;
+        }
+
+        else
+        {
+          v75 = 0;
+        }
+
+        if (v75)
+        {
+          v78 = v70;
+          v79 = &OBJC_PROTOCOL___MSPHistoryEntryRoute;
+          objc_opt_class();
+          v80 = v78;
+          if (objc_opt_isKindOfClass())
+          {
+            v81 = v80;
+          }
+
+          else
+          {
+            v81 = 0;
+          }
+
+          v82 = v81;
+
+          if (v82 && (-[DirectionItem historyEntry](v82, "historyEntry"), v83 = objc_claimAutoreleasedReturnValue(), v84 = [v83 conformsToProtocol:v79], v83, v84))
+          {
+            v85 = v80;
+          }
+
+          else
+          {
+            v85 = 0;
+          }
+
+          v87 = [(DirectionItem *)v85 historyEntry];
+          v88 = [v87 endWaypoint];
+          objc_opt_class();
+          v89 = objc_opt_isKindOfClass();
+
+          if (v89)
+          {
+            v90 = [v87 endWaypoint];
+            v91 = [(ControlContaineeViewController *)self delegate];
+            v92 = [v90 route];
+            v243 = @"DirectionsRouteUUIDKey";
+            v93 = [v87 identifier];
+            v244 = v93;
+            v94 = [NSDictionary dictionaryWithObjects:&v244 forKeys:&v243 count:1];
+            [(DirectionItem *)v91 viewController:self enterRouteCreationWithRoute:v92 withUserInfo:v94];
+          }
+
+          else
+          {
+            v90 = [SearchFieldItem searchFieldItemsForRouteHistoryEntry:v87];
+            if (([v87 navigationWasInterrupted] & 1) != 0 || objc_msgSend(v90, "count") >= 3)
+            {
+              v107 = [v87 transportType];
+            }
+
+            else
+            {
+              v107 = 0;
+            }
+
+            v91 = [[DirectionItem alloc] initWithItems:v90 transportType:v107];
+            v241[0] = @"DirectionsSessionInitiatorKey";
+            v241[1] = @"DirectionsRouteUUIDKey";
+            v242[0] = &off_1016E7DF0;
+            v138 = [v87 identifier];
+            v242[1] = v138;
+            v92 = [NSDictionary dictionaryWithObjects:v242 forKeys:v241 count:2];
+
+            v93 = [(ControlContaineeViewController *)self delegate];
+            [v93 viewController:self doDirectionItem:v91 withUserInfo:v92];
+          }
+
+          goto LABEL_93;
+        }
+
+        v99 = v70;
+        v100 = &OBJC_PROTOCOL___MSPHistoryEntryTransitLineItem;
+        objc_opt_class();
+        v101 = v99;
+        if (objc_opt_isKindOfClass())
+        {
+          v102 = v101;
+        }
+
+        else
+        {
+          v102 = 0;
+        }
+
+        v103 = v102;
+
+        if (v103 && (-[DirectionItem historyEntry](v103, "historyEntry"), v104 = objc_claimAutoreleasedReturnValue(), v105 = [v104 conformsToProtocol:v100], v104, v105))
+        {
+          v106 = v101;
+        }
+
+        else
+        {
+          v106 = 0;
+        }
+
+        if (v106)
+        {
+          v109 = v101;
+          v110 = &OBJC_PROTOCOL___MSPHistoryEntryTransitLineItem;
+          objc_opt_class();
+          v111 = v109;
+          if (objc_opt_isKindOfClass())
+          {
+            v112 = v111;
+          }
+
+          else
+          {
+            v112 = 0;
+          }
+
+          v113 = v112;
+
+          if (v113 && (-[DirectionItem historyEntry](v113, "historyEntry"), v114 = objc_claimAutoreleasedReturnValue(), v115 = [v114 conformsToProtocol:v110], v114, v115))
+          {
+            v116 = v111;
+          }
+
+          else
+          {
+            v116 = 0;
+          }
+
+          v117 = [(ControlContaineeViewController *)self delegate];
+          v118 = [(DirectionItem *)v116 historyEntry];
+          v119 = [v118 lineItem];
+          [v117 viewController:self selectTransitLineItem:v119 zoomToMapRegion:1];
+
+          goto LABEL_93;
+        }
+
+        v120 = v101;
+        v121 = &OBJC_PROTOCOL___CuratedCollectionHistoryEntry;
+        objc_opt_class();
+        v122 = v120;
+        if (objc_opt_isKindOfClass())
+        {
+          v123 = v122;
+        }
+
+        else
+        {
+          v123 = 0;
+        }
+
+        v124 = v123;
+
+        if (v124 && (-[DirectionItem historyEntry](v124, "historyEntry"), v125 = objc_claimAutoreleasedReturnValue(), v126 = [v125 conformsToProtocol:v121], v125, v126))
+        {
+          v127 = v122;
+        }
+
+        else
+        {
+          v127 = 0;
+        }
+
+        if (v127)
+        {
+          v130 = v122;
+          v131 = &OBJC_PROTOCOL___CuratedCollectionHistoryEntry;
+          objc_opt_class();
+          v132 = v130;
+          if (objc_opt_isKindOfClass())
+          {
+            v133 = v132;
+          }
+
+          else
+          {
+            v133 = 0;
+          }
+
+          v134 = v133;
+
+          if (v134 && ([v134 historyEntry], v135 = objc_claimAutoreleasedReturnValue(), v136 = objc_msgSend(v135, "conformsToProtocol:", v131), v135, v136))
+          {
+            v137 = v132;
+          }
+
+          else
+          {
+            v137 = 0;
+          }
+
+          v140 = [v137 historyEntry];
+          v141 = [v140 placeCollection];
+
+          v142 = [(ControlContaineeViewController *)self delegate];
+          [v142 viewController:self showCuratedCollection:v141];
+
+          goto LABEL_93;
+        }
+      }
+
+      else
+      {
+        objc_opt_class();
+        if (objc_opt_isKindOfClass())
+        {
+          objc_initWeak(buf, self);
+          v76 = [(SearchViewController *)self _maps_mapsSceneDelegate];
+          v77 = [v76 rapPresenter];
+          v224[0] = _NSConcreteStackBlock;
+          v224[1] = 3221225472;
+          v224[2] = sub_100993EB4;
+          v224[3] = &unk_101661B98;
+          objc_copyWeak(&v225, buf);
+          [v77 presentAddToMapsFromSearchEntryPoint:11 result:v13 completion:v224];
+
+          objc_destroyWeak(&v225);
+          objc_destroyWeak(buf);
+          goto LABEL_93;
+        }
+
+        objc_opt_class();
+        if ((objc_opt_isKindOfClass() & 1) != 0 && [(DirectionItem *)v13 type]== 3)
+        {
+          v86 = [(ControlContaineeViewController *)self delegate];
+          [v86 viewController:self selectDroppedPin:v13];
+
+          goto LABEL_93;
+        }
+
+        objc_opt_class();
+        if (objc_opt_isKindOfClass())
+        {
+          v95 = [(DirectionItem *)v13 clientResolved];
+          v96 = v95 == 0;
+
+          if (!v96)
+          {
+            v97 = [(DirectionItem *)v13 clientResolved];
+            v98 = [(ControlContaineeViewController *)self delegate];
+            [v98 viewController:self selectClientResolvedItem:v97 fromSearchInfo:0 withUserInfo:0];
+
+            goto LABEL_93;
+          }
+        }
+
+        objc_opt_class();
+        if (objc_opt_isKindOfClass())
+        {
+          v108 = [(ControlContaineeViewController *)self delegate];
+          [v108 viewController:self showCollection:v13];
+
+          goto LABEL_93;
+        }
+
+        if ([(DirectionItem *)v13 conformsToProtocol:&OBJC_PROTOCOL___GEOTransitLine])
+        {
+          v128 = [[IncompleteTransitLineItem alloc] initWithTransitLine:v13];
+          v129 = [(ControlContaineeViewController *)self delegate];
+          [v129 viewController:self selectTransitLineItem:v128 zoomToMapRegion:1];
+
+          goto LABEL_93;
+        }
+
+        objc_opt_class();
+        if (objc_opt_isKindOfClass())
+        {
+          v139 = [(ControlContaineeViewController *)self delegate];
+          [v139 viewController:self showCuratedCollection:v13];
+
+          goto LABEL_93;
+        }
+
+        objc_opt_class();
+        if (objc_opt_isKindOfClass())
+        {
+          v143 = [(ControlContaineeViewController *)self delegate];
+          [v143 viewControllerShowPublisher:v13];
+
+          goto LABEL_93;
+        }
+
+        objc_opt_class();
+        if (objc_opt_isKindOfClass())
+        {
+          self->_maintainSearchStateWhenDisappearing = 1;
+          v144 = [(ControlContaineeViewController *)self delegate];
+          [v144 viewController:self showGuidesHome:v13];
+
+          goto LABEL_93;
+        }
+
+        objc_opt_class();
+        if (objc_opt_isKindOfClass())
+        {
+          v145 = v13;
+          if (-[DirectionItem type](v145, "type") != 11 || (-[DirectionItem relatedSection](v145, "relatedSection"), v146 = objc_claimAutoreleasedReturnValue(), [v146 relatedCollectionSection], v147 = objc_claimAutoreleasedReturnValue(), v148 = v147 == 0, v147, v146, v148))
+          {
+            if (!self->_isSearchAndDiscoveryEnabled || ([(DirectionItem *)v145 placeCollection], v158 = objc_claimAutoreleasedReturnValue(), v159 = v158 == 0, v158, v159))
+            {
+              if ([(SearchViewController *)self shouldInjectVenueSearchResult:v145])
+              {
+                v193 = [(ControlContaineeViewController *)self delegate];
+                [v193 viewController:self selectSearchResult:v145 addToHistory:1 source:2 saveSelectionState:1 replaceCurrentCard:0];
+
+                v194 = [(ControlContaineeViewController *)self delegate];
+                v195 = [v194 searchPinsManager];
+                v240 = v145;
+                v196 = [NSArray arrayWithObjects:&v240 count:1];
+                [v195 setSearchPins:v196 selectedPin:v145 animated:1];
+              }
+
+              else
+              {
+                v197 = [(DirectionItem *)v145 mapItem];
+                v198 = [v197 _hasHikeInfo];
+
+                v199 = [(ControlContaineeViewController *)self delegate];
+                v200 = v199;
+                if (v198)
+                {
+                  v201 = [v199 appCoordinator];
+                  v202 = [(DirectionItem *)v145 mapItem];
+                  [v201 enterRouteCreationWithMapItem:v202 completion:0];
+                }
+
+                else
+                {
+                  v203 = [SearchFieldItem searchFieldItemWithObject:v145];
+                  v204 = [(SearchViewController *)self recentAutocompleteSessionData];
+                  [v200 viewController:self doSearchItem:v203 withUserInfo:v39 refinementsQuery:v216 autocompleteSessionData:v204];
+
+                  [(SearchDataSource *)self->_searchDataSource clearAutocompleteResults];
+                }
+              }
+            }
+
+            else
+            {
+              v160 = [(ControlContaineeViewController *)self delegate];
+              v161 = [(DirectionItem *)v145 placeCollection];
+              [v160 viewController:self showCuratedCollection:v161];
+            }
+          }
+
+          else
+          {
+            v149 = [(ControlContaineeViewController *)self delegate];
+            v150 = [(DirectionItem *)v145 relatedSection];
+            v151 = [v150 relatedPlaceCollections];
+            v152 = +[NSBundle mainBundle];
+            v153 = [v152 localizedStringForKey:@"Related Guides" value:@"localized string not found" table:0];
+            [v149 viewController:self showCuratedCollectionsList:v151 usingTitle:v153 usingCollectionIds:0 completion:0];
+          }
+
+          goto LABEL_222;
+        }
+
+        objc_opt_class();
+        if (objc_opt_isKindOfClass())
+        {
+          v154 = [[SearchResult alloc] initWithMapItem:v13];
+          v155 = [(ControlContaineeViewController *)self delegate];
+          v156 = [v155 searchPinsManager];
+          v239 = v154;
+          v157 = [NSArray arrayWithObjects:&v239 count:1];
+          [v156 setSearchPins:v157 selectedPin:v154 animated:1];
+
+          goto LABEL_93;
+        }
+
+        objc_opt_class();
+        if (objc_opt_isKindOfClass())
+        {
+          v162 = v13;
+          objc_opt_class();
+          if (objc_opt_isKindOfClass())
+          {
+            v163 = v162;
+          }
+
+          else
+          {
+            v163 = 0;
+          }
+
+          v164 = v163;
+
+          if (v164)
+          {
+            v165 = [[GEORouteBuilder_PersistentData alloc] initWithPersistentData:v164];
+            v166 = [v165 buildRoute];
+            v167 = [(ControlContaineeViewController *)self delegate];
+            [v167 viewController:self enterRouteCreationWithRoute:v166 withUserInfo:0];
+          }
+
+          goto LABEL_93;
+        }
+      }
+
+      objc_opt_class();
+      if ((objc_opt_isKindOfClass() & 1) == 0 || (-[DirectionItem category](v13, "category"), v168 = objc_claimAutoreleasedReturnValue(), [v168 venueIdentifier], v169 = objc_claimAutoreleasedReturnValue(), v170 = v169 == 0, v169, v168, v170))
+      {
+        v145 = [SearchFieldItem searchFieldItemWithObject:v13];
+      }
+
+      else
+      {
+        v171 = [(DirectionItem *)v13 category];
+        v172 = [VenueCategoryItem alloc];
+        v173 = [v171 venueIdentifier];
+        v174 = -[VenueCategoryItem initWithSearchCategory:venueIdentifier:displayMode:isAutoCompleteCategory:shouldFrameMapViewport:](v172, "initWithSearchCategory:venueIdentifier:displayMode:isAutoCompleteCategory:shouldFrameMapViewport:", v171, v173, [v171 displayMode], 1, 0);
+
+        v145 = [SearchFieldItem searchFieldItemWithObject:v174];
+      }
+
+      if (v145)
+      {
+        [(DirectionItem *)v145 setUserTypedStringForRAP:self->_userTypedSearchString];
+        objc_opt_class();
+        if (objc_opt_isKindOfClass())
+        {
+          [v39 setObject:&__kCFBooleanTrue forKeyedSubscript:@"SearchSessionSuppressHistoryEntry"];
+        }
+
+        else
+        {
+          objc_opt_class();
+          if (objc_opt_isKindOfClass())
+          {
+            [v39 setObject:&__kCFBooleanTrue forKeyedSubscript:@"SearchSessionSuppressHistoryEntry"];
+            v175 = v13;
+            v176 = +[Recents sharedRecents];
+            [v176 recordCoreRecentContact:v175];
+          }
+        }
+
+        currentDataSource = self->_currentDataSource;
+        if (currentDataSource == self->_searchDataSource)
+        {
+          v178 = &off_1016E7E08;
+        }
+
+        else
+        {
+          if (currentDataSource && currentDataSource != self->_searchHomeDataSource)
+          {
+LABEL_205:
+            if (sub_10000FA08(self) == 5)
+            {
+              v179 = v13;
+              v180 = &OBJC_PROTOCOL___MSPHistoryEntrySearch;
+              objc_opt_class();
+              v181 = v179;
+              v182 = (objc_opt_isKindOfClass() & 1) != 0 ? v181 : 0;
+              v183 = v182;
+
+              if (v183 && (-[DirectionItem historyEntry](v183, "historyEntry"), v184 = objc_claimAutoreleasedReturnValue(), v185 = [v184 conformsToProtocol:v180], v184, v185))
+              {
+                v186 = v181;
+              }
+
+              else
+              {
+                v186 = 0;
+              }
+
+              if (v186)
+              {
+                v187 = 1;
+              }
+
+              else
+              {
+                objc_opt_class();
+                v187 = objc_opt_isKindOfClass();
+              }
+
+              if (v186, objc_opt_class(), (objc_opt_isKindOfClass()) && ((v188 = [(DirectionItem *)v181 _type]) == 0 || v188 == 3) || (v187)
+              {
+                v189 = [(ControlContaineeViewController *)self delegate];
+                [v189 clearSearchPins];
+
+                v190 = [(DirectionItem *)v145 searchString];
+                [(UITextField *)self->_searchField setText:v190];
+              }
+            }
+
+            v191 = [(ControlContaineeViewController *)self delegate];
+            v192 = [(SearchViewController *)self recentAutocompleteSessionData];
+            [v191 viewController:self doSearchItem:v145 withUserInfo:v39 refinementsQuery:v216 autocompleteSessionData:v192];
+
+            [(SearchDataSource *)self->_searchDataSource clearAutocompleteResults];
+            goto LABEL_222;
+          }
+
+          v178 = &off_1016E7E20;
+        }
+
+        [v39 setObject:v178 forKeyedSubscript:@"SearchSessionTraitsSource"];
+        goto LABEL_205;
+      }
+
+LABEL_222:
+
+      goto LABEL_93;
+    }
+
+    if (v12 != 2)
+    {
+      v13 = v7;
+      if (v12 == 1)
+      {
+        v13 = [(DirectionItem *)v7 childItemPlace];
+      }
+
+      goto LABEL_47;
+    }
+
+    objc_initWeak(&location, self);
+    v14 = [(DirectionItem *)v7 childItemAction];
+    v15 = [v14 childActionType];
+
+    if (v15 > 4)
+    {
+      if (v15 <= 6)
+      {
+        if (v15 == 5)
+        {
+          [(SearchViewController *)self fetchSearchCompletion:v210 completion:&stru_1016306C8];
+          goto LABEL_37;
+        }
+
+        v232[0] = _NSConcreteStackBlock;
+        v232[1] = 3221225472;
+        v232[2] = sub_100993D50;
+        v232[3] = &unk_101630688;
+        v16 = &v233;
+        objc_copyWeak(&v233, &location);
+        [(SearchViewController *)self fetchSearchCompletion:v210 completion:v232];
+        goto LABEL_30;
+      }
+
+      if (v15 != 7)
+      {
+        v13 = v7;
+        if (v15 == 8)
+        {
+          [(SearchViewController *)self showRegionSelectorForMapItem:v210];
+          goto LABEL_37;
+        }
+
+        goto LABEL_46;
+      }
+
+      [(SearchViewController *)self fetchSearchCompletion:v210 completion:0];
+      v17 = [(DirectionItem *)v7 childItemAction];
+      v13 = [(SearchFieldItem *)v17 guideLocation];
+      v19 = v7;
+    }
+
+    else
+    {
+      if (v15 > 2)
+      {
+        if (v15 != 3)
+        {
+          v234[0] = _NSConcreteStackBlock;
+          v234[1] = 3221225472;
+          v234[2] = sub_100993C84;
+          v234[3] = &unk_101630688;
+          v16 = &v235;
+          objc_copyWeak(&v235, &location);
+          [(SearchViewController *)self fetchSearchCompletion:v210 completion:v234];
+          goto LABEL_30;
+        }
+
+        v17 = [(DirectionItem *)v7 childItemAction];
+        v19 = [(SearchFieldItem *)v17 childActionSearch];
+        v13 = [v19 relatedSearchSuggestion];
+        v20 = v7;
+      }
+
+      else
+      {
+        if (v15 != 1)
+        {
+          v13 = v7;
+          if (v15 == 2)
+          {
+            v236[0] = _NSConcreteStackBlock;
+            v236[1] = 3221225472;
+            v236[2] = sub_100993BFC;
+            v236[3] = &unk_101630688;
+            v16 = &v237;
+            objc_copyWeak(&v237, &location);
+            [(SearchViewController *)self fetchSearchCompletion:v210 completion:v236];
+LABEL_30:
+            objc_destroyWeak(v16);
+LABEL_37:
+            objc_destroyWeak(&location);
+
+            goto LABEL_96;
+          }
+
+          goto LABEL_46;
+        }
+
+        v17 = objc_alloc_init(SearchFieldItem);
+        v18 = +[SearchResult currentLocationSearchResult];
+        [(SearchFieldItem *)v17 setSearchResult:v18];
+
+        v19 = [SearchFieldItem searchFieldItemWithObject:v210];
+        v20 = [[NSMutableArray alloc] initWithCapacity:2];
+        [(DirectionItem *)v20 addObject:v17];
+        if (v19)
+        {
+          [(DirectionItem *)v20 addObject:v19];
+        }
+
+        else
+        {
+          v21 = sub_100067540();
+          if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
+          {
+            *buf = 138412290;
+            v247 = v210;
+            _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Cannot select Directions child item with childItemParent: %@", buf, 0xCu);
+          }
+        }
+
+        v13 = [[DirectionItem alloc] initWithItems:v20 ignoreMapType:0 transportType:0];
+      }
+    }
+
+LABEL_46:
+    objc_destroyWeak(&location);
+    goto LABEL_47;
+  }
+
+  [(SearchViewController *)self triggerAutocompleteByReplacingQueryWithCompletion:v7];
+LABEL_96:
+}
+
+- (void)dataSourceUpdated:(id)a3
+{
+  v4 = a3;
+  v5 = [(SearchViewController *)self currentDataSource];
+
+  v6 = sub_1000410AC();
+  v7 = v6;
+  if (v5 == v4)
+  {
+    if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+    {
+      contentTableView = self->_contentTableView;
+      v11 = 138412546;
+      v12 = v4;
+      v13 = 2112;
+      v14 = contentTableView;
+      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "SVC dataSource %@ reloading %@", &v11, 0x16u);
+    }
+
+    [(SearchViewController *)self reloadContentTableView];
+  }
+
+  else
+  {
+    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    {
+      v8 = self->_contentTableView;
+      v9 = [(UITableView *)v8 dataSource];
+      v11 = 138412802;
+      v12 = v4;
+      v13 = 2112;
+      v14 = v8;
+      v15 = 2112;
+      v16 = v9;
+      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "SVC dataSource %@ not current delegate of %@. Current DataSource: %@", &v11, 0x20u);
+    }
+  }
+}
+
+- (int)listForDataSource:(id)a3
+{
+  currentDataSource = self->_currentDataSource;
+  if (currentDataSource == self->_searchHomeDataSource)
+  {
+    return 1;
+  }
+
+  else
+  {
+    return 4 * (currentDataSource == self->_searchDataSource);
+  }
+}
+
+- (void)didChangeFocusedVenue:(id)a3 focusedBuilding:(id)a4 displayedFloorOrdinal:(signed __int16)a5
+{
+  v8 = a3;
+  v6 = [(SearchViewController *)self searchResultsViewController];
+  if (![(SearchViewController *)self isShowingOmnipresentSearchBar]|| !v6)
+  {
+    v7 = [(LocalSearchViewController *)self->_localSearchViewController browseVenueBusinessController];
+    [v7 handleVenueWithFocusDidChange:v8];
+  }
+}
+
+- (void)mapView:(id)a3 didChangeUserTrackingMode:(int64_t)a4 animated:(BOOL)a5 fromTrackingButton:(BOOL)a6
+{
+  v6 = a6;
+  v8 = a3;
+  if (v6)
+  {
+    v9 = sub_1007991E4();
+    if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+    {
+      v10 = [(ControlContaineeViewController *)self delegate];
+      v11 = [v10 currentSearchSession];
+      v14 = 138412546;
+      v15 = v8;
+      v16 = 2112;
+      v17 = v11;
+      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[SearchVC] didChangeUserTrackingMode:%@, searchSession:%@", &v14, 0x16u);
+    }
+
+    self->_tappedTrackingButton = 1;
+    v12 = [(SearchViewController *)self localSearchViewController];
+    v13 = [v12 refreshSearchHereBusinessController];
+    [v13 didStartRespondingToGesture:v8];
+  }
+}
+
+- (void)mapView:(id)a3 didStopRespondingToGesture:(int64_t)a4 zoomDirection:(int64_t)a5 zoomGestureType:(int64_t)a6 didDecelerate:(BOOL)a7 tiltDirection:(int64_t)a8
+{
+  v10 = a3;
+  v11 = sub_1007991E4();
+  if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+  {
+    v12 = [(ControlContaineeViewController *)self delegate];
+    v13 = [v12 currentSearchSession];
+    v17 = 138412546;
+    v18 = v10;
+    v19 = 2112;
+    v20 = v13;
+    _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[SearchVC] didStopRespondingToGesture:%@, searchSession:%@", &v17, 0x16u);
+  }
+
+  if (!a4)
+  {
+    v14 = [(SearchViewController *)self localSearchViewController];
+    v15 = [v14 refreshSearchHereBusinessController];
+    v16 = [v15 didStopRespondingToGesture:v10];
+
+    [(SearchViewController *)self showSearchingHereIfNeeded:v16];
+  }
+}
+
+- (void)mapView:(id)a3 willStartRespondingToGesture:(int64_t)a4 animated:(BOOL)a5
+{
+  v7 = a3;
+  v8 = sub_1007991E4();
+  if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+  {
+    v9 = [(ControlContaineeViewController *)self delegate];
+    v10 = [v9 currentSearchSession];
+    v13 = 138412546;
+    v14 = v7;
+    v15 = 2112;
+    v16 = v10;
+    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[SearchVC] willStartRespondingToGesture:%@, searchSession:%@", &v13, 0x16u);
+  }
+
+  if (!a4)
+  {
+    v11 = [(SearchViewController *)self localSearchViewController];
+    v12 = [v11 refreshSearchHereBusinessController];
+    [v12 didStartRespondingToGesture:v7];
+  }
+}
+
+- (void)mapView:(id)a3 didChangeMapType:(unint64_t)a4
+{
+  v5 = [(LocalSearchViewController *)self->_localSearchViewController browseVenueBusinessController];
+  [v5 handleMapTypeDidChange:a4];
+}
+
+- (void)didUpdateSearchResults
+{
+  if (self->_didTriggerAutoRedoSearch)
+  {
+    self->_didTriggerAutoRedoSearch = 0;
+  }
+}
+
+- (void)showSearchingHereIfNeeded:(BOOL)a3
+{
+  v3 = a3;
+  v5 = [(ControlContaineeViewController *)self delegate];
+  v6 = [v5 currentSearchSession];
+
+  v7 = [v6 searchInfo];
+  if (v7)
+  {
+    v8 = v7;
+    v9 = [v6 isLoading];
+
+    if (!v9)
+    {
+      v10 = [(SearchViewController *)self searchResultsViewController];
+      v13 = [v10 view];
+      v14 = [v13 superview];
+
+      if (!v14)
+      {
+        [(SearchViewController *)self _invalidateSearchSession:v6];
+        v11 = sub_1007991E4();
+        if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+        {
+          v29 = 134218242;
+          v30 = [(SearchViewController *)self currentDataSourceType];
+          v31 = 2112;
+          v32 = v6;
+          _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[SearchVC] Not showing search here overlay. Autocomplete is active: %ld, Search session : %@", &v29, 0x16u);
+        }
+
+        goto LABEL_6;
+      }
+
+      v15 = [(ControlContaineeViewController *)self delegate];
+      v16 = [v15 containerViewController];
+      v11 = [v16 chromeViewController];
+
+      if (v3)
+      {
+        v17 = sub_1007991E4();
+        if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+        {
+          v18 = [(ControlContaineeViewController *)self delegate];
+          v19 = [v18 currentSearchSession];
+          v29 = 138412290;
+          v30 = v19;
+          _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "[SearchVC] Trigerred auto-redo search: %@", &v29, 0xCu);
+        }
+
+        [v11 setNeedsUpdateComponent:@"floatingSearchButton" animated:1];
+        v20 = [v11 redoSearchOverlay];
+        [v20 updateSearchOverlayWithState:0];
+
+        v21 = [v11 redoSearchOverlay];
+        [v21 shouldHideFloatingControl:0 animated:1];
+
+        self->_didTriggerAutoRedoSearch = 1;
+        [(SearchViewController *)self refreshCurrentSearch];
+        goto LABEL_6;
+      }
+
+      v22 = [(SearchViewController *)self localSearchViewController];
+      v23 = [v22 refreshSearchHereBusinessController];
+      v24 = [v23 shouldShowManualRedoButton];
+
+      if (!self->_isSearchAndDiscoveryEnabled || !v24)
+      {
+LABEL_6:
+
+        goto LABEL_7;
+      }
+
+      v25 = sub_1007991E4();
+      if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
+      {
+        v26 = [(ControlContaineeViewController *)self delegate];
+        v27 = [v26 currentSearchSession];
+        v29 = 138412290;
+        v30 = v27;
+        _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "[SearchVC] Showing search here button as we did not trigger Auto-Redo: %@", &v29, 0xCu);
+      }
+
+      [v11 setNeedsUpdateComponent:@"floatingSearchButton" animated:1];
+      v28 = [v11 redoSearchOverlay];
+      [v28 updateSearchOverlayWithState:1];
+
+      v12 = +[MKMapService sharedService];
+      [v12 captureUserAction:460 onTarget:503 eventValue:0];
+LABEL_5:
+
+      goto LABEL_6;
+    }
+  }
+
+  v10 = sub_1007991E4();
+  if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+  {
+    [v6 isLoading];
+    v11 = NSStringFromBOOL();
+    v12 = [v6 searchInfo];
+    v29 = 138412546;
+    v30 = v11;
+    v31 = 2112;
+    v32 = v12;
+    _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[SearchVC] Not showing search here overlay. Search session loading:(%@) or doesn't have searchInfo: %@", &v29, 0x16u);
+    goto LABEL_5;
+  }
+
+LABEL_7:
+}
+
+- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4
+{
+  if (self->_tappedTrackingButton)
+  {
+    self->_tappedTrackingButton = 0;
+    v6 = a3;
+    v7 = [(SearchViewController *)self localSearchViewController];
+    v8 = [v7 refreshSearchHereBusinessController];
+    v9 = [v8 didStopRespondingToGesture:v6];
+
+    [(SearchViewController *)self showSearchingHereIfNeeded:v9];
+  }
+}
+
+- (void)mapViewDidChangeVisibleRegion:(id)a3
+{
+  v22 = a3;
+  v4 = +[MapsOfflineUIHelper sharedHelper];
+  v5 = [v4 isUsingOfflineMaps];
+
+  if (v5)
+  {
+    v6 = [[CLLocation alloc] initWithLatitude:self->_mapViewRegion.center.latitude longitude:self->_mapViewRegion.center.longitude];
+    v7 = [CLLocation alloc];
+    [v22 region];
+    v9 = v8;
+    [v22 region];
+    v10 = [v7 initWithLatitude:v9 longitude:?];
+    [v6 distanceFromLocation:v10];
+    v12 = v11;
+    Integer = GEOConfigGetInteger();
+    GEOConfigGetDouble();
+    v15 = v14;
+    if (v12 > Integer || ([v22 _zoomLevel], vabdd_f64(v16, self->_zoomLevel) > v15))
+    {
+      [v22 region];
+      self->_mapViewRegion.center.latitude = v17;
+      self->_mapViewRegion.center.longitude = v18;
+      self->_mapViewRegion.span.latitudeDelta = v19;
+      self->_mapViewRegion.span.longitudeDelta = v20;
+      [v22 _zoomLevel];
+      self->_zoomLevel = v21;
+      [(SearchViewController *)self _initOfflinePlaceHolderWithCompletion:0];
+    }
+  }
+}
+
+- (id)localSearchViewController
+{
+  localSearchViewController = self->_localSearchViewController;
+  if (!localSearchViewController)
+  {
+    v4 = [[LocalSearchViewController alloc] initAsButton:0];
+    v5 = self->_localSearchViewController;
+    self->_localSearchViewController = v4;
+
+    v6 = [(LocalSearchViewController *)self->_localSearchViewController view];
+    [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+
+    v7 = [(ContaineeViewController *)self cardPresentationController];
+    [v7 bottomSafeOffset];
+    [(LocalSearchViewController *)self->_localSearchViewController setBottomInset:?];
+
+    v8 = [(ContaineeViewController *)self cardPresentationController];
+    -[LocalSearchViewController setEnable:](self->_localSearchViewController, "setEnable:", [v8 containerStyle] != 6);
+
+    [(LocalSearchViewController *)self->_localSearchViewController setDelegate:self];
+    localSearchViewController = self->_localSearchViewController;
+  }
+
+  return localSearchViewController;
+}
+
+- (BOOL)shouldInjectVenueSearchResult:(id)a3
+{
+  v4 = a3;
+  if (sub_10000FA08(self) == 5)
+  {
+    v5 = [v4 mapItem];
+    if ([v5 _venueFeatureType])
+    {
+      v6 = [(ControlContaineeViewController *)self delegate];
+      v7 = [v6 currentSearchSession];
+      v8 = [v7 currentResultsSearchInfo];
+      v9 = [v8 shouldInjectSearchResults] ^ 1;
+    }
+
+    else
+    {
+      LOBYTE(v9) = 0;
+    }
+  }
+
+  else
+  {
+    LOBYTE(v9) = 0;
+  }
+
+  return v9;
+}
+
+- (void)viewControllerDidSelectBrowseVenue:(id)a3
+{
+  v4 = [(ControlContaineeViewController *)self delegate];
+  v3 = [v4 venuesManager];
+  [v3 presentPlaceCardForVenueWithFocusAndAddToHistory:1 source:7 centeringOnVenue:0];
+}
+
+- (VKVenueFeatureMarker)venueWithFocus
+{
+  v2 = [(ControlContaineeViewController *)self delegate];
+  v3 = [v2 venuesManager];
+  v4 = [v3 venueWithFocus];
+
+  return v4;
+}
+
+- (void)updateConstraintsForHideableFooterForWasVisible:(BOOL)a3 isVisible:(BOOL)a4
+{
+  if (a4 && !a3)
+  {
+    [(UIView *)self->_hideableFooterView layoutIfNeeded];
+  }
+
+  v7 = [(SearchViewController *)self view];
+  [v7 frame];
+  Height = CGRectGetHeight(v15);
+
+  v12[0] = _NSConcreteStackBlock;
+  v12[1] = 3221225472;
+  v12[2] = sub_100994FD0;
+  v12[3] = &unk_101630638;
+  v13 = a3;
+  v14 = a4;
+  v12[4] = self;
+  *&v12[5] = Height;
+  v9[0] = _NSConcreteStackBlock;
+  v9[1] = 3221225472;
+  v9[2] = sub_1009950E4;
+  v9[3] = &unk_101630660;
+  v10 = a3;
+  v11 = a4;
+  v9[4] = self;
+  [UIView animateWithDuration:v12 animations:v9 completion:0.25];
+}
+
+- (void)localSearchViewControllerSizeDidChange:(id)a3
+{
+  v8 = [a3 view];
+  v4 = [v8 superview];
+
+  if (v4)
+  {
+    [(NSLayoutConstraint *)self->_bottomHideableFooterConstraint constant];
+    if (v5 == 0.0)
+    {
+      [(SearchViewController *)self updateConstraintsForHideableFooterForWasVisible:1 isVisible:1];
+    }
+
+    else
+    {
+      [(UIView *)self->_hideableFooterView layoutIfNeeded];
+      [(UIView *)self->_hideableFooterView frame];
+      [(NSLayoutConstraint *)self->_bottomHideableFooterConstraint setConstant:v6];
+      v7 = [(ContaineeViewController *)self cardPresentationController];
+      [v7 updateHeightForCurrentLayout];
+    }
+  }
+}
+
+- (void)localSearchViewShouldBeVisibleDidChange:(id)a3
+{
+  v4 = a3;
+  v10 = [v4 view];
+  v5 = [v10 superview];
+  if (v5)
+  {
+    [(NSLayoutConstraint *)self->_bottomHideableFooterConstraint constant];
+    v7 = v6 == 0.0;
+  }
+
+  else
+  {
+    v7 = 0;
+  }
+
+  v8 = [v4 shouldBeVisible];
+  if (v7 != v8)
+  {
+    v9 = [v10 superview];
+
+    if (v9)
+    {
+      [(SearchViewController *)self updateConstraintsForHideableFooterForWasVisible:v7 isVisible:v8];
+    }
+
+    else
+    {
+      [(SearchViewController *)self updateRefreshFooterAnimated:1];
+    }
+  }
+}
+
+- (void)addRefreshFooter:(BOOL)a3 animated:(BOOL)a4
+{
+  if (a3)
+  {
+    v6 = a4;
+    v7 = [(SearchViewController *)self localSearchViewController];
+    v8 = [v7 view];
+
+    v9 = [v8 superview];
+
+    if (!v9)
+    {
+      [(SearchViewController *)self addChildViewController:self->_localSearchViewController];
+      [(UIView *)self->_hideableFooterView insertSubview:v8 atIndex:0];
+      [(LocalSearchViewController *)self->_localSearchViewController didMoveToParentViewController:self];
+      v28 = [v8 leadingAnchor];
+      v27 = [(UIView *)self->_hideableFooterView leadingAnchor];
+      v26 = [v28 constraintEqualToAnchor:v27];
+      v34[0] = v26;
+      v25 = [v8 trailingAnchor];
+      v24 = [(UIView *)self->_hideableFooterView trailingAnchor];
+      v23 = [v25 constraintEqualToAnchor:v24];
+      v34[1] = v23;
+      v22 = [v8 bottomAnchor];
+      [(UIView *)self->_hideableFooterView bottomAnchor];
+      v12 = v29 = v6;
+      v13 = [v22 constraintEqualToAnchor:v12];
+      v34[2] = v13;
+      v14 = [v8 topAnchor];
+      v15 = [(UIView *)self->_hideableFooterView topAnchor];
+      v16 = [v14 constraintEqualToAnchor:v15];
+      v34[3] = v16;
+      v17 = [NSArray arrayWithObjects:v34 count:4];
+      [NSLayoutConstraint activateConstraints:v17];
+
+      v6 = v29;
+    }
+
+    [(UIView *)self->_hideableFooterView layoutIfNeeded];
+    [(UIView *)self->_hideableFooterView frame];
+    v19 = v18;
+    if (!self->_showRefreshFooter || ![(LocalSearchViewController *)self->_localSearchViewController shouldBeVisible])
+    {
+      [(NSLayoutConstraint *)self->_bottomHideableFooterConstraint setConstant:v19];
+    }
+
+    [(NSLayoutConstraint *)self->_bottomHideableFooterConstraint constant];
+    v21 = v20;
+
+    if (v6 && v21 != 0.0)
+    {
+      goto LABEL_12;
+    }
+  }
+
+  else
+  {
+    v10 = [(LocalSearchViewController *)self->_localSearchViewController view:a3];
+    v11 = [v10 superview];
+
+    if (v11)
+    {
+LABEL_12:
+      v32[0] = _NSConcreteStackBlock;
+      v32[1] = 3221225472;
+      v32[2] = sub_100995694;
+      v32[3] = &unk_101661AE0;
+      v33 = a3;
+      v32[4] = self;
+      v30[0] = _NSConcreteStackBlock;
+      v30[1] = 3221225472;
+      v30[2] = sub_100995738;
+      v30[3] = &unk_1016574C0;
+      v31 = a3;
+      v30[4] = self;
+      [UIView animateWithDuration:v32 animations:v30 completion:0.25];
+      return;
+    }
+  }
+
+  self->_showRefreshFooter = a3;
+}
+
+- (void)updateRefreshFooterAnimated:(BOOL)a3
+{
+  v3 = a3;
+  v5 = [(ContaineeViewController *)self cardPresentationController];
+  v6 = [v5 containerStyle];
+
+  v7 = (v6 < 6) & (0x3Au >> v6);
+  if ([(LocalSearchViewController *)self->_localSearchViewController showInCardFooterWhenCardHasExpandedLayout])
+  {
+    v8 = 0;
+  }
+
+  else
+  {
+    v9 = [(ContaineeViewController *)self cardPresentationController];
+    v8 = [v9 containeeLayout] != 1;
+  }
+
+  if (self->_refreshFooterEnabled != v7 && !v8)
+  {
+    self->_refreshFooterEnabled = v7;
+
+    [(SearchViewController *)self addRefreshFooter:v7 animated:v3];
+  }
+}
+
+- (void)applyAlphaToContent:(double)a3
+{
+  v12.receiver = self;
+  v12.super_class = SearchViewController;
+  [(ContaineeViewController *)&v12 applyAlphaToContent:?];
+  [(SearchViewController *)self _updateHeaderHairlineAlphaWithContentAlpha:0 animated:a3];
+  v5 = [(ControlContaineeViewController *)self delegate];
+  v6 = [v5 currentSearchSession];
+
+  if (v6)
+  {
+    v7 = [(SearchViewController *)self searchResultsViewController];
+    v8 = v7;
+    if (v7)
+    {
+      v9 = [v7 parentViewController];
+      if (v9)
+      {
+        v10 = v9;
+        v11 = objc_opt_respondsToSelector();
+
+        if (v11)
+        {
+          [v8 applyAlphaToContent:a3];
+        }
+      }
+    }
+  }
+}
+
+- (void)_updateDefaultLayoutWithContainerStyle:(unint64_t)a3
+{
+  if (a3 == 6)
+  {
+    v4 = 3;
+  }
+
+  else
+  {
+    v4 = 0;
+  }
+
+  v5 = [(ContaineeViewController *)self cardPresentationController];
+  [v5 setDefaultContaineeLayout:v4];
+
+  if ([(PassthruSearchBar *)self->_searchBar isFirstResponder])
+  {
+    v6 = [(ContaineeViewController *)self cardPresentationController];
+    [v6 wantsLayout:3];
+  }
+}
+
+- (void)willChangeContainerStyle:(unint64_t)a3
+{
+  v6.receiver = self;
+  v6.super_class = SearchViewController;
+  [(ContaineeViewController *)&v6 willChangeContainerStyle:?];
+  v5 = [(SearchViewController *)self view];
+
+  if (v5)
+  {
+    [(SearchViewController *)self _invalidateMediumHeightCache];
+    [(LocalSearchViewController *)self->_localSearchViewController setEnable:a3 != 6];
+    [(SearchViewController *)self _updateDefaultLayoutWithContainerStyle:a3];
+  }
+}
+
+- (void)didChangeLayout:(unint64_t)a3
+{
+  v7.receiver = self;
+  v7.super_class = SearchViewController;
+  [(ContaineeViewController *)&v7 didChangeLayout:?];
+  if ([(SearchViewController *)self isShowingOmnipresentSearchBar])
+  {
+    v5 = [(SearchViewController *)self searchResultsViewController];
+    v6 = v5;
+    if (v5)
+    {
+      [v5 didChangeLayout:a3];
+    }
+  }
+
+  [(SearchViewController *)self updateRefreshFooter];
+}
+
+- (double)heightForLayout:(unint64_t)a3
+{
+  if (a3 - 3 < 2)
+  {
+    v13 = [(ContaineeViewController *)self cardPresentationController];
+    [v13 availableHeight];
+LABEL_8:
+    v15 = v14;
+
+    return v15;
+  }
+
+  if (a3 != 2)
+  {
+    result = -1.0;
+    if (a3 == 1)
+    {
+      if (![(LocalSearchViewController *)self->_localSearchViewController shouldBeVisible])
+      {
+        goto LABEL_20;
+      }
+
+      [(UIView *)self->_hideableFooterView frame];
+      Height = CGRectGetHeight(v24);
+      v6 = self->_hideableFooterView;
+      v7 = [(UIView *)v6 window];
+      v8 = [v7 screen];
+      if (v8)
+      {
+        v9 = [(UIView *)v6 window];
+        v10 = [v9 screen];
+        [v10 nativeScale];
+        v12 = v11;
+      }
+
+      else
+      {
+        v9 = +[UIScreen mainScreen];
+        [v9 nativeScale];
+        v12 = v17;
+      }
+
+      v18 = v12 <= 0.0 ? 1.0 : 1.0 / v12;
+      v19 = Height - v18;
+      if (v19 == 0.0)
+      {
+LABEL_20:
+        v20 = [(ContaineeViewController *)self cardPresentationController];
+        [v20 bottomSafeOffset];
+        v19 = v21;
+      }
+
+      [(ContaineeViewController *)self headerHeight];
+      return v22 + v19;
+    }
+
+    return result;
+  }
+
+  if ([(SearchViewController *)self isShowingOmnipresentSearchBar])
+  {
+    v16 = [(SearchViewController *)self searchResultsViewController];
+
+    if (v16)
+    {
+      v13 = +[UIScreen mainScreen];
+      [v13 bounds];
+      UIRoundToScreenScale();
+      goto LABEL_8;
+    }
+  }
+
+  [(SearchViewController *)self heightForContaineeLayoutMedium];
+  return result;
+}
+
+- (void)willChangeLayout:(unint64_t)a3
+{
+  v12.receiver = self;
+  v12.super_class = SearchViewController;
+  [(ContaineeViewController *)&v12 willChangeLayout:?];
+  if (([(UITextField *)self->_searchField isFirstResponder]& 1) == 0)
+  {
+    [(PassthruSearchBar *)self->_searchBar setShowsCancelButton:0 animated:1];
+  }
+
+  if (a3 - 1 <= 1)
+  {
+    if ([(SearchViewController *)self isShowingOmnipresentSearchBar]&& ([(SearchViewController *)self searchResultsViewController], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+    {
+      v6 = sub_100067540();
+      if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+      {
+        *v11 = 0;
+        _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Not dismissing search results while changing the layout as we are presenting results.", v11, 2u);
+      }
+    }
+
+    else
+    {
+      v7 = [(SearchViewController *)self currentDataSource];
+      objc_opt_class();
+      isKindOfClass = objc_opt_isKindOfClass();
+
+      if (isKindOfClass)
+      {
+        v9 = [(SearchViewController *)self presentedViewController];
+
+        if (!v9)
+        {
+          [(SearchViewController *)self clearRetainedSearchQuery];
+        }
+
+        v10 = [(SearchDataSource *)self->_searchDataSource searchDataProvider];
+        [v10 clearMKLocalSearchCompleterQueryState];
+      }
+
+      else
+      {
+        [(HomeViewController *)self->_homeViewController scrollContentToOriginalPosition];
+      }
+
+      [(PassthruSearchBar *)self->_searchBar resignFirstResponder];
+      [(SearchViewController *)self cleanSearch];
+    }
+  }
+}
+
+- (int64_t)floatingControlsOptions
+{
+  v7.receiver = self;
+  v7.super_class = SearchViewController;
+  v3 = [(ControlContaineeViewController *)&v7 floatingControlsOptions];
+  v4 = [(ContaineeViewController *)self cardPresentationController];
+  v5 = [v4 containerStyle];
+
+  if (v5 == 6)
+  {
+    return v3 | 4;
+  }
+
+  else
+  {
+    return v3;
+  }
+}
+
+- (void)restoreSearchItem:(id)a3
+{
+  v4 = a3;
+  if (v4)
+  {
+    self->_hasEdited = 1;
+    userTypedSearchString = self->_userTypedSearchString;
+    self->_userTypedSearchString = 0;
+
+    [(UITextField *)self->_searchField setTextSelectionBehavior:0];
+    [(SearchDataSource *)self->_searchDataSource reset];
+    [(SearchViewController *)self updateSearchFieldWithItem:v4];
+    v6 = [(ContaineeViewController *)self cardPresentationController];
+    [v6 wantsLayout:3];
+
+    if (!self->_shouldPreventPresentingKeyboardOnRestore)
+    {
+      [(UITextField *)self->_searchField becomeFirstResponder];
+    }
+
+    v7 = [v4 retainedSearchMetadata];
+    [(SearchViewController *)self sendACRequestWithTappedQuerySuggestionCompletion:0 retainQueryMetadata:v7];
+  }
+
+  else
+  {
+    v8 = sub_100067540();
+    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    {
+      *v9 = 0;
+      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[SearchVC] Nothing to restore for searchItem.", v9, 2u);
+    }
+  }
+}
+
+- (void)retainSearchQueryForSelectedSearchResult:(id)a3
+{
+  retainedQueryController = self->_retainedQueryController;
+  v5 = a3;
+  v7 = [(SearchViewController *)self defaultSearchQueryToRetain];
+  v6 = [(SearchDataSource *)self->_searchDataSource searchDataProvider];
+  [v6 retainSearchTime];
+  [(RetainedQueryController *)retainedQueryController retainSearchQueryForSelectedSearchResult:v5 query:v7 forTimeInterval:?];
+}
+
+- (void)retainSearchQueryForSelectedAutocompleteItem:(id)a3 forTimeInterval:(double)a4
+{
+  v9 = a3;
+  retainedQueryController = self->_retainedQueryController;
+  v7 = [(SearchViewController *)self defaultSearchQueryToRetain];
+  if (a4 == 0.0)
+  {
+    v8 = [(SearchDataSource *)self->_searchDataSource searchDataProvider];
+    [v8 retainSearchTime];
+    [(RetainedQueryController *)retainedQueryController retainSearchQueryForSelectedAutocompleteItem:v9 query:v7 forTimeInterval:?];
+  }
+
+  else
+  {
+    [(RetainedQueryController *)retainedQueryController retainSearchQueryForSelectedAutocompleteItem:v9 query:v7 forTimeInterval:1.0];
+  }
+}
+
+- (void)retainSearchQuery
+{
+  v3 = [(SearchViewController *)self defaultSearchQueryToRetain];
+  if (v3)
+  {
+    retainedQueryController = self->_retainedQueryController;
+    v6 = v3;
+    v5 = [(SearchDataSource *)self->_searchDataSource searchDataProvider];
+    [v5 retainSearchTime];
+    [(RetainedQueryController *)retainedQueryController retainSearchQuery:v6 metadata:0 forTimeInterval:?];
+
+    v3 = v6;
+  }
+}
+
+- (id)defaultSearchQueryToRetain
+{
+  userTypedSearchString = [(NSString *)self->_userTypedSearchString length];
+  if (userTypedSearchString)
+  {
+    userTypedSearchString = self->_userTypedSearchString;
+  }
+
+  return userTypedSearchString;
+}
+
+- (void)resetMapServiceTicket
+{
+  [(MKMapServiceTicket *)self->_mapServiceTicket cancel];
+  mapServiceTicket = self->_mapServiceTicket;
+  self->_mapServiceTicket = 0;
+}
+
+- (void)addSupportedChildActionToTraits:(id)a3
+{
+  v8 = a3;
+  [v8 addSupportedChildAction:1];
+  v4 = +[MKSystemController sharedInstance];
+  v5 = [v4 supports3DImagery];
+
+  if (v5)
+  {
+    [v8 addSupportedChildAction:2];
+  }
+
+  [v8 addSupportedChildAction:3];
+  v6 = +[GEOResourceManifestManager modernManager];
+  v7 = [v6 isMuninEnabled];
+
+  if (v7)
+  {
+    [v8 addSupportedChildAction:4];
+  }
+
+  if (+[TUCallCapabilities supportsTelephonyCalls])
+  {
+    [v8 addSupportedChildAction:5];
+  }
+
+  [v8 addSupportedChildAction:6];
+  if (MapsFeature_IsEnabled_Maps269() && sub_10000FA08(self) != 5)
+  {
+    [v8 addSupportedChildAction:7];
+  }
+
+  if (GEOSupportsOfflineMaps())
+  {
+    [v8 addSupportedChildAction:8];
+  }
+}
+
+- (void)sendACRequestWithTappedQuerySuggestionCompletion:(id)a3 retainQueryMetadata:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  [(SearchViewController *)self updateDataSource];
+  [(SearchViewController *)self setNeedsUpdateContentState];
+  if (self->_currentDataSource == &self->_searchDataSource->super)
+  {
+    v8 = [(ControlContaineeViewController *)self delegate];
+    v9 = [v8 newTraits];
+
+    [v9 setNavigating:{-[SearchViewController isSearchingAlongTheRoute](self, "isSearchingAlongTheRoute")}];
+    [v9 setSupportDirectionIntentAutocomplete:{-[SearchViewController isSearchingAlongTheRoute](self, "isSearchingAlongTheRoute") ^ 1}];
+    [v9 setSupportUnresolvedDirectionIntent:{-[SearchViewController isSearchingAlongTheRoute](self, "isSearchingAlongTheRoute") ^ 1}];
+    [v9 setSupportAutocompletePublisherResults:{-[SearchViewController isSearchingAlongTheRoute](self, "isSearchingAlongTheRoute") ^ 1}];
+    [v9 setSupportAutocompleteGuideResults:{-[SearchViewController isSearchingAlongTheRoute](self, "isSearchingAlongTheRoute") ^ 1}];
+    [v9 addSupportedAutocompleteListType:2];
+    [v9 setSupportClientRankingFeatureMetadata:1];
+    [v9 setSupportClientRankingCompositeFeatures:1];
+    [v9 setSupportChildItems:{-[SearchViewController isSearchingAlongTheRoute](self, "isSearchingAlongTheRoute") ^ 1}];
+    [v9 useOnlineToOfflineFailoverRequestModeIfAllowed];
+    if (![(SearchViewController *)self isSearchingAlongTheRoute])
+    {
+      [(SearchViewController *)self addSupportedChildActionToTraits:v9];
+    }
+
+    v10 = +[NSDate date];
+    v11 = [(SearchViewController *)self lastViewportChangeDate];
+    [v10 timeIntervalSinceDate:v11];
+    LODWORD(v13) = vcvtad_u64_f64(v12);
+    [v9 setTimeSinceMapViewportChanged:v13];
+
+    v14 = sub_10079927C();
+    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    {
+      v21[0] = 67109120;
+      v21[1] = [v9 timeSinceMapViewportChanged];
+      _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Sending AC Request with timeSinceMapViewportChanged: %d", v21, 8u);
+    }
+
+    [v9 setAutocompleteRequestSupportsSectionHeader:1];
+    [v9 addSupportedAutocompleteResultCellType:0];
+    [v9 addSupportedAutocompleteResultCellType:3];
+    if (![(SearchViewController *)self isSearchingAlongTheRoute])
+    {
+      [v9 addSupportedAutocompleteResultCellType:1];
+      [v9 addSupportedAutocompleteResultCellType:2];
+    }
+
+    if (MapsFeature_IsEnabled_VisitedPlaces())
+    {
+      v15 = 37;
+    }
+
+    else
+    {
+      v15 = 35;
+    }
+
+    [v9 setPlaceSummaryRevision:v15];
+    [(SearchViewController *)self isTouristHereValue];
+    [v9 setIsTourist:?];
+    [v9 addKnownRefinementType:1];
+    [v9 addSupportedPlaceSummaryFormatType:1];
+    [v9 addSupportedPlaceSummaryFormatType:2];
+    [v9 addSupportedPlaceSummaryFormatType:3];
+    [v9 setSupportStructuredRapAffordance:{-[SearchViewController isSearchingAlongTheRoute](self, "isSearchingAlongTheRoute") ^ 1}];
+    [(SearchDataSource *)self->_searchDataSource setRetainedSearchMetadata:v7];
+    if ([(SearchViewController *)self isSearchingAlongTheRoute])
+    {
+      v16 = 14;
+    }
+
+    else
+    {
+      v16 = 11;
+    }
+
+    searchDataSource = self->_searchDataSource;
+    v18 = [(UITextField *)self->_searchField text];
+    v19 = [v18 _maps_stringByTrimmingLeadingWhitespace];
+    [(SearchDataSource *)searchDataSource setInputText:v19 tappedQuerySuggestionCompletion:v6 isRetainQuery:v7 != 0 traits:v9 source:v16];
+
+    if (MapsFeature_IsEnabled_NaturalSearchMaps())
+    {
+      v20 = sub_100067540();
+      if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+      {
+        LOWORD(v21[0]) = 0;
+        _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Will not show SearchHome tip again.", v21, 2u);
+      }
+
+      [(SearchHomeDataSource *)self->_searchHomeDataSource setShouldRemoveSearchHomeTip:1];
+    }
+  }
+}
+
+- (id)lastViewportChangeDate
+{
+  v2 = [(ControlContaineeViewController *)self delegate];
+  v3 = [v2 containerViewController];
+  v4 = [v3 chromeViewController];
+  v5 = [v4 lastMapViewportChangedDate];
+
+  return v5;
+}
+
+- (void)sendSearchRequest
+{
+  v3 = [(UITextField *)self->_searchField text];
+  v4 = [v3 _maps_stringByTrimmingLeadingWhitespace];
+  [(SearchFieldItem *)self->_searchItem setSearchString:v4];
+
+  [(SearchFieldItem *)self->_searchItem setUserTypedStringForRAP:self->_userTypedSearchString];
+  v5 = [(RetainedQueryController *)self->_retainedQueryController restoredRetainedSearchQueryMetadata];
+  [(SearchFieldItem *)self->_searchItem setRetainedSearchMetadata:v5];
+
+  [(RetainedQueryController *)self->_retainedQueryController setRestoredRetainedSearchQueryMetadata:0];
+  v6 = +[MKMapService sharedService];
+  v7 = [(SearchViewController *)self currentUITargetForAnalytics];
+  v8 = [(SearchFieldItem *)self->_searchItem searchString];
+  [v6 captureUserAction:2014 onTarget:v7 queryString:v8];
+
+  [(SearchViewController *)self retainSearchQuery];
+  [(SearchViewController *)self setNeedsUpdateContentState];
+  v15 = @"SearchSessionIsAutoRedoSearch";
+  v16 = &__kCFBooleanFalse;
+  v9 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
+  v10 = [NSMutableDictionary dictionaryWithDictionary:v9];
+
+  if (!self->_hasEdited)
+  {
+    [v10 setObject:&off_1016E7DC0 forKeyedSubscript:@"SearchSessionTraitsSource"];
+  }
+
+  v11 = [NSNumber numberWithBool:[(SearchViewController *)self isSearchingAlongTheRoute]];
+  [v10 setObject:v11 forKeyedSubscript:@"SearchSessionIsSearchAlongRoute"];
+
+  v12 = [(ControlContaineeViewController *)self delegate];
+  searchItem = self->_searchItem;
+  v14 = [v10 copy];
+  [v12 viewController:self doSearchItem:searchItem withUserInfo:v14];
+
+  [(SearchViewController *)self endEditing];
+  [(SearchDataSource *)self->_searchDataSource clearAutocompleteResults];
+  [(SearchDataSource *)self->_searchDataSource reset];
+  if (sub_10000FA08(self) == 5 && _UISolariumEnabled())
+  {
+    [(SearchViewController *)self _continueUpdateSearchFieldWithUpdatingSearchText:0];
+  }
+}
+
+- (void)_popToHomeWithCompletion:(id)a3
+{
+  v4 = a3;
+  v5 = [(SearchViewController *)self menuController];
+  v6 = [v5 macMenuPresentationController];
+  v7 = [v6 isPresented];
+
+  if (v7)
+  {
+    [(SearchViewController *)self endEditing];
+    v8 = dispatch_time(0, 200000000);
+    block[0] = _NSConcreteStackBlock;
+    block[1] = 3221225472;
+    block[2] = sub_100996C50;
+    block[3] = &unk_101661760;
+    v10 = v4;
+    dispatch_after(v8, &_dispatch_main_q, block);
+  }
+
+  else
+  {
+    v4[2](v4);
+  }
+}
+
+- (void)editCollection:(id)a3
+{
+  v4 = a3;
+  objc_initWeak(&location, self);
+  v6[0] = _NSConcreteStackBlock;
+  v6[1] = 3221225472;
+  v6[2] = sub_100996D64;
+  v6[3] = &unk_101661340;
+  objc_copyWeak(&v8, &location);
+  v5 = v4;
+  v7 = v5;
+  [(SearchViewController *)self _popToHomeWithCompletion:v6];
+
+  objc_destroyWeak(&v8);
+  objc_destroyWeak(&location);
+}
+
+- (void)showCollection:(id)a3
+{
+  v4 = a3;
+  objc_initWeak(&location, self);
+  v6[0] = _NSConcreteStackBlock;
+  v6[1] = 3221225472;
+  v6[2] = sub_100996EA8;
+  v6[3] = &unk_101661340;
+  objc_copyWeak(&v8, &location);
+  v5 = v4;
+  v7 = v5;
+  [(SearchViewController *)self _popToHomeWithCompletion:v6];
+
+  objc_destroyWeak(&v8);
+  objc_destroyWeak(&location);
+}
+
+- (void)triggerAutocompleteByReplacingQueryWithCompletion:(id)a3
+{
+  v6 = a3;
+  v4 = [v6 queryAcceleratorCompletionString];
+  if ([v4 length])
+  {
+    [v6 queryAcceleratorCompletionString];
+  }
+
+  else
+  {
+    [v6 title];
+  }
+  v5 = ;
+  [(UITextField *)self->_searchField setText:v5];
+
+  [(SearchViewController *)self _textFieldDidChange:0 tappedQuerySuggestionCompletion:v6];
+  [(SearchViewController *)self searchBarBecomeFirstResponder];
+}
+
+- (void)searchBarTextDidBeginEditing:(id)a3
+{
+  v4 = [(SearchViewController *)self currentSearchSession];
+  v5 = sub_100067540();
+  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  {
+    v18 = 138412290;
+    v19 = v4;
+    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Search bar begins editing and invalidate the current active search session if there is any: %@", &v18, 0xCu);
+  }
+
+  if (sub_10000FA08(self) == 5 && !_UISolariumEnabled())
+  {
+    [(SearchViewController *)self _invalidateSearchSession:v4];
+  }
+
+  else
+  {
+    if (self->_isSearchAndDiscoveryEnabled)
+    {
+      v6 = [(SearchViewController *)self searchResultsViewController];
+      v7 = v6;
+      if (v6)
+      {
+        [v6 willMoveToParentViewController:0];
+        v8 = [v7 view];
+        [v8 removeFromSuperview];
+
+        [v7 removeFromParentViewController];
+        v9 = [(SearchViewController *)self closeSearchResultsButton];
+        [v9 setHidden:1];
+
+        v10 = +[MKMapService sharedService];
+        v11 = [(SearchFieldItem *)self->_searchItem searchString];
+        [v10 captureUserAction:2001 onTarget:101 queryString:v11];
+
+        [(SearchViewController *)self _invalidateSearchSession:v4];
+        v12 = [v4 searchFieldItem];
+        [(SearchViewController *)self restoreSearchItem:v12];
+
+        [(SearchViewController *)self clearRetainedSearchQuery];
+        v13 = [(ControlContaineeViewController *)self delegate];
+        [v13 clearSearchPins];
+      }
+    }
+
+    if (sub_10000FA08(self) == 5)
+    {
+      v14 = 0;
+    }
+
+    else
+    {
+      v14 = [(SearchViewController *)self isSearchingAlongTheRoute]^ 1;
+    }
+
+    v15 = [(SearchViewController *)self isSearchingAlongTheRoute];
+    [(PassthruSearchBar *)self->_searchBar setShowsCancelButton:v14 animated:1];
+    [(UIButton *)self->_userProfileButton setHidden:v15 ^ 1];
+    [(SearchViewController *)self _updateUserProfileEntryPointButton];
+  }
+
+  [(SearchViewController *)self showDropDownIfNeeded:1];
+  v16 = +[MapsOfflineUIHelper sharedHelper];
+  if ([v16 isUsingOfflineMaps] && !self->_supportsFullTextSearch)
+  {
+    v17 = [(SearchViewController *)self isSearchingAlongTheRoute];
+
+    if ((v17 & 1) == 0)
+    {
+      [(SearchViewController *)self _shouldHideOfflineHeaderView:self->_supportsFullTextSearch];
+    }
+  }
+
+  else
+  {
+  }
+}
+
+- (void)searchBarBecomeFirstResponder
+{
+  self->_needsToBecomeFirstResponder = 0;
+  if (self->_searchBar)
+  {
+    [(PassthruSearchBar *)self->_searchBar becomeFirstResponder];
+  }
+
+  else
+  {
+    self->_needsToBecomeFirstResponder = 1;
+  }
+}
+
+- (void)_preventAutoPresentingKeyboard_rdar_126940251
+{
+  if ([(SearchViewController *)self isViewLoaded])
+  {
+    [(SearchViewController *)self endEditing];
+    v3 = [(SearchViewController *)self view];
+    [v3 endEditing:1];
+
+    self->_shouldPreventPresentingKeyboardOnRestore = 1;
+    v4 = dispatch_time(0, 2000000000);
+    block[0] = _NSConcreteStackBlock;
+    block[1] = 3221225472;
+    block[2] = sub_100997378;
+    block[3] = &unk_101661B18;
+    block[4] = self;
+    dispatch_after(v4, &_dispatch_main_q, block);
+  }
+}
+
+- (void)_invalidateSearchSession:(id)a3
+{
+  v4 = a3;
+  v5 = sub_100067540();
+  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  {
+    v11 = 134218242;
+    v12 = self;
+    v13 = 2080;
+    v14 = "[SearchViewController _invalidateSearchSession:]";
+    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%p] %s", &v11, 0x16u);
+  }
+
+  v6 = sub_100067540();
+  v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
+  if (v4)
+  {
+    if (v7)
+    {
+      v11 = 138412290;
+      v12 = v4;
+      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Invalidating search session: %@", &v11, 0xCu);
+    }
+
+    v6 = [(SearchViewController *)self searchResultsViewController];
+    if ((-[SearchViewController isLoading](v4, "isLoading") & 1) != 0 || (-[NSObject view](v6, "view"), v8 = objc_claimAutoreleasedReturnValue(), [v8 superview], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, !v9))
+    {
+      v10 = sub_100067540();
+      if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+      {
+        v11 = 138412290;
+        v12 = v4;
+        _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "If we are showing the SearchAC or a search request is in process, then invalidate the current search and cancel the request: %@", &v11, 0xCu);
+      }
+
+      [(SearchViewController *)v4 invalidate];
+      [(SearchViewController *)v4 cancelSearch];
+      [(SearchViewController *)self _hideSearchHereControl];
+      objc_opt_class();
+      if (objc_opt_isKindOfClass())
+      {
+        [v6 searchDidCancel:0];
+      }
+    }
+  }
+
+  else if (v7)
+  {
+    v11 = 134217984;
+    v12 = self;
+    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%p] No search session to invalidate.", &v11, 0xCu);
+  }
+}
+
+- (void)endSearch
+{
+  [(SearchViewController *)self _hideSearchHereControl];
+  self->_searchFieldWantsFocus = 0;
+  [(PassthruSearchBar *)self->_searchBar setShowsCancelButton:0 animated:1];
+  [(SearchViewController *)self clearRetainedSearchQuery];
+  v3 = [(SearchDataSource *)self->_searchDataSource searchDataProvider];
+  [v3 clearMKLocalSearchCompleterQueryState];
+
+  v6[0] = _NSConcreteStackBlock;
+  v6[1] = 3221225472;
+  v6[2] = sub_100997710;
+  v6[3] = &unk_101661B18;
+  v6[4] = self;
+  v4 = objc_retainBlock(v6);
+  if (sub_10000FA08(self) == 5)
+  {
+    (v4[2])(v4);
+  }
+
+  else
+  {
+    [(UIButton *)self->_userProfileButton setHidden:[(PassthruSearchBar *)self->_searchBar isHidden]];
+    [(SearchViewController *)self _updateUserProfileEntryPointButton];
+    v5 = [(ContaineeViewController *)self cardPresentationController];
+    [v5 applyWithAnimations:v4 completion:&stru_1016305E8];
+  }
+}
+
+- (void)endEditing
+{
+  if ([(UITextField *)self->_searchField isFirstResponder])
+  {
+    [(PassthruSearchBar *)self->_searchBar resignFirstResponder];
+    v3 = [(ContaineeViewController *)self cardPresentationController];
+    v4 = [v3 containerStyle];
+
+    if (v4 == 1)
+    {
+      v5 = [(ContaineeViewController *)self cardPresentationController];
+      [v5 wantsLayout:2];
+    }
+  }
+
+  [(SearchViewController *)self showDropDownIfNeeded:0];
+}
+
+- (void)invalidateSearchSession
+{
+  v3 = [(SearchViewController *)self currentSearchSession];
+  [(SearchViewController *)self _invalidateSearchSession:v3];
+}
+
+- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+{
+  v8 = a3;
+  v9 = a4;
+  v10 = a5;
+  v11 = [(SearchViewController *)self currentDataSource];
+  v12 = [v11 conformsToProtocol:&OBJC_PROTOCOL___MapsUICollectionViewDiffableDataSourceCellProviding];
+
+  if (v12)
+  {
+    v13 = [(SearchViewController *)self currentDataSource];
+    v14 = [v13 collectionView:v8 viewForSupplementaryElementOfKind:v9 atIndexPath:v10];
+  }
+
+  else
+  {
+    v14 = 0;
+  }
+
+  return v14;
+}
+
+- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5
+{
+  v8 = a3;
+  v9 = a4;
+  v10 = a5;
+  v11 = [(SearchViewController *)self currentDataSource];
+  v12 = [v11 conformsToProtocol:&OBJC_PROTOCOL___MapsUICollectionViewDiffableDataSourceCellProviding];
+
+  if (v12)
+  {
+    v13 = [(SearchViewController *)self currentDataSource];
+    v14 = [v13 collectionView:v8 cellForItemAtIndexPath:v9 itemIdentifier:v10];
+  }
+
+  else
+  {
+    v14 = 0;
+  }
+
+  return v14;
+}
+
+- (void)updateRowHeightForCurrentDataSource
+{
+  currentDataSource = self->_currentDataSource;
+  if (currentDataSource)
+  {
+    [currentDataSource rowHeight];
+    v5 = v4;
+  }
+
+  else
+  {
+    v5 = UITableViewAutomaticDimension;
+  }
+
+  [(UITableView *)self->_contentTableView rowHeight];
+  if (v6 != v5)
+  {
+    contentTableView = self->_contentTableView;
+
+    [(UITableView *)contentTableView setRowHeight:v5];
+  }
+}
+
+- (void)reloadContentTableView
+{
+  v3 = [(SearchViewController *)self currentDataSource];
+  v4 = [v3 presentationStyle];
+
+  if (!v4)
+  {
+    [(SearchViewController *)self updateRowHeightForCurrentDataSource];
+    [(SearchViewController *)self _invalidateMediumHeightCache];
+    v5 = [(SearchViewController *)self currentDataSource];
+
+    if (v5)
+    {
+      [(UITableView *)self->_contentTableView reloadData];
+    }
+  }
+
+  [(SearchViewController *)self _contentAlphaForCurrentLayout];
+
+  [(SearchViewController *)self _updateHeaderHairlineAlphaWithContentAlpha:0 animated:?];
+}
+
+- (void)showSearchResults:(id)a3
+{
+  v4 = a3;
+  v5 = [(SearchViewController *)self currentSearchSession];
+  if ([v5 isInvalidated])
+  {
+    v6 = sub_100067540();
+    if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+    {
+      v11 = 138412290;
+      v12 = v5;
+      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[SearchVC] The current search session : %@ was invalidated. Not showing any search results.", &v11, 0xCu);
+    }
+  }
+
+  else if ([(SearchViewController *)self isShowingOmnipresentSearchBar])
+  {
+    [(UIButton *)self->_userProfileButton setHidden:1];
+    [(SearchViewController *)self displaySearchResultsWithViewController:v4 searchBar:self->_searchBar];
+    v7 = [v4 _resultsTableView];
+    [(ContaineeViewController *)self setContentScrollView:v7 forEdge:1];
+
+    [(SearchViewController *)self updateCloseSearchResultEntryPointButton];
+    [(SearchViewController *)self endEditing];
+    v8 = [(SearchViewController *)self currentSearchSession];
+    v9 = [(SearchViewController *)self localSearchViewController];
+    v10 = [v9 refreshSearchHereBusinessController];
+    [v10 setSearchSession:v8];
+  }
+}
+
+- (void)showTitleBarSeparatorWhenScrolling:(BOOL)a3
+{
+  v3 = -1.0;
+  if (a3)
+  {
+    v3 = 0.0;
+  }
+
+  [(NSLayoutConstraint *)self->_homeViewControllerBottomConstraint setConstant:v3];
+}
+
+- (void)_continueUpdateSearchFieldWithUpdatingSearchText:(BOOL)a3
+{
+  v3 = a3;
+  [(SearchViewController *)self loadViewIfNeeded];
+  if (v3)
+  {
+    [(SearchViewController *)self _updateSearchFieldText];
+  }
+
+  [(SearchViewController *)self setNeedsUpdateContentState];
+  [(SearchViewController *)self updateDataSource];
+  [(SearchDataSource *)self->_searchDataSource clearAutocompleteResults];
+  searchDataSource = self->_searchDataSource;
+
+  [(SearchDataSource *)searchDataSource reset];
+}
+
+- (void)_updateSearchFieldWithItem:(id)a3 updatingSearchText:(BOOL)a4
+{
+  v4 = a4;
+  v7 = a3;
+  if (self->_searchItem != v7)
+  {
+    v8 = v7;
+    objc_storeStrong(&self->_searchItem, a3);
+    [(SearchViewController *)self _continueUpdateSearchFieldWithUpdatingSearchText:v4];
+    v7 = v8;
+  }
+}
+
+- (void)updateSearchFieldWithItem:(id)a3
+{
+  v6 = a3;
+  if (sub_10000FA08(self) == 5 && ([v6 isSpotlightSearch] & 1) == 0)
+  {
+    v5 = +[UIApplication sharedApplication];
+    v4 = [v5 isRunningTest];
+  }
+
+  else
+  {
+    v4 = 1;
+  }
+
+  [(SearchViewController *)self _updateSearchFieldWithItem:v6 updatingSearchText:v4];
+}
+
+- (void)showDropDownIfNeeded:(BOOL)a3
+{
+  v3 = a3;
+  if ([(SearchViewController *)self _showsContentInDropDownMenu])
+  {
+    if (v3)
+    {
+      v5 = [(SearchViewController *)self menuController];
+      v6 = [v5 macMenuPresentationController];
+      v7 = [v6 isPresented];
+
+      if ((v7 & 1) == 0)
+      {
+        v9 = [(ControlContaineeViewController *)self delegate];
+        v10 = [(SearchViewController *)self menuController];
+        [v9 viewController:self presentMenuController:v10 animated:1 fromChrome:1 completion:0];
+
+        [(SearchViewController *)self showTitleBarSeparatorWhenScrolling:0];
+      }
+    }
+
+    else
+    {
+      self->_userSelectedSearchBar = 0;
+      v11 = [(ControlContaineeViewController *)self delegate];
+      v8 = [(SearchViewController *)self menuController];
+      [v11 viewController:v8 dismissMenuControllerAnimated:1];
+    }
+  }
+}
+
+- (MenuContaineeViewController)menuController
+{
+  menuController = self->_menuController;
+  if (!menuController)
+  {
+    v4 = [[MenuContaineeViewController alloc] initWithContentView:self->_dropDownView];
+    v5 = self->_menuController;
+    self->_menuController = v4;
+
+    [(MenuContaineeViewController *)self->_menuController setTrackedScrollview:self->_collectionView];
+    searchFieldLayoutGuide = self->_searchFieldLayoutGuide;
+    v7 = [(ContaineeViewController *)self->_menuController macMenuPresentationController];
+    [v7 setAnchorLayoutGuide:searchFieldLayoutGuide];
+
+    v8 = self->_searchFieldLayoutGuide;
+    v9 = [(ContaineeViewController *)self->_menuController macMenuPresentationController];
+    [v9 setWidthLayoutGuide:v8];
+
+    searchBar = self->_searchBar;
+    v10 = [NSArray arrayWithObjects:&searchBar count:1];
+    v11 = [(ContaineeViewController *)self->_menuController macMenuPresentationController];
+    [v11 setPassThroughViews:v10];
+
+    v12 = [(ContaineeViewController *)self->_menuController macMenuPresentationController];
+    [v12 addObserver:self];
+
+    menuController = self->_menuController;
+  }
+
+  return menuController;
+}
+
+- (int64_t)currentDataSourceType
+{
+  v3 = [(SearchViewController *)self currentDataSource];
+  v4 = [(SearchViewController *)self searchDataSource];
+
+  if (v3 == v4)
+  {
+    return 2;
+  }
+
+  v5 = [(SearchViewController *)self currentDataSource];
+  v6 = [(SearchViewController *)self searchHomeDataSource];
+  v7 = v5 == v6;
+
+  return v7;
+}
+
+- (void)setCurrentDataSource:(id)a3
+{
+  v5 = a3;
+  v6 = v5;
+  if (self->_currentDataSource != v5 || !v5 && ![(HomeViewController *)self->_homeViewController isActive])
+  {
+    v7 = sub_1000410AC();
+    if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+    {
+      *buf = 138412290;
+      v86 = v6;
+      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "SVC setCurrentDataSource %@", buf, 0xCu);
+    }
+
+    currentDataSource = self->_currentDataSource;
+    if (currentDataSource)
+    {
+      [currentDataSource setActive:0];
+    }
+
+    else if (sub_10000FA08(self) != 5)
+    {
+      [(HomeViewController *)self->_homeViewController setActive:0];
+      [(UIButton *)self->_userProfileButton setHidden:1];
+      [(SearchViewController *)self _updateUserProfileEntryPointButton];
+    }
+
+    if (self->_currentDataSource == &self->_searchHomeDataSource->super)
+    {
+      [(UICollectionView *)self->_collectionView _maps_scrollContentToOriginalPosition];
+      if (![(SearchViewController *)self _showsContentInDropDownMenu])
+      {
+        [(ContaineeViewController *)self setContentScrollView:self->_collectionView forEdge:1];
+      }
+    }
+
+    if (!v6)
+    {
+      self->_userSelectedSearchBar = 0;
+      [(SearchViewController *)self updateIsTouristHereValue];
+      v19 = self->_currentDataSource;
+      self->_currentDataSource = 0;
+
+      [(UITableView *)self->_contentTableView removeFromSuperview];
+      [(UICollectionView *)self->_collectionView removeFromSuperview];
+      v20 = [(HomeViewController *)self->_homeViewController parentViewController];
+
+      if (!v20)
+      {
+        v21 = [(SearchViewController *)self _homeViewController];
+        [(SearchViewController *)self addChildViewController:v21];
+
+        v22 = [(ContaineeViewController *)self contentView];
+        v23 = [(HomeViewController *)self->_homeViewController view];
+        [v22 insertSubview:v23 atIndex:0];
+
+        [(HomeViewController *)self->_homeViewController didMoveToParentViewController:self];
+        v24 = [(HomeViewController *)self->_homeViewController view];
+        [v24 setTranslatesAutoresizingMaskIntoConstraints:0];
+
+        v25 = [(HomeViewController *)self->_homeViewController view];
+        v26 = [v25 bottomAnchor];
+        v27 = [(ContaineeViewController *)self contentView];
+        v28 = [v27 bottomAnchor];
+        v29 = [v26 constraintEqualToAnchor:v28];
+        homeViewControllerBottomConstraint = self->_homeViewControllerBottomConstraint;
+        self->_homeViewControllerBottomConstraint = v29;
+
+        v81 = [(HomeViewController *)self->_homeViewController view];
+        v77 = [v81 topAnchor];
+        v79 = [(ContaineeViewController *)self contentView];
+        v75 = [v79 topAnchor];
+        v73 = [v77 constraintEqualToAnchor:v75];
+        v83[0] = v73;
+        v71 = [(HomeViewController *)self->_homeViewController view];
+        v68 = [v71 leadingAnchor];
+        v69 = [(ContaineeViewController *)self contentView];
+        v67 = [v69 leadingAnchor];
+        v31 = [v68 constraintEqualToAnchor:v67];
+        v83[1] = v31;
+        v32 = [(HomeViewController *)self->_homeViewController view];
+        v33 = [v32 trailingAnchor];
+        v34 = [(ContaineeViewController *)self contentView];
+        v35 = [v34 trailingAnchor];
+        v36 = [v33 constraintEqualToAnchor:v35];
+        v37 = self->_homeViewControllerBottomConstraint;
+        v83[2] = v36;
+        v83[3] = v37;
+        v38 = [NSArray arrayWithObjects:v83 count:4];
+        [NSLayoutConstraint activateConstraints:v38];
+
+        v6 = 0;
+      }
+
+      [(HomeViewController *)self->_homeViewController setActive:1];
+      [(UIButton *)self->_userProfileButton setHidden:[(PassthruSearchBar *)self->_searchBar isHidden]];
+      v39 = [(SearchViewController *)self closeSearchResultsButton];
+      v40 = [(SearchViewController *)self searchResultsViewController];
+      [v39 setHidden:v40 == 0];
+
+      [(SearchViewController *)self _updateUserProfileEntryPointButton];
+      if (sub_10000FA08(self) == 5)
+      {
+        v41 = [(HomeViewController *)self->_homeViewController view];
+        [v41 setAlpha:1.0];
+      }
+
+      v11 = [(HomeViewController *)self->_homeViewController scrollView];
+      [(ContaineeViewController *)self setContentScrollView:v11 forEdge:1];
+      goto LABEL_42;
+    }
+
+    [(SearchViewController *)self updateIsTouristHereValue];
+    objc_storeStrong(&self->_currentDataSource, a3);
+    if ([(SearchViewController *)self _showsContentInDropDownMenu]&& (dropDownView = self->_dropDownView) != 0)
+    {
+      v10 = dropDownView;
+    }
+
+    else
+    {
+      v10 = [(ContaineeViewController *)self contentView];
+    }
+
+    v11 = v10;
+    v12 = [(DataSource *)v6 presentationStyle];
+    if (v12 == 1)
+    {
+      p_collectionView = &self->_collectionView;
+      [(UICollectionView *)self->_collectionView setDelegate:v6];
+      if ([(DataSource *)v6 conformsToProtocol:&OBJC_PROTOCOL___DataSourceCollectionView])
+      {
+        v42 = [(DataSource *)v6 collectionViewDiffableDataSource];
+        [*p_collectionView setDataSource:v42];
+
+        v43 = [(DataSource *)v6 collectionViewLayout];
+        [*p_collectionView setCollectionViewLayout:v43];
+      }
+
+      [(UITableView *)self->_contentTableView removeFromSuperview];
+      v16 = *p_collectionView;
+      v44 = *p_collectionView;
+      v45 = [(SearchViewController *)self menuController];
+      [v45 setTrackedScrollview:v44];
+
+      if ([(SearchViewController *)self _showsContentInDropDownMenu])
+      {
+        goto LABEL_38;
+      }
+    }
+
+    else
+    {
+      if (v12)
+      {
+        v16 = 0;
+        goto LABEL_38;
+      }
+
+      p_collectionView = &self->_contentTableView;
+      [(UITableView *)self->_contentTableView setDelegate:v6];
+      if ([(DataSource *)v6 conformsToProtocol:&OBJC_PROTOCOL___UITableViewDataSource])
+      {
+        [*p_collectionView setDataSource:v6];
+      }
+
+      v14 = +[MapsDragAndDropManager sharedManager];
+      v15 = [v14 deviceSupportsDragAndDrop];
+
+      if (v15)
+      {
+        [*p_collectionView setDragDelegate:v6];
+      }
+
+      [(UICollectionView *)self->_collectionView removeFromSuperview];
+      v16 = *p_collectionView;
+      if (sub_10000FA08(self) == 5)
+      {
+        [*p_collectionView setSeparatorStyle:0];
+      }
+
+      v17 = *p_collectionView;
+      v18 = [(SearchViewController *)self menuController];
+      [v18 setTrackedScrollview:v17];
+    }
+
+    [(ContaineeViewController *)self setContentScrollView:*p_collectionView forEdge:1];
+LABEL_38:
+    v46 = sub_10000FA08(self);
+    homeViewController = self->_homeViewController;
+    v82 = v6;
+    if (v46 == 5)
+    {
+      v48 = [(HomeViewController *)homeViewController view];
+      [v48 setAlpha:0.300000012];
+    }
+
+    else
+    {
+      [(HomeViewController *)homeViewController scrollContentToOriginalPosition];
+      [(HomeViewController *)self->_homeViewController willMoveToParentViewController:0];
+      v49 = [(HomeViewController *)self->_homeViewController view];
+      [v49 removeFromSuperview];
+
+      [(HomeViewController *)self->_homeViewController removeFromParentViewController];
+    }
+
+    [v11 insertSubview:v16 atIndex:0];
+    v80 = [v16 topAnchor];
+    v78 = [v11 topAnchor];
+    v76 = [v80 constraintEqualToAnchor:v78];
+    v84[0] = v76;
+    v72 = [v16 leadingAnchor];
+    v70 = [v11 leadingAnchor];
+    v50 = [v72 constraintEqualToAnchor:v70];
+    v84[1] = v50;
+    v51 = [v16 trailingAnchor];
+    v52 = [v11 trailingAnchor];
+    v53 = [v51 constraintEqualToAnchor:v52];
+    v54 = v16;
+    v74 = v16;
+    v55 = v53;
+    v84[2] = v53;
+    v56 = [v54 bottomAnchor];
+    v57 = [v11 bottomAnchor];
+    v58 = [v56 constraintEqualToAnchor:v57];
+    v84[3] = v58;
+    v59 = [NSArray arrayWithObjects:v84 count:4];
+    [NSLayoutConstraint activateConstraints:v59];
+
+    [self->_currentDataSource setActive:1];
+    [(SearchViewController *)self reloadContentTableView];
+
+    v6 = v82;
+LABEL_42:
+  }
+
+  v60 = +[MapsOfflineUIHelper sharedHelper];
+  v61 = [v60 isUsingOfflineMaps];
+
+  if (v61)
+  {
+    if ([(HomeViewController *)self->_homeViewController isActive])
+    {
+      [(UIButton *)self->_userProfileButton setHidden:0];
+      [(PassthruSearchBar *)self->_searchBar setHidden:0];
+      v62 = [(SearchViewController *)self closeSearchResultsButton];
+      [v62 setHidden:1];
+
+      v63 = [(SearchViewController *)self browseModeHeaderView];
+      [v63 setHidden:1];
+    }
+
+    else
+    {
+      v64 = 1;
+      [(PassthruSearchBar *)self->_searchBar setHidden:!self->_supportsFullTextSearch];
+      supportsFullTextSearch = self->_supportsFullTextSearch;
+      v66 = [(SearchViewController *)self browseModeHeaderView];
+      [v66 setHidden:supportsFullTextSearch];
+
+      if (![(SearchViewController *)self isSearchingAlongTheRoute])
+      {
+        v64 = self->_supportsFullTextSearch;
+      }
+
+      v63 = [(SearchViewController *)self browseModeHeaderView];
+      [v63 setButtonHidden:v64];
+    }
+  }
+}
+
+- (void)updateContentState
+{
+  if ([(SearchViewController *)self isViewLoaded])
+  {
+    [(SearchViewController *)self updateDataSource];
+
+    [(SearchViewController *)self resetMapServiceTicket];
+  }
+}
+
+- (PersonalizedItemSource)suggestionsItemSource
+{
+  v2 = [(SearchViewController *)self _homeViewController];
+  v3 = [v2 suggestionsItemSource];
+
+  return v3;
+}
+
+- (void)setPersonalizedItemManager:(id)a3
+{
+  v5 = a3;
+  objc_storeWeak(&self->_personalizedItemManager, v5);
+  searchDataSource = self->_searchDataSource;
+  if (searchDataSource)
+  {
+    [(SearchDataSource *)searchDataSource setMapPersonalizedItems:v5];
+  }
+}
+
+- (void)popoverDismissed:(id)a3
+{
+  v4 = a3;
+  if (__PAIR64__(self->_didPresentPopover, self->_userSelectedSearchBar) == 0x100000001)
+  {
+    v5[0] = _NSConcreteStackBlock;
+    v5[1] = 3221225472;
+    v5[2] = sub_100998E44;
+    v5[3] = &unk_101661738;
+    v5[4] = self;
+    [UIView animateWithDuration:&stru_1016305C8 animations:v5 completion:0.0];
+    self->_userSelectedSearchBar = 0;
+    self->_didPresentPopover = 0;
+  }
+}
+
+- (void)preferredContentSizeChanged:(id)a3
+{
+  [(PassthruSearchBar *)self->_searchBar invalidateIntrinsicContentSize];
+  v4 = [(SearchViewController *)self view];
+  [v4 setNeedsLayout];
+
+  [(SearchViewController *)self reloadContentTableView];
+}
+
+- (id)searchDataSource
+{
+  if ([(SearchViewController *)self isViewLoaded])
+  {
+    searchDataSource = self->_searchDataSource;
+    if (!searchDataSource)
+    {
+      v4 = [[SearchDataSource alloc] initWithTableView:self->_contentTableView];
+      WeakRetained = objc_loadWeakRetained(&self->_deferredSearchDataSourceDelegate);
+      v6 = WeakRetained;
+      if (WeakRetained)
+      {
+        v7 = WeakRetained;
+      }
+
+      else
+      {
+        v7 = self;
+      }
+
+      [(DataSource *)v4 setDelegate:v7];
+
+      v8 = [(SearchViewController *)self personalizedItemManager];
+      [(SearchDataSource *)v4 setMapPersonalizedItems:v8];
+
+      v9 = [(ControlContaineeViewController *)self delegate];
+      v10 = [v9 userLocationSearchResult];
+      [(SearchDataSource *)v4 setUserLocationSearchResult:v10];
+
+      [(SearchDataSource *)v4 setSearchAlongRoute:[(SearchViewController *)self isSearchingAlongTheRoute]];
+      [(SearchDataSource *)v4 setCanShowQueryAccelerator:1];
+      v11 = self->_searchDataSource;
+      self->_searchDataSource = v4;
+
+      objc_storeWeak(&self->_deferredSearchDataSourceDelegate, 0);
+      searchDataSource = self->_searchDataSource;
+    }
+
+    v12 = searchDataSource;
+  }
+
+  else
+  {
+    v12 = 0;
+  }
+
+  return v12;
+}
+
+- (id)searchHomeDataSource
+{
+  if ([(SearchViewController *)self isViewLoaded])
+  {
+    searchHomeDataSource = self->_searchHomeDataSource;
+    if (!searchHomeDataSource)
+    {
+      v4 = [[SearchHomeDataSource alloc] initWithCollectionView:self->_collectionView parentViewController:self updateLocation:0 isSearchAlongRoute:[(SearchViewController *)self isSearchingAlongTheRoute] supportsFullTextSearch:self->_supportsFullTextSearch];
+      [(DataSource *)v4 setDelegate:self];
+      [(SearchHomeDataSource *)v4 setSearchHomeDataSourceDelegate:self];
+      v5 = self->_searchHomeDataSource;
+      self->_searchHomeDataSource = v4;
+
+      searchHomeDataSource = self->_searchHomeDataSource;
+    }
+
+    v6 = searchHomeDataSource;
+  }
+
+  else
+  {
+    v6 = 0;
+  }
+
+  return v6;
+}
+
+- (void)didResignCurrent
+{
+  [(SearchViewController *)self _internalViewDidDisappear];
+  if ([(SearchViewController *)self isShowingOmnipresentSearchBar])
+  {
+    v3 = [(SearchViewController *)self searchResultsViewController];
+    v4 = v3;
+    if (v3)
+    {
+      [v3 didResignCurrent];
+    }
+  }
+
+  v5.receiver = self;
+  v5.super_class = SearchViewController;
+  [(ContaineeViewController *)&v5 didResignCurrent];
+}
+
+- (void)willResignCurrent:(BOOL)a3
+{
+  v3 = a3;
+  [(SearchViewController *)self _internalViewWillDisappear];
+  v7.receiver = self;
+  v7.super_class = SearchViewController;
+  [(ContaineeViewController *)&v7 willResignCurrent:v3];
+  if (!self->_maintainSearchStateWhenDisappearing)
+  {
+    currentDataSource = self->_currentDataSource;
+    if (!currentDataSource)
+    {
+      currentDataSource = self->_homeViewController;
+    }
+
+    [currentDataSource setActive:0];
+  }
+
+  self->_maintainSearchStateWhenDisappearing = 0;
+  [(SearchViewController *)self _hideSearchHereControl];
+  v6 = +[NSNotificationCenter defaultCenter];
+  [v6 postNotificationName:@"SearchWillResignCurrentNotification" object:self];
+}
+
+- (void)didBecomeCurrent
+{
+  v5.receiver = self;
+  v5.super_class = SearchViewController;
+  [(ContaineeViewController *)&v5 didBecomeCurrent];
+  [(SearchViewController *)self _internalViewDidAppear];
+  if ([(SearchViewController *)self isShowingOmnipresentSearchBar])
+  {
+    v3 = [(SearchViewController *)self searchResultsViewController];
+    v4 = v3;
+    if (v3)
+    {
+      [v3 didBecomeCurrent];
+    }
+  }
+}
+
+- (void)willBecomeCurrentByGesture
+{
+  v5.receiver = self;
+  v5.super_class = SearchViewController;
+  [(ContaineeViewController *)&v5 willBecomeCurrentByGesture];
+  [(SearchViewController *)self _restoreRetainedQueryIfNeeded];
+  if ([(SearchViewController *)self isShowingOmnipresentSearchBar])
+  {
+    v3 = [(SearchViewController *)self searchResultsViewController];
+    v4 = v3;
+    if (v3)
+    {
+      [v3 willBecomeCurrentByGesture];
+    }
+  }
+}
+
+- (void)willBecomeCurrent:(BOOL)a3
+{
+  v3 = a3;
+  v10.receiver = self;
+  v10.super_class = SearchViewController;
+  [(ContaineeViewController *)&v10 willBecomeCurrent:?];
+  [(SearchViewController *)self _internalViewWillAppear];
+  v5 = [(ControlContaineeViewController *)self delegate];
+  [v5 updateHistoricalLocations];
+
+  currentDataSource = self->_currentDataSource;
+  if (!currentDataSource)
+  {
+    currentDataSource = self->_homeViewController;
+  }
+
+  [currentDataSource setActive:1];
+  if ([(SearchViewController *)self isShowingOmnipresentSearchBar])
+  {
+    v7 = [(SearchViewController *)self searchResultsViewController];
+    v8 = v7;
+    if (v7)
+    {
+      [v7 willBecomeCurrent:v3];
+    }
+  }
+
+  v9 = +[NSNotificationCenter defaultCenter];
+  [v9 postNotificationName:@"SearchWillBecomeCurrentNotification" object:self];
+}
+
+- (double)topSpaceForScrollPocket
+{
+  v3 = [(SearchViewController *)self searchResultsViewController];
+  v4 = v3;
+  if (v3)
+  {
+    [v3 topSpaceForScrollPocket];
+LABEL_6:
+    v10 = v5;
+    goto LABEL_7;
+  }
+
+  if (sub_10000FA08(self) != 5)
+  {
+    v12.receiver = self;
+    v12.super_class = SearchViewController;
+    [(ContaineeViewController *)&v12 topSpaceForScrollPocket];
+    goto LABEL_6;
+  }
+
+  v6 = [(ContaineeViewController *)self headerView];
+  [v6 frame];
+  MaxY = CGRectGetMaxY(v13);
+  v8 = [(SearchViewController *)self view];
+  [v8 safeAreaInsets];
+  v10 = MaxY - v9;
+
+LABEL_7:
+  return v10;
+}
+
+- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+{
+  v16 = a3;
+  v5 = [v16 nextFocusedItem];
+  if (!v5)
+  {
+    goto LABEL_5;
+  }
+
+  dropDownView = self->_dropDownView;
+  if (!dropDownView)
+  {
+    goto LABEL_5;
+  }
+
+  v7 = [v16 nextFocusedItem];
+  if ([UIFocusSystem environment:dropDownView containsEnvironment:v7])
+  {
+
+LABEL_5:
+    goto LABEL_6;
+  }
+
+  v12 = [v16 nextFocusedItem];
+  v13 = [UIFocusSystem environment:self containsEnvironment:v12];
+
+  if ((v13 & 1) == 0)
+  {
+    [(SearchViewController *)self showDropDownIfNeeded:0];
+  }
+
+LABEL_6:
+  if (sub_10000FA08(self) != 5 && self->_homeViewController)
+  {
+    v8 = [UIFocusSystem focusSystemForEnvironment:?];
+    v9 = [v8 focusedItem];
+
+    if (!v9)
+    {
+LABEL_18:
+
+      goto LABEL_19;
+    }
+
+    v10 = [(ContaineeViewController *)self cardPresentationController];
+    if ([v10 containerStyle] == 6)
+    {
+      v11 = [(ContaineeViewController *)self cardPresentationController];
+      if ([v11 containeeLayout] == 1)
+      {
+      }
+
+      else
+      {
+        v14 = [(ContaineeViewController *)self cardPresentationController];
+        v15 = [v14 containeeLayout];
+
+        if (v15 != 2)
+        {
+LABEL_17:
+          self->_searchFieldWantsFocus = 1;
+          goto LABEL_18;
+        }
+      }
+
+      v10 = [(ContaineeViewController *)self cardPresentationController];
+      [v10 wantsLayout:3];
+    }
+
+    goto LABEL_17;
+  }
+
+LABEL_19:
+}
+
+- (void)handleDismissAction:(id)a3
+{
+  if ([(HomeViewController *)self->_homeViewController isActive])
+  {
+    v4 = [(SearchViewController *)self presentedViewController];
+    v5 = v4;
+    if (v4)
+    {
+      v7 = v4;
+      v6 = [v4 conformsToProtocol:&OBJC_PROTOCOL___ContaineeProtocol];
+      v5 = v7;
+      if ((v6 & 1) == 0)
+      {
+        [v7 dismissViewControllerAnimated:1 completion:0];
+        v5 = v7;
+      }
+    }
+  }
+
+  else
+  {
+
+    [(SearchViewController *)self endSearch];
+  }
+}
+
+- (id)offlinePlaceholderKey
+{
+  v2 = +[NSLocale preferredLanguages];
+  v3 = [v2 firstObject];
+  v4 = [NSString stringWithFormat:@"%@-%@", @"__internal__searchBarOfflinePlaceholder", v3];
+
+  return v4;
+}
+
+- (id)browseOfflineMapsString
+{
+  v2 = +[NSBundle mainBundle];
+  v3 = [v2 localizedStringForKey:@"Browse Offline Maps" value:@"localized string not found" table:0];
+
+  return v3;
+}
+
+- (MapsDragDestinationHandler)mapsDragDestinationHandler
+{
+  mapsDragDestinationHandler = self->_mapsDragDestinationHandler;
+  if (!mapsDragDestinationHandler)
+  {
+    v4 = objc_alloc_init(MapsDragDestinationHandler);
+    v5 = self->_mapsDragDestinationHandler;
+    self->_mapsDragDestinationHandler = v4;
+
+    v6 = [(ControlContaineeViewController *)self delegate];
+    [(MapsDragDestinationHandler *)self->_mapsDragDestinationHandler setDelegate:v6];
+
+    mapsDragDestinationHandler = self->_mapsDragDestinationHandler;
+  }
+
+  return mapsDragDestinationHandler;
+}
+
+- (void)presentUserProfile
+{
+  +[UserProfileAnalyticsManager captureEnterAccountTapAction];
+  v3 = [(SearchViewController *)self homeActionCoordinator];
+  [v3 viewControllerPresentUserProfile:self];
+}
+
+- (UIEdgeInsets)_calculateAccessoryTouchInsets
+{
+  v2 = [(SearchViewController *)self view];
+  v3 = [v2 effectiveUserInterfaceLayoutDirection];
+
+  v4 = -16.0;
+  if (v3 == 1)
+  {
+    v5 = -16.0;
+  }
+
+  else
+  {
+    v5 = -8.0;
+  }
+
+  if (v3 == 1)
+  {
+    v6 = -8.0;
+  }
+
+  else
+  {
+    v6 = -16.0;
+  }
+
+  v7 = -16.0;
+  result.right = v6;
+  result.bottom = v4;
+  result.left = v5;
+  result.top = v7;
+  return result;
+}
+
+- (double)_searchBarAccessoryWidth
+{
+  v3 = 0.0;
+  if (sub_10000FA08(self) != 5 && ![(SearchViewController *)self isSearchingAlongTheRoute])
+  {
+    v4 = [(SearchViewController *)self closeSearchResultsButton];
+    v5 = [v4 isHidden];
+
+    if (v5)
+    {
+      if ([(UIButton *)self->_userProfileButton isHidden])
+      {
+        return 0.0;
+      }
+
+      else
+      {
+        return 44.0;
+      }
+    }
+
+    else
+    {
+      return 44.0;
+    }
+  }
+
+  return v3;
+}
+
+- (UIEdgeInsets)_calculateSearchBarInsets
+{
+  if (sub_10000FA08(self) == 5)
+  {
+    v3 = [(SearchViewController *)self view];
+    [v3 safeAreaInsets];
+    v4 = 3.0;
+    v6 = v5 + 3.0;
+
+    v7 = 15.0;
+    v8 = 15.0;
+  }
+
+  else
+  {
+    [(SearchViewController *)self _searchBarAccessoryWidth];
+    v6 = 16.0;
+    if (v9 <= 0.0)
+    {
+      v10 = 16.0;
+    }
+
+    else
+    {
+      v10 = v9 + 24.0;
+    }
+
+    v11 = [(SearchViewController *)self view];
+    v12 = [v11 effectiveUserInterfaceLayoutDirection];
+
+    if (v12 == 1)
+    {
+      v7 = v10;
+    }
+
+    else
+    {
+      v7 = 16.0;
+    }
+
+    if (v12 == 1)
+    {
+      v8 = 16.0;
+    }
+
+    else
+    {
+      v8 = v10;
+    }
+
+    v4 = 16.0;
+  }
+
+  v13 = v6;
+  v14 = v4;
+  result.right = v8;
+  result.bottom = v14;
+  result.left = v7;
+  result.top = v13;
+  return result;
+}
+
+- (void)viewSafeAreaInsetsDidChange
+{
+  v3.receiver = self;
+  v3.super_class = SearchViewController;
+  [(SearchViewController *)&v3 viewSafeAreaInsetsDidChange];
+  [(SearchViewController *)self updateSearchBarContentInsets];
+}
+
+- (void)updateSearchBarContentInsets
+{
+  [(SearchViewController *)self _calculateSearchBarInsets];
+  v4 = v3;
+  v6 = v5;
+  v8 = v7;
+  v10 = v9;
+  v11 = [(SearchViewController *)self searchBar];
+  [v11 contentInset];
+  if (v6 == v15 && v4 == v12 && v10 == v14)
+  {
+    v18 = v13;
+
+    if (v8 == v18)
+    {
+      return;
+    }
+  }
+
+  else
+  {
+  }
+
+  v19 = [(SearchViewController *)self searchBar];
+  [v19 setContentInset:{v4, v6, v8, v10}];
+}
+
+- (id)createConstraintsForSearchBarAccessoryView:(id)a3
+{
+  v4 = a3;
+  v5 = [v4 centerYAnchor];
+  v6 = [(ContaineeViewController *)self headerView];
+  v7 = [v6 centerYAnchor];
+  v8 = [v5 constraintEqualToAnchor:v7];
+  v15[0] = v8;
+  v9 = [v4 trailingAnchor];
+
+  v10 = [(ContaineeViewController *)self headerView];
+  v11 = [v10 trailingAnchor];
+  v12 = [v9 constraintEqualToAnchor:v11 constant:-16.0];
+  v15[1] = v12;
+  v13 = [NSArray arrayWithObjects:v15 count:2];
+
+  return v13;
+}
+
+- (void)viewDidLayoutSubviews
+{
+  v7.receiver = self;
+  v7.super_class = SearchViewController;
+  [(ContaineeViewController *)&v7 viewDidLayoutSubviews];
+  v3 = [(SearchViewController *)self currentDataSource];
+  searchDataSource = self->_searchDataSource;
+  if (v3 == searchDataSource)
+  {
+    v5 = [(SearchDataSource *)searchDataSource shouldReloadOnHeightChange];
+
+    if (v5)
+    {
+      [(SearchViewController *)self reloadContentTableView];
+    }
+  }
+
+  else
+  {
+  }
+
+  v6 = [(ContaineeViewController *)self cardPresentationController];
+  -[SearchViewController _updateDefaultLayoutWithContainerStyle:](self, "_updateDefaultLayoutWithContainerStyle:", [v6 containerStyle]);
+}
+
+- (Class)viewClass
+{
+  if (sub_10000FA08(self) == 5)
+  {
+    v3 = objc_opt_class();
+  }
+
+  else
+  {
+    v5.receiver = self;
+    v5.super_class = SearchViewController;
+    v3 = [(ContaineeViewController *)&v5 viewClass];
+  }
+
+  return v3;
+}
+
+- (void)viewDidDisappear:(BOOL)a3
+{
+  v3 = a3;
+  v5 = +[UIDevice currentDevice];
+  v6 = [v5 userInterfaceIdiom];
+
+  if (v6 == 5)
+  {
+    [(SearchViewController *)self _internalViewDidDisappear];
+  }
+
+  v7.receiver = self;
+  v7.super_class = SearchViewController;
+  [(SearchViewController *)&v7 viewDidDisappear:v3];
+}
+
+- (void)viewWillDisappear:(BOOL)a3
+{
+  v3 = a3;
+  v5 = sub_1000410AC();
+  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  {
+    *buf = 0;
+    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "SVC viewWillDisappear", buf, 2u);
+  }
+
+  v6 = +[UIDevice currentDevice];
+  v7 = [v6 userInterfaceIdiom];
+
+  if (v7 == 5)
+  {
+    [(SearchViewController *)self _internalViewWillDisappear];
+  }
+
+  v8.receiver = self;
+  v8.super_class = SearchViewController;
+  [(ContaineeViewController *)&v8 viewWillDisappear:v3];
+  [(SearchViewController *)self _hideSearchHereControl];
+}
+
+- (void)viewWillAppear:(BOOL)a3
+{
+  v3 = a3;
+  v5 = sub_1000410AC();
+  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  {
+    *buf = 0;
+    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "SVC viewWillAppear", buf, 2u);
+  }
+
+  v8.receiver = self;
+  v8.super_class = SearchViewController;
+  [(ContaineeViewController *)&v8 viewWillAppear:v3];
+  v6 = +[UIDevice currentDevice];
+  v7 = [v6 userInterfaceIdiom];
+
+  if (v7 == 5)
+  {
+    [(SearchViewController *)self _internalViewWillAppear];
+  }
+}
+
+- (void)viewDidAppear:(BOOL)a3
+{
+  v6.receiver = self;
+  v6.super_class = SearchViewController;
+  [(SearchViewController *)&v6 viewDidAppear:a3];
+  v4 = +[UIDevice currentDevice];
+  v5 = [v4 userInterfaceIdiom];
+
+  if (v5 == 5)
+  {
+    [(SearchViewController *)self _internalViewDidAppear];
+  }
+}
+
+- (void)_internalViewDidDisappear
+{
+  v3 = [(ControlContaineeViewController *)self delegate];
+  v4 = [v3 venuesManager];
+  [v4 removeChangeObserver:self];
+
+  objc_initWeak(&location, self);
+  v5 = dispatch_time(0, 250000000);
+  v6[0] = _NSConcreteStackBlock;
+  v6[1] = 3221225472;
+  v6[2] = sub_10099A220;
+  v6[3] = &unk_101661B98;
+  objc_copyWeak(&v7, &location);
+  dispatch_after(v5, &_dispatch_main_q, v6);
+  objc_destroyWeak(&v7);
+  objc_destroyWeak(&location);
+}
+
+- (void)_internalViewWillDisappear
+{
+  [(SearchViewController *)self _enableTextFieldNotification:0];
+  [(SearchViewController *)self showDropDownIfNeeded:0];
+
+  [(SearchViewController *)self showDropDownIfNeeded:0];
+}
+
+- (void)_internalViewDidAppear
+{
+  [(SearchViewController *)self _enableTextFieldNotification:1];
+  if (self->_needsToBecomeFirstResponder)
+  {
+
+    [(SearchViewController *)self searchBarBecomeFirstResponder];
+  }
+}
+
+- (void)_enableTextFieldNotification:(BOOL)a3
+{
+  v3 = a3;
+  v5 = +[NSNotificationCenter defaultCenter];
+  v6 = v5;
+  if (v3)
+  {
+    [v5 addObserver:self selector:"_textFieldDidChange:" name:UITextFieldTextDidChangeNotification object:self->_searchField];
+  }
+
+  else
+  {
+    [v5 removeObserver:self name:UITextFieldTextDidChangeNotification object:self->_searchField];
+  }
+}
+
+- (void)_initPlaceholderWithSubmitTicketIfNeeded:(BOOL)a3
+{
+  v3 = a3;
+  if ((+[UIApplication shouldMakeUIForDefaultPNG]& 1) == 0)
+  {
+    if (v3)
+    {
+      v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
+      v6 = dispatch_queue_create("com.apple.Maps.search.placeholder", v5);
+      placeholderQueue = self->_placeholderQueue;
+      self->_placeholderQueue = v6;
+
+      objc_initWeak(&location, self);
+      v8 = self->_placeholderQueue;
+      v9[0] = _NSConcreteStackBlock;
+      v9[1] = 3221225472;
+      v9[2] = sub_10099A510;
+      v9[3] = &unk_101661B98;
+      objc_copyWeak(&v10, &location);
+      dispatch_async(v8, v9);
+      objc_destroyWeak(&v10);
+      objc_destroyWeak(&location);
+    }
+
+    else
+    {
+
+      [(SearchViewController *)self _setPlaceHolder];
+    }
+  }
+}
+
+- (void)_initOfflinePlaceHolderWithCompletion:(id)a3
+{
+  v4 = a3;
+  if (!self->_isOfflineServiceRunning)
+  {
+    self->_isOfflineServiceRunning = 1;
+    objc_initWeak(&location, self);
+    v5 = [(SearchViewController *)self offlinePlaceholderQueue];
+    block[0] = _NSConcreteStackBlock;
+    block[1] = 3221225472;
+    block[2] = sub_10099A894;
+    block[3] = &unk_101660648;
+    objc_copyWeak(&v8, &location);
+    v7 = v4;
+    dispatch_async(v5, block);
+
+    objc_destroyWeak(&v8);
+    objc_destroyWeak(&location);
+  }
+}
+
+- (void)logOfflineBrowseMode:(BOOL)a3
+{
+  if (!a3 && (!self->_isOfflineBrowseRecordedAlready || self->_supportsFullTextSearch))
+  {
+    v4 = +[MKMapService sharedService];
+    [v4 captureUserAction:45 onTarget:1708 eventValue:0];
+  }
+}
+
+- (void)resetOfflineTextSearchSupport
+{
+  objc_initWeak(&location, self);
+  v3[0] = _NSConcreteStackBlock;
+  v3[1] = 3221225472;
+  v3[2] = sub_10099AD2C;
+  v3[3] = &unk_101661B98;
+  objc_copyWeak(&v4, &location);
+  [(SearchViewController *)self _initOfflinePlaceHolderWithCompletion:v3];
+  objc_destroyWeak(&v4);
+  objc_destroyWeak(&location);
+}
+
+- (void)_setupOfflinePlaceholder
+{
+  v3 = +[NSLocale preferredLanguages];
+  v4 = [v3 firstObject];
+  v9 = [NSString stringWithFormat:@"%@-%@", @"__internal__searchBarOfflinePlaceholder", v4];
+
+  v5 = +[NSUserDefaults standardUserDefaults];
+  v6 = [v5 objectForKey:v9];
+
+  if (v6)
+  {
+    [(UITextField *)self->_searchField setPlaceholder:v6];
+  }
+
+  else
+  {
+    v7 = [(SearchViewController *)self browseOfflineMapsString];
+    [(UITextField *)self->_searchField setPlaceholder:v7];
+  }
+
+  v8 = [(UITextField *)self->_searchField _placeholderLabel];
+  [v8 setAllowsDefaultTighteningForTruncation:1];
+}
+
+- (void)_offlineSettingChangeHandler
+{
+  v3 = sub_100067540();
+  if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
+  {
+    v4 = +[MapsOfflineUIHelper sharedHelper];
+    v5 = [v4 isUsingOfflineMaps];
+    v6 = @"NO";
+    if (v5)
+    {
+      v6 = @"YES";
+    }
+
+    v7 = v6;
+    v12 = 138412290;
+    v13 = v7;
+    _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Offline setting has changed. New value is : %@", &v12, 0xCu);
+  }
+
+  v8 = +[MapsOfflineUIHelper sharedHelper];
+  v9 = [v8 isUsingOfflineMaps];
+
+  if (v9)
+  {
+    [(SearchViewController *)self _setupOfflinePlaceholder];
+    [(SearchViewController *)self _initOfflinePlaceHolderWithCompletion:0];
+  }
+
+  else
+  {
+    [(SearchViewController *)self _setupOnlinePlaceholder];
+    v10 = sub_100067540();
+    if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+    {
+      LOWORD(v12) = 0;
+      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Setting the placeholder string for online mode", &v12, 2u);
+    }
+  }
+
+  searchHomeDataSource = self->_searchHomeDataSource;
+  self->_searchHomeDataSource = 0;
+}
+
+- (void)_shouldHideOfflineHeaderView:(BOOL)a3
+{
+  v3 = a3;
+  v5 = [(SearchViewController *)self browseModeHeaderView];
+  [v5 setHidden:v3];
+
+  [(PassthruSearchBar *)self->_searchBar setHidden:v3 ^ 1];
+  [(UIButton *)self->_userProfileButton setHidden:v3 ^ 1];
+
+  [(SearchViewController *)self _updateUserProfileEntryPointButton];
+}
+
+- (id)offlinePlaceholderQueue
+{
+  offlinePlaceholderQueue = self->_offlinePlaceholderQueue;
+  if (!offlinePlaceholderQueue)
+  {
+    v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
+    v5 = dispatch_queue_create("com.apple.Maps.search.offline.placeholder", v4);
+    v6 = self->_offlinePlaceholderQueue;
+    self->_offlinePlaceholderQueue = v5;
+
+    offlinePlaceholderQueue = self->_offlinePlaceholderQueue;
+  }
+
+  return offlinePlaceholderQueue;
+}
+
+- (id)browseModeHeaderView
+{
+  offlineBrowseHeaderView = self->_offlineBrowseHeaderView;
+  if (!offlineBrowseHeaderView)
+  {
+    v4 = [[ContainerHeaderView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
+    v5 = self->_offlineBrowseHeaderView;
+    self->_offlineBrowseHeaderView = v4;
+
+    [(ContainerHeaderView *)self->_offlineBrowseHeaderView setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(ContainerHeaderView *)self->_offlineBrowseHeaderView setDelegate:self];
+    [(ContainerHeaderView *)self->_offlineBrowseHeaderView setHeaderSize:2];
+    [(ContainerHeaderView *)self->_offlineBrowseHeaderView setHairLineAlpha:0.0];
+    v6 = +[UIColor clearColor];
+    [(ContainerHeaderView *)self->_offlineBrowseHeaderView setBackgroundColor:v6];
+
+    v7 = +[NSBundle mainBundle];
+    v8 = [v7 localizedStringForKey:@"Browse" value:@"localized string not found" table:@"Offline"];
+    [(ContainerHeaderView *)self->_offlineBrowseHeaderView setTitle:v8];
+
+    v9 = [(ContaineeViewController *)self headerView];
+    v10 = [(SearchViewController *)self browseModeHeaderView];
+    [v9 addSubview:v10];
+
+    v11 = [(SearchViewController *)self browseModeHeaderView];
+    v12 = [(ContaineeViewController *)self headerView];
+    v13 = [v11 _maps_constraintsForCenteringInView:v12 edgeInsets:{UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
+    [NSLayoutConstraint activateConstraints:v13];
+
+    offlineBrowseHeaderView = self->_offlineBrowseHeaderView;
+  }
+
+  return offlineBrowseHeaderView;
+}
+
+- (id)targetForAction:(SEL)a3 withSender:(id)a4
+{
+  homeViewController = self->_homeViewController;
+  v7 = a4;
+  if ([(HomeViewController *)homeViewController isActive])
+  {
+    v8 = [(HomeViewController *)self->_homeViewController targetForAction:a3 withSender:v7];
+  }
+
+  else
+  {
+    v11.receiver = self;
+    v11.super_class = SearchViewController;
+    v8 = [(SearchViewController *)&v11 targetForAction:a3 withSender:v7];
+  }
+
+  v9 = v8;
+
+  return v9;
+}
+
+- (id)keyCommands
+{
+  if ([(HomeViewController *)self->_homeViewController isActive]&& ([(SearchViewController *)self presentedViewController], v3 = objc_claimAutoreleasedReturnValue(), v3, !v3))
+  {
+    v4 = [(HomeViewController *)self->_homeViewController keyCommands];
+  }
+
+  else
+  {
+    v9.receiver = self;
+    v9.super_class = SearchViewController;
+    v4 = [(ContaineeViewController *)&v9 keyCommands];
+    if (self->_currentDataSource == &self->_searchHomeDataSource->super)
+    {
+      v5 = [(SearchViewController *)self presentedViewController];
+
+      if (!v5)
+      {
+        v6 = [(SearchHomeDataSource *)self->_searchHomeDataSource keyCommands];
+        v7 = [v4 arrayByAddingObjectsFromArray:v6];
+
+        v4 = v7;
+      }
+    }
+  }
+
+  return v4;
+}
+
+- (void)updateTheme
+{
+  v7.receiver = self;
+  v7.super_class = SearchViewController;
+  [(MapsThemeViewController *)&v7 updateTheme];
+  v3 = [(SearchViewController *)self theme];
+  v4 = [v3 searchBarPlaceHolderColor];
+  v5 = [(UITextField *)self->_searchField _placeholderLabel];
+  [v5 setTextColor:v4];
+
+  v6 = [(SearchViewController *)self theme];
+  -[UITextField setKeyboardAppearance:](self->_searchField, "setKeyboardAppearance:", [v6 textFieldKeyboardAppearance]);
+
+  [(UITableView *)self->_contentTableView reloadData];
+}
+
+- (SearchViewController)initWithHomeActionDelegate:(id)a3 searchDataSourceDelegate:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  v8 = [(SearchViewController *)self init];
+  v9 = v8;
+  if (v8)
+  {
+    objc_storeWeak(&v8->_deferredHomeActionDelegate, v6);
+    objc_storeWeak(&v9->_deferredSearchDataSourceDelegate, v7);
+  }
+
+  return v9;
+}
+
+- (SearchViewController)initWithSearchAlongRoute:(BOOL)a3
+{
+  v3 = a3;
+  v4 = [(SearchViewController *)self init];
+  v5 = v4;
+  if (v4)
+  {
+    [(SearchViewController *)v4 setSearchingAlongTheRoute:v3];
+    v6 = [[SearchHomeAnalyticsManager alloc] initWithSearchAlongRoute:v3];
+    [(SearchViewController *)v5 setAnalyticsManager:v6];
+
+    v5->_isOfflineBrowseRecordedAlready = 0;
+    v7 = +[MapsOfflineUIHelper sharedHelper];
+    v8 = [v7 isUsingOfflineMaps];
+
+    if (v8)
+    {
+      [(SearchViewController *)v5 _initOfflinePlaceHolderWithCompletion:0];
+    }
+  }
+
+  return v5;
+}
+
+- (void)endSearchForTesting
+{
+  [(SearchViewController *)self endSearch];
+  v3 = [(SearchViewController *)self searchBar];
+  [v3 setText:&stru_1016631F0];
+}
+
+- (void)closeSearchResultsButtonAction:(id)a3
+{
+  v4 = [(SearchViewController *)self searchResultsViewController];
+  if (v4)
+  {
+    +[SearchResultsAnalyticsManager logCloseSearchResults];
+    [v4 willMoveToParentViewController:0];
+    v5 = [v4 view];
+    [v5 removeFromSuperview];
+
+    [v4 removeFromParentViewController];
+    v6 = [(SearchViewController *)self closeSearchResultsButton];
+    [v6 setHidden:1];
+
+    v11[0] = _NSConcreteStackBlock;
+    v11[1] = 3221225472;
+    v11[2] = sub_100E303EC;
+    v11[3] = &unk_101661B18;
+    v11[4] = self;
+    v7 = objc_retainBlock(v11);
+    v8 = [(ContaineeViewController *)self cardPresentationController];
+    [v8 applyWithAnimations:v7 completion:&stru_101655C98];
+  }
+
+  else
+  {
+    v9 = sub_100067540();
+    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    {
+      *v10 = 0;
+      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Tried to close search results when they were not present.", v10, 2u);
+    }
+  }
+}
+
+- (void)updateCloseSearchResultEntryPointButton
+{
+  if (sub_10000FA08(self) != 5 && ![(SearchViewController *)self isSearchingAlongTheRoute])
+  {
+
+    [(SearchViewController *)self updateSearchBarContentInsets];
+  }
+}
+
+- (void)addCloseSearchResultsButtonBesidesSearchBar
+{
+  if (![(SearchViewController *)self isSearchingAlongTheRoute])
+  {
+    v3 = +[UIButton _maps_cardButtonCloseButton];
+    [(SearchViewController *)self setCloseSearchResultsButton:v3];
+
+    v4 = [(SearchViewController *)self closeSearchResultsButton];
+    [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+
+    v5 = [(SearchViewController *)self closeSearchResultsButton];
+    [v5 setAccessibilityIdentifier:@"closeSearchResultsButton"];
+
+    v6 = [(SearchViewController *)self closeSearchResultsButton];
+    [v6 addTarget:self action:"closeSearchResultsButtonAction:" forControlEvents:64];
+
+    v7 = [(ContaineeViewController *)self headerView];
+    v8 = [(SearchViewController *)self closeSearchResultsButton];
+    [v7 addSubview:v8];
+
+    v9 = [(SearchViewController *)self closeSearchResultsButton];
+    v10 = [(SearchViewController *)self createConstraintsForSearchBarAccessoryView:v9];
+
+    [NSLayoutConstraint activateConstraints:v10];
+  }
+}
+
+- (void)displaySearchResultsWithViewController:(id)a3 searchBar:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  v8 = +[MapsOfflineUIHelper sharedHelper];
+  if ([v8 isUsingOfflineMaps] && !-[SearchViewController supportsFullTextSearch](self, "supportsFullTextSearch"))
+  {
+    IsEnabled_SearchAndDiscovery = MapsFeature_IsEnabled_SearchAndDiscovery();
+  }
+
+  else
+  {
+    IsEnabled_SearchAndDiscovery = 0;
+  }
+
+  v10 = [(SearchViewController *)self closeSearchResultsButton];
+  [v10 setHidden:IsEnabled_SearchAndDiscovery];
+
+  v11 = [(SearchViewController *)self searchResultsViewController];
+
+  if (!v11)
+  {
+    v12 = sub_100067540();
+    if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+    {
+      [(ContaineeViewController *)self headerHeight];
+      v14 = v13;
+      v56.receiver = self;
+      v56.super_class = SearchViewController;
+      [(ContaineeViewController *)&v56 topSpaceForScrollPocket];
+      v16 = v15;
+      [v7 frame];
+      *buf = 134218496;
+      v59 = v14;
+      v60 = 2048;
+      v61 = v16;
+      v62 = 2048;
+      v63 = v17;
+      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Displaying search results: headerHeight: %f, topSpaceForPocker: %f, searchBarHeight: %f", buf, 0x20u);
+    }
+
+    [(ContaineeViewController *)self headerHeight];
+    v19 = v18;
+    v55.receiver = self;
+    v55.super_class = SearchViewController;
+    [(ContaineeViewController *)&v55 topSpaceForScrollPocket];
+    if (v19 <= v20)
+    {
+      v54.receiver = self;
+      v54.super_class = SearchViewController;
+      [(ContaineeViewController *)&v54 topSpaceForScrollPocket];
+    }
+
+    else
+    {
+      [(ContaineeViewController *)self headerHeight];
+    }
+
+    v22 = v21;
+    [v7 frame];
+    if (v23 > v22)
+    {
+      [v7 frame];
+      v22 = v24;
+    }
+
+    [v6 setTopSpaceForRefinements:v22];
+    v25 = [v6 view];
+    [v25 removeFromSuperview];
+
+    [(SearchViewController *)self addChildViewController:v6];
+    v26 = [(ContaineeViewController *)self contentView];
+    v27 = [v6 view];
+    [v26 addSubview:v27];
+
+    v28 = [v6 view];
+    [v28 setTranslatesAutoresizingMaskIntoConstraints:0];
+
+    v52 = [v6 view];
+    v50 = [v52 leadingAnchor];
+    v51 = [(ContaineeViewController *)self contentView];
+    v49 = [v51 leadingAnchor];
+    v48 = [v50 constraintEqualToAnchor:v49];
+    v57[0] = v48;
+    v47 = [v6 view];
+    v45 = [v47 trailingAnchor];
+    v46 = [(ContaineeViewController *)self contentView];
+    v44 = [v46 trailingAnchor];
+    v43 = [v45 constraintEqualToAnchor:v44];
+    v57[1] = v43;
+    v42 = [v6 view];
+    v40 = [v42 topAnchor];
+    v41 = [(ContaineeViewController *)self contentView];
+    v29 = [v41 topAnchor];
+    v30 = [v40 constraintEqualToAnchor:v29];
+    v57[2] = v30;
+    v31 = [v6 view];
+    [v31 bottomAnchor];
+    v32 = v53 = v6;
+    v33 = [(ContaineeViewController *)self contentView];
+    v34 = [v33 bottomAnchor];
+    v35 = [v32 constraintEqualToAnchor:v34];
+    v57[3] = v35;
+    v36 = [NSArray arrayWithObjects:v57 count:4];
+    [NSLayoutConstraint activateConstraints:v36];
+
+    v6 = v53;
+    [v53 didMoveToParentViewController:self];
+  }
+
+  v37 = [(ContaineeViewController *)self cardPresentationController];
+  if ([v37 containeeLayout] != 3)
+  {
+    goto LABEL_17;
+  }
+
+  v38 = sub_10000FA08(self);
+
+  if (v38 != 5)
+  {
+    v37 = [(ContaineeViewController *)self cardPresentationController];
+    [v37 wantsLayout:2 animated:1];
+LABEL_17:
+  }
+
+  v39 = [(ContaineeViewController *)self cardPresentationController];
+  [v39 updateHeightForCurrentLayout];
+
+  [v7 setShowsCancelButton:0 animated:1];
+}
+
+@end

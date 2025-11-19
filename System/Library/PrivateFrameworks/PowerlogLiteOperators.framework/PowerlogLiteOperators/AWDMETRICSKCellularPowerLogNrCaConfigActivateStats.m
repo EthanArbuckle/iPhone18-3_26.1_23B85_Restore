@@ -1,0 +1,752 @@
+@interface AWDMETRICSKCellularPowerLogNrCaConfigActivateStats
+- (BOOL)isEqual:(id)a3;
+- (id)copyWithZone:(_NSZone *)a3;
+- (id)description;
+- (id)dictionaryRepresentation;
+- (int)StringAsLastSdmState:(id)a3;
+- (int)lastSdmState;
+- (unint64_t)hash;
+- (void)addBin:(id)a3;
+- (void)copyTo:(id)a3;
+- (void)mergeFrom:(id)a3;
+- (void)setHasDurationMs:(BOOL)a3;
+- (void)setHasIsDataPreferred:(BOOL)a3;
+- (void)setHasLastSdmState:(BOOL)a3;
+- (void)setHasSubsId:(BOOL)a3;
+- (void)writeTo:(id)a3;
+@end
+
+@implementation AWDMETRICSKCellularPowerLogNrCaConfigActivateStats
+
+- (void)setHasSubsId:(BOOL)a3
+{
+  if (a3)
+  {
+    v3 = 8;
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  *&self->_has = *&self->_has & 0xF7 | v3;
+}
+
+- (void)setHasDurationMs:(BOOL)a3
+{
+  if (a3)
+  {
+    v3 = 2;
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  *&self->_has = *&self->_has & 0xFD | v3;
+}
+
+- (void)addBin:(id)a3
+{
+  v4 = a3;
+  bins = self->_bins;
+  v8 = v4;
+  if (!bins)
+  {
+    v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
+    v7 = self->_bins;
+    self->_bins = v6;
+
+    v4 = v8;
+    bins = self->_bins;
+  }
+
+  [(NSMutableArray *)bins addObject:v4];
+}
+
+- (void)setHasIsDataPreferred:(BOOL)a3
+{
+  if (a3)
+  {
+    v3 = 16;
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  *&self->_has = *&self->_has & 0xEF | v3;
+}
+
+- (int)lastSdmState
+{
+  if ((*&self->_has & 4) != 0)
+  {
+    return self->_lastSdmState;
+  }
+
+  else
+  {
+    return 0;
+  }
+}
+
+- (void)setHasLastSdmState:(BOOL)a3
+{
+  if (a3)
+  {
+    v3 = 4;
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  *&self->_has = *&self->_has & 0xFB | v3;
+}
+
+- (int)StringAsLastSdmState:(id)a3
+{
+  v3 = a3;
+  if ([v3 isEqualToString:@"SDM_STATE_DISABLED"])
+  {
+    v4 = 0;
+  }
+
+  else if ([v3 isEqualToString:@"SDM_STATE_ENABLED"])
+  {
+    v4 = 1;
+  }
+
+  else if ([v3 isEqualToString:@"SDM_STATE_DISABLED_5G_ON"])
+  {
+    v4 = 2;
+  }
+
+  else if ([v3 isEqualToString:@"SDM_STATE_DISABLED_LTE_ON"])
+  {
+    v4 = 3;
+  }
+
+  else
+  {
+    v4 = 0;
+  }
+
+  return v4;
+}
+
+- (id)description
+{
+  v3 = MEMORY[0x277CCACA8];
+  v8.receiver = self;
+  v8.super_class = AWDMETRICSKCellularPowerLogNrCaConfigActivateStats;
+  v4 = [(AWDMETRICSKCellularPowerLogNrCaConfigActivateStats *)&v8 description];
+  v5 = [(AWDMETRICSKCellularPowerLogNrCaConfigActivateStats *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+
+  return v6;
+}
+
+- (id)dictionaryRepresentation
+{
+  v26 = *MEMORY[0x277D85DE8];
+  v3 = [MEMORY[0x277CBEB38] dictionary];
+  has = self->_has;
+  if (has)
+  {
+    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
+    [v3 setObject:v17 forKey:@"timestamp"];
+
+    has = self->_has;
+    if ((has & 8) == 0)
+    {
+LABEL_3:
+      if ((has & 2) == 0)
+      {
+        goto LABEL_5;
+      }
+
+      goto LABEL_4;
+    }
+  }
+
+  else if ((*&self->_has & 8) == 0)
+  {
+    goto LABEL_3;
+  }
+
+  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_subsId];
+  [v3 setObject:v18 forKey:@"subs_id"];
+
+  if ((*&self->_has & 2) != 0)
+  {
+LABEL_4:
+    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_durationMs];
+    [v3 setObject:v5 forKey:@"duration_ms"];
+  }
+
+LABEL_5:
+  if ([(NSMutableArray *)self->_bins count])
+  {
+    v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](self->_bins, "count")}];
+    v21 = 0u;
+    v22 = 0u;
+    v23 = 0u;
+    v24 = 0u;
+    v7 = self->_bins;
+    v8 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    if (v8)
+    {
+      v9 = v8;
+      v10 = *v22;
+      do
+      {
+        for (i = 0; i != v9; ++i)
+        {
+          if (*v22 != v10)
+          {
+            objc_enumerationMutation(v7);
+          }
+
+          v12 = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:v12];
+        }
+
+        v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      }
+
+      while (v9);
+    }
+
+    [v3 setObject:v6 forKey:@"bin"];
+  }
+
+  v13 = self->_has;
+  if ((v13 & 0x10) != 0)
+  {
+    v14 = [MEMORY[0x277CCABB0] numberWithBool:self->_isDataPreferred];
+    [v3 setObject:v14 forKey:@"is_data_preferred"];
+
+    v13 = self->_has;
+  }
+
+  if ((v13 & 4) != 0)
+  {
+    lastSdmState = self->_lastSdmState;
+    if (lastSdmState >= 4)
+    {
+      v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", self->_lastSdmState];
+    }
+
+    else
+    {
+      v16 = off_27825C6E0[lastSdmState];
+    }
+
+    [v3 setObject:v16 forKey:@"last_sdm_state"];
+  }
+
+  v19 = *MEMORY[0x277D85DE8];
+
+  return v3;
+}
+
+- (void)writeTo:(id)a3
+{
+  v24 = *MEMORY[0x277D85DE8];
+  v4 = a3;
+  has = self->_has;
+  if (has)
+  {
+    timestamp = self->_timestamp;
+    PBDataWriterWriteUint64Field();
+    has = self->_has;
+    if ((has & 8) == 0)
+    {
+LABEL_3:
+      if ((has & 2) == 0)
+      {
+        goto LABEL_5;
+      }
+
+      goto LABEL_4;
+    }
+  }
+
+  else if ((*&self->_has & 8) == 0)
+  {
+    goto LABEL_3;
+  }
+
+  subsId = self->_subsId;
+  PBDataWriterWriteUint32Field();
+  if ((*&self->_has & 2) != 0)
+  {
+LABEL_4:
+    durationMs = self->_durationMs;
+    PBDataWriterWriteUint32Field();
+  }
+
+LABEL_5:
+  v21 = 0u;
+  v22 = 0u;
+  v19 = 0u;
+  v20 = 0u;
+  v7 = self->_bins;
+  v8 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  if (v8)
+  {
+    v9 = v8;
+    v10 = *v20;
+    do
+    {
+      for (i = 0; i != v9; ++i)
+      {
+        if (*v20 != v10)
+        {
+          objc_enumerationMutation(v7);
+        }
+
+        v12 = *(*(&v19 + 1) + 8 * i);
+        PBDataWriterWriteSubmessage();
+      }
+
+      v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    }
+
+    while (v9);
+  }
+
+  v13 = self->_has;
+  if ((v13 & 0x10) != 0)
+  {
+    isDataPreferred = self->_isDataPreferred;
+    PBDataWriterWriteBOOLField();
+    v13 = self->_has;
+  }
+
+  if ((v13 & 4) != 0)
+  {
+    lastSdmState = self->_lastSdmState;
+    PBDataWriterWriteInt32Field();
+  }
+
+  v16 = *MEMORY[0x277D85DE8];
+}
+
+- (void)copyTo:(id)a3
+{
+  v4 = a3;
+  has = self->_has;
+  if ((has & 1) == 0)
+  {
+    if ((*&self->_has & 8) == 0)
+    {
+      goto LABEL_3;
+    }
+
+LABEL_17:
+    v4[8] = self->_subsId;
+    *(v4 + 40) |= 8u;
+    if ((*&self->_has & 2) == 0)
+    {
+      goto LABEL_5;
+    }
+
+    goto LABEL_4;
+  }
+
+  *(v4 + 1) = self->_timestamp;
+  *(v4 + 40) |= 1u;
+  has = self->_has;
+  if ((has & 8) != 0)
+  {
+    goto LABEL_17;
+  }
+
+LABEL_3:
+  if ((has & 2) != 0)
+  {
+LABEL_4:
+    v4[6] = self->_durationMs;
+    *(v4 + 40) |= 2u;
+  }
+
+LABEL_5:
+  v11 = v4;
+  if ([(AWDMETRICSKCellularPowerLogNrCaConfigActivateStats *)self binsCount])
+  {
+    [v11 clearBins];
+    v6 = [(AWDMETRICSKCellularPowerLogNrCaConfigActivateStats *)self binsCount];
+    if (v6)
+    {
+      v7 = v6;
+      for (i = 0; i != v7; ++i)
+      {
+        v9 = [(AWDMETRICSKCellularPowerLogNrCaConfigActivateStats *)self binAtIndex:i];
+        [v11 addBin:v9];
+      }
+    }
+  }
+
+  v10 = self->_has;
+  if ((v10 & 0x10) != 0)
+  {
+    *(v11 + 36) = self->_isDataPreferred;
+    *(v11 + 40) |= 0x10u;
+    v10 = self->_has;
+  }
+
+  if ((v10 & 4) != 0)
+  {
+    *(v11 + 7) = self->_lastSdmState;
+    *(v11 + 40) |= 4u;
+  }
+}
+
+- (id)copyWithZone:(_NSZone *)a3
+{
+  v22 = *MEMORY[0x277D85DE8];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v6 = v5;
+  has = self->_has;
+  if (has)
+  {
+    *(v5 + 8) = self->_timestamp;
+    *(v5 + 40) |= 1u;
+    has = self->_has;
+    if ((has & 8) == 0)
+    {
+LABEL_3:
+      if ((has & 2) == 0)
+      {
+        goto LABEL_5;
+      }
+
+      goto LABEL_4;
+    }
+  }
+
+  else if ((*&self->_has & 8) == 0)
+  {
+    goto LABEL_3;
+  }
+
+  *(v5 + 32) = self->_subsId;
+  *(v5 + 40) |= 8u;
+  if ((*&self->_has & 2) != 0)
+  {
+LABEL_4:
+    *(v5 + 24) = self->_durationMs;
+    *(v5 + 40) |= 2u;
+  }
+
+LABEL_5:
+  v19 = 0u;
+  v20 = 0u;
+  v17 = 0u;
+  v18 = 0u;
+  v8 = self->_bins;
+  v9 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  if (v9)
+  {
+    v10 = v9;
+    v11 = *v18;
+    do
+    {
+      for (i = 0; i != v10; ++i)
+      {
+        if (*v18 != v11)
+        {
+          objc_enumerationMutation(v8);
+        }
+
+        v13 = [*(*(&v17 + 1) + 8 * i) copyWithZone:{a3, v17}];
+        [v6 addBin:v13];
+      }
+
+      v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    }
+
+    while (v10);
+  }
+
+  v14 = self->_has;
+  if ((v14 & 0x10) != 0)
+  {
+    *(v6 + 36) = self->_isDataPreferred;
+    *(v6 + 40) |= 0x10u;
+    v14 = self->_has;
+  }
+
+  if ((v14 & 4) != 0)
+  {
+    *(v6 + 28) = self->_lastSdmState;
+    *(v6 + 40) |= 4u;
+  }
+
+  v15 = *MEMORY[0x277D85DE8];
+  return v6;
+}
+
+- (BOOL)isEqual:(id)a3
+{
+  v4 = a3;
+  if (![v4 isMemberOfClass:objc_opt_class()])
+  {
+    goto LABEL_27;
+  }
+
+  has = self->_has;
+  v6 = *(v4 + 40);
+  if (has)
+  {
+    if ((*(v4 + 40) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    {
+      goto LABEL_27;
+    }
+  }
+
+  else if (*(v4 + 40))
+  {
+    goto LABEL_27;
+  }
+
+  if ((*&self->_has & 8) != 0)
+  {
+    if ((*(v4 + 40) & 8) == 0 || self->_subsId != *(v4 + 8))
+    {
+      goto LABEL_27;
+    }
+  }
+
+  else if ((*(v4 + 40) & 8) != 0)
+  {
+    goto LABEL_27;
+  }
+
+  if ((*&self->_has & 2) != 0)
+  {
+    if ((*(v4 + 40) & 2) == 0 || self->_durationMs != *(v4 + 6))
+    {
+      goto LABEL_27;
+    }
+  }
+
+  else if ((*(v4 + 40) & 2) != 0)
+  {
+    goto LABEL_27;
+  }
+
+  bins = self->_bins;
+  if (bins | *(v4 + 2))
+  {
+    if (![(NSMutableArray *)bins isEqual:?])
+    {
+      goto LABEL_27;
+    }
+
+    has = self->_has;
+    v6 = *(v4 + 40);
+  }
+
+  if ((has & 0x10) == 0)
+  {
+    if ((v6 & 0x10) == 0)
+    {
+      goto LABEL_22;
+    }
+
+LABEL_27:
+    v8 = 0;
+    goto LABEL_28;
+  }
+
+  if ((v6 & 0x10) == 0)
+  {
+    goto LABEL_27;
+  }
+
+  v10 = *(v4 + 36);
+  if (self->_isDataPreferred)
+  {
+    if ((*(v4 + 36) & 1) == 0)
+    {
+      goto LABEL_27;
+    }
+  }
+
+  else if (*(v4 + 36))
+  {
+    goto LABEL_27;
+  }
+
+LABEL_22:
+  v8 = (v6 & 4) == 0;
+  if ((has & 4) != 0)
+  {
+    if ((v6 & 4) == 0 || self->_lastSdmState != *(v4 + 7))
+    {
+      goto LABEL_27;
+    }
+
+    v8 = 1;
+  }
+
+LABEL_28:
+
+  return v8;
+}
+
+- (unint64_t)hash
+{
+  if ((*&self->_has & 1) == 0)
+  {
+    v3 = 0;
+    if ((*&self->_has & 8) != 0)
+    {
+      goto LABEL_3;
+    }
+
+LABEL_6:
+    v4 = 0;
+    if ((*&self->_has & 2) != 0)
+    {
+      goto LABEL_4;
+    }
+
+    goto LABEL_7;
+  }
+
+  v3 = 2654435761u * self->_timestamp;
+  if ((*&self->_has & 8) == 0)
+  {
+    goto LABEL_6;
+  }
+
+LABEL_3:
+  v4 = 2654435761 * self->_subsId;
+  if ((*&self->_has & 2) != 0)
+  {
+LABEL_4:
+    v5 = 2654435761 * self->_durationMs;
+    goto LABEL_8;
+  }
+
+LABEL_7:
+  v5 = 0;
+LABEL_8:
+  v6 = [(NSMutableArray *)self->_bins hash];
+  if ((*&self->_has & 0x10) != 0)
+  {
+    v7 = 2654435761 * self->_isDataPreferred;
+    if ((*&self->_has & 4) != 0)
+    {
+      goto LABEL_10;
+    }
+
+LABEL_12:
+    v8 = 0;
+    return v4 ^ v3 ^ v5 ^ v7 ^ v8 ^ v6;
+  }
+
+  v7 = 0;
+  if ((*&self->_has & 4) == 0)
+  {
+    goto LABEL_12;
+  }
+
+LABEL_10:
+  v8 = 2654435761 * self->_lastSdmState;
+  return v4 ^ v3 ^ v5 ^ v7 ^ v8 ^ v6;
+}
+
+- (void)mergeFrom:(id)a3
+{
+  v19 = *MEMORY[0x277D85DE8];
+  v4 = a3;
+  v5 = v4;
+  v6 = *(v4 + 40);
+  if (v6)
+  {
+    self->_timestamp = *(v4 + 1);
+    *&self->_has |= 1u;
+    v6 = *(v4 + 40);
+    if ((v6 & 8) == 0)
+    {
+LABEL_3:
+      if ((v6 & 2) == 0)
+      {
+        goto LABEL_5;
+      }
+
+      goto LABEL_4;
+    }
+  }
+
+  else if ((*(v4 + 40) & 8) == 0)
+  {
+    goto LABEL_3;
+  }
+
+  self->_subsId = *(v4 + 8);
+  *&self->_has |= 8u;
+  if ((*(v4 + 40) & 2) != 0)
+  {
+LABEL_4:
+    self->_durationMs = *(v4 + 6);
+    *&self->_has |= 2u;
+  }
+
+LABEL_5:
+  v16 = 0u;
+  v17 = 0u;
+  v14 = 0u;
+  v15 = 0u;
+  v7 = *(v4 + 2);
+  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  if (v8)
+  {
+    v9 = v8;
+    v10 = *v15;
+    do
+    {
+      for (i = 0; i != v9; ++i)
+      {
+        if (*v15 != v10)
+        {
+          objc_enumerationMutation(v7);
+        }
+
+        [(AWDMETRICSKCellularPowerLogNrCaConfigActivateStats *)self addBin:*(*(&v14 + 1) + 8 * i), v14];
+      }
+
+      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    }
+
+    while (v9);
+  }
+
+  v12 = *(v5 + 40);
+  if ((v12 & 0x10) != 0)
+  {
+    self->_isDataPreferred = *(v5 + 36);
+    *&self->_has |= 0x10u;
+    v12 = *(v5 + 40);
+  }
+
+  if ((v12 & 4) != 0)
+  {
+    self->_lastSdmState = *(v5 + 7);
+    *&self->_has |= 4u;
+  }
+
+  v13 = *MEMORY[0x277D85DE8];
+}
+
+@end

@@ -1,0 +1,267 @@
+@interface SKUILoadProductPageOperation
+- (SKUILoadProductPageOperation)initWithItemIdentifier:(int64_t)a3 clientContext:(id)a4;
+- (SKUILoadProductPageOperation)initWithProductPageURLRequest:(id)a3 clientContext:(id)a4;
+- (SSMetricsPageEvent)metricsPageEvent;
+- (id)_initSKUILoadProductPageOperation;
+- (id)outputBlock;
+- (void)_initSKUILoadProductPageOperation;
+- (void)main;
+- (void)setOutputBlock:(id)a3;
+@end
+
+@implementation SKUILoadProductPageOperation
+
+- (id)_initSKUILoadProductPageOperation
+{
+  if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
+  {
+    [SKUILoadProductPageOperation _initSKUILoadProductPageOperation];
+  }
+
+  v7.receiver = self;
+  v7.super_class = SKUILoadProductPageOperation;
+  v3 = [(SKUILoadProductPageOperation *)&v7 init];
+  if (v3)
+  {
+    v4 = dispatch_queue_create("com.apple.StoreKitUI.SKUILoadProductPageOperation", 0);
+    dispatchQueue = v3->_dispatchQueue;
+    v3->_dispatchQueue = v4;
+  }
+
+  return v3;
+}
+
+- (SKUILoadProductPageOperation)initWithItemIdentifier:(int64_t)a3 clientContext:(id)a4
+{
+  v7 = a4;
+  v8 = [(SKUILoadProductPageOperation *)self _initSKUILoadProductPageOperation];
+  v9 = v8;
+  if (v8)
+  {
+    objc_storeStrong(v8 + 31, a4);
+    v9->_itemID = a3;
+  }
+
+  return v9;
+}
+
+- (SKUILoadProductPageOperation)initWithProductPageURLRequest:(id)a3 clientContext:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  v8 = [(SKUILoadProductPageOperation *)self _initSKUILoadProductPageOperation];
+  v9 = v8;
+  if (v8)
+  {
+    objc_storeStrong(v8 + 31, a4);
+    v10 = [v6 copy];
+    urlRequest = v9->_urlRequest;
+    v9->_urlRequest = v10;
+  }
+
+  return v9;
+}
+
+- (SSMetricsPageEvent)metricsPageEvent
+{
+  v6 = 0;
+  v7 = &v6;
+  v8 = 0x3032000000;
+  v9 = __Block_byref_object_copy__70;
+  v10 = __Block_byref_object_dispose__70;
+  v11 = 0;
+  dispatchQueue = self->_dispatchQueue;
+  v5[0] = MEMORY[0x277D85DD0];
+  v5[1] = 3221225472;
+  v5[2] = __48__SKUILoadProductPageOperation_metricsPageEvent__block_invoke;
+  v5[3] = &unk_2781F8608;
+  v5[4] = self;
+  v5[5] = &v6;
+  dispatch_sync(dispatchQueue, v5);
+  v3 = v7[5];
+  _Block_object_dispose(&v6, 8);
+
+  return v3;
+}
+
+- (id)outputBlock
+{
+  v6 = 0;
+  v7 = &v6;
+  v8 = 0x3032000000;
+  v9 = __Block_byref_object_copy__5_1;
+  v10 = __Block_byref_object_dispose__6_1;
+  v11 = 0;
+  dispatchQueue = self->_dispatchQueue;
+  v5[0] = MEMORY[0x277D85DD0];
+  v5[1] = 3221225472;
+  v5[2] = __43__SKUILoadProductPageOperation_outputBlock__block_invoke;
+  v5[3] = &unk_2781F8608;
+  v5[4] = self;
+  v5[5] = &v6;
+  dispatch_sync(dispatchQueue, v5);
+  v3 = _Block_copy(v7[5]);
+  _Block_object_dispose(&v6, 8);
+
+  return v3;
+}
+
+uint64_t __43__SKUILoadProductPageOperation_outputBlock__block_invoke(uint64_t a1)
+{
+  v2 = [*(*(a1 + 32) + 280) copy];
+  v3 = *(*(a1 + 40) + 8);
+  v4 = *(v3 + 40);
+  *(v3 + 40) = v2;
+
+  return MEMORY[0x2821F96F8](v2, v4);
+}
+
+- (void)setOutputBlock:(id)a3
+{
+  v4 = a3;
+  dispatchQueue = self->_dispatchQueue;
+  v7[0] = MEMORY[0x277D85DD0];
+  v7[1] = 3221225472;
+  v7[2] = __47__SKUILoadProductPageOperation_setOutputBlock___block_invoke;
+  v7[3] = &unk_2781F98F0;
+  v7[4] = self;
+  v8 = v4;
+  v6 = v4;
+  dispatch_async(dispatchQueue, v7);
+}
+
+void *__47__SKUILoadProductPageOperation_setOutputBlock___block_invoke(uint64_t a1)
+{
+  v3 = *(a1 + 32);
+  result = *(a1 + 40);
+  if (*(v3 + 280) != result)
+  {
+    v4 = [result copy];
+    v5 = *(a1 + 32);
+    v6 = *(v5 + 280);
+    *(v5 + 280) = v4;
+
+    return MEMORY[0x2821F96F8](v4, v6);
+  }
+
+  return result;
+}
+
+- (void)main
+{
+  v45[1] = *MEMORY[0x277D85DE8];
+  v39 = 0;
+  v40 = &v39;
+  v41 = 0x3032000000;
+  v42 = __Block_byref_object_copy__70;
+  v43 = __Block_byref_object_dispose__70;
+  v44 = 0;
+  v33 = 0;
+  v34 = &v33;
+  v35 = 0x3032000000;
+  v36 = __Block_byref_object_copy__70;
+  v37 = __Block_byref_object_dispose__70;
+  v38 = 0;
+  v27 = 0;
+  v28 = &v27;
+  v29 = 0x3032000000;
+  v30 = __Block_byref_object_copy__70;
+  v31 = __Block_byref_object_dispose__70;
+  v32 = self->_urlRequest;
+  if (v28[5] || (v3 = objc_autoreleasePoolPush(), [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", self->_itemID], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_alloc(MEMORY[0x277D69CF0]), -[SKUIClientContext platformContext](self->_clientContext, "platformContext"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "initWithPlatformContext:", v6), v6, v45[0] = v4, objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v45, 1), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "setItemIdentifiers:", v8), v8, objc_msgSend(v7, "setKeyProfile:", *MEMORY[0x277D6A2D8]), -[SKUIClientContext valueForConfigurationKey:](self->_clientContext, "valueForConfigurationKey:", @"sfsuffix"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "setStoreFrontSuffix:", v9), v9, v23[0] = MEMORY[0x277D85DD0], v23[1] = 3221225472, v23[2] = __36__SKUILoadProductPageOperation_main__block_invoke, v23[3] = &unk_2781FE948, v10 = v4, v24 = v10, v25 = &v27, v26 = &v39, objc_msgSend(v7, "setResponseBlock:", v23), objc_msgSend(v7, "main"), v24, v7, v10, objc_autoreleasePoolPop(v3), v28[5]))
+  {
+    v11 = objc_autoreleasePoolPush();
+    v12 = objc_alloc(MEMORY[0x277D69CD8]);
+    v13 = [v12 initWithURLRequest:v28[5]];
+    v14 = +[(SSVURLDataConsumer *)SKUIProductPageDataConsumer];
+    [v13 setDataConsumer:v14];
+
+    v15 = [(SKUIClientContext *)self->_clientContext valueForConfigurationKey:@"sfsuffix"];
+    [v13 setStoreFrontSuffix:v15];
+
+    v22[0] = MEMORY[0x277D85DD0];
+    v22[1] = 3221225472;
+    v22[2] = __36__SKUILoadProductPageOperation_main__block_invoke_2;
+    v22[3] = &unk_2781FEA98;
+    v22[4] = &v39;
+    v22[5] = &v33;
+    [v13 setOutputBlock:v22];
+    [v13 main];
+    dispatchQueue = self->_dispatchQueue;
+    block[0] = MEMORY[0x277D85DD0];
+    block[1] = 3221225472;
+    block[2] = __36__SKUILoadProductPageOperation_main__block_invoke_3;
+    block[3] = &unk_2781F80C8;
+    block[4] = self;
+    v21 = v13;
+    v17 = v13;
+    dispatch_sync(dispatchQueue, block);
+
+    objc_autoreleasePoolPop(v11);
+  }
+
+  v18 = [(SKUILoadProductPageOperation *)self outputBlock];
+  v19 = v18;
+  if (v18)
+  {
+    (*(v18 + 16))(v18, v34[5], v40[5]);
+  }
+
+  _Block_object_dispose(&v27, 8);
+  _Block_object_dispose(&v33, 8);
+
+  _Block_object_dispose(&v39, 8);
+}
+
+void __36__SKUILoadProductPageOperation_main__block_invoke(void *a1, void *a2, void *a3)
+{
+  v13 = a3;
+  v5 = [a2 itemForKey:a1[4]];
+  v6 = [v5 productPageURL];
+
+  if (v6)
+  {
+    v7 = [objc_alloc(MEMORY[0x277CBABA0]) initWithURL:v6];
+    v8 = *(a1[5] + 8);
+    v9 = *(v8 + 40);
+    *(v8 + 40) = v7;
+  }
+
+  v10 = [v13 copy];
+  v11 = *(a1[6] + 8);
+  v12 = *(v11 + 40);
+  *(v11 + 40) = v10;
+}
+
+void __36__SKUILoadProductPageOperation_main__block_invoke_2(uint64_t a1, void *a2, void *a3)
+{
+  v5 = a2;
+  v6 = [a3 copy];
+  v7 = *(*(a1 + 32) + 8);
+  v8 = *(v7 + 40);
+  *(v7 + 40) = v6;
+
+  v9 = [v5 copy];
+  v10 = *(*(a1 + 40) + 8);
+  v11 = *(v10 + 40);
+  *(v10 + 40) = v9;
+}
+
+uint64_t __36__SKUILoadProductPageOperation_main__block_invoke_3(uint64_t a1)
+{
+  v2 = [*(a1 + 40) metricsPageEvent];
+  v3 = *(a1 + 32);
+  v4 = *(v3 + 272);
+  *(v3 + 272) = v2;
+
+  return MEMORY[0x2821F96F8](v2, v4);
+}
+
+- (void)_initSKUILoadProductPageOperation
+{
+  v2 = *MEMORY[0x277D85DE8];
+  v0 = 136446210;
+  v1 = "[SKUILoadProductPageOperation _initSKUILoadProductPageOperation]";
+}
+
+@end

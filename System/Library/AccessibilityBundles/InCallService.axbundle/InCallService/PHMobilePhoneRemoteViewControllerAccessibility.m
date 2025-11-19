@@ -1,0 +1,26 @@
+@interface PHMobilePhoneRemoteViewControllerAccessibility
++ (void)_accessibilityPerformValidations:(id)a3;
+@end
+
+@implementation PHMobilePhoneRemoteViewControllerAccessibility
+
++ (void)_accessibilityPerformValidations:(id)a3
+{
+  v3 = a3;
+  [v3 validateClass:@"PHMobilePhoneRemoteViewController" isKindOfClass:@"PHPhoneRemoteViewController"];
+  [v3 validateClass:@"PHPhoneRemoteViewController" hasInstanceMethod:@"viewDidAppear:" withFullSignature:{"v", "B", 0}];
+  [v3 validateClass:@"PHPhoneRemoteViewController" hasInstanceMethod:@"viewWillDisappear:" withFullSignature:{"v", "B", 0}];
+}
+
+void __64__PHMobilePhoneRemoteViewControllerAccessibility_viewDidAppear___block_invoke(uint64_t a1)
+{
+  v1 = *MEMORY[0x29EDC7F10];
+  v2 = [*(a1 + 32) safeValueForKey:@"view"];
+  UIAccessibilityPostNotification(v1, v2);
+
+  v3 = *MEMORY[0x29EDC7EA8];
+  v4 = accessibilityLocalizedString(@"add.call.hint");
+  UIAccessibilityPostNotification(v3, v4);
+}
+
+@end

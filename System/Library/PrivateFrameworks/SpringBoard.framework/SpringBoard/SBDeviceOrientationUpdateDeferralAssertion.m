@@ -1,0 +1,73 @@
+@interface SBDeviceOrientationUpdateDeferralAssertion
+- (SBDeviceOrientationUpdateDeferralAssertion)initWithReason:(id)a3;
+- (SBDeviceOrientationUpdateManager)hackyBackReference;
+- (void)dealloc;
+- (void)invalidate;
+@end
+
+@implementation SBDeviceOrientationUpdateDeferralAssertion
+
+- (void)invalidate
+{
+  v4 = [MEMORY[0x277CCA890] currentHandler];
+  [v4 handleFailureInMethod:a1 object:a2 file:@"SBDeviceOrientationUpdateManager.m" lineNumber:228 description:@"Invalidating an assert without a back-reference"];
+}
+
+- (SBDeviceOrientationUpdateDeferralAssertion)initWithReason:(id)a3
+{
+  v5 = a3;
+  if (!v5)
+  {
+    [(SBDeviceOrientationUpdateDeferralAssertion *)a2 initWithReason:?];
+  }
+
+  v10.receiver = self;
+  v10.super_class = SBDeviceOrientationUpdateDeferralAssertion;
+  v6 = [(SBDeviceOrientationUpdateDeferralAssertion *)&v10 init];
+  if (v6)
+  {
+    v7 = [v5 copy];
+    reason = v6->_reason;
+    v6->_reason = v7;
+  }
+
+  return v6;
+}
+
+- (void)dealloc
+{
+  if (!self->_invalidated)
+  {
+    v3 = SBLogCommon();
+    v4 = os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG);
+
+    if (v4)
+    {
+      NSLog(&cfstr_YouShouldAlway.isa);
+    }
+  }
+
+  if (!self->_invalidated)
+  {
+    [(SBDeviceOrientationUpdateDeferralAssertion *)self invalidate];
+  }
+
+  v5.receiver = self;
+  v5.super_class = SBDeviceOrientationUpdateDeferralAssertion;
+  [(SBDeviceOrientationUpdateDeferralAssertion *)&v5 dealloc];
+}
+
+- (SBDeviceOrientationUpdateManager)hackyBackReference
+{
+  WeakRetained = objc_loadWeakRetained(&self->_hackyBackReference);
+
+  return WeakRetained;
+}
+
+- (void)initWithReason:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)
+{
+  v4 = [MEMORY[0x277CCA890] currentHandler];
+  [v4 handleFailureInMethod:a1 object:a2 file:@"SBDeviceOrientationUpdateManager.m" lineNumber:210 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
+}
+
+@end

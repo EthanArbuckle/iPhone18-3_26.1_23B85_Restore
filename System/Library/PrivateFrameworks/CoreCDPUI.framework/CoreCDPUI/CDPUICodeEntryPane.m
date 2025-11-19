@@ -1,0 +1,250 @@
+@interface CDPUICodeEntryPane
+- (CDPUICodeEntryPane)initWithFrame:(CGRect)a3;
+- (CGSize)preferredContentSize;
+- (id)_createFooterButton;
+- (void)didFinishResizingHeaderView;
+- (void)didFinishResizingPinView;
+- (void)setViewModel:(id)a3;
+@end
+
+@implementation CDPUICodeEntryPane
+
+- (CDPUICodeEntryPane)initWithFrame:(CGRect)a3
+{
+  v8.receiver = self;
+  v8.super_class = CDPUICodeEntryPane;
+  v3 = [(CDPPassphraseEntryPane *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = v3;
+  if (v3)
+  {
+    containerView = v3->super._containerView;
+    v6 = [(CDPUICodeEntryPane *)v3 _createFooterButton];
+    [(UIScrollView *)containerView addSubview:v6];
+  }
+
+  return v4;
+}
+
+- (id)_createFooterButton
+{
+  v3 = [MEMORY[0x277D75220] buttonWithType:1];
+  footerButton = self->_footerButton;
+  self->_footerButton = v3;
+
+  v5 = [(UIButton *)self->_footerButton titleLabel];
+  [v5 setNumberOfLines:0];
+
+  v6 = [(UIButton *)self->_footerButton titleLabel];
+  [v6 setTextAlignment:1];
+
+  [(UIButton *)self->_footerButton setAutoresizingMask:12];
+  v7 = self->_footerButton;
+
+  return v7;
+}
+
+- (void)didFinishResizingHeaderView
+{
+  v3.receiver = self;
+  v3.super_class = CDPUICodeEntryPane;
+  [(CDPPassphraseEntryPane *)&v3 didFinishResizingHeaderView];
+  [(CDPUICodeEntryPane *)self setViewModel:self->_viewModel];
+}
+
+- (void)didFinishResizingPinView
+{
+  [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FBD8]) frame];
+  v3 = CGRectGetMaxY(v57) + self->super._keyboardOffset;
+  [(UIScrollView *)self->super._containerView setContentSize:0.0, v3];
+  containerView = self->super._containerView;
+  [(UIScrollView *)containerView frame];
+  v49 = v3;
+  [(UIScrollView *)containerView setContentOffset:0.0, fmax(v3 - CGRectGetHeight(v58), 0.0)];
+  if ([(CDPPassphraseEntryPane *)self isSmallScreen])
+  {
+    v5 = 8.0;
+  }
+
+  else
+  {
+    v5 = 24.0;
+  }
+
+  v6 = *MEMORY[0x277D76918];
+  v7 = [MEMORY[0x277D75520] metricsForTextStyle:*MEMORY[0x277D76918]];
+  [v7 scaledValueForValue:v5];
+  v9 = v8;
+
+  v10 = MEMORY[0x277D74300];
+  v11 = [MEMORY[0x277D759A0] mainScreen];
+  v12 = [v11 traitCollection];
+  v13 = [v10 preferredFontForTextStyle:v6 compatibleWithTraitCollection:v12];
+  v14 = [(UIButton *)self->_footerButton titleLabel];
+  [v14 setFont:v13];
+
+  [(UIButton *)self->_footerButton frame];
+  v53 = v16;
+  v54 = v15;
+  v17 = [(UIButton *)self->_footerButton titleLabel];
+  [(CDPUICodeEntryPane *)self frame];
+  [v17 sizeThatFits:{CGRectGetWidth(v59), 1.79769313e308}];
+  v19 = v18;
+  v21 = v20;
+
+  v22 = *MEMORY[0x277D3FBD0];
+  v23 = [*(&self->super.super.super.super.super.super.isa + v22) superview];
+  [v23 frame];
+  v25 = v24;
+  v27 = v26;
+  v51 = v28;
+  v52 = v26;
+  v29 = v28;
+  v31 = v30;
+
+  v60.origin.x = v25;
+  v60.origin.y = v27;
+  v60.size.width = v29;
+  v60.size.height = v31;
+  Height = CGRectGetHeight(v60);
+  [(CDPPassphraseEntryPane *)self desiredMinPinHeight];
+  v33 = v32;
+  v34 = v9 + v21;
+  v35 = v9;
+  [(CDPUICodeEntryPane *)self bounds];
+  MidX = CGRectGetMidX(v61);
+  v62.origin.y = v53;
+  v62.origin.x = v54;
+  v62.size.width = v19;
+  v62.size.height = v21;
+  Width = CGRectGetWidth(v62);
+  v38 = 0.0;
+  if (Height > v33)
+  {
+    v38 = v34;
+  }
+
+  v39 = v31 - v38;
+  v40 = MidX + Width * -0.5;
+  v41 = 8.0;
+  if (Height > v33)
+  {
+    v41 = v35;
+  }
+
+  v55 = v41;
+  v63.origin.x = v25;
+  v63.origin.y = v52;
+  v63.size.width = v51;
+  v63.size.height = v39;
+  MaxY = CGRectGetMaxY(v63);
+  if ([MEMORY[0x277CFD560] isNaturalUIEnabled])
+  {
+    v25 = -44.0;
+    v40 = 22.0;
+  }
+
+  [(UIButton *)self->_footerButton setFrame:v40, MaxY, v19, v21];
+  v43 = [*(&self->super.super.super.super.super.super.isa + v22) superview];
+  [v43 setFrame:{v25, v52, v51, v39}];
+
+  v44 = *(&self->super.super.super.super.super.super.isa + v22);
+  v45 = [v44 superview];
+  [v45 bounds];
+  [v44 setFrame:?];
+
+  v64.origin.x = v40;
+  v64.origin.y = MaxY;
+  v64.size.width = v19;
+  v64.size.height = v21;
+  [(UIScrollView *)self->super._containerView setContentSize:0.0, v55 + CGRectGetMaxY(v64) + self->super._keyboardOffset];
+  v46 = [(UIButton *)self->_footerButton superview];
+
+  if (v46)
+  {
+    v47 = self->super._containerView;
+    [(UIScrollView *)v47 frame];
+    v48 = v49 - CGRectGetHeight(v65);
+
+    [(UIScrollView *)v47 setContentOffset:0.0, v48];
+  }
+}
+
+- (void)setViewModel:(id)a3
+{
+  v35 = a3;
+  objc_storeStrong(&self->_viewModel, a3);
+  headerView = self->super._headerView;
+  v6 = [(CDPUICodeEntryViewModel *)self->_viewModel promptTitle];
+  [(CDPPaneHeaderView *)headerView setTitleText:v6];
+
+  v7 = [(CDPUICodeEntryViewModel *)self->_viewModel promptMessage];
+  v8 = [(CDPPaneHeaderView *)self->super._headerView subLabel];
+  [v8 setText:v7];
+
+  v9 = MEMORY[0x277D74300];
+  v10 = *MEMORY[0x277D76918];
+  v11 = [MEMORY[0x277D759A0] mainScreen];
+  v12 = [v11 traitCollection];
+  v13 = [v9 preferredFontForTextStyle:v10 compatibleWithTraitCollection:v12];
+  v14 = [(CDPPaneHeaderView *)self->super._headerView subLabel];
+  [v14 setFont:v13];
+
+  if ([MEMORY[0x277CFD560] isNaturalUIEnabled])
+  {
+    v15 = [(CDPPaneHeaderView *)self->super._headerView textLabel];
+    [v15 setTextAlignment:4];
+
+    v16 = [(CDPPaneHeaderView *)self->super._headerView subLabel];
+    [v16 setTextAlignment:4];
+
+    v17 = MEMORY[0x277D74310];
+    v18 = *MEMORY[0x277D76A20];
+    v19 = [(CDPUICodeEntryPane *)self traitCollection];
+    v20 = [v17 preferredFontDescriptorWithTextStyle:v18 compatibleWithTraitCollection:v19];
+
+    v21 = MEMORY[0x277D74300];
+    v22 = [v20 fontDescriptorWithSymbolicTraits:2];
+    v23 = [v21 fontWithDescriptor:v22 size:0.0];
+    v24 = [(CDPPaneHeaderView *)self->super._headerView textLabel];
+    [v24 setFont:v23];
+
+    v25 = [MEMORY[0x277D74300] fontWithDescriptor:v20 size:0.0];
+    v26 = [(CDPPaneHeaderView *)self->super._headerView subLabel];
+    [v26 setFont:v25];
+
+    v27 = [MEMORY[0x277D75348] secondaryLabelColor];
+    v28 = [(CDPPaneHeaderView *)self->super._headerView subLabel];
+    [v28 setTextColor:v27];
+  }
+
+  [(CDPPaneHeaderView *)self->super._headerView makeAllTheTextFits];
+  v29 = [(CDPUICodeEntryViewModel *)self->_viewModel escapeOffer];
+
+  footerButton = self->_footerButton;
+  if (v29)
+  {
+    v31 = [(CDPUICodeEntryViewModel *)self->_viewModel escapeOffer];
+    [(UIButton *)footerButton addTarget:v31 action:sel_handleEscapeAction_ forControlEvents:64];
+
+    v32 = self->_footerButton;
+    v33 = [(CDPUICodeEntryViewModel *)self->_viewModel escapeOffer];
+    v34 = [v33 title];
+    [(UIButton *)v32 setTitle:v34 forState:0];
+  }
+
+  else
+  {
+    [(UIButton *)self->_footerButton removeFromSuperview];
+  }
+}
+
+- (CGSize)preferredContentSize
+{
+  v2 = *MEMORY[0x277CBF3A8];
+  v3 = *(MEMORY[0x277CBF3A8] + 8);
+  result.height = v3;
+  result.width = v2;
+  return result;
+}
+
+@end

@@ -1,0 +1,351 @@
+@interface AKAppleIDServerUIContextController
+- (AKAppleIDServerUIContextController)initWithRequestConfiguration:(id)a3 completion:(id)a4;
+- (BOOL)handleAuthKitActionAttribute:(id)a3;
+- (id)_headerValueFromType:(unint64_t)a3;
+- (void)_completeWithResponse:(id)a3 additionalData:(id)a4 error:(id)a5;
+- (void)completeWithError:(id)a3;
+- (void)completeWithError:(id)a3 additionalData:(id)a4;
+- (void)completeWithFinalResponse:(id)a3;
+- (void)processResponse:(id)a3;
+- (void)signRequest:(id)a3 withCompletionHandler:(id)a4;
+- (void)tearDownContext;
+@end
+
+@implementation AKAppleIDServerUIContextController
+
+- (void)tearDownContext
+{
+  serverUICompletion = self->_serverUICompletion;
+  self->_serverUICompletion = 0;
+  MEMORY[0x277D82BD8](serverUICompletion);
+  objc_storeStrong(&self->_initiatingURL, 0);
+}
+
+- (AKAppleIDServerUIContextController)initWithRequestConfiguration:(id)a3 completion:(id)a4
+{
+  v20 = self;
+  location[1] = a2;
+  location[0] = 0;
+  objc_storeStrong(location, a3);
+  v18 = 0;
+  objc_storeStrong(&v18, a4);
+  v4 = v20;
+  v20 = 0;
+  v17 = [(AKAppleIDServerUIContextController *)v4 init];
+  v20 = v17;
+  objc_storeStrong(&v20, v17);
+  if (v17)
+  {
+    v5 = [location[0] resourceLoadDelegate];
+    serverUIDelegate = v20->_serverUIDelegate;
+    v20->_serverUIDelegate = v5;
+    MEMORY[0x277D82BD8](serverUIDelegate);
+    v7 = MEMORY[0x223DB6C90](v18);
+    serverUICompletion = v20->_serverUICompletion;
+    v20->_serverUICompletion = v7;
+    MEMORY[0x277D82BD8](serverUICompletion);
+    v15 = [location[0] request];
+    v9 = [v15 URL];
+    initiatingURL = v20->_initiatingURL;
+    v20->_initiatingURL = v9;
+    MEMORY[0x277D82BD8](initiatingURL);
+    MEMORY[0x277D82BD8](v15);
+    objc_storeStrong(&v20->_configuration, location[0]);
+    v11 = objc_opt_new();
+    serverDataHarvester = v20->_serverDataHarvester;
+    v20->_serverDataHarvester = v11;
+    MEMORY[0x277D82BD8](serverDataHarvester);
+  }
+
+  v14 = MEMORY[0x277D82BE0](v20);
+  objc_storeStrong(&v18, 0);
+  objc_storeStrong(location, 0);
+  objc_storeStrong(&v20, 0);
+  return v14;
+}
+
+- (BOOL)handleAuthKitActionAttribute:(id)a3
+{
+  v13 = *MEMORY[0x277D85DE8];
+  v10 = self;
+  location[1] = a2;
+  location[0] = 0;
+  objc_storeStrong(location, a3);
+  if (location[0])
+  {
+    v8 = _AKLogSystem();
+    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    {
+      __os_log_helper_16_2_1_8_64(v12, location[0]);
+      _os_log_impl(&dword_222379000, v8, OS_LOG_TYPE_DEFAULT, "Detected BuddyML button tap with %@ action", v12, 0xCu);
+    }
+
+    objc_storeStrong(&v8, 0);
+  }
+
+  if ([location[0] isEqualToString:*MEMORY[0x277CEFED8]])
+  {
+    v6 = v10;
+    v7 = [MEMORY[0x277CCA9B8] ak_errorWithCode:-7038];
+    [(AKAppleIDServerUIContextController *)v6 completeWithError:?];
+    MEMORY[0x277D82BD8](v7);
+LABEL_12:
+    v11 = 1;
+    goto LABEL_13;
+  }
+
+  if ([location[0] isEqualToString:*MEMORY[0x277CEFEC8]])
+  {
+    v4 = v10;
+    v5 = [MEMORY[0x277CCA9B8] ak_errorWithCode:-7003];
+    [(AKAppleIDServerUIContextController *)v4 completeWithError:?];
+    MEMORY[0x277D82BD8](v5);
+    goto LABEL_12;
+  }
+
+  if ([location[0] isEqualToString:*MEMORY[0x277CEFED0]])
+  {
+    [(AKAppleIDServerUIContextController *)v10 completeWithFinalResponse:v10->_latestReadResponse];
+    goto LABEL_12;
+  }
+
+  v11 = 0;
+LABEL_13:
+  objc_storeStrong(location, 0);
+  *MEMORY[0x277D85DE8];
+  return v11 & 1;
+}
+
+- (void)signRequest:(id)a3 withCompletionHandler:(id)a4
+{
+  v15 = *MEMORY[0x277D85DE8];
+  v13 = self;
+  location[1] = a2;
+  location[0] = 0;
+  objc_storeStrong(location, a3);
+  v11 = 0;
+  objc_storeStrong(&v11, a4);
+  v4 = [(AKServerRequestConfiguration *)v13->_configuration presentationType];
+  v9 = 0;
+  v6 = 0;
+  if (v4)
+  {
+    v10 = [location[0] URL];
+    v9 = 1;
+    v6 = [v10 isEqual:v13->_initiatingURL];
+  }
+
+  if (v9)
+  {
+    MEMORY[0x277D82BD8](v10);
+  }
+
+  if (v6)
+  {
+    v8 = [(AKAppleIDServerUIContextController *)v13 _headerValueFromType:[(AKServerRequestConfiguration *)v13->_configuration presentationType]];
+    oslog = _AKLogSystem();
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
+    {
+      __os_log_helper_16_2_1_8_64(v14, v8);
+      _os_log_debug_impl(&dword_222379000, oslog, OS_LOG_TYPE_DEBUG, "Signing request with presentation action: %@", v14, 0xCu);
+    }
+
+    objc_storeStrong(&oslog, 0);
+    if (v8)
+    {
+      [location[0] setValue:v8 forHTTPHeaderField:@"X-Apple-ServerUI-Action"];
+    }
+
+    objc_storeStrong(&v8, 0);
+  }
+
+  [(AKAppleIDServerResourceLoadDelegate *)v13->_serverUIDelegate signRequest:location[0] withCompletionHandler:v11];
+  objc_storeStrong(&v11, 0);
+  objc_storeStrong(location, 0);
+  *MEMORY[0x277D85DE8];
+}
+
+- (id)_headerValueFromType:(unint64_t)a3
+{
+  location[3] = self;
+  location[2] = a2;
+  location[1] = a3;
+  location[0] = 0;
+  if (a3 == 1)
+  {
+LABEL_4:
+    objc_storeStrong(location, @"push");
+    goto LABEL_6;
+  }
+
+  if (a3 != 2)
+  {
+    if (a3 != 3)
+    {
+      goto LABEL_6;
+    }
+
+    goto LABEL_4;
+  }
+
+  objc_storeStrong(location, @"showModal");
+LABEL_6:
+  v4 = MEMORY[0x277D82BE0](location[0]);
+  objc_storeStrong(location, 0);
+
+  return v4;
+}
+
+- (void)processResponse:(id)a3
+{
+  v8 = *MEMORY[0x277D85DE8];
+  v6 = self;
+  location[1] = a2;
+  location[0] = 0;
+  objc_storeStrong(location, a3);
+  oslog = _AKLogSystem();
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
+  {
+    __os_log_helper_16_2_1_8_64(v7, location[0]);
+    _os_log_impl(&dword_222379000, oslog, OS_LOG_TYPE_DEFAULT, "Processing a server UI response: %@", v7, 0xCu);
+  }
+
+  objc_storeStrong(&oslog, 0);
+  if ([MEMORY[0x277CF0180] signalFromServerResponse:location[0]] == 6)
+  {
+    objc_storeStrong(&v6->_latestReadResponse, location[0]);
+  }
+
+  if (location[0])
+  {
+    v3 = [(AKAppleIDServerUIContextController *)v6 serverDataHarvester];
+    [(AKAppleIDServerUIDataHarvester *)v3 harvestDataFromServerHTTPResponse:location[0]];
+    MEMORY[0x277D82BD8](v3);
+    [(AKAppleIDServerResourceLoadDelegate *)v6->_serverUIDelegate processResponse:location[0]];
+  }
+
+  objc_storeStrong(location, 0);
+  *MEMORY[0x277D85DE8];
+}
+
+- (void)completeWithError:(id)a3
+{
+  v4 = self;
+  location[1] = a2;
+  location[0] = 0;
+  objc_storeStrong(location, a3);
+  [(AKAppleIDServerUIContextController *)v4 _completeWithResponse:0 additionalData:0 error:location[0]];
+  objc_storeStrong(location, 0);
+}
+
+- (void)completeWithError:(id)a3 additionalData:(id)a4
+{
+  v7 = self;
+  location[1] = a2;
+  location[0] = 0;
+  objc_storeStrong(location, a3);
+  v5 = 0;
+  objc_storeStrong(&v5, a4);
+  [(AKAppleIDServerUIContextController *)v7 _completeWithResponse:0 additionalData:v5 error:location[0]];
+  objc_storeStrong(&v5, 0);
+  objc_storeStrong(location, 0);
+}
+
+- (void)completeWithFinalResponse:(id)a3
+{
+  v8 = self;
+  location[1] = a2;
+  location[0] = 0;
+  objc_storeStrong(location, a3);
+  v4 = v8;
+  v3 = location[0];
+  v6 = [(AKAppleIDServerUIContextController *)v8 serverDataHarvester];
+  v5 = [(AKAppleIDServerUIDataHarvester *)v6 harvestedData];
+  [AKAppleIDServerUIContextController _completeWithResponse:v4 additionalData:"_completeWithResponse:additionalData:error:" error:v3];
+  MEMORY[0x277D82BD8](v5);
+  MEMORY[0x277D82BD8](v6);
+  objc_storeStrong(location, 0);
+}
+
+- (void)_completeWithResponse:(id)a3 additionalData:(id)a4 error:(id)a5
+{
+  v30 = *MEMORY[0x277D85DE8];
+  v26 = self;
+  location[1] = a2;
+  location[0] = 0;
+  objc_storeStrong(location, a3);
+  v24 = 0;
+  objc_storeStrong(&v24, a4);
+  v23 = 0;
+  objc_storeStrong(&v23, a5);
+  if (v26->_serverUICompletion)
+  {
+    if (location[0])
+    {
+      v19 = _AKLogSystem();
+      v18 = OS_LOG_TYPE_DEFAULT;
+      if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+      {
+        __os_log_helper_16_2_1_8_64(v29, location[0]);
+        _os_log_impl(&dword_222379000, v19, v18, "Completed server UI request with final response: %@", v29, 0xCu);
+      }
+
+      objc_storeStrong(&v19, 0);
+      v17 = _AKLogSystem();
+      v16 = OS_LOG_TYPE_DEFAULT;
+      if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+      {
+        v10 = [location[0] allHeaderFields];
+        __os_log_helper_16_2_1_8_64(v28, v10);
+        _os_log_impl(&dword_222379000, v17, v16, "Final response headers: %@", v28, 0xCu);
+        MEMORY[0x277D82BD8](v10);
+      }
+
+      objc_storeStrong(&v17, 0);
+    }
+
+    else if (v23)
+    {
+      oslog = _AKLogSystem();
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
+      {
+        __os_log_helper_16_2_1_8_64(v27, v23);
+        _os_log_error_impl(&dword_222379000, oslog, OS_LOG_TYPE_ERROR, "Completed server UI request with error: %@", v27, 0xCu);
+      }
+
+      objc_storeStrong(&oslog, 0);
+    }
+
+    serverUICompletion = v26->_serverUICompletion;
+    v6 = location[0];
+    v7 = v24;
+    v9 = [v23 ac_secureCodingError];
+    serverUICompletion[2](serverUICompletion, v6, v7);
+    MEMORY[0x277D82BD8](v9);
+    v5 = v26->_serverUICompletion;
+    v26->_serverUICompletion = 0;
+    MEMORY[0x277D82BD8](v5);
+  }
+
+  else
+  {
+    v22 = _AKLogSystem();
+    v21 = 16;
+    if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+    {
+      log = v22;
+      type = v21;
+      __os_log_helper_16_0_0(v20);
+      _os_log_error_impl(&dword_222379000, log, type, "We're done with the server UI flow client-side, but there's no completion block to call!", v20, 2u);
+    }
+
+    objc_storeStrong(&v22, 0);
+  }
+
+  objc_storeStrong(&v23, 0);
+  objc_storeStrong(&v24, 0);
+  objc_storeStrong(location, 0);
+  *MEMORY[0x277D85DE8];
+}
+
+@end

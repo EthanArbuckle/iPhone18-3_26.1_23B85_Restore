@@ -1,0 +1,23 @@
+@interface SBHBackButtonFocusNavigationGestureRecognizer
+- (SBHBackButtonFocusNavigationGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+@end
+
+@implementation SBHBackButtonFocusNavigationGestureRecognizer
+
+- (SBHBackButtonFocusNavigationGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+{
+  v7.receiver = self;
+  v7.super_class = SBHBackButtonFocusNavigationGestureRecognizer;
+  v4 = [(SBHBackButtonFocusNavigationGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v5 = v4;
+  if (v4)
+  {
+    [(SBHFocusNavigationGestureRecognizer *)v4 setOnlyAcceptsGameControllerEvents:1];
+    [(SBHFocusNavigationGestureRecognizer *)v5 setRequiresFailureOfBuiltInFocusGestureRecognizers:1];
+    [(SBHBackButtonFocusNavigationGestureRecognizer *)v5 setAllowedPressTypes:&unk_1F3DB2C48];
+  }
+
+  return v5;
+}
+
+@end

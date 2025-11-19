@@ -1,0 +1,114 @@
+@interface _LTLanguageStatus
+- (_LTLanguageStatus)initWithTaskHint:(int64_t)a3 useDedicatedMachPort:(BOOL)a4 observations:(id)a5;
+- (void)_start;
+- (void)cancel;
+- (void)dealloc;
+@end
+
+@implementation _LTLanguageStatus
+
+- (void)_start
+{
+  v3 = +[_LTLanguageStatusMulticaster shared];
+  [v3 addObserver:self];
+}
+
+- (void)cancel
+{
+  v10 = *MEMORY[0x277D85DE8];
+  v3 = _LTOSLogAssets();
+  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  {
+    identifier = self->_identifier;
+    *buf = 138412290;
+    v9 = identifier;
+    _os_log_impl(&dword_23AAF5000, v3, OS_LOG_TYPE_DEFAULT, "LTLanguageStatus %@ cancel", buf, 0xCu);
+  }
+
+  v7[0] = MEMORY[0x277D85DD0];
+  v7[1] = 3221225472;
+  v7[2] = __27___LTLanguageStatus_cancel__block_invoke;
+  v7[3] = &unk_278B6CEE8;
+  v7[4] = self;
+  os_unfair_lock_assert_not_owner(&self->_lock);
+  os_unfair_lock_lock(&self->_lock);
+  __27___LTLanguageStatus_cancel__block_invoke(v7);
+  os_unfair_lock_unlock(&self->_lock);
+  v5 = +[_LTLanguageStatusMulticaster shared];
+  [v5 removeObserver:self];
+
+  v6 = *MEMORY[0x277D85DE8];
+}
+
+- (void)dealloc
+{
+  v9 = *MEMORY[0x277D85DE8];
+  v3 = _LTOSLogAssets();
+  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  {
+    identifier = self->_identifier;
+    *buf = 138412290;
+    v8 = identifier;
+    _os_log_impl(&dword_23AAF5000, v3, OS_LOG_TYPE_DEFAULT, "LTLanguageStatus %@ dealloc", buf, 0xCu);
+  }
+
+  [(_LTLanguageStatus *)self cancel];
+  v6.receiver = self;
+  v6.super_class = _LTLanguageStatus;
+  [(_LTLanguageStatus *)&v6 dealloc];
+  v5 = *MEMORY[0x277D85DE8];
+}
+
+- (_LTLanguageStatus)initWithTaskHint:(int64_t)a3 useDedicatedMachPort:(BOOL)a4 observations:(id)a5
+{
+  v5 = a4;
+  v30 = *MEMORY[0x277D85DE8];
+  v8 = a5;
+  v23.receiver = self;
+  v23.super_class = _LTLanguageStatus;
+  v9 = [(_LTLanguageStatus *)&v23 init];
+  v10 = v9;
+  if (v9)
+  {
+    v9->_lock._os_unfair_lock_opaque = 0;
+    v11 = [MEMORY[0x277CCAD78] UUID];
+    objc_storeStrong(&v10->_identifier, v11);
+    v12 = _LTOSLogAssets();
+    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    {
+      *buf = 138412802;
+      v25 = v11;
+      v26 = 2048;
+      v27 = a3;
+      v28 = 1024;
+      v29 = v5;
+      _os_log_impl(&dword_23AAF5000, v12, OS_LOG_TYPE_DEFAULT, "LTLanguageStatus %@ alloc task:%zd dedicated:%{BOOL}i", buf, 0x1Cu);
+    }
+
+    v10->_taskHint = a3;
+    v10->_useDedicatedMachPort = v5;
+    objc_initWeak(buf, v10);
+    aBlock[0] = MEMORY[0x277D85DD0];
+    aBlock[1] = 3221225472;
+    aBlock[2] = __72___LTLanguageStatus_initWithTaskHint_useDedicatedMachPort_observations___block_invoke;
+    aBlock[3] = &unk_278B6D0B8;
+    objc_copyWeak(&v22, buf);
+    v13 = v11;
+    v20 = v13;
+    v21 = v8;
+    v14 = _Block_copy(aBlock);
+    observations = v10->_observations;
+    v10->_observations = v14;
+
+    [(_LTLanguageStatus *)v10 _start];
+    v16 = v10;
+
+    objc_destroyWeak(&v22);
+    objc_destroyWeak(buf);
+  }
+
+  v17 = *MEMORY[0x277D85DE8];
+  return v10;
+}
+
+@end

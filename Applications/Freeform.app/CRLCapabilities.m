@@ -1,0 +1,589 @@
+@interface CRLCapabilities
++ (CRLCapabilities)currentCapabilities;
+- (BOOL)hasHEVCHardwareEncoding;
+- (BOOL)p_isMetalCapable;
+- (CGSize)maximumHardcodedTextureSize;
+- (CGSize)maximumImageSize;
+- (CGSize)maximumMetalTextureSizeForDevice:(id)a3;
+- (CRLCapabilities)init;
+- (id)metalCapabilitiesForDevice:(id)a3;
+- (unint64_t)physicalMemory;
+- (void)p_setupDevice;
+@end
+
+@implementation CRLCapabilities
+
+- (void)p_setupDevice
+{
+  v19 = +[UIDevice crl_platformString];
+  if ([v19 hasPrefix:{@"iPod3, "}])
+  {
+    v3 = 1;
+LABEL_5:
+    v4 = vdupq_n_s64(v3);
+LABEL_6:
+    *&self->_device = v4;
+    goto LABEL_7;
+  }
+
+  if ([v19 hasPrefix:{@"iPod4, "}])
+  {
+    v3 = 2;
+    goto LABEL_5;
+  }
+
+  if ([v19 hasPrefix:{@"iPod5, "}])
+  {
+    v4 = xmmword_1014661B0;
+    goto LABEL_6;
+  }
+
+  if ([v19 hasPrefix:{@"iPhone2, "}])
+  {
+    v4 = xmmword_1014661C0;
+    goto LABEL_6;
+  }
+
+  if ([v19 hasPrefix:{@"iPhone3, "}])
+  {
+    v4 = xmmword_1014661D0;
+    goto LABEL_6;
+  }
+
+  if ([v19 hasPrefix:{@"iPhone4, "}])
+  {
+    v4 = xmmword_1014661E0;
+    goto LABEL_6;
+  }
+
+  if ([v19 hasPrefix:{@"iPhone5, "}])
+  {
+    v4 = xmmword_1014661F0;
+    goto LABEL_6;
+  }
+
+  if ([v19 hasPrefix:{@"iPhone7, "}])
+  {
+    v4 = xmmword_101466200;
+    goto LABEL_6;
+  }
+
+  if ([v19 hasPrefix:{@"iPhone8, 4"}])
+  {
+    v4 = xmmword_101466210;
+    goto LABEL_6;
+  }
+
+  if ([v19 hasPrefix:{@"iPhone8, "}])
+  {
+    v4 = xmmword_101466220;
+    goto LABEL_6;
+  }
+
+  if ([v19 hasPrefix:{@"iPhone9, "}])
+  {
+    v4 = xmmword_101466230;
+    goto LABEL_6;
+  }
+
+  if ([v19 hasPrefix:{@"iPhone10, 6"}])
+  {
+    v4 = xmmword_101466240;
+    goto LABEL_6;
+  }
+
+  if ([v19 hasPrefix:{@"iPhone10, "}])
+  {
+    v4 = xmmword_101466250;
+    goto LABEL_6;
+  }
+
+  if ([v19 hasPrefix:{@"iPad1, "}])
+  {
+    v4 = xmmword_101466260;
+    goto LABEL_6;
+  }
+
+  if (![v19 hasPrefix:{@"iPad2, "}])
+  {
+    if ([v19 hasPrefix:{@"iPad3, "}])
+    {
+      v17 = xmmword_101466320;
+      if (([v19 hasPrefix:{@"iPad3, 1"}] & 1) == 0 && (objc_msgSend(v19, "hasPrefix:", @"iPad3,2") & 1) == 0)
+      {
+        v6 = [v19 hasPrefix:{@"iPad3, 3"}];
+        v4 = xmmword_101466320;
+        if (v6)
+        {
+          goto LABEL_6;
+        }
+
+        v17 = xmmword_101466330;
+        if (([v19 hasPrefix:{@"iPad3, 4", COERCE_DOUBLE(16)}] & 1) == 0 && (objc_msgSend(v19, "hasPrefix:", @"iPad3,5") & 1) == 0)
+        {
+          v7 = @"iPad3,6";
+          goto LABEL_72;
+        }
+      }
+    }
+
+    else if ([v19 hasPrefix:{@"iPad4, "}])
+    {
+      v17 = xmmword_1014662F0;
+      if (([v19 hasPrefix:{@"iPad4, 4"}] & 1) == 0 && (objc_msgSend(v19, "hasPrefix:", @"iPad4,5") & 1) == 0)
+      {
+        v8 = [v19 hasPrefix:{@"iPad4, 6"}];
+        v4 = xmmword_1014662F0;
+        if (v8)
+        {
+          goto LABEL_6;
+        }
+
+        v17 = xmmword_101466300;
+        if (([v19 hasPrefix:{@"iPad4, 7", COERCE_DOUBLE(19)}] & 1) == 0 && (objc_msgSend(v19, "hasPrefix:", @"iPad4,8") & 1) == 0)
+        {
+          v9 = [v19 hasPrefix:{@"iPad4, 9"}];
+          v4 = xmmword_101466300;
+          if (v9)
+          {
+            goto LABEL_6;
+          }
+
+          v17 = xmmword_101466310;
+          if (([v19 hasPrefix:{@"iPad4, 1", COERCE_DOUBLE(21)}] & 1) == 0 && (objc_msgSend(v19, "hasPrefix:", @"iPad4,2") & 1) == 0)
+          {
+            v7 = @"iPad4,3";
+            goto LABEL_72;
+          }
+        }
+      }
+    }
+
+    else if ([v19 hasPrefix:{@"iPad5, "}])
+    {
+      v17 = xmmword_1014662D0;
+      if (([v19 hasPrefix:{@"iPad5, 3"}] & 1) == 0)
+      {
+        v10 = [v19 hasPrefix:{@"iPad5, 4"}];
+        v4 = xmmword_1014662D0;
+        if (v10)
+        {
+          goto LABEL_6;
+        }
+
+        v17 = xmmword_1014662E0;
+        if (([v19 hasPrefix:{@"iPad5, 1", COERCE_DOUBLE(22)}] & 1) == 0)
+        {
+          v7 = @"iPad5,2";
+          goto LABEL_72;
+        }
+      }
+    }
+
+    else if ([v19 hasPrefix:{@"iPad6, "}])
+    {
+      v17 = xmmword_1014662A0;
+      if (([v19 hasPrefix:{@"iPad6, 3"}] & 1) == 0)
+      {
+        v11 = [v19 hasPrefix:{@"iPad6, 4"}];
+        v4 = xmmword_1014662A0;
+        if (v11)
+        {
+          goto LABEL_6;
+        }
+
+        v17 = xmmword_1014662B0;
+        if (([v19 hasPrefix:{@"iPad6, 7", COERCE_DOUBLE(24)}] & 1) == 0)
+        {
+          v12 = [v19 hasPrefix:{@"iPad6, 8"}];
+          v4 = xmmword_1014662B0;
+          if (v12)
+          {
+            goto LABEL_6;
+          }
+
+          v17 = xmmword_1014662C0;
+          if (([v19 hasPrefix:{@"iPad6, 11", COERCE_DOUBLE(25)}] & 1) == 0)
+          {
+            v7 = @"iPad6,12";
+            goto LABEL_72;
+          }
+        }
+      }
+    }
+
+    else
+    {
+      if (![v19 hasPrefix:{@"iPad7, "}])
+      {
+        goto LABEL_7;
+      }
+
+      v17 = xmmword_101466270;
+      if (([v19 hasPrefix:{@"iPad7, 1"}] & 1) == 0)
+      {
+        v14 = [v19 hasPrefix:{@"iPad7, 2"}];
+        v4 = xmmword_101466270;
+        if (v14)
+        {
+          goto LABEL_6;
+        }
+
+        v17 = xmmword_101466280;
+        if (([v19 hasPrefix:{@"iPad7, 3", COERCE_DOUBLE(28)}] & 1) == 0)
+        {
+          v15 = [v19 hasPrefix:{@"iPad7, 4"}];
+          v4 = xmmword_101466280;
+          if (v15)
+          {
+            goto LABEL_6;
+          }
+
+          v17 = xmmword_101466290;
+          if (([v19 hasPrefix:{@"iPad7, 5", COERCE_DOUBLE(27)}] & 1) == 0)
+          {
+            v16 = [v19 hasPrefix:{@"iPad7, 6"}];
+            v4 = xmmword_101466290;
+            if (v16)
+            {
+              goto LABEL_6;
+            }
+
+            goto LABEL_7;
+          }
+        }
+      }
+    }
+
+LABEL_76:
+    v4 = v17;
+    goto LABEL_6;
+  }
+
+  v17 = xmmword_101466340;
+  if ([v19 hasPrefix:{@"iPad2, 1"}] & 1) != 0 || (objc_msgSend(v19, "hasPrefix:", @"iPad2,2"))
+  {
+    goto LABEL_76;
+  }
+
+  v5 = [v19 hasPrefix:{@"iPad2, 3"}];
+  v4 = xmmword_101466340;
+  if (v5)
+  {
+    goto LABEL_6;
+  }
+
+  if ([v19 hasPrefix:{@"iPad2, 4", COERCE_DOUBLE(15)}])
+  {
+    v4 = xmmword_101466350;
+    goto LABEL_6;
+  }
+
+  v17 = xmmword_101466360;
+  if ([v19 hasPrefix:{@"iPad2, 5"}] & 1) != 0 || (objc_msgSend(v19, "hasPrefix:", @"iPad2,6"))
+  {
+    goto LABEL_76;
+  }
+
+  v7 = @"iPad2,7";
+LABEL_72:
+  v13 = [v19 hasPrefix:{v7, v17}];
+  v4 = v18;
+  if (v13)
+  {
+    goto LABEL_6;
+  }
+
+LABEL_7:
+  self->_deviceType = sub_1004F2968(v19);
+}
+
+- (CRLCapabilities)init
+{
+  v8.receiver = self;
+  v8.super_class = CRLCapabilities;
+  v2 = [(CRLCapabilities *)&v8 init];
+  v3 = v2;
+  if (v2)
+  {
+    block[0] = _NSConcreteStackBlock;
+    block[1] = 3221225472;
+    block[2] = sub_1004F3238;
+    block[3] = &unk_10183AB38;
+    v4 = v2;
+    v7 = v4;
+    if (qword_101A35260 != -1)
+    {
+      dispatch_once(&qword_101A35260, block);
+    }
+
+    [(CRLCapabilities *)v4 p_setupPlatform];
+    [(CRLCapabilities *)v4 p_setupDevice];
+  }
+
+  return v3;
+}
+
++ (CRLCapabilities)currentCapabilities
+{
+  if (qword_101A35270 != -1)
+  {
+    sub_101386EE4();
+  }
+
+  v3 = qword_101A35278;
+
+  return v3;
+}
+
+- (CGSize)maximumHardcodedTextureSize
+{
+  platform = self->_platform;
+  if ((platform - 2) < 2)
+  {
+    v5 = 0x40C0000000000000;
+    goto LABEL_6;
+  }
+
+  width = CGSizeZero.width;
+  height = CGSizeZero.height;
+  if (platform)
+  {
+    if (platform == 1)
+    {
+      v5 = 0x40B0000000000000;
+LABEL_6:
+      height = *&v5;
+      width = *&v5;
+    }
+  }
+
+  else
+  {
+    +[CRLAssertionHandler _atomicIncrementAssertCount];
+    if (qword_101AD5A10 != -1)
+    {
+      sub_101386EF8();
+    }
+
+    if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
+    {
+      sub_101386F0C();
+    }
+
+    if (qword_101AD5A10 != -1)
+    {
+      sub_101386F94();
+    }
+
+    v6 = off_1019EDA68;
+    if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
+    {
+      sub_10130DA10(v6);
+    }
+
+    v7 = [NSString stringWithUTF8String:"[CRLCapabilities maximumHardcodedTextureSize]"];
+    v8 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/CRLCapabilities.m"];
+    [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:386 isFatal:0 description:"Unknown platform!"];
+  }
+
+  v9 = width;
+  v10 = height;
+  result.height = v10;
+  result.width = v9;
+  return result;
+}
+
+- (CGSize)maximumImageSize
+{
+  width = CGSizeZero.width;
+  height = CGSizeZero.height;
+  platform = self->_platform;
+  if (platform > 1)
+  {
+    if (platform == 2)
+    {
+      v5 = 0x40D0000000000000;
+      goto LABEL_18;
+    }
+
+    if (platform == 3)
+    {
+LABEL_7:
+      v5 = 0x40C0000000000000;
+LABEL_18:
+      height = *&v5;
+      width = *&v5;
+    }
+  }
+
+  else
+  {
+    if (platform)
+    {
+      if (platform != 1)
+      {
+        goto LABEL_19;
+      }
+
+      goto LABEL_7;
+    }
+
+    +[CRLAssertionHandler _atomicIncrementAssertCount];
+    if (qword_101AD5A10 != -1)
+    {
+      sub_101386FBC();
+    }
+
+    if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
+    {
+      sub_101386FD0();
+    }
+
+    if (qword_101AD5A10 != -1)
+    {
+      sub_101387058();
+    }
+
+    v6 = off_1019EDA68;
+    if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
+    {
+      sub_10130DA10(v6);
+    }
+
+    v7 = [NSString stringWithUTF8String:"[CRLCapabilities maximumImageSize]"];
+    v8 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/CRLCapabilities.m"];
+    [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:406 isFatal:0 description:"Unknown platform!"];
+  }
+
+LABEL_19:
+  v9 = width;
+  v10 = height;
+  result.height = v10;
+  result.width = v9;
+  return result;
+}
+
+- (CGSize)maximumMetalTextureSizeForDevice:(id)a3
+{
+  if ([(CRLCapabilities *)self isMetalCapable])
+  {
+    v4 = 8192.0;
+    v5 = 8192.0;
+  }
+
+  else
+  {
+    +[CRLAssertionHandler _atomicIncrementAssertCount];
+    if (qword_101AD5A10 != -1)
+    {
+      sub_101387080();
+    }
+
+    if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
+    {
+      sub_101387094();
+    }
+
+    if (qword_101AD5A10 != -1)
+    {
+      sub_10138711C();
+    }
+
+    v6 = off_1019EDA68;
+    if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
+    {
+      sub_10130DA10(v6);
+    }
+
+    v7 = [NSString stringWithUTF8String:"[CRLCapabilities maximumMetalTextureSizeForDevice:]"];
+    v8 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/CRLCapabilities.m"];
+    [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:424 isFatal:0 description:"Shouldn't be asking for the maximum Metal texture size on a device that doesn't support Metal."];
+
+    [(CRLCapabilities *)self maximumHardcodedTextureSize];
+  }
+
+  result.height = v5;
+  result.width = v4;
+  return result;
+}
+
+- (id)metalCapabilitiesForDevice:(id)a3
+{
+  v3 = a3;
+  if (!v3)
+  {
+    +[CRLAssertionHandler _atomicIncrementAssertCount];
+    if (qword_101AD5A10 != -1)
+    {
+      sub_101387144();
+    }
+
+    if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
+    {
+      sub_101387158();
+    }
+
+    if (qword_101AD5A10 != -1)
+    {
+      sub_101387208();
+    }
+
+    v4 = off_1019EDA68;
+    if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
+    {
+      sub_10130DA10(v4);
+    }
+
+    v5 = [NSString stringWithUTF8String:"[CRLCapabilities metalCapabilitiesForDevice:]"];
+    v6 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/CRLCapabilities.m"];
+    [CRLAssertionHandler handleFailureInFunction:v5 file:v6 lineNumber:438 isFatal:0 description:"invalid nil value for '%{public}s'", "device"];
+  }
+
+  if (qword_101A35288 != -1)
+  {
+    sub_101387230();
+  }
+
+  v7 = [qword_101A35280 objectForKey:v3];
+  if (!v7)
+  {
+    v7 = [[CRLMetalDeviceCapabilities alloc] initWithDevice:v3];
+    [qword_101A35280 setObject:v7 forKey:v3];
+  }
+
+  return v7;
+}
+
+- (BOOL)p_isMetalCapable
+{
+  v2 = MTLCreateSystemDefaultDevice();
+  v3 = v2 != 0;
+
+  return v3;
+}
+
+- (unint64_t)physicalMemory
+{
+  v2 = +[NSProcessInfo processInfo];
+  v3 = [v2 physicalMemory];
+
+  return v3;
+}
+
+- (BOOL)hasHEVCHardwareEncoding
+{
+  block[0] = _NSConcreteStackBlock;
+  block[1] = 3221225472;
+  block[2] = sub_1004F3C94;
+  block[3] = &unk_10183AB38;
+  block[4] = self;
+  if (qword_101A35298 != -1)
+  {
+    dispatch_once(&qword_101A35298, block);
+  }
+
+  return byte_101A35290;
+}
+
+@end

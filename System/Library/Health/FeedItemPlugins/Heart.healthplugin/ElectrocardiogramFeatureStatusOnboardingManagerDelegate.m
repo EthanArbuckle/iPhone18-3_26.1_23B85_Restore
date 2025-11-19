@@ -1,0 +1,14 @@
+@interface ElectrocardiogramFeatureStatusOnboardingManagerDelegate
+- (_TtC5HeartP33_83D08B8D42E0F7375EF54A8E4D22046B55ElectrocardiogramFeatureStatusOnboardingManagerDelegate)init;
+@end
+
+@implementation ElectrocardiogramFeatureStatusOnboardingManagerDelegate
+
+- (_TtC5HeartP33_83D08B8D42E0F7375EF54A8E4D22046B55ElectrocardiogramFeatureStatusOnboardingManagerDelegate)init
+{
+  result = _swift_stdlib_reportUnimplementedInitializer();
+  __break(1u);
+  return result;
+}
+
+@end

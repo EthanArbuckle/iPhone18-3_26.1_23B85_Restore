@@ -1,0 +1,2093 @@
+@interface RCWaveformSelectionOverlay
+- ($F24F406B2B787EFB06265DBA3D28CBD5)selectedTimeRange;
+- (BOOL)__shouldDisplayBeginTimeText;
+- (BOOL)__shouldDisplayEndTimeText;
+- (BOOL)_beginTrackingSelectionBar:(id)a3 selectionBarType:(int64_t)a4 withTouch:(id)a5;
+- (BOOL)_shouldDisplayBeginTimeText;
+- (BOOL)_shouldDisplayEndTimeText;
+- (BOOL)accessibilityScroll:(int64_t)a3;
+- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (CGRect)_alternateBeginTimeRectWithSizedTextLayer:(id)a3;
+- (CGRect)_alternateEndTimeRectWithSizedTextLayer:(id)a3;
+- (CGRect)_beginTimeRectWithSizedTextLayer:(id)a3 isOffsetForThumb:(BOOL *)a4;
+- (CGRect)_endTimeRectWithSizedTextLayer:(id)a3 isOffsetForThumb:(BOOL *)a4;
+- (CGRect)_middleTimeRectWithFont:(id)a3;
+- (CGRect)_selectionBoundsIncludingKnobs;
+- (CGRect)_selectionBoundsIncludingKnobsUsingMultiplier:(double)a3;
+- (CGRect)_selectionRectForSelectedTimeRange:(id)a3;
+- (CGRect)selectionRect;
+- (RCWaveformSelectionOverlay)initWithCoder:(id)a3;
+- (RCWaveformSelectionOverlay)initWithDelegate:(id)a3 height:(double)a4 selectionAreaInsets:(UIEdgeInsets)a5;
+- (RCWaveformSelectionOverlay)initWithFrame:(CGRect)a3;
+- (RCWaveformSelectionOverlayDelegate)delegate;
+- (UIView)selectionBackgroundView;
+- (double)_xAdjustmentAmount;
+- (double)currentTimeIndicatorCoordinate;
+- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_hitSelectionForPoint:(CGPoint)a3;
+- (id)_touchTrackingInfoForSelectionBarTye:(int64_t)a3;
+- (id)accessibilityElements;
+- (id)accessibilityValue;
+- (int64_t)beginTimeIndicatorSelectionAffinity;
+- (int64_t)endTimeIndicatorSelectionAffinity;
+- (unint64_t)accessibilityTraits;
+- (void)_accessibilityIncreaseValue:(BOOL)a3 bySegment:(double)a4;
+- (void)_clearStaleTouches;
+- (void)_clearSublayers;
+- (void)_createSublayersIfNeeded;
+- (void)_setWantsAnimatedLayoutDuration:(double)a3;
+- (void)_updateSelectedTimeRangeForTrackedTouchesAnimated:(BOOL)a3;
+- (void)accessibilityDecrement;
+- (void)accessibilityIncrement;
+- (void)layoutSubviews;
+- (void)reloadSelectionOffsets;
+- (void)setAssetCurrentTime:(double)a3;
+- (void)setEditingEnabled:(BOOL)a3;
+- (void)setFrame:(CGRect)a3;
+- (void)setInsertMode:(BOOL)a3;
+- (void)setIsRecording:(BOOL)a3;
+- (void)setSelectedTimeRange:(id)a3 withAnimationDuration:(double)a4;
+- (void)setSelectionMode:(int64_t)a3;
+- (void)setSelectionRect:(CGRect)a3;
+- (void)setTrackedAssetCurrentTime:(double)a3;
+- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+@end
+
+@implementation RCWaveformSelectionOverlay
+
+- (RCWaveformSelectionOverlay)initWithFrame:(CGRect)a3
+{
+  v5 = [NSAssertionHandler currentHandler:a3.origin.x];
+  [v5 handleFailureInMethod:a2 object:self file:@"RCWaveformSelectionOverlay.m" lineNumber:111 description:@"Use the designated initializer instead"];
+
+  return 0;
+}
+
+- (RCWaveformSelectionOverlay)initWithCoder:(id)a3
+{
+  v5 = +[NSAssertionHandler currentHandler];
+  [v5 handleFailureInMethod:a2 object:self file:@"RCWaveformSelectionOverlay.m" lineNumber:117 description:@"this view does not support keyed coding.  use the designated initializer instead"];
+
+  return [(RCWaveformSelectionOverlay *)self init];
+}
+
+- (RCWaveformSelectionOverlay)initWithDelegate:(id)a3 height:(double)a4 selectionAreaInsets:(UIEdgeInsets)a5
+{
+  right = a5.right;
+  bottom = a5.bottom;
+  left = a5.left;
+  top = a5.top;
+  v11 = a3;
+  v22.receiver = self;
+  v22.super_class = RCWaveformSelectionOverlay;
+  v12 = [(RCWaveformSelectionOverlay *)&v22 initWithFrame:0.0, 0.0, 0.0, a4];
+  v13 = v12;
+  if (v12)
+  {
+    objc_storeWeak(&v12->_delegate, v11);
+    v13->_selectionAreaInsets.top = top;
+    v13->_selectionAreaInsets.left = left;
+    v13->_selectionAreaInsets.bottom = bottom;
+    v13->_selectionAreaInsets.right = right;
+    v13->_selectionRect.origin.x = 0.0;
+    v13->_selectionRect.origin.y = 0.0;
+    v13->_selectionRect.size.width = 0.0;
+    v13->_selectionRect.size.height = 177.0;
+    v14 = +[NSMutableDictionary dictionary];
+    trackedTouches = v13->_trackedTouches;
+    v13->_trackedTouches = v14;
+
+    [(RCWaveformSelectionOverlay *)v13 sizeThatFits:0.0, a4];
+    v17 = v16;
+    v19 = v18;
+    [(RCWaveformSelectionOverlay *)v13 setMultipleTouchEnabled:1];
+    [(RCWaveformSelectionOverlay *)v13 setFrame:0.0, 0.0, v17, v19];
+    [(RCWaveformSelectionOverlay *)v13 setOpaque:0];
+    [(RCWaveformSelectionOverlay *)v13 setUserInteractionEnabled:1];
+    v20 = +[UIColor clearColor];
+    [(RCWaveformSelectionOverlay *)v13 setBackgroundColor:v20];
+
+    [(RCWaveformSelectionOverlay *)v13 setIsRecording:0];
+    v13->_trackedAssetCurrentTime = -1.0;
+  }
+
+  return v13;
+}
+
+- (void)setSelectionRect:(CGRect)a3
+{
+  height = a3.size.height;
+  width = a3.size.width;
+  y = a3.origin.y;
+  x = a3.origin.x;
+  p_selectionRect = &self->_selectionRect;
+  if (!CGRectEqualToRect(self->_selectionRect, a3))
+  {
+    if (p_selectionRect->size.height != height)
+    {
+      [(RCWaveformSelectionOverlay *)self _clearSublayers];
+    }
+
+    p_selectionRect->origin.x = x;
+    p_selectionRect->origin.y = y;
+    p_selectionRect->size.width = width;
+    p_selectionRect->size.height = height;
+
+    [(RCWaveformSelectionOverlay *)self setNeedsLayout];
+  }
+}
+
+- (void)setSelectedTimeRange:(id)a3 withAnimationDuration:(double)a4
+{
+  var1 = a3.var1;
+  var0 = a3.var0;
+  p_selectedTimeRange = &self->_selectedTimeRange;
+  if ((RCTimeRangeEqualToTimeRange() & 1) == 0)
+  {
+    p_selectedTimeRange->beginTime = var0;
+    p_selectedTimeRange->endTime = var1;
+    [(RCWaveformSelectionOverlay *)self reloadSelectionOffsets];
+
+    [(RCWaveformSelectionOverlay *)self _setWantsAnimatedLayoutDuration:a4];
+  }
+}
+
+- (void)reloadSelectionOffsets
+{
+  WeakRetained = objc_loadWeakRetained(&self->_delegate);
+  [WeakRetained waveformSelectionOverlayGetCurrentTime:self];
+  self->_assetCurrentTime = v4;
+
+  if (self->_assetCurrentTime >= 0.0 || self->_trackedAssetCurrentTime >= 0.0 || (RCTimeRangeDeltaWithUIPrecision(), v5 > 0.00000011920929))
+  {
+    beginTime = self->_selectedTimeRange.beginTime;
+    endTime = self->_selectedTimeRange.endTime;
+  }
+
+  else
+  {
+    RCTimeRangeMake();
+  }
+
+  [(RCWaveformSelectionOverlay *)self _selectionRectForSelectedTimeRange:beginTime, endTime];
+
+  [(RCWaveformSelectionOverlay *)self setSelectionRect:?];
+}
+
+- (void)setFrame:(CGRect)a3
+{
+  height = a3.size.height;
+  width = a3.size.width;
+  y = a3.origin.y;
+  x = a3.origin.x;
+  [(RCWaveformSelectionOverlay *)self frame];
+  if (v8 == height)
+  {
+    v9.receiver = self;
+    v9.super_class = RCWaveformSelectionOverlay;
+    [(RCWaveformSelectionOverlay *)&v9 setFrame:x, y, width, height];
+  }
+
+  else
+  {
+    [(RCWaveformSelectionOverlay *)self _clearSublayers];
+    v10.receiver = self;
+    v10.super_class = RCWaveformSelectionOverlay;
+    [(RCWaveformSelectionOverlay *)&v10 setFrame:x, y, width, height];
+    [(RCWaveformSelectionOverlay *)self reloadSelectionOffsets];
+  }
+
+  [(RCWaveformSelectionOverlay *)self setNeedsLayout];
+}
+
+- (void)setTrackedAssetCurrentTime:(double)a3
+{
+  if (self->_trackedAssetCurrentTime != a3)
+  {
+    self->_trackedAssetCurrentTime = a3;
+    [(RCWaveformSelectionOverlay *)self setNeedsLayout];
+  }
+}
+
+- (void)setAssetCurrentTime:(double)a3
+{
+  if (self->_assetCurrentTime != a3)
+  {
+    self->_assetCurrentTime = a3;
+    if (self->_trackedAssetCurrentTime < 0.0)
+    {
+      [(RCWaveformSelectionOverlay *)self setNeedsLayout];
+    }
+  }
+}
+
+- (void)setSelectionMode:(int64_t)a3
+{
+  if (self->_selectionMode != a3)
+  {
+    self->_selectionMode = a3;
+    [(RCWaveformSelectionOverlay *)self _clearSublayers];
+
+    [(RCWaveformSelectionOverlay *)self setNeedsLayout];
+  }
+}
+
+- (double)currentTimeIndicatorCoordinate
+{
+  [(RCWaveformSelectionOverlay *)self layoutIfNeeded];
+  [(RCOverlayBarLayer *)self->_currentTimeBar frame];
+
+  return CGRectGetMidX(*&v3);
+}
+
+- (int64_t)beginTimeIndicatorSelectionAffinity
+{
+  v2 = [(RCWaveformSelectionOverlay *)self _touchTrackingInfoForSelectionBarTye:0];
+  v3 = [v2 selectionAffinity];
+
+  return v3;
+}
+
+- (int64_t)endTimeIndicatorSelectionAffinity
+{
+  v2 = [(RCWaveformSelectionOverlay *)self _touchTrackingInfoForSelectionBarTye:1];
+  v3 = [v2 selectionAffinity];
+
+  return v3;
+}
+
+- (void)setIsRecording:(BOOL)a3
+{
+  if (self->_isRecording != a3)
+  {
+    self->_isRecording = a3;
+    [(RCWaveformSelectionOverlay *)self setNeedsLayout];
+  }
+}
+
+- (void)_clearSublayers
+{
+  [(RCOverlayBarLayer *)self->_beginTimeSelection removeFromSuperlayer];
+  beginTimeSelection = self->_beginTimeSelection;
+  self->_beginTimeSelection = 0;
+
+  [(RCOverlayBarLayer *)self->_endTimeSelection removeFromSuperlayer];
+  endTimeSelection = self->_endTimeSelection;
+  self->_endTimeSelection = 0;
+
+  [(CALayer *)self->_middleSelectionOverlay removeFromSuperlayer];
+  middleSelectionOverlay = self->_middleSelectionOverlay;
+  self->_middleSelectionOverlay = 0;
+
+  [(CALayer *)self->_corneredDimOverlayContainer removeFromSuperlayer];
+  corneredDimOverlayContainer = self->_corneredDimOverlayContainer;
+  self->_corneredDimOverlayContainer = 0;
+
+  [(RCOverlayBarLayer *)self->_currentTimeBar removeFromSuperlayer];
+  currentTimeBar = self->_currentTimeBar;
+  self->_currentTimeBar = 0;
+
+  [(RCOverlayBarLayer *)self->_compactCurrentTimeBar removeFromSuperlayer];
+  compactCurrentTimeBar = self->_compactCurrentTimeBar;
+  self->_compactCurrentTimeBar = 0;
+
+  self->_sublayersCreated = 0;
+}
+
+- (void)_createSublayersIfNeeded
+{
+  if (!self->_sublayersCreated)
+  {
+    v45 = +[RCRecorderStyleProvider sharedStyleProvider];
+    +[CATransaction begin];
+    [CATransaction setDisableActions:1];
+    if (!self->_middleSelectionOverlay)
+    {
+      v3 = objc_alloc_init(CALayer);
+      middleSelectionOverlay = self->_middleSelectionOverlay;
+      self->_middleSelectionOverlay = v3;
+
+      if (self->_overviewTrimHandleStyle)
+      {
+        v5 = [v45 selectionOverlayEndpointBarColor];
+        -[CALayer setBorderColor:](self->_middleSelectionOverlay, "setBorderColor:", [v5 CGColor]);
+
+        [v45 selectionOverlayBorderWidth];
+        [(CALayer *)self->_middleSelectionOverlay setBorderWidth:?];
+      }
+    }
+
+    if (!self->_corneredDimOverlayContainer)
+    {
+      v6 = objc_alloc_init(CALayer);
+      corneredDimOverlayContainer = self->_corneredDimOverlayContainer;
+      self->_corneredDimOverlayContainer = v6;
+
+      v8 = +[UIColor clearColor];
+      -[CALayer setBackgroundColor:](self->_corneredDimOverlayContainer, "setBackgroundColor:", [v8 CGColor]);
+
+      if (self->_overviewTrimHandleStyle)
+      {
+        [v45 overviewWaveformCornerRadius];
+        [(CALayer *)self->_corneredDimOverlayContainer setCornerRadius:?];
+        [(CALayer *)self->_corneredDimOverlayContainer setMasksToBounds:1];
+      }
+    }
+
+    [(RCWaveformSelectionOverlay *)self knobWidthMultiplier];
+    [(RCWaveformSelectionOverlay *)self _selectionBoundsIncludingKnobsUsingMultiplier:?];
+    v10 = v9;
+    if (!self->_beginTimeSelection)
+    {
+      overviewTrimHandleStyle = self->_overviewTrimHandleStyle;
+      v12 = [RCOverlayBarLayer alloc];
+      v13 = [v45 selectionOverlayEndpointBarColor];
+      [(RCWaveformSelectionOverlay *)self knobWidthMultiplier];
+      if (overviewTrimHandleStyle)
+      {
+        v15 = [(RCOverlayBarLayer *)v12 initWithColor:v13 selectionExtentIncludingKnobs:0 topKnob:0 bottomKnob:1 widthMultiplier:0 barWidthMatchesKnobs:v10 selectionBarType:v14];
+        beginTimeSelection = self->_beginTimeSelection;
+        self->_beginTimeSelection = v15;
+
+        v13 = [UIImage imageNamed:@"Trim_Chevron_Left"];
+        [(RCOverlayBarLayer *)self->_beginTimeSelection setBarGlyph:v13];
+      }
+
+      else
+      {
+        v17 = [(RCOverlayBarLayer *)v12 initWithColor:v13 selectionExtentIncludingKnobs:1 topKnob:1 bottomKnob:0 widthMultiplier:0 barWidthMatchesKnobs:v10 selectionBarType:v14];
+        v18 = self->_beginTimeSelection;
+        self->_beginTimeSelection = v17;
+      }
+    }
+
+    if (!self->_endTimeSelection)
+    {
+      v19 = self->_overviewTrimHandleStyle;
+      v20 = [RCOverlayBarLayer alloc];
+      v21 = [v45 selectionOverlayEndpointBarColor];
+      [(RCWaveformSelectionOverlay *)self knobWidthMultiplier];
+      if (v19)
+      {
+        v23 = [(RCOverlayBarLayer *)v20 initWithColor:v21 selectionExtentIncludingKnobs:0 topKnob:0 bottomKnob:1 widthMultiplier:1 barWidthMatchesKnobs:v10 selectionBarType:v22];
+        endTimeSelection = self->_endTimeSelection;
+        self->_endTimeSelection = v23;
+
+        v21 = [UIImage imageNamed:@"Trim_Chevron_Right"];
+        [(RCOverlayBarLayer *)self->_endTimeSelection setBarGlyph:v21];
+      }
+
+      else
+      {
+        v25 = [(RCOverlayBarLayer *)v20 initWithColor:v21 selectionExtentIncludingKnobs:1 topKnob:1 bottomKnob:0 widthMultiplier:1 barWidthMatchesKnobs:v10 selectionBarType:v22];
+        v26 = self->_endTimeSelection;
+        self->_endTimeSelection = v25;
+      }
+    }
+
+    if (!self->_currentTimeBar)
+    {
+      [(RCWaveformSelectionOverlay *)self playWidthMultiplier];
+      [(RCWaveformSelectionOverlay *)self _selectionBoundsIncludingKnobsUsingMultiplier:?];
+      v28 = v27;
+      v29 = [RCOverlayBarLayer alloc];
+      v30 = [v45 playbackPositionBarColor];
+      [(RCWaveformSelectionOverlay *)self playWidthMultiplier];
+      v32 = [(RCOverlayBarLayer *)v29 initWithColor:v30 selectionExtentIncludingKnobs:1 topKnob:1 bottomKnob:[(RCWaveformSelectionOverlay *)self barMatchesKnobRadius] widthMultiplier:2 barWidthMatchesKnobs:v28 selectionBarType:v31];
+      currentTimeBar = self->_currentTimeBar;
+      self->_currentTimeBar = v32;
+    }
+
+    if (!self->_compactCurrentTimeBar)
+    {
+      v34 = +[RCRecorderStyleProvider sharedStyleProvider];
+      [v34 compactStyleTimeBarDefaultHeight];
+      v36 = v35;
+
+      v37 = +[RCRecorderStyleProvider sharedStyleProvider];
+      [v37 compactStylePlayheadMultiplier];
+      v39 = v38;
+
+      v40 = [RCOverlayBarLayer alloc];
+      v41 = +[RCRecorderStyleProvider sharedStyleProvider];
+      v42 = [v41 playbackPositionBarColor];
+      v43 = [(RCOverlayBarLayer *)v40 initWithColor:v42 selectionExtentIncludingKnobs:0 topKnob:0 bottomKnob:1 widthMultiplier:2 barWidthMatchesKnobs:v36 selectionBarType:v39];
+      compactCurrentTimeBar = self->_compactCurrentTimeBar;
+      self->_compactCurrentTimeBar = v43;
+    }
+
+    +[CATransaction commit];
+    self->_sublayersCreated = 1;
+  }
+}
+
+- (void)_setWantsAnimatedLayoutDuration:(double)a3
+{
+  if (a3 <= 0.0)
+  {
+    requestedNonAnimatedLayout = 1;
+  }
+
+  else
+  {
+    self->_requestedAnimatedLayoutDuration = a3;
+    requestedNonAnimatedLayout = self->_requestedNonAnimatedLayout;
+  }
+
+  self->_requestedNonAnimatedLayout = requestedNonAnimatedLayout;
+  [(RCWaveformSelectionOverlay *)self setNeedsLayout];
+}
+
+- (void)setEditingEnabled:(BOOL)a3
+{
+  if (self->_editingEnabled != a3)
+  {
+    self->_editingEnabled = a3;
+    [(RCWaveformSelectionOverlay *)self setNeedsLayout];
+
+    [(RCWaveformSelectionOverlay *)self layoutIfNeeded];
+  }
+}
+
+- (void)setInsertMode:(BOOL)a3
+{
+  if (self->_insertMode != a3)
+  {
+    self->_insertMode = a3;
+    [(RCWaveformSelectionOverlay *)self setNeedsLayout];
+
+    [(RCWaveformSelectionOverlay *)self layoutIfNeeded];
+  }
+}
+
+- (void)layoutSubviews
+{
+  v3 = self->_requestedAnimatedLayoutDuration > 0.0 && !self->_requestedNonAnimatedLayout;
+  v4 = v3;
+  v5 = +[RCRecorderStyleProvider sharedStyleProvider];
+  [v5 animationDragCoefficient];
+  v7 = v6;
+
+  v8 = v7 * self->_requestedAnimatedLayoutDuration;
+  v9 = +[RCRecorderStyleProvider sharedStyleProvider];
+  if (v3)
+  {
+    +[CATransaction begin];
+    [CATransaction setAnimationDuration:v8];
+  }
+
+  self->_requestedAnimatedLayoutDuration = 0.0;
+  self->_requestedNonAnimatedLayout = 0;
+  v166[0] = _NSConcreteStackBlock;
+  v166[1] = 3221225472;
+  v166[2] = sub_10004BF40;
+  v166[3] = &unk_10028AC60;
+  v166[4] = self;
+  *&v166[5] = v7;
+  *&v166[6] = v8;
+  v167 = v3;
+  v10 = objc_retainBlock(v166);
+  [(RCWaveformSelectionOverlay *)self _createSublayersIfNeeded];
+  [(RCWaveformSelectionOverlay *)self _selectionBoundsIncludingKnobs];
+  x = v169.origin.x;
+  y = v169.origin.y;
+  width = v169.size.width;
+  height = v169.size.height;
+  if (CGRectIsEmpty(v169) || (v170.origin.x = x, v170.origin.y = y, v170.size.width = width, v170.size.height = height, CGRectIsInfinite(v170)) || (*&x & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000 || (*&y & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000 || (*&width & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000 || (*&height & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
+  {
+    if (v3)
+    {
+      +[CATransaction commit];
+    }
+  }
+
+  else
+  {
+    if ([(RCWaveformSelectionOverlay *)self playBarOnly])
+    {
+      v153 = 0;
+      v15 = 0.0;
+    }
+
+    else
+    {
+      v153 = [(RCWaveformSelectionOverlay *)self isEditingEnabled];
+      v15 = 0.0;
+      if (v153)
+      {
+        v15 = 1.0;
+      }
+    }
+
+    v156 = v15;
+    [(RCWaveformSelectionOverlay *)self selectedTimeRange];
+    v17 = v16;
+    v154 = v18;
+    RCTimeRangeDeltaWithUIPrecision();
+    v150 = v19;
+    v20 = v19 == 0.0 && self->_insertMode;
+    v21 = v19 > 0.0 || !self->_insertMode;
+    overviewTrimHandleStyle = self->_overviewTrimHandleStyle;
+    [(CALayer *)self->_middleSelectionOverlay setZPosition:1.0];
+    if (overviewTrimHandleStyle)
+    {
+      v23 = 3.0;
+    }
+
+    else
+    {
+      v23 = 2.0;
+    }
+
+    if (overviewTrimHandleStyle)
+    {
+      v24 = 2.0;
+    }
+
+    else
+    {
+      v24 = 3.0;
+    }
+
+    [(RCOverlayBarLayer *)self->_currentTimeBar setZPosition:v23];
+    [(RCOverlayBarLayer *)self->_compactCurrentTimeBar setZPosition:v23];
+    [(RCOverlayBarLayer *)self->_beginTimeSelection setZPosition:v24];
+    [(RCOverlayBarLayer *)self->_endTimeSelection setZPosition:v24];
+    [(CALayer *)self->_corneredDimOverlayContainer setZPosition:0.5];
+    [(RCWaveformSelectionOverlay *)self _selectionHighlightBounds];
+    v159 = v25;
+    v160 = v26;
+    [(RCOverlayBarLayer *)self->_beginTimeSelection frame];
+    v28 = v27;
+    v151 = v29;
+    WeakRetained = objc_loadWeakRetained(&self->_delegate);
+    v31 = WeakRetained;
+    assetDuration = self->_assetDuration;
+    if (v17 < assetDuration)
+    {
+      assetDuration = v17;
+    }
+
+    if (assetDuration < 0.0)
+    {
+      assetDuration = 0.0;
+    }
+
+    [WeakRetained waveformSelectionOverlay:self offsetForTime:assetDuration];
+    v34 = v33;
+
+    v158 = v21;
+    v161 = v34;
+    if (self->_overviewTrimHandleStyle)
+    {
+      if (v20 || v21)
+      {
+        [(RCOverlayBarLayer *)self->_endTimeSelection frame];
+        v28 = v35;
+        [(RCOverlayBarLayer *)self->_beginTimeSelection setMasksToBounds:0];
+        MinY = v159;
+        v36 = v160;
+        v38 = v28;
+      }
+
+      else
+      {
+        [(RCOverlayBarLayer *)self->_beginTimeSelection setMasksToBounds:1];
+        v28 = 1.0;
+        MinY = v159;
+        v36 = v160;
+        v38 = 1.0;
+      }
+    }
+
+    else
+    {
+      v38 = v28 * 0.5;
+      v171.origin.x = x;
+      v171.origin.y = y;
+      v171.size.width = width;
+      v171.size.height = height;
+      MinY = CGRectGetMinY(v171);
+      v36 = v151;
+    }
+
+    v39.n128_f64[0] = RCRoundCoord(v161 - v38);
+    if (v20)
+    {
+      v40.n128_f64[0] = 0.0;
+    }
+
+    else
+    {
+      v40.n128_f64[0] = v156;
+    }
+
+    (v10[2])(v10, self->_beginTimeSelection, 0, 0, v39, MinY, v28, v36, v40);
+    [(RCOverlayBarLayer *)self->_endTimeSelection frame];
+    v42 = v41;
+    v152 = v43;
+    v44 = objc_loadWeakRetained(&self->_delegate);
+    v45 = v44;
+    v46 = self->_assetDuration;
+    if (v154 < v46)
+    {
+      v46 = v154;
+    }
+
+    if (v46 < 0.0)
+    {
+      v46 = 0.0;
+    }
+
+    [v44 waveformSelectionOverlay:self offsetForTime:v46];
+    v48 = v47;
+
+    v49 = v159;
+    v50 = v160;
+    if (!self->_overviewTrimHandleStyle)
+    {
+      v48 = v48 + v42 * -0.5;
+      v172.origin.x = x;
+      v172.origin.y = y;
+      v172.size.width = width;
+      v172.size.height = height;
+      v49 = CGRectGetMinY(v172);
+      v50 = v152;
+    }
+
+    v51.n128_f64[0] = RCRoundCoord(v48);
+    if (v21)
+    {
+      v52.n128_f64[0] = v156;
+    }
+
+    else
+    {
+      v52.n128_f64[0] = 0.0;
+    }
+
+    (v10[2])(v10, self->_endTimeSelection, 0, 0, v51, v49, v42, v50, v52);
+    [(RCWaveformSelectionOverlay *)self playWidthMultiplier];
+    [(RCWaveformSelectionOverlay *)self _selectionBoundsIncludingKnobsUsingMultiplier:?];
+    v54 = v53;
+    v56 = v55;
+    v58 = v57;
+    v60 = v59;
+    trackedAssetCurrentTime = self->_trackedAssetCurrentTime;
+    if (trackedAssetCurrentTime < 0.0)
+    {
+      v62 = objc_loadWeakRetained(&self->_delegate);
+      [v62 waveformSelectionOverlayGetCurrentTime:self];
+      trackedAssetCurrentTime = v63;
+    }
+
+    v64 = self->_assetDuration;
+    if (trackedAssetCurrentTime < v64)
+    {
+      v64 = trackedAssetCurrentTime;
+    }
+
+    if (v64 >= 0.0)
+    {
+      v65 = v64;
+    }
+
+    else
+    {
+      v65 = 0.0;
+    }
+
+    [(RCOverlayBarLayer *)self->_currentTimeBar frame];
+    v67 = v66;
+    v69 = v68;
+    v70 = objc_loadWeakRetained(&self->_delegate);
+    [v70 waveformSelectionOverlay:self offsetForTime:v65];
+    v72 = v71;
+
+    +[RCOverlayBarLayer selectionKnobRadius];
+    v74 = v73;
+    [(RCWaveformSelectionOverlay *)self playWidthMultiplier];
+    v76 = RCRoundCoord(v72 - v74 * v75);
+    if (self->_overviewTrimHandleStyle)
+    {
+      [v9 overviewPlayheadHeightInset];
+      v78 = -v77;
+      v173.origin.x = v76;
+      v173.origin.y = v159;
+      v173.size.height = v160;
+      v173.size.width = v67;
+      v174 = CGRectInset(v173, 0.0, v78);
+      v76 = v174.origin.x;
+      v79 = v174.origin.y;
+      v67 = v174.size.width;
+      v69 = v174.size.height;
+    }
+
+    else
+    {
+      v175.origin.x = v54;
+      v175.origin.y = v56;
+      v175.size.width = v58;
+      v175.size.height = v60;
+      v79 = CGRectGetMinY(v175);
+    }
+
+    if (v72 < 0.0)
+    {
+      v80 = 0.0;
+    }
+
+    else
+    {
+      v80 = 1.0;
+    }
+
+    v81 = [(RCWaveformSelectionOverlay *)self layer];
+    v82 = [v81 animationForKey:@"bounds.origin"];
+
+    v155 = v82;
+    if ([v82 isMemberOfClass:objc_opt_class()])
+    {
+      v157 = v82;
+    }
+
+    else
+    {
+      v157 = 0;
+    }
+
+    [(RCOverlayBarLayer *)self->_currentTimeBar position];
+    v84 = v83;
+    v86 = v85;
+    v87 = [(RCWaveformSelectionOverlay *)self delegate];
+    v88 = [v87 waveformSelectionOverlayNeedsExplicitAnimations];
+
+    [(RCOverlayBarLayer *)self->_currentTimeBar frame];
+    if (v88 && v157)
+    {
+      v90 = v76 - v84;
+      if (v76 - v84 < 0.0)
+      {
+        v90 = -(v76 - v84);
+      }
+
+      if (v90 > v89)
+      {
+        +[CATransaction begin];
+        v91 = v155;
+        v92 = [CASpringAnimation animationWithKeyPath:@"position"];
+        [v91 duration];
+        [v92 setDuration:?];
+        [v91 timingFunction];
+        v94 = v93 = v4;
+        [v92 setTimingFunction:v94];
+
+        v4 = v93;
+        [v91 damping];
+        [v92 setDamping:?];
+        [v91 stiffness];
+        [v92 setStiffness:?];
+        [v91 mass];
+        v96 = v95;
+
+        [v92 setMass:v96];
+        [(RCOverlayBarLayer *)self->_currentTimeBar position];
+        v97 = [NSValue valueWithCGPoint:?];
+        [v92 setFromValue:v97];
+
+        [(RCOverlayBarLayer *)self->_currentTimeBar setPosition:v76, v79];
+        [(RCOverlayBarLayer *)self->_currentTimeBar addAnimation:v92 forKey:@"position"];
+        +[CATransaction commit];
+      }
+    }
+
+    else if (v84 != v76 || v86 != v79)
+    {
+      (v10[2])(v10, self->_currentTimeBar, 0, 0, v76, v79, v67, v69, v80);
+    }
+
+    [(RCWaveformSelectionOverlay *)self bounds];
+    v99 = v98;
+    v101 = v100;
+    v103 = v102;
+    [(RCOverlayBarLayer *)self->_compactCurrentTimeBar frame];
+    v104 = CGRectGetWidth(v176);
+    v177.origin.x = v99;
+    v177.origin.y = v101;
+    v177.size.width = v104;
+    v177.size.height = v103;
+    v105 = CGRectGetWidth(v177);
+    v106 = RCRoundCoord(v72 + v105 * -0.5);
+    [v9 compactStyleTimeBarHeightInset];
+    v108 = v107;
+    v178.origin.x = v106;
+    v178.origin.y = v101;
+    v178.size.width = v104;
+    v178.size.height = v103;
+    v179 = CGRectInset(v178, 0.0, v108);
+    (v10[2])(v10, self->_compactCurrentTimeBar, 0, 0, v179.origin, *&v179.origin.y, v179.size, *&v179.size.height, v80);
+    selectionMode = self->_selectionMode;
+    v110 = selectionMode == 1;
+    [(RCOverlayBarLayer *)self->_compactCurrentTimeBar setHidden:selectionMode != 1];
+    [(RCOverlayBarLayer *)self->_currentTimeBar setHidden:v110];
+    if (self->_insertMode)
+    {
+      v111 = [v9 recordPositionBarColor];
+      [(RCOverlayBarLayer *)self->_beginTimeSelection setColor:v111];
+
+      v112 = [v9 recordPositionBarColor];
+      [(RCOverlayBarLayer *)self->_endTimeSelection setColor:v112];
+
+      v113 = [v9 replaceSelectionOverlayColor];
+      v114 = objc_loadWeakRetained(&self->_selectionBackgroundView);
+      [v114 setBackgroundColor:v113];
+
+      [v9 recordPositionBarColor];
+    }
+
+    else
+    {
+      v116 = [v9 selectionOverlayEndpointBarColor];
+      [(RCOverlayBarLayer *)self->_beginTimeSelection setColor:v116];
+
+      v117 = [v9 selectionOverlayEndpointBarColor];
+      [(RCOverlayBarLayer *)self->_endTimeSelection setColor:v117];
+
+      v118 = [v9 selectionOverlayColor];
+      v119 = objc_loadWeakRetained(&self->_selectionBackgroundView);
+      [v119 setBackgroundColor:v118];
+
+      [v9 selectionOverlayEndpointBarColor];
+    }
+    v115 = ;
+    -[CALayer setBorderColor:](self->_middleSelectionOverlay, "setBorderColor:", [v115 CGColor]);
+
+    if (self->_isRecording || self->_insertMode && (v120 = v150, v150 == 0.0))
+    {
+      v121 = [v9 recordPositionBarColor];
+      [(RCOverlayBarLayer *)self->_currentTimeBar setColor:v121];
+
+      v122 = [v9 recordPositionBarColor];
+    }
+
+    else
+    {
+      v123 = [v9 playbackPositionBarColor];
+      [(RCOverlayBarLayer *)self->_currentTimeBar setColor:v123];
+
+      v122 = [v9 playbackPositionBarColor];
+    }
+
+    v124 = v122;
+    [(RCOverlayBarLayer *)self->_compactCurrentTimeBar setColor:v122];
+
+    [(RCOverlayBarLayer *)self->_beginTimeSelection frame];
+    MidX = CGRectGetMidX(v180);
+    [(RCOverlayBarLayer *)self->_endTimeSelection frame];
+    v126 = CGRectGetMidX(v181) - MidX;
+    v127 = RCRoundCoord(MidX);
+    v128 = RCRoundCoord(v126);
+    middleSelectionOverlay = self->_middleSelectionOverlay;
+    v130 = 0.0;
+    v131 = 0.0;
+    v132.n128_u64[0] = 0;
+    if (v153 & v158)
+    {
+      [v9 selectionOverlayAlpha];
+      v132.n128_u64[0] = v133;
+      v131 = 1.0;
+    }
+
+    (v10[2])(v10, middleSelectionOverlay, 0, 0, v127, v159, v128, v160, v132);
+    +[CATransaction begin];
+    [CATransaction setDisableActions:1];
+    v134 = objc_loadWeakRetained(&self->_selectionBackgroundView);
+    [v134 setFrame:{v127, v159, v128, v160}];
+
+    v135 = objc_loadWeakRetained(&self->_selectionBackgroundView);
+    [v135 setAlpha:v131];
+
+    if ([(RCWaveformSelectionOverlay *)self overviewTrimHandleStyle])
+    {
+      [v9 selectionOverlayBorderWidth];
+      v130 = v136;
+    }
+
+    v137 = objc_loadWeakRetained(&self->_delegate);
+    [v137 waveformSelectionOverlay:self offsetForTime:0.0];
+    v139 = v138;
+
+    v140 = objc_loadWeakRetained(&self->_delegate);
+    [v140 waveformSelectionOverlay:self offsetForTime:self->_assetDuration];
+    v142 = v141;
+
+    v182.origin.x = v127;
+    v182.origin.y = v159;
+    v182.size.width = v128;
+    v182.size.height = v160;
+    v183 = CGRectInset(v182, 0.0, v130);
+    (v10[2])(v10, self->_corneredDimOverlayContainer, 0, 0, v139, *&v183.origin.y, v142 - v139, *&v183.size.height, v131);
+    v184.origin.x = v127 - v139;
+    v184.origin.y = v159;
+    v184.size.width = v128;
+    v184.size.height = v160;
+    +[CATransaction commit];
+    if (+[UIApplication shouldMakeUIForDefaultPNG])
+    {
+      v164 = 0u;
+      v165 = 0u;
+      v162 = 0u;
+      v163 = 0u;
+      v143 = [(RCWaveformSelectionOverlay *)self layer];
+      v144 = [v143 sublayers];
+
+      v145 = [v144 countByEnumeratingWithState:&v162 objects:v168 count:16];
+      if (v145)
+      {
+        v146 = v145;
+        v147 = *v163;
+        do
+        {
+          for (i = 0; i != v146; i = i + 1)
+          {
+            if (*v163 != v147)
+            {
+              objc_enumerationMutation(v144);
+            }
+
+            [*(*(&v162 + 1) + 8 * i) setHidden:1];
+          }
+
+          v146 = [v144 countByEnumeratingWithState:&v162 objects:v168 count:16];
+        }
+
+        while (v146);
+      }
+
+      [(RCOverlayBarLayer *)self->_currentTimeBar setHidden:0];
+      LODWORD(v149) = 1.0;
+      [(RCOverlayBarLayer *)self->_currentTimeBar setOpacity:v149];
+    }
+
+    if (v4)
+    {
+      +[CATransaction commit];
+    }
+  }
+}
+
+- (id)_hitSelectionForPoint:(CGPoint)a3
+{
+  y = a3.y;
+  x = a3.x;
+  v6 = +[RCRecorderStyleProvider sharedStyleProvider];
+  v25[0] = _NSConcreteStackBlock;
+  v25[1] = 3221225472;
+  v25[2] = sub_10004C618;
+  v25[3] = &unk_10028AC88;
+  v25[4] = self;
+  *&v25[5] = x;
+  *&v25[6] = y;
+  v7 = objc_retainBlock(v25);
+  if (self->_editingEnabled)
+  {
+    if (x >= 0.0)
+    {
+      [(RCWaveformSelectionOverlay *)self frame];
+      v8 = 0.0;
+      if (x > v9)
+      {
+        [(RCWaveformSelectionOverlay *)self frame];
+        v8 = x - v10;
+      }
+    }
+
+    else
+    {
+      v8 = fabs(x);
+    }
+
+    p_endTimeSelection = &self->_endTimeSelection;
+    endTimeSelection = self->_endTimeSelection;
+    [v6 selectionHitTestSlop];
+    if ((v7[2])(v7, endTimeSelection))
+    {
+      goto LABEL_16;
+    }
+
+    beginTimeSelection = self->_beginTimeSelection;
+    [v6 selectionHitTestSlop];
+    if ((v7[2])(v7, beginTimeSelection, 0.0, v14))
+    {
+      p_endTimeSelection = &self->_beginTimeSelection;
+LABEL_16:
+      v23 = *p_endTimeSelection;
+      goto LABEL_18;
+    }
+
+    v15 = *p_endTimeSelection;
+    [v6 selectionHitTestSlop];
+    if ((v7[2])(v7, v15, 0.0, v8 + v16))
+    {
+      goto LABEL_16;
+    }
+
+    v17 = self->_beginTimeSelection;
+    [v6 selectionHitTestSlop];
+    p_endTimeSelection = &self->_beginTimeSelection;
+    if ((v7[2])(v7, v17, v8 + v18, 0.0))
+    {
+      goto LABEL_16;
+    }
+
+    if ([(RCWaveformSelectionOverlay *)self enablePlayBarTracking])
+    {
+      if (v8 == 0.0)
+      {
+        p_endTimeSelection = &self->_currentTimeBar;
+        currentTimeBar = self->_currentTimeBar;
+        [v6 selectionHitTestSlop];
+        v21 = v20;
+        [v6 selectionHitTestSlop];
+        if ((v7[2])(v7, currentTimeBar, v21, v22))
+        {
+          goto LABEL_16;
+        }
+      }
+    }
+  }
+
+  if ([(RCWaveformSelectionOverlay *)self enableTimeTrackingInView])
+  {
+    p_endTimeSelection = &self->_currentTimeBar;
+    goto LABEL_16;
+  }
+
+  v23 = 0;
+LABEL_18:
+
+  return v23;
+}
+
+- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+{
+  v4 = [(RCWaveformSelectionOverlay *)self _hitSelectionForPoint:a4, a3.x, a3.y];
+  v5 = v4 != 0;
+
+  return v5;
+}
+
+- (BOOL)_beginTrackingSelectionBar:(id)a3 selectionBarType:(int64_t)a4 withTouch:(id)a5
+{
+  v8 = a3;
+  v9 = a5;
+  trackedTouches = self->_trackedTouches;
+  v11 = [NSValue valueWithPointer:v9];
+  v12 = [(NSMutableDictionary *)trackedTouches objectForKey:v11];
+
+  if (!v12)
+  {
+    v13 = [(RCWaveformSelectionOverlay *)self _touchTrackingInfoForSelectionBarTye:a4];
+
+    if (!v13)
+    {
+      [v9 locationInView:self];
+      v14 = [(RCWaveformSelectionOverlay *)self _hitSelectionForPoint:?];
+
+      if (v14 == v8)
+      {
+        [(RCWaveformSelectionOverlay *)self selectionRect];
+        if (a4 == 2)
+        {
+          [(RCWaveformSelectionOverlay *)self currentTimeIndicatorCoordinate];
+        }
+
+        else if (a4 == 1)
+        {
+          MaxX = CGRectGetMaxX(*&v17);
+        }
+
+        else
+        {
+          v21 = 0.0;
+          if (a4)
+          {
+LABEL_13:
+            v23 = objc_alloc_init(RCSelectionTouchTrackingInfo);
+            v24 = [(RCWaveformSelectionOverlay *)self superview];
+            [v9 locationInView:v24];
+            [(RCSelectionTouchTrackingInfo *)v23 setTrackingOffset:v21 - v25];
+
+            [(RCSelectionTouchTrackingInfo *)v23 setSelectionBarType:a4];
+            [(RCSelectionTouchTrackingInfo *)v23 setTouch:v9];
+            v26 = self->_trackedTouches;
+            v27 = [NSValue valueWithPointer:v9];
+            [(NSMutableDictionary *)v26 setObject:v23 forKey:v27];
+
+            v15 = 1;
+            goto LABEL_5;
+          }
+
+          MaxX = CGRectGetMinX(*&v17);
+        }
+
+        v21 = MaxX;
+        goto LABEL_13;
+      }
+    }
+  }
+
+  v15 = 0;
+LABEL_5:
+
+  return v15;
+}
+
+- (void)_updateSelectedTimeRangeForTrackedTouchesAnimated:(BOOL)a3
+{
+  v4 = 0.0;
+  if (a3)
+  {
+    v4 = 0.5;
+  }
+
+  [(RCWaveformSelectionOverlay *)self _setWantsAnimatedLayoutDuration:v4];
+  v51[0] = 0;
+  v51[1] = v51;
+  v51[2] = 0x2020000000;
+  [(RCWaveformSelectionOverlay *)self selectionRect];
+  v51[3] = CGRectGetMinX(v52);
+  v50[0] = 0;
+  v50[1] = v50;
+  v50[2] = 0x2020000000;
+  [(RCWaveformSelectionOverlay *)self selectionRect];
+  v50[3] = CGRectGetMaxX(v53);
+  beginTime = self->_selectedTimeRange.beginTime;
+  endTime = self->_selectedTimeRange.endTime;
+  v49[2] = 0x2020000000;
+  *&v49[3] = beginTime;
+  v49[0] = 0;
+  v49[1] = v49;
+  v48[0] = 0;
+  v48[1] = v48;
+  v48[2] = 0x2020000000;
+  *&v48[3] = endTime;
+  v44 = 0;
+  v45 = &v44;
+  v46 = 0x2020000000;
+  v47 = 0xBFF0000000000000;
+  v40 = 0;
+  v41 = &v40;
+  v42 = 0x2020000000;
+  v43 = 0;
+  v36 = 0;
+  v37 = &v36;
+  v38 = 0x2020000000;
+  v39 = 0;
+  v32 = 0;
+  v33 = &v32;
+  v34 = 0x2020000000;
+  v35 = 0;
+  v7 = [(NSMutableDictionary *)self->_trackedTouches allValues];
+  v22[0] = _NSConcreteStackBlock;
+  v22[1] = 3221225472;
+  v22[2] = sub_10004CD44;
+  v22[3] = &unk_10028ACF0;
+  v24 = &v40;
+  v25 = v51;
+  v22[4] = self;
+  v23 = &stru_10028ACC8;
+  v26 = v49;
+  v27 = v48;
+  v28 = &v36;
+  v29 = v50;
+  v30 = &v32;
+  v31 = &v44;
+  [v7 enumerateObjectsUsingBlock:v22];
+
+  RCTimeRangeMake();
+  v9 = v8;
+  v11 = v10;
+  if ((RCTimeRangeEqualToTimeRange() & 1) == 0)
+  {
+    WeakRetained = objc_loadWeakRetained(&self->_delegate);
+    [WeakRetained waveformSelectionOverlay:self willChangeSelectedTimeRange:*(v41 + 24) isTrackingMin:*(v37 + 24) isTrackingMax:{v9, v11}];
+    v14 = v13;
+    v16 = v15;
+
+    if (v14 >= 0.0)
+    {
+      [(RCWaveformSelectionOverlay *)self setSelectedTimeRange:v14, v16];
+    }
+  }
+
+  if (*(v33 + 24) == 1)
+  {
+    v17 = v45[3];
+    if (v17 != self->_assetCurrentTime || v17 != self->_trackedAssetCurrentTime)
+    {
+      assetDuration = 0.0;
+      if (v17 < 0.0 || (assetDuration = self->_assetDuration, v17 > assetDuration))
+      {
+        v45[3] = assetDuration;
+      }
+
+      v19 = objc_loadWeakRetained(&self->_delegate);
+      [v19 waveformSelectionOverlay:self willChangeAssetCurrentTime:1 isTracking:v45[3]];
+      *(v45 + 3) = v20;
+
+      [(RCWaveformSelectionOverlay *)self setTrackedAssetCurrentTime:v45[3]];
+      [(RCWaveformSelectionOverlay *)self setAssetCurrentTime:v45[3]];
+    }
+  }
+
+  else
+  {
+    trackedAssetCurrentTime = self->_trackedAssetCurrentTime;
+    [(RCWaveformSelectionOverlay *)self setTrackedAssetCurrentTime:-1.0];
+    if (trackedAssetCurrentTime >= 0.0)
+    {
+      [(RCWaveformSelectionOverlay *)self setAssetCurrentTime:trackedAssetCurrentTime];
+    }
+  }
+
+  _Block_object_dispose(&v32, 8);
+  _Block_object_dispose(&v36, 8);
+  _Block_object_dispose(&v40, 8);
+  _Block_object_dispose(&v44, 8);
+  _Block_object_dispose(v48, 8);
+  _Block_object_dispose(v49, 8);
+  _Block_object_dispose(v50, 8);
+  _Block_object_dispose(v51, 8);
+}
+
+- (void)_clearStaleTouches
+{
+  v3 = +[NSMutableArray array];
+  trackedTouches = self->_trackedTouches;
+  v7[0] = _NSConcreteStackBlock;
+  v7[1] = 3221225472;
+  v7[2] = sub_10004D12C;
+  v7[3] = &unk_10028AD18;
+  v5 = v3;
+  v8 = v5;
+  [(NSMutableDictionary *)trackedTouches enumerateKeysAndObjectsUsingBlock:v7];
+  if ([v5 count])
+  {
+    [(NSMutableDictionary *)self->_trackedTouches removeObjectsForKeys:v5];
+    if (![(NSMutableDictionary *)self->_trackedTouches count])
+    {
+      WeakRetained = objc_loadWeakRetained(&self->_delegate);
+      [WeakRetained waveformSelectionOverlay:self didFinishTrackingSelectionBeginTime:1 endTime:1 assetCurrentTime:1];
+    }
+  }
+}
+
+- (void)touchesBegan:(id)a3 withEvent:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  if (!self->_isRecording && (self->_editingEnabled || [(RCWaveformSelectionOverlay *)self enableTimeTrackingInView]))
+  {
+    [(RCWaveformSelectionOverlay *)self _clearStaleTouches];
+    v21 = [(NSMutableDictionary *)self->_trackedTouches count];
+    v22 = 0u;
+    v23 = 0u;
+    v24 = 0u;
+    v25 = 0u;
+    v8 = v6;
+    v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    if (v9)
+    {
+      v10 = v9;
+      v11 = *v23;
+      do
+      {
+        for (i = 0; i != v10; i = i + 1)
+        {
+          if (*v23 != v11)
+          {
+            objc_enumerationMutation(v8);
+          }
+
+          v13 = *(*(&v22 + 1) + 8 * i);
+          if (![(RCWaveformSelectionOverlay *)self _beginTrackingSelectionBar:self->_beginTimeSelection selectionBarType:0 withTouch:v13]&& ![(RCWaveformSelectionOverlay *)self _beginTrackingSelectionBar:self->_endTimeSelection selectionBarType:1 withTouch:v13])
+          {
+            [(RCWaveformSelectionOverlay *)self _beginTrackingSelectionBar:self->_currentTimeBar selectionBarType:2 withTouch:v13];
+          }
+        }
+
+        v10 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      }
+
+      while (v10);
+    }
+
+    if (v21 != [(NSMutableDictionary *)self->_trackedTouches count])
+    {
+      [(RCWaveformSelectionOverlay *)self _updateSelectedTimeRangeForTrackedTouchesAnimated:[(RCWaveformSelectionOverlay *)self rc_canAnimate]];
+      if ([(NSMutableDictionary *)self->_trackedTouches count])
+      {
+        if (!v21)
+        {
+          v14 = [(RCWaveformSelectionOverlay *)self _touchTrackingInfoForSelectionBarTye:0];
+          v15 = v14 != 0;
+
+          v16 = [(RCWaveformSelectionOverlay *)self _touchTrackingInfoForSelectionBarTye:1];
+          v17 = v16 != 0;
+
+          v18 = [(RCWaveformSelectionOverlay *)self _touchTrackingInfoForSelectionBarTye:2];
+          v19 = v18 != 0;
+
+          WeakRetained = objc_loadWeakRetained(&self->_delegate);
+          [WeakRetained waveformSelectionOverlay:self willBeginTrackingSelectionBeginTime:v15 endTime:v17 assetCurrentTime:v19];
+        }
+      }
+    }
+  }
+}
+
+- (void)touchesMoved:(id)a3 withEvent:(id)a4
+{
+  v5 = a3;
+  v6 = [(NSMutableDictionary *)self->_trackedTouches allKeys];
+  v13[0] = _NSConcreteStackBlock;
+  v13[1] = 3221225472;
+  v13[2] = sub_10004D60C;
+  v13[3] = &unk_10028AD40;
+  v14 = v5;
+  v7 = v5;
+  v8 = [v6 indexesOfObjectsPassingTest:v13];
+
+  if ([v8 count])
+  {
+    [(RCWaveformSelectionOverlay *)self _updateSelectedTimeRangeForTrackedTouchesAnimated:0];
+    v9 = [(RCWaveformSelectionOverlay *)self _touchTrackingInfoForSelectionBarTye:2];
+
+    if ([(RCWaveformSelectionOverlay *)self enableTimeTrackingInView])
+    {
+      if (v9)
+      {
+        WeakRetained = objc_loadWeakRetained(&self->_delegate);
+        [WeakRetained waveformSelectionOverlay:self didFinishTrackingSelectionBeginTime:0 endTime:0 assetCurrentTime:1];
+      }
+    }
+  }
+
+  [(RCWaveformSelectionOverlay *)self _touchTrackingInfoForSelectionBarTye:0];
+
+  v11 = [(RCWaveformSelectionOverlay *)self _accessibilityValueForKey:@"LastSpokenTime"];
+  v12 = UIAXTimeStringForDuration();
+  if (([v11 isEqualToString:v12] & 1) == 0)
+  {
+    UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, v12);
+    [(RCWaveformSelectionOverlay *)self _accessibilitySetRetainedValue:v12 forKey:@"LastSpokenTime"];
+  }
+}
+
+- (void)touchesEnded:(id)a3 withEvent:(id)a4
+{
+  v5 = a3;
+  v18 = [(RCWaveformSelectionOverlay *)self _touchTrackingInfoForSelectionBarTye:0];
+
+  v17 = [(RCWaveformSelectionOverlay *)self _touchTrackingInfoForSelectionBarTye:1];
+
+  v16 = [(RCWaveformSelectionOverlay *)self _touchTrackingInfoForSelectionBarTye:2];
+
+  v6 = [(NSMutableDictionary *)self->_trackedTouches count];
+  v19 = 0u;
+  v20 = 0u;
+  v21 = 0u;
+  v22 = 0u;
+  v7 = v5;
+  v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  if (v8)
+  {
+    v9 = v8;
+    v10 = *v20;
+    do
+    {
+      for (i = 0; i != v9; i = i + 1)
+      {
+        if (*v20 != v10)
+        {
+          objc_enumerationMutation(v7);
+        }
+
+        trackedTouches = self->_trackedTouches;
+        v13 = [NSValue valueWithPointer:*(*(&v19 + 1) + 8 * i)];
+        [(NSMutableDictionary *)trackedTouches removeObjectForKey:v13];
+      }
+
+      v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    }
+
+    while (v9);
+  }
+
+  if (v6 != [(NSMutableDictionary *)self->_trackedTouches count])
+  {
+    [(RCWaveformSelectionOverlay *)self _updateSelectedTimeRangeForTrackedTouchesAnimated:[(RCWaveformSelectionOverlay *)self rc_canAnimate]];
+    if (![(NSMutableDictionary *)self->_trackedTouches count])
+    {
+      WeakRetained = objc_loadWeakRetained(&self->_delegate);
+      [WeakRetained waveformSelectionOverlay:self didFinishTrackingSelectionBeginTime:v18 != 0 endTime:v17 != 0 assetCurrentTime:v16 != 0];
+    }
+  }
+
+  v15 = RCLocalizedFrameworkString();
+  UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, v15);
+  [(RCWaveformSelectionOverlay *)self _accessibilityRemoveValueForKey:@"LastSpokenTime"];
+}
+
+- (double)_xAdjustmentAmount
+{
+  overviewTrimHandleStyle = self->_overviewTrimHandleStyle;
+  +[RCOverlayBarLayer selectionKnobRadius];
+  v5 = v4;
+  [(RCWaveformSelectionOverlay *)self knobWidthMultiplier];
+  if (overviewTrimHandleStyle)
+  {
+    v6 = v6 + v6;
+  }
+
+  return -(v5 * v6);
+}
+
+- (CGRect)_selectionBoundsIncludingKnobsUsingMultiplier:(double)a3
+{
+  [(RCWaveformSelectionOverlay *)self selectionRect];
+  v6 = v5;
+  v8 = v7;
+  v10 = v9;
+  v12 = v11;
+  +[RCOverlayBarLayer selectionKnobRadius];
+  v14 = v13 * a3;
+  v15 = +[RCRecorderStyleProvider sharedStyleProvider];
+  [v15 selectionHighlightToKnobInset];
+  v17 = v16 + v14 * 2.0;
+
+  [(RCWaveformSelectionOverlay *)self _xAdjustmentAmount];
+  v19 = v18;
+  v28.origin.x = v6;
+  v28.origin.y = v8;
+  v28.size.width = v10;
+  v28.size.height = v12;
+  v20 = v19 + CGRectGetMinX(v28);
+  v29.origin.x = v6;
+  v29.origin.y = v8;
+  v29.size.width = v10;
+  v29.size.height = v12;
+  v21 = CGRectGetMaxX(v29) - v19;
+  v30.origin.x = v6;
+  v30.origin.y = v8;
+  v30.size.width = v10;
+  v30.size.height = v12;
+  v22 = CGRectGetMinY(v30) - v17;
+  v31.origin.x = v6;
+  v31.origin.y = v8;
+  v31.size.width = v10;
+  v31.size.height = v12;
+  MaxY = CGRectGetMaxY(v31);
+  v24 = v21 - v20;
+  v25 = v17 + MaxY - v22;
+  v26 = v20;
+  v27 = v22;
+  result.size.height = v25;
+  result.size.width = v24;
+  result.origin.y = v27;
+  result.origin.x = v26;
+  return result;
+}
+
+- (CGRect)_selectionBoundsIncludingKnobs
+{
+  [(RCWaveformSelectionOverlay *)self knobWidthMultiplier];
+
+  [(RCWaveformSelectionOverlay *)self _selectionBoundsIncludingKnobsUsingMultiplier:?];
+  result.size.height = v6;
+  result.size.width = v5;
+  result.origin.y = v4;
+  result.origin.x = v3;
+  return result;
+}
+
+- (CGRect)_selectionRectForSelectedTimeRange:(id)a3
+{
+  var1 = a3.var1;
+  var0 = a3.var0;
+  v6 = +[RCRecorderStyleProvider sharedStyleProvider];
+  WeakRetained = objc_loadWeakRetained(&self->_delegate);
+  [WeakRetained waveformSelectionOverlay:self offsetForTime:var0];
+  v9 = v8 + self->_selectionAreaInsets.left;
+
+  v10 = objc_loadWeakRetained(&self->_delegate);
+  [v10 waveformSelectionOverlay:self offsetForTime:var1];
+  v12 = v11 - self->_selectionAreaInsets.right;
+
+  [(RCWaveformSelectionOverlay *)self bounds];
+  MinY = CGRectGetMinY(v27);
+  top = self->_selectionAreaInsets.top;
+  [v6 selectionHighlightToKnobInset];
+  v16 = MinY + top + v15;
+  [(RCWaveformSelectionOverlay *)self bounds];
+  MaxY = CGRectGetMaxY(v28);
+  bottom = self->_selectionAreaInsets.bottom;
+  [v6 selectionHighlightToKnobInset];
+  v20 = MaxY - (bottom + v19);
+  v21 = v12 - v9;
+  v22 = v20 - v16;
+
+  v23 = v9;
+  v24 = v16;
+  v25 = v21;
+  v26 = v22;
+  result.size.height = v26;
+  result.size.width = v25;
+  result.origin.y = v24;
+  result.origin.x = v23;
+  return result;
+}
+
+- (CGRect)_middleTimeRectWithFont:(id)a3
+{
+  v4 = a3;
+  [(RCWaveformSelectionOverlay *)self bounds];
+  v6 = v5;
+  v29 = v7;
+  [(RCWaveformSelectionOverlay *)self _selectionHighlightBounds];
+  v9 = v8;
+  v11 = v10;
+  v13 = v12;
+  v15 = v14;
+  [v4 lineHeight];
+  *&v16 = v16;
+  v17 = ceilf(*&v16);
+  v18 = +[RCRecorderStyleProvider sharedStyleProvider];
+  [v18 selectionMiddleTimeBaselineInset];
+  v20 = v19;
+  [v4 descender];
+  v22 = v21;
+
+  v23 = v20 + v22;
+  v24 = rintf(v23);
+
+  v30.origin.x = v9;
+  v30.origin.y = v11;
+  v30.size.width = v13;
+  v30.size.height = v15;
+  v25 = CGRectGetMaxY(v30) - v17 - v24;
+  v26 = v6;
+  v27 = v29;
+  v28 = v17;
+  result.size.height = v28;
+  result.size.width = v27;
+  result.origin.y = v25;
+  result.origin.x = v26;
+  return result;
+}
+
+- (id)_touchTrackingInfoForSelectionBarTye:(int64_t)a3
+{
+  v12 = 0u;
+  v13 = 0u;
+  v14 = 0u;
+  v15 = 0u;
+  v4 = [(NSMutableDictionary *)self->_trackedTouches allValues];
+  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  if (v5)
+  {
+    v6 = v5;
+    v7 = *v13;
+    while (2)
+    {
+      for (i = 0; i != v6; i = i + 1)
+      {
+        if (*v13 != v7)
+        {
+          objc_enumerationMutation(v4);
+        }
+
+        v9 = *(*(&v12 + 1) + 8 * i);
+        if ([v9 selectionBarType] == a3)
+        {
+          v10 = v9;
+          goto LABEL_11;
+        }
+      }
+
+      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      if (v6)
+      {
+        continue;
+      }
+
+      break;
+    }
+  }
+
+  v10 = 0;
+LABEL_11:
+
+  return v10;
+}
+
+- (BOOL)__shouldDisplayBeginTimeText
+{
+  v3 = [(RCWaveformSelectionOverlay *)self _touchTrackingInfoForSelectionBarTye:0];
+  if (v3)
+  {
+    v4 = 1;
+  }
+
+  else
+  {
+    p_selectedTimeRange = &self->_selectedTimeRange;
+    RCTimeRangeDeltaWithUIPrecision();
+    v4 = v6 > 0.001 && p_selectedTimeRange->beginTime != 0.0;
+  }
+
+  return v4;
+}
+
+- (BOOL)__shouldDisplayEndTimeText
+{
+  v3 = 1;
+  v4 = [(RCWaveformSelectionOverlay *)self _touchTrackingInfoForSelectionBarTye:1];
+  if (!v4)
+  {
+    RCTimeRangeDeltaWithUIPrecision();
+    v3 = v5 > 0.001 && vabdd_f64(self->_selectedTimeRange.endTime, self->_assetDuration) > 0.001;
+  }
+
+  return v3;
+}
+
+- (BOOL)_shouldDisplayBeginTimeText
+{
+  if ([(RCWaveformSelectionOverlay *)self __shouldDisplayBeginTimeText])
+  {
+    return 1;
+  }
+
+  return [(RCWaveformSelectionOverlay *)self __shouldDisplayEndTimeText];
+}
+
+- (CGRect)_beginTimeRectWithSizedTextLayer:(id)a3 isOffsetForThumb:(BOOL *)a4
+{
+  v6 = a3;
+  v7 = [v6 font];
+  v8 = +[RCRecorderStyleProvider sharedStyleProvider];
+  [(RCWaveformSelectionOverlay *)self _selectionBoundsIncludingKnobs];
+  v10 = v9;
+  v12 = v11;
+  v14 = v13;
+  v16 = v15;
+  v17 = [(RCWaveformSelectionOverlay *)self _shouldOffsetSelectionBarTypeForThumb:0];
+  v18 = v17;
+  if (v17)
+  {
+    [v8 selectionTimeInsetWhenSelected];
+  }
+
+  else
+  {
+    [v8 selectionTimeInsetNormal];
+  }
+
+  v47 = v19;
+  [v8 selectionTimeBaseLineOffset];
+  v21 = v20;
+  [v7 ascender];
+  v23 = v22;
+  v48.origin.x = v10;
+  v48.origin.y = v12;
+  v48.size.width = v14;
+  v48.size.height = v16;
+  MinX = CGRectGetMinX(v48);
+  v49.origin.x = v10;
+  v49.origin.y = v12;
+  v49.size.width = v14;
+  v49.size.height = v16;
+  MinY = CGRectGetMinY(v49);
+  [v6 frame];
+  v27 = v26;
+  v29 = v28;
+  v31 = v30;
+  v33 = v32;
+
+  v50.origin.x = v27;
+  v50.origin.y = v29;
+  v50.size.width = v31;
+  v50.size.height = v33;
+  Width = CGRectGetWidth(v50);
+  [v7 lineHeight];
+  if (a4)
+  {
+    *a4 = v18;
+  }
+
+  v36 = v47;
+  v37 = v21 + v23;
+  v38 = v35;
+  v39 = rint(MinX + rintf(v36));
+  v40 = rint(MinY - rintf(v37));
+  v41 = ceil(Width);
+  v42 = ceilf(v38);
+
+  v43 = v39;
+  v44 = v40;
+  v45 = v41;
+  v46 = v42;
+  result.size.height = v46;
+  result.size.width = v45;
+  result.origin.y = v44;
+  result.origin.x = v43;
+  return result;
+}
+
+- (CGRect)_alternateBeginTimeRectWithSizedTextLayer:(id)a3
+{
+  v4 = a3;
+  [(RCWaveformSelectionOverlay *)self _selectionBoundsIncludingKnobs];
+  v6 = v5;
+  v8 = v7;
+  v10 = v9;
+  v12 = v11;
+  [(RCWaveformSelectionOverlay *)self _beginTimeRectWithSizedTextLayer:v4 isOffsetForThumb:0];
+  v14 = v13;
+  v16 = v15;
+  v18 = v17;
+  v20 = v19;
+
+  v27.origin.x = v14;
+  v27.origin.y = v16;
+  v27.size.width = v18;
+  v27.size.height = v20;
+  MinX = CGRectGetMinX(v27);
+  v28.origin.x = v6;
+  v28.origin.y = v8;
+  v28.size.width = v10;
+  v28.size.height = v12;
+  v22 = MinX - CGRectGetMinX(v28);
+  v29.origin.x = v6;
+  v29.origin.y = v8;
+  v29.size.width = v10;
+  v29.size.height = v12;
+  v23 = CGRectGetMinX(v29) - v22 - v18;
+  v24 = v16;
+  v25 = v18;
+  v26 = v20;
+  result.size.height = v26;
+  result.size.width = v25;
+  result.origin.y = v24;
+  result.origin.x = v23;
+  return result;
+}
+
+- (BOOL)_shouldDisplayEndTimeText
+{
+  if ([(RCWaveformSelectionOverlay *)self __shouldDisplayBeginTimeText])
+  {
+    return 1;
+  }
+
+  return [(RCWaveformSelectionOverlay *)self __shouldDisplayEndTimeText];
+}
+
+- (CGRect)_endTimeRectWithSizedTextLayer:(id)a3 isOffsetForThumb:(BOOL *)a4
+{
+  v6 = a3;
+  v7 = [v6 font];
+  v8 = +[RCRecorderStyleProvider sharedStyleProvider];
+  [(RCWaveformSelectionOverlay *)self _selectionBoundsIncludingKnobs];
+  v10 = v9;
+  v12 = v11;
+  v14 = v13;
+  v16 = v15;
+  v17 = [(RCWaveformSelectionOverlay *)self _shouldOffsetSelectionBarTypeForThumb:1];
+  v18 = v17;
+  if (v17)
+  {
+    [v8 selectionTimeInsetWhenSelected];
+  }
+
+  else
+  {
+    [v8 selectionTimeInsetNormal];
+  }
+
+  v49 = v19;
+  [v8 selectionTimeBaseLineOffset];
+  v48 = v20;
+  [v7 ascender];
+  v47 = v21;
+  v50.origin.x = v10;
+  v50.origin.y = v12;
+  v50.size.width = v14;
+  v50.size.height = v16;
+  MaxX = CGRectGetMaxX(v50);
+  [v6 frame];
+  v23 = v22;
+  v25 = v24;
+  v27 = v26;
+  v29 = v28;
+
+  v51.origin.x = v23;
+  v51.origin.y = v25;
+  v51.size.width = v27;
+  v51.size.height = v29;
+  Width = CGRectGetWidth(v51);
+  v52.origin.x = v10;
+  v52.origin.y = v12;
+  v52.size.width = v14;
+  v52.size.height = v16;
+  MinY = CGRectGetMinY(v52);
+  [v7 lineHeight];
+  if (a4)
+  {
+    *a4 = v18;
+  }
+
+  v33 = v49;
+  v34 = MaxX - rintf(v33);
+  v35 = v48 + v47;
+  v36 = MinY - rintf(v35);
+  v37 = v32;
+  v38 = rint(v34 - Width);
+  v39 = rint(v36);
+  v40 = ceil(v34 - (v34 - Width));
+  v41 = ceilf(v37);
+
+  v42 = v38;
+  v43 = v39;
+  v44 = v40;
+  v45 = v41;
+  result.size.height = v45;
+  result.size.width = v44;
+  result.origin.y = v43;
+  result.origin.x = v42;
+  return result;
+}
+
+- (CGRect)_alternateEndTimeRectWithSizedTextLayer:(id)a3
+{
+  v4 = a3;
+  [(RCWaveformSelectionOverlay *)self _selectionBoundsIncludingKnobs];
+  v6 = v5;
+  v8 = v7;
+  v10 = v9;
+  v12 = v11;
+  [(RCWaveformSelectionOverlay *)self _endTimeRectWithSizedTextLayer:v4 isOffsetForThumb:0];
+  rect = v13;
+  v15 = v14;
+  v17 = v16;
+  v19 = v18;
+
+  v27.origin.x = v6;
+  v27.origin.y = v8;
+  v27.size.width = v10;
+  v27.size.height = v12;
+  MaxX = CGRectGetMaxX(v27);
+  v28.origin.x = rect;
+  v28.origin.y = v15;
+  v28.size.width = v17;
+  v28.size.height = v19;
+  v21 = MaxX - CGRectGetMaxX(v28);
+  v29.origin.x = v6;
+  v29.origin.y = v8;
+  v29.size.width = v10;
+  v29.size.height = v12;
+  v22 = CGRectGetMaxX(v29) + v21;
+  v23 = v15;
+  v24 = v17;
+  v25 = v19;
+  result.size.height = v25;
+  result.size.width = v24;
+  result.origin.y = v23;
+  result.origin.x = v22;
+  return result;
+}
+
+- (id)accessibilityElements
+{
+  v3 = [(RCWaveformSelectionOverlay *)self _accessibilityValueForKey:@"kUIAccessibilityStorageKeyChildren"];
+  if (!v3)
+  {
+    v4 = [[AXWaveformSelectionBarElement alloc] initWithAccessibilityContainer:self];
+    [(AXWaveformSelectionBarElement *)v4 setAdjustsStartTime:1];
+    v5 = [[AXWaveformSelectionBarElement alloc] initWithAccessibilityContainer:self];
+    v7[0] = v4;
+    v7[1] = v5;
+    v3 = [NSArray arrayWithObjects:v7 count:2];
+    [(RCWaveformSelectionOverlay *)self _accessibilitySetRetainedValue:v3 forKey:@"kUIAccessibilityStorageKeyChildren"];
+  }
+
+  return v3;
+}
+
+- (unint64_t)accessibilityTraits
+{
+  v3.receiver = self;
+  v3.super_class = RCWaveformSelectionOverlay;
+  return UIAccessibilityTraitAdjustable | [(RCWaveformSelectionOverlay *)&v3 accessibilityTraits];
+}
+
+- (id)accessibilityValue
+{
+  WeakRetained = objc_loadWeakRetained(&self->_delegate);
+  [WeakRetained waveformSelectionOverlayGetCurrentTime:self];
+
+  return UIAXTimeStringForDuration();
+}
+
+- (BOOL)accessibilityScroll:(int64_t)a3
+{
+  v5 = [(RCWaveformSelectionOverlay *)self isAccessibilityElement];
+  v6 = 0;
+  if (v5)
+  {
+    v7 = 20.0;
+    if (self->_isOverView)
+    {
+      v7 = 8.0;
+    }
+
+    if (a3 == 3)
+    {
+      goto LABEL_7;
+    }
+
+    if (a3 == 4)
+    {
+      v6 = 1;
+LABEL_7:
+      [(RCWaveformSelectionOverlay *)self _accessibilityIncreaseValue:v6 bySegment:v7];
+      v8 = UIAccessibilityAnnouncementNotification;
+      v9 = [(RCWaveformSelectionOverlay *)self accessibilityValue];
+      UIAccessibilityPostNotification(v8, v9);
+
+      LOBYTE(v6) = 1;
+    }
+  }
+
+  return v6;
+}
+
+- (void)_accessibilityIncreaseValue:(BOOL)a3 bySegment:(double)a4
+{
+  v4 = a3;
+  if (a4 == 0.0)
+  {
+    a4 = 20.0;
+  }
+
+  v6 = self->_assetDuration / a4;
+  WeakRetained = objc_loadWeakRetained(&self->_delegate);
+  [WeakRetained waveformSelectionOverlayGetCurrentTime:self];
+  v9 = v8;
+
+  v10 = -v6;
+  if (v4)
+  {
+    v10 = v6;
+  }
+
+  v11 = v10 + v9;
+  if (v11 == self->_assetCurrentTime && v11 == self->_trackedAssetCurrentTime)
+  {
+    assetDuration = v11;
+  }
+
+  else
+  {
+    assetDuration = 0.0;
+    if (v11 >= 0.0)
+    {
+      assetDuration = v11;
+      if (v11 > self->_assetDuration)
+      {
+        assetDuration = self->_assetDuration;
+      }
+    }
+  }
+
+  v13 = objc_loadWeakRetained(&self->_delegate);
+  [v13 waveformSelectionOverlay:self willChangeAssetCurrentTime:1 isTracking:assetDuration];
+}
+
+- (void)accessibilityIncrement
+{
+  [(RCWaveformSelectionOverlay *)self axSegment];
+
+  [(RCWaveformSelectionOverlay *)self _accessibilityIncreaseValue:1 bySegment:?];
+}
+
+- (void)accessibilityDecrement
+{
+  [(RCWaveformSelectionOverlay *)self axSegment];
+
+  [(RCWaveformSelectionOverlay *)self _accessibilityIncreaseValue:0 bySegment:?];
+}
+
+- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+{
+  y = a3.y;
+  x = a3.x;
+  v7 = a4;
+  if ([(RCWaveformSelectionOverlay *)self _axIsShowingSelectionBars]|| ([(RCWaveformSelectionOverlay *)self bounds], v13.x = x, v13.y = y, !CGRectContainsPoint(v14, v13)))
+  {
+    v11.receiver = self;
+    v11.super_class = RCWaveformSelectionOverlay;
+    v8 = [(RCWaveformSelectionOverlay *)&v11 _accessibilityHitTest:v7 withEvent:x, y];
+  }
+
+  else
+  {
+    v8 = self;
+  }
+
+  v9 = v8;
+
+  return v9;
+}
+
+- (RCWaveformSelectionOverlayDelegate)delegate
+{
+  WeakRetained = objc_loadWeakRetained(&self->_delegate);
+
+  return WeakRetained;
+}
+
+- ($F24F406B2B787EFB06265DBA3D28CBD5)selectedTimeRange
+{
+  beginTime = self->_selectedTimeRange.beginTime;
+  endTime = self->_selectedTimeRange.endTime;
+  result.var1 = endTime;
+  result.var0 = beginTime;
+  return result;
+}
+
+- (CGRect)selectionRect
+{
+  x = self->_selectionRect.origin.x;
+  y = self->_selectionRect.origin.y;
+  width = self->_selectionRect.size.width;
+  height = self->_selectionRect.size.height;
+  result.size.height = height;
+  result.size.width = width;
+  result.origin.y = y;
+  result.origin.x = x;
+  return result;
+}
+
+- (UIView)selectionBackgroundView
+{
+  WeakRetained = objc_loadWeakRetained(&self->_selectionBackgroundView);
+
+  return WeakRetained;
+}
+
+@end

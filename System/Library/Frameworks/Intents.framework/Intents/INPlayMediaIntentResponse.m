@@ -1,0 +1,460 @@
+@interface INPlayMediaIntentResponse
++ (int)_errorCodeFromCode:(int64_t)a3;
++ (int)_typeFromCode:(int64_t)a3;
++ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5;
+- (INPlayMediaIntentResponse)initWithBackingStore:(id)a3;
+- (INPlayMediaIntentResponse)initWithCode:(INPlayMediaIntentResponseCode)code userActivity:(NSUserActivity *)userActivity;
+- (INPlayMediaIntentResponse)initWithCoder:(id)a3;
+- (INPlayMediaIntentResponseCode)code;
+- (NSDictionary)nowPlayingInfo;
+- (id)_dictionaryRepresentation;
+- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4;
+- (int64_t)_codeWithName:(id)a3;
+- (int64_t)_intentResponseCode;
+- (void)_intents_prepareResponse;
+- (void)encodeWithCoder:(id)a3;
+- (void)setNowPlayingInfo:(NSDictionary *)nowPlayingInfo;
+@end
+
+@implementation INPlayMediaIntentResponse
+
+- (id)_dictionaryRepresentation
+{
+  v13[2] = *MEMORY[0x1E69E9840];
+  v12[0] = @"code";
+  v3 = [(INPlayMediaIntentResponse *)self code];
+  v4 = v3;
+  if (v3 < (INPlayMediaIntentResponseCodeFailureUnknownMediaType|INPlayMediaIntentResponseCodeSuccess))
+  {
+    v5 = off_1E7285E60[v3];
+    v6 = v5;
+  }
+
+  else
+  {
+    v5 = [MEMORY[0x1E695DFB0] null];
+    v6 = 0;
+  }
+
+  v12[1] = @"nowPlayingInfo";
+  v13[0] = v5;
+  v7 = [(INPlayMediaIntentResponse *)self nowPlayingInfo];
+  v8 = v7;
+  if (!v7)
+  {
+    v8 = [MEMORY[0x1E695DFB0] null];
+  }
+
+  v13[1] = v8;
+  v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
+  if (!v7)
+  {
+  }
+
+  if (v4 >= 0xC)
+  {
+  }
+
+  v10 = *MEMORY[0x1E69E9840];
+
+  return v9;
+}
+
+- (void)setNowPlayingInfo:(NSDictionary *)nowPlayingInfo
+{
+  v4 = nowPlayingInfo;
+  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  v6 = INIntentSlotValueTransformToDictionary(v4);
+
+  [v5 setNowPlayingInfo:v6];
+  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  v7 = [v8 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+}
+
+- (NSDictionary)nowPlayingInfo
+{
+  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  v3 = [v2 nowPlayingInfo];
+  v4 = INIntentSlotValueTransformFromDictionary(v3);
+
+  return v4;
+}
+
+- (int64_t)_codeWithName:(id)a3
+{
+  v3 = a3;
+  [v3 isEqualToString:@"INPlayMediaIntentResponseCodeUnspecified"];
+  v4 = [v3 isEqualToString:@"INPlayMediaIntentResponseCodeReady"];
+  if ([v3 isEqualToString:@"INPlayMediaIntentResponseCodeContinueInApp"])
+  {
+    v4 = 2;
+  }
+
+  if ([v3 isEqualToString:@"INPlayMediaIntentResponseCodeInProgress"])
+  {
+    v4 = 3;
+  }
+
+  if ([v3 isEqualToString:@"INPlayMediaIntentResponseCodeSuccess"])
+  {
+    v4 = 4;
+  }
+
+  if ([v3 isEqualToString:@"INPlayMediaIntentResponseCodeHandleInApp"])
+  {
+    v4 = 5;
+  }
+
+  if ([v3 isEqualToString:@"INPlayMediaIntentResponseCodeFailure"])
+  {
+    v4 = 6;
+  }
+
+  if ([v3 isEqualToString:@"INPlayMediaIntentResponseCodeFailureRequiringAppLaunch"])
+  {
+    v4 = 7;
+  }
+
+  if ([v3 isEqualToString:@"INPlayMediaIntentResponseCodeFailureUnknownMediaType"])
+  {
+    v4 = 8;
+  }
+
+  if ([v3 isEqualToString:@"INPlayMediaIntentResponseCodeFailureNoUnplayedContent"])
+  {
+    v4 = 9;
+  }
+
+  if ([v3 isEqualToString:@"INPlayMediaIntentResponseCodeFailureRestrictedContent"])
+  {
+    v5 = 10;
+  }
+
+  else
+  {
+    v5 = v4;
+  }
+
+  v6 = [v3 isEqualToString:@"INPlayMediaIntentResponseCodeFailureMaxStreamLimitReached"];
+
+  if (v6)
+  {
+    return 11;
+  }
+
+  else
+  {
+    return v5;
+  }
+}
+
+- (int64_t)_intentResponseCode
+{
+  v2 = [(INPlayMediaIntentResponse *)self code];
+  if ((v2 - 1) > 0xA)
+  {
+    return 0;
+  }
+
+  else
+  {
+    return qword_18EE5F1C8[v2 - 1];
+  }
+}
+
+- (INPlayMediaIntentResponse)initWithCoder:(id)a3
+{
+  v4.receiver = self;
+  v4.super_class = INPlayMediaIntentResponse;
+  return [(INIntentResponse *)&v4 initWithCoder:a3];
+}
+
+- (void)encodeWithCoder:(id)a3
+{
+  v3.receiver = self;
+  v3.super_class = INPlayMediaIntentResponse;
+  [(INIntentResponse *)&v3 encodeWithCoder:a3];
+}
+
+- (INPlayMediaIntentResponseCode)code
+{
+  v3.receiver = self;
+  v3.super_class = INPlayMediaIntentResponse;
+  return [(INIntentResponse *)&v3 code];
+}
+
+- (INPlayMediaIntentResponse)initWithBackingStore:(id)a3
+{
+  v4.receiver = self;
+  v4.super_class = INPlayMediaIntentResponse;
+  return [(INIntentResponse *)&v4 initWithBackingStore:a3];
+}
+
+- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4
+{
+  v5.receiver = self;
+  v5.super_class = INPlayMediaIntentResponse;
+  return [(INIntentResponse *)&v5 _initWithCode:a3 userActivity:a4];
+}
+
+- (INPlayMediaIntentResponse)initWithCode:(INPlayMediaIntentResponseCode)code userActivity:(NSUserActivity *)userActivity
+{
+  v23 = *MEMORY[0x1E69E9840];
+  v6 = userActivity;
+  v7 = INSiriLogContextIntents;
+  if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
+  {
+    v8 = v7;
+    if (code > INPlayMediaIntentResponseCodeFailureMaxStreamLimitReached)
+    {
+      v9 = 0;
+    }
+
+    else
+    {
+      v9 = off_1E7285E60[code];
+    }
+
+    v10 = v9;
+    *buf = 136315906;
+    v16 = "[INPlayMediaIntentResponse initWithCode:userActivity:]";
+    v17 = 2048;
+    v18 = code;
+    v19 = 2112;
+    v20 = v10;
+    v21 = 2112;
+    v22 = v6;
+    _os_log_impl(&dword_18E991000, v8, OS_LOG_TYPE_INFO, "%s code = %zd (%@), userActivity = %@", buf, 0x2Au);
+  }
+
+  v14.receiver = self;
+  v14.super_class = INPlayMediaIntentResponse;
+  v11 = [(INIntentResponse *)&v14 _initWithCode:code userActivity:v6];
+
+  v12 = *MEMORY[0x1E69E9840];
+  return v11;
+}
+
++ (int)_errorCodeFromCode:(int64_t)a3
+{
+  if ((a3 - 8) < 4)
+  {
+    return a3 - 7;
+  }
+
+  else
+  {
+    return 0x7FFFFFFF;
+  }
+}
+
++ (int)_typeFromCode:(int64_t)a3
+{
+  if ((a3 - 1) > 0xA)
+  {
+    return 3;
+  }
+
+  else
+  {
+    return dword_18EE5F198[a3 - 1];
+  }
+}
+
++ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5
+{
+  v5 = 3;
+  v6 = 2;
+  if (a3 != 4)
+  {
+    v6 = a3 == 5;
+  }
+
+  if (a3 != 2)
+  {
+    v5 = v6;
+  }
+
+  v7 = 4;
+  v8 = a4 - 1;
+  v9 = 6;
+  if (a5)
+  {
+    v9 = 7;
+  }
+
+  if (v8 >= 4)
+  {
+    v10 = v9;
+  }
+
+  else
+  {
+    v10 = v8 | 8;
+  }
+
+  if (a3 != 1)
+  {
+    v10 = 0;
+  }
+
+  if (a3)
+  {
+    v7 = v10;
+  }
+
+  if (a3 <= 1)
+  {
+    return v7;
+  }
+
+  else
+  {
+    return v5;
+  }
+}
+
+- (void)_intents_prepareResponse
+{
+  v40 = *MEMORY[0x1E69E9840];
+  v3 = [(INPlayMediaIntentResponse *)self nowPlayingInfo];
+  if (![v3 count] || !MediaRemoteLibrary() || !MediaPlayerLibrary())
+  {
+    goto LABEL_29;
+  }
+
+  v4 = getMPMediaItemPropertyArtwork();
+  v25 = [v3 objectForKeyedSubscript:v4];
+
+  if (!v25)
+  {
+    v5 = [v3 objectForKeyedSubscript:getkMRMediaRemoteNowPlayingInfoArtworkData()];
+    if (v5)
+    {
+      v25 = [INImage imageWithImageData:v5];
+      v6 = [v3 objectForKeyedSubscript:getkMRMediaRemoteNowPlayingInfoArtworkDataWidth()];
+      v7 = [v3 objectForKeyedSubscript:getkMRMediaRemoteNowPlayingInfoArtworkDataHeight()];
+      if (v7 && v6)
+      {
+        [v6 doubleValue];
+        v9 = v8;
+        [v7 doubleValue];
+        [v25 _setImageSize:{v9, v10}];
+      }
+    }
+
+    else
+    {
+      v25 = 0;
+    }
+  }
+
+  v11 = [v3 mutableCopy];
+  v12 = getMPMediaItemPropertyArtwork();
+  [v11 removeObjectForKey:v12];
+
+  [v11 removeObjectForKey:getkMRMediaRemoteNowPlayingInfoArtworkData()];
+  [v11 removeObjectForKey:getkMRMediaRemoteNowPlayingInfoArtworkDataHeight()];
+  [v11 removeObjectForKey:getkMRMediaRemoteNowPlayingInfoArtworkDataWidth()];
+  v35 = 0;
+  v36 = &v35;
+  v37 = 0x2020000000;
+  v13 = getkMRMediaRemoteNowPlayingInfoArtworkMIMETypeSymbolLoc_ptr;
+  v38 = getkMRMediaRemoteNowPlayingInfoArtworkMIMETypeSymbolLoc_ptr;
+  if (!getkMRMediaRemoteNowPlayingInfoArtworkMIMETypeSymbolLoc_ptr)
+  {
+    v30 = MEMORY[0x1E69E9820];
+    v31 = 3221225472;
+    v32 = __getkMRMediaRemoteNowPlayingInfoArtworkMIMETypeSymbolLoc_block_invoke;
+    v33 = &unk_1E72888B8;
+    v34 = &v35;
+    v14 = MediaRemoteLibrary();
+    v36[3] = dlsym(v14, "kMRMediaRemoteNowPlayingInfoArtworkMIMEType");
+    getkMRMediaRemoteNowPlayingInfoArtworkMIMETypeSymbolLoc_ptr = *(v34[1] + 24);
+    v13 = v36[3];
+  }
+
+  _Block_object_dispose(&v35, 8);
+  if (!v13)
+  {
+    dlerror();
+    abort_report_np();
+    goto LABEL_32;
+  }
+
+  [v11 removeObjectForKey:*v13];
+  v28 = 0u;
+  v29 = 0u;
+  v26 = 0u;
+  v27 = 0u;
+  v15 = v3;
+  v16 = [v15 countByEnumeratingWithState:&v26 objects:v39 count:16];
+  if (v16)
+  {
+    v17 = *v27;
+    do
+    {
+      for (i = 0; i != v16; ++i)
+      {
+        if (*v27 != v17)
+        {
+          objc_enumerationMutation(v15);
+        }
+
+        v19 = *(*(&v26 + 1) + 8 * i);
+        objc_opt_class();
+        if (objc_opt_isKindOfClass() & 1) != 0 && ([v19 hasPrefix:@"kMRMediaRemote"])
+        {
+          goto LABEL_28;
+        }
+      }
+
+      v16 = [v15 countByEnumeratingWithState:&v26 objects:v39 count:16];
+    }
+
+    while (v16);
+  }
+
+  v20 = v11;
+  v35 = 0;
+  v36 = &v35;
+  v37 = 0x2020000000;
+  v21 = getMPNowPlayingInfoDictionaryToMRNowPlayingInfoDictionarySymbolLoc_ptr;
+  v38 = getMPNowPlayingInfoDictionaryToMRNowPlayingInfoDictionarySymbolLoc_ptr;
+  if (!getMPNowPlayingInfoDictionaryToMRNowPlayingInfoDictionarySymbolLoc_ptr)
+  {
+    v30 = MEMORY[0x1E69E9820];
+    v31 = 3221225472;
+    v32 = __getMPNowPlayingInfoDictionaryToMRNowPlayingInfoDictionarySymbolLoc_block_invoke;
+    v33 = &unk_1E72888B8;
+    v34 = &v35;
+    v22 = MediaPlayerLibrary();
+    v23 = dlsym(v22, "MPNowPlayingInfoDictionaryToMRNowPlayingInfoDictionary");
+    *(v34[1] + 24) = v23;
+    getMPNowPlayingInfoDictionaryToMRNowPlayingInfoDictionarySymbolLoc_ptr = *(v34[1] + 24);
+    v21 = v36[3];
+  }
+
+  _Block_object_dispose(&v35, 8);
+  if (!v21)
+  {
+    dlerror();
+    abort_report_np();
+LABEL_32:
+    __break(1u);
+  }
+
+  v15 = v21(v20);
+
+  v11 = [v15 mutableCopy];
+LABEL_28:
+
+  [v11 setObject:v25 forKeyedSubscript:@"artwork"];
+  [(INPlayMediaIntentResponse *)self setNowPlayingInfo:v11];
+
+LABEL_29:
+  v24 = *MEMORY[0x1E69E9840];
+}
+
+@end

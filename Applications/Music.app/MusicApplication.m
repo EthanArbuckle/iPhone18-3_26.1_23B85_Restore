@@ -1,0 +1,44 @@
+@interface MusicApplication
++ (id)_defaultContentSizeCategory;
+- (id)_extendLaunchTest;
+- (void)startedTest:(id)a3;
+@end
+
+@implementation MusicApplication
+
++ (id)_defaultContentSizeCategory
+{
+  swift_getObjCClassMetadata();
+  v2 = static Application._defaultContentSizeCategory()();
+
+  return v2;
+}
+
+- (void)startedTest:(id)a3
+{
+  if (a3)
+  {
+    v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    v6 = v5;
+  }
+
+  else
+  {
+    v4 = 0;
+    v6 = 0;
+  }
+
+  v7 = self;
+  v8.value._countAndFlagsBits = v4;
+  v8.value._object = v6;
+  Application.startedTest(_:)(v8);
+}
+
+- (id)_extendLaunchTest
+{
+  v2 = String._bridgeToObjectiveC()();
+
+  return v2;
+}
+
+@end

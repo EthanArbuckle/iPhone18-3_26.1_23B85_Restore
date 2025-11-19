@@ -1,0 +1,184 @@
+@interface MFBaseFilterDataConsumer
++ (id)filterWithConsumer:(id)a3;
++ (id)filterWithConsumers:(id)a3;
+- (MFBaseFilterDataConsumer)initWithConsumer:(id)a3;
+- (MFBaseFilterDataConsumer)initWithConsumers:(id)a3;
+- (int64_t)appendData:(id)a3;
+- (void)done;
+@end
+
+@implementation MFBaseFilterDataConsumer
+
++ (id)filterWithConsumers:(id)a3
+{
+  v4 = a3;
+  v5 = [[a1 alloc] initWithConsumers:v4];
+
+  return v5;
+}
+
++ (id)filterWithConsumer:(id)a3
+{
+  v4 = a3;
+  v5 = [[a1 alloc] initWithConsumer:v4];
+
+  return v5;
+}
+
+- (MFBaseFilterDataConsumer)initWithConsumers:(id)a3
+{
+  v4 = a3;
+  v5 = [(MFBaseFilterDataConsumer *)self init];
+  if (v5)
+  {
+    v6 = [v4 mutableCopy];
+    consumers = v5->_consumers;
+    v5->_consumers = v6;
+  }
+
+  return v5;
+}
+
+- (MFBaseFilterDataConsumer)initWithConsumer:(id)a3
+{
+  v7 = a3;
+  v4 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:&v7 count:1];
+  v5 = [(MFBaseFilterDataConsumer *)self initWithConsumers:v4];
+
+  return v5;
+}
+
+- (int64_t)appendData:(id)a3
+{
+  v4 = a3;
+  v5 = [v4 length];
+  if (!self->_serialAppend)
+  {
+    v15 = [(NSMutableArray *)self->_consumers count];
+    if (v15 < 1)
+    {
+      v8 = 0;
+      goto LABEL_27;
+    }
+
+    v8 = 0;
+    v16 = v15 + 1;
+    while (1)
+    {
+      v10 = [(NSMutableArray *)self->_consumers objectAtIndex:v16 - 2];
+      v17 = [v10 appendData:v4];
+      v18 = v17;
+      if (v17)
+      {
+        if (v17 < 0)
+        {
+          [(NSMutableArray *)self->_consumers removeObjectAtIndex:v16 - 2];
+          v8 = v18;
+LABEL_26:
+
+          goto LABEL_27;
+        }
+      }
+
+      else
+      {
+        [v10 done];
+        [(NSMutableArray *)self->_consumers removeObjectAtIndex:v16 - 2];
+      }
+
+      if (!v8)
+      {
+        v8 = [v4 length];
+      }
+
+      if (--v16 <= 1)
+      {
+        goto LABEL_27;
+      }
+    }
+  }
+
+  v6 = v5;
+  v7 = [v4 bytes];
+  v8 = 0;
+  while ([(NSMutableArray *)self->_consumers count]&& v6 != v8)
+  {
+    v10 = [(NSMutableArray *)self->_consumers objectAtIndex:0];
+    v11 = v6 - v8;
+    v12 = [[MFData alloc] initWithBytesNoCopy:v7 + v8 length:v6 - v8 freeWhenDone:0];
+    v13 = [v10 appendData:v12];
+    v14 = v13;
+    if (v13)
+    {
+      if (v13 < 0)
+      {
+        [(NSMutableArray *)self->_consumers removeObjectAtIndex:0];
+        v8 = v14;
+LABEL_25:
+
+        goto LABEL_26;
+      }
+
+      v8 += v13;
+      if (v13 < v11)
+      {
+        goto LABEL_25;
+      }
+    }
+
+    else
+    {
+      [v10 done];
+      [(NSMutableArray *)self->_consumers removeObjectAtIndex:0];
+    }
+  }
+
+LABEL_27:
+
+  return v8;
+}
+
+- (void)done
+{
+  v13 = *MEMORY[0x1E69E9840];
+  v8 = 0u;
+  v9 = 0u;
+  v10 = 0u;
+  v11 = 0u;
+  v3 = self->_consumers;
+  v4 = [(NSMutableArray *)v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  if (v4)
+  {
+    v5 = *v9;
+LABEL_3:
+    v6 = 0;
+    while (1)
+    {
+      if (*v9 != v5)
+      {
+        objc_enumerationMutation(v3);
+      }
+
+      [*(*(&v8 + 1) + 8 * v6) done];
+      if (self->_serialAppend)
+      {
+        break;
+      }
+
+      if (v4 == ++v6)
+      {
+        v4 = [(NSMutableArray *)v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        if (v4)
+        {
+          goto LABEL_3;
+        }
+
+        break;
+      }
+    }
+  }
+
+  v7 = *MEMORY[0x1E69E9840];
+}
+
+@end

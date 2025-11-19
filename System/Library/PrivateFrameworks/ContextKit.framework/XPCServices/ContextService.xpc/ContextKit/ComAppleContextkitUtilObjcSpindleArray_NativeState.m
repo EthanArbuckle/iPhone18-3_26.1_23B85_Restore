@@ -1,0 +1,56 @@
+@interface ComAppleContextkitUtilObjcSpindleArray_NativeState
+- (ComAppleContextkitUtilObjcSpindleArray_NativeState)init;
+- (int)decodeWithInt:(int)a3 withByteArray:(id)a4 withByteArray:(id)a5;
+- (void)dealloc;
+@end
+
+@implementation ComAppleContextkitUtilObjcSpindleArray_NativeState
+
+- (void)dealloc
+{
+  free(self->_dstBuffer);
+  free(self->_scratchBuffer);
+  v3.receiver = self;
+  v3.super_class = ComAppleContextkitUtilObjcSpindleArray_NativeState;
+  [(ComAppleContextkitUtilSpindleArray_State *)&v3 dealloc];
+}
+
+- (ComAppleContextkitUtilObjcSpindleArray_NativeState)init
+{
+  ComAppleContextkitUtilSpindleArray_State_init(self);
+  sub_1000A269C(self);
+  return self;
+}
+
+- (int)decodeWithInt:(int)a3 withByteArray:(id)a4 withByteArray:(id)a5
+{
+  if (!a4)
+  {
+    goto LABEL_6;
+  }
+
+  if (!*(a4 + 2))
+  {
+    v7 = @"Empty buffer";
+    goto LABEL_9;
+  }
+
+  if (!a5)
+  {
+LABEL_6:
+    JreThrowNullPointerException();
+  }
+
+  v5 = *(a5 + 2);
+  if (v5 < a3)
+  {
+    v7 = @"OutBuf too small";
+LABEL_9:
+    v8 = new_JavaIoIOException_initWithNSString_(v7);
+    objc_exception_throw(v8);
+  }
+
+  return compression_decode_buffer(a5 + 12, v5, a4 + 12, *(a4 + 2), self->_scratchBuffer, COMPRESSION_LZFSE);
+}
+
+@end

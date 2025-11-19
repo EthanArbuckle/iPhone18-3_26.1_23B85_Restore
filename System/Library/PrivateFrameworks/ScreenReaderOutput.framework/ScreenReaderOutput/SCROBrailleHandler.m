@@ -1,0 +1,608 @@
+@interface SCROBrailleHandler
+- (SCROBrailleHandler)initWithBrailleDisplayManager:(id)a3;
+- (int)handlePerformActionForKey:(int)a3 trusted:(BOOL)a4;
+- (int)handleRegisterCallbackForKey:(int)a3 trusted:(BOOL)a4;
+- (void)configurationDidChange;
+- (void)handleBrailleDidDisplay:(id)a3;
+- (void)handleBrailleDidPanLeft:(id)a3 elementToken:(id)a4 appToken:(id)a5 lineOffset:(id)a6;
+- (void)handleBrailleDidPanRight:(id)a3 elementToken:(id)a4 appToken:(id)a5 lineOffset:(id)a6;
+- (void)handleBrailleDidShowNextAnnouncement:(id)a3;
+- (void)handleBrailleDidShowPreviousAnnouncement:(id)a3;
+- (void)handleBrailleDriverDidLoad;
+- (void)handleBrailleDriverDisconnected;
+- (void)handleBrailleKeyMemorize:(id)a3;
+- (void)handleBrailleKeyWillMemorize:(id)a3;
+- (void)handleBrailleKeypress:(id)a3;
+- (void)handleBrailleReplaceTextRange:(_NSRange)a3 withString:(id)a4 cursor:(unint64_t)a5;
+- (void)handleBrailleTableFailedToLoad:(id)a3;
+- (void)handleBrailleUIRequest:(id)a3;
+- (void)handleCopyStringToClipboard:(id)a3;
+- (void)handleDidBrailleUIEnd;
+- (void)handleDidBrailleUIStart;
+- (void)handleDisplayModeChanged:(id)a3;
+- (void)handleFailedToLoadBluetoothDevice:(id)a3;
+- (void)handlePlayBorderHitSound;
+- (void)handlePlayCommandNotSupportedSound;
+- (void)handleStartEditing;
+- (void)handleTacticalGraphicsCanvasDidChange:(id)a3;
+- (void)handleUserEventOccured;
+- (void)invalidate;
+@end
+
+@implementation SCROBrailleHandler
+
+- (SCROBrailleHandler)initWithBrailleDisplayManager:(id)a3
+{
+  v5 = a3;
+  v9.receiver = self;
+  v9.super_class = SCROBrailleHandler;
+  v6 = [(SCROHandler *)&v9 init];
+  v7 = v6;
+  if (v6)
+  {
+    objc_storeStrong(&v6->_brailleDisplayManager, a3);
+    [(SCROBrailleDisplayManager *)v7->_brailleDisplayManager setDelegate:v7];
+  }
+
+  return v7;
+}
+
+- (void)invalidate
+{
+  [(SCROBrailleDisplayManager *)self->_brailleDisplayManager setDelegate:0];
+  v3.receiver = self;
+  v3.super_class = SCROBrailleHandler;
+  [(SCROHandler *)&v3 invalidate];
+}
+
+- (int)handleRegisterCallbackForKey:(int)a3 trusted:(BOOL)a4
+{
+  switch(a3)
+  {
+    case 'N':
+      result = 0;
+      self->_callbacks.configChanged = 1;
+      break;
+    case 'O':
+      result = 0;
+      self->_callbacks.tableLoadFailed = 1;
+      break;
+    case 'P':
+      result = 0;
+      self->_callbacks.keypress = 1;
+      break;
+    case 'Q':
+      result = 0;
+      self->_callbacks.userEventOccured = 1;
+      break;
+    case 'R':
+      result = 0;
+      self->_callbacks.replaceTextRange = 1;
+      break;
+    case 'S':
+      result = 0;
+      self->_callbacks.startEditing = 1;
+      break;
+    case 'T':
+      result = 0;
+      self->_callbacks.insertUntranslatedText = 1;
+      break;
+    case 'U':
+      result = 0;
+      self->_callbacks.deleteUntranslatedText = 1;
+      break;
+    case 'V':
+      result = 0;
+      self->_callbacks.speechRequest = 1;
+      break;
+    case 'W':
+      result = 0;
+      self->_callbacks.keyWillMem = 1;
+      break;
+    case 'X':
+      result = 0;
+      self->_callbacks.keymem = 1;
+      break;
+    case 'Y':
+      if (!a4)
+      {
+        goto LABEL_29;
+      }
+
+      result = 0;
+      self->_callbacks.didDisplay = 1;
+      break;
+    case 'Z':
+      result = 0;
+      self->_callbacks.panLeft = 1;
+      break;
+    case '[':
+      result = 0;
+      self->_callbacks.panRight = 1;
+      break;
+    case '\\':
+      result = 0;
+      self->_callbacks.showPreviousAnnouncement = 1;
+      break;
+    case ']':
+      result = 0;
+      self->_callbacks.showNextAnnouncement = 1;
+      break;
+    case '^':
+      result = 0;
+      self->_callbacks.playBorderHitSound = 1;
+      break;
+    case '_':
+      result = 0;
+      self->_callbacks.playCommandNotSupportedSound = 1;
+      break;
+      v6 = _SCROD_LOG();
+      if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+      {
+        *buf = 0;
+        _os_log_impl(&dword_26490B000, v6, OS_LOG_TYPE_DEFAULT, "Made connection sound", buf, 2u);
+      }
+
+      self->_callbacks.playDisplayConnectionSound = 1;
+      result = [(SCROBrailleDisplayManager *)self->_brailleDisplayManager hasActiveUserDisplays];
+      if (result)
+      {
+        v7 = _SCROD_LOG();
+        if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+        {
+          *buf = 0;
+          _os_log_impl(&dword_26490B000, v7, OS_LOG_TYPE_DEFAULT, "Handle did load", buf, 2u);
+        }
+
+        [(SCROBrailleHandler *)self performSelector:sel_handleBrailleDriverDidLoad withObject:0 afterDelay:0.0];
+LABEL_29:
+        result = 0;
+      }
+
+      break;
+    case 'a':
+      result = 0;
+      self->_callbacks.bluetoothDisplayLoadFailed = 1;
+      break;
+    case 'b':
+      result = 0;
+      self->_callbacks.displayModeChanged = 1;
+      break;
+    case 'c':
+      result = 0;
+      self->_callbacks.copyStringToClipboard = 1;
+      break;
+    case 'd':
+      result = 0;
+      self->_callbacks.planarCanvasDidChange = 1;
+      break;
+    case 'e':
+      result = 0;
+      self->_callbacks.planarPan = 1;
+      break;
+    case 'f':
+      result = 0;
+      self->_callbacks.didBrailleUIStart = 1;
+      break;
+    case 'g':
+      result = 0;
+      self->_callbacks.brailleUIRequest = 1;
+      break;
+    case 'h':
+      result = 0;
+      self->_callbacks.didBrailleUIEnd = 1;
+      break;
+    default:
+      v8.receiver = self;
+      v8.super_class = SCROBrailleHandler;
+      result = [SCROHandler handleRegisterCallbackForKey:sel_handleRegisterCallbackForKey_trusted_ trusted:?];
+      break;
+  }
+
+  return result;
+}
+
+- (int)handlePerformActionForKey:(int)a3 trusted:(BOOL)a4
+{
+  switch(a3)
+  {
+    case 1:
+      [(SCROBrailleDisplayManager *)self->_brailleDisplayManager beginUpdates];
+      goto LABEL_16;
+    case 2:
+      [(SCROBrailleDisplayManager *)self->_brailleDisplayManager endUpdates];
+      goto LABEL_16;
+    case 6:
+      [(SCROBrailleDisplayManager *)self->_brailleDisplayManager setAnnouncementsDisplayMode];
+      goto LABEL_16;
+    case 7:
+      [(SCROBrailleDisplayManager *)self->_brailleDisplayManager showNextAnnouncement];
+      goto LABEL_16;
+    case 8:
+      [(SCROBrailleDisplayManager *)self->_brailleDisplayManager showPreviousAnnouncement];
+      goto LABEL_16;
+    case 9:
+      [(SCROBrailleDisplayManager *)self->_brailleDisplayManager exitCurrentDisplayMode];
+      goto LABEL_16;
+    case 10:
+      [(SCROBrailleDisplayManager *)self->_brailleDisplayManager translateBrailleToClipboard];
+      goto LABEL_16;
+    case 11:
+      [(SCROBrailleDisplayManager *)self->_brailleDisplayManager resetEditingManager];
+      goto LABEL_16;
+    case 12:
+      [(SCROBrailleDisplayManager *)self->_brailleDisplayManager clearTimeoutAlert];
+      goto LABEL_16;
+    case 13:
+      [(SCROBrailleDisplayManager *)self->_brailleDisplayManager cancelCandidateSelection];
+      goto LABEL_16;
+    case 14:
+      [(SCROBrailleDisplayManager *)self->_brailleDisplayManager showPreviousCandidate];
+      goto LABEL_16;
+    case 15:
+      [(SCROBrailleDisplayManager *)self->_brailleDisplayManager showNextCandidate];
+      goto LABEL_16;
+    case 16:
+      [(SCROBrailleDisplayManager *)self->_brailleDisplayManager showPreviousWordDescription];
+      goto LABEL_16;
+    case 17:
+      [(SCROBrailleDisplayManager *)self->_brailleDisplayManager showNextWordDescription];
+LABEL_16:
+      result = 0;
+      break;
+    default:
+      v5.receiver = self;
+      v5.super_class = SCROBrailleHandler;
+      result = [SCROHandler handlePerformActionForKey:sel_handlePerformActionForKey_trusted_ trusted:?];
+      break;
+  }
+
+  return result;
+}
+
+- (void)handleBrailleKeypress:(id)a3
+{
+  if (self->_callbacks.keypress)
+  {
+    v5 = a3;
+    v7 = [[SCROCallback alloc] initWithKey:80 object:v5];
+
+    v6 = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v7 postToHandler:v6];
+  }
+}
+
+- (void)handleBrailleReplaceTextRange:(_NSRange)a3 withString:(id)a4 cursor:(unint64_t)a5
+{
+  v19[3] = *MEMORY[0x277D85DE8];
+  if (self->_callbacks.replaceTextRange)
+  {
+    length = a3.length;
+    location = a3.location;
+    v18[0] = kSCROBrailleCallbackReplaceTextRange_RangeKey;
+    v9 = MEMORY[0x277CCAE60];
+    v10 = a4;
+    v11 = [v9 valueWithRange:{location, length}];
+    v19[0] = v11;
+    v19[1] = v10;
+    v18[1] = kSCROBrailleCallbackReplaceTextRange_StringKey;
+    v18[2] = kSCROBrailleCallbackReplaceTextRange_CursorKey;
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+    v19[2] = v12;
+    v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:3];
+
+    v14 = [SCROCallback alloc];
+    v15 = [(SCROCallback *)v14 initWithKey:82 object:v13];
+    v16 = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v15 postToHandler:v16];
+  }
+
+  v17 = *MEMORY[0x277D85DE8];
+}
+
+- (void)handleUserEventOccured
+{
+  if (self->_callbacks.userEventOccured)
+  {
+    v5 = [[SCROCallback alloc] initWithKey:81 object:0];
+    v4 = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v5 postToHandler:v4];
+  }
+}
+
+- (void)handleStartEditing
+{
+  if (self->_callbacks.startEditing)
+  {
+    v5 = [[SCROCallback alloc] initWithKey:83 object:0];
+    v4 = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v5 postToHandler:v4];
+  }
+}
+
+- (void)handleBrailleKeyWillMemorize:(id)a3
+{
+  if (self->_callbacks.keyWillMem)
+  {
+    v5 = a3;
+    v7 = [[SCROCallback alloc] initWithKey:87 object:v5];
+
+    v6 = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v7 postToHandler:v6];
+  }
+}
+
+- (void)handleBrailleKeyMemorize:(id)a3
+{
+  if (self->_callbacks.keymem)
+  {
+    v5 = a3;
+    v7 = [[SCROCallback alloc] initWithKey:88 object:v5];
+
+    v6 = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v7 postToHandler:v6];
+  }
+}
+
+- (void)handleBrailleDidDisplay:(id)a3
+{
+  v4 = a3;
+  if (self->_callbacks.didDisplay)
+  {
+    v8 = v4;
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      v5 = [v8 copy];
+
+      v8 = v5;
+    }
+
+    v6 = [[SCROCallback alloc] initWithKey:89 object:v8];
+    v7 = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v6 postToHandler:v7];
+
+    v4 = v8;
+  }
+}
+
+- (void)handleBrailleDidPanLeft:(id)a3 elementToken:(id)a4 appToken:(id)a5 lineOffset:(id)a6
+{
+  if (self->_callbacks.panLeft)
+  {
+    v11 = MEMORY[0x277CBEAC0];
+    v12 = a6;
+    v13 = a5;
+    v14 = a4;
+    v15 = a3;
+    v18 = [[v11 alloc] initWithObjectsAndKeys:{v15, @"success", v14, @"token", v12, @"lineOffset", v13, @"appToken", 0}];
+
+    v16 = [[SCROCallback alloc] initWithKey:90 object:v18];
+    v17 = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v16 postToHandler:v17];
+  }
+}
+
+- (void)handleBrailleDidPanRight:(id)a3 elementToken:(id)a4 appToken:(id)a5 lineOffset:(id)a6
+{
+  if (self->_callbacks.panRight)
+  {
+    v11 = MEMORY[0x277CBEAC0];
+    v12 = a6;
+    v13 = a5;
+    v14 = a4;
+    v15 = a3;
+    v18 = [[v11 alloc] initWithObjectsAndKeys:{v15, @"success", v14, @"token", v12, @"lineOffset", v13, @"appToken", 0}];
+
+    v16 = [[SCROCallback alloc] initWithKey:91 object:v18];
+    v17 = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v16 postToHandler:v17];
+  }
+}
+
+- (void)handleBrailleDidShowPreviousAnnouncement:(id)a3
+{
+  if (self->_callbacks.showPreviousAnnouncement)
+  {
+    v5 = a3;
+    v7 = [[SCROCallback alloc] initWithKey:92 object:v5];
+
+    v6 = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v7 postToHandler:v6];
+  }
+}
+
+- (void)handleBrailleDidShowNextAnnouncement:(id)a3
+{
+  if (self->_callbacks.showNextAnnouncement)
+  {
+    v5 = a3;
+    v7 = [[SCROCallback alloc] initWithKey:93 object:v5];
+
+    v6 = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v7 postToHandler:v6];
+  }
+}
+
+- (void)handleBrailleDriverDisconnected
+{
+  if (self->_callbacks.playDisplayConnectionSound)
+  {
+    v4 = [SCROCallback alloc];
+    v6 = [(SCROCallback *)v4 initWithKey:96 object:MEMORY[0x277CBEC28]];
+    [(SCROCallback *)v6 setIsAtomic:1];
+    v5 = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v6 postToHandler:v5];
+  }
+}
+
+- (void)handleBrailleDriverDidLoad
+{
+  v11 = *MEMORY[0x277D85DE8];
+  v3 = _SCROD_LOG();
+  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  {
+    v4 = [MEMORY[0x277CCABB0] numberWithBool:self->_callbacks.playDisplayConnectionSound];
+    v9 = 138412290;
+    v10 = v4;
+    _os_log_impl(&dword_26490B000, v3, OS_LOG_TYPE_DEFAULT, "Brailler driver did load %@", &v9, 0xCu);
+  }
+
+  if (self->_callbacks.playDisplayConnectionSound)
+  {
+    v5 = [SCROCallback alloc];
+    v6 = [(SCROCallback *)v5 initWithKey:96 object:MEMORY[0x277CBEC38]];
+    [(SCROCallback *)v6 setIsAtomic:1];
+    v7 = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v6 postToHandler:v7];
+  }
+
+  v8 = *MEMORY[0x277D85DE8];
+}
+
+- (void)configurationDidChange
+{
+  v12 = *MEMORY[0x277D85DE8];
+  v3 = _SCROD_LOG();
+  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  {
+    configChanged = self->_callbacks.configChanged;
+    v11[0] = 67109120;
+    v11[1] = configChanged;
+    _os_log_impl(&dword_26490B000, v3, OS_LOG_TYPE_DEFAULT, "[SCROBrailleHandler configurationDidChange]: _callbacks.configChanged == %d", v11, 8u);
+  }
+
+  if (self->_callbacks.configChanged)
+  {
+    v5 = [MEMORY[0x277CCABB0] numberWithBool:{-[SCROBrailleDisplayManager isConfigured](self->_brailleDisplayManager, "isConfigured")}];
+    v6 = [[SCROCallback alloc] initWithKey:78 object:v5];
+    v7 = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v6 postToHandler:v7];
+
+    v8 = _SCROD_LOG();
+    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    {
+      LOWORD(v11[0]) = 0;
+      _os_log_impl(&dword_26490B000, v8, OS_LOG_TYPE_DEFAULT, "Posting SCRODisplayConfigurationChangedNotification", v11, 2u);
+    }
+
+    DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
+    CFNotificationCenterPostNotification(DarwinNotifyCenter, kSCRODisplayConfigurationChangedNotification, 0, 0, 1u);
+  }
+
+  v10 = *MEMORY[0x277D85DE8];
+}
+
+- (void)handleFailedToLoadBluetoothDevice:(id)a3
+{
+  if (self->_callbacks.bluetoothDisplayLoadFailed)
+  {
+    v5 = a3;
+    v7 = [[SCROCallback alloc] initWithKey:97 object:v5];
+
+    v6 = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v7 postToHandler:v6];
+  }
+}
+
+- (void)handleBrailleTableFailedToLoad:(id)a3
+{
+  if (self->_callbacks.tableLoadFailed)
+  {
+    v5 = a3;
+    v7 = [[SCROCallback alloc] initWithKey:79 object:v5];
+
+    v6 = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v7 postToHandler:v6];
+  }
+}
+
+- (void)handleDisplayModeChanged:(id)a3
+{
+  if (self->_callbacks.displayModeChanged)
+  {
+    v5 = a3;
+    v7 = [[SCROCallback alloc] initWithKey:98 object:v5];
+
+    v6 = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v7 postToHandler:v6];
+  }
+}
+
+- (void)handleCopyStringToClipboard:(id)a3
+{
+  if (self->_callbacks.copyStringToClipboard)
+  {
+    v5 = a3;
+    v7 = [[SCROCallback alloc] initWithKey:99 object:v5];
+
+    v6 = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v7 postToHandler:v6];
+  }
+}
+
+- (void)handleTacticalGraphicsCanvasDidChange:(id)a3
+{
+  if (self->_callbacks.planarCanvasDidChange)
+  {
+    v5 = a3;
+    v7 = [[SCROCallback alloc] initWithKey:100 object:v5];
+
+    v6 = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v7 postToHandler:v6];
+  }
+}
+
+- (void)handlePlayBorderHitSound
+{
+  if (self->_callbacks.playBorderHitSound)
+  {
+    v5 = [[SCROCallback alloc] initWithKey:94 object:0];
+    v4 = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v5 postToHandler:v4];
+  }
+}
+
+- (void)handlePlayCommandNotSupportedSound
+{
+  if (self->_callbacks.playCommandNotSupportedSound)
+  {
+    v5 = [[SCROCallback alloc] initWithKey:95 object:0];
+    v4 = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v5 postToHandler:v4];
+  }
+}
+
+- (void)handleDidBrailleUIStart
+{
+  if (self->_callbacks.didBrailleUIStart)
+  {
+    v5 = [[SCROCallback alloc] initWithKey:102 object:0];
+    v4 = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v5 postToHandler:v4];
+  }
+}
+
+- (void)handleBrailleUIRequest:(id)a3
+{
+  if (self->_callbacks.brailleUIRequest)
+  {
+    v5 = a3;
+    v7 = [[SCROCallback alloc] initWithKey:103 object:v5];
+
+    v6 = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v7 postToHandler:v6];
+  }
+}
+
+- (void)handleDidBrailleUIEnd
+{
+  if (self->_callbacks.didBrailleUIEnd)
+  {
+    v5 = [[SCROCallback alloc] initWithKey:104 object:0];
+    v4 = [(SCROHandler *)self callbackDelegate];
+    [(SCROCallback *)v5 postToHandler:v4];
+  }
+}
+
+@end

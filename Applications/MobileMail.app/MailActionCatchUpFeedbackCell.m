@@ -1,0 +1,65 @@
+@interface MailActionCatchUpFeedbackCell
++ (NSString)reusableIdentifier;
+- (BOOL)_disableRasterizeInAnimations;
+- (_TtP10MobileMail37MailActionCatchUpFeedbackCellDelegate_)delegate;
+- (void)handleThumbsDownWithSender:(id)a3;
+- (void)handleThumbsUpWithSender:(id)a3;
+- (void)setDelegate:(id)a3;
+@end
+
+@implementation MailActionCatchUpFeedbackCell
+
+- (_TtP10MobileMail37MailActionCatchUpFeedbackCellDelegate_)delegate
+{
+  _objc_retain(self);
+  v4 = sub_10034D500();
+  _objc_release(self);
+
+  return v4;
+}
+
+- (void)setDelegate:(id)a3
+{
+  swift_unknownObjectRetain();
+  _objc_retain(self);
+  sub_10034D5C8();
+  _objc_release(self);
+}
+
++ (NSString)reusableIdentifier
+{
+  swift_getObjCClassMetadata();
+  swift_getObjCClassMetadata();
+  sub_10034DCE8();
+  v3 = String._bridgeToObjectiveC()();
+
+  return v3;
+}
+
+- (BOOL)_disableRasterizeInAnimations
+{
+  _objc_retain(self);
+  sub_10034DFDC();
+  _objc_release(self);
+  return _convertBoolToObjCBool(_:)() & 1;
+}
+
+- (void)handleThumbsUpWithSender:(id)a3
+{
+  _objc_retain(a3);
+  _objc_retain(self);
+  sub_10034E488();
+  _objc_release(self);
+  _objc_release(a3);
+}
+
+- (void)handleThumbsDownWithSender:(id)a3
+{
+  _objc_retain(a3);
+  _objc_retain(self);
+  sub_10034E59C();
+  _objc_release(self);
+  _objc_release(a3);
+}
+
+@end

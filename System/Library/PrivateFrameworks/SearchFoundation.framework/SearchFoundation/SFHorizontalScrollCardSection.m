@@ -1,0 +1,701 @@
+@interface SFHorizontalScrollCardSection
+- (BOOL)isEqual:(id)a3;
+- (NSData)jsonData;
+- (NSDictionary)dictionaryRepresentation;
+- (SFHorizontalScrollCardSection)initWithCoder:(id)a3;
+- (SFHorizontalScrollCardSection)initWithProtobuf:(id)a3;
+- (id)copyWithZone:(_NSZone *)a3;
+- (unint64_t)hash;
+- (void)encodeWithCoder:(id)a3;
+@end
+
+@implementation SFHorizontalScrollCardSection
+
+- (unint64_t)hash
+{
+  v22.receiver = self;
+  v22.super_class = SFHorizontalScrollCardSection;
+  v3 = [(SFCardSection *)&v22 hash];
+  v4 = [(SFCardSection *)self punchoutOptions];
+  v5 = [v4 hash];
+  v6 = [(SFCardSection *)self punchoutPickerTitle];
+  v7 = v5 ^ [v6 hash];
+  v8 = [(SFCardSection *)self punchoutPickerDismissText];
+  v9 = v7 ^ [v8 hash];
+  v10 = v9 ^ [(SFCardSection *)self canBeHidden];
+  v11 = v10 ^ [(SFCardSection *)self hasTopPadding]^ v3;
+  v12 = [(SFCardSection *)self hasBottomPadding];
+  v13 = [(SFHorizontalScrollCardSection *)self type];
+  v14 = v12 ^ [v13 hash];
+  v15 = v14 ^ [(SFCardSection *)self separatorStyle];
+  v16 = [(SFCardSection *)self backgroundColor];
+  v17 = v15 ^ [v16 hash];
+  v18 = [(SFHorizontalScrollCardSection *)self cardSections];
+  v19 = v11 ^ v17 ^ [v18 hash];
+  v20 = [(SFHorizontalScrollCardSection *)self numberOfRows];
+
+  return v19 ^ v20;
+}
+
+- (BOOL)isEqual:(id)a3
+{
+  v5 = a3;
+  if (self == v5)
+  {
+    v11 = 1;
+  }
+
+  else
+  {
+    if ([(SFHorizontalScrollCardSection *)v5 isMemberOfClass:objc_opt_class()])
+    {
+      v71.receiver = self;
+      v71.super_class = SFHorizontalScrollCardSection;
+      if ([(SFCardSection *)&v71 isEqual:v5])
+      {
+        v6 = v5;
+        v7 = [(SFCardSection *)self punchoutOptions];
+        v8 = [(SFCardSection *)v6 punchoutOptions];
+        if ((v7 != 0) == (v8 == 0))
+        {
+          v11 = 0;
+LABEL_58:
+
+          goto LABEL_59;
+        }
+
+        v9 = [(SFCardSection *)self punchoutOptions];
+        if (v9)
+        {
+          v10 = [(SFCardSection *)self punchoutOptions];
+          v3 = [(SFCardSection *)v6 punchoutOptions];
+          if (![v10 isEqual:v3])
+          {
+            v11 = 0;
+            goto LABEL_56;
+          }
+
+          v70 = v10;
+        }
+
+        v12 = [(SFCardSection *)self punchoutPickerTitle];
+        v13 = [(SFCardSection *)v6 punchoutPickerTitle];
+        if ((v12 != 0) != (v13 == 0))
+        {
+          v14 = [(SFCardSection *)self punchoutPickerTitle];
+          if (v14)
+          {
+            v63 = v3;
+            v65 = v12;
+            v15 = [(SFCardSection *)self punchoutPickerTitle];
+            v16 = [(SFCardSection *)v6 punchoutPickerTitle];
+            if (([v15 isEqual:v16] & 1) == 0)
+            {
+
+              v11 = 0;
+              v10 = v70;
+              v3 = v63;
+              if (!v9)
+              {
+                goto LABEL_57;
+              }
+
+              goto LABEL_56;
+            }
+
+            v61 = v16;
+            v62 = v15;
+            v67 = v8;
+            v68 = v6;
+            v17 = v7;
+            v18 = v9;
+            v19 = v13;
+            v3 = v63;
+            v20 = v65;
+            v21 = v14;
+          }
+
+          else
+          {
+            v67 = v8;
+            v68 = v6;
+            v17 = v7;
+            v18 = v9;
+            v19 = v13;
+            v20 = v12;
+            v21 = 0;
+          }
+
+          v22 = [(SFCardSection *)self punchoutPickerDismissText];
+          v23 = [(SFCardSection *)v68 punchoutPickerDismissText];
+          v24 = v21;
+          v12 = v20;
+          v13 = v19;
+          v9 = v18;
+          v7 = v17;
+          v8 = v67;
+          if ((v22 != 0) != (v23 == 0))
+          {
+            v58 = v13;
+            v59 = v23;
+            v60 = v22;
+            v64 = [(SFCardSection *)self punchoutPickerDismissText];
+            if (v64)
+            {
+              v13 = [(SFCardSection *)self punchoutPickerDismissText];
+              v6 = v68;
+              v56 = [(SFCardSection *)v68 punchoutPickerDismissText];
+              if (![v13 isEqual:?])
+              {
+                goto LABEL_28;
+              }
+            }
+
+            else
+            {
+              v6 = v68;
+            }
+
+            v57 = v24;
+            v25 = [(SFCardSection *)self canBeHidden];
+            if (v25 != [(SFCardSection *)v6 canBeHidden]|| (v26 = [(SFCardSection *)self hasTopPadding], v26 != [(SFCardSection *)v6 hasTopPadding]) || (v27 = [(SFCardSection *)self hasBottomPadding], v27 != [(SFCardSection *)v6 hasBottomPadding]))
+            {
+              v24 = v57;
+              if (!v64)
+              {
+LABEL_29:
+
+                if (v24)
+                {
+                }
+
+                goto LABEL_54;
+              }
+
+LABEL_28:
+
+              goto LABEL_29;
+            }
+
+            v28 = [(SFHorizontalScrollCardSection *)self type];
+            v29 = [(SFHorizontalScrollCardSection *)v6 type];
+            if ((v28 != 0) != (v29 == 0))
+            {
+              v55 = v29;
+              v69 = v28;
+              v30 = [(SFHorizontalScrollCardSection *)self type];
+              if (v30)
+              {
+                v54 = [(SFHorizontalScrollCardSection *)self type];
+                v52 = [(SFHorizontalScrollCardSection *)v6 type];
+                if (![v54 isEqual:?])
+                {
+                  v11 = 0;
+                  goto LABEL_68;
+                }
+
+                v53 = v30;
+              }
+
+              else
+              {
+                v53 = 0;
+              }
+
+              v31 = [(SFCardSection *)self separatorStyle];
+              if (v31 != [(SFCardSection *)v6 separatorStyle])
+              {
+                v11 = 0;
+                goto LABEL_67;
+              }
+
+              v51 = [(SFCardSection *)self backgroundColor];
+              v32 = [(SFCardSection *)v6 backgroundColor];
+              if ((v51 != 0) != (v32 == 0))
+              {
+                v33 = v32;
+                v49 = v7;
+                v50 = v13;
+                v48 = v9;
+                v66 = v12;
+                v34 = v3;
+                v35 = [(SFCardSection *)self backgroundColor];
+                if (v35)
+                {
+                  v36 = [(SFCardSection *)self backgroundColor];
+                  v46 = [(SFCardSection *)v6 backgroundColor];
+                  v47 = v36;
+                  if (![v36 isEqual:?])
+                  {
+                    v11 = 0;
+                    goto LABEL_65;
+                  }
+                }
+
+                v38 = [(SFHorizontalScrollCardSection *)self cardSections];
+                v39 = [(SFHorizontalScrollCardSection *)v6 cardSections];
+                v40 = v39;
+                if ((v38 != 0) == (v39 == 0))
+                {
+
+                  v11 = 0;
+                  if (!v35)
+                  {
+LABEL_66:
+
+                    v3 = v34;
+                    v12 = v66;
+                    v8 = v67;
+                    v9 = v48;
+                    v7 = v49;
+                    v13 = v50;
+LABEL_67:
+                    v30 = v53;
+                    if (!v53)
+                    {
+LABEL_69:
+
+                      if (v64)
+                      {
+                      }
+
+                      if (v57)
+                      {
+                      }
+
+LABEL_55:
+                      v10 = v70;
+                      if (!v9)
+                      {
+LABEL_57:
+
+                        goto LABEL_58;
+                      }
+
+LABEL_56:
+
+                      goto LABEL_57;
+                    }
+
+LABEL_68:
+
+                    goto LABEL_69;
+                  }
+
+LABEL_65:
+
+                  goto LABEL_66;
+                }
+
+                v41 = [(SFHorizontalScrollCardSection *)self cardSections];
+                if (!v41 || (-[SFHorizontalScrollCardSection cardSections](self, "cardSections"), v42 = objc_claimAutoreleasedReturnValue(), -[SFHorizontalScrollCardSection cardSections](v6, "cardSections"), v44 = objc_claimAutoreleasedReturnValue(), v45 = v42, [v42 isEqual:?]))
+                {
+                  v43 = [(SFHorizontalScrollCardSection *)self numberOfRows];
+                  v11 = v43 == [(SFHorizontalScrollCardSection *)v6 numberOfRows];
+                  if (!v41)
+                  {
+                    goto LABEL_76;
+                  }
+                }
+
+                else
+                {
+                  v11 = 0;
+                }
+
+LABEL_76:
+                if (!v35)
+                {
+                  goto LABEL_66;
+                }
+
+                goto LABEL_65;
+              }
+
+              if (v53)
+              {
+              }
+
+              v28 = v69;
+              v29 = v55;
+            }
+
+            v68 = v6;
+
+            v24 = v57;
+            if (v64)
+            {
+            }
+
+            v23 = v59;
+            v22 = v60;
+            v13 = v58;
+          }
+
+          if (v24)
+          {
+          }
+
+          v6 = v68;
+        }
+
+LABEL_54:
+        v11 = 0;
+        goto LABEL_55;
+      }
+    }
+
+    v11 = 0;
+  }
+
+LABEL_59:
+
+  return v11;
+}
+
+- (id)copyWithZone:(_NSZone *)a3
+{
+  v18.receiver = self;
+  v18.super_class = SFHorizontalScrollCardSection;
+  v4 = [(SFCardSection *)&v18 copyWithZone:a3];
+  v5 = [(SFCardSection *)self punchoutOptions];
+  v6 = [v5 copy];
+  [v4 setPunchoutOptions:v6];
+
+  v7 = [(SFCardSection *)self punchoutPickerTitle];
+  v8 = [v7 copy];
+  [v4 setPunchoutPickerTitle:v8];
+
+  v9 = [(SFCardSection *)self punchoutPickerDismissText];
+  v10 = [v9 copy];
+  [v4 setPunchoutPickerDismissText:v10];
+
+  [v4 setCanBeHidden:{-[SFCardSection canBeHidden](self, "canBeHidden")}];
+  [v4 setHasTopPadding:{-[SFCardSection hasTopPadding](self, "hasTopPadding")}];
+  [v4 setHasBottomPadding:{-[SFCardSection hasBottomPadding](self, "hasBottomPadding")}];
+  v11 = [(SFHorizontalScrollCardSection *)self type];
+  v12 = [v11 copy];
+  [v4 setType:v12];
+
+  [v4 setSeparatorStyle:{-[SFCardSection separatorStyle](self, "separatorStyle")}];
+  v13 = [(SFCardSection *)self backgroundColor];
+  v14 = [v13 copy];
+  [v4 setBackgroundColor:v14];
+
+  v15 = [(SFHorizontalScrollCardSection *)self cardSections];
+  v16 = [v15 copy];
+  [v4 setCardSections:v16];
+
+  [v4 setNumberOfRows:{-[SFHorizontalScrollCardSection numberOfRows](self, "numberOfRows")}];
+  return v4;
+}
+
+- (NSData)jsonData
+{
+  v2 = [[_SFPBHorizontalScrollCardSection alloc] initWithFacade:self];
+  v3 = [(_SFPBHorizontalScrollCardSection *)v2 jsonData];
+
+  return v3;
+}
+
+- (NSDictionary)dictionaryRepresentation
+{
+  v2 = [[_SFPBHorizontalScrollCardSection alloc] initWithFacade:self];
+  v3 = [(_SFPBHorizontalScrollCardSection *)v2 dictionaryRepresentation];
+
+  return v3;
+}
+
+- (void)encodeWithCoder:(id)a3
+{
+  v3.receiver = self;
+  v3.super_class = SFHorizontalScrollCardSection;
+  [(SFCardSection *)&v3 encodeWithCoder:a3];
+}
+
+- (SFHorizontalScrollCardSection)initWithCoder:(id)a3
+{
+  v4 = a3;
+  v5 = [(SFCardSection *)self init];
+  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+
+  v7 = [[_SFPBCardSection alloc] initWithData:v6];
+  v8 = [[SFCardSection alloc] initWithProtobuf:v7];
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    v9 = [(SFCardSection *)v8 punchoutOptions];
+    [(SFCardSection *)v5 setPunchoutOptions:v9];
+
+    v10 = [(SFCardSection *)v8 punchoutPickerTitle];
+    [(SFCardSection *)v5 setPunchoutPickerTitle:v10];
+
+    v11 = [(SFCardSection *)v8 punchoutPickerDismissText];
+    [(SFCardSection *)v5 setPunchoutPickerDismissText:v11];
+
+    [(SFCardSection *)v5 setCanBeHidden:[(SFCardSection *)v8 canBeHidden]];
+    [(SFCardSection *)v5 setHasTopPadding:[(SFCardSection *)v8 hasTopPadding]];
+    [(SFCardSection *)v5 setHasBottomPadding:[(SFCardSection *)v8 hasBottomPadding]];
+    v12 = [(SFCardSection *)v8 type];
+    [(SFHorizontalScrollCardSection *)v5 setType:v12];
+
+    [(SFCardSection *)v5 setSeparatorStyle:[(SFCardSection *)v8 separatorStyle]];
+    v13 = [(SFCardSection *)v8 backgroundColor];
+    [(SFCardSection *)v5 setBackgroundColor:v13];
+
+    v14 = [(SFCardSection *)v8 cardSections];
+    [(SFHorizontalScrollCardSection *)v5 setCardSections:v14];
+
+    [(SFHorizontalScrollCardSection *)v5 setNumberOfRows:[(SFCardSection *)v8 numberOfRows]];
+    v15 = [(SFCardSection *)v8 nextCard];
+    [(SFCardSection *)v5 setNextCard:v15];
+
+    v16 = [(SFCardSection *)v8 commands];
+    [(SFCardSection *)v5 setCommands:v16];
+
+    v17 = [(SFCardSection *)v8 parameterKeyPaths];
+    [(SFCardSection *)v5 setParameterKeyPaths:v17];
+
+    v18 = [(SFCardSection *)v8 cardSectionId];
+    [(SFCardSection *)v5 setCardSectionId:v18];
+
+    v19 = [(SFCardSection *)v8 resultIdentifier];
+    [(SFCardSection *)v5 setResultIdentifier:v19];
+
+    v20 = [(SFCardSection *)v8 userReportRequest];
+    [(SFCardSection *)v5 setUserReportRequest:v20];
+
+    v21 = [(SFCardSection *)v8 command];
+    [(SFCardSection *)v5 setCommand:v21];
+
+    v22 = [(SFCardSection *)v8 previewCommand];
+    [(SFCardSection *)v5 setPreviewCommand:v22];
+
+    v23 = [(SFCardSection *)v8 previewButtonItems];
+    [(SFCardSection *)v5 setPreviewButtonItems:v23];
+
+    v24 = [(SFCardSection *)v8 cardSectionDetail];
+    [(SFCardSection *)v5 setCardSectionDetail:v24];
+
+    v25 = [(SFCardSection *)v8 previewButtonItemsTitle];
+    [(SFCardSection *)v5 setPreviewButtonItemsTitle:v25];
+
+    v26 = [(SFCardSection *)v8 backgroundColor];
+    [(SFCardSection *)v5 setBackgroundColor:v26];
+
+    [(SFCardSection *)v5 setShouldHideInAmbientMode:[(SFCardSection *)v8 shouldHideInAmbientMode]];
+    v27 = [(SFCardSection *)v8 leadingSwipeButtonItems];
+    [(SFCardSection *)v5 setLeadingSwipeButtonItems:v27];
+
+    v28 = [(SFCardSection *)v8 trailingSwipeButtonItems];
+    [(SFCardSection *)v5 setTrailingSwipeButtonItems:v28];
+
+    v29 = [(SFCardSection *)v8 punchoutOptions];
+    [(SFCardSection *)v5 setPunchoutOptions:v29];
+
+    v30 = [(SFCardSection *)v8 punchoutPickerTitle];
+    [(SFCardSection *)v5 setPunchoutPickerTitle:v30];
+
+    v31 = [(SFCardSection *)v8 punchoutPickerDismissText];
+    [(SFCardSection *)v5 setPunchoutPickerDismissText:v31];
+
+    [(SFCardSection *)v5 setCanBeHidden:[(SFCardSection *)v8 canBeHidden]];
+    [(SFCardSection *)v5 setHasTopPadding:[(SFCardSection *)v8 hasTopPadding]];
+    [(SFCardSection *)v5 setHasBottomPadding:[(SFCardSection *)v8 hasBottomPadding]];
+    [(SFCardSection *)v5 setSeparatorStyle:[(SFCardSection *)v8 separatorStyle]];
+    v32 = [(SFCardSection *)v8 referencedCommands];
+    [(SFCardSection *)v5 setReferencedCommands:v32];
+
+    [(SFCardSection *)v5 setForceEnable3DTouch:[(SFCardSection *)v8 forceEnable3DTouch]];
+    [(SFCardSection *)v5 setShouldShowInSmartDialog:[(SFCardSection *)v8 shouldShowInSmartDialog]];
+    v33 = [(SFCardSection *)v8 appEntityAnnotation];
+    [(SFCardSection *)v5 setAppEntityAnnotation:v33];
+
+    v34 = [(SFCardSection *)v8 emphasisSubjectId];
+    [(SFCardSection *)v5 setEmphasisSubjectId:v34];
+
+    [(SFCardSection *)v5 setIncreasedContrastMode:[(SFCardSection *)v8 increasedContrastMode]];
+    v35 = [(SFCardSection *)v8 secondaryCommand];
+    [(SFCardSection *)v5 setSecondaryCommand:v35];
+
+    [(SFCardSection *)v5 setRequiredLevelOfDetail:[(SFCardSection *)v8 requiredLevelOfDetail]];
+    v36 = [(SFCardSection *)v8 racFeedbackSubfeatureId];
+    [(SFCardSection *)v5 setRacFeedbackSubfeatureId:v36];
+
+    v37 = [(SFCardSection *)v8 racFeedbackLoggingContent];
+    [(SFCardSection *)v5 setRacFeedbackLoggingContent:v37];
+
+    v38 = [(SFCardSection *)v8 copyableItems];
+    [(SFCardSection *)v5 setCopyableItems:v38];
+
+    v39 = [(SFCardSection *)v8 applicationBundleIdentifier];
+    [(SFCardSection *)v5 setApplicationBundleIdentifier:v39];
+  }
+
+  return v5;
+}
+
+- (SFHorizontalScrollCardSection)initWithProtobuf:(id)a3
+{
+  v46 = *MEMORY[0x1E69E9840];
+  v4 = a3;
+  v43.receiver = self;
+  v43.super_class = SFHorizontalScrollCardSection;
+  v5 = [(SFCardSection *)&v43 init];
+  if (v5)
+  {
+    v6 = [v4 punchoutOptions];
+    if (v6)
+    {
+      v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
+    }
+
+    else
+    {
+      v7 = 0;
+    }
+
+    v41 = 0u;
+    v42 = 0u;
+    v39 = 0u;
+    v40 = 0u;
+    v8 = [v4 punchoutOptions];
+    v9 = [v8 countByEnumeratingWithState:&v39 objects:v45 count:16];
+    if (v9)
+    {
+      v10 = v9;
+      v11 = *v40;
+      do
+      {
+        for (i = 0; i != v10; ++i)
+        {
+          if (*v40 != v11)
+          {
+            objc_enumerationMutation(v8);
+          }
+
+          v13 = [[SFPunchout alloc] initWithProtobuf:*(*(&v39 + 1) + 8 * i)];
+          if (v13)
+          {
+            [v7 addObject:v13];
+          }
+        }
+
+        v10 = [v8 countByEnumeratingWithState:&v39 objects:v45 count:16];
+      }
+
+      while (v10);
+    }
+
+    [(SFCardSection *)v5 setPunchoutOptions:v7];
+    v14 = [v4 punchoutPickerTitle];
+
+    if (v14)
+    {
+      v15 = [v4 punchoutPickerTitle];
+      [(SFCardSection *)v5 setPunchoutPickerTitle:v15];
+    }
+
+    v16 = [v4 punchoutPickerDismissText];
+
+    if (v16)
+    {
+      v17 = [v4 punchoutPickerDismissText];
+      [(SFCardSection *)v5 setPunchoutPickerDismissText:v17];
+    }
+
+    if ([v4 canBeHidden])
+    {
+      -[SFCardSection setCanBeHidden:](v5, "setCanBeHidden:", [v4 canBeHidden]);
+    }
+
+    if ([v4 hasTopPadding])
+    {
+      -[SFCardSection setHasTopPadding:](v5, "setHasTopPadding:", [v4 hasTopPadding]);
+    }
+
+    if ([v4 hasBottomPadding])
+    {
+      -[SFCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [v4 hasBottomPadding]);
+    }
+
+    v18 = [v4 type];
+
+    if (v18)
+    {
+      v19 = [v4 type];
+      [(SFHorizontalScrollCardSection *)v5 setType:v19];
+    }
+
+    if ([v4 separatorStyle])
+    {
+      -[SFCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [v4 separatorStyle]);
+    }
+
+    v20 = [v4 backgroundColor];
+
+    if (v20)
+    {
+      v21 = [SFColor alloc];
+      v22 = [v4 backgroundColor];
+      v23 = [(SFColor *)v21 initWithProtobuf:v22];
+      [(SFCardSection *)v5 setBackgroundColor:v23];
+    }
+
+    v24 = [v4 cardSections];
+    if (v24)
+    {
+      v25 = objc_alloc_init(MEMORY[0x1E695DF70]);
+    }
+
+    else
+    {
+      v25 = 0;
+    }
+
+    v37 = 0u;
+    v38 = 0u;
+    v35 = 0u;
+    v36 = 0u;
+    v26 = [v4 cardSections];
+    v27 = [v26 countByEnumeratingWithState:&v35 objects:v44 count:16];
+    if (v27)
+    {
+      v28 = v27;
+      v29 = *v36;
+      do
+      {
+        for (j = 0; j != v28; ++j)
+        {
+          if (*v36 != v29)
+          {
+            objc_enumerationMutation(v26);
+          }
+
+          v31 = [[SFCardSection alloc] initWithProtobuf:*(*(&v35 + 1) + 8 * j)];
+          if (v31)
+          {
+            [v25 addObject:v31];
+          }
+        }
+
+        v28 = [v26 countByEnumeratingWithState:&v35 objects:v44 count:16];
+      }
+
+      while (v28);
+    }
+
+    [(SFHorizontalScrollCardSection *)v5 setCardSections:v25];
+    if ([v4 numberOfRows])
+    {
+      -[SFHorizontalScrollCardSection setNumberOfRows:](v5, "setNumberOfRows:", [v4 numberOfRows]);
+    }
+
+    v32 = v5;
+  }
+
+  v33 = *MEMORY[0x1E69E9840];
+  return v5;
+}
+
+@end

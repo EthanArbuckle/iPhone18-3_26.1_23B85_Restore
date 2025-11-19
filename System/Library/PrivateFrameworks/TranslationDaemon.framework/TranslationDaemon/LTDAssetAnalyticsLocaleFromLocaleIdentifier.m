@@ -1,0 +1,12 @@
+@interface LTDAssetAnalyticsLocaleFromLocaleIdentifier
+@end
+
+@implementation LTDAssetAnalyticsLocaleFromLocaleIdentifier
+
+void ___LTDAssetAnalyticsLocaleFromLocaleIdentifier_block_invoke()
+{
+  v0 = _LTDAssetAnalyticsLocaleFromLocaleIdentifier_localeIdentifierMap;
+  _LTDAssetAnalyticsLocaleFromLocaleIdentifier_localeIdentifierMap = &unk_284868158;
+}
+
+@end

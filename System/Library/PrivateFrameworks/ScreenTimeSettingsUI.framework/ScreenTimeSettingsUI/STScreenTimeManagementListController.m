@@ -1,0 +1,29 @@
+@interface STScreenTimeManagementListController
+- (void)viewDidLoad;
+@end
+
+@implementation STScreenTimeManagementListController
+
+- (void)viewDidLoad
+{
+  v11[5] = *MEMORY[0x277D85DE8];
+  v3 = [(STPINListViewController *)self coordinator];
+  v4 = [(STRootGroupSpecifierProvider *)STPasscodeActivitySpecifierProvider providerWithCoordinator:v3];
+  v11[0] = v4;
+  v5 = [STIncludeWebsiteDataGroupSpecifierProvider providerWithCoordinator:v3 isRootView:0];
+  v11[1] = v5;
+  v6 = [STPasscodeGroupSpecifierProvider providerWithCoordinator:v3 listController:self isRootView:0];
+  v11[2] = v6;
+  v7 = [STDisableAppAndWebsiteActivityGroupSpecifierProvider providerWithCoordinator:v3 isRootView:0];
+  v11[3] = v7;
+  v8 = [STStopSharingScreenTimeGroupSpecifierProvider providerWithCoordinator:v3 isRootView:0];
+  v11[4] = v8;
+  v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:5];
+  [(STListViewController *)self setSpecifierProviders:v9];
+
+  v10.receiver = self;
+  v10.super_class = STScreenTimeManagementListController;
+  [(STScreenTimeManagementListController *)&v10 viewDidLoad];
+}
+
+@end

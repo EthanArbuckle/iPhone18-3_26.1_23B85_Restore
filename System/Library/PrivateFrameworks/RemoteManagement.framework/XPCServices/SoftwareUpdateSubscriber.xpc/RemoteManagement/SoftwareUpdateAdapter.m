@@ -1,0 +1,784 @@
+@interface SoftwareUpdateAdapter
+- (BOOL)applyConfiguration:(id)a3 scope:(int64_t)a4 returningReasons:(id *)a5 error:(id *)a6;
+- (BOOL)removeDeclarationKey:(id)a3 scope:(int64_t)a4 error:(id *)a5;
+- (SoftwareUpdateAdapter)init;
+- (id)allDeclarationKeysForScope:(int64_t)a3 error:(id *)a4;
+- (id)configurationClasses;
+- (id)declarationKeyForConfiguration:(id)a3;
+- (void)configurationUIForConfiguration:(id)a3 scope:(int64_t)a4 completionHandler:(id)a5;
+@end
+
+@implementation SoftwareUpdateAdapter
+
+- (SoftwareUpdateAdapter)init
+{
+  v6.receiver = self;
+  v6.super_class = SoftwareUpdateAdapter;
+  v2 = [(SoftwareUpdateAdapter *)&v6 init];
+  if (v2)
+  {
+    v3 = [[SUManagerClient alloc] initWithDelegate:0 queue:&_dispatch_main_q clientType:1];
+    controller = v2->_controller;
+    v2->_controller = v3;
+  }
+
+  return v2;
+}
+
+- (id)configurationClasses
+{
+  v4 = objc_opt_class();
+  v2 = [NSArray arrayWithObjects:&v4 count:1];
+
+  return v2;
+}
+
+- (id)allDeclarationKeysForScope:(int64_t)a3 error:(id *)a4
+{
+  if (a3 == 1)
+  {
+    v6 = +[NSSet set];
+    v7 = [(SoftwareUpdateAdapter *)self controller];
+    v8 = objc_opt_respondsToSelector();
+
+    v9 = [(SoftwareUpdateAdapter *)self controller];
+    v10 = v9;
+    if (v8)
+    {
+      v62 = 0;
+      v11 = [v9 declarationsWithError:&v62];
+      v12 = v62;
+
+      if (v12)
+      {
+        v13 = +[SUCoreDDMUtilities sharedLogger];
+        v14 = [v13 oslog];
+
+        if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+        {
+          *buf = 136315394;
+          v64 = "[SoftwareUpdateAdapter allDeclarationKeysForScope:error:]";
+          v65 = 2114;
+          v66 = v12;
+          _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s: Failed to get declarations; error = %{public}@", buf, 0x16u);
+        }
+      }
+
+      else if (v11 && [v11 count])
+      {
+        v55 = a4;
+        v30 = +[SUCoreDDMUtilities sharedLogger];
+        v31 = [v30 oslog];
+
+        if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
+        {
+          *buf = 136315394;
+          v64 = "[SoftwareUpdateAdapter allDeclarationKeysForScope:error:]";
+          v65 = 2114;
+          v66 = v11;
+          _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "%s: All declarations: %{public}@", buf, 0x16u);
+        }
+
+        v54 = v6;
+
+        v56 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v11 count]);
+        v58 = 0u;
+        v59 = 0u;
+        v60 = 0u;
+        v61 = 0u;
+        v53 = v11;
+        v32 = v11;
+        v33 = [v32 countByEnumeratingWithState:&v58 objects:v69 count:16];
+        if (v33)
+        {
+          v34 = v33;
+          v12 = 0;
+          v35 = *v59;
+          do
+          {
+            for (i = 0; i != v34; i = i + 1)
+            {
+              if (*v59 != v35)
+              {
+                objc_enumerationMutation(v32);
+              }
+
+              v37 = *(*(&v58 + 1) + 8 * i);
+              v38 = [v37 declarationKey];
+              v39 = [RMStoreDeclarationKey newDeclarationKey:v38];
+
+              if ([v39 isValid])
+              {
+                [v56 addObject:v39];
+              }
+
+              else
+              {
+                v40 = +[SUCoreDDMUtilities sharedLogger];
+                v41 = [v40 oslog];
+
+                if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
+                {
+                  v46 = [v37 declarationKey];
+                  *buf = 136315650;
+                  v64 = "[SoftwareUpdateAdapter allDeclarationKeysForScope:error:]";
+                  v65 = 2114;
+                  v66 = v37;
+                  v67 = 2114;
+                  v68 = v46;
+                  _os_log_error_impl(&_mh_execute_header, v41, OS_LOG_TYPE_ERROR, "%s: %{public}@ is invalid, not adding key (%{public}@)", buf, 0x20u);
+                }
+
+                v42 = [v37 declarationKey];
+                v43 = [NSString stringWithFormat:@"Invalid declaration detected: %@", v42];
+
+                v44 = +[SUCore sharedCore];
+                v45 = [v44 buildError:9100 underlying:0 description:v43];
+
+                v12 = v45;
+              }
+            }
+
+            v34 = [v32 countByEnumeratingWithState:&v58 objects:v69 count:16];
+          }
+
+          while (v34);
+        }
+
+        else
+        {
+          v12 = 0;
+        }
+
+        v14 = v56;
+        v6 = [NSSet setWithArray:v56];
+
+        a4 = v55;
+        v11 = v53;
+      }
+
+      else
+      {
+        v47 = +[SUCoreDDMUtilities sharedLogger];
+        v14 = [v47 oslog];
+
+        if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+        {
+          *buf = 136315138;
+          v64 = "[SoftwareUpdateAdapter allDeclarationKeysForScope:error:]";
+          _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s: No declaration found, returning empty set", buf, 0xCu);
+        }
+
+        v12 = 0;
+      }
+
+      goto LABEL_49;
+    }
+
+    v19 = objc_opt_respondsToSelector();
+
+    if ((v19 & 1) == 0)
+    {
+      v28 = +[SUCoreDDMUtilities sharedLogger];
+      v29 = [v28 oslog];
+
+      if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+      {
+        *buf = 136315138;
+        v64 = "[SoftwareUpdateAdapter allDeclarationKeysForScope:error:]";
+        _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "%s: Anomaly: No controller found to get declaration keys", buf, 0xCu);
+      }
+
+      v11 = +[SUCore sharedCore];
+      v12 = [v11 buildError:9101 underlying:0 description:@"No controller found to get keys"];
+      goto LABEL_49;
+    }
+
+    v20 = [(SoftwareUpdateAdapter *)self controller];
+    v57 = 0;
+    v11 = [v20 declarationWithError:&v57];
+    v12 = v57;
+
+    v21 = +[SUCoreDDMUtilities sharedLogger];
+    v22 = [v21 oslog];
+
+    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    {
+      *buf = 136315394;
+      v64 = "[SoftwareUpdateAdapter allDeclarationKeysForScope:error:]";
+      v65 = 2114;
+      v66 = v11;
+      _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%s: Declaration: %{public}@", buf, 0x16u);
+    }
+
+    if (v12)
+    {
+      v23 = +[SUCoreDDMUtilities sharedLogger];
+      v24 = [v23 oslog];
+
+      if (!os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+      {
+LABEL_45:
+
+LABEL_49:
+        if (a4 && v12)
+        {
+          v51 = v12;
+          *a4 = v12;
+        }
+
+        goto LABEL_53;
+      }
+
+      *buf = 136315394;
+      v64 = "[SoftwareUpdateAdapter allDeclarationKeysForScope:error:]";
+      v65 = 2114;
+      v66 = v12;
+      v25 = "%s: Failed to get declaration; error = %{public}@";
+      v26 = v24;
+      v27 = 22;
+    }
+
+    else
+    {
+      if (v11)
+      {
+        v24 = [v11 declarationKey];
+        v48 = [RMStoreDeclarationKey newDeclarationKey:v24];
+        v49 = [NSSet setWithObject:v48];
+
+        v6 = v49;
+        goto LABEL_45;
+      }
+
+      v50 = +[SUCoreDDMUtilities sharedLogger];
+      v24 = [v50 oslog];
+
+      if (!os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+      {
+        goto LABEL_45;
+      }
+
+      *buf = 136315138;
+      v64 = "[SoftwareUpdateAdapter allDeclarationKeysForScope:error:]";
+      v25 = "%s: No declaration found, returning empty set";
+      v26 = v24;
+      v27 = 12;
+    }
+
+    _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, v25, buf, v27);
+    goto LABEL_45;
+  }
+
+  v16 = +[SUCoreDDMUtilities sharedLogger];
+  v17 = [v16 oslog];
+
+  if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+  {
+    *buf = 136315394;
+    v64 = "[SoftwareUpdateAdapter allDeclarationKeysForScope:error:]";
+    v65 = 2048;
+    v66 = a3;
+    _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%s: Error, declarations required for non system scope: (long)%ld", buf, 0x16u);
+  }
+
+  if (a4)
+  {
+    v18 = +[SUCore sharedCore];
+    *a4 = [v18 buildError:8114 underlying:0 description:@"Software update declarations only support system scope"];
+  }
+
+  v6 = objc_opt_new();
+LABEL_53:
+
+  return v6;
+}
+
+- (BOOL)applyConfiguration:(id)a3 scope:(int64_t)a4 returningReasons:(id *)a5 error:(id *)a6
+{
+  v9 = a3;
+  if (a4 == 1)
+  {
+    v10 = [(SoftwareUpdateAdapter *)self declarationKeyForConfiguration:v9];
+    v11 = +[SUCoreDDMUtilities sharedLogger];
+    v12 = [v11 oslog];
+
+    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    {
+      *buf = 136315394;
+      v42 = "[SoftwareUpdateAdapter applyConfiguration:scope:returningReasons:error:]";
+      v43 = 2114;
+      v44[0] = v10;
+      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%s: Applying configuration with key: %{public}@", buf, 0x16u);
+    }
+
+    v13 = [v9 declaration];
+    v14 = +[NSMutableDictionary dictionary];
+    v15 = [v10 key];
+    [v14 setSafeObject:v15 forKey:SUCorePolicyDDMConfigurationKeyRMStoreDeclarationKey];
+
+    v16 = [v13 payloadTargetLocalDateTime];
+    [v14 setSafeObject:v16 forKey:SUCorePolicyDDMConfigurationKeyTargetLocalDateTime];
+
+    v17 = [v13 payloadTargetOSVersion];
+    [v14 setSafeObject:v17 forKey:SUCorePolicyDDMConfigurationKeyTargetVersion];
+
+    v18 = [v13 payloadTargetBuildVersion];
+    [v14 setSafeObject:v18 forKey:SUCorePolicyDDMConfigurationKeyTargetBuildVersion];
+
+    v19 = [v13 payloadDetailsURL];
+    [v14 setSafeObject:v19 forKey:SUCorePolicyDDMConfigurationKeyDetailsURL];
+
+    v20 = +[SUCoreDDMUtilities sharedLogger];
+    v21 = [v20 oslog];
+
+    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    {
+      *buf = 136315138;
+      v42 = "[SoftwareUpdateAdapter applyConfiguration:scope:returningReasons:error:]";
+      _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%s: Scheduling update", buf, 0xCu);
+    }
+
+    v22 = [(SoftwareUpdateAdapter *)self controller];
+    v23 = objc_opt_respondsToSelector();
+
+    if (v23)
+    {
+      v24 = [[SUCoreDDMDeclaration alloc] initWithDeclarationKeys:v14];
+      v25 = [(SoftwareUpdateAdapter *)self controller];
+      v40 = 0;
+      v26 = [v25 scheduleUpdate:v24 withError:&v40];
+      v27 = v40;
+    }
+
+    else
+    {
+      v31 = [(SoftwareUpdateAdapter *)self controller];
+      v32 = objc_opt_respondsToSelector();
+
+      if ((v32 & 1) == 0)
+      {
+        v34 = +[SUCoreDDMUtilities sharedLogger];
+        v35 = [v34 oslog];
+
+        if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
+        {
+          *buf = 136315138;
+          v42 = "[SoftwareUpdateAdapter applyConfiguration:scope:returningReasons:error:]";
+          _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "%s: Anomaly: No controller found to enforce declaration", buf, 0xCu);
+        }
+
+        v24 = +[SUCore sharedCore];
+        v28 = [v24 buildError:9101 underlying:0 description:@"No controller found to enforce declaration"];
+        v26 = 0;
+        goto LABEL_20;
+      }
+
+      v24 = [[SUCoreDDMDeclaration alloc] initWithDeclarationKeys:v14];
+      v33 = [(SoftwareUpdateAdapter *)self controller];
+      v26 = [v33 scheduleUpdate:v24];
+
+      if (v26)
+      {
+        v28 = 0;
+        goto LABEL_20;
+      }
+
+      v25 = +[SUCore sharedCore];
+      v27 = [v25 buildError:9102 underlying:0 description:@"Failed to schedule update"];
+    }
+
+    v28 = v27;
+
+LABEL_20:
+    v36 = +[SUCoreDDMUtilities sharedLogger];
+    v37 = [v36 oslog];
+
+    if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
+    {
+      *buf = 136315650;
+      v42 = "[SoftwareUpdateAdapter applyConfiguration:scope:returningReasons:error:]";
+      v43 = 1024;
+      LODWORD(v44[0]) = v26;
+      WORD2(v44[0]) = 2114;
+      *(v44 + 6) = v28;
+      _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "%s: Scheduled update, result = %d, error = %{public}@", buf, 0x1Cu);
+    }
+
+    if (a6 && v28)
+    {
+      v38 = v28;
+      *a6 = v28;
+    }
+
+    goto LABEL_26;
+  }
+
+  v29 = +[SUCoreDDMUtilities sharedLogger];
+  v30 = [v29 oslog];
+
+  if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+  {
+    *buf = 136315394;
+    v42 = "[SoftwareUpdateAdapter applyConfiguration:scope:returningReasons:error:]";
+    v43 = 2048;
+    v44[0] = a4;
+    _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "%s: Error, declarations required for non system scope: (long)%ld", buf, 0x16u);
+  }
+
+  if (a6)
+  {
+    v10 = +[SUCore sharedCore];
+    [v10 buildError:8114 underlying:0 description:@"Software update declarations only support system scope"];
+    *a6 = LOBYTE(v26) = 0;
+LABEL_26:
+
+    goto LABEL_27;
+  }
+
+  LOBYTE(v26) = 0;
+LABEL_27:
+
+  return v26;
+}
+
+- (BOOL)removeDeclarationKey:(id)a3 scope:(int64_t)a4 error:(id *)a5
+{
+  v8 = a3;
+  v9 = +[SUCoreDDMUtilities sharedLogger];
+  v10 = [v9 oslog];
+
+  v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
+  if (a4 == 1)
+  {
+    if (v11)
+    {
+      *buf = 136315394;
+      v41 = "[SoftwareUpdateAdapter removeDeclarationKey:scope:error:]";
+      v42 = 2114;
+      v43[0] = v8;
+      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s: Canceling update for key %{public}@", buf, 0x16u);
+    }
+
+    v12 = [(SoftwareUpdateAdapter *)self controller];
+    v13 = objc_opt_respondsToSelector();
+
+    v14 = [(SoftwareUpdateAdapter *)self controller];
+    if (v13)
+    {
+      v15 = [v8 key];
+      v39 = 0;
+      v16 = [v14 cancelUpdateForKey:v15 withError:&v39];
+      v17 = v39;
+LABEL_6:
+
+LABEL_25:
+      v31 = +[SUCoreDDMUtilities sharedLogger];
+      v32 = [v31 oslog];
+
+      if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+      {
+        *buf = 136315650;
+        v41 = "[SoftwareUpdateAdapter removeDeclarationKey:scope:error:]";
+        v42 = 1024;
+        LODWORD(v43[0]) = v16;
+        WORD2(v43[0]) = 2114;
+        *(v43 + 6) = v17;
+        _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "%s: Canceled update, result = %d; error = %{public}@", buf, 0x1Cu);
+      }
+
+      if (!a5 || !v17)
+      {
+        goto LABEL_31;
+      }
+
+      v18 = v17;
+LABEL_30:
+      *a5 = v18;
+LABEL_31:
+
+      goto LABEL_32;
+    }
+
+    if (objc_opt_respondsToSelector())
+    {
+      v19 = [(SoftwareUpdateAdapter *)self controller];
+      v20 = objc_opt_respondsToSelector();
+
+      if (v20)
+      {
+        v21 = [(SoftwareUpdateAdapter *)self controller];
+        v38 = 0;
+        v14 = [v21 declarationWithError:&v38];
+        v17 = v38;
+
+        v22 = +[SUCoreDDMUtilities sharedLogger];
+        v23 = [v22 oslog];
+
+        if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+        {
+          *buf = 136315394;
+          v41 = "[SoftwareUpdateAdapter removeDeclarationKey:scope:error:]";
+          v42 = 2114;
+          v43[0] = v14;
+          _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%s: Found declaration %{public}@", buf, 0x16u);
+        }
+
+        if (!v14 || v17)
+        {
+          if (v17)
+          {
+LABEL_35:
+            v35 = +[SUCoreDDMUtilities sharedLogger];
+            v15 = [v35 oslog];
+
+            if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+            {
+              *buf = 136315394;
+              v41 = "[SoftwareUpdateAdapter removeDeclarationKey:scope:error:]";
+              v42 = 2114;
+              v43[0] = v17;
+              _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%s: No declaration found, error = %{public}@", buf, 0x16u);
+            }
+
+            v16 = 0;
+            goto LABEL_6;
+          }
+        }
+
+        else
+        {
+          v24 = [v14 declarationKey];
+          v25 = [v8 key];
+          v26 = [v24 isEqualToString:v25];
+
+          if (v26)
+          {
+            v27 = [(SoftwareUpdateAdapter *)self controller];
+            v16 = [v27 cancelUpdate:v14];
+
+            if (v16)
+            {
+              v17 = 0;
+            }
+
+            else
+            {
+              v36 = +[SUCore sharedCore];
+              v17 = [v36 buildError:9102 underlying:0 description:@"Failed to cancel update"];
+            }
+
+            v37 = +[SUCoreDDMUtilities sharedLogger];
+            v15 = [v37 oslog];
+
+            if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+            {
+              *buf = 136315394;
+              v41 = "[SoftwareUpdateAdapter removeDeclarationKey:scope:error:]";
+              v42 = 1024;
+              LODWORD(v43[0]) = v16;
+              _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%s: Canceled update: %d", buf, 0x12u);
+            }
+
+            goto LABEL_6;
+          }
+        }
+
+        v34 = +[SUCore sharedCore];
+        v17 = [v34 buildError:9100 underlying:0 description:@"No declaration found"];
+
+        goto LABEL_35;
+      }
+    }
+
+    else
+    {
+    }
+
+    v28 = +[SUCore sharedCore];
+    v17 = [v28 buildError:9101 underlying:0 description:@"No controller found to remove declaration"];
+
+    v29 = +[SUCoreDDMUtilities sharedLogger];
+    v14 = [v29 oslog];
+
+    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    {
+      v30 = [v8 key];
+      *buf = 136315394;
+      v41 = "[SoftwareUpdateAdapter removeDeclarationKey:scope:error:]";
+      v42 = 2114;
+      v43[0] = v30;
+      _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s: Anomaly: No controller found to cancel declaration for key %{public}@", buf, 0x16u);
+    }
+
+    v16 = 0;
+    goto LABEL_25;
+  }
+
+  if (v11)
+  {
+    *buf = 136315394;
+    v41 = "[SoftwareUpdateAdapter removeDeclarationKey:scope:error:]";
+    v42 = 2048;
+    v43[0] = a4;
+    _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s: Error, declarations required for non system scope: (long)%ld", buf, 0x16u);
+  }
+
+  if (a5)
+  {
+    v17 = +[SUCore sharedCore];
+    v18 = [v17 buildError:8114 underlying:0 description:@"Software update declarations only support system scope"];
+    LOBYTE(v16) = 0;
+    goto LABEL_30;
+  }
+
+  LOBYTE(v16) = 0;
+LABEL_32:
+
+  return v16;
+}
+
+- (id)declarationKeyForConfiguration:(id)a3
+{
+  v3 = a3;
+  v4 = [v3 store];
+  v5 = [v3 declaration];
+
+  v6 = [RMStoreDeclarationKey newDeclarationKeyWithSubscriberIdentifier:@"com.apple.RemoteManagement.SoftwareUpdateExtension" store:v4 declaration:v5];
+
+  return v6;
+}
+
+- (void)configurationUIForConfiguration:(id)a3 scope:(int64_t)a4 completionHandler:(id)a5
+{
+  v6 = a3;
+  v49 = a5;
+  v7 = +[SUCoreDDMUtilities sharedLogger];
+  v8 = [v7 oslog];
+
+  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  {
+    v9 = [v6 declaration];
+    v10 = [v9 declarationIdentifier];
+    *buf = 136315394;
+    v54 = "[SoftwareUpdateAdapter configurationUIForConfiguration:scope:completionHandler:]";
+    v55 = 2114;
+    v56 = v10;
+    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: Get configuration UI for: %{public}@", buf, 0x16u);
+  }
+
+  v50 = v6;
+  v11 = [v6 declaration];
+  v12 = +[NSMutableArray array];
+  v13 = [v11 payloadTargetOSVersion];
+
+  if (v13)
+  {
+    v14 = [NSBundle bundleForClass:objc_opt_class()];
+    v15 = [v14 localizedStringForKey:@"SU_CONFIGURATION_OS_VERSION" value:&stru_10000C4A8 table:0];
+    v62[0] = v15;
+    v16 = [v11 payloadTargetOSVersion];
+    v62[1] = v16;
+    v17 = [NSArray arrayWithObjects:v62 count:2];
+    [v12 addObject:v17];
+  }
+
+  v18 = [v11 payloadTargetBuildVersion];
+
+  if (v18)
+  {
+    v19 = [NSBundle bundleForClass:objc_opt_class()];
+    v20 = [v19 localizedStringForKey:@"SU_CONFIGURATION_BUILD_VERSION" value:&stru_10000C4A8 table:0];
+    v61[0] = v20;
+    v21 = [v11 payloadTargetBuildVersion];
+    v61[1] = v21;
+    v22 = [NSArray arrayWithObjects:v61 count:2];
+    [v12 addObject:v22];
+  }
+
+  v23 = [v11 payloadTargetLocalDateTime];
+
+  v51 = v11;
+  if (v23)
+  {
+    v24 = objc_opt_new();
+    v25 = +[NSTimeZone localTimeZone];
+    [v24 setTimeZone:v25];
+
+    [v24 setFormatOptions:819];
+    v26 = [v11 payloadTargetLocalDateTime];
+    v27 = [v24 dateFromString:v26];
+
+    v28 = [NSDateFormatter localizedStringFromDate:v27 dateStyle:2 timeStyle:1];
+    v29 = v28;
+    if (v27 && v28)
+    {
+      v30 = [NSBundle bundleForClass:objc_opt_class()];
+      v31 = [v30 localizedStringForKey:@"SU_CONFIGURATION_TARGET_DATE_TIME" value:&stru_10000C4A8 table:0];
+      v52[0] = v31;
+      v52[1] = v29;
+      v32 = [NSArray arrayWithObjects:v52 count:2];
+      v33 = v12;
+      v34 = v32;
+      v35 = v33;
+      [v33 addObject:v32];
+
+      v36 = 0;
+    }
+
+    else
+    {
+      v37 = +[SUCoreDDMUtilities sharedLogger];
+      v38 = [v37 oslog];
+
+      if (os_log_type_enabled(v38, OS_LOG_TYPE_FAULT))
+      {
+        *buf = 136315906;
+        v54 = "[SoftwareUpdateAdapter configurationUIForConfiguration:scope:completionHandler:]";
+        v55 = 2114;
+        v56 = v11;
+        v57 = 2114;
+        v58 = v27;
+        v59 = 2114;
+        v60 = v29;
+        _os_log_fault_impl(&_mh_execute_header, v38, OS_LOG_TYPE_FAULT, "%s: ANOMALY: No date found for declaration? %{public}@, date: %{public}@, formattedDateString: %{public}@", buf, 0x2Au);
+      }
+
+      v35 = v12;
+
+      v30 = +[SUCore sharedCore];
+      v36 = [v30 buildError:9103 underlying:0 description:@"Invalid declaration payload"];
+    }
+  }
+
+  else
+  {
+    v35 = v12;
+    v36 = 0;
+  }
+
+  v39 = [NSBundle bundleForClass:objc_opt_class()];
+  v40 = [v39 localizedStringForKey:@"SU_CONFIGURATION_TITLE" value:&stru_10000C4A8 table:0];
+  v41 = [v51 payloadTargetOSVersion];
+  v42 = [NSString localizedStringWithFormat:v40, v41];
+  v43 = [NSBundle bundleForClass:objc_opt_class()];
+  v44 = [v43 localizedStringForKey:@"SU_CONFIGURATION_DESCRIPTION" value:&stru_10000C4A8 table:0];
+  v45 = [v35 copy];
+  v46 = [RMConfigurationUIDetails configurationUIWithTitle:v42 description:v44 details:v45];
+
+  v47 = +[SUCoreDDMUtilities sharedLogger];
+  v48 = [v47 oslog];
+
+  if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
+  {
+    *buf = 136315394;
+    v54 = "[SoftwareUpdateAdapter configurationUIForConfiguration:scope:completionHandler:]";
+    v55 = 2114;
+    v56 = v35;
+    _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEFAULT, "%s: Applying configuration UI: %{public}@", buf, 0x16u);
+  }
+
+  v49[2](v49, 1, v46, v36);
+}
+
+@end

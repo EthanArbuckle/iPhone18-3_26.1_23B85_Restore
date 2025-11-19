@@ -1,0 +1,182 @@
+@interface PXGCGImageTextureProvider
+- (PXGCGImageTextureProvider)init;
+- (void)_clearStrongCaches;
+- (void)_updateCacheLimit;
+- (void)cacheAdditionalInfo:(id)a3 withKey:(id)a4;
+- (void)invalidateCache;
+- (void)lowMemoryModeDidChange;
+- (void)releaseCachedResources;
+- (void)requestCGImageAndAdditionalInfoWithCacheKey:(id)a3 imageProvider:(id)a4 resultHandler:(id)a5;
+- (void)requestCGImageWithCacheKey:(id)a3 imageProvider:(id)a4 resultHandler:(id)a5;
+@end
+
+@implementation PXGCGImageTextureProvider
+
+- (PXGCGImageTextureProvider)init
+{
+  v8.receiver = self;
+  v8.super_class = PXGCGImageTextureProvider;
+  v2 = [(PXGTextureProvider *)&v8 init];
+  if (v2)
+  {
+    v3 = objc_alloc_init(MEMORY[0x277CBEA78]);
+    imageCache = v2->_imageCache;
+    v2->_imageCache = v3;
+
+    [(NSCache *)v2->_imageCache setTotalCostLimit:15728640];
+    v5 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    aliveImagesCache = v2->_aliveImagesCache;
+    v2->_aliveImagesCache = v5;
+
+    [(PXGCGImageTextureProvider *)v2 _updateCacheLimit];
+  }
+
+  return v2;
+}
+
+- (void)_updateCacheLimit
+{
+  if ([(PXGTextureProvider *)self lowMemoryMode])
+  {
+    v3 = 5242880;
+  }
+
+  else
+  {
+    v3 = 15728640;
+  }
+
+  imageCache = self->_imageCache;
+
+  [(NSCache *)imageCache setTotalCostLimit:v3];
+}
+
+- (void)invalidateCache
+{
+  [(PXGCGImageTextureProvider *)self _clearStrongCaches];
+  v3 = [(PXGCGImageTextureProvider *)self workQueue];
+  block[0] = MEMORY[0x277D85DD0];
+  block[1] = 3221225472;
+  block[2] = __44__PXGCGImageTextureProvider_invalidateCache__block_invoke;
+  block[3] = &unk_2782ABE50;
+  block[4] = self;
+  dispatch_async(v3, block);
+}
+
+- (void)_clearStrongCaches
+{
+  [(NSCache *)self->_imageCache removeAllObjects];
+  additionalInfoCache = self->_additionalInfoCache;
+
+  [(NSCache *)additionalInfoCache removeAllObjects];
+}
+
+- (void)releaseCachedResources
+{
+  v3.receiver = self;
+  v3.super_class = PXGCGImageTextureProvider;
+  [(PXGTextureProvider *)&v3 releaseCachedResources];
+  [(PXGCGImageTextureProvider *)self _clearStrongCaches];
+}
+
+- (void)lowMemoryModeDidChange
+{
+  v3.receiver = self;
+  v3.super_class = PXGCGImageTextureProvider;
+  [(PXGTextureProvider *)&v3 lowMemoryModeDidChange];
+  [(PXGCGImageTextureProvider *)self _updateCacheLimit];
+}
+
+- (void)cacheAdditionalInfo:(id)a3 withKey:(id)a4
+{
+  v11 = a3;
+  v6 = a4;
+  v7 = [(PXGCGImageTextureProvider *)self workQueue];
+  dispatch_assert_queue_V2(v7);
+
+  additionalInfoCache = self->_additionalInfoCache;
+  if (!additionalInfoCache)
+  {
+    v9 = objc_alloc_init(MEMORY[0x277CBEA78]);
+    v10 = self->_additionalInfoCache;
+    self->_additionalInfoCache = v9;
+
+    additionalInfoCache = self->_additionalInfoCache;
+  }
+
+  [(NSCache *)additionalInfoCache setObject:v11 forKey:v6];
+}
+
+- (void)requestCGImageAndAdditionalInfoWithCacheKey:(id)a3 imageProvider:(id)a4 resultHandler:(id)a5
+{
+  v18 = a3;
+  v9 = a4;
+  v10 = a5;
+  v11 = [(PXGCGImageTextureProvider *)self workQueue];
+  dispatch_assert_queue_V2(v11);
+
+  v12 = [(NSCache *)self->_imageCache objectForKey:v18];
+  v13 = [(NSCache *)self->_additionalInfoCache objectForKey:v18];
+  if (v12)
+  {
+    v10[2](v10, v12, v13);
+  }
+
+  else
+  {
+    kdebug_trace();
+    v14 = v9[2](v9);
+    if (!v14)
+    {
+      v17 = [MEMORY[0x277CCA890] currentHandler];
+      [v17 handleFailureInMethod:a2 object:self file:@"PXGCGImageTextureProvider.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"imageRef != nil"}];
+    }
+
+    CGImageGetWidth(v14);
+    CGImageGetHeight(v14);
+    kdebug_trace();
+    Width = CGImageGetWidth(v14);
+    [(NSCache *)self->_imageCache setObject:v14 forKey:v18 cost:4 * Width * CGImageGetHeight(v14)];
+    v16 = [(NSCache *)self->_additionalInfoCache objectForKey:v18];
+
+    v10[2](v10, v14, v16);
+    CGImageRelease(v14);
+    v13 = v16;
+  }
+}
+
+- (void)requestCGImageWithCacheKey:(id)a3 imageProvider:(id)a4 resultHandler:(id)a5
+{
+  v17 = a3;
+  v9 = a4;
+  v10 = a5;
+  v11 = [(PXGCGImageTextureProvider *)self workQueue];
+  dispatch_assert_queue_V2(v11);
+
+  v12 = [(NSCache *)self->_imageCache objectForKey:v17];
+  if (v12 || (v12 = [(NSMapTable *)self->_aliveImagesCache objectForKey:v17]) != 0)
+  {
+    v10[2](v10, v12);
+  }
+
+  else
+  {
+    kdebug_trace();
+    v13 = v9[2](v9);
+    if (!v13)
+    {
+      v16 = [MEMORY[0x277CCA890] currentHandler];
+      [v16 handleFailureInMethod:a2 object:self file:@"PXGCGImageTextureProvider.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"imageRef != nil"}];
+    }
+
+    Width = CGImageGetWidth(v13);
+    Height = CGImageGetHeight(v13);
+    kdebug_trace();
+    [(NSCache *)self->_imageCache setObject:v13 forKey:v17 cost:4 * Width * Height];
+    [(NSMapTable *)self->_aliveImagesCache setObject:v13 forKey:v17];
+    v10[2](v10, v13);
+    CGImageRelease(v13);
+  }
+}
+
+@end

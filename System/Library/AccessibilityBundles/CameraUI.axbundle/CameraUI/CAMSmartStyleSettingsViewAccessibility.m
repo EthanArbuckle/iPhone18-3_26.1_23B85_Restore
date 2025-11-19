@@ -1,0 +1,26 @@
+@interface CAMSmartStyleSettingsViewAccessibility
++ (void)_accessibilityPerformValidations:(id)a3;
+- (void)_accessibilityLoadAccessibilityInformation;
+@end
+
+@implementation CAMSmartStyleSettingsViewAccessibility
+
++ (void)_accessibilityPerformValidations:(id)a3
+{
+  v3 = a3;
+  [v3 validateClass:@"CAMSmartStyleSettingsView" hasInstanceMethod:@"_selectAssetsButton" withFullSignature:{"@", 0}];
+  [v3 validateClass:@"CAMSmartStyleSettingsView" hasInstanceMethod:@"_showGridButton" withFullSignature:{"@", 0}];
+}
+
+- (void)_accessibilityLoadAccessibilityInformation
+{
+  v5.receiver = self;
+  v5.super_class = CAMSmartStyleSettingsViewAccessibility;
+  [(CAMSmartStyleSettingsViewAccessibility *)&v5 _accessibilityLoadAccessibilityInformation];
+  v3 = [(CAMSmartStyleSettingsViewAccessibility *)self safeValueForKey:@"_selectAssetsButton"];
+  [v3 _setAccessibilityLabelBlock:&__block_literal_global_1];
+  v4 = [(CAMSmartStyleSettingsViewAccessibility *)self safeValueForKey:@"_showGridButton"];
+  [v4 _setAccessibilityLabelBlock:&__block_literal_global_488];
+}
+
+@end

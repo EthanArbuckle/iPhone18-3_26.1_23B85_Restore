@@ -1,0 +1,653 @@
+@interface MRImage
+- (BOOL)isOpaque;
+- (BOOL)usesMipmap;
+- (CGSize)relativeSizeInContextPixelSize:(CGSize)a3;
+- (CGSize)size;
+- (EAGLContext)updateGLContext;
+- (MRImage)init;
+- (MRImage)initWithImage:(id)a3;
+- (MRImage)initWithTextureSource:(id)a3 andSize:(CGSize)a4;
+- (MRTexture)texture;
+- (NSMutableDictionary)userData;
+- (NSString)filterID;
+- (id)retainedByUserImage;
+- (id)retainedByUserImageWithShader:(id)a3;
+- (void)cleanup;
+- (void)dealloc;
+- (void)getMatrix:(float)a3[16] forReferenceAspectRatio:(float)a4;
+- (void)kenburnsMatrix:(float)a3[16] forReferenceAspectRatio:(float)a4;
+- (void)releaseByUser;
+- (void)removingFromCollection;
+- (void)setFiltersNearest:(BOOL)a3;
+- (void)setHasKenBurns:(BOOL)a3;
+- (void)setLabel:(id)a3;
+- (void)setMipmapFiltersNearest:(BOOL)a3;
+- (void)setPreservesAspectRatio:(BOOL)a3;
+- (void)setScaleWasFixedForTargetAspectRatio:(BOOL)a3;
+- (void)setUsesBackgroundColorAsBorderColor:(BOOL)a3;
+- (void)setUsesMipmap:(BOOL)a3;
+- (void)uploadCGImage:(CGImage *)a3 toTextureRect:(CGRect)a4;
+@end
+
+@implementation MRImage
+
+- (MRImage)init
+{
+  v3.receiver = self;
+  v3.super_class = MRImage;
+  result = [(MRImage *)&v3 init];
+  if (result)
+  {
+    result->_scale = 1.0;
+    result->_flags |= 2u;
+    result->_clampMode = 2;
+  }
+
+  return result;
+}
+
+- (MRImage)initWithImage:(id)a3
+{
+  v4 = [(MRImage *)self init];
+  v5 = v4;
+  if (v4)
+  {
+    v4->_imageManager = *(a3 + 5);
+    v4->_referenceImage = [a3 retainByUser];
+    v5->_size = *(a3 + 136);
+    v5->_flags = *(a3 + 6) & 0x4B;
+  }
+
+  return v5;
+}
+
+- (MRImage)initWithTextureSource:(id)a3 andSize:(CGSize)a4
+{
+  height = a4.height;
+  width = a4.width;
+  v7 = [(MRImage *)self init];
+  if (v7)
+  {
+    v7->_imageManager = [a3 imageManager];
+    v7->_textureSource = a3;
+    v7->_size.width = width;
+    v7->_size.height = height;
+    if (*([a3 textureOptions] + 4) == 1)
+    {
+      v7->_flags |= 8u;
+    }
+  }
+
+  return v7;
+}
+
+- (void)dealloc
+{
+  [(MRImage *)self cleanup];
+  v3.receiver = self;
+  v3.super_class = MRImage;
+  [(MRImage *)&v3 dealloc];
+}
+
+- (void)cleanup
+{
+  if (self->_imageManager)
+  {
+    objc_sync_enter(self);
+    referenceImage = self->_referenceImage;
+    if (referenceImage)
+    {
+      [(MRImage *)referenceImage releaseByUser];
+      self->_referenceImage = 0;
+    }
+
+    textureSource = self->_textureSource;
+    if (textureSource)
+    {
+
+      self->_textureSource = 0;
+    }
+
+    texture = self->_texture;
+    if (texture)
+    {
+      if ([(MRTexture *)texture isShared])
+      {
+        [(MRImageManager *)self->_imageManager recycleTexture:self->_texture];
+      }
+
+      self->_texture = 0;
+    }
+
+    self->_imageManager = 0;
+    self->_size.width = 0.0;
+    self->_size.height = 0.0;
+    userData = self->_userData;
+    if (userData)
+    {
+
+      self->_userData = 0;
+    }
+
+    shader = self->_shader;
+    if (shader)
+    {
+
+      self->_shader = 0;
+    }
+
+    filterID = self->_filterID;
+    if (filterID)
+    {
+
+      self->_filterID = 0;
+    }
+
+    label = self->_label;
+    if (label)
+    {
+
+      self->_label = 0;
+    }
+
+    objc_sync_exit(self);
+  }
+}
+
+- (void)releaseByUser
+{
+  if (atomic_fetch_add(&self->_retainByUserCount, 0xFFFFFFFF) == 1)
+  {
+    v3 = self;
+    [(MRImage *)self cleanup];
+    self = v3;
+  }
+}
+
+- (void)removingFromCollection
+{
+  v2 = self;
+
+  [(MRImage *)v2 releaseByUser];
+}
+
+- (id)retainedByUserImage
+{
+  v2 = [[MRImage alloc] initWithImage:self];
+
+  return v2;
+}
+
+- (id)retainedByUserImageWithShader:(id)a3
+{
+  v4 = [[MRImage alloc] initWithImage:self];
+
+  [(MRImage *)v4 setShader:a3];
+  return v4;
+}
+
+- (void)setUsesBackgroundColorAsBorderColor:(BOOL)a3
+{
+  flags = self->_flags;
+  if (a3)
+  {
+    self->_flags = flags | 1;
+    self->_clampMode = 1;
+  }
+
+  else
+  {
+    self->_flags = flags & 0xFFFFFFFE;
+  }
+}
+
+- (void)setFiltersNearest:(BOOL)a3
+{
+  if (a3)
+  {
+    v3 = 16;
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  self->_flags = self->_flags & 0xFFFFFFEF | v3;
+}
+
+- (BOOL)isOpaque
+{
+  v2 = [(MRImage *)self texture];
+
+  return [(MRTexture *)v2 isOpaque];
+}
+
+- (BOOL)usesMipmap
+{
+  referenceImage = self->_referenceImage;
+  if (referenceImage)
+  {
+    LOBYTE(v4) = [(MRImage *)referenceImage usesMipmap];
+  }
+
+  else
+  {
+    return (LOBYTE(self->_flags) >> 3) & 1;
+  }
+
+  return v4;
+}
+
+- (void)setUsesMipmap:(BOOL)a3
+{
+  if (a3)
+  {
+    v3 = 8;
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  self->_flags = self->_flags & 0xFFFFFFF7 | v3;
+}
+
+- (void)setMipmapFiltersNearest:(BOOL)a3
+{
+  if (a3)
+  {
+    v3 = 32;
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  self->_flags = self->_flags & 0xFFFFFFDF | v3;
+}
+
+- (void)setPreservesAspectRatio:(BOOL)a3
+{
+  if (a3)
+  {
+    v3 = 2;
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  self->_flags = self->_flags & 0xFFFFFFFD | v3;
+}
+
+- (void)setHasKenBurns:(BOOL)a3
+{
+  if (a3)
+  {
+    v3 = 4;
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  self->_flags = self->_flags & 0xFFFFFFFB | v3;
+}
+
+- (void)setScaleWasFixedForTargetAspectRatio:(BOOL)a3
+{
+  if (a3)
+  {
+    v3 = 64;
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  self->_flags = self->_flags & 0xFFFFFFBF | v3;
+}
+
+- (void)setLabel:(id)a3
+{
+  label = self->_label;
+  if (label != a3)
+  {
+
+    v7 = [a3 copy];
+    self->_label = v7;
+    texture = self->_texture;
+    if (texture)
+    {
+
+      [(MRTexture *)texture setLabel:v7];
+    }
+  }
+}
+
+- (NSMutableDictionary)userData
+{
+  objc_sync_enter(self);
+  userData = self->_userData;
+  if (!userData)
+  {
+    userData = objc_alloc_init(NSMutableDictionary);
+    self->_userData = userData;
+  }
+
+  v4 = userData;
+  objc_sync_exit(self);
+  return v4;
+}
+
+- (void)kenburnsMatrix:(float)a3[16] forReferenceAspectRatio:(float)a4
+{
+  *v4.i32 = a4;
+  scale = self->_scale;
+  if (scale > 0.0)
+  {
+    v8 = 1.0 / scale;
+    v9 = v8;
+  }
+
+  else
+  {
+    v9 = 1.0;
+  }
+
+  v10 = self->_size.width / self->_size.height;
+  if (self->_rotationAngle == 0.0)
+  {
+    MRMatrix_SetDiagonal(a3, v9, (v9 * v10) / *v4.i32, 1.0);
+  }
+
+  else
+  {
+    v13 = v4;
+    MRMatrix_SetDiagonal(a3, 1.0, 1.0 / *v4.i32, 1.0);
+    v11 = self->_rotationAngle * 57.2957764;
+    MRMatrix_SetRotationFromAnglesYXZDeg(a3, 0.0, 0.0, v11);
+    v12 = vdiv_f32(*(a3 + 4), vdup_lane_s32(v13, 0));
+    *(a3 + 2) = v12;
+    v12.f32[0] = v9;
+    MRMatrix_Scale(a3, v12, v9 * v10, 1.0);
+  }
+
+  *(a3 + 6) = vcvt_f32_f64(vaddq_f64(*&self->_centerX, vcvtq_f64_f32(*(a3 + 12))));
+}
+
+- (void)getMatrix:(float)a3[16] forReferenceAspectRatio:(float)a4
+{
+  referenceImage = self->_referenceImage;
+  if (!referenceImage)
+  {
+    v9 = [(MRTexture *)[(MRImage *)self texture] textureTarget];
+    if (a4 <= 0.0)
+    {
+      if (v9 == 3553)
+      {
+        var1 = 1.0;
+        var0 = 1.0;
+        v13 = -1.0;
+      }
+
+      else
+      {
+        v17 = [(MRTexture *)self->_texture size];
+        var0 = v17.var0;
+        var1 = v17.var1;
+        v13 = -v17.var1;
+      }
+
+      MRMatrix_SetDiagonal(a3, var0, v13, 1.0);
+    }
+
+    else
+    {
+      if (v9 == 3553)
+      {
+        var1 = 0.5;
+        MRMatrix_SetDiagonal(a3, 0.5, -0.5, 1.0);
+        a3[13] = 0.5;
+        v11 = 12;
+        goto LABEL_14;
+      }
+
+      v14 = [(MRTexture *)self->_texture size];
+      v15 = HIDWORD(*&v14);
+      v16 = vcvts_n_f32_u32(v14.var0, 1uLL);
+      MRMatrix_SetDiagonal(a3, v16, v14.var1 * -0.5, 1.0);
+      a3[12] = v16;
+      var1 = vcvts_n_f32_u32(v15, 1uLL);
+    }
+
+    v11 = 13;
+LABEL_14:
+    a3[v11] = var1;
+    v18 = [(MRTexture *)[(MRImage *)self texture] orientation];
+    if ((v18 & 0xFE) == 0)
+    {
+      goto LABEL_35;
+    }
+
+    v19 = v18;
+    v28 = 0u;
+    v29 = 0u;
+    v26 = 0u;
+    v27 = 0u;
+    MRMatrix_Clear(&v26);
+    if (v19 <= 4u)
+    {
+      if (v19 != 2)
+      {
+        if (v19 != 3)
+        {
+          if (v19 == 4)
+          {
+            DWORD1(v27) = -1082130432;
+          }
+
+          goto LABEL_34;
+        }
+
+        DWORD1(v27) = -1082130432;
+      }
+
+      LODWORD(v26) = -1082130432;
+      goto LABEL_34;
+    }
+
+    if (v19 > 6u)
+    {
+      if (v19 != 7)
+      {
+        if (v19 == 8)
+        {
+          v20 = 0xBF80000000000000;
+          v21 = 1065353216;
+          goto LABEL_27;
+        }
+
+LABEL_34:
+        MRMatrix_PreMultiply(&v26, a3);
+        goto LABEL_35;
+      }
+
+      v22 = 1065353216;
+      v23 = 0x3F80000000000000;
+    }
+
+    else
+    {
+      if (v19 != 5)
+      {
+        if (v19 == 6)
+        {
+          v20 = 0x3F80000000000000;
+          v21 = 3212836864;
+LABEL_27:
+          *&v26 = v20;
+          *&v27 = v21;
+          goto LABEL_34;
+        }
+
+        goto LABEL_34;
+      }
+
+      v22 = 3212836864;
+      v23 = 0xBF80000000000000;
+    }
+
+    *&v27 = v22;
+    *&v26 = v23;
+    goto LABEL_34;
+  }
+
+  v8 = 0.0;
+  if (a4 > 0.0)
+  {
+    [(MRImage *)self aspectRatio];
+    *&v8 = v8;
+  }
+
+  [(MRImage *)referenceImage getMatrix:a3 forReferenceAspectRatio:v8];
+LABEL_35:
+  if (a4 > 0.0 && (self->_flags & 2) != 0)
+  {
+    v28 = 0u;
+    v29 = 0u;
+    v26 = 0u;
+    v27 = 0u;
+    [(MRImage *)self kenburnsMatrix:&v26 forReferenceAspectRatio:COERCE_DOUBLE(LODWORD(a4))];
+    MRMatrix_PreMultiply(&v26, a3);
+  }
+
+  else
+  {
+    scale = self->_scale;
+    v25 = 1.0;
+    if (scale > 0.0)
+    {
+      v25 = 1.0 / scale;
+    }
+
+    *a3 = v25 * *a3;
+    a3[5] = v25 * a3[5];
+    *(a3 + 6) = vcvt_f32_f64(vsubq_f64(vcvtq_f64_f32(*(a3 + 12)), *&self->_centerX));
+  }
+}
+
+- (CGSize)relativeSizeInContextPixelSize:(CGSize)a3
+{
+  height = a3.height;
+  v4 = vdivq_f64(vaddq_f64(self->_size, self->_size), a3);
+  v5 = v4.f64[1];
+  result.width = v4.f64[0];
+  result.height = v5;
+  return result;
+}
+
+- (NSString)filterID
+{
+  result = self->_filterID;
+  if (!result)
+  {
+    result = &self->_referenceImage->super.isa;
+    if (result)
+    {
+      return [(NSString *)result filterID];
+    }
+  }
+
+  return result;
+}
+
+- (MRTexture)texture
+{
+  referenceImage = self->_referenceImage;
+  if (referenceImage)
+  {
+
+    return [(MRImage *)referenceImage texture];
+  }
+
+  else
+  {
+    result = self->_texture;
+    if (!result)
+    {
+      result = self->_textureSource;
+      if (result)
+      {
+        result = [(MRTexture *)result texture];
+        self->_texture = result;
+      }
+    }
+  }
+
+  return result;
+}
+
+- (EAGLContext)updateGLContext
+{
+  v2 = [(MRImage *)self texture];
+
+  return [(MRTexture *)v2 glContext];
+}
+
+- (void)uploadCGImage:(CGImage *)a3 toTextureRect:(CGRect)a4
+{
+  height = a4.size.height;
+  width = a4.size.width;
+  y = a4.origin.y;
+  x = a4.origin.x;
+  v9 = [(MRImage *)self texture];
+  v10 = [(MRTexture *)v9 isMonochromatic];
+  v11 = 4.0;
+  if (v10)
+  {
+    v11 = 1.0;
+  }
+
+  v12 = (width * v11);
+  if (v10)
+  {
+    v13 = 0;
+  }
+
+  else
+  {
+    v13 = 8194;
+  }
+
+  v14 = malloc_type_malloc((height * (width * v11)), 0x9CC37918uLL);
+  ColorSpace = CGImageGetColorSpace(a3);
+  v16 = CGBitmapContextCreate(v14, width, height, 8uLL, v12, ColorSpace, v13);
+  CGContextSetBlendMode(v16, kCGBlendModeCopy);
+  v18.origin.x = 0.0;
+  v18.origin.y = 0.0;
+  v18.size.width = width;
+  v18.size.height = height;
+  CGContextDrawImage(v16, v18, a3);
+  CGContextRelease(v16);
+  [(MRTexture *)v9 uploadData:v14 rowBytes:v12 toRect:x, y, width, height];
+
+  free(v14);
+}
+
+- (CGSize)size
+{
+  width = self->_size.width;
+  height = self->_size.height;
+  result.height = height;
+  result.width = width;
+  return result;
+}
+
+@end

@@ -1,0 +1,160 @@
+@interface DMCEnrollmentManagementDetailsOverviewViewController
+- (DMCEnrollmentManagementDetailsOverviewViewController)initWithDelegate:(id)a3 managedAppleID:(id)a4 profile:(id)a5 requiredAppRequest:(id)a6 requiredAppViewGroup:(id)a7;
+- (DMCEnrollmentManagementDetailsOverviewViewControllerDelegate)delegate;
+- (void)leftBarButtonTapped:(id)a3;
+- (void)loadView;
+- (void)viewWillAppear:(BOOL)a3;
+@end
+
+@implementation DMCEnrollmentManagementDetailsOverviewViewController
+
+- (DMCEnrollmentManagementDetailsOverviewViewController)initWithDelegate:(id)a3 managedAppleID:(id)a4 profile:(id)a5 requiredAppRequest:(id)a6 requiredAppViewGroup:(id)a7
+{
+  v12 = a3;
+  v13 = a4;
+  v14 = a5;
+  v15 = a6;
+  v16 = a7;
+  v17 = DMCLocalizedString();
+  v33.receiver = self;
+  v33.super_class = DMCEnrollmentManagementDetailsOverviewViewController;
+  v18 = [(DMCEnrollmentTemplateTableViewController *)&v33 initWithIconName:@"gear.badge.checkmark" title:v17 subTitle:0];
+
+  if (v18)
+  {
+    objc_storeStrong(&v18->_profile, a5);
+    objc_storeWeak(&v18->_delegate, v12);
+    v19 = objc_opt_new();
+    v20 = [DMCEnrollmentTableViewTextCell alloc];
+    v21 = DMCLocalizedFormat();
+    v22 = [(DMCEnrollmentTableViewTextCell *)v20 initWithText:v21 bold:0, v13];
+    [v19 addObject:v22];
+
+    v23 = [[DMCEnrollmentTableViewTextCell alloc] initWithText:&stru_2859FB650 bold:0];
+    objc_initWeak(&location, v18);
+    v24 = DMCLocalizedString();
+    v30[0] = MEMORY[0x277D85DD0];
+    v30[1] = 3221225472;
+    v30[2] = __136__DMCEnrollmentManagementDetailsOverviewViewController_initWithDelegate_managedAppleID_profile_requiredAppRequest_requiredAppViewGroup___block_invoke;
+    v30[3] = &unk_278EE7880;
+    objc_copyWeak(&v31, &location);
+    [(DMCEnrollmentTableViewTextCell *)v23 configureLinkText:v24 forceLineBreak:0 linkAction:v30];
+
+    if (v15)
+    {
+      v25 = [DMCEnrollmentTableViewTextCell alloc];
+      v26 = DMCLocalizedString();
+      v27 = [(DMCEnrollmentTableViewTextCell *)v25 initWithText:v26 bold:0];
+
+      v28 = [[DMCEnrollmentTableViewAppLockupCell alloc] initWithLockupRequest:v15 lockupViewGroup:v16 presentingViewController:v18];
+    }
+
+    else
+    {
+      v27 = 0;
+      v28 = 0;
+    }
+
+    [v19 addObject:v23];
+    if (v28)
+    {
+      [v19 addObject:v27];
+      [v19 addObject:v28];
+    }
+
+    [(DMCEnrollmentTemplateTableViewController *)v18 addCellData:v19 animated:0];
+
+    objc_destroyWeak(&v31);
+    objc_destroyWeak(&location);
+  }
+
+  return v18;
+}
+
+void __136__DMCEnrollmentManagementDetailsOverviewViewController_initWithDelegate_managedAppleID_profile_requiredAppRequest_requiredAppViewGroup___block_invoke(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  v2 = WeakRetained;
+  if (WeakRetained)
+  {
+    block[0] = MEMORY[0x277D85DD0];
+    block[1] = 3221225472;
+    block[2] = __136__DMCEnrollmentManagementDetailsOverviewViewController_initWithDelegate_managedAppleID_profile_requiredAppRequest_requiredAppViewGroup___block_invoke_2;
+    block[3] = &unk_278EE74C0;
+    v4 = WeakRetained;
+    dispatch_async(MEMORY[0x277D85CD0], block);
+  }
+}
+
+void __136__DMCEnrollmentManagementDetailsOverviewViewController_initWithDelegate_managedAppleID_profile_requiredAppRequest_requiredAppViewGroup___block_invoke_2(uint64_t a1)
+{
+  v2 = [DMCProfileViewModel alloc];
+  v3 = [*(a1 + 32) profile];
+  v7 = [(DMCProfileViewModel *)v2 initWithProfile:v3 managedPayloads:0];
+
+  v4 = [[DMCProfileDetailsViewController alloc] initWithProfileViewModel:v7 mode:1];
+  v5 = DMCLocalizedString();
+  [(DMCProfileDetailsViewController *)v4 setTableTitle:v5];
+
+  v6 = [[DMCNavigationController alloc] initWithRootViewController:v4];
+  [*(a1 + 32) presentViewController:v6 animated:1 completion:0];
+}
+
+- (void)loadView
+{
+  v12.receiver = self;
+  v12.super_class = DMCEnrollmentManagementDetailsOverviewViewController;
+  [(DMCEnrollmentManagementDetailsOverviewViewController *)&v12 loadView];
+  objc_initWeak(&location, self);
+  v3 = [DMCEnrollmentConfirmationView alloc];
+  v4 = DMCLocalizedString();
+  v6 = MEMORY[0x277D85DD0];
+  v7 = 3221225472;
+  v8 = __64__DMCEnrollmentManagementDetailsOverviewViewController_loadView__block_invoke;
+  v9 = &unk_278EE7880;
+  objc_copyWeak(&v10, &location);
+  v5 = [(DMCEnrollmentConfirmationView *)v3 initWithConfirmationText:v4 cancelText:0 confirmationAction:&v6 cancelAction:&__block_literal_global_5];
+
+  [(DMCEnrollmentTemplateTableViewController *)self addBottomView:v5, v6, v7, v8, v9];
+  objc_destroyWeak(&v10);
+  objc_destroyWeak(&location);
+}
+
+void __64__DMCEnrollmentManagementDetailsOverviewViewController_loadView__block_invoke(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  if (WeakRetained)
+  {
+    v3 = WeakRetained;
+    v2 = [WeakRetained delegate];
+    [v2 managementDetailsOverviewViewController:v3 didReceiveUserAction:1];
+
+    WeakRetained = v3;
+  }
+}
+
+- (void)viewWillAppear:(BOOL)a3
+{
+  v4.receiver = self;
+  v4.super_class = DMCEnrollmentManagementDetailsOverviewViewController;
+  [(DMCEnrollmentTemplateTableViewController *)&v4 viewWillAppear:a3];
+  if (([(DMCEnrollmentManagementDetailsOverviewViewController *)self isBeingPresented]& 1) != 0 || [(DMCEnrollmentManagementDetailsOverviewViewController *)self isMovingToParentViewController])
+  {
+    [(DMCEnrollmentManagementDetailsOverviewViewController *)self _setupNavigationBar];
+  }
+}
+
+- (void)leftBarButtonTapped:(id)a3
+{
+  v4 = [(DMCEnrollmentManagementDetailsOverviewViewController *)self delegate];
+  [v4 managementDetailsOverviewViewController:self didReceiveUserAction:0];
+}
+
+- (DMCEnrollmentManagementDetailsOverviewViewControllerDelegate)delegate
+{
+  WeakRetained = objc_loadWeakRetained(&self->_delegate);
+
+  return WeakRetained;
+}
+
+@end

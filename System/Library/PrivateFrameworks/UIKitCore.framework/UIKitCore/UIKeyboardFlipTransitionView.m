@@ -1,0 +1,744 @@
+@interface UIKeyboardFlipTransitionView
+- (UIKeyboardFlipTransitionView)initWithFrame:(CGRect)a3;
+- (void)_delayedUpdateTransition;
+- (void)_flipToFront:(BOOL)a3 animated:(BOOL)a4;
+- (void)rebuildBackgroundTransition;
+- (void)rebuildControlSlicesForKeyName:(id)a3;
+- (void)rebuildMoreIntlKeys;
+- (void)setFrame:(CGRect)a3;
+- (void)setShowingFrontFace:(BOOL)a3;
+- (void)updateMoreIntlKey:(id)a3 asStart:(BOOL)a4 withRect:(CGRect)a5 showIntl:(BOOL)a6 showDictKey:(BOOL)a7;
+@end
+
+@implementation UIKeyboardFlipTransitionView
+
+- (UIKeyboardFlipTransitionView)initWithFrame:(CGRect)a3
+{
+  v37.receiver = self;
+  v37.super_class = UIKeyboardFlipTransitionView;
+  v3 = [(UIView *)&v37 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = v3;
+  if (v3)
+  {
+    [(UIView *)v3 setAnchorPoint:0.5, 0.5];
+    v5 = [MEMORY[0x1E6979398] layer];
+    container = v4->_container;
+    v4->_container = v5;
+
+    [(UIView *)v4 anchorPoint];
+    [(CALayer *)v4->_container setAnchorPoint:?];
+    v7 = [MEMORY[0x1E6979398] layer];
+    frontFace = v4->_frontFace;
+    v4->_frontFace = v7;
+
+    v9 = [MEMORY[0x1E6979398] layer];
+    backFace = v4->_backFace;
+    v4->_backFace = v9;
+
+    [(UIKeyboardSplitTransitionView *)v4 initializeLayers];
+    v11 = v4->_frontFace;
+    v12 = [(UIKeyboardSplitTransitionView *)v4 backgroundLayers];
+    v13 = [v12 objectAtIndex:0];
+    [(CALayer *)v11 addSublayer:v13];
+
+    v14 = v4->_backFace;
+    v15 = [(UIKeyboardSplitTransitionView *)v4 backgroundLayers];
+    v16 = [v15 objectAtIndex:1];
+    [(CALayer *)v14 addSublayer:v16];
+
+    v17 = v4->_backFace;
+    v18 = [(UIKeyboardSplitTransitionView *)v4 backgroundLayers];
+    v19 = [v18 objectAtIndex:2];
+    [(CALayer *)v17 addSublayer:v19];
+
+    v20 = [MEMORY[0x1E6979398] layer];
+    frontDarkening = v4->_frontDarkening;
+    v4->_frontDarkening = v20;
+
+    v22 = +[UIColor blackColor];
+    -[CALayer setBackgroundColor:](v4->_frontDarkening, "setBackgroundColor:", [v22 CGColor]);
+
+    v23 = [MEMORY[0x1E6979398] layer];
+    backDarkening = v4->_backDarkening;
+    v4->_backDarkening = v23;
+
+    v25 = +[UIColor blackColor];
+    -[CALayer setBackgroundColor:](v4->_backDarkening, "setBackgroundColor:", [v25 CGColor]);
+
+    v26 = [MEMORY[0x1E6979398] layer];
+    backDarkeningLeft = v4->_backDarkeningLeft;
+    v4->_backDarkeningLeft = v26;
+
+    v28 = +[UIColor blackColor];
+    -[CALayer setBackgroundColor:](v4->_backDarkeningLeft, "setBackgroundColor:", [v28 CGColor]);
+
+    v29 = [MEMORY[0x1E6979398] layer];
+    backDarkeningRight = v4->_backDarkeningRight;
+    v4->_backDarkeningRight = v29;
+
+    v31 = +[UIColor blackColor];
+    -[CALayer setBackgroundColor:](v4->_backDarkeningRight, "setBackgroundColor:", [v31 CGColor]);
+
+    [(CALayer *)v4->_frontFace addSublayer:v4->_frontDarkening];
+    [(CALayer *)v4->_backFace addSublayer:v4->_backDarkening];
+    [(CALayer *)v4->_backFace addSublayer:v4->_backDarkeningLeft];
+    [(CALayer *)v4->_backFace addSublayer:v4->_backDarkeningRight];
+    v32 = objc_alloc_init(MEMORY[0x1E695DF90]);
+    controlKeys = v4->_controlKeys;
+    v4->_controlKeys = v32;
+
+    v34 = [(UIView *)v4 layer];
+    [v34 addSublayer:v4->_container];
+
+    [(CALayer *)v4->_container addSublayer:v4->_frontFace];
+    [(CALayer *)v4->_container addSublayer:v4->_backFace];
+    v35 = v4;
+  }
+
+  return v4;
+}
+
+- (void)setFrame:(CGRect)a3
+{
+  height = a3.size.height;
+  width = a3.size.width;
+  y = a3.origin.y;
+  x = a3.origin.x;
+  if (!CGRectIsEmpty(a3))
+  {
+    v12.receiver = self;
+    v12.super_class = UIKeyboardFlipTransitionView;
+    [(UIKeyboardSplitTransitionView *)&v12 setFrame:x, y, width, height];
+    [(UIView *)self frame];
+    [(UIView *)self setCenter:width * 0.5, v8 * 0.5];
+    [(UIView *)self bounds];
+    [(CALayer *)self->_container setBounds:?];
+    v9 = [(UIView *)self layer];
+    [v9 position];
+    [(CALayer *)self->_container setPosition:?];
+
+    [(CALayer *)self->_container setPerspectiveDistance:width];
+    v10 = [(CALayer *)self->_container sublayers];
+    v11[0] = MEMORY[0x1E69E9820];
+    v11[1] = 3221225472;
+    v11[2] = __41__UIKeyboardFlipTransitionView_setFrame___block_invoke;
+    v11[3] = &unk_1E70F5BE0;
+    v11[4] = self;
+    [v10 enumerateObjectsUsingBlock:v11];
+  }
+}
+
+void __41__UIKeyboardFlipTransitionView_setFrame___block_invoke(uint64_t a1, void *a2)
+{
+  v3 = a2;
+  v4 = *(a1 + 32);
+  if (v4[73] != v3 && v4[74] != v3 && v4[75] != v3 && v4[76] != v3)
+  {
+    v5 = v3;
+    [v3 setAnchorPoint:{0.5, 0.5}];
+    [*(*(a1 + 32) + 560) bounds];
+    [v5 setBounds:?];
+    [*(*(a1 + 32) + 560) position];
+    [v5 setPosition:?];
+    v3 = v5;
+  }
+}
+
+- (void)_flipToFront:(BOOL)a3 animated:(BOOL)a4
+{
+  v4 = a3;
+  v5 = *(MEMORY[0x1E69792E8] + 80);
+  v82 = v5;
+  v84 = *(MEMORY[0x1E69792E8] + 64);
+  if (a4)
+  {
+    v6 = 0.4;
+  }
+
+  else
+  {
+    v6 = 0.0;
+  }
+
+  *&v93.m31 = *(MEMORY[0x1E69792E8] + 64);
+  *&v93.m33 = v5;
+  v79 = *(MEMORY[0x1E69792E8] + 112);
+  *&v93.m41 = *(MEMORY[0x1E69792E8] + 96);
+  v80 = *&v93.m41;
+  *&v93.m43 = v79;
+  v76 = *(MEMORY[0x1E69792E8] + 16);
+  *&v93.m11 = *MEMORY[0x1E69792E8];
+  v77 = *&v93.m11;
+  *&v93.m13 = v76;
+  v73 = *(MEMORY[0x1E69792E8] + 48);
+  *&v93.m21 = *(MEMORY[0x1E69792E8] + 32);
+  v74 = *&v93.m21;
+  *&v93.m23 = v73;
+  memset(&v92, 0, sizeof(v92));
+  CATransform3DMakeRotation(&v92, 1.57079633, 1.0, 0.0, 0.0);
+  memset(&v91, 0, sizeof(v91));
+  CATransform3DMakeRotation(&v91, 3.14159265, 1.0, 0.0, 0.0);
+  *&v90.m31 = v84;
+  *&v90.m33 = v82;
+  *&v90.m41 = v80;
+  *&v90.m43 = v79;
+  *&v90.m11 = v77;
+  *&v90.m13 = v76;
+  *&v90.m21 = v74;
+  *&v90.m23 = v73;
+  memset(&v89, 0, sizeof(v89));
+  CATransform3DMakeRotation(&v89, -1.57079633, 1.0, 0.0, 0.0);
+  memset(&v88, 0, sizeof(v88));
+  CATransform3DMakeRotation(&v88, -3.14159265, 1.0, 0.0, 0.0);
+  v72 = v4;
+  if (v4)
+  {
+    v93 = v91;
+    v7 = &v91;
+  }
+
+  else
+  {
+    v90 = v88;
+    v7 = &v88;
+  }
+
+  *&v7->m31 = v84;
+  *&v7->m33 = v82;
+  *&v7->m41 = v80;
+  *&v7->m43 = v79;
+  *&v7->m11 = v77;
+  *&v7->m13 = v76;
+  *&v7->m21 = v74;
+  *&v7->m23 = v73;
+  v8 = MEMORY[0x1E695DEC8];
+  v87 = v93;
+  v9 = [MEMORY[0x1E696B098] valueWithCATransform3D:&v87];
+  v87 = v92;
+  v10 = [MEMORY[0x1E696B098] valueWithCATransform3D:&v87];
+  v87 = v91;
+  v11 = [MEMORY[0x1E696B098] valueWithCATransform3D:&v87];
+  v12 = [v8 arrayWithObjects:{v9, v10, v11, 0}];
+
+  v13 = MEMORY[0x1E695DEC8];
+  v87 = v90;
+  v14 = [MEMORY[0x1E696B098] valueWithCATransform3D:&v87];
+  v87 = v89;
+  v15 = [MEMORY[0x1E696B098] valueWithCATransform3D:&v87];
+  v87 = v88;
+  v16 = [MEMORY[0x1E696B098] valueWithCATransform3D:&v87];
+  v17 = [v13 arrayWithObjects:{v14, v15, v16, 0}];
+
+  v18 = [MEMORY[0x1E6979390] animationWithKeyPath:@"transform"];
+  [v18 setRemovedOnCompletion:0];
+  v19 = *MEMORY[0x1E69797E8];
+  v75 = *MEMORY[0x1E69797E8];
+  [v18 setFillMode:*MEMORY[0x1E69797E8]];
+  [v18 setDuration:v6];
+  [v18 setCalculationMode:@"cubic"];
+  v20 = MEMORY[0x1E695DEC8];
+  v21 = [MEMORY[0x1E696AD98] numberWithFloat:0.0];
+  LODWORD(v22) = 0.5;
+  v23 = [MEMORY[0x1E696AD98] numberWithFloat:v22];
+  LODWORD(v24) = 1.0;
+  v25 = [MEMORY[0x1E696AD98] numberWithFloat:v24];
+  v26 = [v20 arrayWithObjects:{v21, v23, v25, 0}];
+  [v18 setKeyTimes:v26];
+
+  v85 = v12;
+  [v18 setValues:v12];
+  [(CALayer *)self->_frontFace addAnimation:v18 forKey:@"front flip animation"];
+  v27 = [MEMORY[0x1E6979390] animationWithKeyPath:@"transform"];
+  [v27 setRemovedOnCompletion:0];
+  [v27 setFillMode:v19];
+  [v27 setDuration:v6];
+  [v27 setCalculationMode:@"cubic"];
+  v81 = v18;
+  v28 = [v18 keyTimes];
+  [v27 setKeyTimes:v28];
+
+  v83 = v17;
+  [v27 setValues:v17];
+  v78 = v27;
+  [(CALayer *)self->_backFace addAnimation:v27 forKey:@"back flip animation"];
+  v29 = MEMORY[0x1E695DEC8];
+  v30 = [MEMORY[0x1E696AD98] numberWithFloat:0.0];
+  LODWORD(v31) = 0.5;
+  v32 = [MEMORY[0x1E696AD98] numberWithFloat:v31];
+  LODWORD(v33) = 1056964776;
+  v34 = [MEMORY[0x1E696AD98] numberWithFloat:v33];
+  LODWORD(v35) = 1.0;
+  v36 = [MEMORY[0x1E696AD98] numberWithFloat:v35];
+  v37 = [v29 arrayWithObjects:{v30, v32, v34, v36, 0}];
+
+  v38 = [MEMORY[0x1E6979390] animationWithKeyPath:@"hidden"];
+  [v38 setRemovedOnCompletion:0];
+  [v38 setFillMode:v75];
+  [v38 setDuration:v6];
+  [v38 setCalculationMode:@"cubic"];
+  [v38 setKeyTimes:v37];
+  v39 = MEMORY[0x1E695DEC8];
+  v40 = [MEMORY[0x1E696AD98] numberWithBool:v72];
+  *&v41 = v72;
+  v42 = [MEMORY[0x1E696AD98] numberWithFloat:v41];
+  *&v43 = (v72 ^ 1);
+  v44 = [MEMORY[0x1E696AD98] numberWithFloat:v43];
+  *&v45 = (v72 ^ 1);
+  v46 = [MEMORY[0x1E696AD98] numberWithFloat:v45];
+  v47 = [v39 arrayWithObjects:{v40, v42, v44, v46, 0}];
+  [v38 setValues:v47];
+
+  [(CALayer *)self->_frontFace addAnimation:v38 forKey:@"front hidden animation"];
+  v48 = [MEMORY[0x1E6979390] animationWithKeyPath:@"hidden"];
+  [v48 setRemovedOnCompletion:0];
+  [v48 setFillMode:v75];
+  [v48 setDuration:v6];
+  [v48 setCalculationMode:@"cubic"];
+  [v48 setKeyTimes:v37];
+  v49 = MEMORY[0x1E695DEC8];
+  *&v50 = (v72 ^ 1);
+  v51 = [MEMORY[0x1E696AD98] numberWithFloat:v50];
+  *&v52 = (v72 ^ 1);
+  v53 = [MEMORY[0x1E696AD98] numberWithFloat:v52];
+  *&v54 = v72;
+  v55 = [MEMORY[0x1E696AD98] numberWithFloat:v54];
+  *&v56 = v72;
+  v57 = [MEMORY[0x1E696AD98] numberWithFloat:v56];
+  v58 = [v49 arrayWithObjects:{v51, v53, v55, v57, 0}];
+  [v48 setValues:v58];
+
+  [(CALayer *)self->_backFace addAnimation:v48 forKey:@"back hidden animation"];
+  v59 = [MEMORY[0x1E6979390] animationWithKeyPath:@"opacity"];
+  [v59 setRemovedOnCompletion:0];
+  [v59 setFillMode:v75];
+  [v59 setDuration:v6];
+  [v59 setCalculationMode:@"cubic"];
+  [v59 setKeyTimes:v37];
+  v60 = MEMORY[0x1E695DEC8];
+  v61 = [MEMORY[0x1E696AD98] numberWithFloat:0.0];
+  LODWORD(v62) = 1053609165;
+  v63 = [MEMORY[0x1E696AD98] numberWithFloat:v62];
+  LODWORD(v64) = 1053609165;
+  v65 = [MEMORY[0x1E696AD98] numberWithFloat:v64];
+  v66 = [MEMORY[0x1E696AD98] numberWithFloat:0.0];
+  v67 = [v60 arrayWithObjects:{v61, v63, v65, v66, 0}];
+  [v59 setValues:v67];
+
+  [(CALayer *)self->_frontDarkening addAnimation:v59 forKey:@"darkening animation"];
+  [(CALayer *)self->_frontDarkening addAnimation:v38 forKey:@"front hidden animation"];
+  if (self->super._centerFilled)
+  {
+    p_backDarkening = &self->_backDarkening;
+    backDarkening = self->_backDarkening;
+    v70 = @"darkening animation";
+    v71 = v59;
+  }
+
+  else
+  {
+    [(CALayer *)self->_backDarkeningLeft addAnimation:v59 forKey:@"darkening animation"];
+    p_backDarkening = &self->_backDarkeningRight;
+    [(CALayer *)self->_backDarkeningRight addAnimation:v59 forKey:@"darkening animation"];
+    backDarkening = self->_backDarkeningLeft;
+    v70 = @"back hidden animation";
+    v71 = v48;
+  }
+
+  [(CALayer *)backDarkening addAnimation:v71 forKey:v70];
+  [(CALayer *)*p_backDarkening addAnimation:v48 forKey:@"back hidden animation"];
+}
+
+- (void)setShowingFrontFace:(BOOL)a3
+{
+  if (self->_showingFrontFace != a3)
+  {
+    self->_showingFrontFace = a3;
+    [UIKeyboardFlipTransitionView _flipToFront:"_flipToFront:animated:" animated:?];
+  }
+}
+
+- (void)rebuildBackgroundTransition
+{
+  v3 = [(UIKeyboardSplitTransitionView *)self backgroundLayers];
+  v46 = [v3 objectAtIndex:0];
+
+  [(CALayer *)self->_frontFace insertSublayer:v46 atIndex:0];
+  v4 = [(UIKeyboardSplitTransitionView *)self backgroundLayers];
+  v5 = [v4 objectAtIndex:1];
+
+  v6 = [(UIKeyboardSplitTransitionView *)self backgroundLayers];
+  v7 = [v6 objectAtIndex:2];
+
+  centerFilled = self->super._centerFilled;
+  v9 = +[UIKeyboardPreferencesController sharedPreferencesController];
+  v10 = [v9 preferencesActions];
+  [v10 rivenSizeFactor:9.0];
+  v12 = -v11;
+  if (centerFilled)
+  {
+    p_backFace = &self->_backFace;
+    [(CALayer *)self->_backFace frame];
+    v15 = v14;
+    v16 = +[UIKeyboardPreferencesController sharedPreferencesController];
+    v17 = [v16 preferencesActions];
+    [v17 rivenSizeFactor:9.0];
+    v19 = v15 + v18 + v18;
+    [(UIKeyboardSliceSet *)self->super._sliceSet endRect];
+    [v5 setBounds:{v12, 0.0, v19}];
+
+    v20 = v5;
+    v21 = v5;
+  }
+
+  else
+  {
+    [(UIKeyboardSliceSet *)self->super._sliceSet leftWidth];
+    v23 = v22;
+    v24 = +[UIKeyboardPreferencesController sharedPreferencesController];
+    v25 = [v24 preferencesActions];
+    [v25 rivenSizeFactor:9.0];
+    v27 = v23 + v26;
+    [(UIKeyboardSliceSet *)self->super._sliceSet endRect];
+    [v5 setBounds:{v12, 0.0, v27}];
+
+    [(UIKeyboardSliceSet *)self->super._sliceSet rightWidth];
+    v29 = v28;
+    v30 = +[UIKeyboardPreferencesController sharedPreferencesController];
+    v31 = [v30 preferencesActions];
+    [v31 rivenSizeFactor:9.0];
+    v33 = v29 + v32;
+    [(UIKeyboardSliceSet *)self->super._sliceSet endRect];
+    [v7 setBounds:{0.0, 0.0, v33}];
+
+    p_backFace = &self->_backFace;
+    v20 = v5;
+    [(CALayer *)self->_backFace insertSublayer:v5 atIndex:0];
+    v21 = v7;
+  }
+
+  [(CALayer *)*p_backFace insertSublayer:v21 atIndex:0];
+  [(CALayer *)self->_frontFace frame];
+  v35 = v34;
+  v37 = v36;
+  v39 = v38;
+  v41 = v40;
+  v42 = +[UIKeyboardPreferencesController sharedPreferencesController];
+  v43 = [v42 preferencesActions];
+  [v43 rivenSizeFactor:9.0];
+  v45 = -v44;
+  v48.origin.x = v35;
+  v48.origin.y = v37;
+  v48.size.width = v39;
+  v48.size.height = v41;
+  v49 = CGRectInset(v48, v45, 0.0);
+  [(CALayer *)self->_frontDarkening setFrame:v49.origin.x, v49.origin.y, v49.size.width, v49.size.height];
+
+  [(UIKeyboardSliceSet *)self->super._sliceSet endRect];
+  [(CALayer *)self->_backDarkening setFrame:?];
+  [v20 frame];
+  [(CALayer *)self->_backDarkeningLeft setFrame:?];
+  [v7 frame];
+  [(CALayer *)self->_backDarkeningRight setFrame:?];
+  [(CALayer *)self->_backDarkening setHidden:!self->super._centerFilled];
+  [(CALayer *)self->_backDarkeningLeft setHidden:self->super._centerFilled];
+  [(CALayer *)self->_backDarkeningRight setHidden:self->super._centerFilled];
+  [(CALayer *)self->_frontFace addSublayer:self->_frontDarkening];
+  [(CALayer *)self->_backFace addSublayer:self->_backDarkening];
+  [(CALayer *)self->_backFace addSublayer:self->_backDarkeningLeft];
+  [(CALayer *)self->_backFace addSublayer:self->_backDarkeningRight];
+}
+
+- (void)rebuildControlSlicesForKeyName:(id)a3
+{
+  v27 = *MEMORY[0x1E69E9840];
+  v4 = a3;
+  v5 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
+  v6 = [v5 objectForKey:v4];
+
+  objc_opt_class();
+  if (objc_opt_isKindOfClass())
+  {
+    v7 = [MEMORY[0x1E695DEC8] arrayWithObject:v6];
+
+    v6 = v7;
+  }
+
+  v24 = 0u;
+  v25 = 0u;
+  v22 = 0u;
+  v23 = 0u;
+  v8 = v6;
+  v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  if (v9)
+  {
+    v10 = v9;
+    v11 = *v23;
+    do
+    {
+      for (i = 0; i != v10; ++i)
+      {
+        if (*v23 != v11)
+        {
+          objc_enumerationMutation(v8);
+        }
+
+        v13 = *(*(&v22 + 1) + 8 * i);
+        v14 = [v13 endToken];
+        v15 = v14;
+        if (v14)
+        {
+          v16 = v14;
+        }
+
+        else
+        {
+          v16 = [v13 startToken];
+        }
+
+        v17 = v16;
+
+        controlKeys = self->_controlKeys;
+        v19 = [v17 name];
+        v20 = [(NSMutableDictionary *)controlKeys objectForKeyedSubscript:v19];
+
+        v21 = [v20 objectForKeyedSubscript:v17];
+        [v21 setContents:{-[UIKeyboardSplitTransitionView keyImageWithToken:](self, "keyImageWithToken:", v17)}];
+      }
+
+      v10 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    }
+
+    while (v10);
+  }
+}
+
+- (void)updateMoreIntlKey:(id)a3 asStart:(BOOL)a4 withRect:(CGRect)a5 showIntl:(BOOL)a6 showDictKey:(BOOL)a7
+{
+  v7 = a7;
+  v8 = a6;
+  height = a5.size.height;
+  width = a5.size.width;
+  y = a5.origin.y;
+  x = a5.origin.x;
+  v20 = a3;
+  v15 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
+  v16 = [v15 objectForKey:v20];
+
+  if (a4)
+  {
+    [v16 startToken];
+  }
+
+  else
+  {
+    [v16 endToken];
+  }
+  v17 = ;
+  v18 = [(NSMutableDictionary *)self->_controlKeys objectForKeyedSubscript:v20];
+  v19 = [v18 objectForKeyedSubscript:v17];
+
+  [v17 setSize:{width, height}];
+  [v19 setFrame:{x, y, width, height}];
+  [v16 setStartRect:{x, y, width, height}];
+  [v19 setContents:{-[UIKeyboardSplitTransitionView keyImageWithToken:](self, "keyImageWithToken:", v17)}];
+  if ([v20 hasSuffix:@"International-Key"])
+  {
+    [v19 setHidden:!v8];
+  }
+
+  if ([v20 hasSuffix:@"Dictation-Key"])
+  {
+    [v19 setHidden:!v7];
+  }
+}
+
+- (void)rebuildMoreIntlKeys
+{
+  v69 = *MEMORY[0x1E69E9840];
+  v3 = [(UIKeyboardSplitTransitionView *)self showIntlKey];
+  v58 = [(UIKeyboardSplitTransitionView *)self showDictationKey];
+  if (v58)
+  {
+    v4 = 2;
+  }
+
+  else
+  {
+    v4 = 0;
+  }
+
+  v5 = v3;
+  v6 = v4 | v3;
+  v7 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
+  v8 = [v7 objectForKey:@"MoreIntlStartNames"];
+
+  if (!v8)
+  {
+    v9 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
+    v8 = [v9 objectForKey:@"MoreIntlNames"];
+  }
+
+  v10 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
+  v11 = [v10 objectForKey:@"MoreIntlStartLeftAligned"];
+  v12 = v6 | (16 * (v11 != 0));
+
+  v13 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
+  v14 = [v13 objectForKey:@"MoreIntlStarts"];
+  v57 = [UIKBTree shapesForControlKeyShapes:v14 options:v12 | 4u];
+
+  v15 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
+  v16 = [v15 objectForKey:@"MoreIntlEndNames"];
+
+  if (!v16)
+  {
+    v17 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
+    v16 = [v17 objectForKey:@"MoreIntlNames"];
+  }
+
+  v56 = v16;
+  v18 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
+  v19 = [v18 objectForKey:@"MoreIntlEndLeftAligned"];
+  v20 = v6 | (16 * (v19 != 0));
+
+  v21 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
+  v22 = [v21 objectForKey:@"MoreIntlEnds"];
+  v23 = [UIKBTree shapesForControlKeyShapes:v22 options:v20 | 0xCu];
+
+  v65 = 0u;
+  v66 = 0u;
+  v63 = 0u;
+  v64 = 0u;
+  v24 = v8;
+  v25 = [v24 countByEnumeratingWithState:&v63 objects:v68 count:16];
+  if (v25)
+  {
+    v26 = v25;
+    v27 = *v64;
+    do
+    {
+      for (i = 0; i != v26; ++i)
+      {
+        if (*v64 != v27)
+        {
+          objc_enumerationMutation(v24);
+        }
+
+        v29 = *(*(&v63 + 1) + 8 * i);
+        v30 = [v24 objectForKey:v29];
+        if (([v30 hasSuffix:@"Unlabeled-Space-Key"] & 1) == 0)
+        {
+          v31 = [v57 objectForKey:v29];
+          [v31 paddedFrame];
+          v33 = v32;
+          v35 = v34;
+          v37 = v36;
+          v39 = v38;
+
+          [(UIKeyboardFlipTransitionView *)self updateMoreIntlKey:v30 asStart:1 withRect:v5 showIntl:v58 showDictKey:v33, v35, v37, v39];
+        }
+      }
+
+      v26 = [v24 countByEnumeratingWithState:&v63 objects:v68 count:16];
+    }
+
+    while (v26);
+  }
+
+  v61 = 0u;
+  v62 = 0u;
+  v59 = 0u;
+  v60 = 0u;
+  v40 = v56;
+  v41 = [v40 countByEnumeratingWithState:&v59 objects:v67 count:16];
+  if (v41)
+  {
+    v42 = v41;
+    v43 = *v60;
+    do
+    {
+      for (j = 0; j != v42; ++j)
+      {
+        if (*v60 != v43)
+        {
+          objc_enumerationMutation(v40);
+        }
+
+        v45 = *(*(&v59 + 1) + 8 * j);
+        v46 = [v40 objectForKey:v45];
+        v47 = [v23 objectForKey:v45];
+        [v47 paddedFrame];
+        v49 = v48;
+        v51 = v50;
+        v53 = v52;
+        v55 = v54;
+
+        [(UIKeyboardFlipTransitionView *)self updateMoreIntlKey:v46 asStart:0 withRect:v5 showIntl:v58 showDictKey:v49, v51, v53, v55];
+      }
+
+      v42 = [v40 countByEnumeratingWithState:&v59 objects:v67 count:16];
+    }
+
+    while (v42);
+  }
+
+  *&self->_rebuildFlags &= ~4u;
+}
+
+- (void)_delayedUpdateTransition
+{
+  if ([(UIView *)self isHidden]&& self->super._sliceSet)
+  {
+    [MEMORY[0x1E6979518] begin];
+    [MEMORY[0x1E6979518] setDisableActions:1];
+    [(UIKeyboardSliceSet *)self->super._sliceSet startRect];
+    [(UIKeyboardFlipTransitionView *)self setFrame:?];
+    v3 = +[UIKeyboardImpl activeInstance];
+    self->super._centerFilled = [v3 centerFilled];
+
+    v4 = +[UIKeyboardImpl activeInstance];
+    v5 = [v4 showsCandidateBar];
+
+    if (+[UIKeyboardImpl isSplit])
+    {
+      v6 = [(UIKeyboardSliceSet *)self->super._sliceSet controlKeys];
+      v7 = [v6 objectForKey:@"Candidate-Selection"];
+      v8 = v7 != 0;
+
+      centerFilled = self->super._centerFilled;
+      if (v8 || !centerFilled)
+      {
+        v10 = v8 && centerFilled;
+      }
+
+      else
+      {
+        v10 = v5 ^ 1;
+      }
+    }
+
+    else
+    {
+      v10 = self->super._centerFilled & (v5 ^ 1);
+    }
+
+    self->super._centerFilled = v10 & 1;
+    [(UIKeyboardFlipTransitionView *)self rebuildTransition];
+    [(UIKeyboardFlipTransitionView *)self rebuildMoreIntlKeys];
+    rebuildFlags = self->_rebuildFlags;
+    if (rebuildFlags)
+    {
+      [(UIKeyboardFlipTransitionView *)self rebuildShiftSlices];
+      rebuildFlags = self->_rebuildFlags;
+    }
+
+    if ((rebuildFlags & 2) != 0)
+    {
+      [(UIKeyboardFlipTransitionView *)self rebuildReturnSlices];
+    }
+
+    [MEMORY[0x1E6979518] commit];
+    self->super._isRebuilding = 0;
+  }
+}
+
+@end

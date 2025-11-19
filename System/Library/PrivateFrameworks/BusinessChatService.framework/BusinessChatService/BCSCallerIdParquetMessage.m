@@ -1,0 +1,893 @@
+@interface BCSCallerIdParquetMessage
+- (BOOL)isEqual:(id)a3;
+- (BOOL)readFrom:(id)a3;
+- (id)copyWithZone:(_NSZone *)a3;
+- (id)description;
+- (id)dictionaryRepresentation;
+- (unint64_t)hash;
+- (void)addIntent:(id)a3;
+- (void)addName:(id)a3;
+- (void)copyTo:(id)a3;
+- (void)mergeFrom:(id)a3;
+- (void)setHasIsVerified:(BOOL)a3;
+- (void)writeTo:(id)a3;
+@end
+
+@implementation BCSCallerIdParquetMessage
+
+- (void)addName:(id)a3
+{
+  v4 = a3;
+  names = self->_names;
+  v8 = v4;
+  if (!names)
+  {
+    v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
+    v7 = self->_names;
+    self->_names = v6;
+
+    v4 = v8;
+    names = self->_names;
+  }
+
+  [(NSMutableArray *)names addObject:v4];
+}
+
+- (void)setHasIsVerified:(BOOL)a3
+{
+  if (a3)
+  {
+    v3 = 2;
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  *&self->_has = *&self->_has & 0xFD | v3;
+}
+
+- (void)addIntent:(id)a3
+{
+  v4 = a3;
+  intents = self->_intents;
+  v8 = v4;
+  if (!intents)
+  {
+    v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
+    v7 = self->_intents;
+    self->_intents = v6;
+
+    v4 = v8;
+    intents = self->_intents;
+  }
+
+  [(NSMutableArray *)intents addObject:v4];
+}
+
+- (id)description
+{
+  v3 = MEMORY[0x277CCACA8];
+  v8.receiver = self;
+  v8.super_class = BCSCallerIdParquetMessage;
+  v4 = [(BCSCallerIdParquetMessage *)&v8 description];
+  v5 = [(BCSCallerIdParquetMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+
+  return v6;
+}
+
+- (id)dictionaryRepresentation
+{
+  v35 = *MEMORY[0x277D85DE8];
+  v3 = [MEMORY[0x277CBEB38] dictionary];
+  if (*&self->_has)
+  {
+    v4 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_phoneHash];
+    [v3 setObject:v4 forKey:@"phone_hash"];
+  }
+
+  phoneNumber = self->_phoneNumber;
+  if (phoneNumber)
+  {
+    [v3 setObject:phoneNumber forKey:@"phone_number"];
+  }
+
+  if ([(NSMutableArray *)self->_names count])
+  {
+    v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](self->_names, "count")}];
+    v29 = 0u;
+    v30 = 0u;
+    v31 = 0u;
+    v32 = 0u;
+    v7 = self->_names;
+    v8 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v29 objects:v34 count:16];
+    if (v8)
+    {
+      v9 = v8;
+      v10 = *v30;
+      do
+      {
+        for (i = 0; i != v9; ++i)
+        {
+          if (*v30 != v10)
+          {
+            objc_enumerationMutation(v7);
+          }
+
+          v12 = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:v12];
+        }
+
+        v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      }
+
+      while (v9);
+    }
+
+    [v3 setObject:v6 forKey:@"name"];
+  }
+
+  logo = self->_logo;
+  if (logo)
+  {
+    [v3 setObject:logo forKey:@"logo"];
+  }
+
+  if ((*&self->_has & 2) != 0)
+  {
+    v14 = [MEMORY[0x277CCABB0] numberWithBool:self->_isVerified];
+    [v3 setObject:v14 forKey:@"is_verified"];
+  }
+
+  if ([(NSMutableArray *)self->_intents count])
+  {
+    v15 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](self->_intents, "count")}];
+    v25 = 0u;
+    v26 = 0u;
+    v27 = 0u;
+    v28 = 0u;
+    v16 = self->_intents;
+    v17 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v25 objects:v33 count:16];
+    if (v17)
+    {
+      v18 = v17;
+      v19 = *v26;
+      do
+      {
+        for (j = 0; j != v18; ++j)
+        {
+          if (*v26 != v19)
+          {
+            objc_enumerationMutation(v16);
+          }
+
+          v21 = [*(*(&v25 + 1) + 8 * j) dictionaryRepresentation];
+          [v15 addObject:v21];
+        }
+
+        v18 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v25 objects:v33 count:16];
+      }
+
+      while (v18);
+    }
+
+    [v3 setObject:v15 forKey:@"intent"];
+  }
+
+  logoFormat = self->_logoFormat;
+  if (logoFormat)
+  {
+    [v3 setObject:logoFormat forKey:@"logo_format"];
+  }
+
+  v23 = *MEMORY[0x277D85DE8];
+
+  return v3;
+}
+
+- (BOOL)readFrom:(id)a3
+{
+  v5 = [a3 position];
+  if (v5 < [a3 length])
+  {
+    do
+    {
+      if ([a3 hasError])
+      {
+        return [a3 hasError] ^ 1;
+      }
+
+      v6 = 0;
+      v7 = 0;
+      v8 = 0;
+      while (1)
+      {
+        LOBYTE(v35[0]) = 0;
+        v9 = [a3 position] + 1;
+        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        {
+          v11 = [a3 data];
+          [v11 getBytes:v35 range:{objc_msgSend(a3, "position"), 1}];
+
+          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+        }
+
+        else
+        {
+          [a3 _setError];
+        }
+
+        v8 |= (v35[0] & 0x7F) << v6;
+        if ((v35[0] & 0x80) == 0)
+        {
+          break;
+        }
+
+        v6 += 7;
+        v12 = v7++ >= 9;
+        if (v12)
+        {
+          v13 = 0;
+          goto LABEL_15;
+        }
+      }
+
+      v13 = [a3 hasError] ? 0 : v8;
+LABEL_15:
+      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      {
+        return [a3 hasError] ^ 1;
+      }
+
+      v14 = v13 >> 3;
+      if ((v13 >> 3) <= 3)
+      {
+        if (v14 == 1)
+        {
+          v25 = 0;
+          v26 = 0;
+          v27 = 0;
+          *&self->_has |= 1u;
+          while (1)
+          {
+            LOBYTE(v35[0]) = 0;
+            v28 = [a3 position] + 1;
+            if (v28 >= [a3 position] && (v29 = objc_msgSend(a3, "position") + 1, v29 <= objc_msgSend(a3, "length")))
+            {
+              v30 = [a3 data];
+              [v30 getBytes:v35 range:{objc_msgSend(a3, "position"), 1}];
+
+              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            }
+
+            else
+            {
+              [a3 _setError];
+            }
+
+            v27 |= (v35[0] & 0x7F) << v25;
+            if ((v35[0] & 0x80) == 0)
+            {
+              break;
+            }
+
+            v25 += 7;
+            v12 = v26++ >= 9;
+            if (v12)
+            {
+              v31 = 0;
+              goto LABEL_58;
+            }
+          }
+
+          if ([a3 hasError])
+          {
+            v31 = 0;
+          }
+
+          else
+          {
+            v31 = v27;
+          }
+
+LABEL_58:
+          self->_phoneHash = v31;
+          goto LABEL_61;
+        }
+
+        if (v14 == 2)
+        {
+          v23 = PBReaderReadString();
+          v24 = 48;
+          goto LABEL_54;
+        }
+
+        if (v14 != 3)
+        {
+          goto LABEL_46;
+        }
+
+        v22 = objc_alloc_init(BCSCallerIdLocalizedString);
+        [(BCSCallerIdParquetMessage *)self addName:v22];
+      }
+
+      else
+      {
+        if (v14 <= 5)
+        {
+          if (v14 == 4)
+          {
+            v23 = PBReaderReadData();
+            v24 = 24;
+            goto LABEL_54;
+          }
+
+          if (v14 == 5)
+          {
+            v15 = 0;
+            v16 = 0;
+            v17 = 0;
+            *&self->_has |= 2u;
+            while (1)
+            {
+              LOBYTE(v35[0]) = 0;
+              v18 = [a3 position] + 1;
+              if (v18 >= [a3 position] && (v19 = objc_msgSend(a3, "position") + 1, v19 <= objc_msgSend(a3, "length")))
+              {
+                v20 = [a3 data];
+                [v20 getBytes:v35 range:{objc_msgSend(a3, "position"), 1}];
+
+                [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              }
+
+              else
+              {
+                [a3 _setError];
+              }
+
+              v17 |= (v35[0] & 0x7F) << v15;
+              if ((v35[0] & 0x80) == 0)
+              {
+                break;
+              }
+
+              v15 += 7;
+              v12 = v16++ >= 9;
+              if (v12)
+              {
+                LOBYTE(v21) = 0;
+                goto LABEL_60;
+              }
+            }
+
+            v21 = (v17 != 0) & ~[a3 hasError];
+LABEL_60:
+            self->_isVerified = v21;
+            goto LABEL_61;
+          }
+
+LABEL_46:
+          if ((PBReaderSkipValueWithTag() & 1) == 0)
+          {
+            return 0;
+          }
+
+          goto LABEL_61;
+        }
+
+        if (v14 != 6)
+        {
+          if (v14 == 7)
+          {
+            v23 = PBReaderReadString();
+            v24 = 32;
+LABEL_54:
+            v32 = *(&self->super.super.isa + v24);
+            *(&self->super.super.isa + v24) = v23;
+
+            goto LABEL_61;
+          }
+
+          goto LABEL_46;
+        }
+
+        v22 = objc_alloc_init(BCSCallerIdLocalizedString);
+        [(BCSCallerIdParquetMessage *)self addIntent:v22];
+      }
+
+      v35[0] = 0;
+      v35[1] = 0;
+      if (!PBReaderPlaceMark() || !BCSCallerIdLocalizedStringReadFrom(v22, a3))
+      {
+
+        return 0;
+      }
+
+      PBReaderRecallMark();
+
+LABEL_61:
+      v33 = [a3 position];
+    }
+
+    while (v33 < [a3 length]);
+  }
+
+  return [a3 hasError] ^ 1;
+}
+
+- (void)writeTo:(id)a3
+{
+  v30 = *MEMORY[0x277D85DE8];
+  v4 = a3;
+  if (*&self->_has)
+  {
+    phoneHash = self->_phoneHash;
+    PBDataWriterWriteInt64Field();
+  }
+
+  if (self->_phoneNumber)
+  {
+    PBDataWriterWriteStringField();
+  }
+
+  v26 = 0u;
+  v27 = 0u;
+  v24 = 0u;
+  v25 = 0u;
+  v6 = self->_names;
+  v7 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  if (v7)
+  {
+    v8 = v7;
+    v9 = *v25;
+    do
+    {
+      v10 = 0;
+      do
+      {
+        if (*v25 != v9)
+        {
+          objc_enumerationMutation(v6);
+        }
+
+        v11 = *(*(&v24 + 1) + 8 * v10);
+        PBDataWriterWriteSubmessage();
+        ++v10;
+      }
+
+      while (v8 != v10);
+      v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+    }
+
+    while (v8);
+  }
+
+  if (self->_logo)
+  {
+    PBDataWriterWriteDataField();
+  }
+
+  if ((*&self->_has & 2) != 0)
+  {
+    isVerified = self->_isVerified;
+    PBDataWriterWriteBOOLField();
+  }
+
+  v22 = 0u;
+  v23 = 0u;
+  v20 = 0u;
+  v21 = 0u;
+  v13 = self->_intents;
+  v14 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v20 objects:v28 count:16];
+  if (v14)
+  {
+    v15 = v14;
+    v16 = *v21;
+    do
+    {
+      v17 = 0;
+      do
+      {
+        if (*v21 != v16)
+        {
+          objc_enumerationMutation(v13);
+        }
+
+        v18 = *(*(&v20 + 1) + 8 * v17);
+        PBDataWriterWriteSubmessage();
+        ++v17;
+      }
+
+      while (v15 != v17);
+      v15 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v20 objects:v28 count:16];
+    }
+
+    while (v15);
+  }
+
+  if (self->_logoFormat)
+  {
+    PBDataWriterWriteStringField();
+  }
+
+  v19 = *MEMORY[0x277D85DE8];
+}
+
+- (void)copyTo:(id)a3
+{
+  v4 = a3;
+  if (*&self->_has)
+  {
+    v4[1] = self->_phoneHash;
+    *(v4 + 60) |= 1u;
+  }
+
+  v13 = v4;
+  if (self->_phoneNumber)
+  {
+    [v4 setPhoneNumber:?];
+  }
+
+  if ([(BCSCallerIdParquetMessage *)self namesCount])
+  {
+    [v13 clearNames];
+    v5 = [(BCSCallerIdParquetMessage *)self namesCount];
+    if (v5)
+    {
+      v6 = v5;
+      for (i = 0; i != v6; ++i)
+      {
+        v8 = [(BCSCallerIdParquetMessage *)self nameAtIndex:i];
+        [v13 addName:v8];
+      }
+    }
+  }
+
+  if (self->_logo)
+  {
+    [v13 setLogo:?];
+  }
+
+  if ((*&self->_has & 2) != 0)
+  {
+    v13[56] = self->_isVerified;
+    v13[60] |= 2u;
+  }
+
+  if ([(BCSCallerIdParquetMessage *)self intentsCount])
+  {
+    [v13 clearIntents];
+    v9 = [(BCSCallerIdParquetMessage *)self intentsCount];
+    if (v9)
+    {
+      v10 = v9;
+      for (j = 0; j != v10; ++j)
+      {
+        v12 = [(BCSCallerIdParquetMessage *)self intentAtIndex:j];
+        [v13 addIntent:v12];
+      }
+    }
+  }
+
+  if (self->_logoFormat)
+  {
+    [v13 setLogoFormat:?];
+  }
+}
+
+- (id)copyWithZone:(_NSZone *)a3
+{
+  v37 = *MEMORY[0x277D85DE8];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v6 = v5;
+  if (*&self->_has)
+  {
+    *(v5 + 8) = self->_phoneHash;
+    *(v5 + 60) |= 1u;
+  }
+
+  v7 = [(NSString *)self->_phoneNumber copyWithZone:a3];
+  v8 = *(v6 + 48);
+  *(v6 + 48) = v7;
+
+  v33 = 0u;
+  v34 = 0u;
+  v31 = 0u;
+  v32 = 0u;
+  v9 = self->_names;
+  v10 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  if (v10)
+  {
+    v11 = v10;
+    v12 = *v32;
+    do
+    {
+      for (i = 0; i != v11; ++i)
+      {
+        if (*v32 != v12)
+        {
+          objc_enumerationMutation(v9);
+        }
+
+        v14 = [*(*(&v31 + 1) + 8 * i) copyWithZone:a3];
+        [v6 addName:v14];
+      }
+
+      v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v31 objects:v36 count:16];
+    }
+
+    while (v11);
+  }
+
+  v15 = [(NSData *)self->_logo copyWithZone:a3];
+  v16 = *(v6 + 24);
+  *(v6 + 24) = v15;
+
+  if ((*&self->_has & 2) != 0)
+  {
+    *(v6 + 56) = self->_isVerified;
+    *(v6 + 60) |= 2u;
+  }
+
+  v29 = 0u;
+  v30 = 0u;
+  v27 = 0u;
+  v28 = 0u;
+  v17 = self->_intents;
+  v18 = [(NSMutableArray *)v17 countByEnumeratingWithState:&v27 objects:v35 count:16];
+  if (v18)
+  {
+    v19 = v18;
+    v20 = *v28;
+    do
+    {
+      for (j = 0; j != v19; ++j)
+      {
+        if (*v28 != v20)
+        {
+          objc_enumerationMutation(v17);
+        }
+
+        v22 = [*(*(&v27 + 1) + 8 * j) copyWithZone:{a3, v27}];
+        [v6 addIntent:v22];
+      }
+
+      v19 = [(NSMutableArray *)v17 countByEnumeratingWithState:&v27 objects:v35 count:16];
+    }
+
+    while (v19);
+  }
+
+  v23 = [(NSString *)self->_logoFormat copyWithZone:a3];
+  v24 = *(v6 + 32);
+  *(v6 + 32) = v23;
+
+  v25 = *MEMORY[0x277D85DE8];
+  return v6;
+}
+
+- (BOOL)isEqual:(id)a3
+{
+  v4 = a3;
+  if (![v4 isMemberOfClass:objc_opt_class()])
+  {
+    goto LABEL_20;
+  }
+
+  v5 = *(v4 + 60);
+  if (*&self->_has)
+  {
+    if ((*(v4 + 60) & 1) == 0 || self->_phoneHash != *(v4 + 1))
+    {
+      goto LABEL_20;
+    }
+  }
+
+  else if (*(v4 + 60))
+  {
+    goto LABEL_20;
+  }
+
+  phoneNumber = self->_phoneNumber;
+  if (phoneNumber | *(v4 + 6) && ![(NSString *)phoneNumber isEqual:?])
+  {
+    goto LABEL_20;
+  }
+
+  names = self->_names;
+  if (names | *(v4 + 5))
+  {
+    if (![(NSMutableArray *)names isEqual:?])
+    {
+      goto LABEL_20;
+    }
+  }
+
+  logo = self->_logo;
+  if (logo | *(v4 + 3))
+  {
+    if (![(NSData *)logo isEqual:?])
+    {
+      goto LABEL_20;
+    }
+  }
+
+  v9 = *(v4 + 60);
+  if ((*&self->_has & 2) == 0)
+  {
+    if ((*(v4 + 60) & 2) == 0)
+    {
+      goto LABEL_15;
+    }
+
+LABEL_20:
+    v12 = 0;
+    goto LABEL_21;
+  }
+
+  if ((*(v4 + 60) & 2) == 0)
+  {
+    goto LABEL_20;
+  }
+
+  v14 = *(v4 + 56);
+  if (self->_isVerified)
+  {
+    if ((*(v4 + 56) & 1) == 0)
+    {
+      goto LABEL_20;
+    }
+  }
+
+  else if (*(v4 + 56))
+  {
+    goto LABEL_20;
+  }
+
+LABEL_15:
+  intents = self->_intents;
+  if (intents | *(v4 + 2) && ![(NSMutableArray *)intents isEqual:?])
+  {
+    goto LABEL_20;
+  }
+
+  logoFormat = self->_logoFormat;
+  if (logoFormat | *(v4 + 4))
+  {
+    v12 = [(NSString *)logoFormat isEqual:?];
+  }
+
+  else
+  {
+    v12 = 1;
+  }
+
+LABEL_21:
+
+  return v12;
+}
+
+- (unint64_t)hash
+{
+  if (*&self->_has)
+  {
+    v3 = 2654435761 * self->_phoneHash;
+  }
+
+  else
+  {
+    v3 = 0;
+  }
+
+  v4 = [(NSString *)self->_phoneNumber hash];
+  v5 = [(NSMutableArray *)self->_names hash];
+  v6 = [(NSData *)self->_logo hash];
+  if ((*&self->_has & 2) != 0)
+  {
+    v7 = 2654435761 * self->_isVerified;
+  }
+
+  else
+  {
+    v7 = 0;
+  }
+
+  v8 = v4 ^ v3 ^ v5 ^ v6;
+  v9 = v7 ^ [(NSMutableArray *)self->_intents hash];
+  return v8 ^ v9 ^ [(NSString *)self->_logoFormat hash];
+}
+
+- (void)mergeFrom:(id)a3
+{
+  v27 = *MEMORY[0x277D85DE8];
+  v4 = a3;
+  v5 = v4;
+  if (*(v4 + 60))
+  {
+    self->_phoneHash = v4[1];
+    *&self->_has |= 1u;
+  }
+
+  if (v4[6])
+  {
+    [(BCSCallerIdParquetMessage *)self setPhoneNumber:?];
+  }
+
+  v23 = 0u;
+  v24 = 0u;
+  v21 = 0u;
+  v22 = 0u;
+  v6 = *(v5 + 5);
+  v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  if (v7)
+  {
+    v8 = v7;
+    v9 = *v22;
+    do
+    {
+      for (i = 0; i != v8; ++i)
+      {
+        if (*v22 != v9)
+        {
+          objc_enumerationMutation(v6);
+        }
+
+        [(BCSCallerIdParquetMessage *)self addName:*(*(&v21 + 1) + 8 * i)];
+      }
+
+      v8 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+    }
+
+    while (v8);
+  }
+
+  if (*(v5 + 3))
+  {
+    [(BCSCallerIdParquetMessage *)self setLogo:?];
+  }
+
+  if ((*(v5 + 60) & 2) != 0)
+  {
+    self->_isVerified = *(v5 + 56);
+    *&self->_has |= 2u;
+  }
+
+  v19 = 0u;
+  v20 = 0u;
+  v17 = 0u;
+  v18 = 0u;
+  v11 = *(v5 + 2);
+  v12 = [v11 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  if (v12)
+  {
+    v13 = v12;
+    v14 = *v18;
+    do
+    {
+      for (j = 0; j != v13; ++j)
+      {
+        if (*v18 != v14)
+        {
+          objc_enumerationMutation(v11);
+        }
+
+        [(BCSCallerIdParquetMessage *)self addIntent:*(*(&v17 + 1) + 8 * j), v17];
+      }
+
+      v13 = [v11 countByEnumeratingWithState:&v17 objects:v25 count:16];
+    }
+
+    while (v13);
+  }
+
+  if (*(v5 + 4))
+  {
+    [(BCSCallerIdParquetMessage *)self setLogoFormat:?];
+  }
+
+  v16 = *MEMORY[0x277D85DE8];
+}
+
+@end

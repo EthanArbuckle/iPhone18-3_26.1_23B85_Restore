@@ -1,0 +1,263 @@
+@interface PDCollectionPublishOperation
+- (BOOL)wantsToExecute;
+- (PDCollectionPublishOperation)initWithDatabase:(id)a3;
+- (PDCollectionPublishOperation)initWithDatabase:(id)a3 andObjectsToDelete:(id)a4;
+- (id)createPayloadForDeletingCollection:(id)a3;
+- (id)createPayloadForDeletingCollectionItem:(id)a3;
+- (id)requestData;
+- (void)execute;
+@end
+
+@implementation PDCollectionPublishOperation
+
+- (PDCollectionPublishOperation)initWithDatabase:(id)a3
+{
+  v4.receiver = self;
+  v4.super_class = PDCollectionPublishOperation;
+  result = [(PDURLRequestOperation *)&v4 initWithDatabase:a3];
+  if (result)
+  {
+    BYTE3(result->super.super._responseStatusError) = 1;
+  }
+
+  return result;
+}
+
+- (PDCollectionPublishOperation)initWithDatabase:(id)a3 andObjectsToDelete:(id)a4
+{
+  v6 = a4;
+  v7 = [(PDCollectionPublishOperation *)self initWithDatabase:a3];
+  if (v7)
+  {
+    v8 = objc_alloc_init(NSMutableArray);
+    v18 = 0u;
+    v19 = 0u;
+    v20 = 0u;
+    v21 = 0u;
+    v9 = v6;
+    v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    if (v10)
+    {
+      v11 = v10;
+      v12 = *v19;
+      do
+      {
+        v13 = 0;
+        do
+        {
+          if (*v19 != v12)
+          {
+            objc_enumerationMutation(v9);
+          }
+
+          v14 = *(*(&v18 + 1) + 8 * v13);
+          objc_opt_class();
+          if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
+          {
+            [v8 addObject:{v14, v18}];
+          }
+
+          v13 = v13 + 1;
+        }
+
+        while (v11 != v13);
+        v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      }
+
+      while (v11);
+    }
+
+    v15 = [v8 copy];
+    v16 = *(&v7->super._responseStatusPayloadFailed + 3);
+    *(&v7->super._responseStatusPayloadFailed + 3) = v15;
+
+    BYTE3(v7->super.super._responseStatusError) = 1;
+  }
+
+  return v7;
+}
+
+- (id)requestData
+{
+  if ([(PDOperation *)self isAborted])
+  {
+    goto LABEL_31;
+  }
+
+  if (!*(&self->super._responseStatusPayloadFailed + 3))
+  {
+    [(PDEndpointRequestOperation *)self markAsFinished];
+LABEL_31:
+    v29 = 0;
+    goto LABEL_32;
+  }
+
+  v3 = objc_alloc_init(PDDPPublishCollectionRequest);
+  v4 = objc_alloc_init(PBDataWriter);
+  v36 = 0u;
+  v37 = 0u;
+  v38 = 0u;
+  v39 = 0u;
+  obj = *(&self->super._responseStatusPayloadFailed + 3);
+  v5 = [obj countByEnumeratingWithState:&v36 objects:v46 count:16];
+  if (v5)
+  {
+    v7 = v5;
+    v35 = *v37;
+    *&v6 = 138543874;
+    v31 = v6;
+LABEL_5:
+    v8 = 0;
+    while (1)
+    {
+      if (*v37 != v35)
+      {
+        objc_enumerationMutation(obj);
+      }
+
+      v9 = *(*(&v36 + 1) + 8 * v8);
+      v10 = objc_autoreleasePoolPush();
+      objc_opt_class();
+      if (objc_opt_isKindOfClass())
+      {
+        v11 = [(PDCollectionPublishOperation *)self createPayloadForDeletingCollection:v9];
+      }
+
+      else
+      {
+        v11 = 0;
+      }
+
+      objc_opt_class();
+      if (objc_opt_isKindOfClass())
+      {
+        v12 = [(PDCollectionPublishOperation *)self createPayloadForDeletingCollectionItem:v9];
+
+        v11 = v12;
+      }
+
+      [(PDDPPublishCollectionRequest *)v3 addPayload:v11, v31];
+      [(PDDPPublishCollectionRequest *)v3 writeTo:v4];
+      [(PDDPPublishCollectionRequest *)v3 clearPayloads];
+      v13 = [v4 data];
+      v14 = [v13 length];
+      v15 = [(PDURLRequestOperation *)self stats];
+      if (v15)
+      {
+        v15[10] = v14;
+      }
+
+      v16 = [(PDURLRequestOperation *)self stats];
+      if (v16)
+      {
+        ++v16[14];
+      }
+
+      CLSInitLog();
+      v17 = [(PDCollectionPublishOperation *)self logSubsystem];
+      if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
+      {
+        v25 = objc_opt_class();
+        v33 = v25;
+        [(PDURLRequestOperation *)self operationID];
+        v26 = v32 = v7;
+        v27 = [v11 dictionaryRepresentation];
+        *buf = v31;
+        v41 = v25;
+        v42 = 2114;
+        v43 = v26;
+        v44 = 2112;
+        v45 = v27;
+        _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ added payload item %@ ", buf, 0x20u);
+
+        v7 = v32;
+      }
+
+      objc_autoreleasePoolPop(v10);
+      v18 = [(PDURLRequestOperation *)self stats];
+      v19 = v18;
+      v20 = v18 ? *(v18 + 80) : 0;
+      v21 = [(PDURLRequestOperation *)self stats];
+      v22 = v21;
+      v23 = v21 ? *(v21 + 112) : 0;
+      v24 = [(PDEndpointRequestOperation *)self hasReachedRequestPayloadLimitBytes:v20 count:v23];
+
+      if (v24)
+      {
+        break;
+      }
+
+      if (v7 == ++v8)
+      {
+        v28 = [obj countByEnumeratingWithState:&v36 objects:v46 count:16];
+        v7 = v28;
+        if (v28)
+        {
+          goto LABEL_5;
+        }
+
+        break;
+      }
+    }
+  }
+
+  v29 = [v4 immutableData];
+
+LABEL_32:
+
+  return v29;
+}
+
+- (void)execute
+{
+  v3.receiver = self;
+  v3.super_class = PDCollectionPublishOperation;
+  [(PDEndpointRequestOperation *)&v3 execute];
+  BYTE3(self->super.super._responseStatusError) = 0;
+}
+
+- (BOOL)wantsToExecute
+{
+  result = 0;
+  if (BYTE3(self->super.super._responseStatusError) == 1)
+  {
+    v4 = *(&self->super._responseStatusPayloadFailed + 3);
+    if (v4)
+    {
+      if ([v4 count])
+      {
+        return 1;
+      }
+    }
+  }
+
+  return result;
+}
+
+- (id)createPayloadForDeletingCollectionItem:(id)a3
+{
+  v3 = a3;
+  v4 = objc_alloc_init(PDDPPayload);
+  [(PDDPPayload *)v4 setAction:3];
+  [(PDDPPayload *)v4 setType:21];
+  v5 = sub_10001D56C(v3);
+
+  [(PDDPPayload *)v4 setCollectionItem:v5];
+
+  return v4;
+}
+
+- (id)createPayloadForDeletingCollection:(id)a3
+{
+  v3 = a3;
+  v4 = objc_alloc_init(PDDPPayload);
+  [(PDDPPayload *)v4 setAction:3];
+  [(PDDPPayload *)v4 setType:20];
+  v5 = sub_10001CE94(v3);
+
+  [(PDDPPayload *)v4 setCollection:v5];
+
+  return v4;
+}
+
+@end

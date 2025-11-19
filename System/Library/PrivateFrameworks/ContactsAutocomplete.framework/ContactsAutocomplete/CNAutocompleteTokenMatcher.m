@@ -1,0 +1,107 @@
+@interface CNAutocompleteTokenMatcher
++ (BOOL)doSearchTokens:(id)a3 matchNameTokens:(id)a4;
++ (id)indexesOfNameTokens:(id)a3 matchingSearchToken:(id)a4;
++ (id)tokensForNameString:(id)a3;
+@end
+
+@implementation CNAutocompleteTokenMatcher
+
++ (BOOL)doSearchTokens:(id)a3 matchNameTokens:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  v8 = [v6 count];
+  if (v8 <= [v7 count])
+  {
+    if ((*(*MEMORY[0x277CFBCF8] + 16))())
+    {
+      v9 = 1;
+    }
+
+    else
+    {
+      v10 = [v6 firstObject];
+      v11 = [a1 indexesOfNameTokens:v7 matchingSearchToken:v10];
+      if ((*(*MEMORY[0x277CFBD10] + 16))())
+      {
+        v9 = 0;
+      }
+
+      else
+      {
+        v12 = [v6 _cn_tail];
+        v15[0] = MEMORY[0x277D85DD0];
+        v15[1] = 3221225472;
+        v15[2] = __61__CNAutocompleteTokenMatcher_doSearchTokens_matchNameTokens___block_invoke;
+        v15[3] = &unk_2781C41C8;
+        v17 = v12;
+        v18 = a1;
+        v16 = v7;
+        v13 = v12;
+        v9 = [v11 _cn_any:v15];
+      }
+    }
+  }
+
+  else
+  {
+    v9 = 0;
+  }
+
+  return v9;
+}
+
+uint64_t __61__CNAutocompleteTokenMatcher_doSearchTokens_matchNameTokens___block_invoke(uint64_t a1, uint64_t a2)
+{
+  v4 = [*(a1 + 32) mutableCopy];
+  [v4 removeObjectAtIndex:a2];
+  v5 = [*(a1 + 48) doSearchTokens:*(a1 + 40) matchNameTokens:v4];
+
+  return v5;
+}
+
++ (id)indexesOfNameTokens:(id)a3 matchingSearchToken:(id)a4
+{
+  v5 = a4;
+  v9[0] = MEMORY[0x277D85DD0];
+  v9[1] = 3221225472;
+  v9[2] = __70__CNAutocompleteTokenMatcher_indexesOfNameTokens_matchingSearchToken___block_invoke;
+  v9[3] = &unk_2781C41F0;
+  v10 = v5;
+  v6 = v5;
+  v7 = [a3 indexesOfObjectsPassingTest:v9];
+
+  return v7;
+}
+
++ (id)tokensForNameString:(id)a3
+{
+  v3 = a3;
+  if ((*(*MEMORY[0x277CFBD30] + 16))())
+  {
+    v4 = MEMORY[0x277CBEBF8];
+  }
+
+  else
+  {
+    if (tokensForNameString__cn_once_token_0 != -1)
+    {
+      +[CNAutocompleteTokenMatcher tokensForNameString:];
+    }
+
+    v4 = [tokensForNameString__cn_once_object_0 tokenizeNameString:v3 inferredNameOrder:0];
+  }
+
+  return v4;
+}
+
+void __50__CNAutocompleteTokenMatcher_tokensForNameString___block_invoke()
+{
+  v0 = objc_alloc(MEMORY[0x277CFBE58]);
+  v3 = +[CNAutocompleteResult localeForHashing];
+  v1 = [v0 initWithLocale:v3];
+  v2 = tokensForNameString__cn_once_object_0;
+  tokensForNameString__cn_once_object_0 = v1;
+}
+
+@end

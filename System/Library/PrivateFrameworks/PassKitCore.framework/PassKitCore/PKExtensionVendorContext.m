@@ -1,0 +1,415 @@
+@interface PKExtensionVendorContext
+- (id)entitlementWhitelist;
+- (void)authorizationDidAuthorizePaymentCompleteWithResult:(id)a3;
+- (void)authorizationDidAuthorizePaymentCompleteWithStatus:(int64_t)a3;
+- (void)authorizationDidAuthorizePeerPaymentQuoteCompleteWithResult:(id)a3;
+- (void)authorizationDidAuthorizePurchaseCompleteWithStatus:(int64_t)a3;
+- (void)authorizationDidChangeCouponCodeCompleteWithUpdate:(id)a3;
+- (void)authorizationDidRequestMerchantSessionCompleteWithUpdate:(id)a3;
+- (void)authorizationDidSelectPaymentMethodCompleteWithPaymentSummaryItems:(id)a3;
+- (void)authorizationDidSelectPaymentMethodCompleteWithUpdate:(id)a3;
+- (void)authorizationDidSelectShippingAddressCompleteWithStatus:(int64_t)a3 shippingMethods:(id)a4 paymentSummaryItems:(id)a5;
+- (void)authorizationDidSelectShippingAddressCompleteWithUpdate:(id)a3;
+- (void)authorizationDidSelectShippingMethodCompleteWithStatus:(int64_t)a3 paymentSummaryItems:(id)a4;
+- (void)authorizationDidSelectShippingMethodCompleteWithUpdate:(id)a3;
+- (void)handleDismissWithCompletion:(id)a3;
+- (void)handleHostApplicationDidBecomeActive;
+- (void)handleHostApplicationDidCancel;
+- (void)handleHostApplicationWillResignActive:(BOOL)a3;
+- (void)prepareWithPaymentRequest:(id)a3 completion:(id)a4;
+@end
+
+@implementation PKExtensionVendorContext
+
+- (void)handleHostApplicationWillResignActive:(BOOL)a3
+{
+  v3[0] = MEMORY[0x1E69E9820];
+  v3[1] = 3221225472;
+  v3[2] = __66__PKExtensionVendorContext_handleHostApplicationWillResignActive___block_invoke;
+  v3[3] = &unk_1E79C4EC8;
+  v3[4] = self;
+  v4 = a3;
+  dispatch_async(MEMORY[0x1E69E96A0], v3);
+}
+
+void __66__PKExtensionVendorContext_handleHostApplicationWillResignActive___block_invoke(uint64_t a1)
+{
+  v2 = [*(a1 + 32) _principalObject];
+  [v2 handleHostApplicationWillResignActive:*(a1 + 40)];
+}
+
+- (void)handleHostApplicationDidBecomeActive
+{
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __64__PKExtensionVendorContext_handleHostApplicationDidBecomeActive__block_invoke;
+  block[3] = &unk_1E79C4E28;
+  block[4] = self;
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+}
+
+void __64__PKExtensionVendorContext_handleHostApplicationDidBecomeActive__block_invoke(uint64_t a1)
+{
+  v1 = [*(a1 + 32) _principalObject];
+  [v1 handleHostApplicationDidBecomeActive];
+}
+
+- (void)authorizationDidRequestMerchantSessionCompleteWithUpdate:(id)a3
+{
+  v4 = a3;
+  v6[0] = MEMORY[0x1E69E9820];
+  v6[1] = 3221225472;
+  v6[2] = __85__PKExtensionVendorContext_authorizationDidRequestMerchantSessionCompleteWithUpdate___block_invoke;
+  v6[3] = &unk_1E79C4DD8;
+  v7 = v4;
+  v8 = self;
+  v5 = v4;
+  dispatch_async(MEMORY[0x1E69E96A0], v6);
+}
+
+void __85__PKExtensionVendorContext_authorizationDidRequestMerchantSessionCompleteWithUpdate___block_invoke(uint64_t a1)
+{
+  if ([*(a1 + 32) status] || (objc_msgSend(*(a1 + 40), "entitlementWhitelist"), v2 = objc_claimAutoreleasedReturnValue(), objc_msgSend(*(a1 + 32), "session"), v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_msgSend(v2, "isEntitledForMerchantSession:", v3), v3, v2, !v4))
+  {
+    v5 = [[PKPaymentRequestMerchantSessionUpdate alloc] initWithStatus:1 merchantSession:0];
+  }
+
+  else
+  {
+    v5 = *(a1 + 32);
+  }
+
+  v7 = v5;
+  v6 = [*(a1 + 40) _principalObject];
+  [v6 authorizationDidRequestMerchantSessionCompleteWithUpdate:v7];
+}
+
+- (void)authorizationDidAuthorizePaymentCompleteWithResult:(id)a3
+{
+  v4 = a3;
+  v6[0] = MEMORY[0x1E69E9820];
+  v6[1] = 3221225472;
+  v6[2] = __79__PKExtensionVendorContext_authorizationDidAuthorizePaymentCompleteWithResult___block_invoke;
+  v6[3] = &unk_1E79C4DD8;
+  v6[4] = self;
+  v7 = v4;
+  v5 = v4;
+  dispatch_async(MEMORY[0x1E69E96A0], v6);
+}
+
+void __79__PKExtensionVendorContext_authorizationDidAuthorizePaymentCompleteWithResult___block_invoke(uint64_t a1)
+{
+  v2 = [*(a1 + 32) _principalObject];
+  [v2 authorizationDidAuthorizePaymentCompleteWithResult:*(a1 + 40)];
+}
+
+- (void)authorizationDidAuthorizePaymentCompleteWithStatus:(int64_t)a3
+{
+  v3[0] = MEMORY[0x1E69E9820];
+  v3[1] = 3221225472;
+  v3[2] = __79__PKExtensionVendorContext_authorizationDidAuthorizePaymentCompleteWithStatus___block_invoke;
+  v3[3] = &unk_1E79CAED8;
+  v3[4] = self;
+  v3[5] = a3;
+  dispatch_async(MEMORY[0x1E69E96A0], v3);
+}
+
+void __79__PKExtensionVendorContext_authorizationDidAuthorizePaymentCompleteWithStatus___block_invoke(uint64_t a1)
+{
+  v3 = objc_alloc_init(PKPaymentAuthorizationResult);
+  [(PKPaymentAuthorizationResult *)v3 setStatus:*(a1 + 40)];
+  v2 = [*(a1 + 32) _principalObject];
+  [v2 authorizationDidAuthorizePaymentCompleteWithResult:v3];
+}
+
+- (void)authorizationDidAuthorizePurchaseCompleteWithStatus:(int64_t)a3
+{
+  v3[0] = MEMORY[0x1E69E9820];
+  v3[1] = 3221225472;
+  v3[2] = __80__PKExtensionVendorContext_authorizationDidAuthorizePurchaseCompleteWithStatus___block_invoke;
+  v3[3] = &unk_1E79CAED8;
+  v3[4] = self;
+  v3[5] = a3;
+  dispatch_async(MEMORY[0x1E69E96A0], v3);
+}
+
+void __80__PKExtensionVendorContext_authorizationDidAuthorizePurchaseCompleteWithStatus___block_invoke(uint64_t a1)
+{
+  v2 = [*(a1 + 32) _principalObject];
+  [v2 authorizationDidAuthorizePurchaseCompleteWithStatus:*(a1 + 40)];
+}
+
+- (void)authorizationDidAuthorizePeerPaymentQuoteCompleteWithResult:(id)a3
+{
+  v4 = a3;
+  v6[0] = MEMORY[0x1E69E9820];
+  v6[1] = 3221225472;
+  v6[2] = __88__PKExtensionVendorContext_authorizationDidAuthorizePeerPaymentQuoteCompleteWithResult___block_invoke;
+  v6[3] = &unk_1E79C4DD8;
+  v6[4] = self;
+  v7 = v4;
+  v5 = v4;
+  dispatch_async(MEMORY[0x1E69E96A0], v6);
+}
+
+void __88__PKExtensionVendorContext_authorizationDidAuthorizePeerPaymentQuoteCompleteWithResult___block_invoke(uint64_t a1)
+{
+  v2 = [*(a1 + 32) _principalObject];
+  [v2 authorizationDidAuthorizePeerPaymentQuoteCompleteWithResult:*(a1 + 40)];
+}
+
+- (void)authorizationDidSelectShippingMethodCompleteWithUpdate:(id)a3
+{
+  v4 = a3;
+  v6[0] = MEMORY[0x1E69E9820];
+  v6[1] = 3221225472;
+  v6[2] = __83__PKExtensionVendorContext_authorizationDidSelectShippingMethodCompleteWithUpdate___block_invoke;
+  v6[3] = &unk_1E79C4DD8;
+  v6[4] = self;
+  v7 = v4;
+  v5 = v4;
+  dispatch_async(MEMORY[0x1E69E96A0], v6);
+}
+
+void __83__PKExtensionVendorContext_authorizationDidSelectShippingMethodCompleteWithUpdate___block_invoke(uint64_t a1)
+{
+  v2 = [*(a1 + 32) _principalObject];
+  [v2 authorizationDidSelectShippingMethodCompleteWithUpdate:*(a1 + 40)];
+}
+
+- (void)authorizationDidSelectShippingMethodCompleteWithStatus:(int64_t)a3 paymentSummaryItems:(id)a4
+{
+  v6 = a4;
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __103__PKExtensionVendorContext_authorizationDidSelectShippingMethodCompleteWithStatus_paymentSummaryItems___block_invoke;
+  block[3] = &unk_1E79CBF50;
+  v10 = self;
+  v11 = a3;
+  v9 = v6;
+  v7 = v6;
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+}
+
+void __103__PKExtensionVendorContext_authorizationDidSelectShippingMethodCompleteWithStatus_paymentSummaryItems___block_invoke(uint64_t a1)
+{
+  v3 = objc_alloc_init(PKPaymentRequestShippingMethodUpdate);
+  [(PKPaymentRequestUpdate *)v3 setStatus:*(a1 + 48)];
+  [(PKPaymentRequestUpdate *)v3 setPaymentSummaryItems:*(a1 + 32)];
+  v2 = [*(a1 + 40) _principalObject];
+  [v2 authorizationDidSelectShippingMethodCompleteWithUpdate:v3];
+}
+
+- (void)authorizationDidSelectShippingAddressCompleteWithUpdate:(id)a3
+{
+  v4 = a3;
+  v6[0] = MEMORY[0x1E69E9820];
+  v6[1] = 3221225472;
+  v6[2] = __84__PKExtensionVendorContext_authorizationDidSelectShippingAddressCompleteWithUpdate___block_invoke;
+  v6[3] = &unk_1E79C4DD8;
+  v6[4] = self;
+  v7 = v4;
+  v5 = v4;
+  dispatch_async(MEMORY[0x1E69E96A0], v6);
+}
+
+void __84__PKExtensionVendorContext_authorizationDidSelectShippingAddressCompleteWithUpdate___block_invoke(uint64_t a1)
+{
+  v2 = [*(a1 + 32) _principalObject];
+  [v2 authorizationDidSelectShippingAddressCompleteWithUpdate:*(a1 + 40)];
+}
+
+- (void)authorizationDidSelectShippingAddressCompleteWithStatus:(int64_t)a3 shippingMethods:(id)a4 paymentSummaryItems:(id)a5
+{
+  v8 = a4;
+  v9 = a5;
+  v12[0] = MEMORY[0x1E69E9820];
+  v12[1] = 3221225472;
+  v12[2] = __120__PKExtensionVendorContext_authorizationDidSelectShippingAddressCompleteWithStatus_shippingMethods_paymentSummaryItems___block_invoke;
+  v12[3] = &unk_1E79D6948;
+  v13 = v9;
+  v14 = v8;
+  v15 = self;
+  v16 = a3;
+  v10 = v8;
+  v11 = v9;
+  dispatch_async(MEMORY[0x1E69E96A0], v12);
+}
+
+void __120__PKExtensionVendorContext_authorizationDidSelectShippingAddressCompleteWithStatus_shippingMethods_paymentSummaryItems___block_invoke(uint64_t a1)
+{
+  v2 = [PKPaymentRequestShippingContactUpdate alloc];
+  v4 = [(PKPaymentRequestShippingContactUpdate *)v2 initWithErrors:MEMORY[0x1E695E0F0] paymentSummaryItems:*(a1 + 32) shippingMethods:*(a1 + 40)];
+  [(PKPaymentRequestUpdate *)v4 setStatus:*(a1 + 56)];
+  v3 = [*(a1 + 48) _principalObject];
+  [v3 authorizationDidSelectShippingAddressCompleteWithUpdate:v4];
+}
+
+- (void)authorizationDidSelectPaymentMethodCompleteWithUpdate:(id)a3
+{
+  v4 = a3;
+  v6[0] = MEMORY[0x1E69E9820];
+  v6[1] = 3221225472;
+  v6[2] = __82__PKExtensionVendorContext_authorizationDidSelectPaymentMethodCompleteWithUpdate___block_invoke;
+  v6[3] = &unk_1E79C4DD8;
+  v6[4] = self;
+  v7 = v4;
+  v5 = v4;
+  dispatch_async(MEMORY[0x1E69E96A0], v6);
+}
+
+void __82__PKExtensionVendorContext_authorizationDidSelectPaymentMethodCompleteWithUpdate___block_invoke(uint64_t a1)
+{
+  v2 = [*(a1 + 32) _principalObject];
+  [v2 authorizationDidSelectPaymentMethodCompleteWithUpdate:*(a1 + 40)];
+}
+
+- (void)authorizationDidSelectPaymentMethodCompleteWithPaymentSummaryItems:(id)a3
+{
+  v4 = a3;
+  v6[0] = MEMORY[0x1E69E9820];
+  v6[1] = 3221225472;
+  v6[2] = __95__PKExtensionVendorContext_authorizationDidSelectPaymentMethodCompleteWithPaymentSummaryItems___block_invoke;
+  v6[3] = &unk_1E79C4DD8;
+  v7 = v4;
+  v8 = self;
+  v5 = v4;
+  dispatch_async(MEMORY[0x1E69E96A0], v6);
+}
+
+void __95__PKExtensionVendorContext_authorizationDidSelectPaymentMethodCompleteWithPaymentSummaryItems___block_invoke(uint64_t a1)
+{
+  v3 = objc_alloc_init(PKPaymentRequestPaymentMethodUpdate);
+  [(PKPaymentRequestUpdate *)v3 setPaymentSummaryItems:*(a1 + 32)];
+  v2 = [*(a1 + 40) _principalObject];
+  [v2 authorizationDidSelectPaymentMethodCompleteWithUpdate:v3];
+}
+
+- (void)authorizationDidChangeCouponCodeCompleteWithUpdate:(id)a3
+{
+  v4 = a3;
+  v6[0] = MEMORY[0x1E69E9820];
+  v6[1] = 3221225472;
+  v6[2] = __79__PKExtensionVendorContext_authorizationDidChangeCouponCodeCompleteWithUpdate___block_invoke;
+  v6[3] = &unk_1E79C4DD8;
+  v6[4] = self;
+  v7 = v4;
+  v5 = v4;
+  dispatch_async(MEMORY[0x1E69E96A0], v6);
+}
+
+void __79__PKExtensionVendorContext_authorizationDidChangeCouponCodeCompleteWithUpdate___block_invoke(uint64_t a1)
+{
+  v2 = [*(a1 + 32) _principalObject];
+  [v2 authorizationDidChangeCouponCodeCompleteWithUpdate:*(a1 + 40)];
+}
+
+- (void)handleHostApplicationDidCancel
+{
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __58__PKExtensionVendorContext_handleHostApplicationDidCancel__block_invoke;
+  block[3] = &unk_1E79C4E28;
+  block[4] = self;
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+}
+
+void __58__PKExtensionVendorContext_handleHostApplicationDidCancel__block_invoke(uint64_t a1)
+{
+  v1 = [*(a1 + 32) _principalObject];
+  if (objc_opt_respondsToSelector())
+  {
+    [v1 handleHostApplicationDidCancel];
+  }
+}
+
+- (void)handleDismissWithCompletion:(id)a3
+{
+  v4 = a3;
+  v6[0] = MEMORY[0x1E69E9820];
+  v6[1] = 3221225472;
+  v6[2] = __56__PKExtensionVendorContext_handleDismissWithCompletion___block_invoke;
+  v6[3] = &unk_1E79C4A40;
+  v6[4] = self;
+  v7 = v4;
+  v5 = v4;
+  dispatch_async(MEMORY[0x1E69E96A0], v6);
+}
+
+void __56__PKExtensionVendorContext_handleDismissWithCompletion___block_invoke(uint64_t a1)
+{
+  v4 = [*(a1 + 32) _principalObject];
+  v2 = objc_opt_respondsToSelector();
+  v3 = *(a1 + 40);
+  if (v2)
+  {
+    [v4 handleDismissWithCompletion:v3];
+  }
+
+  else if (v3)
+  {
+    (*(v3 + 16))(*(a1 + 40));
+  }
+}
+
+- (void)prepareWithPaymentRequest:(id)a3 completion:(id)a4
+{
+  v6 = a3;
+  v7 = a4;
+  block[0] = MEMORY[0x1E69E9820];
+  block[1] = 3221225472;
+  block[2] = __65__PKExtensionVendorContext_prepareWithPaymentRequest_completion___block_invoke;
+  block[3] = &unk_1E79C4D60;
+  block[4] = self;
+  v11 = v6;
+  v12 = v7;
+  v8 = v7;
+  v9 = v6;
+  dispatch_async(MEMORY[0x1E69E96A0], block);
+}
+
+void __65__PKExtensionVendorContext_prepareWithPaymentRequest_completion___block_invoke(uint64_t a1)
+{
+  v2 = [*(a1 + 32) entitlementWhitelist];
+  v3 = [v2 isEntitledForPaymentRequest:*(a1 + 40)];
+
+  if (v3)
+  {
+    v5 = [*(a1 + 32) _principalObject];
+    if (objc_opt_respondsToSelector())
+    {
+      [v5 prepareWithPaymentRequest:*(a1 + 40) completion:*(a1 + 48)];
+    }
+  }
+
+  else
+  {
+    v4 = *(a1 + 48);
+    if (!v4)
+    {
+      return;
+    }
+
+    v5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:4 userInfo:0];
+    (*(v4 + 16))(v4);
+  }
+}
+
+- (id)entitlementWhitelist
+{
+  whitelist = self->_whitelist;
+  if (!whitelist)
+  {
+    v4 = [PKEntitlementWhitelist alloc];
+    v5 = [(PKExtensionVendorContext *)self _auxiliaryConnection];
+    v6 = [(PKEntitlementWhitelist *)v4 initWithConnection:v5];
+    v7 = self->_whitelist;
+    self->_whitelist = v6;
+
+    whitelist = self->_whitelist;
+  }
+
+  return whitelist;
+}
+
+@end

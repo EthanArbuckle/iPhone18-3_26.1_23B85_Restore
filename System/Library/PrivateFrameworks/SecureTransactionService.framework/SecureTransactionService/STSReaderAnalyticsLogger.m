@@ -1,0 +1,371 @@
+@interface STSReaderAnalyticsLogger
++ (id)sharedCALogger;
+- (STSReaderAnalyticsLogger)init;
+- (void)_postReaderTransactionEvent:(id)a3 prepOnly:(BOOL)a4;
+- (void)postReaderSessionEvent:(id)a3;
+- (void)postReaderTransactionEvent:(id)a3 prepOnly:(BOOL)a4;
+@end
+
+@implementation STSReaderAnalyticsLogger
+
++ (id)sharedCALogger
+{
+  if (qword_280017790 != -1)
+  {
+    dispatch_once(&qword_280017790, &unk_2876E3DB0);
+  }
+
+  v3 = qword_280017788;
+
+  return v3;
+}
+
+- (STSReaderAnalyticsLogger)init
+{
+  v8.receiver = self;
+  v8.super_class = STSReaderAnalyticsLogger;
+  v2 = [(STSReaderAnalyticsLogger *)&v8 init];
+  if (v2)
+  {
+    v3 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
+    v4 = dispatch_queue_attr_make_with_qos_class(v3, QOS_CLASS_BACKGROUND, 0);
+    v5 = dispatch_queue_create("com.apple.sts.analyticsLogger", v4);
+    queue = v2->_queue;
+    v2->_queue = v5;
+  }
+
+  return v2;
+}
+
+- (void)_postReaderTransactionEvent:(id)a3 prepOnly:(BOOL)a4
+{
+  v4 = a4;
+  v99[11] = *MEMORY[0x277D85DE8];
+  v5 = a3;
+  v6 = v5;
+  if (v4)
+  {
+    v7 = [v5 objectForKeyedSubscript:@"transactionStartEventTime"];
+    objc_opt_class();
+    isKindOfClass = objc_opt_isKindOfClass();
+
+    if (isKindOfClass)
+    {
+      v9 = [v6 objectForKeyedSubscript:@"transactionStartEventTime"];
+      v10 = qword_280017798;
+      qword_280017798 = v9;
+    }
+
+    v11 = [v6 objectForKeyedSubscript:@"engagementType"];
+    objc_opt_class();
+    v12 = objc_opt_isKindOfClass();
+
+    if (v12)
+    {
+      v13 = [v6 objectForKeyedSubscript:@"engagementType"];
+      v14 = qword_2800175C8;
+      qword_2800175C8 = v13;
+    }
+
+    v15 = [v6 objectForKeyedSubscript:@"supportedtedReaderBTRoles"];
+    objc_opt_class();
+    v16 = objc_opt_isKindOfClass();
+
+    if (v16)
+    {
+      v17 = [v6 objectForKeyedSubscript:@"supportedtedReaderBTRoles"];
+      v18 = qword_2800175D0;
+      qword_2800175D0 = v17;
+    }
+
+    v19 = [v6 objectForKeyedSubscript:@"responseSize"];
+    objc_opt_class();
+    v20 = objc_opt_isKindOfClass();
+
+    if (v20)
+    {
+      v21 = [v6 objectForKeyedSubscript:@"responseSize"];
+      v22 = qword_2800175E0;
+      qword_2800175E0 = v21;
+    }
+
+    v23 = [v6 objectForKeyedSubscript:@"requestSize"];
+    objc_opt_class();
+    v24 = objc_opt_isKindOfClass();
+
+    if (v24)
+    {
+      v25 = [v6 objectForKeyedSubscript:@"requestSize"];
+      v26 = qword_2800175D8;
+      qword_2800175D8 = v25;
+    }
+
+    v27 = [v6 objectForKeyedSubscript:@"handoverResponseSize"];
+    objc_opt_class();
+    v28 = objc_opt_isKindOfClass();
+
+    if (v28)
+    {
+      v29 = [v6 objectForKeyedSubscript:@"handoverResponseSize"];
+      v30 = qword_2800175F0;
+      qword_2800175F0 = v29;
+    }
+
+    v31 = [v6 objectForKeyedSubscript:@"handoverRequestSize"];
+    objc_opt_class();
+    v32 = objc_opt_isKindOfClass();
+
+    if (v32)
+    {
+      v33 = [v6 objectForKeyedSubscript:@"handoverRequestSize"];
+      v34 = qword_2800175E8;
+      qword_2800175E8 = v33;
+    }
+
+    v35 = [v6 objectForKeyedSubscript:@"handoverStartEventTime"];
+    objc_opt_class();
+    v36 = objc_opt_isKindOfClass();
+
+    if (v36)
+    {
+      v37 = [v6 objectForKeyedSubscript:@"handoverStartEventTime"];
+      v38 = qword_2800177A0;
+      qword_2800177A0 = v37;
+    }
+
+    v39 = [v6 objectForKeyedSubscript:@"handoverEndEventTime"];
+    objc_opt_class();
+    v40 = objc_opt_isKindOfClass();
+
+    if (v40)
+    {
+      v41 = [v6 objectForKeyedSubscript:@"handoverEndEventTime"];
+      v42 = qword_2800177A8;
+      qword_2800177A8 = v41;
+    }
+
+    v43 = [v6 objectForKeyedSubscript:@"altCarrierStartEventTime"];
+    objc_opt_class();
+    v44 = objc_opt_isKindOfClass();
+
+    if (v44)
+    {
+      v45 = [v6 objectForKeyedSubscript:@"altCarrierStartEventTime"];
+      v46 = qword_2800177B0;
+      qword_2800177B0 = v45;
+    }
+
+    v47 = &unk_2876ED9B0;
+  }
+
+  else
+  {
+    v48 = [MEMORY[0x277CCAD78] UUID];
+    v49 = [v48 UUIDString];
+
+    v53 = qword_280017798;
+    if (!qword_280017798)
+    {
+      sub_265398190(OS_LOG_TYPE_INFO, 0, "[STSReaderAnalyticsLogger _postReaderTransactionEvent:prepOnly:]", 146, @"Missing startEvent time", v50, v51, v52, v93);
+    }
+
+    v54 = [v6 objectForKeyedSubscript:@"transactionEndEventTime"];
+    objc_opt_class();
+    v55 = (v53 != 0) & objc_opt_isKindOfClass();
+
+    if (v55 == 1)
+    {
+      v59 = [v6 objectForKeyedSubscript:@"transactionEndEventTime"];
+    }
+
+    else
+    {
+      sub_265398190(OS_LOG_TYPE_INFO, 0, "[STSReaderAnalyticsLogger _postReaderTransactionEvent:prepOnly:]", 153, @"Missing dictionary element %@", v56, v57, v58, @"transactionEndEventTime");
+      v59 = 0;
+    }
+
+    v60 = [v6 objectForKeyedSubscript:@"errorCode"];
+    objc_opt_class();
+    v61 = v55 & objc_opt_isKindOfClass();
+
+    if (v61 == 1)
+    {
+      v47 = [v6 objectForKeyedSubscript:@"errorCode"];
+    }
+
+    else
+    {
+      sub_265398190(OS_LOG_TYPE_INFO, 0, "[STSReaderAnalyticsLogger _postReaderTransactionEvent:prepOnly:]", 159, @"Missing dictionary element %@", v62, v63, v64, @"errorCode");
+      v47 = &unk_2876ED9B0;
+    }
+
+    if (v55)
+    {
+      [v59 timeIntervalSinceDate:qword_280017798];
+      v66 = v65;
+      v67 = 0;
+      v68 = qword_2800177A8;
+      v95 = v59;
+      if (qword_2800177A0 && qword_2800177A8)
+      {
+        [qword_2800177A8 timeIntervalSinceDate:?];
+        v67 = (v69 * 1000.0);
+        v68 = qword_2800177A8;
+      }
+
+      v70 = 0;
+      if (qword_2800177B0 && v68)
+      {
+        [v95 timeIntervalSinceDate:?];
+        v70 = (v71 * 1000.0);
+      }
+
+      v98[0] = @"transactionUUID";
+      v98[1] = @"engagementType";
+      v94 = v49;
+      v99[0] = v49;
+      v99[1] = qword_2800175C8;
+      v98[2] = @"supportedtedReaderBTRoles";
+      v98[3] = @"errorCode";
+      v99[2] = qword_2800175D0;
+      v99[3] = v47;
+      v98[4] = @"totalDurationSec";
+      v72 = [MEMORY[0x277CCABB0] numberWithLong:v66];
+      v99[4] = v72;
+      v98[5] = @"engagementDurationMSec";
+      v73 = [MEMORY[0x277CCABB0] numberWithLong:v67];
+      v99[5] = v73;
+      v98[6] = @"altCarrierTransactionDurationMSecs";
+      v74 = [MEMORY[0x277CCABB0] numberWithLong:v70];
+      v99[6] = v74;
+      v99[7] = qword_2800175E0;
+      v98[7] = @"responseSize";
+      v98[8] = @"requestSize";
+      v99[8] = qword_2800175D8;
+      v99[9] = qword_2800175E8;
+      v98[9] = @"handoverRequestSize";
+      v98[10] = @"handoverResponseSize";
+      v99[10] = qword_2800175F0;
+      v75 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v99 forKeys:v98 count:11];
+
+      [CALogger postCAEventFor:@"com.apple.sts.readerISO18013TransactionEvent" eventInput:v75];
+      v96[0] = @"totalNFCEngagementTransactions";
+      if ([qword_2800175C8 intValue] == 1)
+      {
+        v76 = &unk_2876ED9E0;
+      }
+
+      else
+      {
+        v76 = &unk_2876ED9B0;
+      }
+
+      v97[0] = v76;
+      v96[1] = @"totalQRCodeEngagementTransactions";
+      if ([qword_2800175C8 intValue] == 2)
+      {
+        v77 = &unk_2876ED9E0;
+      }
+
+      else
+      {
+        v77 = &unk_2876ED9B0;
+      }
+
+      v97[1] = v77;
+      v96[2] = @"totalSuccessfulNFCEngagementTransactions";
+      v78 = [qword_2800175C8 intValue];
+      v79 = &unk_2876ED9B0;
+      if (v78 == 1)
+      {
+        if ([v47 intValue])
+        {
+          v79 = &unk_2876ED9B0;
+        }
+
+        else
+        {
+          v79 = &unk_2876ED9E0;
+        }
+      }
+
+      v97[2] = v79;
+      v96[3] = @"totalSuccessfulQRCodeEngagementTransactions";
+      v80 = &unk_2876ED9B0;
+      if ([qword_2800175C8 intValue] == 2 && !objc_msgSend(v47, "intValue"))
+      {
+        v80 = &unk_2876ED9E0;
+      }
+
+      v97[3] = v80;
+      v81 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v97 forKeys:v96 count:4];
+      [CALogger postCAEventFor:@"com.apple.sts.dailyReaderISO18013Statistics" eventInput:v81];
+
+      v49 = v94;
+      v59 = v95;
+    }
+
+    v82 = qword_280017798;
+    qword_280017798 = 0;
+
+    v83 = qword_2800177A0;
+    qword_2800177A0 = 0;
+
+    v84 = qword_2800177A8;
+    qword_2800177A8 = 0;
+
+    v85 = qword_2800177B0;
+    qword_2800177B0 = 0;
+
+    v86 = qword_2800175C8;
+    qword_2800175C8 = &unk_2876ED9C8;
+
+    v87 = qword_2800175D8;
+    qword_2800175D8 = &unk_2876ED9B0;
+
+    v88 = qword_2800175E0;
+    qword_2800175E0 = &unk_2876ED9B0;
+
+    v89 = qword_2800175E8;
+    qword_2800175E8 = &unk_2876ED9B0;
+
+    v90 = qword_2800175F0;
+    qword_2800175F0 = &unk_2876ED9B0;
+
+    v91 = qword_2800175D0;
+    qword_2800175D0 = &unk_2876ED9C8;
+  }
+
+  v92 = *MEMORY[0x277D85DE8];
+}
+
+- (void)postReaderTransactionEvent:(id)a3 prepOnly:(BOOL)a4
+{
+  v6 = a3;
+  queue = self->_queue;
+  block[0] = MEMORY[0x277D85DD0];
+  block[1] = 3221225472;
+  block[2] = sub_265399264;
+  block[3] = &unk_279B94158;
+  block[4] = self;
+  v10 = v6;
+  v11 = a4;
+  v8 = v6;
+  dispatch_async(queue, block);
+}
+
+- (void)postReaderSessionEvent:(id)a3
+{
+  v4 = a3;
+  queue = self->_queue;
+  v7[0] = MEMORY[0x277D85DD0];
+  v7[1] = 3221225472;
+  v7[2] = sub_26539930C;
+  v7[3] = &unk_279B93898;
+  v7[4] = self;
+  v8 = v4;
+  v6 = v4;
+  dispatch_async(queue, v7);
+}
+
+@end

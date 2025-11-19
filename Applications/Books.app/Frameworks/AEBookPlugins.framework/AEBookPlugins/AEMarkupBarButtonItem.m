@@ -1,0 +1,84 @@
+@interface AEMarkupBarButtonItem
+- (AEMarkupBarButtonItem)init;
+- (AEMarkupBarButtonItem)initWithCoder:(id)a3;
+- (SEL)action;
+- (id)target;
+- (void)setAction:(SEL)a3;
+- (void)setEnabled:(BOOL)a3;
+- (void)setSelected:(BOOL)a3;
+- (void)setTarget:(id)a3;
+@end
+
+@implementation AEMarkupBarButtonItem
+
+- (AEMarkupBarButtonItem)initWithCoder:(id)a3
+{
+  result = sub_139C50();
+  __break(1u);
+  return result;
+}
+
+- (AEMarkupBarButtonItem)init
+{
+  *(&self->super.super.super.isa + OBJC_IVAR___AEMarkupBarButtonItem_toggleView) = [objc_allocWithZone(type metadata accessor for MarkupButtonContainerView()) initWithFrame:{0.0, 0.0, 0.0, 0.0}];
+  v5.receiver = self;
+  v5.super_class = type metadata accessor for MarkupBarButtonItem();
+  v3 = [(AEMarkupBarButtonItem *)&v5 init];
+  [(AEMarkupBarButtonItem *)v3 setCustomView:*(&v3->super.super.super.isa + OBJC_IVAR___AEMarkupBarButtonItem_toggleView)];
+  return v3;
+}
+
+- (id)target
+{
+  v4.receiver = self;
+  v4.super_class = type metadata accessor for MarkupBarButtonItem();
+  v2 = [(AEMarkupBarButtonItem *)&v4 target];
+
+  return v2;
+}
+
+- (void)setTarget:(id)a3
+{
+  swift_unknownObjectRetain();
+  v5 = self;
+  sub_1278B0(a3);
+}
+
+- (SEL)action
+{
+  v3.receiver = self;
+  v3.super_class = type metadata accessor for MarkupBarButtonItem();
+  return [(AEMarkupBarButtonItem *)&v3 action];
+}
+
+- (void)setAction:(SEL)a3
+{
+  v4 = self;
+  sub_127A9C(a3);
+}
+
+- (void)setSelected:(BOOL)a3
+{
+  v3 = a3;
+  v7.receiver = self;
+  v7.super_class = type metadata accessor for MarkupBarButtonItem();
+  v4 = v7.receiver;
+  [(AEMarkupBarButtonItem *)&v7 setSelected:v3];
+  v5 = *&v4[OBJC_IVAR___AEMarkupBarButtonItem_toggleView];
+  v6 = [v4 selected];
+  *(v5 + OBJC_IVAR____TtC13AEBookPlugins25MarkupButtonContainerView_selected) = v6;
+  sub_121E48();
+}
+
+- (void)setEnabled:(BOOL)a3
+{
+  v3 = a3;
+  v6.receiver = self;
+  v6.super_class = type metadata accessor for MarkupBarButtonItem();
+  v4 = v6.receiver;
+  [(AEMarkupBarButtonItem *)&v6 setEnabled:v3];
+  v5 = *(*&v4[OBJC_IVAR___AEMarkupBarButtonItem_toggleView] + OBJC_IVAR____TtC13AEBookPlugins25MarkupButtonContainerView_button);
+  [v5 setEnabled:{objc_msgSend(v4, "isEnabled", v6.receiver, v6.super_class)}];
+}
+
+@end

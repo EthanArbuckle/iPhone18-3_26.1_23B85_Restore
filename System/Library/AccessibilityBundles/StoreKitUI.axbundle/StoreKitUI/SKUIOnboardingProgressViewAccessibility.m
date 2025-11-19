@@ -1,0 +1,55 @@
+@interface SKUIOnboardingProgressViewAccessibility
++ (void)_accessibilityPerformValidations:(id)a3;
+- (id)accessibilityLabel;
+- (id)accessibilityPath;
+- (id)accessibilityValue;
+@end
+
+@implementation SKUIOnboardingProgressViewAccessibility
+
++ (void)_accessibilityPerformValidations:(id)a3
+{
+  v3 = a3;
+  [v3 validateClass:@"SKUIOnboardingProgressView" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [v3 validateClass:@"SKUIOnboardingProgressView" hasInstanceMethod:@"progress" withFullSignature:{"d", 0}];
+}
+
+- (id)accessibilityPath
+{
+  v3 = MEMORY[0x29EDC7948];
+  [(SKUIOnboardingProgressViewAccessibility *)self bounds];
+  AX_CGRectGetCenter();
+  v5 = v4;
+  v7 = v6;
+  [(SKUIOnboardingProgressViewAccessibility *)self bounds];
+  v9 = [v3 bezierPathWithArcCenter:1 radius:v5 startAngle:v7 endAngle:v8 * 0.5 clockwise:{0.0, 360.0}];
+  v10 = UIAccessibilityConvertPathFunction();
+
+  return v10;
+}
+
+- (id)accessibilityLabel
+{
+  v2 = [(SKUIOnboardingProgressViewAccessibility *)self safeValueForKey:@"title"];
+  v3 = __UIAccessibilitySafeClass();
+
+  return v3;
+}
+
+- (id)accessibilityValue
+{
+  [(SKUIOnboardingProgressViewAccessibility *)self safeDoubleForKey:@"progress"];
+  if (v2 <= 0.0)
+  {
+    v3 = 0;
+  }
+
+  else
+  {
+    v3 = AXFormatFloatWithPercentage();
+  }
+
+  return v3;
+}
+
+@end

@@ -1,0 +1,10071 @@
+BOOL sub_15ED420(uint64_t a1)
+{
+  if (!sub_195228C(a1 + 16))
+  {
+    return 0;
+  }
+
+  v2 = *(a1 + 56);
+  do
+  {
+    v3 = v2 < 1;
+    if (v2 < 1)
+    {
+      break;
+    }
+
+    v4 = v2 - 1;
+    v5 = sub_15EB808(*(*(a1 + 64) + 8 * v2));
+    v2 = v4;
+  }
+
+  while ((v5 & 1) != 0);
+  return v3;
+}
+
+void *sub_15ED498(uint64_t a1)
+{
+  if (!a1)
+  {
+    operator new();
+  }
+
+  result[1] = a1;
+  *result = off_26F5660;
+  result[2] = 0;
+  result[3] = &qword_278E990;
+  result[4] = &qword_278E990;
+  result[5] = &qword_278E990;
+  return result;
+}
+
+uint64_t sub_15ED520(uint64_t a1)
+{
+  if (!a1)
+  {
+    operator new();
+  }
+
+  *result = off_26F56E0;
+  *(result + 8) = a1;
+  *(result + 16) = 0;
+  *(result + 24) = a1;
+  *(result + 32) = 0;
+  *(result + 40) = 0;
+  *(result + 48) = 0;
+  *(result + 56) = 0;
+  return result;
+}
+
+void *sub_15ED5C4(uint64_t a1)
+{
+  if (!a1)
+  {
+    operator new();
+  }
+
+  result[1] = a1;
+  *result = off_26F5760;
+  result[3] = 0;
+  result[4] = 0;
+  result[2] = 0;
+  return result;
+}
+
+uint64_t sub_15ED640(uint64_t a1)
+{
+  if (!a1)
+  {
+    operator new();
+  }
+
+  *(result + 8) = a1;
+  *result = off_26F57E0;
+  *(result + 16) = 0;
+  *(result + 24) = &qword_278E990;
+  *(result + 32) = 0;
+  *(result + 40) = 0;
+  *(result + 48) = 0;
+  return result;
+}
+
+uint64_t sub_15ED6C8(uint64_t a1)
+{
+  if (!a1)
+  {
+    operator new();
+  }
+
+  *result = off_26F5860;
+  *(result + 8) = a1;
+  *(result + 16) = 0;
+  *(result + 24) = a1;
+  *(result + 32) = 0;
+  *(result + 40) = 0;
+  *(result + 48) = 0;
+  *(result + 56) = 0;
+  return result;
+}
+
+void *sub_15ED76C(uint64_t a1)
+{
+  if (!a1)
+  {
+    operator new();
+  }
+
+  result[1] = a1;
+  *result = off_26F58E0;
+  result[2] = 0;
+  result[3] = 0;
+  *(result + 29) = 0;
+  return result;
+}
+
+uint64_t sub_15ED7E8(uint64_t a1)
+{
+  if (!a1)
+  {
+
+    sub_15EFB84();
+  }
+
+  return sub_15E3FC8(v3, a1, 0);
+}
+
+uint64_t sub_15ED844(uint64_t a1)
+{
+  if (!a1)
+  {
+
+    sub_15EFBF0();
+  }
+
+  return sub_15E5934(v3, a1, 0);
+}
+
+uint64_t sub_15ED8A0(uint64_t a1)
+{
+  if (!a1)
+  {
+    operator new();
+  }
+
+  *result = off_26F5A60;
+  *(result + 8) = a1;
+  *(result + 16) = 0;
+  *(result + 24) = a1;
+  *(result + 32) = 0u;
+  *(result + 48) = 0u;
+  *(result + 64) = 0u;
+  *(result + 80) = 0u;
+  *(result + 96) = 0u;
+  *(result + 112) = 0u;
+  *(result + 128) = 0u;
+  *(result + 144) = 0u;
+  *(result + 160) = 0;
+  return result;
+}
+
+void *sub_15ED94C(uint64_t a1)
+{
+  if (!a1)
+  {
+    operator new();
+  }
+
+  result[1] = a1;
+  *result = off_26F5AE0;
+  result[2] = 0;
+  result[3] = 0;
+  return result;
+}
+
+double sub_15ED9C4(uint64_t a1)
+{
+  if (!a1)
+  {
+    operator new();
+  }
+
+  *(v2 + 8) = a1;
+  *v2 = off_26F5B60;
+  result = 0.0;
+  *(v2 + 16) = 0u;
+  *(v2 + 32) = 0u;
+  return result;
+}
+
+double sub_15EDA40(uint64_t a1)
+{
+  if (!a1)
+  {
+    operator new();
+  }
+
+  *v2 = off_26F5BE0;
+  *(v2 + 8) = a1;
+  *(v2 + 16) = 0;
+  *(v2 + 24) = a1;
+  *(v2 + 32) = 0;
+  *(v2 + 40) = 0;
+  *(v2 + 48) = a1;
+  result = 0.0;
+  *(v2 + 56) = 0u;
+  *(v2 + 72) = 0u;
+  *(v2 + 88) = 0u;
+  *(v2 + 104) = 0u;
+  return result;
+}
+
+uint64_t sub_15EDAFC(uint64_t a1)
+{
+  if (!a1)
+  {
+
+    sub_15EFC5C();
+  }
+
+  return sub_15E9B80(v3, a1, 0);
+}
+
+void *sub_15EDB58(uint64_t a1)
+{
+  if (!a1)
+  {
+    operator new();
+  }
+
+  result[1] = a1;
+  *result = off_26F5CE0;
+  result[3] = 0;
+  result[4] = 0;
+  result[2] = 0;
+  return result;
+}
+
+uint64_t sub_15EDBD4(uint64_t a1)
+{
+  if (!a1)
+  {
+
+    sub_15EFCC8();
+  }
+
+  return sub_15EADC8(v3, a1, 0);
+}
+
+uint64_t sub_15EDC30(uint64_t a1)
+{
+  if (!a1)
+  {
+
+    sub_15EFD34();
+  }
+
+  return sub_15EB860(v3, a1, 0);
+}
+
+uint64_t sub_15EDC8C(uint64_t a1)
+{
+  v3 = (a1 + 8);
+  v2 = *(a1 + 8);
+  v4 = (v2 & 0xFFFFFFFFFFFFFFFCLL);
+  if (v2)
+  {
+    if (*v4)
+    {
+      goto LABEL_11;
+    }
+  }
+
+  else if (v4)
+  {
+    goto LABEL_11;
+  }
+
+  v5 = (a1 + 24);
+  if (*(a1 + 24) != &qword_278E990)
+  {
+    sub_194E89C(v5);
+  }
+
+  if (*(a1 + 32) != &qword_278E990)
+  {
+    sub_194E89C((a1 + 32));
+  }
+
+  if (*(a1 + 40) != &qword_278E990)
+  {
+    sub_194E89C((a1 + 40));
+  }
+
+  if (*v3)
+  {
+    sub_11F19CC(v3);
+  }
+
+LABEL_11:
+  *a1 = off_27215B8;
+  sub_195A5E8(v3);
+  return a1;
+}
+
+void sub_15EDD58(uint64_t a1)
+{
+  sub_15EDC8C(a1);
+
+  operator delete();
+}
+
+uint64_t sub_15EDD90(uint64_t a1)
+{
+  v1 = *(a1 + 16);
+  if ((v1 & 7) == 0)
+  {
+    goto LABEL_17;
+  }
+
+  if (v1)
+  {
+    v2 = *(a1 + 24) & 0xFFFFFFFFFFFFFFFELL;
+    if (*(v2 + 23) < 0)
+    {
+      **v2 = 0;
+      *(v2 + 8) = 0;
+      if ((v1 & 2) != 0)
+      {
+        goto LABEL_10;
+      }
+    }
+
+    else
+    {
+      *v2 = 0;
+      *(v2 + 23) = 0;
+      if ((v1 & 2) != 0)
+      {
+        goto LABEL_10;
+      }
+    }
+
+LABEL_4:
+    if ((v1 & 4) == 0)
+    {
+      goto LABEL_17;
+    }
+
+LABEL_14:
+    v4 = *(a1 + 40) & 0xFFFFFFFFFFFFFFFELL;
+    if (*(v4 + 23) < 0)
+    {
+      **v4 = 0;
+      *(v4 + 8) = 0;
+    }
+
+    else
+    {
+      *v4 = 0;
+      *(v4 + 23) = 0;
+    }
+
+    goto LABEL_17;
+  }
+
+  if ((v1 & 2) == 0)
+  {
+    goto LABEL_4;
+  }
+
+LABEL_10:
+  v3 = *(a1 + 32) & 0xFFFFFFFFFFFFFFFELL;
+  if (*(v3 + 23) < 0)
+  {
+    **v3 = 0;
+    *(v3 + 8) = 0;
+    if ((v1 & 4) == 0)
+    {
+      goto LABEL_17;
+    }
+
+    goto LABEL_14;
+  }
+
+  *v3 = 0;
+  *(v3 + 23) = 0;
+  if ((v1 & 4) != 0)
+  {
+    goto LABEL_14;
+  }
+
+LABEL_17:
+  v6 = *(a1 + 8);
+  result = a1 + 8;
+  *(result + 8) = 0;
+  if (v6)
+  {
+    return sub_1957EA8(result);
+  }
+
+  return result;
+}
+
+uint64_t sub_15EDE48(uint64_t a1, uint64_t a2, int32x2_t *a3)
+{
+  *v23 = a2;
+  for (i = a3[11].i32[1]; (sub_195ADC0(a3, v23, i) & 1) == 0; i = a3[11].i32[1])
+  {
+    v6 = (*v23 + 1);
+    v7 = **v23;
+    if (**v23 < 0)
+    {
+      v8 = v7 + (*v6 << 7);
+      v7 = v8 - 128;
+      if (*v6 < 0)
+      {
+        v6 = sub_1958824(*v23, v8 - 128);
+        v7 = v9;
+      }
+
+      else
+      {
+        v6 = (*v23 + 2);
+      }
+    }
+
+    *v23 = v6;
+    v10 = v7 >> 3;
+    if (v7 >> 3 == 3)
+    {
+      if (v7 == 26)
+      {
+        *(a1 + 16) |= 4u;
+        v19 = *(a1 + 8);
+        v17 = (v19 & 0xFFFFFFFFFFFFFFFCLL);
+        if (v19)
+        {
+          v17 = *v17;
+        }
+
+        v18 = (a1 + 40);
+        goto LABEL_31;
+      }
+    }
+
+    else if (v10 == 2)
+    {
+      if (v7 == 18)
+      {
+        *(a1 + 16) |= 2u;
+        v16 = *(a1 + 8);
+        v17 = (v16 & 0xFFFFFFFFFFFFFFFCLL);
+        if (v16)
+        {
+          v17 = *v17;
+        }
+
+        v18 = (a1 + 32);
+        goto LABEL_31;
+      }
+    }
+
+    else if (v10 == 1 && v7 == 10)
+    {
+      *(a1 + 16) |= 1u;
+      v20 = *(a1 + 8);
+      v17 = (v20 & 0xFFFFFFFFFFFFFFFCLL);
+      if (v20)
+      {
+        v17 = *v17;
+      }
+
+      v18 = (a1 + 24);
+LABEL_31:
+      v21 = sub_194DB04(v18, v17);
+      v15 = sub_1958890(v21, *v23, a3);
+      goto LABEL_32;
+    }
+
+    if (v7)
+    {
+      v12 = (v7 & 7) == 4;
+    }
+
+    else
+    {
+      v12 = 1;
+    }
+
+    if (v12)
+    {
+      if (v6)
+      {
+        a3[10].i32[0] = v7 - 1;
+        return *v23;
+      }
+
+LABEL_38:
+      *v23 = 0;
+      return *v23;
+    }
+
+    v13 = *(a1 + 8);
+    if (v13)
+    {
+      v14 = (v13 & 0xFFFFFFFFFFFFFFFCLL) + 8;
+    }
+
+    else
+    {
+      v14 = sub_11F1920((a1 + 8));
+      v6 = *v23;
+    }
+
+    v15 = sub_1952690(v7, v14, v6, a3);
+LABEL_32:
+    *v23 = v15;
+    if (!v15)
+    {
+      goto LABEL_38;
+    }
+  }
+
+  return *v23;
+}
+
+char *sub_15EE004(uint64_t a1, char *__dst, void *a3)
+{
+  v4 = __dst;
+  v6 = *(a1 + 16);
+  if (v6)
+  {
+    v4 = sub_128AEEC(a3, 1, *(a1 + 24) & 0xFFFFFFFFFFFFFFFELL, __dst);
+    if ((v6 & 2) == 0)
+    {
+LABEL_3:
+      if ((v6 & 4) == 0)
+      {
+        goto LABEL_5;
+      }
+
+      goto LABEL_4;
+    }
+  }
+
+  else if ((v6 & 2) == 0)
+  {
+    goto LABEL_3;
+  }
+
+  v4 = sub_128AEEC(a3, 2, *(a1 + 32) & 0xFFFFFFFFFFFFFFFELL, v4);
+  if ((v6 & 4) != 0)
+  {
+LABEL_4:
+    v4 = sub_128AEEC(a3, 3, *(a1 + 40) & 0xFFFFFFFFFFFFFFFELL, v4);
+  }
+
+LABEL_5:
+  v7 = *(a1 + 8);
+  if ((v7 & 1) == 0)
+  {
+    return v4;
+  }
+
+  v9 = v7 & 0xFFFFFFFFFFFFFFFCLL;
+  v10 = *(v9 + 31);
+  if (v10 < 0)
+  {
+    v11 = *(v9 + 8);
+    v10 = *(v9 + 16);
+  }
+
+  else
+  {
+    v11 = (v9 + 8);
+  }
+
+  if (*a3 - v4 >= v10)
+  {
+    v12 = v10;
+    memcpy(v4, v11, v10);
+    v4 += v12;
+    return v4;
+  }
+
+  return sub_1957130(a3, v11, v10, v4);
+}
+
+uint64_t sub_15EE118(uint64_t a1)
+{
+  v1 = *(a1 + 16);
+  if ((v1 & 7) == 0)
+  {
+    v2 = 0;
+    goto LABEL_16;
+  }
+
+  if (v1)
+  {
+    v3 = *(a1 + 24) & 0xFFFFFFFFFFFFFFFELL;
+    v4 = *(v3 + 23);
+    v5 = *(v3 + 8);
+    if ((v4 & 0x80u) == 0)
+    {
+      v5 = v4;
+    }
+
+    v2 = v5 + ((9 * (__clz(v5 | 1) ^ 0x1F) + 73) >> 6) + 1;
+    if ((v1 & 2) == 0)
+    {
+      goto LABEL_12;
+    }
+
+    goto LABEL_9;
+  }
+
+  v2 = 0;
+  if ((v1 & 2) != 0)
+  {
+LABEL_9:
+    v6 = *(a1 + 32) & 0xFFFFFFFFFFFFFFFELL;
+    v7 = *(v6 + 23);
+    v8 = *(v6 + 8);
+    if ((v7 & 0x80u) == 0)
+    {
+      v8 = v7;
+    }
+
+    v2 += v8 + ((9 * (__clz(v8 | 1) ^ 0x1F) + 73) >> 6) + 1;
+  }
+
+LABEL_12:
+  if ((v1 & 4) != 0)
+  {
+    v9 = *(a1 + 40) & 0xFFFFFFFFFFFFFFFELL;
+    v10 = *(v9 + 23);
+    v11 = *(v9 + 8);
+    if ((v10 & 0x80u) == 0)
+    {
+      v11 = v10;
+    }
+
+    v2 += v11 + ((9 * (__clz(v11 | 1) ^ 0x1F) + 73) >> 6) + 1;
+  }
+
+LABEL_16:
+  v12 = *(a1 + 8);
+  if (v12)
+  {
+    v14 = v12 & 0xFFFFFFFFFFFFFFFCLL;
+    v15 = *((v12 & 0xFFFFFFFFFFFFFFFCLL) + 31);
+    if (v15 < 0)
+    {
+      v15 = *(v14 + 16);
+    }
+
+    v2 += v15;
+  }
+
+  *(a1 + 20) = v2;
+  return v2;
+}
+
+void *sub_15EE248(uint64_t a1)
+{
+  if (!a1)
+  {
+    operator new();
+  }
+
+  result[1] = a1;
+  *result = off_26F5E60;
+  result[2] = 0;
+  result[3] = &qword_278E990;
+  result[4] = &qword_278E990;
+  result[5] = &qword_278E990;
+  return result;
+}
+
+void sub_15EEEE4(void *a1)
+{
+  v2 = a1[2];
+  if (v2 && !*a1)
+  {
+    v3 = v2 + 1;
+    v4 = *v2;
+    if (v4 >= 1)
+    {
+      do
+      {
+        if (*v3)
+        {
+          sub_15D9754(*v3);
+          operator delete();
+        }
+
+        ++v3;
+        --v4;
+      }
+
+      while (v4);
+      v2 = a1[2];
+    }
+
+    operator delete(v2);
+  }
+
+  a1[2] = 0;
+}
+
+void sub_15EEF68(void *a1)
+{
+  v2 = a1[2];
+  if (v2 && !*a1)
+  {
+    v3 = v2 + 1;
+    v4 = *v2;
+    if (v4 >= 1)
+    {
+      do
+      {
+        if (*v3)
+        {
+          sub_15DA514(*v3);
+          operator delete();
+        }
+
+        ++v3;
+        --v4;
+      }
+
+      while (v4);
+      v2 = a1[2];
+    }
+
+    operator delete(v2);
+  }
+
+  a1[2] = 0;
+}
+
+void sub_15EEFEC(void *a1)
+{
+  v2 = a1[2];
+  if (v2 && !*a1)
+  {
+    v3 = (v2 + 2);
+    v4 = *v2;
+    if (v4 >= 1)
+    {
+      do
+      {
+        if (*v3)
+        {
+          sub_15DC0A4(*v3);
+          operator delete();
+        }
+
+        ++v3;
+        --v4;
+      }
+
+      while (v4);
+      v2 = a1[2];
+    }
+
+    operator delete(v2);
+  }
+
+  a1[2] = 0;
+}
+
+void sub_15EF070(void *a1)
+{
+  v2 = a1[2];
+  if (v2 && !*a1)
+  {
+    v3 = v2 + 1;
+    v4 = *v2;
+    if (v4 >= 1)
+    {
+      do
+      {
+        if (*v3)
+        {
+          sub_15DDFE8(*v3);
+          operator delete();
+        }
+
+        ++v3;
+        --v4;
+      }
+
+      while (v4);
+      v2 = a1[2];
+    }
+
+    operator delete(v2);
+  }
+
+  a1[2] = 0;
+}
+
+void sub_15EF0F4(void *a1)
+{
+  v2 = a1[2];
+  if (v2 && !*a1)
+  {
+    v3 = v2 + 1;
+    v4 = *v2;
+    if (v4 >= 1)
+    {
+      do
+      {
+        if (*v3)
+        {
+          sub_15DF0B4(*v3);
+          operator delete();
+        }
+
+        ++v3;
+        --v4;
+      }
+
+      while (v4);
+      v2 = a1[2];
+    }
+
+    operator delete(v2);
+  }
+
+  a1[2] = 0;
+}
+
+void sub_15EF178(void *a1)
+{
+  v2 = a1[2];
+  if (v2 && !*a1)
+  {
+    v3 = (v2 + 2);
+    v4 = *v2;
+    if (v4 >= 1)
+    {
+      do
+      {
+        if (*v3)
+        {
+          sub_15DCE58(*v3);
+          operator delete();
+        }
+
+        ++v3;
+        --v4;
+      }
+
+      while (v4);
+      v2 = a1[2];
+    }
+
+    operator delete(v2);
+  }
+
+  a1[2] = 0;
+}
+
+void sub_15EF1FC(void *a1)
+{
+  v2 = a1[2];
+  if (v2 && !*a1)
+  {
+    v3 = v2 + 1;
+    v4 = *v2;
+    if (v4 >= 1)
+    {
+      do
+      {
+        if (*v3)
+        {
+          sub_15DFC9C(*v3);
+          operator delete();
+        }
+
+        ++v3;
+        --v4;
+      }
+
+      while (v4);
+      v2 = a1[2];
+    }
+
+    operator delete(v2);
+  }
+
+  a1[2] = 0;
+}
+
+void sub_15EF280(uint64_t *a1, uint64_t *a2, uint64_t *a3, int a4, int a5)
+{
+  LODWORD(v5) = a4;
+  v7 = a2;
+  v8 = a4 - a5;
+  if (a4 > a5)
+  {
+    v9 = *a1;
+    v10 = &a2[a5];
+    do
+    {
+      *v10++ = sub_15E0CD4(v9);
+      --v8;
+    }
+
+    while (v8);
+  }
+
+  if (v5 >= 1)
+  {
+    v5 = v5;
+    do
+    {
+      v12 = *a3++;
+      v11 = v12;
+      v13 = *v7++;
+      sub_15EF2FC(v11, v13);
+      --v5;
+    }
+
+    while (v5);
+  }
+}
+
+void sub_15EF30C(uint64_t *a1, std::string **a2, uint64_t *a3, int a4, int a5)
+{
+  LODWORD(v5) = a4;
+  v7 = a2;
+  v8 = a4 - a5;
+  if (a4 > a5)
+  {
+    v9 = *a1;
+    v10 = &a2[a5];
+    do
+    {
+      sub_15E0DEC(v9);
+      *v10++ = v11;
+      --v8;
+    }
+
+    while (v8);
+  }
+
+  if (v5 >= 1)
+  {
+    v5 = v5;
+    do
+    {
+      v13 = *a3++;
+      v12 = v13;
+      v14 = *v7++;
+      sub_15EF388(v12, v14);
+      --v5;
+    }
+
+    while (v5);
+  }
+}
+
+void sub_15EF398(uint64_t *a1, uint64_t *a2, uint64_t *a3, int a4, int a5)
+{
+  LODWORD(v5) = a4;
+  v7 = a2;
+  v8 = a4 - a5;
+  if (a4 > a5)
+  {
+    v9 = *a1;
+    v10 = &a2[a5];
+    do
+    {
+      *v10++ = sub_15E0F18(v9);
+      --v8;
+    }
+
+    while (v8);
+  }
+
+  if (v5 >= 1)
+  {
+    v5 = v5;
+    do
+    {
+      v12 = *a3++;
+      v11 = v12;
+      v13 = *v7++;
+      sub_15EF414(v11, v13);
+      --v5;
+    }
+
+    while (v5);
+  }
+}
+
+uint64_t *sub_15EF424(uint64_t *result, std::string **a2, uint64_t *a3, int a4, int a5)
+{
+  LODWORD(v5) = a4;
+  v7 = a2;
+  v8 = a4 - a5;
+  if (a4 > a5)
+  {
+    v9 = *result;
+    v10 = &a2[a5];
+    do
+    {
+      result = sub_15E10C4(v9);
+      *v10++ = result;
+      --v8;
+    }
+
+    while (v8);
+  }
+
+  if (v5 >= 1)
+  {
+    v5 = v5;
+    do
+    {
+      v12 = *a3++;
+      v11 = v12;
+      v13 = *v7++;
+      result = sub_15EF4A0(v11, v13);
+      --v5;
+    }
+
+    while (v5);
+  }
+
+  return result;
+}
+
+uint64_t *sub_15EF4B0(uint64_t *result, std::string **a2, uint64_t *a3, int a4, int a5)
+{
+  LODWORD(v5) = a4;
+  v7 = a2;
+  v8 = a4 - a5;
+  if (a4 > a5)
+  {
+    v9 = *result;
+    v10 = &a2[a5];
+    do
+    {
+      result = sub_15E1170(v9);
+      *v10++ = result;
+      --v8;
+    }
+
+    while (v8);
+  }
+
+  if (v5 >= 1)
+  {
+    v5 = v5;
+    do
+    {
+      v12 = *a3++;
+      v11 = v12;
+      v13 = *v7++;
+      result = sub_15EF52C(v11, v13);
+      --v5;
+    }
+
+    while (v5);
+  }
+
+  return result;
+}
+
+void sub_15EF53C(uint64_t *a1, std::string **a2, uint64_t *a3, int a4, int a5)
+{
+  LODWORD(v5) = a4;
+  v7 = a2;
+  v8 = a4 - a5;
+  if (a4 > a5)
+  {
+    v9 = *a1;
+    v10 = &a2[a5];
+    do
+    {
+      sub_15E0FCC(v9);
+      *v10++ = v11;
+      --v8;
+    }
+
+    while (v8);
+  }
+
+  if (v5 >= 1)
+  {
+    v5 = v5;
+    do
+    {
+      v13 = *a3++;
+      v12 = v13;
+      v14 = *v7++;
+      sub_15EF5B8(v12, v14);
+      --v5;
+    }
+
+    while (v5);
+  }
+}
+
+uint64_t *sub_15EF5C8(uint64_t *result, std::string **a2, uint64_t *a3, int a4, int a5)
+{
+  LODWORD(v5) = a4;
+  v7 = a2;
+  v8 = a4 - a5;
+  if (a4 > a5)
+  {
+    v9 = *result;
+    v10 = &a2[a5];
+    do
+    {
+      result = sub_15E120C(v9);
+      *v10++ = result;
+      --v8;
+    }
+
+    while (v8);
+  }
+
+  if (v5 >= 1)
+  {
+    v5 = v5;
+    do
+    {
+      v12 = *a3++;
+      v11 = v12;
+      v13 = *v7++;
+      result = sub_15EF644(v11, v13);
+      --v5;
+    }
+
+    while (v5);
+  }
+
+  return result;
+}
+
+void sub_15EF654(void *a1)
+{
+  v2 = a1[2];
+  if (v2 && !*a1)
+  {
+    v3 = v2 + 1;
+    v4 = *v2;
+    if (v4 >= 1)
+    {
+      do
+      {
+        if (*v3)
+        {
+          sub_15E1578(*v3);
+          operator delete();
+        }
+
+        ++v3;
+        --v4;
+      }
+
+      while (v4);
+      v2 = a1[2];
+    }
+
+    operator delete(v2);
+  }
+
+  a1[2] = 0;
+}
+
+void sub_15EF6D8(void *a1)
+{
+  v2 = a1[2];
+  if (v2 && !*a1)
+  {
+    v3 = (v2 + 2);
+    v4 = *v2;
+    if (v4 >= 1)
+    {
+      do
+      {
+        if (*v3)
+        {
+          sub_15E3990(*v3);
+          operator delete();
+        }
+
+        ++v3;
+        --v4;
+      }
+
+      while (v4);
+      v2 = a1[2];
+    }
+
+    operator delete(v2);
+  }
+
+  a1[2] = 0;
+}
+
+void sub_15EF75C(void *a1)
+{
+  v2 = a1[2];
+  if (v2 && !*a1)
+  {
+    v3 = v2 + 1;
+    v4 = *v2;
+    if (v4 >= 1)
+    {
+      do
+      {
+        if (*v3)
+        {
+          sub_15E811C(*v3);
+          operator delete();
+        }
+
+        ++v3;
+        --v4;
+      }
+
+      while (v4);
+      v2 = a1[2];
+    }
+
+    operator delete(v2);
+  }
+
+  a1[2] = 0;
+}
+
+void sub_15EF7E0(void *a1)
+{
+  v2 = a1[2];
+  if (v2 && !*a1)
+  {
+    v3 = (v2 + 2);
+    v4 = *v2;
+    if (v4 >= 1)
+    {
+      do
+      {
+        if (*v3)
+        {
+          sub_15EA8B4(*v3);
+          operator delete();
+        }
+
+        ++v3;
+        --v4;
+      }
+
+      while (v4);
+      v2 = a1[2];
+    }
+
+    operator delete(v2);
+  }
+
+  a1[2] = 0;
+}
+
+void sub_15EF864(void *a1)
+{
+  v2 = a1[2];
+  if (v2 && !*a1)
+  {
+    v3 = v2 + 1;
+    v4 = *v2;
+    if (v4 >= 1)
+    {
+      do
+      {
+        if (*v3)
+        {
+          sub_15EAE68(*v3);
+          operator delete();
+        }
+
+        ++v3;
+        --v4;
+      }
+
+      while (v4);
+      v2 = a1[2];
+    }
+
+    operator delete(v2);
+  }
+
+  a1[2] = 0;
+}
+
+std::string *sub_15EF8E8(std::string *result, std::string **a2, uint64_t *a3, int a4, int a5)
+{
+  LODWORD(v5) = a4;
+  v7 = a2;
+  v8 = a4 - a5;
+  if (a4 > a5)
+  {
+    v9 = result->__r_.__value_.__r.__words[0];
+    v10 = &a2[a5];
+    do
+    {
+      result = sub_15ED498(v9);
+      *v10++ = result;
+      --v8;
+    }
+
+    while (v8);
+  }
+
+  if (v5 >= 1)
+  {
+    v5 = v5;
+    do
+    {
+      v12 = *a3++;
+      v11 = v12;
+      v13 = *v7++;
+      result = sub_12E55CC(v11, v13);
+      --v5;
+    }
+
+    while (v5);
+  }
+
+  return result;
+}
+
+std::string *sub_15EF964(std::string *result, std::string **a2, uint64_t *a3, int a4, int a5)
+{
+  LODWORD(v5) = a4;
+  v7 = a2;
+  v8 = a4 - a5;
+  if (a4 > a5)
+  {
+    v9 = result->__r_.__value_.__r.__words[0];
+    v10 = &a2[a5];
+    do
+    {
+      result = sub_15ED76C(v9);
+      *v10++ = result;
+      --v8;
+    }
+
+    while (v8);
+  }
+
+  if (v5 >= 1)
+  {
+    v5 = v5;
+    do
+    {
+      v12 = *a3++;
+      v11 = v12;
+      v13 = *v7++;
+      result = sub_15EF9E0(v11, v13);
+      --v5;
+    }
+
+    while (v5);
+  }
+
+  return result;
+}
+
+void sub_15EF9F0(uint64_t *a1, uint64_t *a2, uint64_t *a3, int a4, int a5)
+{
+  LODWORD(v5) = a4;
+  v7 = a2;
+  v8 = a4 - a5;
+  if (a4 > a5)
+  {
+    v9 = *a1;
+    v10 = &a2[a5];
+    do
+    {
+      sub_15ED9C4(v9);
+      *v10++ = v11;
+      --v8;
+    }
+
+    while (v8);
+  }
+
+  if (v5 >= 1)
+  {
+    v5 = v5;
+    do
+    {
+      v13 = *a3++;
+      v12 = v13;
+      v14 = *v7++;
+      sub_15EFA6C(v12, v14);
+      --v5;
+    }
+
+    while (v5);
+  }
+}
+
+std::string *sub_15EFA7C(std::string *result, std::string **a2, uint64_t *a3, int a4, int a5)
+{
+  LODWORD(v5) = a4;
+  v7 = a2;
+  v8 = a4 - a5;
+  if (a4 > a5)
+  {
+    v9 = result->__r_.__value_.__r.__words[0];
+    v10 = &a2[a5];
+    do
+    {
+      result = sub_15EDB58(v9);
+      *v10++ = result;
+      --v8;
+    }
+
+    while (v8);
+  }
+
+  if (v5 >= 1)
+  {
+    v5 = v5;
+    do
+    {
+      v12 = *a3++;
+      v11 = v12;
+      v13 = *v7++;
+      result = sub_12168FC(v11, v13);
+      --v5;
+    }
+
+    while (v5);
+  }
+
+  return result;
+}
+
+void sub_15EFAF8(uint64_t *a1, uint64_t *a2, uint64_t *a3, int a4, int a5)
+{
+  LODWORD(v5) = a4;
+  v7 = a2;
+  v8 = a4 - a5;
+  if (a4 > a5)
+  {
+    v9 = *a1;
+    v10 = &a2[a5];
+    do
+    {
+      *v10++ = sub_15EDBD4(v9);
+      --v8;
+    }
+
+    while (v8);
+  }
+
+  if (v5 >= 1)
+  {
+    v5 = v5;
+    do
+    {
+      v12 = *a3++;
+      v11 = v12;
+      v13 = *v7++;
+      sub_15EFB74(v11, v13);
+      --v5;
+    }
+
+    while (v5);
+  }
+}
+
+void sub_15EFDA0()
+{
+  dword_278D9D8 = 100;
+  qword_278D9E0 = &off_276ED70;
+  sub_194F72C(&off_277EFB8, 100, 11, 1, 0, &off_276ED70);
+  dword_278D9E8 = 10000;
+  qword_278D9F0 = &off_278AFA0;
+
+  sub_194F72C(&off_2787B70, 10000, 11, 0, 0, &off_278AFA0);
+}
+
+uint64_t sub_15EFE30()
+{
+  qword_27CD1F8 = "MERGE_DONEMERGE_NOT_APPLICABLEMERGE_REQUIRED";
+  unk_27CD200 = 10;
+  dword_27CD208 = 2;
+  qword_27CD210 = "MERGE_NOT_APPLICABLEMERGE_REQUIRED";
+  unk_27CD218 = 20;
+  dword_27CD220 = 0;
+  qword_27CD228 = "MERGE_REQUIRED";
+  unk_27CD230 = 14;
+  dword_27CD238 = 1;
+  qword_27CD240 = "LS_LIVE_FWD_GEOLS_OLD_FWD_GEO";
+  *algn_27CD248 = 15;
+  dword_27CD250 = 1;
+  qword_27CD258 = "LS_OLD_FWD_GEO";
+  unk_27CD260 = 14;
+  dword_27CD268 = 2;
+  qword_27CD270 = "DEPLOYMENT_FAILURERESPONSE_SUCCESSROUTE_FAILUREUNKNOWN_PRECACHEUNKNOWN_RESPONSE_STATUS";
+  *algn_27CD278 = 18;
+  dword_27CD280 = 3;
+  qword_27CD288 = "RESPONSE_SUCCESSROUTE_FAILUREUNKNOWN_PRECACHEUNKNOWN_RESPONSE_STATUS";
+  unk_27CD290 = 16;
+  dword_27CD298 = 1;
+  qword_27CD2A0 = "ROUTE_FAILUREUNKNOWN_PRECACHEUNKNOWN_RESPONSE_STATUS";
+  unk_27CD2A8 = 13;
+  dword_27CD2B0 = 4;
+  qword_27CD2B8 = "UNKNOWN_PRECACHEUNKNOWN_RESPONSE_STATUS";
+  unk_27CD2C0 = 16;
+  dword_27CD2C8 = 2;
+  qword_27CD2D0 = "UNKNOWN_RESPONSE_STATUS";
+  unk_27CD2D8 = 23;
+  dword_27CD2E0 = 0;
+  qword_27CD370 = "FARE_CALCULATION_FAILEDINVALID_ROUTEINVALID_VALUEMISSING_GTFS_MAPPINGMISSING_PLATFORM_ZONESMISSING_SYSTEM_FARESNO_VALID_FARESROUTE_SUCCESSROUTE_TOO_LONGUNKNOWN_PLATFORMUNKNOWN_ROUTE_STATUSUNKNOWN_TRIPUNSPECIFIED_FAILURE";
+  *algn_27CD378 = 23;
+  dword_27CD380 = 8;
+  qword_27CD388 = "INVALID_ROUTEINVALID_VALUEMISSING_GTFS_MAPPINGMISSING_PLATFORM_ZONESMISSING_SYSTEM_FARESNO_VALID_FARESROUTE_SUCCESSROUTE_TOO_LONGUNKNOWN_PLATFORMUNKNOWN_ROUTE_STATUSUNKNOWN_TRIPUNSPECIFIED_FAILURE";
+  unk_27CD390 = 13;
+  dword_27CD398 = 7;
+  qword_27CD3A0 = "INVALID_VALUEMISSING_GTFS_MAPPINGMISSING_PLATFORM_ZONESMISSING_SYSTEM_FARESNO_VALID_FARESROUTE_SUCCESSROUTE_TOO_LONGUNKNOWN_PLATFORMUNKNOWN_ROUTE_STATUSUNKNOWN_TRIPUNSPECIFIED_FAILURE";
+  unk_27CD3A8 = 13;
+  dword_27CD3B0 = 6;
+  qword_27CD3B8 = "MISSING_GTFS_MAPPINGMISSING_PLATFORM_ZONESMISSING_SYSTEM_FARESNO_VALID_FARESROUTE_SUCCESSROUTE_TOO_LONGUNKNOWN_PLATFORMUNKNOWN_ROUTE_STATUSUNKNOWN_TRIPUNSPECIFIED_FAILURE";
+  unk_27CD3C0 = 20;
+  dword_27CD3C8 = 4;
+  qword_27CD3D0 = "MISSING_PLATFORM_ZONESMISSING_SYSTEM_FARESNO_VALID_FARESROUTE_SUCCESSROUTE_TOO_LONGUNKNOWN_PLATFORMUNKNOWN_ROUTE_STATUSUNKNOWN_TRIPUNSPECIFIED_FAILURE";
+  unk_27CD3D8 = 22;
+  dword_27CD3E0 = 11;
+  qword_27CD3E8 = "MISSING_SYSTEM_FARESNO_VALID_FARESROUTE_SUCCESSROUTE_TOO_LONGUNKNOWN_PLATFORMUNKNOWN_ROUTE_STATUSUNKNOWN_TRIPUNSPECIFIED_FAILURE";
+  unk_27CD3F0 = 20;
+  dword_27CD3F8 = 10;
+  qword_27CD400 = "NO_VALID_FARESROUTE_SUCCESSROUTE_TOO_LONGUNKNOWN_PLATFORMUNKNOWN_ROUTE_STATUSUNKNOWN_TRIPUNSPECIFIED_FAILURE";
+  unk_27CD408 = 14;
+  dword_27CD410 = 12;
+  qword_27CD418 = "ROUTE_SUCCESSROUTE_TOO_LONGUNKNOWN_PLATFORMUNKNOWN_ROUTE_STATUSUNKNOWN_TRIPUNSPECIFIED_FAILURE";
+  unk_27CD420 = 13;
+  dword_27CD428 = 1;
+  qword_27CD430 = "ROUTE_TOO_LONGUNKNOWN_PLATFORMUNKNOWN_ROUTE_STATUSUNKNOWN_TRIPUNSPECIFIED_FAILURE";
+  unk_27CD438 = 14;
+  dword_27CD440 = 9;
+  qword_27CD448 = "UNKNOWN_PLATFORMUNKNOWN_ROUTE_STATUSUNKNOWN_TRIPUNSPECIFIED_FAILURE";
+  unk_27CD450 = 16;
+  dword_27CD458 = 5;
+  qword_27CD460 = "UNKNOWN_ROUTE_STATUSUNKNOWN_TRIPUNSPECIFIED_FAILURE";
+  unk_27CD468 = 20;
+  dword_27CD470 = 0;
+  qword_27CD478 = "UNKNOWN_TRIPUNSPECIFIED_FAILURE";
+  unk_27CD480 = 12;
+  dword_27CD488 = 3;
+  qword_27CD490 = "UNSPECIFIED_FAILURE";
+  unk_27CD498 = 19;
+  dword_27CD4A0 = 2;
+  qword_27CD5F0 = "INACCURATEUNKNOWN_RESTRICTIONVARIABLE";
+  *algn_27CD5F8 = 10;
+  dword_27CD600 = 1;
+  qword_27CD608 = "UNKNOWN_RESTRICTIONVARIABLE";
+  unk_27CD610 = 19;
+  dword_27CD618 = 0;
+  qword_27CD620 = "VARIABLE";
+  unk_27CD628 = 8;
+  dword_27CD630 = 2;
+  qword_27CD638 = "A_SLEEPERB_SLEEPEREXPRESS_TICKETGRAN_CLASSGREENLINERNIGHT_DISCOUNTNON_RESERVED_SEATPANORAMA_SEATRESERVED_SEATSL_TICKETSTANDING_EXPRESS_TICKETTRAIN_TICKETUNKNOWN_TYPEVACANT_SEAT_ONLY";
+  unk_27CD640 = 9;
+  dword_27CD648 = 4;
+  qword_27CD650 = "B_SLEEPEREXPRESS_TICKETGRAN_CLASSGREENLINERNIGHT_DISCOUNTNON_RESERVED_SEATPANORAMA_SEATRESERVED_SEATSL_TICKETSTANDING_EXPRESS_TICKETTRAIN_TICKETUNKNOWN_TYPEVACANT_SEAT_ONLY";
+  unk_27CD658 = 9;
+  dword_27CD660 = 5;
+  qword_27CD668 = "EXPRESS_TICKETGRAN_CLASSGREENLINERNIGHT_DISCOUNTNON_RESERVED_SEATPANORAMA_SEATRESERVED_SEATSL_TICKETSTANDING_EXPRESS_TICKETTRAIN_TICKETUNKNOWN_TYPEVACANT_SEAT_ONLY";
+  unk_27CD670 = 14;
+  dword_27CD678 = 9;
+  qword_27CD680 = "GRAN_CLASSGREENLINERNIGHT_DISCOUNTNON_RESERVED_SEATPANORAMA_SEATRESERVED_SEATSL_TICKETSTANDING_EXPRESS_TICKETTRAIN_TICKETUNKNOWN_TYPEVACANT_SEAT_ONLY";
+  unk_27CD688 = 10;
+  dword_27CD690 = 14;
+  qword_27CD698 = "GREENLINERNIGHT_DISCOUNTNON_RESERVED_SEATPANORAMA_SEATRESERVED_SEATSL_TICKETSTANDING_EXPRESS_TICKETTRAIN_TICKETUNKNOWN_TYPEVACANT_SEAT_ONLY";
+  unk_27CD6A0 = 5;
+  dword_27CD6A8 = 3;
+  qword_27CD6B0 = "LINERNIGHT_DISCOUNTNON_RESERVED_SEATPANORAMA_SEATRESERVED_SEATSL_TICKETSTANDING_EXPRESS_TICKETTRAIN_TICKETUNKNOWN_TYPEVACANT_SEAT_ONLY";
+  unk_27CD6B8 = 5;
+  dword_27CD6C0 = 7;
+  qword_27CD6C8 = "NIGHT_DISCOUNTNON_RESERVED_SEATPANORAMA_SEATRESERVED_SEATSL_TICKETSTANDING_EXPRESS_TICKETTRAIN_TICKETUNKNOWN_TYPEVACANT_SEAT_ONLY";
+  unk_27CD6D0 = 14;
+  dword_27CD6D8 = 11;
+  qword_27CD6E0 = "NON_RESERVED_SEATPANORAMA_SEATRESERVED_SEATSL_TICKETSTANDING_EXPRESS_TICKETTRAIN_TICKETUNKNOWN_TYPEVACANT_SEAT_ONLY";
+  unk_27CD6E8 = 17;
+  dword_27CD6F0 = 2;
+  qword_27CD6F8 = "PANORAMA_SEATRESERVED_SEATSL_TICKETSTANDING_EXPRESS_TICKETTRAIN_TICKETUNKNOWN_TYPEVACANT_SEAT_ONLY";
+  unk_27CD700 = 13;
+  dword_27CD708 = 13;
+  qword_27CD710 = "RESERVED_SEATSL_TICKETSTANDING_EXPRESS_TICKETTRAIN_TICKETUNKNOWN_TYPEVACANT_SEAT_ONLY";
+  unk_27CD718 = 13;
+  dword_27CD720 = 1;
+  qword_27CD728 = "SL_TICKETSTANDING_EXPRESS_TICKETTRAIN_TICKETUNKNOWN_TYPEVACANT_SEAT_ONLY";
+  unk_27CD730 = 9;
+  dword_27CD738 = 12;
+  qword_27CD740 = "STANDING_EXPRESS_TICKETTRAIN_TICKETUNKNOWN_TYPEVACANT_SEAT_ONLY";
+  unk_27CD748 = 23;
+  dword_27CD750 = 10;
+  qword_27CD758 = "TRAIN_TICKETUNKNOWN_TYPEVACANT_SEAT_ONLY";
+  unk_27CD760 = 12;
+  dword_27CD768 = 6;
+  qword_27CD770 = "UNKNOWN_TYPEVACANT_SEAT_ONLY";
+  unk_27CD778 = 12;
+  dword_27CD780 = 0;
+  qword_27CD788 = "VACANT_SEAT_ONLY";
+  unk_27CD790 = 16;
+  dword_27CD798 = 15;
+  qword_27CD7B8 = "CURRENCY_AFNCURRENCY_ALLCURRENCY_AMDCURRENCY_ANGCURRENCY_AOACURRENCY_ARSCURRENCY_AUDCURRENCY_AWGCURRENCY_AZNCURRENCY_BAMCURRENCY_BBDCURRENCY_BDTCURRENCY_BGNCURRENCY_BHDCURRENCY_BIFCURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CD7D0 = "CURRENCY_ALLCURRENCY_AMDCURRENCY_ANGCURRENCY_AOACURRENCY_ARSCURRENCY_AUDCURRENCY_AWGCURRENCY_AZNCURRENCY_BAMCURRENCY_BBDCURRENCY_BDTCURRENCY_BGNCURRENCY_BHDCURRENCY_BIFCURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CD7E8 = "CURRENCY_AMDCURRENCY_ANGCURRENCY_AOACURRENCY_ARSCURRENCY_AUDCURRENCY_AWGCURRENCY_AZNCURRENCY_BAMCURRENCY_BBDCURRENCY_BDTCURRENCY_BGNCURRENCY_BHDCURRENCY_BIFCURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CD800 = "CURRENCY_ANGCURRENCY_AOACURRENCY_ARSCURRENCY_AUDCURRENCY_AWGCURRENCY_AZNCURRENCY_BAMCURRENCY_BBDCURRENCY_BDTCURRENCY_BGNCURRENCY_BHDCURRENCY_BIFCURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CD818 = "CURRENCY_AOACURRENCY_ARSCURRENCY_AUDCURRENCY_AWGCURRENCY_AZNCURRENCY_BAMCURRENCY_BBDCURRENCY_BDTCURRENCY_BGNCURRENCY_BHDCURRENCY_BIFCURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CD830 = "CURRENCY_ARSCURRENCY_AUDCURRENCY_AWGCURRENCY_AZNCURRENCY_BAMCURRENCY_BBDCURRENCY_BDTCURRENCY_BGNCURRENCY_BHDCURRENCY_BIFCURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CD848 = "CURRENCY_AUDCURRENCY_AWGCURRENCY_AZNCURRENCY_BAMCURRENCY_BBDCURRENCY_BDTCURRENCY_BGNCURRENCY_BHDCURRENCY_BIFCURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CD860 = "CURRENCY_AWGCURRENCY_AZNCURRENCY_BAMCURRENCY_BBDCURRENCY_BDTCURRENCY_BGNCURRENCY_BHDCURRENCY_BIFCURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CD878 = "CURRENCY_AZNCURRENCY_BAMCURRENCY_BBDCURRENCY_BDTCURRENCY_BGNCURRENCY_BHDCURRENCY_BIFCURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CD890 = "CURRENCY_BAMCURRENCY_BBDCURRENCY_BDTCURRENCY_BGNCURRENCY_BHDCURRENCY_BIFCURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CD8A8 = "CURRENCY_BBDCURRENCY_BDTCURRENCY_BGNCURRENCY_BHDCURRENCY_BIFCURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CD8C0 = "CURRENCY_BDTCURRENCY_BGNCURRENCY_BHDCURRENCY_BIFCURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CD8D8 = "CURRENCY_BGNCURRENCY_BHDCURRENCY_BIFCURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CD8F0 = "CURRENCY_BHDCURRENCY_BIFCURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CD908 = "CURRENCY_BIFCURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CD920 = "CURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CD938 = "CURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CD950 = "CURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CD968 = "CURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CD980 = "CURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CD998 = "CURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CD9B0 = "CURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CD9C8 = "CURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CD9E0 = "CURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CD9F8 = "CURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDA10 = "CURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDA28 = "CURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDA40 = "CURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDA58 = "CURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDA70 = "CURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDA88 = "CURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDAA0 = "CURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDAB8 = "CURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDAD0 = "CURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDAE8 = "CURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDB00 = "CURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDB18 = "CURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDB30 = "CURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDB48 = "CURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDB60 = "CURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDB78 = "CURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDB90 = "CURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDBA8 = "CURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDBC0 = "CURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDBD8 = "CURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDBF0 = "CURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDC08 = "CURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDC20 = "CURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDC38 = "CURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDC50 = "CURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDC68 = "CURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDC80 = "CURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDC98 = "CURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDCB0 = "CURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDCC8 = "CURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDCE0 = "CURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDCF8 = "CURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDD10 = "CURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDD28 = "CURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDD40 = "CURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDD58 = "CURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDD70 = "CURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDD88 = "CURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDDA0 = "CURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDDB8 = "CURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDDD0 = "CURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDDE8 = "CURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDE00 = "CURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDE18 = "CURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDE30 = "CURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDE48 = "CURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDE60 = "CURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDE78 = "CURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDE90 = "CURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDEA8 = "CURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDEC0 = "CURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDED8 = "CURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDEF0 = "CURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDF08 = "CURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDF20 = "CURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDF38 = "CURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDF50 = "CURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDF68 = "CURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDF80 = "CURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDF98 = "CURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDFB0 = "CURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDFC8 = "CURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDFE0 = "CURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDFF8 = "CURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE010 = "CURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE028 = "CURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE040 = "CURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE058 = "CURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE070 = "CURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE088 = "CURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE0A0 = "CURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE0B8 = "CURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE0D0 = "CURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE0E8 = "CURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE100 = "CURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE118 = "CURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE130 = "CURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE148 = "CURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE160 = "CURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE178 = "CURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE190 = "CURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE1A8 = "CURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE1C0 = "CURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE1D8 = "CURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE1F0 = "CURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE208 = "CURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE220 = "CURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE238 = "CURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE250 = "CURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE268 = "CURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE280 = "CURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE298 = "CURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE2B0 = "CURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE2C8 = "CURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE2E0 = "CURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE2F8 = "CURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE310 = "CURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE328 = "CURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE340 = "CURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE358 = "CURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE370 = "CURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE388 = "CURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE3A0 = "CURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CECC0 = 35;
+  dword_27CEC38 = 1013;
+  qword_27CECA8 = 34;
+  dword_27CECB0 = 1501;
+  qword_27CECB8 = "TRANSIT_TYPE_COMMUTER_COACH_SERVICETRANSIT_TYPE_CROSS_COUNTRY_RAIL_SERVICETRANSIT_TYPE_DEMAND_AND_RESPONSE_BUS_SERVICETRANSIT_TYPE_DOMESTIC_AIR_SERVICETRANSIT_TYPE_DOMESTIC_CHARTER_AIR_SERVICETRANSIT_TYPE_DOMESTIC_SCHEDULED_AIR_SERVICETRANSIT_TYPE_DRAG_LIFT_SERVICETRANSIT_TYPE_ELEVATOR_SERVICETRANSIT_TYPE_EXPRESS_BUS_SERVICETRANSIT_TYPE_FERRYTRANSIT_TYPE_FERRY_SERVICETRANSIT_TYPE_FUNICULARTRANSIT_TYPE_FUNICULAR_SERVICETRANSIT_TYPE_FUNICULAR_SERVICE_MINORTRANSIT_TYPE_HELICOPTER_AIR_SERVICETRANSIT_TYPE_HIGH_SPEED_RAIL_SERVICETRANSIT_TYPE_HIRE_CARTRANSIT_TYPE_HIRE_CYCLETRANSIT_TYPE_HIRE_MOTORBIKETRANSIT_TYPE_HIRE_VANTRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  qword_27CEC90 = 26;
+  dword_27CEC98 = 200;
+  qword_27CECA0 = "TRANSIT_TYPE_COMMUNAL_TAXI_SERVICETRANSIT_TYPE_COMMUTER_COACH_SERVICETRANSIT_TYPE_CROSS_COUNTRY_RAIL_SERVICETRANSIT_TYPE_DEMAND_AND_RESPONSE_BUS_SERVICETRANSIT_TYPE_DOMESTIC_AIR_SERVICETRANSIT_TYPE_DOMESTIC_CHARTER_AIR_SERVICETRANSIT_TYPE_DOMESTIC_SCHEDULED_AIR_SERVICETRANSIT_TYPE_DRAG_LIFT_SERVICETRANSIT_TYPE_ELEVATOR_SERVICETRANSIT_TYPE_EXPRESS_BUS_SERVICETRANSIT_TYPE_FERRYTRANSIT_TYPE_FERRY_SERVICETRANSIT_TYPE_FUNICULARTRANSIT_TYPE_FUNICULAR_SERVICETRANSIT_TYPE_FUNICULAR_SERVICE_MINORTRANSIT_TYPE_HELICOPTER_AIR_SERVICETRANSIT_TYPE_HIGH_SPEED_RAIL_SERVICETRANSIT_TYPE_HIRE_CARTRANSIT_TYPE_HIRE_CYCLETRANSIT_TYPE_HIRE_MOTORBIKETRANSIT_TYPE_HIRE_VANTRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  qword_27CEC88 = "TRANSIT_TYPE_COACH_SERVICETRANSIT_TYPE_COMMUNAL_TAXI_SERVICETRANSIT_TYPE_COMMUTER_COACH_SERVICETRANSIT_TYPE_CROSS_COUNTRY_RAIL_SERVICETRANSIT_TYPE_DEMAND_AND_RESPONSE_BUS_SERVICETRANSIT_TYPE_DOMESTIC_AIR_SERVICETRANSIT_TYPE_DOMESTIC_CHARTER_AIR_SERVICETRANSIT_TYPE_DOMESTIC_SCHEDULED_AIR_SERVICETRANSIT_TYPE_DRAG_LIFT_SERVICETRANSIT_TYPE_ELEVATOR_SERVICETRANSIT_TYPE_EXPRESS_BUS_SERVICETRANSIT_TYPE_FERRYTRANSIT_TYPE_FERRY_SERVICETRANSIT_TYPE_FUNICULARTRANSIT_TYPE_FUNICULAR_SERVICETRANSIT_TYPE_FUNICULAR_SERVICE_MINORTRANSIT_TYPE_HELICOPTER_AIR_SERVICETRANSIT_TYPE_HIGH_SPEED_RAIL_SERVICETRANSIT_TYPE_HIRE_CARTRANSIT_TYPE_HIRE_CYCLETRANSIT_TYPE_HIRE_MOTORBIKETRANSIT_TYPE_HIRE_VANTRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  qword_27CEC78 = 30;
+  dword_27CEC80 = 901;
+  dword_27CEC68 = 1304;
+  qword_27CEC70 = "TRANSIT_TYPE_CITY_TRAM_SERVICETRANSIT_TYPE_COACH_SERVICETRANSIT_TYPE_COMMUNAL_TAXI_SERVICETRANSIT_TYPE_COMMUTER_COACH_SERVICETRANSIT_TYPE_CROSS_COUNTRY_RAIL_SERVICETRANSIT_TYPE_DEMAND_AND_RESPONSE_BUS_SERVICETRANSIT_TYPE_DOMESTIC_AIR_SERVICETRANSIT_TYPE_DOMESTIC_CHARTER_AIR_SERVICETRANSIT_TYPE_DOMESTIC_SCHEDULED_AIR_SERVICETRANSIT_TYPE_DRAG_LIFT_SERVICETRANSIT_TYPE_ELEVATOR_SERVICETRANSIT_TYPE_EXPRESS_BUS_SERVICETRANSIT_TYPE_FERRYTRANSIT_TYPE_FERRY_SERVICETRANSIT_TYPE_FUNICULARTRANSIT_TYPE_FUNICULAR_SERVICETRANSIT_TYPE_FUNICULAR_SERVICE_MINORTRANSIT_TYPE_HELICOPTER_AIR_SERVICETRANSIT_TYPE_HIGH_SPEED_RAIL_SERVICETRANSIT_TYPE_HIRE_CARTRANSIT_TYPE_HIRE_CYCLETRANSIT_TYPE_HIRE_MOTORBIKETRANSIT_TYPE_HIRE_VANTRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  qword_27CEC60 = 31;
+  qword_27CEC58 = "TRANSIT_TYPE_CHAIR_LIFT_SERVICETRANSIT_TYPE_CITY_TRAM_SERVICETRANSIT_TYPE_COACH_SERVICETRANSIT_TYPE_COMMUNAL_TAXI_SERVICETRANSIT_TYPE_COMMUTER_COACH_SERVICETRANSIT_TYPE_CROSS_COUNTRY_RAIL_SERVICETRANSIT_TYPE_DEMAND_AND_RESPONSE_BUS_SERVICETRANSIT_TYPE_DOMESTIC_AIR_SERVICETRANSIT_TYPE_DOMESTIC_CHARTER_AIR_SERVICETRANSIT_TYPE_DOMESTIC_SCHEDULED_AIR_SERVICETRANSIT_TYPE_DRAG_LIFT_SERVICETRANSIT_TYPE_ELEVATOR_SERVICETRANSIT_TYPE_EXPRESS_BUS_SERVICETRANSIT_TYPE_FERRYTRANSIT_TYPE_FERRY_SERVICETRANSIT_TYPE_FUNICULARTRANSIT_TYPE_FUNICULAR_SERVICETRANSIT_TYPE_FUNICULAR_SERVICE_MINORTRANSIT_TYPE_HELICOPTER_AIR_SERVICETRANSIT_TYPE_HIGH_SPEED_RAIL_SERVICETRANSIT_TYPE_HIRE_CARTRANSIT_TYPE_HIRE_CYCLETRANSIT_TYPE_HIRE_MOTORBIKETRANSIT_TYPE_HIRE_VANTRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  qword_27CEC48 = 39;
+  dword_27CEC50 = 104;
+  qword_27CEC40 = "TRANSIT_TYPE_CAR_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_CHAIR_LIFT_SERVICETRANSIT_TYPE_CITY_TRAM_SERVICETRANSIT_TYPE_COACH_SERVICETRANSIT_TYPE_COMMUNAL_TAXI_SERVICETRANSIT_TYPE_COMMUTER_COACH_SERVICETRANSIT_TYPE_CROSS_COUNTRY_RAIL_SERVICETRANSIT_TYPE_DEMAND_AND_RESPONSE_BUS_SERVICETRANSIT_TYPE_DOMESTIC_AIR_SERVICETRANSIT_TYPE_DOMESTIC_CHARTER_AIR_SERVICETRANSIT_TYPE_DOMESTIC_SCHEDULED_AIR_SERVICETRANSIT_TYPE_DRAG_LIFT_SERVICETRANSIT_TYPE_ELEVATOR_SERVICETRANSIT_TYPE_EXPRESS_BUS_SERVICETRANSIT_TYPE_FERRYTRANSIT_TYPE_FERRY_SERVICETRANSIT_TYPE_FUNICULARTRANSIT_TYPE_FUNICULAR_SERVICETRANSIT_TYPE_FUNICULAR_SERVICE_MINORTRANSIT_TYPE_HELICOPTER_AIR_SERVICETRANSIT_TYPE_HIGH_SPEED_RAIL_SERVICETRANSIT_TYPE_HIRE_CARTRANSIT_TYPE_HIRE_CYCLETRANSIT_TYPE_HIRE_MOTORBIKETRANSIT_TYPE_HIRE_VANTRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  qword_27CEC28 = "TRANSIT_TYPE_CAR_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_CAR_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_CHAIR_LIFT_SERVICETRANSIT_TYPE_CITY_TRAM_SERVICETRANSIT_TYPE_COACH_SERVICETRANSIT_TYPE_COMMUNAL_TAXI_SERVICETRANSIT_TYPE_COMMUTER_COACH_SERVICETRANSIT_TYPE_CROSS_COUNTRY_RAIL_SERVICETRANSIT_TYPE_DEMAND_AND_RESPONSE_BUS_SERVICETRANSIT_TYPE_DOMESTIC_AIR_SERVICETRANSIT_TYPE_DOMESTIC_CHARTER_AIR_SERVICETRANSIT_TYPE_DOMESTIC_SCHEDULED_AIR_SERVICETRANSIT_TYPE_DRAG_LIFT_SERVICETRANSIT_TYPE_ELEVATOR_SERVICETRANSIT_TYPE_EXPRESS_BUS_SERVICETRANSIT_TYPE_FERRYTRANSIT_TYPE_FERRY_SERVICETRANSIT_TYPE_FUNICULARTRANSIT_TYPE_FUNICULAR_SERVICETRANSIT_TYPE_FUNICULAR_SERVICE_MINORTRANSIT_TYPE_HELICOPTER_AIR_SERVICETRANSIT_TYPE_HIGH_SPEED_RAIL_SERVICETRANSIT_TYPE_HIRE_CARTRANSIT_TYPE_HIRE_CYCLETRANSIT_TYPE_HIRE_MOTORBIKETRANSIT_TYPE_HIRE_VANTRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  unk_27CEC30 = 41;
+  dword_27CEC20 = 1017;
+  qword_27CEC10 = "TRANSIT_TYPE_CABLE_DRAWN_BOAT_SERVICETRANSIT_TYPE_CAR_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_CAR_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_CHAIR_LIFT_SERVICETRANSIT_TYPE_CITY_TRAM_SERVICETRANSIT_TYPE_COACH_SERVICETRANSIT_TYPE_COMMUNAL_TAXI_SERVICETRANSIT_TYPE_COMMUTER_COACH_SERVICETRANSIT_TYPE_CROSS_COUNTRY_RAIL_SERVICETRANSIT_TYPE_DEMAND_AND_RESPONSE_BUS_SERVICETRANSIT_TYPE_DOMESTIC_AIR_SERVICETRANSIT_TYPE_DOMESTIC_CHARTER_AIR_SERVICETRANSIT_TYPE_DOMESTIC_SCHEDULED_AIR_SERVICETRANSIT_TYPE_DRAG_LIFT_SERVICETRANSIT_TYPE_ELEVATOR_SERVICETRANSIT_TYPE_EXPRESS_BUS_SERVICETRANSIT_TYPE_FERRYTRANSIT_TYPE_FERRY_SERVICETRANSIT_TYPE_FUNICULARTRANSIT_TYPE_FUNICULAR_SERVICETRANSIT_TYPE_FUNICULAR_SERVICE_MINORTRANSIT_TYPE_HELICOPTER_AIR_SERVICETRANSIT_TYPE_HIGH_SPEED_RAIL_SERVICETRANSIT_TYPE_HIRE_CARTRANSIT_TYPE_HIRE_CYCLETRANSIT_TYPE_HIRE_MOTORBIKETRANSIT_TYPE_HIRE_VANTRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  unk_27CEC18 = 37;
+  dword_27CEBD8 = 1800;
+  qword_27CEBF8 = "TRANSIT_TYPE_CABLE_CAR_SERVICETRANSIT_TYPE_CABLE_DRAWN_BOAT_SERVICETRANSIT_TYPE_CAR_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_CAR_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_CHAIR_LIFT_SERVICETRANSIT_TYPE_CITY_TRAM_SERVICETRANSIT_TYPE_COACH_SERVICETRANSIT_TYPE_COMMUNAL_TAXI_SERVICETRANSIT_TYPE_COMMUTER_COACH_SERVICETRANSIT_TYPE_CROSS_COUNTRY_RAIL_SERVICETRANSIT_TYPE_DEMAND_AND_RESPONSE_BUS_SERVICETRANSIT_TYPE_DOMESTIC_AIR_SERVICETRANSIT_TYPE_DOMESTIC_CHARTER_AIR_SERVICETRANSIT_TYPE_DOMESTIC_SCHEDULED_AIR_SERVICETRANSIT_TYPE_DRAG_LIFT_SERVICETRANSIT_TYPE_ELEVATOR_SERVICETRANSIT_TYPE_EXPRESS_BUS_SERVICETRANSIT_TYPE_FERRYTRANSIT_TYPE_FERRY_SERVICETRANSIT_TYPE_FUNICULARTRANSIT_TYPE_FUNICULAR_SERVICETRANSIT_TYPE_FUNICULAR_SERVICE_MINORTRANSIT_TYPE_HELICOPTER_AIR_SERVICETRANSIT_TYPE_HIGH_SPEED_RAIL_SERVICETRANSIT_TYPE_HIRE_CARTRANSIT_TYPE_HIRE_CYCLETRANSIT_TYPE_HIRE_MOTORBIKETRANSIT_TYPE_HIRE_VANTRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  unk_27CEC00 = 30;
+  dword_27CEC08 = 5;
+  dword_27CEBF0 = 700;
+  qword_27CEBE0 = "TRANSIT_TYPE_BUS_SERVICETRANSIT_TYPE_CABLE_CAR_SERVICETRANSIT_TYPE_CABLE_DRAWN_BOAT_SERVICETRANSIT_TYPE_CAR_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_CAR_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_CHAIR_LIFT_SERVICETRANSIT_TYPE_CITY_TRAM_SERVICETRANSIT_TYPE_COACH_SERVICETRANSIT_TYPE_COMMUNAL_TAXI_SERVICETRANSIT_TYPE_COMMUTER_COACH_SERVICETRANSIT_TYPE_CROSS_COUNTRY_RAIL_SERVICETRANSIT_TYPE_DEMAND_AND_RESPONSE_BUS_SERVICETRANSIT_TYPE_DOMESTIC_AIR_SERVICETRANSIT_TYPE_DOMESTIC_CHARTER_AIR_SERVICETRANSIT_TYPE_DOMESTIC_SCHEDULED_AIR_SERVICETRANSIT_TYPE_DRAG_LIFT_SERVICETRANSIT_TYPE_ELEVATOR_SERVICETRANSIT_TYPE_EXPRESS_BUS_SERVICETRANSIT_TYPE_FERRYTRANSIT_TYPE_FERRY_SERVICETRANSIT_TYPE_FUNICULARTRANSIT_TYPE_FUNICULAR_SERVICETRANSIT_TYPE_FUNICULAR_SERVICE_MINORTRANSIT_TYPE_HELICOPTER_AIR_SERVICETRANSIT_TYPE_HIGH_SPEED_RAIL_SERVICETRANSIT_TYPE_HIRE_CARTRANSIT_TYPE_HIRE_CYCLETRANSIT_TYPE_HIRE_MOTORBIKETRANSIT_TYPE_HIRE_VANTRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  unk_27CEBE8 = 24;
+  qword_27CEBC8 = "TRANSIT_TYPE_BUS_RAPID_TRANSITTRANSIT_TYPE_BUS_SERVICETRANSIT_TYPE_CABLE_CAR_SERVICETRANSIT_TYPE_CABLE_DRAWN_BOAT_SERVICETRANSIT_TYPE_CAR_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_CAR_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_CHAIR_LIFT_SERVICETRANSIT_TYPE_CITY_TRAM_SERVICETRANSIT_TYPE_COACH_SERVICETRANSIT_TYPE_COMMUNAL_TAXI_SERVICETRANSIT_TYPE_COMMUTER_COACH_SERVICETRANSIT_TYPE_CROSS_COUNTRY_RAIL_SERVICETRANSIT_TYPE_DEMAND_AND_RESPONSE_BUS_SERVICETRANSIT_TYPE_DOMESTIC_AIR_SERVICETRANSIT_TYPE_DOMESTIC_CHARTER_AIR_SERVICETRANSIT_TYPE_DOMESTIC_SCHEDULED_AIR_SERVICETRANSIT_TYPE_DRAG_LIFT_SERVICETRANSIT_TYPE_ELEVATOR_SERVICETRANSIT_TYPE_EXPRESS_BUS_SERVICETRANSIT_TYPE_FERRYTRANSIT_TYPE_FERRY_SERVICETRANSIT_TYPE_FUNICULARTRANSIT_TYPE_FUNICULAR_SERVICETRANSIT_TYPE_FUNICULAR_SERVICE_MINORTRANSIT_TYPE_HELICOPTER_AIR_SERVICETRANSIT_TYPE_HIGH_SPEED_RAIL_SERVICETRANSIT_TYPE_HIRE_CARTRANSIT_TYPE_HIRE_CYCLETRANSIT_TYPE_HIRE_MOTORBIKETRANSIT_TYPE_HIRE_VANTRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  unk_27CEBD0 = 30;
+  qword_27CEBB0 = "TRANSIT_TYPE_BUSTRANSIT_TYPE_BUS_RAPID_TRANSITTRANSIT_TYPE_BUS_SERVICETRANSIT_TYPE_CABLE_CAR_SERVICETRANSIT_TYPE_CABLE_DRAWN_BOAT_SERVICETRANSIT_TYPE_CAR_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_CAR_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_CHAIR_LIFT_SERVICETRANSIT_TYPE_CITY_TRAM_SERVICETRANSIT_TYPE_COACH_SERVICETRANSIT_TYPE_COMMUNAL_TAXI_SERVICETRANSIT_TYPE_COMMUTER_COACH_SERVICETRANSIT_TYPE_CROSS_COUNTRY_RAIL_SERVICETRANSIT_TYPE_DEMAND_AND_RESPONSE_BUS_SERVICETRANSIT_TYPE_DOMESTIC_AIR_SERVICETRANSIT_TYPE_DOMESTIC_CHARTER_AIR_SERVICETRANSIT_TYPE_DOMESTIC_SCHEDULED_AIR_SERVICETRANSIT_TYPE_DRAG_LIFT_SERVICETRANSIT_TYPE_ELEVATOR_SERVICETRANSIT_TYPE_EXPRESS_BUS_SERVICETRANSIT_TYPE_FERRYTRANSIT_TYPE_FERRY_SERVICETRANSIT_TYPE_FUNICULARTRANSIT_TYPE_FUNICULAR_SERVICETRANSIT_TYPE_FUNICULAR_SERVICE_MINORTRANSIT_TYPE_HELICOPTER_AIR_SERVICETRANSIT_TYPE_HIGH_SPEED_RAIL_SERVICETRANSIT_TYPE_HIRE_CARTRANSIT_TYPE_HIRE_CYCLETRANSIT_TYPE_HIRE_MOTORBIKETRANSIT_TYPE_HIRE_VANTRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  unk_27CEBB8 = 16;
+  dword_27CEBC0 = 3;
+  dword_27CEBA8 = 1504;
+  qword_27CEB98 = "TRANSIT_TYPE_BIKE_TAXI_SERVICETRANSIT_TYPE_BUSTRANSIT_TYPE_BUS_RAPID_TRANSITTRANSIT_TYPE_BUS_SERVICETRANSIT_TYPE_CABLE_CAR_SERVICETRANSIT_TYPE_CABLE_DRAWN_BOAT_SERVICETRANSIT_TYPE_CAR_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_CAR_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_CHAIR_LIFT_SERVICETRANSIT_TYPE_CITY_TRAM_SERVICETRANSIT_TYPE_COACH_SERVICETRANSIT_TYPE_COMMUNAL_TAXI_SERVICETRANSIT_TYPE_COMMUTER_COACH_SERVICETRANSIT_TYPE_CROSS_COUNTRY_RAIL_SERVICETRANSIT_TYPE_DEMAND_AND_RESPONSE_BUS_SERVICETRANSIT_TYPE_DOMESTIC_AIR_SERVICETRANSIT_TYPE_DOMESTIC_CHARTER_AIR_SERVICETRANSIT_TYPE_DOMESTIC_SCHEDULED_AIR_SERVICETRANSIT_TYPE_DRAG_LIFT_SERVICETRANSIT_TYPE_ELEVATOR_SERVICETRANSIT_TYPE_EXPRESS_BUS_SERVICETRANSIT_TYPE_FERRYTRANSIT_TYPE_FERRY_SERVICETRANSIT_TYPE_FUNICULARTRANSIT_TYPE_FUNICULAR_SERVICETRANSIT_TYPE_FUNICULAR_SERVICE_MINORTRANSIT_TYPE_HELICOPTER_AIR_SERVICETRANSIT_TYPE_HIGH_SPEED_RAIL_SERVICETRANSIT_TYPE_HIRE_CARTRANSIT_TYPE_HIRE_CYCLETRANSIT_TYPE_HIRE_MOTORBIKETRANSIT_TYPE_HIRE_VANTRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  unk_27CEBA0 = 30;
+  dword_27CEB30 = 1507;
+  dword_27CEB90 = 1021;
+  qword_27CEB80 = &aTransitTypeAdd[441];
+  unk_27CEB88 = 41;
+  qword_27CEB68 = &aTransitTypeAdd[402];
+  unk_27CEB70 = 39;
+  dword_27CEB78 = 404;
+  dword_27CEB48 = 1307;
+  dword_27CEB60 = 906;
+  qword_27CEB50 = &aTransitTypeAdd[372];
+  unk_27CEB58 = 30;
+  qword_27CEB38 = &aTransitTypeAdd[337];
+  unk_27CEB40 = 35;
+  qword_27CEB20 = &aTransitTypeAdd[307];
+  unk_27CEB28 = 30;
+  dword_27CEB18 = 113;
+  qword_27CEB08 = &aTransitTypeAdd[277];
+  unk_27CEB10 = 30;
+  dword_27CEA40 = 117;
+  dword_27CEB00 = 1402;
+  qword_27CEAF0 = &aTransitTypeAdd[243];
+  unk_27CEAF8 = 34;
+  dword_27CEAE8 = 209;
+  qword_27CEAD8 = &aTransitTypeAdd[212];
+  unk_27CEAE0 = 31;
+  dword_27CEAD0 = 716;
+  qword_27CEAC0 = &aTransitTypeAdd[183];
+  unk_27CEAC8 = 29;
+  dword_27CEAA0 = 1100;
+  dword_27CEAB8 = 1114;
+  qword_27CEAA8 = &aTransitTypeAdd[154];
+  unk_27CEAB0 = 29;
+  dword_27CEA88 = 1113;
+  qword_27CEA90 = &aTransitTypeAdd[130];
+  unk_27CEA98 = 24;
+  dword_27CEA70 = 1012;
+  qword_27CEA78 = &aTransitTypeAdd[102];
+  unk_27CEA80 = 28;
+  qword_27CEA48 = &aTransitTypeAdd[36];
+  unk_27CEA50 = 27;
+  qword_27CEA60 = &aTransitTypeAdd[63];
+  unk_27CEA68 = 39;
+  dword_27CEA58 = 6;
+  qword_27CEA18 = "PICKUP_DROPOFF_TYPE_REGULAR";
+  unk_27CEA20 = 27;
+  dword_27CEA28 = 0;
+  qword_27CEA30 = aTransitTypeAdd;
+  *algn_27CEA38 = 36;
+  qword_27CEA00 = "PICKUP_DROPOFF_TYPE_PHONE_AGENCYPICKUP_DROPOFF_TYPE_REGULAR";
+  unk_27CEA08 = 32;
+  dword_27CEA10 = 2;
+  qword_27CE9D0 = "PICKUP_DROPOFF_TYPE_COORDINATE_WITH_DRIVERPICKUP_DROPOFF_TYPE_NOT_AVAILABLEPICKUP_DROPOFF_TYPE_PHONE_AGENCYPICKUP_DROPOFF_TYPE_REGULAR";
+  *algn_27CE9D8 = 42;
+  qword_27CE9E8 = "PICKUP_DROPOFF_TYPE_NOT_AVAILABLEPICKUP_DROPOFF_TYPE_PHONE_AGENCYPICKUP_DROPOFF_TYPE_REGULAR";
+  unk_27CE9F0 = 33;
+  dword_27CE9F8 = 1;
+  dword_27CE9E0 = 3;
+  dword_27CE9B0 = 1;
+  qword_27CE9B8 = "UNKNOWN";
+  unk_27CE9C0 = 7;
+  dword_27CE9C8 = 0;
+  qword_27CE9A0 = "SNAP_DIRECTLYUNKNOWN";
+  unk_27CE9A8 = 13;
+  qword_27CE988 = "RESTRICT_INITIAL_WALKINGSNAP_DIRECTLYUNKNOWN";
+  unk_27CE990 = 24;
+  dword_27CE998 = 2;
+  dword_27CE980 = 0;
+  dword_27CE968 = 1;
+  qword_27CE970 = "DURATION";
+  unk_27CE978 = 8;
+  qword_27CE940 = "NUMBER";
+  *algn_27CE948 = 6;
+  dword_27CE950 = 1000;
+  qword_27CE958 = "ARRIVAL_TIMEDURATION";
+  unk_27CE960 = 12;
+  dword_27CE938 = 0;
+  qword_27CE928 = "UNKNOWN";
+  unk_27CE930 = 7;
+  qword_27CE910 = "ORIGIN_IDUNKNOWN";
+  unk_27CE918 = 9;
+  dword_27CE920 = 1;
+  qword_27CE8F8 = "LANGUAGEORIGIN_IDUNKNOWN";
+  unk_27CE900 = 8;
+  dword_27CE8F0 = 2;
+  dword_27CE908 = 5;
+  qword_27CE8E0 = "DESTINATION_IDLANGUAGEORIGIN_IDUNKNOWN";
+  qword_27CE8C8 = "DEPARTURE_TIMESTAMPDESTINATION_IDLANGUAGEORIGIN_IDUNKNOWN";
+  qword_27CE8D0 = 19;
+  dword_27CE8D8 = 3;
+  qword_27CE8E8 = 14;
+  qword_27CE8B0 = "CARD_NAMEDEPARTURE_TIMESTAMPDESTINATION_IDLANGUAGEORIGIN_IDUNKNOWN";
+  unk_27CE8B8 = 9;
+  qword_27CE898 = "ARRIVAL_TIMESTAMPCARD_NAMEDEPARTURE_TIMESTAMPDESTINATION_IDLANGUAGEORIGIN_IDUNKNOWN";
+  qword_27CE8A0 = 17;
+  dword_27CE8C0 = 6;
+  dword_27CE8A8 = 4;
+  dword_27CE890 = 0;
+  qword_27CE880 = "PAYMENT_TYPE_UNKNOWN";
+  unk_27CE888 = 20;
+  qword_27CE868 = "PAYMENT_TYPE_ICPAYMENT_TYPE_UNKNOWN";
+  unk_27CE870 = 15;
+  dword_27CE878 = 1;
+  qword_27CE568 = "CURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE858 = 12;
+  dword_27CE860 = 932;
+  qword_27CE838 = "CURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE850 = "CURRENCY_ZWL";
+  qword_27CE840 = 12;
+  dword_27CE848 = 967;
+  qword_27CE820 = "CURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE828 = 12;
+  dword_27CE830 = 710;
+  qword_27CE808 = "CURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27CE800 = 999;
+  qword_27CE810 = 12;
+  dword_27CE818 = 886;
+  qword_27CE7F0 = "CURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE7E0 = 12;
+  dword_27CE7E8 = 965;
+  qword_27CE7F8 = 12;
+  qword_27CE7D8 = "CURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE7C8 = 12;
+  dword_27CE7D0 = 963;
+  qword_27CE7A8 = "CURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE7C0 = "CURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE7B0 = 12;
+  dword_27CE7B8 = 994;
+  qword_27CE790 = "CURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE798 = 12;
+  dword_27CE7A0 = 962;
+  qword_27CE778 = "CURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27CE770 = 964;
+  qword_27CE780 = 12;
+  dword_27CE788 = 953;
+  qword_27CE760 = "CURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE750 = 12;
+  dword_27CE758 = 952;
+  qword_27CE768 = 12;
+  qword_27CE748 = "CURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE738 = 12;
+  dword_27CE740 = 960;
+  qword_27CE718 = "CURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE730 = "CURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE720 = 12;
+  dword_27CE728 = 951;
+  qword_27CE700 = "CURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE708 = 12;
+  dword_27CE710 = 958;
+  qword_27CE6E8 = "CURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27CE6E0 = 956;
+  qword_27CE6F0 = 12;
+  dword_27CE6F8 = 957;
+  qword_27CE6D0 = "CURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE6C0 = 12;
+  dword_27CE6C8 = 955;
+  qword_27CE6D8 = 12;
+  qword_27CE6B8 = "CURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE6A8 = 12;
+  dword_27CE6B0 = 959;
+  qword_27CE688 = "CURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE6A0 = "CURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE690 = 12;
+  dword_27CE698 = 961;
+  qword_27CE670 = "CURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE678 = 12;
+  dword_27CE680 = 950;
+  qword_27CE658 = "CURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27CE650 = 548;
+  qword_27CE660 = 12;
+  dword_27CE668 = 882;
+  qword_27CE640 = "CURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE630 = 12;
+  dword_27CE638 = 704;
+  qword_27CE648 = 12;
+  qword_27CE628 = "CURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE618 = 12;
+  dword_27CE620 = 937;
+  qword_27CE5F8 = "CURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE610 = "CURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE600 = 12;
+  dword_27CE608 = 860;
+  qword_27CE5E0 = "CURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE5E8 = 12;
+  dword_27CE5F0 = 858;
+  qword_27CE5C8 = "CURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27CE5C0 = 997;
+  qword_27CE5D0 = 12;
+  dword_27CE5D8 = 940;
+  qword_27CE5B0 = "CURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE5A0 = 12;
+  dword_27CE5A8 = 840;
+  qword_27CE5B8 = 12;
+  qword_27CE580 = "CURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE598 = "CURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE588 = 16;
+  dword_27CE590 = 0;
+  dword_27CE560 = 980;
+  qword_27CE570 = 12;
+  dword_27CE578 = 800;
+  qword_27CE550 = "CURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE540 = 12;
+  dword_27CE548 = 834;
+  qword_27CE558 = 12;
+  qword_27CE3B8 = "CURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE538 = "CURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDD30 = 12;
+  qword_27CE528 = 12;
+  dword_27CE530 = 901;
+  qword_27CE3D0 = "CURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDD18 = 12;
+  dword_27CDD20 = 328;
+  qword_27CE3E8 = "CURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE400 = "CURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDD00 = 12;
+  dword_27CDD08 = 320;
+  qword_27CE418 = "CURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDCE8 = 12;
+  dword_27CDCF0 = 324;
+  qword_27CE430 = "CURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27CDCC0 = 292;
+  qword_27CDCD0 = 12;
+  dword_27CDCD8 = 270;
+  qword_27CE448 = "CURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDCA0 = 12;
+  dword_27CDCA8 = 936;
+  qword_27CDCB8 = 12;
+  qword_27CE460 = "CURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDC88 = 12;
+  dword_27CDC90 = 981;
+  qword_27CE478 = "CURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CE490 = "CURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDC70 = 12;
+  dword_27CDC78 = 826;
+  qword_27CE4A8 = "CURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDC58 = 12;
+  dword_27CDC60 = 238;
+  qword_27CE4C0 = "CURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27CDC30 = 978;
+  qword_27CDC40 = 12;
+  dword_27CDC48 = 242;
+  qword_27CE4D8 = "CURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDC10 = 12;
+  dword_27CDC18 = 230;
+  qword_27CDC28 = 12;
+  qword_27CE4F0 = "CURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CDBF8 = 12;
+  dword_27CDC00 = 232;
+  qword_27CE508 = "CURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27CDBD0 = 12;
+  qword_27CDBE0 = 12;
+  dword_27CDBE8 = 818;
+  qword_27CE520 = "CURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27CD7A0 = "CURRENCY_AEDCURRENCY_AFNCURRENCY_ALLCURRENCY_AMDCURRENCY_ANGCURRENCY_AOACURRENCY_ARSCURRENCY_AUDCURRENCY_AWGCURRENCY_AZNCURRENCY_BAMCURRENCY_BBDCURRENCY_BDTCURRENCY_BGNCURRENCY_BHDCURRENCY_BIFCURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  *algn_27CD7A8 = 12;
+  qword_27CDBB0 = 12;
+  dword_27CDBB8 = 214;
+  qword_27CDBC8 = 12;
+  dword_27CD7B0 = 784;
+  qword_27CDB98 = 12;
+  dword_27CDBA0 = 208;
+  qword_27CD7C0 = 12;
+  dword_27CDB70 = 203;
+  qword_27CDB80 = 12;
+  dword_27CDB88 = 262;
+  dword_27CD7C8 = 971;
+  qword_27CDB50 = 12;
+  dword_27CDB58 = 132;
+  qword_27CDB68 = 12;
+  qword_27CD7D8 = 12;
+  dword_27CDB28 = 931;
+  qword_27CDB38 = 12;
+  dword_27CDB40 = 192;
+  dword_27CD7E0 = 8;
+  qword_27CD7F0 = 12;
+  qword_27CDB08 = 12;
+  dword_27CDB10 = 188;
+  qword_27CDB20 = 12;
+  dword_27CD7F8 = 51;
+  qword_27CD808 = 12;
+  qword_27CDAF0 = 12;
+  dword_27CDAF8 = 970;
+  dword_27CDAC8 = 156;
+  qword_27CDAD8 = 12;
+  dword_27CDAE0 = 170;
+  dword_27CD810 = 532;
+  qword_27CD820 = 12;
+  qword_27CDAA8 = 12;
+  dword_27CDAB0 = 152;
+  qword_27CDAC0 = 12;
+  dword_27CD828 = 973;
+  qword_27CD838 = 12;
+  qword_27CDA90 = 12;
+  dword_27CDA98 = 990;
+  qword_27CDA60 = 12;
+  dword_27CDA68 = 756;
+  qword_27CDA78 = 12;
+  dword_27CDA80 = 948;
+  dword_27CD840 = 32;
+  qword_27CD850 = 12;
+  dword_27CD858 = 36;
+  qword_27CDA48 = 12;
+  dword_27CDA50 = 947;
+  qword_27CD868 = 12;
+  dword_27CDA20 = 124;
+  qword_27CDA30 = 12;
+  dword_27CDA38 = 976;
+  dword_27CD870 = 533;
+  qword_27CDA00 = 12;
+  dword_27CDA08 = 84;
+  qword_27CDA18 = 12;
+  qword_27CD880 = 12;
+  dword_27CD888 = 944;
+  qword_27CD9E8 = 12;
+  dword_27CD9F0 = 974;
+  qword_27CD898 = 12;
+  dword_27CD9C0 = 64;
+  qword_27CD9D0 = 12;
+  dword_27CD9D8 = 72;
+  dword_27CD8A0 = 977;
+  qword_27CD9A0 = 12;
+  dword_27CD9A8 = 44;
+  qword_27CD9B8 = 12;
+  qword_27CD8B0 = 12;
+  dword_27CD8B8 = 52;
+  qword_27CD988 = 12;
+  dword_27CD990 = 986;
+  qword_27CD8C8 = 12;
+  dword_27CD960 = 68;
+  qword_27CD970 = 12;
+  dword_27CD978 = 984;
+  dword_27CD8D0 = 50;
+  qword_27CD940 = 12;
+  dword_27CD948 = 96;
+  qword_27CD958 = 12;
+  qword_27CD8E0 = 12;
+  dword_27CD8E8 = 975;
+  qword_27CD928 = 12;
+  dword_27CD930 = 60;
+  qword_27CD8F8 = 12;
+  dword_27CD900 = 48;
+  qword_27CD910 = 12;
+  dword_27CD918 = 108;
+  dword_27CDD38 = 344;
+  qword_27CDD48 = 12;
+  dword_27CDD50 = 340;
+  qword_27CDD60 = 12;
+  dword_27CDD68 = 191;
+  qword_27CDD78 = 12;
+  dword_27CDD80 = 332;
+  qword_27CDD90 = 12;
+  dword_27CDD98 = 348;
+  qword_27CDDA8 = 12;
+  dword_27CDDB0 = 360;
+  qword_27CDDC0 = 12;
+  dword_27CDDC8 = 376;
+  qword_27CDDD8 = 12;
+  dword_27CDDE0 = 356;
+  qword_27CDDF0 = 12;
+  dword_27CDDF8 = 368;
+  qword_27CDE08 = 12;
+  dword_27CDE10 = 364;
+  qword_27CDE20 = 12;
+  dword_27CDE28 = 352;
+  qword_27CDE38 = 12;
+  dword_27CDE40 = 388;
+  qword_27CDE50 = 12;
+  dword_27CDE58 = 400;
+  qword_27CDE68 = 12;
+  dword_27CDE70 = 392;
+  qword_27CDE80 = 12;
+  dword_27CDE88 = 404;
+  qword_27CDE98 = 12;
+  dword_27CDEA0 = 417;
+  qword_27CDEB0 = 12;
+  dword_27CDEB8 = 116;
+  qword_27CDEC8 = 12;
+  dword_27CDED0 = 174;
+  qword_27CDEE0 = 12;
+  dword_27CDEE8 = 408;
+  qword_27CDEF8 = 12;
+  dword_27CDF00 = 410;
+  qword_27CDF10 = 12;
+  dword_27CDF18 = 414;
+  qword_27CDF28 = 12;
+  dword_27CDF30 = 136;
+  qword_27CDF40 = 12;
+  dword_27CDF48 = 398;
+  qword_27CDF58 = 12;
+  dword_27CDF60 = 418;
+  qword_27CDF70 = 12;
+  dword_27CDF78 = 422;
+  qword_27CDF88 = 12;
+  dword_27CDF90 = 144;
+  qword_27CDFA0 = 12;
+  dword_27CDFA8 = 430;
+  qword_27CDFB8 = 12;
+  dword_27CDFC0 = 426;
+  qword_27CDFD0 = 12;
+  dword_27CDFD8 = 434;
+  qword_27CDFE8 = 12;
+  dword_27CDFF0 = 504;
+  qword_27CE000 = 12;
+  dword_27CE008 = 498;
+  qword_27CE018 = 12;
+  dword_27CE020 = 969;
+  qword_27CE030 = 12;
+  dword_27CE038 = 807;
+  qword_27CE048 = 12;
+  dword_27CE050 = 104;
+  qword_27CE060 = 12;
+  dword_27CE068 = 496;
+  qword_27CE078 = 12;
+  dword_27CE080 = 446;
+  qword_27CE090 = 12;
+  dword_27CE098 = 478;
+  qword_27CE0A8 = 12;
+  dword_27CE0B0 = 480;
+  qword_27CE0C0 = 12;
+  dword_27CE0C8 = 462;
+  qword_27CE0D8 = 12;
+  dword_27CE0E0 = 454;
+  qword_27CE0F0 = 12;
+  dword_27CE0F8 = 484;
+  qword_27CE108 = 12;
+  dword_27CE110 = 979;
+  qword_27CE120 = 12;
+  dword_27CE128 = 458;
+  qword_27CE138 = 12;
+  dword_27CE140 = 943;
+  qword_27CE150 = 12;
+  dword_27CE158 = 516;
+  qword_27CE168 = 12;
+  dword_27CE170 = 566;
+  qword_27CE180 = 12;
+  dword_27CE188 = 558;
+  qword_27CE198 = 12;
+  dword_27CE1A0 = 578;
+  qword_27CE1B0 = 12;
+  dword_27CE1B8 = 524;
+  qword_27CE1C8 = 12;
+  dword_27CE1D0 = 554;
+  qword_27CE1E0 = 12;
+  dword_27CE1E8 = 512;
+  qword_27CE1F8 = 12;
+  dword_27CE200 = 590;
+  qword_27CE210 = 12;
+  dword_27CE218 = 604;
+  qword_27CE228 = 12;
+  dword_27CE230 = 598;
+  qword_27CE240 = 12;
+  dword_27CE248 = 608;
+  qword_27CE258 = 12;
+  dword_27CE260 = 586;
+  qword_27CE270 = 12;
+  dword_27CE278 = 985;
+  qword_27CE288 = 12;
+  dword_27CE290 = 600;
+  qword_27CE2A0 = 12;
+  dword_27CE2A8 = 634;
+  qword_27CE2B8 = 12;
+  dword_27CE2C0 = 946;
+  qword_27CE2D0 = 12;
+  dword_27CE2D8 = 941;
+  qword_27CE2E8 = 12;
+  dword_27CE2F0 = 643;
+  qword_27CE300 = 12;
+  dword_27CE308 = 646;
+  qword_27CE318 = 12;
+  dword_27CE320 = 682;
+  qword_27CE330 = 12;
+  dword_27CE338 = 90;
+  qword_27CE348 = 12;
+  dword_27CE350 = 690;
+  qword_27CE360 = 12;
+  dword_27CE368 = 938;
+  qword_27CE378 = 12;
+  dword_27CE380 = 752;
+  qword_27CE390 = 12;
+  dword_27CE398 = 702;
+  qword_27CE3A8 = 12;
+  dword_27CE3B0 = 654;
+  qword_27CE3C0 = 12;
+  dword_27CE3C8 = 694;
+  qword_27CE3D8 = 12;
+  dword_27CE3E0 = 706;
+  qword_27CE3F0 = 12;
+  dword_27CE3F8 = 968;
+  qword_27CE408 = 12;
+  dword_27CE410 = 728;
+  qword_27CE420 = 12;
+  dword_27CE428 = 678;
+  qword_27CE438 = 12;
+  dword_27CE440 = 222;
+  qword_27CE450 = 12;
+  dword_27CE458 = 760;
+  qword_27CE468 = 12;
+  dword_27CE470 = 748;
+  qword_27CE480 = 12;
+  dword_27CE488 = 764;
+  qword_27CE498 = 12;
+  dword_27CE4A0 = 972;
+  qword_27CE4B0 = 12;
+  dword_27CE4B8 = 934;
+  qword_27CE4C8 = 12;
+  dword_27CE4D0 = 788;
+  qword_27CE4E0 = 12;
+  dword_27CE4E8 = 776;
+  qword_27CE4F8 = 12;
+  dword_27CE500 = 949;
+  qword_27CE510 = 12;
+  dword_27CE518 = 780;
+  qword_27CECD0 = "TRANSIT_TYPE_CROSS_COUNTRY_RAIL_SERVICETRANSIT_TYPE_DEMAND_AND_RESPONSE_BUS_SERVICETRANSIT_TYPE_DOMESTIC_AIR_SERVICETRANSIT_TYPE_DOMESTIC_CHARTER_AIR_SERVICETRANSIT_TYPE_DOMESTIC_SCHEDULED_AIR_SERVICETRANSIT_TYPE_DRAG_LIFT_SERVICETRANSIT_TYPE_ELEVATOR_SERVICETRANSIT_TYPE_EXPRESS_BUS_SERVICETRANSIT_TYPE_FERRYTRANSIT_TYPE_FERRY_SERVICETRANSIT_TYPE_FUNICULARTRANSIT_TYPE_FUNICULAR_SERVICETRANSIT_TYPE_FUNICULAR_SERVICE_MINORTRANSIT_TYPE_HELICOPTER_AIR_SERVICETRANSIT_TYPE_HIGH_SPEED_RAIL_SERVICETRANSIT_TYPE_HIRE_CARTRANSIT_TYPE_HIRE_CYCLETRANSIT_TYPE_HIRE_MOTORBIKETRANSIT_TYPE_HIRE_VANTRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CECE0 = 114;
+  qword_27CECE8 = "TRANSIT_TYPE_DEMAND_AND_RESPONSE_BUS_SERVICETRANSIT_TYPE_DOMESTIC_AIR_SERVICETRANSIT_TYPE_DOMESTIC_CHARTER_AIR_SERVICETRANSIT_TYPE_DOMESTIC_SCHEDULED_AIR_SERVICETRANSIT_TYPE_DRAG_LIFT_SERVICETRANSIT_TYPE_ELEVATOR_SERVICETRANSIT_TYPE_EXPRESS_BUS_SERVICETRANSIT_TYPE_FERRYTRANSIT_TYPE_FERRY_SERVICETRANSIT_TYPE_FUNICULARTRANSIT_TYPE_FUNICULAR_SERVICETRANSIT_TYPE_FUNICULAR_SERVICE_MINORTRANSIT_TYPE_HELICOPTER_AIR_SERVICETRANSIT_TYPE_HIGH_SPEED_RAIL_SERVICETRANSIT_TYPE_HIRE_CARTRANSIT_TYPE_HIRE_CYCLETRANSIT_TYPE_HIRE_MOTORBIKETRANSIT_TYPE_HIRE_VANTRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  qword_27CECF0 = 44;
+  dword_27CECF8 = 715;
+  qword_27CED00 = "TRANSIT_TYPE_DOMESTIC_AIR_SERVICETRANSIT_TYPE_DOMESTIC_CHARTER_AIR_SERVICETRANSIT_TYPE_DOMESTIC_SCHEDULED_AIR_SERVICETRANSIT_TYPE_DRAG_LIFT_SERVICETRANSIT_TYPE_ELEVATOR_SERVICETRANSIT_TYPE_EXPRESS_BUS_SERVICETRANSIT_TYPE_FERRYTRANSIT_TYPE_FERRY_SERVICETRANSIT_TYPE_FUNICULARTRANSIT_TYPE_FUNICULAR_SERVICETRANSIT_TYPE_FUNICULAR_SERVICE_MINORTRANSIT_TYPE_HELICOPTER_AIR_SERVICETRANSIT_TYPE_HIGH_SPEED_RAIL_SERVICETRANSIT_TYPE_HIRE_CARTRANSIT_TYPE_HIRE_CYCLETRANSIT_TYPE_HIRE_MOTORBIKETRANSIT_TYPE_HIRE_VANTRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CED10 = 1102;
+  qword_27CED18 = "TRANSIT_TYPE_DOMESTIC_CHARTER_AIR_SERVICETRANSIT_TYPE_DOMESTIC_SCHEDULED_AIR_SERVICETRANSIT_TYPE_DRAG_LIFT_SERVICETRANSIT_TYPE_ELEVATOR_SERVICETRANSIT_TYPE_EXPRESS_BUS_SERVICETRANSIT_TYPE_FERRYTRANSIT_TYPE_FERRY_SERVICETRANSIT_TYPE_FUNICULARTRANSIT_TYPE_FUNICULAR_SERVICETRANSIT_TYPE_FUNICULAR_SERVICE_MINORTRANSIT_TYPE_HELICOPTER_AIR_SERVICETRANSIT_TYPE_HIGH_SPEED_RAIL_SERVICETRANSIT_TYPE_HIRE_CARTRANSIT_TYPE_HIRE_CYCLETRANSIT_TYPE_HIRE_MOTORBIKETRANSIT_TYPE_HIRE_VANTRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CED28 = 1111;
+  qword_27CED30 = "TRANSIT_TYPE_DOMESTIC_SCHEDULED_AIR_SERVICETRANSIT_TYPE_DRAG_LIFT_SERVICETRANSIT_TYPE_ELEVATOR_SERVICETRANSIT_TYPE_EXPRESS_BUS_SERVICETRANSIT_TYPE_FERRYTRANSIT_TYPE_FERRY_SERVICETRANSIT_TYPE_FUNICULARTRANSIT_TYPE_FUNICULAR_SERVICETRANSIT_TYPE_FUNICULAR_SERVICE_MINORTRANSIT_TYPE_HELICOPTER_AIR_SERVICETRANSIT_TYPE_HIGH_SPEED_RAIL_SERVICETRANSIT_TYPE_HIRE_CARTRANSIT_TYPE_HIRE_CYCLETRANSIT_TYPE_HIRE_MOTORBIKETRANSIT_TYPE_HIRE_VANTRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CED40 = 1104;
+  qword_27CED48 = "TRANSIT_TYPE_DRAG_LIFT_SERVICETRANSIT_TYPE_ELEVATOR_SERVICETRANSIT_TYPE_EXPRESS_BUS_SERVICETRANSIT_TYPE_FERRYTRANSIT_TYPE_FERRY_SERVICETRANSIT_TYPE_FUNICULARTRANSIT_TYPE_FUNICULAR_SERVICETRANSIT_TYPE_FUNICULAR_SERVICE_MINORTRANSIT_TYPE_HELICOPTER_AIR_SERVICETRANSIT_TYPE_HIGH_SPEED_RAIL_SERVICETRANSIT_TYPE_HIRE_CARTRANSIT_TYPE_HIRE_CYCLETRANSIT_TYPE_HIRE_MOTORBIKETRANSIT_TYPE_HIRE_VANTRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CED58 = 1305;
+  qword_27CED60 = "TRANSIT_TYPE_ELEVATOR_SERVICETRANSIT_TYPE_EXPRESS_BUS_SERVICETRANSIT_TYPE_FERRYTRANSIT_TYPE_FERRY_SERVICETRANSIT_TYPE_FUNICULARTRANSIT_TYPE_FUNICULAR_SERVICETRANSIT_TYPE_FUNICULAR_SERVICE_MINORTRANSIT_TYPE_HELICOPTER_AIR_SERVICETRANSIT_TYPE_HIGH_SPEED_RAIL_SERVICETRANSIT_TYPE_HIRE_CARTRANSIT_TYPE_HIRE_CYCLETRANSIT_TYPE_HIRE_MOTORBIKETRANSIT_TYPE_HIRE_VANTRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CED70 = 1303;
+  qword_27CED78 = "TRANSIT_TYPE_EXPRESS_BUS_SERVICETRANSIT_TYPE_FERRYTRANSIT_TYPE_FERRY_SERVICETRANSIT_TYPE_FUNICULARTRANSIT_TYPE_FUNICULAR_SERVICETRANSIT_TYPE_FUNICULAR_SERVICE_MINORTRANSIT_TYPE_HELICOPTER_AIR_SERVICETRANSIT_TYPE_HIGH_SPEED_RAIL_SERVICETRANSIT_TYPE_HIRE_CARTRANSIT_TYPE_HIRE_CYCLETRANSIT_TYPE_HIRE_MOTORBIKETRANSIT_TYPE_HIRE_VANTRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  qword_27CED90 = "TRANSIT_TYPE_FERRYTRANSIT_TYPE_FERRY_SERVICETRANSIT_TYPE_FUNICULARTRANSIT_TYPE_FUNICULAR_SERVICETRANSIT_TYPE_FUNICULAR_SERVICE_MINORTRANSIT_TYPE_HELICOPTER_AIR_SERVICETRANSIT_TYPE_HIGH_SPEED_RAIL_SERVICETRANSIT_TYPE_HIRE_CARTRANSIT_TYPE_HIRE_CYCLETRANSIT_TYPE_HIRE_MOTORBIKETRANSIT_TYPE_HIRE_VANTRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  qword_27CEDA8 = "TRANSIT_TYPE_FERRY_SERVICETRANSIT_TYPE_FUNICULARTRANSIT_TYPE_FUNICULAR_SERVICETRANSIT_TYPE_FUNICULAR_SERVICE_MINORTRANSIT_TYPE_HELICOPTER_AIR_SERVICETRANSIT_TYPE_HIGH_SPEED_RAIL_SERVICETRANSIT_TYPE_HIRE_CARTRANSIT_TYPE_HIRE_CYCLETRANSIT_TYPE_HIRE_MOTORBIKETRANSIT_TYPE_HIRE_VANTRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CEDB8 = 1200;
+  qword_27CEDC0 = "TRANSIT_TYPE_FUNICULARTRANSIT_TYPE_FUNICULAR_SERVICETRANSIT_TYPE_FUNICULAR_SERVICE_MINORTRANSIT_TYPE_HELICOPTER_AIR_SERVICETRANSIT_TYPE_HIGH_SPEED_RAIL_SERVICETRANSIT_TYPE_HIRE_CARTRANSIT_TYPE_HIRE_CYCLETRANSIT_TYPE_HIRE_MOTORBIKETRANSIT_TYPE_HIRE_VANTRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  qword_27CEDD8 = "TRANSIT_TYPE_FUNICULAR_SERVICETRANSIT_TYPE_FUNICULAR_SERVICE_MINORTRANSIT_TYPE_HELICOPTER_AIR_SERVICETRANSIT_TYPE_HIGH_SPEED_RAIL_SERVICETRANSIT_TYPE_HIRE_CARTRANSIT_TYPE_HIRE_CYCLETRANSIT_TYPE_HIRE_MOTORBIKETRANSIT_TYPE_HIRE_VANTRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CEDE8 = 1400;
+  qword_27CEDF0 = "TRANSIT_TYPE_FUNICULAR_SERVICE_MINORTRANSIT_TYPE_HELICOPTER_AIR_SERVICETRANSIT_TYPE_HIGH_SPEED_RAIL_SERVICETRANSIT_TYPE_HIRE_CARTRANSIT_TYPE_HIRE_CYCLETRANSIT_TYPE_HIRE_MOTORBIKETRANSIT_TYPE_HIRE_VANTRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CEE00 = 1401;
+  qword_27CEE08 = "TRANSIT_TYPE_HELICOPTER_AIR_SERVICETRANSIT_TYPE_HIGH_SPEED_RAIL_SERVICETRANSIT_TYPE_HIRE_CARTRANSIT_TYPE_HIRE_CYCLETRANSIT_TYPE_HIRE_MOTORBIKETRANSIT_TYPE_HIRE_VANTRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CEE18 = 1110;
+  qword_27CEE20 = "TRANSIT_TYPE_HIGH_SPEED_RAIL_SERVICETRANSIT_TYPE_HIRE_CARTRANSIT_TYPE_HIRE_CYCLETRANSIT_TYPE_HIRE_MOTORBIKETRANSIT_TYPE_HIRE_VANTRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  qword_27CEE38 = "TRANSIT_TYPE_HIRE_CARTRANSIT_TYPE_HIRE_CYCLETRANSIT_TYPE_HIRE_MOTORBIKETRANSIT_TYPE_HIRE_VANTRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CEE48 = 1601;
+  qword_27CEE50 = "TRANSIT_TYPE_HIRE_CYCLETRANSIT_TYPE_HIRE_MOTORBIKETRANSIT_TYPE_HIRE_VANTRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CEE60 = 1604;
+  qword_27CEE68 = "TRANSIT_TYPE_HIRE_MOTORBIKETRANSIT_TYPE_HIRE_VANTRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CEE78 = 1603;
+  qword_27CEE80 = "TRANSIT_TYPE_HIRE_VANTRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CEE90 = 1602;
+  qword_27CEE98 = "TRANSIT_TYPE_HORSE_DRAWN_CARRIAGETRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CEEA8 = 1701;
+  qword_27CEEB0 = "TRANSIT_TYPE_INTERCONTINENTAL_AIR_SERVICETRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CEEC0 = 1103;
+  qword_27CEEC8 = "TRANSIT_TYPE_INTERCONTINENTAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CEED8 = 1106;
+  qword_27CEEE0 = "TRANSIT_TYPE_INTERNATIONAL_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CEEF0 = 1101;
+  qword_27CEEF8 = "TRANSIT_TYPE_INTERNATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CEF08 = 1001;
+  qword_27CEF10 = "TRANSIT_TYPE_INTERNATIONAL_CHARTER_AIR_SERVICETRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CEF20 = 1107;
+  qword_27CEF28 = "TRANSIT_TYPE_INTERNATIONAL_COACH_SERVICETRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CEF38 = 201;
+  qword_27CEF40 = "TRANSIT_TYPE_INTERNATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CEF50 = 1005;
+  qword_27CEF58 = "TRANSIT_TYPE_INTER_REGIONAL_RAIL_SERVICETRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CEF68 = 103;
+  qword_27CEF70 = "TRANSIT_TYPE_LICENSED_TAXI_SERVICETRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CEF80 = 1505;
+  qword_27CEF88 = "TRANSIT_TYPE_LIGHT_RAILTRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  qword_27CEFA0 = "TRANSIT_TYPE_LOCAL_BUS_SERVICETRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  qword_27CEFB8 = "TRANSIT_TYPE_LOCAL_CAR_FERRY_SERVICETRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CEFC8 = 1004;
+  qword_27CEFD0 = "TRANSIT_TYPE_LOCAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CEFE0 = 1008;
+  qword_27CEFE8 = "TRANSIT_TYPE_LOCAL_TRAM_SERVICETRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CEFF8 = 902;
+  qword_27CF000 = "TRANSIT_TYPE_LONG_DISTANCE_TRAINSTRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  qword_27CF018 = "TRANSIT_TYPE_LORRY_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF028 = 112;
+  qword_27CF030 = "TRANSIT_TYPE_METRO_SERVICETRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF040 = 401;
+  qword_27CF048 = "TRANSIT_TYPE_METRO_SERVICE_MAJORTRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF058 = 500;
+  qword_27CF060 = "TRANSIT_TYPE_MISCELLANEOUS_SERVICETRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF070 = 1700;
+  qword_27CF078 = "TRANSIT_TYPE_MOBILITY_BUS_FOR_REGISTERED_DISABLEDTRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  qword_27CEED0 = 49;
+  qword_27CF080 = 49;
+  dword_27CF088 = 709;
+  qword_27CF090 = "TRANSIT_TYPE_MOBILITY_BUS_SERVICETRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF0A0 = 708;
+  qword_27CF0A8 = "TRANSIT_TYPE_MONORAILTRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  qword_27CF0C0 = "TRANSIT_TYPE_MONORAIL_SERVICETRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF0D0 = 405;
+  qword_27CF0D8 = "TRANSIT_TYPE_NATIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF0E8 = 1002;
+  qword_27CF0F0 = "TRANSIT_TYPE_NATIONAL_COACH_SERVICETRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF100 = 202;
+  qword_27CF108 = "TRANSIT_TYPE_NATIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF118 = 1006;
+  qword_27CF120 = "TRANSIT_TYPE_NIGHT_BUS_SERVICETRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF130 = 705;
+  qword_27CF138 = "TRANSIT_TYPE_PASSENGER_HIGH_SPEED_FERRY_SERVICETRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF148 = 1014;
+  qword_27CF150 = "TRANSIT_TYPE_POST_BOAT_SERVICETRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF160 = 1009;
+  qword_27CF168 = "TRANSIT_TYPE_POST_BUS_SERVICETRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  qword_27CF180 = "TRANSIT_TYPE_PRIVATE_HIRE_SERVICE_VEHICLETRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF190 = 1506;
+  qword_27CF198 = "TRANSIT_TYPE_RACK_AND_PINION_RAILWAYTRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  qword_27CF1B0 = "TRANSIT_TYPE_RAILTRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  qword_27CF1C8 = "TRANSIT_TYPE_RAILWAY_SERVICETRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  qword_27CF1E0 = "TRANSIT_TYPE_RAIL_REPLACEMENT_BUS_SERVICETRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF1F0 = 714;
+  qword_27CF1F8 = "TRANSIT_TYPE_RAIL_SHUTTLE_WITHIN_COMPLEXTRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  qword_27CF210 = "TRANSIT_TYPE_RAIL_TAXI_SERVICETRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF220 = 1503;
+  qword_27CF228 = "TRANSIT_TYPE_REGIONAL_BUS_SERVICETRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF238 = 701;
+  qword_27CF240 = "TRANSIT_TYPE_REGIONAL_CAR_FERRY_SERVICETRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF250 = 1003;
+  qword_27CF258 = "TRANSIT_TYPE_REGIONAL_COACH_SERVICETRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF268 = 204;
+  qword_27CF270 = "TRANSIT_TYPE_REGIONAL_PASSENGER_FERRY_SERVICETRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF280 = 1007;
+  qword_27CF288 = "TRANSIT_TYPE_REGIONAL_RAIL_SERVICETRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF298 = 106;
+  qword_27CF2A0 = "TRANSIT_TYPE_REGIONAL_TRAM_SERVICETRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF2B0 = 903;
+  qword_27CF2B8 = "TRANSIT_TYPE_REPLACEMENT_RAIL_SERVICETRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  qword_27CF2D0 = "TRANSIT_TYPE_RIVER_BUS_SERVICETRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF2E0 = 1018;
+  qword_27CF2E8 = "TRANSIT_TYPE_ROAD_LINK_FERRY_SERVICETRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF2F8 = 1011;
+  qword_27CF300 = "TRANSIT_TYPE_ROUND_TRIP_CHARTER_AIR_SERVICETRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF310 = 1108;
+  qword_27CF318 = "TRANSIT_TYPE_SCHEDULED_FERRY_SERVICETRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF328 = 1019;
+  qword_27CF330 = "TRANSIT_TYPE_SCHENGEN_AREA_AIR_SERVICETRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF340 = 1112;
+  qword_27CF348 = "TRANSIT_TYPE_SCHOOL_AND_PUBLIC_SERVICE_BUSTRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF358 = 713;
+  qword_27CF360 = "TRANSIT_TYPE_SCHOOL_BOATTRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF370 = 1016;
+  qword_27CF378 = "TRANSIT_TYPE_SCHOOL_BUSTRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF388 = 712;
+  qword_27CF390 = "TRANSIT_TYPE_SELF_DRIVETRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF3A0 = 1600;
+  qword_27CF3A8 = "TRANSIT_TYPE_SHARE_TAXI_SERVICETRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF3B8 = 717;
+  qword_27CF3C0 = "TRANSIT_TYPE_SHUTTLE_AIR_SERVICETRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF3D0 = 1105;
+  qword_27CF3D8 = "TRANSIT_TYPE_SHUTTLE_BUSTRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF3E8 = 711;
+  qword_27CF3F0 = "TRANSIT_TYPE_SHUTTLE_COACH_SERVICETRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  qword_27CF408 = "TRANSIT_TYPE_SHUTTLE_FERRY_SERVICETRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF418 = 1020;
+  qword_27CF420 = "TRANSIT_TYPE_SHUTTLE_TRAM_SERVICETRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF430 = 905;
+  qword_27CF438 = "TRANSIT_TYPE_SIGHTSEEING_AIR_SERVICETRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF448 = 1109;
+  qword_27CF450 = "TRANSIT_TYPE_SIGHTSEEING_BOAT_SERVICETRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF460 = 1015;
+  qword_27CF468 = "TRANSIT_TYPE_SIGHTSEEING_BUSTRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  qword_27CF480 = "TRANSIT_TYPE_SIGHTSEEING_COACH_SERVICETRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF490 = 206;
+  qword_27CF498 = "TRANSIT_TYPE_SIGHTSEEING_TRAM_SERVICETRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF4A8 = 904;
+  qword_27CF4B0 = "TRANSIT_TYPE_SLEEPER_RAIL_SERVICETRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF4C0 = 105;
+  qword_27CF4C8 = "TRANSIT_TYPE_SMALL_TELECABIN_SERVICETRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF4D8 = 1306;
+  qword_27CF4E0 = "TRANSIT_TYPE_SPECIAL_COACH_SERVICETRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF4F0 = 205;
+  qword_27CF4F8 = "TRANSIT_TYPE_SPECIAL_NEEDS_BUSTRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF508 = 707;
+  qword_27CF510 = "TRANSIT_TYPE_SPECIAL_RAIL_SERVICETRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  qword_27CF528 = "TRANSIT_TYPE_STOPPING_BUS_SERVICETRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF538 = 703;
+  qword_27CF540 = "TRANSIT_TYPE_SUBURBAN_RAILWAYTRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF550 = 109;
+  qword_27CF558 = "TRANSIT_TYPE_SUBURBAN_RAILWAY_SERVICETRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF568 = 300;
+  qword_27CF570 = "TRANSIT_TYPE_SUBWAYTRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  qword_27CF588 = "TRANSIT_TYPE_TAXI_SERVICETRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF598 = 1500;
+  qword_27CF5A0 = "TRANSIT_TYPE_TELECABIN_CABLE_CAR_SERVICETRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF5B0 = 1302;
+  qword_27CF5B8 = "TRANSIT_TYPE_TELECABIN_SERVICETRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF5C8 = 1300;
+  qword_27CF5D0 = "TRANSIT_TYPE_TELECABIN_SERVICE_MINORTRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF5E0 = 1301;
+  qword_27CF5E8 = "TRANSIT_TYPE_TOURIST_COACH_SERVICETRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF5F8 = 207;
+  qword_27CF600 = "TRANSIT_TYPE_TOURIST_RAILWAY_SERVICETRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF610 = 107;
+  qword_27CF618 = "TRANSIT_TYPE_TRAIN_FERRY_SERVICETRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF628 = 1010;
+  qword_27CF630 = "TRANSIT_TYPE_TRAM_SERVICETRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF640 = 900;
+  qword_27CF648 = "TRANSIT_TYPE_TROLLEYBUS_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  qword_27CF660 = "TRANSIT_TYPE_UNDERGROUND_SERVICETRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF670 = 402;
+  qword_27CF678 = "TRANSIT_TYPE_UNDERGROUND_SERVICE_MAJORTRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  qword_27CF690 = "TRANSIT_TYPE_URBAN_RAILWAY_SERVICETRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  qword_27CF6A8 = "TRANSIT_TYPE_URBAN_RAILWAY_SERVICE_MINORTRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF6B8 = 403;
+  qword_27CF6C0 = "TRANSIT_TYPE_VEHICLE_TRANSPORT_RAIL_SERVICETRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF6D0 = 115;
+  qword_27CF6D8 = "TRANSIT_TYPE_WATER_TAXI_SERVICETRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF6E8 = 1502;
+  qword_27CF6F0 = "TRANSIT_TYPE_WATER_TRANSPORT_SERVICE";
+  dword_27CF700 = 1000;
+  qword_27CF720 = "LOCALIZED_TRANSIT_TYPE_AERIAL_TRAMWAYLOCALIZED_TRANSIT_TYPE_BOATLOCALIZED_TRANSIT_TYPE_BUSLOCALIZED_TRANSIT_TYPE_BUS_RAPID_TRANSITLOCALIZED_TRANSIT_TYPE_BUS_RAPID_TRANSIT_STATIONLOCALIZED_TRANSIT_TYPE_BUS_STATIONLOCALIZED_TRANSIT_TYPE_CABLE_CARLOCALIZED_TRANSIT_TYPE_COACHLOCALIZED_TRANSIT_TYPE_COACH_STATIONLOCALIZED_TRANSIT_TYPE_FERRYLOCALIZED_TRANSIT_TYPE_FUNICULARLOCALIZED_TRANSIT_TYPE_GONDOLALOCALIZED_TRANSIT_TYPE_HIGH_SPEED_RAILLOCALIZED_TRANSIT_TYPE_JEEPNEYLOCALIZED_TRANSIT_TYPE_LIGHT_RAILLOCALIZED_TRANSIT_TYPE_LINELOCALIZED_TRANSIT_TYPE_MONORAILLOCALIZED_TRANSIT_TYPE_SHIPLOCALIZED_TRANSIT_TYPE_SHUTTLELOCALIZED_TRANSIT_TYPE_SHUTTLE_BUSLOCALIZED_TRANSIT_TYPE_SHUTTLE_BUS_STATIONLOCALIZED_TRANSIT_TYPE_STREETCARLOCALIZED_TRANSIT_TYPE_SUBWAYLOCALIZED_TRANSIT_TYPE_TAXILOCALIZED_TRANSIT_TYPE_TRAINLOCALIZED_TRANSIT_TYPE_TRAMLOCALIZED_TRANSIT_TYPE_TROLLEYLOCALIZED_TRANSIT_TYPE_TROLLEYBUSLOCALIZED_TRANSIT_TYPE_VEHICLE_AIRLOCALIZED_TRANSIT_TYPE_VEHICLE_LANDLOCALIZED_TRANSIT_TYPE_VEHICLE_WATERLOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  dword_27CF730 = 91;
+  qword_27CF738 = "LOCALIZED_TRANSIT_TYPE_BOATLOCALIZED_TRANSIT_TYPE_BUSLOCALIZED_TRANSIT_TYPE_BUS_RAPID_TRANSITLOCALIZED_TRANSIT_TYPE_BUS_RAPID_TRANSIT_STATIONLOCALIZED_TRANSIT_TYPE_BUS_STATIONLOCALIZED_TRANSIT_TYPE_CABLE_CARLOCALIZED_TRANSIT_TYPE_COACHLOCALIZED_TRANSIT_TYPE_COACH_STATIONLOCALIZED_TRANSIT_TYPE_FERRYLOCALIZED_TRANSIT_TYPE_FUNICULARLOCALIZED_TRANSIT_TYPE_GONDOLALOCALIZED_TRANSIT_TYPE_HIGH_SPEED_RAILLOCALIZED_TRANSIT_TYPE_JEEPNEYLOCALIZED_TRANSIT_TYPE_LIGHT_RAILLOCALIZED_TRANSIT_TYPE_LINELOCALIZED_TRANSIT_TYPE_MONORAILLOCALIZED_TRANSIT_TYPE_SHIPLOCALIZED_TRANSIT_TYPE_SHUTTLELOCALIZED_TRANSIT_TYPE_SHUTTLE_BUSLOCALIZED_TRANSIT_TYPE_SHUTTLE_BUS_STATIONLOCALIZED_TRANSIT_TYPE_STREETCARLOCALIZED_TRANSIT_TYPE_SUBWAYLOCALIZED_TRANSIT_TYPE_TAXILOCALIZED_TRANSIT_TYPE_TRAINLOCALIZED_TRANSIT_TYPE_TRAMLOCALIZED_TRANSIT_TYPE_TROLLEYLOCALIZED_TRANSIT_TYPE_TROLLEYBUSLOCALIZED_TRANSIT_TYPE_VEHICLE_AIRLOCALIZED_TRANSIT_TYPE_VEHICLE_LANDLOCALIZED_TRANSIT_TYPE_VEHICLE_WATERLOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  dword_27CF2C8 = 110;
+  dword_27CF748 = 110;
+  qword_27CF750 = "LOCALIZED_TRANSIT_TYPE_BUSLOCALIZED_TRANSIT_TYPE_BUS_RAPID_TRANSITLOCALIZED_TRANSIT_TYPE_BUS_RAPID_TRANSIT_STATIONLOCALIZED_TRANSIT_TYPE_BUS_STATIONLOCALIZED_TRANSIT_TYPE_CABLE_CARLOCALIZED_TRANSIT_TYPE_COACHLOCALIZED_TRANSIT_TYPE_COACH_STATIONLOCALIZED_TRANSIT_TYPE_FERRYLOCALIZED_TRANSIT_TYPE_FUNICULARLOCALIZED_TRANSIT_TYPE_GONDOLALOCALIZED_TRANSIT_TYPE_HIGH_SPEED_RAILLOCALIZED_TRANSIT_TYPE_JEEPNEYLOCALIZED_TRANSIT_TYPE_LIGHT_RAILLOCALIZED_TRANSIT_TYPE_LINELOCALIZED_TRANSIT_TYPE_MONORAILLOCALIZED_TRANSIT_TYPE_SHIPLOCALIZED_TRANSIT_TYPE_SHUTTLELOCALIZED_TRANSIT_TYPE_SHUTTLE_BUSLOCALIZED_TRANSIT_TYPE_SHUTTLE_BUS_STATIONLOCALIZED_TRANSIT_TYPE_STREETCARLOCALIZED_TRANSIT_TYPE_SUBWAYLOCALIZED_TRANSIT_TYPE_TAXILOCALIZED_TRANSIT_TYPE_TRAINLOCALIZED_TRANSIT_TYPE_TRAMLOCALIZED_TRANSIT_TYPE_TROLLEYLOCALIZED_TRANSIT_TYPE_TROLLEYBUSLOCALIZED_TRANSIT_TYPE_VEHICLE_AIRLOCALIZED_TRANSIT_TYPE_VEHICLE_LANDLOCALIZED_TRANSIT_TYPE_VEHICLE_WATERLOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  qword_27CF768 = "LOCALIZED_TRANSIT_TYPE_BUS_RAPID_TRANSITLOCALIZED_TRANSIT_TYPE_BUS_RAPID_TRANSIT_STATIONLOCALIZED_TRANSIT_TYPE_BUS_STATIONLOCALIZED_TRANSIT_TYPE_CABLE_CARLOCALIZED_TRANSIT_TYPE_COACHLOCALIZED_TRANSIT_TYPE_COACH_STATIONLOCALIZED_TRANSIT_TYPE_FERRYLOCALIZED_TRANSIT_TYPE_FUNICULARLOCALIZED_TRANSIT_TYPE_GONDOLALOCALIZED_TRANSIT_TYPE_HIGH_SPEED_RAILLOCALIZED_TRANSIT_TYPE_JEEPNEYLOCALIZED_TRANSIT_TYPE_LIGHT_RAILLOCALIZED_TRANSIT_TYPE_LINELOCALIZED_TRANSIT_TYPE_MONORAILLOCALIZED_TRANSIT_TYPE_SHIPLOCALIZED_TRANSIT_TYPE_SHUTTLELOCALIZED_TRANSIT_TYPE_SHUTTLE_BUSLOCALIZED_TRANSIT_TYPE_SHUTTLE_BUS_STATIONLOCALIZED_TRANSIT_TYPE_STREETCARLOCALIZED_TRANSIT_TYPE_SUBWAYLOCALIZED_TRANSIT_TYPE_TAXILOCALIZED_TRANSIT_TYPE_TRAINLOCALIZED_TRANSIT_TYPE_TRAMLOCALIZED_TRANSIT_TYPE_TROLLEYLOCALIZED_TRANSIT_TYPE_TROLLEYBUSLOCALIZED_TRANSIT_TYPE_VEHICLE_AIRLOCALIZED_TRANSIT_TYPE_VEHICLE_LANDLOCALIZED_TRANSIT_TYPE_VEHICLE_WATERLOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  dword_27CF778 = 120;
+  qword_27CF780 = "LOCALIZED_TRANSIT_TYPE_BUS_RAPID_TRANSIT_STATIONLOCALIZED_TRANSIT_TYPE_BUS_STATIONLOCALIZED_TRANSIT_TYPE_CABLE_CARLOCALIZED_TRANSIT_TYPE_COACHLOCALIZED_TRANSIT_TYPE_COACH_STATIONLOCALIZED_TRANSIT_TYPE_FERRYLOCALIZED_TRANSIT_TYPE_FUNICULARLOCALIZED_TRANSIT_TYPE_GONDOLALOCALIZED_TRANSIT_TYPE_HIGH_SPEED_RAILLOCALIZED_TRANSIT_TYPE_JEEPNEYLOCALIZED_TRANSIT_TYPE_LIGHT_RAILLOCALIZED_TRANSIT_TYPE_LINELOCALIZED_TRANSIT_TYPE_MONORAILLOCALIZED_TRANSIT_TYPE_SHIPLOCALIZED_TRANSIT_TYPE_SHUTTLELOCALIZED_TRANSIT_TYPE_SHUTTLE_BUSLOCALIZED_TRANSIT_TYPE_SHUTTLE_BUS_STATIONLOCALIZED_TRANSIT_TYPE_STREETCARLOCALIZED_TRANSIT_TYPE_SUBWAYLOCALIZED_TRANSIT_TYPE_TAXILOCALIZED_TRANSIT_TYPE_TRAINLOCALIZED_TRANSIT_TYPE_TRAMLOCALIZED_TRANSIT_TYPE_TROLLEYLOCALIZED_TRANSIT_TYPE_TROLLEYBUSLOCALIZED_TRANSIT_TYPE_VEHICLE_AIRLOCALIZED_TRANSIT_TYPE_VEHICLE_LANDLOCALIZED_TRANSIT_TYPE_VEHICLE_WATERLOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  dword_27CF790 = 143;
+  qword_27CF798 = "LOCALIZED_TRANSIT_TYPE_BUS_STATIONLOCALIZED_TRANSIT_TYPE_CABLE_CARLOCALIZED_TRANSIT_TYPE_COACHLOCALIZED_TRANSIT_TYPE_COACH_STATIONLOCALIZED_TRANSIT_TYPE_FERRYLOCALIZED_TRANSIT_TYPE_FUNICULARLOCALIZED_TRANSIT_TYPE_GONDOLALOCALIZED_TRANSIT_TYPE_HIGH_SPEED_RAILLOCALIZED_TRANSIT_TYPE_JEEPNEYLOCALIZED_TRANSIT_TYPE_LIGHT_RAILLOCALIZED_TRANSIT_TYPE_LINELOCALIZED_TRANSIT_TYPE_MONORAILLOCALIZED_TRANSIT_TYPE_SHIPLOCALIZED_TRANSIT_TYPE_SHUTTLELOCALIZED_TRANSIT_TYPE_SHUTTLE_BUSLOCALIZED_TRANSIT_TYPE_SHUTTLE_BUS_STATIONLOCALIZED_TRANSIT_TYPE_STREETCARLOCALIZED_TRANSIT_TYPE_SUBWAYLOCALIZED_TRANSIT_TYPE_TAXILOCALIZED_TRANSIT_TYPE_TRAINLOCALIZED_TRANSIT_TYPE_TRAMLOCALIZED_TRANSIT_TYPE_TROLLEYLOCALIZED_TRANSIT_TYPE_TROLLEYBUSLOCALIZED_TRANSIT_TYPE_VEHICLE_AIRLOCALIZED_TRANSIT_TYPE_VEHICLE_LANDLOCALIZED_TRANSIT_TYPE_VEHICLE_WATERLOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  dword_27CF7A8 = 140;
+  qword_27CF7B0 = "LOCALIZED_TRANSIT_TYPE_CABLE_CARLOCALIZED_TRANSIT_TYPE_COACHLOCALIZED_TRANSIT_TYPE_COACH_STATIONLOCALIZED_TRANSIT_TYPE_FERRYLOCALIZED_TRANSIT_TYPE_FUNICULARLOCALIZED_TRANSIT_TYPE_GONDOLALOCALIZED_TRANSIT_TYPE_HIGH_SPEED_RAILLOCALIZED_TRANSIT_TYPE_JEEPNEYLOCALIZED_TRANSIT_TYPE_LIGHT_RAILLOCALIZED_TRANSIT_TYPE_LINELOCALIZED_TRANSIT_TYPE_MONORAILLOCALIZED_TRANSIT_TYPE_SHIPLOCALIZED_TRANSIT_TYPE_SHUTTLELOCALIZED_TRANSIT_TYPE_SHUTTLE_BUSLOCALIZED_TRANSIT_TYPE_SHUTTLE_BUS_STATIONLOCALIZED_TRANSIT_TYPE_STREETCARLOCALIZED_TRANSIT_TYPE_SUBWAYLOCALIZED_TRANSIT_TYPE_TAXILOCALIZED_TRANSIT_TYPE_TRAINLOCALIZED_TRANSIT_TYPE_TRAMLOCALIZED_TRANSIT_TYPE_TROLLEYLOCALIZED_TRANSIT_TYPE_TROLLEYBUSLOCALIZED_TRANSIT_TYPE_VEHICLE_AIRLOCALIZED_TRANSIT_TYPE_VEHICLE_LANDLOCALIZED_TRANSIT_TYPE_VEHICLE_WATERLOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  dword_27CF7C0 = 70;
+  qword_27CF7C8 = "LOCALIZED_TRANSIT_TYPE_COACHLOCALIZED_TRANSIT_TYPE_COACH_STATIONLOCALIZED_TRANSIT_TYPE_FERRYLOCALIZED_TRANSIT_TYPE_FUNICULARLOCALIZED_TRANSIT_TYPE_GONDOLALOCALIZED_TRANSIT_TYPE_HIGH_SPEED_RAILLOCALIZED_TRANSIT_TYPE_JEEPNEYLOCALIZED_TRANSIT_TYPE_LIGHT_RAILLOCALIZED_TRANSIT_TYPE_LINELOCALIZED_TRANSIT_TYPE_MONORAILLOCALIZED_TRANSIT_TYPE_SHIPLOCALIZED_TRANSIT_TYPE_SHUTTLELOCALIZED_TRANSIT_TYPE_SHUTTLE_BUSLOCALIZED_TRANSIT_TYPE_SHUTTLE_BUS_STATIONLOCALIZED_TRANSIT_TYPE_STREETCARLOCALIZED_TRANSIT_TYPE_SUBWAYLOCALIZED_TRANSIT_TYPE_TAXILOCALIZED_TRANSIT_TYPE_TRAINLOCALIZED_TRANSIT_TYPE_TRAMLOCALIZED_TRANSIT_TYPE_TROLLEYLOCALIZED_TRANSIT_TYPE_TROLLEYBUSLOCALIZED_TRANSIT_TYPE_VEHICLE_AIRLOCALIZED_TRANSIT_TYPE_VEHICLE_LANDLOCALIZED_TRANSIT_TYPE_VEHICLE_WATERLOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  qword_27CF7E0 = "LOCALIZED_TRANSIT_TYPE_COACH_STATIONLOCALIZED_TRANSIT_TYPE_FERRYLOCALIZED_TRANSIT_TYPE_FUNICULARLOCALIZED_TRANSIT_TYPE_GONDOLALOCALIZED_TRANSIT_TYPE_HIGH_SPEED_RAILLOCALIZED_TRANSIT_TYPE_JEEPNEYLOCALIZED_TRANSIT_TYPE_LIGHT_RAILLOCALIZED_TRANSIT_TYPE_LINELOCALIZED_TRANSIT_TYPE_MONORAILLOCALIZED_TRANSIT_TYPE_SHIPLOCALIZED_TRANSIT_TYPE_SHUTTLELOCALIZED_TRANSIT_TYPE_SHUTTLE_BUSLOCALIZED_TRANSIT_TYPE_SHUTTLE_BUS_STATIONLOCALIZED_TRANSIT_TYPE_STREETCARLOCALIZED_TRANSIT_TYPE_SUBWAYLOCALIZED_TRANSIT_TYPE_TAXILOCALIZED_TRANSIT_TYPE_TRAINLOCALIZED_TRANSIT_TYPE_TRAMLOCALIZED_TRANSIT_TYPE_TROLLEYLOCALIZED_TRANSIT_TYPE_TROLLEYBUSLOCALIZED_TRANSIT_TYPE_VEHICLE_AIRLOCALIZED_TRANSIT_TYPE_VEHICLE_LANDLOCALIZED_TRANSIT_TYPE_VEHICLE_WATERLOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  dword_27CF7F0 = 141;
+  qword_27CF7F8 = "LOCALIZED_TRANSIT_TYPE_FERRYLOCALIZED_TRANSIT_TYPE_FUNICULARLOCALIZED_TRANSIT_TYPE_GONDOLALOCALIZED_TRANSIT_TYPE_HIGH_SPEED_RAILLOCALIZED_TRANSIT_TYPE_JEEPNEYLOCALIZED_TRANSIT_TYPE_LIGHT_RAILLOCALIZED_TRANSIT_TYPE_LINELOCALIZED_TRANSIT_TYPE_MONORAILLOCALIZED_TRANSIT_TYPE_SHIPLOCALIZED_TRANSIT_TYPE_SHUTTLELOCALIZED_TRANSIT_TYPE_SHUTTLE_BUSLOCALIZED_TRANSIT_TYPE_SHUTTLE_BUS_STATIONLOCALIZED_TRANSIT_TYPE_STREETCARLOCALIZED_TRANSIT_TYPE_SUBWAYLOCALIZED_TRANSIT_TYPE_TAXILOCALIZED_TRANSIT_TYPE_TRAINLOCALIZED_TRANSIT_TYPE_TRAMLOCALIZED_TRANSIT_TYPE_TROLLEYLOCALIZED_TRANSIT_TYPE_TROLLEYBUSLOCALIZED_TRANSIT_TYPE_VEHICLE_AIRLOCALIZED_TRANSIT_TYPE_VEHICLE_LANDLOCALIZED_TRANSIT_TYPE_VEHICLE_WATERLOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  dword_27CF1D8 = 100;
+  dword_27CF808 = 100;
+  qword_27CF810 = "LOCALIZED_TRANSIT_TYPE_FUNICULARLOCALIZED_TRANSIT_TYPE_GONDOLALOCALIZED_TRANSIT_TYPE_HIGH_SPEED_RAILLOCALIZED_TRANSIT_TYPE_JEEPNEYLOCALIZED_TRANSIT_TYPE_LIGHT_RAILLOCALIZED_TRANSIT_TYPE_LINELOCALIZED_TRANSIT_TYPE_MONORAILLOCALIZED_TRANSIT_TYPE_SHIPLOCALIZED_TRANSIT_TYPE_SHUTTLELOCALIZED_TRANSIT_TYPE_SHUTTLE_BUSLOCALIZED_TRANSIT_TYPE_SHUTTLE_BUS_STATIONLOCALIZED_TRANSIT_TYPE_STREETCARLOCALIZED_TRANSIT_TYPE_SUBWAYLOCALIZED_TRANSIT_TYPE_TAXILOCALIZED_TRANSIT_TYPE_TRAINLOCALIZED_TRANSIT_TYPE_TRAMLOCALIZED_TRANSIT_TYPE_TROLLEYLOCALIZED_TRANSIT_TYPE_TROLLEYBUSLOCALIZED_TRANSIT_TYPE_VEHICLE_AIRLOCALIZED_TRANSIT_TYPE_VEHICLE_LANDLOCALIZED_TRANSIT_TYPE_VEHICLE_WATERLOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  dword_27CF820 = 80;
+  qword_27CF828 = "LOCALIZED_TRANSIT_TYPE_GONDOLALOCALIZED_TRANSIT_TYPE_HIGH_SPEED_RAILLOCALIZED_TRANSIT_TYPE_JEEPNEYLOCALIZED_TRANSIT_TYPE_LIGHT_RAILLOCALIZED_TRANSIT_TYPE_LINELOCALIZED_TRANSIT_TYPE_MONORAILLOCALIZED_TRANSIT_TYPE_SHIPLOCALIZED_TRANSIT_TYPE_SHUTTLELOCALIZED_TRANSIT_TYPE_SHUTTLE_BUSLOCALIZED_TRANSIT_TYPE_SHUTTLE_BUS_STATIONLOCALIZED_TRANSIT_TYPE_STREETCARLOCALIZED_TRANSIT_TYPE_SUBWAYLOCALIZED_TRANSIT_TYPE_TAXILOCALIZED_TRANSIT_TYPE_TRAINLOCALIZED_TRANSIT_TYPE_TRAMLOCALIZED_TRANSIT_TYPE_TROLLEYLOCALIZED_TRANSIT_TYPE_TROLLEYBUSLOCALIZED_TRANSIT_TYPE_VEHICLE_AIRLOCALIZED_TRANSIT_TYPE_VEHICLE_LANDLOCALIZED_TRANSIT_TYPE_VEHICLE_WATERLOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  dword_27CF838 = 92;
+  qword_27CF840 = "LOCALIZED_TRANSIT_TYPE_HIGH_SPEED_RAILLOCALIZED_TRANSIT_TYPE_JEEPNEYLOCALIZED_TRANSIT_TYPE_LIGHT_RAILLOCALIZED_TRANSIT_TYPE_LINELOCALIZED_TRANSIT_TYPE_MONORAILLOCALIZED_TRANSIT_TYPE_SHIPLOCALIZED_TRANSIT_TYPE_SHUTTLELOCALIZED_TRANSIT_TYPE_SHUTTLE_BUSLOCALIZED_TRANSIT_TYPE_SHUTTLE_BUS_STATIONLOCALIZED_TRANSIT_TYPE_STREETCARLOCALIZED_TRANSIT_TYPE_SUBWAYLOCALIZED_TRANSIT_TYPE_TAXILOCALIZED_TRANSIT_TYPE_TRAINLOCALIZED_TRANSIT_TYPE_TRAMLOCALIZED_TRANSIT_TYPE_TROLLEYLOCALIZED_TRANSIT_TYPE_TROLLEYBUSLOCALIZED_TRANSIT_TYPE_VEHICLE_AIRLOCALIZED_TRANSIT_TYPE_VEHICLE_LANDLOCALIZED_TRANSIT_TYPE_VEHICLE_WATERLOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  qword_27CF858 = "LOCALIZED_TRANSIT_TYPE_JEEPNEYLOCALIZED_TRANSIT_TYPE_LIGHT_RAILLOCALIZED_TRANSIT_TYPE_LINELOCALIZED_TRANSIT_TYPE_MONORAILLOCALIZED_TRANSIT_TYPE_SHIPLOCALIZED_TRANSIT_TYPE_SHUTTLELOCALIZED_TRANSIT_TYPE_SHUTTLE_BUSLOCALIZED_TRANSIT_TYPE_SHUTTLE_BUS_STATIONLOCALIZED_TRANSIT_TYPE_STREETCARLOCALIZED_TRANSIT_TYPE_SUBWAYLOCALIZED_TRANSIT_TYPE_TAXILOCALIZED_TRANSIT_TYPE_TRAINLOCALIZED_TRANSIT_TYPE_TRAMLOCALIZED_TRANSIT_TYPE_TROLLEYLOCALIZED_TRANSIT_TYPE_TROLLEYBUSLOCALIZED_TRANSIT_TYPE_VEHICLE_AIRLOCALIZED_TRANSIT_TYPE_VEHICLE_LANDLOCALIZED_TRANSIT_TYPE_VEHICLE_WATERLOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  dword_27CF868 = 130;
+  qword_27CF870 = "LOCALIZED_TRANSIT_TYPE_LIGHT_RAILLOCALIZED_TRANSIT_TYPE_LINELOCALIZED_TRANSIT_TYPE_MONORAILLOCALIZED_TRANSIT_TYPE_SHIPLOCALIZED_TRANSIT_TYPE_SHUTTLELOCALIZED_TRANSIT_TYPE_SHUTTLE_BUSLOCALIZED_TRANSIT_TYPE_SHUTTLE_BUS_STATIONLOCALIZED_TRANSIT_TYPE_STREETCARLOCALIZED_TRANSIT_TYPE_SUBWAYLOCALIZED_TRANSIT_TYPE_TAXILOCALIZED_TRANSIT_TYPE_TRAINLOCALIZED_TRANSIT_TYPE_TRAMLOCALIZED_TRANSIT_TYPE_TROLLEYLOCALIZED_TRANSIT_TYPE_TROLLEYBUSLOCALIZED_TRANSIT_TYPE_VEHICLE_AIRLOCALIZED_TRANSIT_TYPE_VEHICLE_LANDLOCALIZED_TRANSIT_TYPE_VEHICLE_WATERLOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  qword_27CF888 = "LOCALIZED_TRANSIT_TYPE_LINELOCALIZED_TRANSIT_TYPE_MONORAILLOCALIZED_TRANSIT_TYPE_SHIPLOCALIZED_TRANSIT_TYPE_SHUTTLELOCALIZED_TRANSIT_TYPE_SHUTTLE_BUSLOCALIZED_TRANSIT_TYPE_SHUTTLE_BUS_STATIONLOCALIZED_TRANSIT_TYPE_STREETCARLOCALIZED_TRANSIT_TYPE_SUBWAYLOCALIZED_TRANSIT_TYPE_TAXILOCALIZED_TRANSIT_TYPE_TRAINLOCALIZED_TRANSIT_TYPE_TRAMLOCALIZED_TRANSIT_TYPE_TROLLEYLOCALIZED_TRANSIT_TYPE_TROLLEYBUSLOCALIZED_TRANSIT_TYPE_VEHICLE_AIRLOCALIZED_TRANSIT_TYPE_VEHICLE_LANDLOCALIZED_TRANSIT_TYPE_VEHICLE_WATERLOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  qword_27CF8A0 = "LOCALIZED_TRANSIT_TYPE_MONORAILLOCALIZED_TRANSIT_TYPE_SHIPLOCALIZED_TRANSIT_TYPE_SHUTTLELOCALIZED_TRANSIT_TYPE_SHUTTLE_BUSLOCALIZED_TRANSIT_TYPE_SHUTTLE_BUS_STATIONLOCALIZED_TRANSIT_TYPE_STREETCARLOCALIZED_TRANSIT_TYPE_SUBWAYLOCALIZED_TRANSIT_TYPE_TAXILOCALIZED_TRANSIT_TYPE_TRAINLOCALIZED_TRANSIT_TYPE_TRAMLOCALIZED_TRANSIT_TYPE_TROLLEYLOCALIZED_TRANSIT_TYPE_TROLLEYBUSLOCALIZED_TRANSIT_TYPE_VEHICLE_AIRLOCALIZED_TRANSIT_TYPE_VEHICLE_LANDLOCALIZED_TRANSIT_TYPE_VEHICLE_WATERLOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  qword_27CF8B8 = "LOCALIZED_TRANSIT_TYPE_SHIPLOCALIZED_TRANSIT_TYPE_SHUTTLELOCALIZED_TRANSIT_TYPE_SHUTTLE_BUSLOCALIZED_TRANSIT_TYPE_SHUTTLE_BUS_STATIONLOCALIZED_TRANSIT_TYPE_STREETCARLOCALIZED_TRANSIT_TYPE_SUBWAYLOCALIZED_TRANSIT_TYPE_TAXILOCALIZED_TRANSIT_TYPE_TRAINLOCALIZED_TRANSIT_TYPE_TRAMLOCALIZED_TRANSIT_TYPE_TROLLEYLOCALIZED_TRANSIT_TYPE_TROLLEYBUSLOCALIZED_TRANSIT_TYPE_VEHICLE_AIRLOCALIZED_TRANSIT_TYPE_VEHICLE_LANDLOCALIZED_TRANSIT_TYPE_VEHICLE_WATERLOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  dword_27CF520 = 111;
+  dword_27CF8C8 = 111;
+  qword_27CF8D0 = "LOCALIZED_TRANSIT_TYPE_SHUTTLELOCALIZED_TRANSIT_TYPE_SHUTTLE_BUSLOCALIZED_TRANSIT_TYPE_SHUTTLE_BUS_STATIONLOCALIZED_TRANSIT_TYPE_STREETCARLOCALIZED_TRANSIT_TYPE_SUBWAYLOCALIZED_TRANSIT_TYPE_TAXILOCALIZED_TRANSIT_TYPE_TRAINLOCALIZED_TRANSIT_TYPE_TRAMLOCALIZED_TRANSIT_TYPE_TROLLEYLOCALIZED_TRANSIT_TYPE_TROLLEYBUSLOCALIZED_TRANSIT_TYPE_VEHICLE_AIRLOCALIZED_TRANSIT_TYPE_VEHICLE_LANDLOCALIZED_TRANSIT_TYPE_VEHICLE_WATERLOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  qword_27CF8E8 = "LOCALIZED_TRANSIT_TYPE_SHUTTLE_BUSLOCALIZED_TRANSIT_TYPE_SHUTTLE_BUS_STATIONLOCALIZED_TRANSIT_TYPE_STREETCARLOCALIZED_TRANSIT_TYPE_SUBWAYLOCALIZED_TRANSIT_TYPE_TAXILOCALIZED_TRANSIT_TYPE_TRAINLOCALIZED_TRANSIT_TYPE_TRAMLOCALIZED_TRANSIT_TYPE_TROLLEYLOCALIZED_TRANSIT_TYPE_TROLLEYBUSLOCALIZED_TRANSIT_TYPE_VEHICLE_AIRLOCALIZED_TRANSIT_TYPE_VEHICLE_LANDLOCALIZED_TRANSIT_TYPE_VEHICLE_WATERLOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  qword_27CF900 = "LOCALIZED_TRANSIT_TYPE_SHUTTLE_BUS_STATIONLOCALIZED_TRANSIT_TYPE_STREETCARLOCALIZED_TRANSIT_TYPE_SUBWAYLOCALIZED_TRANSIT_TYPE_TAXILOCALIZED_TRANSIT_TYPE_TRAINLOCALIZED_TRANSIT_TYPE_TRAMLOCALIZED_TRANSIT_TYPE_TROLLEYLOCALIZED_TRANSIT_TYPE_TROLLEYBUSLOCALIZED_TRANSIT_TYPE_VEHICLE_AIRLOCALIZED_TRANSIT_TYPE_VEHICLE_LANDLOCALIZED_TRANSIT_TYPE_VEHICLE_WATERLOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  dword_27CF910 = 142;
+  qword_27CF918 = "LOCALIZED_TRANSIT_TYPE_STREETCARLOCALIZED_TRANSIT_TYPE_SUBWAYLOCALIZED_TRANSIT_TYPE_TAXILOCALIZED_TRANSIT_TYPE_TRAINLOCALIZED_TRANSIT_TYPE_TRAMLOCALIZED_TRANSIT_TYPE_TROLLEYLOCALIZED_TRANSIT_TYPE_TROLLEYBUSLOCALIZED_TRANSIT_TYPE_VEHICLE_AIRLOCALIZED_TRANSIT_TYPE_VEHICLE_LANDLOCALIZED_TRANSIT_TYPE_VEHICLE_WATERLOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  qword_27CF930 = "LOCALIZED_TRANSIT_TYPE_SUBWAYLOCALIZED_TRANSIT_TYPE_TAXILOCALIZED_TRANSIT_TYPE_TRAINLOCALIZED_TRANSIT_TYPE_TRAMLOCALIZED_TRANSIT_TYPE_TROLLEYLOCALIZED_TRANSIT_TYPE_TROLLEYBUSLOCALIZED_TRANSIT_TYPE_VEHICLE_AIRLOCALIZED_TRANSIT_TYPE_VEHICLE_LANDLOCALIZED_TRANSIT_TYPE_VEHICLE_WATERLOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  qword_27CF948 = "LOCALIZED_TRANSIT_TYPE_TAXILOCALIZED_TRANSIT_TYPE_TRAINLOCALIZED_TRANSIT_TYPE_TRAMLOCALIZED_TRANSIT_TYPE_TROLLEYLOCALIZED_TRANSIT_TYPE_TROLLEYBUSLOCALIZED_TRANSIT_TYPE_VEHICLE_AIRLOCALIZED_TRANSIT_TYPE_VEHICLE_LANDLOCALIZED_TRANSIT_TYPE_VEHICLE_WATERLOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  qword_27CF960 = "LOCALIZED_TRANSIT_TYPE_TRAINLOCALIZED_TRANSIT_TYPE_TRAMLOCALIZED_TRANSIT_TYPE_TROLLEYLOCALIZED_TRANSIT_TYPE_TROLLEYBUSLOCALIZED_TRANSIT_TYPE_VEHICLE_AIRLOCALIZED_TRANSIT_TYPE_VEHICLE_LANDLOCALIZED_TRANSIT_TYPE_VEHICLE_WATERLOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  qword_27CF978 = "LOCALIZED_TRANSIT_TYPE_TRAMLOCALIZED_TRANSIT_TYPE_TROLLEYLOCALIZED_TRANSIT_TYPE_TROLLEYBUSLOCALIZED_TRANSIT_TYPE_VEHICLE_AIRLOCALIZED_TRANSIT_TYPE_VEHICLE_LANDLOCALIZED_TRANSIT_TYPE_VEHICLE_WATERLOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  qword_27CF990 = "LOCALIZED_TRANSIT_TYPE_TROLLEYLOCALIZED_TRANSIT_TYPE_TROLLEYBUSLOCALIZED_TRANSIT_TYPE_VEHICLE_AIRLOCALIZED_TRANSIT_TYPE_VEHICLE_LANDLOCALIZED_TRANSIT_TYPE_VEHICLE_WATERLOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  qword_27CF9A8 = "LOCALIZED_TRANSIT_TYPE_TROLLEYBUSLOCALIZED_TRANSIT_TYPE_VEHICLE_AIRLOCALIZED_TRANSIT_TYPE_VEHICLE_LANDLOCALIZED_TRANSIT_TYPE_VEHICLE_WATERLOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  qword_27CF9C0 = "LOCALIZED_TRANSIT_TYPE_VEHICLE_AIRLOCALIZED_TRANSIT_TYPE_VEHICLE_LANDLOCALIZED_TRANSIT_TYPE_VEHICLE_WATERLOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  qword_27CF9D8 = "LOCALIZED_TRANSIT_TYPE_VEHICLE_LANDLOCALIZED_TRANSIT_TYPE_VEHICLE_WATERLOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  qword_27CF9F0 = "LOCALIZED_TRANSIT_TYPE_VEHICLE_WATERLOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  qword_27CFA08 = "LOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  dword_27CF010 = 102;
+  dword_27CFA18 = 102;
+  qword_27CFA20 = "LOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  dword_27CEE30 = 101;
+  dword_27CFA30 = 101;
+  qword_27CFA50 = "LOCALIZABLE_STATION_TYPE_BUS_STOPLOCALIZABLE_STATION_TYPE_FERRY_TERMINALLOCALIZABLE_STATION_TYPE_NONELOCALIZABLE_STATION_TYPE_RAIL_STATIONLOCALIZABLE_STATION_TYPE_RAIL_STOPLOCALIZABLE_STATION_TYPE_SUBWAY_STATIONLOCALIZABLE_STATION_TYPE_SUBWAY_STOPLOCALIZABLE_STATION_TYPE_TRAM_STATIONLOCALIZABLE_STATION_TYPE_TRAM_STOP";
+  dword_27CECC8 = 208;
+  qword_27CECD8 = 39;
+  qword_27CFC90 = "NODE_LABEL_POSITION_CENTER_RIGHTNODE_LABEL_POSITION_HIDDENNODE_LABEL_POSITION_TOP_CENTERNODE_LABEL_POSITION_TOP_LEFTNODE_LABEL_POSITION_TOP_RIGHTNODE_LABEL_POSITION_UNKNOWN";
+  qword_27D0C78 = "LOCALIZED_STOP_TYPE_NONELOCALIZED_STOP_TYPE_NUMBER";
+  dword_27D0CB8 = 784;
+  qword_27D0CC0 = "CURRENCY_AFNCURRENCY_ALLCURRENCY_AMDCURRENCY_ANGCURRENCY_AOACURRENCY_ARSCURRENCY_AUDCURRENCY_AWGCURRENCY_AZNCURRENCY_BAMCURRENCY_BBDCURRENCY_BDTCURRENCY_BGNCURRENCY_BHDCURRENCY_BIFCURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  unk_27D0CC8 = 12;
+  qword_27D0C90 = "LOCALIZED_STOP_TYPE_NUMBER";
+  qword_27D0C98 = 26;
+  dword_27D0CA0 = 2;
+  qword_27D0CA8 = "CURRENCY_AEDCURRENCY_AFNCURRENCY_ALLCURRENCY_AMDCURRENCY_ANGCURRENCY_AOACURRENCY_ARSCURRENCY_AUDCURRENCY_AWGCURRENCY_AZNCURRENCY_BAMCURRENCY_BBDCURRENCY_BDTCURRENCY_BGNCURRENCY_BHDCURRENCY_BIFCURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  unk_27D0CB0 = 12;
+  qword_27D0C60 = "LOCALIZED_STOP_TYPE_NAMELOCALIZED_STOP_TYPE_NONELOCALIZED_STOP_TYPE_NUMBER";
+  *algn_27D0C68 = 24;
+  qword_27D0C80 = 24;
+  dword_27D0C88 = 0;
+  dword_27D0C70 = 1;
+  qword_27D0C48 = "TRANSIT_LINE_DISPLAY_STYLE_NAME_SECONDARY";
+  unk_27D0C50 = 41;
+  dword_27D0C58 = 2;
+  qword_27D0BA0 = "EXTREMELY_EXPENSIVEINEXPENSIVENEUTRALVERY_EXPENSIVEVERY_INEXPENSIVE";
+  qword_27D0C30 = "TRANSIT_LINE_DISPLAY_STYLE_NAME_PRIMARYTRANSIT_LINE_DISPLAY_STYLE_NAME_SECONDARY";
+  unk_27D0C38 = 39;
+  dword_27D0C28 = 0;
+  dword_27D0C40 = 1;
+  qword_27D0C18 = "TRANSIT_LINE_DISPLAY_STYLE_DEFAULTTRANSIT_LINE_DISPLAY_STYLE_NAME_PRIMARYTRANSIT_LINE_DISPLAY_STYLE_NAME_SECONDARY";
+  qword_27D0C20 = 34;
+  qword_27D0C00 = "VERY_INEXPENSIVE";
+  unk_27D0C08 = 16;
+  dword_27D0C10 = 0;
+  dword_27D0BE0 = 2;
+  qword_27D0BE8 = "VERY_EXPENSIVEVERY_INEXPENSIVE";
+  unk_27D0BF0 = 14;
+  dword_27D0BF8 = 4;
+  qword_27D0BB8 = "INEXPENSIVENEUTRALVERY_EXPENSIVEVERY_INEXPENSIVE";
+  unk_27D0BC0 = 11;
+  dword_27D0BC8 = 1;
+  qword_27D0BD0 = "NEUTRALVERY_EXPENSIVEVERY_INEXPENSIVE";
+  unk_27D0BD8 = 7;
+  qword_27D0BA8 = 19;
+  dword_27D0BB0 = 5;
+  qword_27D0B88 = "EXPENSIVEEXTREMELY_EXPENSIVEINEXPENSIVENEUTRALVERY_EXPENSIVEVERY_INEXPENSIVE";
+  unk_27D0B90 = 9;
+  dword_27D0B98 = 3;
+  dword_27D0B80 = 4;
+  qword_27D0B58 = "STRONGLY_NOT_PREFERREDSTRONGLY_PREFERRED";
+  unk_27D0B60 = 22;
+  dword_27D0B68 = 1;
+  qword_27D0B70 = "STRONGLY_PREFERRED";
+  unk_27D0B78 = 18;
+  qword_27D0B28 = "NO_PREFERENCEPREFERREDSTRONGLY_NOT_PREFERREDSTRONGLY_PREFERRED";
+  qword_27D0B40 = "PREFERREDSTRONGLY_NOT_PREFERREDSTRONGLY_PREFERRED";
+  unk_27D0B48 = 9;
+  dword_27D0B38 = 0;
+  dword_27D0B50 = 3;
+  qword_27D0B10 = "NOT_PREFERREDNO_PREFERENCEPREFERREDSTRONGLY_NOT_PREFERREDSTRONGLY_PREFERRED";
+  qword_27D0B18 = 13;
+  dword_27D0B20 = 2;
+  qword_27D0B30 = 13;
+  qword_27D0AF8 = "TRANSIT_GUIDANCE_SNAPPING_TYPE_ROAD";
+  unk_27D0B00 = 35;
+  dword_27D0B08 = 1;
+  qword_27D0AE0 = "TRANSIT_GUIDANCE_SNAPPING_TYPE_RAILTRANSIT_GUIDANCE_SNAPPING_TYPE_ROAD";
+  unk_27D0AE8 = 35;
+  qword_27D0AC8 = "TRANSIT_GUIDANCE_SNAPPING_TYPE_NONETRANSIT_GUIDANCE_SNAPPING_TYPE_RAILTRANSIT_GUIDANCE_SNAPPING_TYPE_ROAD";
+  unk_27D0AD0 = 35;
+  dword_27D0AF0 = 2;
+  dword_27D0AD8 = 0;
+  qword_27D0AB0 = "TRANSIT_SHIELD_ENTITY_TYPE_SYSTEM";
+  qword_27D0A98 = "TRANSIT_SHIELD_ENTITY_TYPE_LINETRANSIT_SHIELD_ENTITY_TYPE_SYSTEM";
+  unk_27D0AA0 = 31;
+  qword_27D0AB8 = 33;
+  dword_27D0AC0 = 5;
+  dword_27D0AA8 = 4;
+  qword_27D0908 = "TRANSIT_ENTITY_TYPE_MARKETTRANSIT_ENTITY_TYPE_STATIONTRANSIT_ENTITY_TYPE_STOPTRANSIT_ENTITY_TYPE_SYSTEMTRANSIT_ENTITY_TYPE_TRIPTRANSIT_ENTITY_TYPE_UNKNOWN";
+  qword_27D0A80 = "TRANSIT_SHIELD_ENTITY_TYPE_HALLTRANSIT_SHIELD_ENTITY_TYPE_LINETRANSIT_SHIELD_ENTITY_TYPE_SYSTEM";
+  *algn_27D0A88 = 31;
+  dword_27D0A90 = 20;
+  dword_27D0990 = 0;
+  qword_27D0980 = "TRANSIT_ENTITY_TYPE_UNKNOWN";
+  qword_27D0968 = "TRANSIT_ENTITY_TYPE_TRIPTRANSIT_ENTITY_TYPE_UNKNOWN";
+  unk_27D0970 = 24;
+  dword_27D0978 = 2;
+  qword_27D0988 = 27;
+  dword_27D0948 = 3;
+  qword_27D0950 = "TRANSIT_ENTITY_TYPE_SYSTEMTRANSIT_ENTITY_TYPE_TRIPTRANSIT_ENTITY_TYPE_UNKNOWN";
+  unk_27D0958 = 26;
+  dword_27D0960 = 5;
+  qword_27D0938 = "TRANSIT_ENTITY_TYPE_STOPTRANSIT_ENTITY_TYPE_SYSTEMTRANSIT_ENTITY_TYPE_TRIPTRANSIT_ENTITY_TYPE_UNKNOWN";
+  unk_27D0940 = 24;
+  qword_27D0920 = "TRANSIT_ENTITY_TYPE_STATIONTRANSIT_ENTITY_TYPE_STOPTRANSIT_ENTITY_TYPE_SYSTEMTRANSIT_ENTITY_TYPE_TRIPTRANSIT_ENTITY_TYPE_UNKNOWN";
+  unk_27D0928 = 27;
+  dword_27D0930 = 1;
+  qword_27D08F0 = "TRANSIT_ENTITY_TYPE_LINETRANSIT_ENTITY_TYPE_MARKETTRANSIT_ENTITY_TYPE_STATIONTRANSIT_ENTITY_TYPE_STOPTRANSIT_ENTITY_TYPE_SYSTEMTRANSIT_ENTITY_TYPE_TRIPTRANSIT_ENTITY_TYPE_UNKNOWN";
+  unk_27D08F8 = 24;
+  dword_27D0900 = 4;
+  qword_27D0910 = 26;
+  dword_27D0918 = 16;
+  qword_27D08D8 = "TRANSIT_ENTITY_TYPE_HALLTRANSIT_ENTITY_TYPE_LINETRANSIT_ENTITY_TYPE_MARKETTRANSIT_ENTITY_TYPE_STATIONTRANSIT_ENTITY_TYPE_STOPTRANSIT_ENTITY_TYPE_SYSTEMTRANSIT_ENTITY_TYPE_TRIPTRANSIT_ENTITY_TYPE_UNKNOWN";
+  unk_27D08E0 = 24;
+  qword_27D08C0 = "TRANSIT_ENTITY_TYPE_ACCESS_POINTTRANSIT_ENTITY_TYPE_HALLTRANSIT_ENTITY_TYPE_LINETRANSIT_ENTITY_TYPE_MARKETTRANSIT_ENTITY_TYPE_STATIONTRANSIT_ENTITY_TYPE_STOPTRANSIT_ENTITY_TYPE_SYSTEMTRANSIT_ENTITY_TYPE_TRIPTRANSIT_ENTITY_TYPE_UNKNOWN";
+  *algn_27D08C8 = 32;
+  dword_27D08E8 = 20;
+  dword_27D08D0 = 10;
+  qword_27D0890 = "NODE_INCIDENT_MANEUVER_PASSNODE_INCIDENT_MANEUVER_UNKNOWN";
+  unk_27D0898 = 27;
+  qword_27D08A8 = "NODE_INCIDENT_MANEUVER_UNKNOWN";
+  unk_27D08B0 = 30;
+  dword_27D08A0 = 3;
+  dword_27D08B8 = 0;
+  qword_27D0860 = "NODE_INCIDENT_MANEUVER_ALIGHTNODE_INCIDENT_MANEUVER_BOARDNODE_INCIDENT_MANEUVER_PASSNODE_INCIDENT_MANEUVER_UNKNOWN";
+  qword_27D0878 = "NODE_INCIDENT_MANEUVER_BOARDNODE_INCIDENT_MANEUVER_PASSNODE_INCIDENT_MANEUVER_UNKNOWN";
+  unk_27D0880 = 28;
+  dword_27D0888 = 1;
+  qword_27D0868 = 29;
+  dword_27D0870 = 2;
+  qword_27D0848 = "ICON_WARNING";
+  unk_27D0850 = 12;
+  qword_27D0830 = "ICON_CONSTRUCTIONICON_WARNING";
+  *algn_27D0838 = 17;
+  dword_27D0858 = 0;
+  dword_27D0840 = 1;
+  dword_27D0810 = 0;
+  qword_27D0818 = "ROAD_ACCESS_POINT_ACCESSIBILITY_WALKING";
+  unk_27D0820 = 39;
+  dword_27D0828 = 1;
+  qword_27D07D0 = "ROAD_ACCESS_POINT_ACCESSIBILITY_DRIVINGROAD_ACCESS_POINT_ACCESSIBILITY_TRANSITROAD_ACCESS_POINT_ACCESSIBILITY_UNKNOWNROAD_ACCESS_POINT_ACCESSIBILITY_WALKING";
+  *algn_27D07D8 = 39;
+  qword_27D07E8 = "ROAD_ACCESS_POINT_ACCESSIBILITY_TRANSITROAD_ACCESS_POINT_ACCESSIBILITY_UNKNOWNROAD_ACCESS_POINT_ACCESSIBILITY_WALKING";
+  unk_27D07F0 = 39;
+  dword_27D07F8 = 3;
+  qword_27D0800 = "ROAD_ACCESS_POINT_ACCESSIBILITY_UNKNOWNROAD_ACCESS_POINT_ACCESSIBILITY_WALKING";
+  unk_27D0808 = 39;
+  dword_27D07E0 = 2;
+  qword_27D07A0 = "TRANSIT_SEGMENT_DIRECTION_NEGATIVETRANSIT_SEGMENT_DIRECTION_POSITIVE";
+  qword_27D07A8 = 34;
+  qword_27D07B8 = "TRANSIT_SEGMENT_DIRECTION_POSITIVE";
+  unk_27D07C0 = 34;
+  dword_27D07C8 = 0;
+  dword_27D07B0 = 1;
+  qword_27D0788 = "TEXT_LENGTH_SHORT";
+  unk_27D0790 = 17;
+  qword_27D0770 = "TEXT_LENGTH_MEDIUMTEXT_LENGTH_SHORT";
+  unk_27D0778 = 18;
+  dword_27D0798 = 1;
+  dword_27D0780 = 2;
+  qword_27D06F8 = "TIME_STYLE_UNKNOWNTRANSIT_TIME_STYLE_OPERATING_HOURS";
+  dword_27D0750 = 0;
+  qword_27D0758 = "TEXT_LENGTH_LONGTEXT_LENGTH_MEDIUMTEXT_LENGTH_SHORT";
+  unk_27D0760 = 16;
+  dword_27D0768 = 3;
+  qword_27D0740 = "TEXT_LENGTH_EXTRA_SHORTTEXT_LENGTH_LONGTEXT_LENGTH_MEDIUMTEXT_LENGTH_SHORT";
+  qword_27D0728 = "TEXT_LENGTH_EXTRA_LONGTEXT_LENGTH_EXTRA_SHORTTEXT_LENGTH_LONGTEXT_LENGTH_MEDIUMTEXT_LENGTH_SHORT";
+  unk_27D0730 = 22;
+  dword_27D0738 = 4;
+  qword_27D0748 = 23;
+  qword_27D0710 = "TRANSIT_TIME_STYLE_OPERATING_HOURS";
+  unk_27D0718 = 34;
+  dword_27D0708 = 0;
+  dword_27D0720 = 5;
+  qword_27D06E0 = "TIME_STYLE_STAMP_LISTTIME_STYLE_UNKNOWNTRANSIT_TIME_STYLE_OPERATING_HOURS";
+  unk_27D06E8 = 21;
+  dword_27D06F0 = 3;
+  qword_27D0700 = 18;
+  qword_27D06C8 = "TIME_STYLE_STAMPTIME_STYLE_STAMP_LISTTIME_STYLE_UNKNOWNTRANSIT_TIME_STYLE_OPERATING_HOURS";
+  unk_27D06D0 = 16;
+  dword_27D06C0 = 4;
+  dword_27D06D8 = 2;
+  qword_27D0698 = "TIME_STYLE_COUNTDOWNTIME_STYLE_HIDDENTIME_STYLE_STAMPTIME_STYLE_STAMP_LISTTIME_STYLE_UNKNOWNTRANSIT_TIME_STYLE_OPERATING_HOURS";
+  unk_27D06A0 = 20;
+  dword_27D06A8 = 1;
+  qword_27D06B0 = "TIME_STYLE_HIDDENTIME_STYLE_STAMPTIME_STYLE_STAMP_LISTTIME_STYLE_UNKNOWNTRANSIT_TIME_STYLE_OPERATING_HOURS";
+  unk_27D06B8 = 17;
+  qword_27D0680 = "JUSTIFICATION_START";
+  unk_27D0688 = 19;
+  dword_27D0690 = 1;
+  qword_27D0668 = "JUSTIFICATION_ENDJUSTIFICATION_START";
+  unk_27D0670 = 17;
+  qword_27D0650 = "JUSTIFICATION_CENTERJUSTIFICATION_ENDJUSTIFICATION_START";
+  *algn_27D0658 = 20;
+  dword_27D0678 = 2;
+  dword_27D0660 = 0;
+  qword_27D05D8 = "EXTENDED_STRUCTURE_TYPE_UNDERGROUNDEXTENDED_STRUCTURE_TYPE_UNDERGROUND_BUILDINGEXTENDED_STRUCTURE_TYPE_UNKNOWNEXTENDED_STRUCTURE_TYPE_VIRTUAL_BUS_STATIONEXTENDED_STRUCTURE_TYPE_VIRTUAL_PIER";
+  qword_27D0638 = "EXTENDED_STRUCTURE_TYPE_VIRTUAL_PIER";
+  unk_27D0640 = 36;
+  dword_27D0648 = 22;
+  qword_27D0620 = "EXTENDED_STRUCTURE_TYPE_VIRTUAL_BUS_STATIONEXTENDED_STRUCTURE_TYPE_VIRTUAL_PIER";
+  unk_27D0628 = 43;
+  dword_27D0618 = 0;
+  dword_27D0630 = 21;
+  qword_27D0608 = "EXTENDED_STRUCTURE_TYPE_UNKNOWNEXTENDED_STRUCTURE_TYPE_VIRTUAL_BUS_STATIONEXTENDED_STRUCTURE_TYPE_VIRTUAL_PIER";
+  unk_27D0610 = 31;
+  qword_27D05F0 = "EXTENDED_STRUCTURE_TYPE_UNDERGROUND_BUILDINGEXTENDED_STRUCTURE_TYPE_UNKNOWNEXTENDED_STRUCTURE_TYPE_VIRTUAL_BUS_STATIONEXTENDED_STRUCTURE_TYPE_VIRTUAL_PIER";
+  unk_27D05F8 = 44;
+  dword_27D0600 = 20;
+  qword_27D05C0 = "EXTENDED_STRUCTURE_TYPE_STREET_SIDE_SHELTEREXTENDED_STRUCTURE_TYPE_UNDERGROUNDEXTENDED_STRUCTURE_TYPE_UNDERGROUND_BUILDINGEXTENDED_STRUCTURE_TYPE_UNKNOWNEXTENDED_STRUCTURE_TYPE_VIRTUAL_BUS_STATIONEXTENDED_STRUCTURE_TYPE_VIRTUAL_PIER";
+  unk_27D05C8 = 43;
+  dword_27D05D0 = 10;
+  qword_27D05E0 = 35;
+  dword_27D05E8 = 4;
+  qword_27D05A8 = "EXTENDED_STRUCTURE_TYPE_STREET_SIDE_PLATFORMEXTENDED_STRUCTURE_TYPE_STREET_SIDE_SHELTEREXTENDED_STRUCTURE_TYPE_UNDERGROUNDEXTENDED_STRUCTURE_TYPE_UNDERGROUND_BUILDINGEXTENDED_STRUCTURE_TYPE_UNKNOWNEXTENDED_STRUCTURE_TYPE_VIRTUAL_BUS_STATIONEXTENDED_STRUCTURE_TYPE_VIRTUAL_PIER";
+  unk_27D05B0 = 44;
+  dword_27D05B8 = 11;
+  qword_27D04E8 = "EXTENDED_STRUCTURE_TYPE_ELEVATED_OPEN_AIR_PLATFORMS_ADJACENT_BUILDINGEXTENDED_STRUCTURE_TYPE_ELEVATED_OPEN_AIR_PLATFORMS_NO_BUILDINGEXTENDED_STRUCTURE_TYPE_ELEVATED_SHELTEREXTENDED_STRUCTURE_TYPE_GROUND_LEVEL_BUILDINGEXTENDED_STRUCTURE_TYPE_GROUND_LEVEL_OPEN_AIR_PLATFORMS_ADJACENT_BUILDINGEXTENDED_STRUCTURE_TYPE_PIEREXTENDED_STRUCTURE_TYPE_STREET_SIDE_GROUND_LEVEL_OPEN_AIR_PLATFORMS_NO_BUILDINGEXTENDED_STRUCTURE_TYPE_STREET_SIDE_NONEEXTENDED_STRUCTURE_TYPE_STREET_SIDE_PLATFORMEXTENDED_STRUCTURE_TYPE_STREET_SIDE_SHELTEREXTENDED_STRUCTURE_TYPE_UNDERGROUNDEXTENDED_STRUCTURE_TYPE_UNDERGROUND_BUILDINGEXTENDED_STRUCTURE_TYPE_UNKNOWNEXTENDED_STRUCTURE_TYPE_VIRTUAL_BUS_STATIONEXTENDED_STRUCTURE_TYPE_VIRTUAL_PIER";
+  qword_27D0590 = "EXTENDED_STRUCTURE_TYPE_STREET_SIDE_NONEEXTENDED_STRUCTURE_TYPE_STREET_SIDE_PLATFORMEXTENDED_STRUCTURE_TYPE_STREET_SIDE_SHELTEREXTENDED_STRUCTURE_TYPE_UNDERGROUNDEXTENDED_STRUCTURE_TYPE_UNDERGROUND_BUILDINGEXTENDED_STRUCTURE_TYPE_UNKNOWNEXTENDED_STRUCTURE_TYPE_VIRTUAL_BUS_STATIONEXTENDED_STRUCTURE_TYPE_VIRTUAL_PIER";
+  unk_27D0598 = 40;
+  dword_27D05A0 = 9;
+  qword_27D0578 = "EXTENDED_STRUCTURE_TYPE_STREET_SIDE_GROUND_LEVEL_OPEN_AIR_PLATFORMS_NO_BUILDINGEXTENDED_STRUCTURE_TYPE_STREET_SIDE_NONEEXTENDED_STRUCTURE_TYPE_STREET_SIDE_PLATFORMEXTENDED_STRUCTURE_TYPE_STREET_SIDE_SHELTEREXTENDED_STRUCTURE_TYPE_UNDERGROUNDEXTENDED_STRUCTURE_TYPE_UNDERGROUND_BUILDINGEXTENDED_STRUCTURE_TYPE_UNKNOWNEXTENDED_STRUCTURE_TYPE_VIRTUAL_BUS_STATIONEXTENDED_STRUCTURE_TYPE_VIRTUAL_PIER";
+  unk_27D0580 = 79;
+  dword_27D0588 = 12;
+  qword_27D0548 = "EXTENDED_STRUCTURE_TYPE_GROUND_LEVEL_OPEN_AIR_PLATFORMS_ADJACENT_BUILDINGEXTENDED_STRUCTURE_TYPE_PIEREXTENDED_STRUCTURE_TYPE_STREET_SIDE_GROUND_LEVEL_OPEN_AIR_PLATFORMS_NO_BUILDINGEXTENDED_STRUCTURE_TYPE_STREET_SIDE_NONEEXTENDED_STRUCTURE_TYPE_STREET_SIDE_PLATFORMEXTENDED_STRUCTURE_TYPE_STREET_SIDE_SHELTEREXTENDED_STRUCTURE_TYPE_UNDERGROUNDEXTENDED_STRUCTURE_TYPE_UNDERGROUND_BUILDINGEXTENDED_STRUCTURE_TYPE_UNKNOWNEXTENDED_STRUCTURE_TYPE_VIRTUAL_BUS_STATIONEXTENDED_STRUCTURE_TYPE_VIRTUAL_PIER";
+  unk_27D0550 = 73;
+  qword_27D0560 = "EXTENDED_STRUCTURE_TYPE_PIEREXTENDED_STRUCTURE_TYPE_STREET_SIDE_GROUND_LEVEL_OPEN_AIR_PLATFORMS_NO_BUILDINGEXTENDED_STRUCTURE_TYPE_STREET_SIDE_NONEEXTENDED_STRUCTURE_TYPE_STREET_SIDE_PLATFORMEXTENDED_STRUCTURE_TYPE_STREET_SIDE_SHELTEREXTENDED_STRUCTURE_TYPE_UNDERGROUNDEXTENDED_STRUCTURE_TYPE_UNDERGROUND_BUILDINGEXTENDED_STRUCTURE_TYPE_UNKNOWNEXTENDED_STRUCTURE_TYPE_VIRTUAL_BUS_STATIONEXTENDED_STRUCTURE_TYPE_VIRTUAL_PIER";
+  unk_27D0568 = 28;
+  dword_27D0558 = 13;
+  dword_27D0570 = 8;
+  qword_27D0530 = "EXTENDED_STRUCTURE_TYPE_GROUND_LEVEL_BUILDINGEXTENDED_STRUCTURE_TYPE_GROUND_LEVEL_OPEN_AIR_PLATFORMS_ADJACENT_BUILDINGEXTENDED_STRUCTURE_TYPE_PIEREXTENDED_STRUCTURE_TYPE_STREET_SIDE_GROUND_LEVEL_OPEN_AIR_PLATFORMS_NO_BUILDINGEXTENDED_STRUCTURE_TYPE_STREET_SIDE_NONEEXTENDED_STRUCTURE_TYPE_STREET_SIDE_PLATFORMEXTENDED_STRUCTURE_TYPE_STREET_SIDE_SHELTEREXTENDED_STRUCTURE_TYPE_UNDERGROUNDEXTENDED_STRUCTURE_TYPE_UNDERGROUND_BUILDINGEXTENDED_STRUCTURE_TYPE_UNKNOWNEXTENDED_STRUCTURE_TYPE_VIRTUAL_BUS_STATIONEXTENDED_STRUCTURE_TYPE_VIRTUAL_PIER";
+  unk_27D0538 = 45;
+  dword_27D0540 = 14;
+  qword_27D04F0 = 69;
+  qword_27D0518 = "EXTENDED_STRUCTURE_TYPE_ELEVATED_SHELTEREXTENDED_STRUCTURE_TYPE_GROUND_LEVEL_BUILDINGEXTENDED_STRUCTURE_TYPE_GROUND_LEVEL_OPEN_AIR_PLATFORMS_ADJACENT_BUILDINGEXTENDED_STRUCTURE_TYPE_PIEREXTENDED_STRUCTURE_TYPE_STREET_SIDE_GROUND_LEVEL_OPEN_AIR_PLATFORMS_NO_BUILDINGEXTENDED_STRUCTURE_TYPE_STREET_SIDE_NONEEXTENDED_STRUCTURE_TYPE_STREET_SIDE_PLATFORMEXTENDED_STRUCTURE_TYPE_STREET_SIDE_SHELTEREXTENDED_STRUCTURE_TYPE_UNDERGROUNDEXTENDED_STRUCTURE_TYPE_UNDERGROUND_BUILDINGEXTENDED_STRUCTURE_TYPE_UNKNOWNEXTENDED_STRUCTURE_TYPE_VIRTUAL_BUS_STATIONEXTENDED_STRUCTURE_TYPE_VIRTUAL_PIER";
+  unk_27D0520 = 40;
+  dword_27D0510 = 17;
+  dword_27D0528 = 16;
+  qword_27D0500 = "EXTENDED_STRUCTURE_TYPE_ELEVATED_OPEN_AIR_PLATFORMS_NO_BUILDINGEXTENDED_STRUCTURE_TYPE_ELEVATED_SHELTEREXTENDED_STRUCTURE_TYPE_GROUND_LEVEL_BUILDINGEXTENDED_STRUCTURE_TYPE_GROUND_LEVEL_OPEN_AIR_PLATFORMS_ADJACENT_BUILDINGEXTENDED_STRUCTURE_TYPE_PIEREXTENDED_STRUCTURE_TYPE_STREET_SIDE_GROUND_LEVEL_OPEN_AIR_PLATFORMS_NO_BUILDINGEXTENDED_STRUCTURE_TYPE_STREET_SIDE_NONEEXTENDED_STRUCTURE_TYPE_STREET_SIDE_PLATFORMEXTENDED_STRUCTURE_TYPE_STREET_SIDE_SHELTEREXTENDED_STRUCTURE_TYPE_UNDERGROUNDEXTENDED_STRUCTURE_TYPE_UNDERGROUND_BUILDINGEXTENDED_STRUCTURE_TYPE_UNKNOWNEXTENDED_STRUCTURE_TYPE_VIRTUAL_BUS_STATIONEXTENDED_STRUCTURE_TYPE_VIRTUAL_PIER";
+  unk_27D0508 = 63;
+  dword_27D04F8 = 18;
+  qword_27D04B8 = "EXTENDED_STRUCTURE_TYPE_ELEVATED_BUILDINGEXTENDED_STRUCTURE_TYPE_ELEVATED_NONEEXTENDED_STRUCTURE_TYPE_ELEVATED_OPEN_AIR_PLATFORMS_ADJACENT_BUILDINGEXTENDED_STRUCTURE_TYPE_ELEVATED_OPEN_AIR_PLATFORMS_NO_BUILDINGEXTENDED_STRUCTURE_TYPE_ELEVATED_SHELTEREXTENDED_STRUCTURE_TYPE_GROUND_LEVEL_BUILDINGEXTENDED_STRUCTURE_TYPE_GROUND_LEVEL_OPEN_AIR_PLATFORMS_ADJACENT_BUILDINGEXTENDED_STRUCTURE_TYPE_PIEREXTENDED_STRUCTURE_TYPE_STREET_SIDE_GROUND_LEVEL_OPEN_AIR_PLATFORMS_NO_BUILDINGEXTENDED_STRUCTURE_TYPE_STREET_SIDE_NONEEXTENDED_STRUCTURE_TYPE_STREET_SIDE_PLATFORMEXTENDED_STRUCTURE_TYPE_STREET_SIDE_SHELTEREXTENDED_STRUCTURE_TYPE_UNDERGROUNDEXTENDED_STRUCTURE_TYPE_UNDERGROUND_BUILDINGEXTENDED_STRUCTURE_TYPE_UNKNOWNEXTENDED_STRUCTURE_TYPE_VIRTUAL_BUS_STATIONEXTENDED_STRUCTURE_TYPE_VIRTUAL_PIER";
+  qword_27D04C0 = 41;
+  qword_27D04D0 = "EXTENDED_STRUCTURE_TYPE_ELEVATED_NONEEXTENDED_STRUCTURE_TYPE_ELEVATED_OPEN_AIR_PLATFORMS_ADJACENT_BUILDINGEXTENDED_STRUCTURE_TYPE_ELEVATED_OPEN_AIR_PLATFORMS_NO_BUILDINGEXTENDED_STRUCTURE_TYPE_ELEVATED_SHELTEREXTENDED_STRUCTURE_TYPE_GROUND_LEVEL_BUILDINGEXTENDED_STRUCTURE_TYPE_GROUND_LEVEL_OPEN_AIR_PLATFORMS_ADJACENT_BUILDINGEXTENDED_STRUCTURE_TYPE_PIEREXTENDED_STRUCTURE_TYPE_STREET_SIDE_GROUND_LEVEL_OPEN_AIR_PLATFORMS_NO_BUILDINGEXTENDED_STRUCTURE_TYPE_STREET_SIDE_NONEEXTENDED_STRUCTURE_TYPE_STREET_SIDE_PLATFORMEXTENDED_STRUCTURE_TYPE_STREET_SIDE_SHELTEREXTENDED_STRUCTURE_TYPE_UNDERGROUNDEXTENDED_STRUCTURE_TYPE_UNDERGROUND_BUILDINGEXTENDED_STRUCTURE_TYPE_UNKNOWNEXTENDED_STRUCTURE_TYPE_VIRTUAL_BUS_STATIONEXTENDED_STRUCTURE_TYPE_VIRTUAL_PIER";
+  unk_27D04D8 = 37;
+  dword_27D04E0 = 15;
+  dword_27D04C8 = 19;
+  qword_27CFB58 = "NODE_LABEL_ORIENTATION_DIAGONAL_UPNODE_LABEL_ORIENTATION_DYNAMICNODE_LABEL_ORIENTATION_HORIZONTALNODE_LABEL_ORIENTATION_UNKNOWNNODE_LABEL_ORIENTATION_VERTICAL";
+  qword_27D04A0 = "EXTENDED_STRUCTURE_TYPE_BUS_STATIONEXTENDED_STRUCTURE_TYPE_ELEVATED_BUILDINGEXTENDED_STRUCTURE_TYPE_ELEVATED_NONEEXTENDED_STRUCTURE_TYPE_ELEVATED_OPEN_AIR_PLATFORMS_ADJACENT_BUILDINGEXTENDED_STRUCTURE_TYPE_ELEVATED_OPEN_AIR_PLATFORMS_NO_BUILDINGEXTENDED_STRUCTURE_TYPE_ELEVATED_SHELTEREXTENDED_STRUCTURE_TYPE_GROUND_LEVEL_BUILDINGEXTENDED_STRUCTURE_TYPE_GROUND_LEVEL_OPEN_AIR_PLATFORMS_ADJACENT_BUILDINGEXTENDED_STRUCTURE_TYPE_PIEREXTENDED_STRUCTURE_TYPE_STREET_SIDE_GROUND_LEVEL_OPEN_AIR_PLATFORMS_NO_BUILDINGEXTENDED_STRUCTURE_TYPE_STREET_SIDE_NONEEXTENDED_STRUCTURE_TYPE_STREET_SIDE_PLATFORMEXTENDED_STRUCTURE_TYPE_STREET_SIDE_SHELTEREXTENDED_STRUCTURE_TYPE_UNDERGROUNDEXTENDED_STRUCTURE_TYPE_UNDERGROUND_BUILDINGEXTENDED_STRUCTURE_TYPE_UNKNOWNEXTENDED_STRUCTURE_TYPE_VIRTUAL_BUS_STATIONEXTENDED_STRUCTURE_TYPE_VIRTUAL_PIER";
+  *algn_27D04A8 = 35;
+  dword_27D04B0 = 23;
+  qword_27D0488 = "STRUCTURE_TYPE_UNDERGROUND";
+  unk_27D0490 = 26;
+  dword_27D0498 = 3;
+  qword_27CFC78 = "NODE_LABEL_POSITION_CENTER_LEFTNODE_LABEL_POSITION_CENTER_RIGHTNODE_LABEL_POSITION_HIDDENNODE_LABEL_POSITION_TOP_CENTERNODE_LABEL_POSITION_TOP_LEFTNODE_LABEL_POSITION_TOP_RIGHTNODE_LABEL_POSITION_UNKNOWN";
+  qword_27D0470 = "STRUCTURE_TYPE_SHELTERSTRUCTURE_TYPE_UNDERGROUND";
+  unk_27D0478 = 22;
+  dword_27D0480 = 1;
+  qword_27CFC60 = "NODE_LABEL_POSITION_CENTERNODE_LABEL_POSITION_CENTER_LEFTNODE_LABEL_POSITION_CENTER_RIGHTNODE_LABEL_POSITION_HIDDENNODE_LABEL_POSITION_TOP_CENTERNODE_LABEL_POSITION_TOP_LEFTNODE_LABEL_POSITION_TOP_RIGHTNODE_LABEL_POSITION_UNKNOWN";
+  unk_27CFC68 = 26;
+  dword_27CFC58 = 10;
+  dword_27CFC70 = 6;
+  qword_27CFC48 = "NODE_LABEL_POSITION_BOTTOM_RIGHTNODE_LABEL_POSITION_CENTERNODE_LABEL_POSITION_CENTER_LEFTNODE_LABEL_POSITION_CENTER_RIGHTNODE_LABEL_POSITION_HIDDENNODE_LABEL_POSITION_TOP_CENTERNODE_LABEL_POSITION_TOP_LEFTNODE_LABEL_POSITION_TOP_RIGHTNODE_LABEL_POSITION_UNKNOWN";
+  qword_27CFC30 = "NODE_LABEL_POSITION_BOTTOM_LEFTNODE_LABEL_POSITION_BOTTOM_RIGHTNODE_LABEL_POSITION_CENTERNODE_LABEL_POSITION_CENTER_LEFTNODE_LABEL_POSITION_CENTER_RIGHTNODE_LABEL_POSITION_HIDDENNODE_LABEL_POSITION_TOP_CENTERNODE_LABEL_POSITION_TOP_LEFTNODE_LABEL_POSITION_TOP_RIGHTNODE_LABEL_POSITION_UNKNOWN";
+  unk_27CFC38 = 31;
+  dword_27CFC40 = 8;
+  qword_27CFC50 = 32;
+  qword_27CFC18 = "NODE_LABEL_POSITION_BOTTOM_CENTERNODE_LABEL_POSITION_BOTTOM_LEFTNODE_LABEL_POSITION_BOTTOM_RIGHTNODE_LABEL_POSITION_CENTERNODE_LABEL_POSITION_CENTER_LEFTNODE_LABEL_POSITION_CENTER_RIGHTNODE_LABEL_POSITION_HIDDENNODE_LABEL_POSITION_TOP_CENTERNODE_LABEL_POSITION_TOP_LEFTNODE_LABEL_POSITION_TOP_RIGHTNODE_LABEL_POSITION_UNKNOWN";
+  unk_27CFC20 = 33;
+  dword_27CFC28 = 9;
+  qword_27CFC00 = "NODE_LABEL_REFERENCE_FRAME_UNKNOWN";
+  unk_27CFC08 = 34;
+  dword_27CFBF8 = 1;
+  dword_27CFC10 = 0;
+  qword_27CFBD0 = "NODE_LABEL_REFERENCE_FRAME_MAP_SPACENODE_LABEL_REFERENCE_FRAME_SCREEN_SPACENODE_LABEL_REFERENCE_FRAME_UNKNOWN";
+  *algn_27CFBD8 = 36;
+  dword_27CFBE0 = 2;
+  qword_27CFBE8 = "NODE_LABEL_REFERENCE_FRAME_SCREEN_SPACENODE_LABEL_REFERENCE_FRAME_UNKNOWN";
+  unk_27CFBF0 = 39;
+  qword_27CFBB8 = "NODE_LABEL_ORIENTATION_VERTICAL";
+  unk_27CFBC0 = 31;
+  dword_27CFBB0 = 0;
+  dword_27CFBC8 = 2;
+  qword_27CFBA0 = "NODE_LABEL_ORIENTATION_UNKNOWNNODE_LABEL_ORIENTATION_VERTICAL";
+  qword_27CFB88 = "NODE_LABEL_ORIENTATION_HORIZONTALNODE_LABEL_ORIENTATION_UNKNOWNNODE_LABEL_ORIENTATION_VERTICAL";
+  unk_27CFB90 = 33;
+  dword_27CFB98 = 1;
+  qword_27CFBA8 = 30;
+  qword_27CFB70 = "NODE_LABEL_ORIENTATION_DYNAMICNODE_LABEL_ORIENTATION_HORIZONTALNODE_LABEL_ORIENTATION_UNKNOWNNODE_LABEL_ORIENTATION_VERTICAL";
+  unk_27CFB78 = 30;
+  dword_27CFB50 = 3;
+  dword_27CFB68 = 4;
+  dword_27CFB80 = 5;
+  qword_27CFB60 = 34;
+  qword_27CFA80 = "LOCALIZABLE_STATION_TYPE_NONELOCALIZABLE_STATION_TYPE_RAIL_STATIONLOCALIZABLE_STATION_TYPE_RAIL_STOPLOCALIZABLE_STATION_TYPE_SUBWAY_STATIONLOCALIZABLE_STATION_TYPE_SUBWAY_STOPLOCALIZABLE_STATION_TYPE_TRAM_STATIONLOCALIZABLE_STATION_TYPE_TRAM_STOP";
+  qword_27CFB28 = "TBD";
+  unk_27CFB30 = 3;
+  dword_27CFB38 = 1;
+  qword_27CFB40 = "NODE_LABEL_ORIENTATION_DIAGONAL_DOWNNODE_LABEL_ORIENTATION_DIAGONAL_UPNODE_LABEL_ORIENTATION_DYNAMICNODE_LABEL_ORIENTATION_HORIZONTALNODE_LABEL_ORIENTATION_UNKNOWNNODE_LABEL_ORIENTATION_VERTICAL";
+  *algn_27CFB48 = 36;
+  qword_27CFB10 = "LOCALIZABLE_STATION_TYPE_TRAM_STOP";
+  unk_27CFB18 = 34;
+  dword_27CFB08 = 9;
+  dword_27CFB20 = 8;
+  qword_27CFAF8 = "LOCALIZABLE_STATION_TYPE_TRAM_STATIONLOCALIZABLE_STATION_TYPE_TRAM_STOP";
+  qword_27CFAE0 = "LOCALIZABLE_STATION_TYPE_SUBWAY_STOPLOCALIZABLE_STATION_TYPE_TRAM_STATIONLOCALIZABLE_STATION_TYPE_TRAM_STOP";
+  unk_27CFAE8 = 36;
+  dword_27CFAF0 = 3;
+  qword_27CFB00 = 37;
+  dword_27CFAC0 = 2;
+  qword_27CFAC8 = "LOCALIZABLE_STATION_TYPE_SUBWAY_STATIONLOCALIZABLE_STATION_TYPE_SUBWAY_STOPLOCALIZABLE_STATION_TYPE_TRAM_STATIONLOCALIZABLE_STATION_TYPE_TRAM_STOP";
+  unk_27CFAD0 = 39;
+  dword_27CFAD8 = 6;
+  qword_27CFAB0 = "LOCALIZABLE_STATION_TYPE_RAIL_STOPLOCALIZABLE_STATION_TYPE_SUBWAY_STATIONLOCALIZABLE_STATION_TYPE_SUBWAY_STOPLOCALIZABLE_STATION_TYPE_TRAM_STATIONLOCALIZABLE_STATION_TYPE_TRAM_STOP";
+  unk_27CFAB8 = 34;
+  qword_27CFA98 = "LOCALIZABLE_STATION_TYPE_RAIL_STATIONLOCALIZABLE_STATION_TYPE_RAIL_STOPLOCALIZABLE_STATION_TYPE_SUBWAY_STATIONLOCALIZABLE_STATION_TYPE_SUBWAY_STOPLOCALIZABLE_STATION_TYPE_TRAM_STATIONLOCALIZABLE_STATION_TYPE_TRAM_STOP";
+  unk_27CFAA0 = 37;
+  dword_27CFAA8 = 5;
+  qword_27CFA68 = "LOCALIZABLE_STATION_TYPE_FERRY_TERMINALLOCALIZABLE_STATION_TYPE_NONELOCALIZABLE_STATION_TYPE_RAIL_STATIONLOCALIZABLE_STATION_TYPE_RAIL_STOPLOCALIZABLE_STATION_TYPE_SUBWAY_STATIONLOCALIZABLE_STATION_TYPE_SUBWAY_STOPLOCALIZABLE_STATION_TYPE_TRAM_STATIONLOCALIZABLE_STATION_TYPE_TRAM_STOP";
+  unk_27CFA70 = 39;
+  dword_27CFA78 = 7;
+  qword_27CFA88 = 29;
+  dword_27CFA90 = 0;
+  qword_27CFA38 = "LOCALIZABLE_STATION_TYPE_BUS_STATIONLOCALIZABLE_STATION_TYPE_BUS_STOPLOCALIZABLE_STATION_TYPE_FERRY_TERMINALLOCALIZABLE_STATION_TYPE_NONELOCALIZABLE_STATION_TYPE_RAIL_STATIONLOCALIZABLE_STATION_TYPE_RAIL_STOPLOCALIZABLE_STATION_TYPE_SUBWAY_STATIONLOCALIZABLE_STATION_TYPE_SUBWAY_STOPLOCALIZABLE_STATION_TYPE_TRAM_STATIONLOCALIZABLE_STATION_TYPE_TRAM_STOP";
+  unk_27CFA40 = 36;
+  dword_27CFA48 = 4;
+  qword_27CFA58 = 33;
+  dword_27CFA60 = 1;
+  qword_27CF708 = "LOCALIZED_TRANSIT_TYPE_AERIAL_TRAMLOCALIZED_TRANSIT_TYPE_AERIAL_TRAMWAYLOCALIZED_TRANSIT_TYPE_BOATLOCALIZED_TRANSIT_TYPE_BUSLOCALIZED_TRANSIT_TYPE_BUS_RAPID_TRANSITLOCALIZED_TRANSIT_TYPE_BUS_RAPID_TRANSIT_STATIONLOCALIZED_TRANSIT_TYPE_BUS_STATIONLOCALIZED_TRANSIT_TYPE_CABLE_CARLOCALIZED_TRANSIT_TYPE_COACHLOCALIZED_TRANSIT_TYPE_COACH_STATIONLOCALIZED_TRANSIT_TYPE_FERRYLOCALIZED_TRANSIT_TYPE_FUNICULARLOCALIZED_TRANSIT_TYPE_GONDOLALOCALIZED_TRANSIT_TYPE_HIGH_SPEED_RAILLOCALIZED_TRANSIT_TYPE_JEEPNEYLOCALIZED_TRANSIT_TYPE_LIGHT_RAILLOCALIZED_TRANSIT_TYPE_LINELOCALIZED_TRANSIT_TYPE_MONORAILLOCALIZED_TRANSIT_TYPE_SHIPLOCALIZED_TRANSIT_TYPE_SHUTTLELOCALIZED_TRANSIT_TYPE_SHUTTLE_BUSLOCALIZED_TRANSIT_TYPE_SHUTTLE_BUS_STATIONLOCALIZED_TRANSIT_TYPE_STREETCARLOCALIZED_TRANSIT_TYPE_SUBWAYLOCALIZED_TRANSIT_TYPE_TAXILOCALIZED_TRANSIT_TYPE_TRAINLOCALIZED_TRANSIT_TYPE_TRAMLOCALIZED_TRANSIT_TYPE_TROLLEYLOCALIZED_TRANSIT_TYPE_TROLLEYBUSLOCALIZED_TRANSIT_TYPE_VEHICLE_AIRLOCALIZED_TRANSIT_TYPE_VEHICLE_LANDLOCALIZED_TRANSIT_TYPE_VEHICLE_WATERLOCALIZED_TRANSIT_TYPE_WATER_BUSLOCALIZED_TRANSIT_TYPE_WATER_TAXI";
+  unk_27CF710 = 34;
+  dword_27CF718 = 90;
+  qword_27CF728 = 37;
+  qword_27CF740 = 27;
+  qword_27CFA10 = 32;
+  qword_27CFA28 = 33;
+  qword_27CF758 = 26;
+  dword_27CF760 = 10;
+  qword_27CF9E0 = 35;
+  dword_27CF9E8 = 2;
+  qword_27CF9F8 = 36;
+  dword_27CFA00 = 4;
+  qword_27CF770 = 40;
+  qword_27CF788 = 48;
+  dword_27CF9B8 = 55;
+  qword_27CF9C8 = 34;
+  dword_27CF9D0 = 3;
+  qword_27CF7A0 = 34;
+  dword_27CF988 = 52;
+  qword_27CF998 = 30;
+  dword_27CF9A0 = 54;
+  qword_27CF9B0 = 33;
+  qword_27CF7B8 = 32;
+  qword_27CF7D0 = 28;
+  dword_27CF958 = 20;
+  qword_27CF968 = 28;
+  dword_27CF970 = 40;
+  qword_27CF980 = 27;
+  dword_27CF7D8 = 11;
+  qword_27CF7E8 = 36;
+  dword_27CF928 = 51;
+  qword_27CF938 = 29;
+  dword_27CF940 = 41;
+  qword_27CF950 = 27;
+  qword_27CF800 = 28;
+  qword_27CF818 = 32;
+  qword_27CF830 = 30;
+  dword_27CF8F8 = 31;
+  qword_27CF908 = 42;
+  qword_27CF920 = 32;
+  qword_27CF848 = 38;
+  dword_27CF850 = 42;
+  qword_27CF860 = 30;
+  qword_27CF8D8 = 30;
+  dword_27CF8E0 = 30;
+  qword_27CF8F0 = 34;
+  qword_27CF878 = 33;
+  dword_27CF880 = 50;
+  dword_27CF898 = 1;
+  qword_27CF8A8 = 31;
+  dword_27CF8B0 = 60;
+  qword_27CF8C0 = 27;
+  qword_27CF890 = 27;
+  qword_27CED08 = 33;
+  qword_27CED20 = 41;
+  qword_27CED38 = 43;
+  qword_27CED50 = 30;
+  qword_27CED68 = 29;
+  qword_27CED80 = 32;
+  dword_27CED88 = 702;
+  qword_27CED98 = 18;
+  dword_27CEDA0 = 4;
+  qword_27CEDB0 = 26;
+  qword_27CEDC8 = 22;
+  dword_27CEDD0 = 7;
+  qword_27CEDE0 = 30;
+  qword_27CEDF8 = 36;
+  qword_27CEE10 = 35;
+  qword_27CEE28 = 36;
+  qword_27CEE40 = 21;
+  qword_27CEE58 = 23;
+  qword_27CEE70 = 27;
+  qword_27CEE88 = 21;
+  qword_27CEEA0 = 33;
+  qword_27CEEB8 = 41;
+  qword_27CEEE8 = 38;
+  qword_27CEF00 = 44;
+  qword_27CEF18 = 46;
+  qword_27CEF30 = 40;
+  qword_27CEF48 = 50;
+  qword_27CEF60 = 40;
+  qword_27CEF78 = 34;
+  qword_27CEF90 = 23;
+  dword_27CEF98 = 0;
+  qword_27CEFA8 = 30;
+  dword_27CEFB0 = 704;
+  qword_27CEFC0 = 36;
+  qword_27CEFD8 = 42;
+  qword_27CEFF0 = 31;
+  qword_27CF008 = 33;
+  qword_27CF020 = 41;
+  qword_27CF038 = 26;
+  qword_27CF050 = 32;
+  qword_27CF068 = 34;
+  qword_27CF098 = 33;
+  qword_27CF0B0 = 21;
+  dword_27CF0B8 = 12;
+  qword_27CF0C8 = 29;
+  qword_27CF0E0 = 39;
+  qword_27CF0F8 = 35;
+  qword_27CF110 = 45;
+  qword_27CF128 = 30;
+  qword_27CF140 = 47;
+  qword_27CF6F8 = 36;
+  qword_27CF158 = 30;
+  qword_27CF170 = 29;
+  dword_27CF178 = 706;
+  qword_27CF188 = 41;
+  qword_27CF6C8 = 43;
+  qword_27CF6E0 = 31;
+  qword_27CF1A0 = 36;
+  dword_27CF1A8 = 116;
+  qword_27CF1B8 = 17;
+  qword_27CF698 = 34;
+  dword_27CF6A0 = 400;
+  qword_27CF6B0 = 40;
+  dword_27CF1C0 = 2;
+  qword_27CF1D0 = 28;
+  qword_27CF1E8 = 41;
+  qword_27CF668 = 32;
+  qword_27CF680 = 38;
+  dword_27CF688 = 600;
+  qword_27CF200 = 40;
+  dword_27CF208 = 108;
+  qword_27CF218 = 30;
+  qword_27CF230 = 33;
+  qword_27CF650 = 31;
+  dword_27CF658 = 800;
+  qword_27CF248 = 39;
+  qword_27CF260 = 35;
+  qword_27CF278 = 45;
+  qword_27CF620 = 32;
+  qword_27CF638 = 25;
+  qword_27CF290 = 34;
+  qword_27CF2A8 = 34;
+  qword_27CF2C0 = 37;
+  qword_27CF2D8 = 30;
+  qword_27CF5F0 = 34;
+  qword_27CF608 = 36;
+  qword_27CF2F0 = 36;
+  qword_27CF308 = 43;
+  qword_27CF320 = 36;
+  qword_27CF338 = 38;
+  qword_27CF5C0 = 30;
+  qword_27CF5D8 = 36;
+  qword_27CF350 = 42;
+  qword_27CF368 = 24;
+  qword_27CF380 = 23;
+  dword_27CF580 = 1;
+  qword_27CF590 = 25;
+  qword_27CF5A8 = 40;
+  qword_27CF398 = 23;
+  qword_27CF3B0 = 31;
+  qword_27CF3C8 = 32;
+  qword_27CF3E0 = 24;
+  qword_27CF560 = 37;
+  qword_27CF578 = 19;
+  qword_27CF3F8 = 34;
+  dword_27CF400 = 203;
+  qword_27CF410 = 34;
+  qword_27CF428 = 33;
+  qword_27CF530 = 33;
+  qword_27CF548 = 29;
+  qword_27CF440 = 36;
+  qword_27CF458 = 37;
+  qword_27CF470 = 28;
+  dword_27CF478 = 710;
+  qword_27CF500 = 30;
+  qword_27CF518 = 33;
+  qword_27CF488 = 38;
+  qword_27CF4A0 = 37;
+  qword_27CF4B8 = 33;
+  qword_27CF4D0 = 36;
+  qword_27CF4E8 = 34;
+  qword_27CFCA8 = "NODE_LABEL_POSITION_HIDDENNODE_LABEL_POSITION_TOP_CENTERNODE_LABEL_POSITION_TOP_LEFTNODE_LABEL_POSITION_TOP_RIGHTNODE_LABEL_POSITION_UNKNOWN";
+  qword_27CFCC0 = "NODE_LABEL_POSITION_TOP_CENTERNODE_LABEL_POSITION_TOP_LEFTNODE_LABEL_POSITION_TOP_RIGHTNODE_LABEL_POSITION_UNKNOWN";
+  unk_27CFCC8 = 30;
+  qword_27CFCD8 = "NODE_LABEL_POSITION_TOP_LEFTNODE_LABEL_POSITION_TOP_RIGHTNODE_LABEL_POSITION_UNKNOWN";
+  unk_27CFCE0 = 28;
+  qword_27CFCF0 = "NODE_LABEL_POSITION_TOP_RIGHTNODE_LABEL_POSITION_UNKNOWN";
+  unk_27CFCF8 = 29;
+  qword_27CFD08 = "NODE_LABEL_POSITION_UNKNOWN";
+  unk_27CFD10 = 27;
+  qword_27CFC80 = 31;
+  dword_27CFC88 = 5;
+  qword_27CFC98 = 32;
+  dword_27CFCA0 = 7;
+  qword_27CFCB0 = 26;
+  dword_27CFCB8 = 1;
+  dword_27CFCD0 = 3;
+  dword_27CFCE8 = 2;
+  dword_27CFD00 = 4;
+  dword_27CFD18 = 0;
+  qword_27CFD38 = "LINE_STOP_VISIBILITY_SHIELD_ICONLINE_STOP_VISIBILITY_SHIELD_TEXTLINE_STOP_VISIBILITY_UNKNOWN";
+  qword_27CFD50 = "LINE_STOP_VISIBILITY_SHIELD_TEXTLINE_STOP_VISIBILITY_UNKNOWN";
+  qword_27CFD68 = "LINE_STOP_VISIBILITY_UNKNOWN";
+  unk_27CFD70 = 28;
+  qword_27CFD20 = "LINE_STOP_VISIBILITY_NOT_VISIBLELINE_STOP_VISIBILITY_SHIELD_ICONLINE_STOP_VISIBILITY_SHIELD_TEXTLINE_STOP_VISIBILITY_UNKNOWN";
+  *algn_27CFD28 = 32;
+  dword_27CFD30 = 1;
+  qword_27CFD40 = 32;
+  dword_27CFD48 = 3;
+  qword_27CFD58 = 32;
+  dword_27CFD60 = 2;
+  dword_27CFD78 = 0;
+  qword_27CFDB0 = "SIGNIFICANCE_EXTRA_LARGESIGNIFICANCE_EXTRA_SMALLSIGNIFICANCE_LARGESIGNIFICANCE_MEDIUMSIGNIFICANCE_SMALL";
+  qword_27CFDC8 = "SIGNIFICANCE_EXTRA_SMALLSIGNIFICANCE_LARGESIGNIFICANCE_MEDIUMSIGNIFICANCE_SMALL";
+  qword_27CFDE0 = "SIGNIFICANCE_LARGESIGNIFICANCE_MEDIUMSIGNIFICANCE_SMALL";
+  qword_27CFDF8 = "SIGNIFICANCE_MEDIUMSIGNIFICANCE_SMALL";
+  qword_27CFE10 = "SIGNIFICANCE_SMALL";
+  qword_27CFD80 = "SIGNIFICANCE_EXTRA_EXTRA_LARGESIGNIFICANCE_EXTRA_EXTRA_SMALLSIGNIFICANCE_EXTRA_LARGESIGNIFICANCE_EXTRA_SMALLSIGNIFICANCE_LARGESIGNIFICANCE_MEDIUMSIGNIFICANCE_SMALL";
+  *algn_27CFD88 = 30;
+  dword_27CFD90 = 6;
+  qword_27CFD98 = "SIGNIFICANCE_EXTRA_EXTRA_SMALLSIGNIFICANCE_EXTRA_LARGESIGNIFICANCE_EXTRA_SMALLSIGNIFICANCE_LARGESIGNIFICANCE_MEDIUMSIGNIFICANCE_SMALL";
+  unk_27CFDA0 = 30;
+  dword_27CFDA8 = 5;
+  qword_27CFDB8 = 24;
+  dword_27CFDC0 = 4;
+  qword_27CFDD0 = 24;
+  dword_27CFDD8 = 0;
+  qword_27CFDE8 = 18;
+  dword_27CFDF0 = 3;
+  qword_27CFE00 = 19;
+  dword_27CFE08 = 2;
+  qword_27CFE18 = 18;
+  dword_27CFE20 = 1;
+  qword_27CFE40 = "SHIELD_USE_LINESHIELD_USE_MODESHIELD_USE_STATION_LINESHIELD_USE_SYSTEMSHIELD_USE_TRIPSHIELD_USE_UNKNOWN";
+  qword_27CFE58 = "SHIELD_USE_MODESHIELD_USE_STATION_LINESHIELD_USE_SYSTEMSHIELD_USE_TRIPSHIELD_USE_UNKNOWN";
+  qword_27CFE70 = "SHIELD_USE_STATION_LINESHIELD_USE_SYSTEMSHIELD_USE_TRIPSHIELD_USE_UNKNOWN";
+  qword_27CFE88 = "SHIELD_USE_SYSTEMSHIELD_USE_TRIPSHIELD_USE_UNKNOWN";
+  unk_27CFE90 = 17;
+  qword_27CFEA0 = "SHIELD_USE_TRIPSHIELD_USE_UNKNOWN";
+  qword_27CFEB8 = "SHIELD_USE_UNKNOWN";
+  unk_27CFEC0 = 18;
+  qword_27CFE28 = "SHIELD_USE_ACCESS_POINTSHIELD_USE_LINESHIELD_USE_MODESHIELD_USE_STATION_LINESHIELD_USE_SYSTEMSHIELD_USE_TRIPSHIELD_USE_UNKNOWN";
+  unk_27CFE30 = 23;
+  dword_27CFE38 = 6;
+  qword_27CFE48 = 15;
+  dword_27CFE50 = 1;
+  qword_27CFE60 = 15;
+  dword_27CFE68 = 3;
+  qword_27CFE78 = 23;
+  dword_27CFE80 = 10;
+  dword_27CFE98 = 4;
+  qword_27CFEA8 = 15;
+  dword_27CFEB0 = 5;
+  dword_27CFEC8 = 0;
+  qword_27CFEE8 = "TRANSIT_CARD_GROUPING_STYLE_SYSTEMTRANSIT_CARD_GROUPING_STYLE_UNKNOWN";
+  unk_27CFEF0 = 34;
+  qword_27CFED0 = "TRANSIT_CARD_GROUPING_STYLE_LINETRANSIT_CARD_GROUPING_STYLE_SYSTEMTRANSIT_CARD_GROUPING_STYLE_UNKNOWN";
+  *algn_27CFED8 = 32;
+  dword_27CFEE0 = 1;
+  dword_27CFEF8 = 2;
+  qword_27CFF00 = "TRANSIT_CARD_GROUPING_STYLE_UNKNOWN";
+  unk_27CFF08 = 35;
+  dword_27CFF10 = 0;
+  qword_27CFF30 = "ADVISORY_TYPE_PLANNED_OUTAGEADVISORY_TYPE_STRIKE";
+  unk_27CFF38 = 28;
+  qword_27CFF18 = "ADVISORY_TYPE_CONSTRUCTIONADVISORY_TYPE_PLANNED_OUTAGEADVISORY_TYPE_STRIKE";
+  unk_27CFF20 = 26;
+  dword_27CFF28 = 2;
+  dword_27CFF40 = 1;
+  qword_27CFF48 = "ADVISORY_TYPE_STRIKE";
+  unk_27CFF50 = 20;
+  dword_27CFF58 = 0;
+  qword_27CFF78 = "TRANSIT_PROTOBUF_RECORD_TYPE_ACCESS_POINT_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_ATTRIBUTIONTRANSIT_PROTOBUF_RECORD_TYPE_BLOCK_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_BRANDTRANSIT_PROTOBUF_RECORD_TYPE_CARTOGRAPHIC_LINE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_CONNECTED_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_FARETRANSIT_PROTOBUF_RECORD_TYPE_FARE_AREATRANSIT_PROTOBUF_RECORD_TYPE_FARE_CONTAINERTRANSIT_PROTOBUF_RECORD_TYPE_FARE_LEG_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_LEG_RULE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_FARE_NETWORKTRANSIT_PROTOBUF_RECORD_TYPE_FARE_NETWORK_SETTRANSIT_PROTOBUF_RECORD_TYPE_FARE_PROVIDERTRANSIT_PROTOBUF_RECORD_TYPE_FARE_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_FARE_ZONETRANSIT_PROTOBUF_RECORD_TYPE_FEEDTRANSIT_PROTOBUF_RECORD_TYPE_HALLTRANSIT_PROTOBUF_RECORD_TYPE_LINETRANSIT_PROTOBUF_RECORD_TYPE_LINKTRANSIT_PROTOBUF_RECORD_TYPE_MARKETTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHODTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHOD_REGIONTRANSIT_PROTOBUF_RECORD_TYPE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_SEGMENTTRANSIT_PROTOBUF_RECORD_TYPE_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_STATION_POLYGONTRANSIT_PROTOBUF_RECORD_TYPE_STOPTRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27CFF90 = "TRANSIT_PROTOBUF_RECORD_TYPE_ATTRIBUTIONTRANSIT_PROTOBUF_RECORD_TYPE_BLOCK_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_BRANDTRANSIT_PROTOBUF_RECORD_TYPE_CARTOGRAPHIC_LINE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_CONNECTED_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_FARETRANSIT_PROTOBUF_RECORD_TYPE_FARE_AREATRANSIT_PROTOBUF_RECORD_TYPE_FARE_CONTAINERTRANSIT_PROTOBUF_RECORD_TYPE_FARE_LEG_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_LEG_RULE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_FARE_NETWORKTRANSIT_PROTOBUF_RECORD_TYPE_FARE_NETWORK_SETTRANSIT_PROTOBUF_RECORD_TYPE_FARE_PROVIDERTRANSIT_PROTOBUF_RECORD_TYPE_FARE_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_FARE_ZONETRANSIT_PROTOBUF_RECORD_TYPE_FEEDTRANSIT_PROTOBUF_RECORD_TYPE_HALLTRANSIT_PROTOBUF_RECORD_TYPE_LINETRANSIT_PROTOBUF_RECORD_TYPE_LINKTRANSIT_PROTOBUF_RECORD_TYPE_MARKETTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHODTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHOD_REGIONTRANSIT_PROTOBUF_RECORD_TYPE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_SEGMENTTRANSIT_PROTOBUF_RECORD_TYPE_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_STATION_POLYGONTRANSIT_PROTOBUF_RECORD_TYPE_STOPTRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27CFFA8 = "TRANSIT_PROTOBUF_RECORD_TYPE_BLOCK_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_BRANDTRANSIT_PROTOBUF_RECORD_TYPE_CARTOGRAPHIC_LINE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_CONNECTED_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_FARETRANSIT_PROTOBUF_RECORD_TYPE_FARE_AREATRANSIT_PROTOBUF_RECORD_TYPE_FARE_CONTAINERTRANSIT_PROTOBUF_RECORD_TYPE_FARE_LEG_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_LEG_RULE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_FARE_NETWORKTRANSIT_PROTOBUF_RECORD_TYPE_FARE_NETWORK_SETTRANSIT_PROTOBUF_RECORD_TYPE_FARE_PROVIDERTRANSIT_PROTOBUF_RECORD_TYPE_FARE_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_FARE_ZONETRANSIT_PROTOBUF_RECORD_TYPE_FEEDTRANSIT_PROTOBUF_RECORD_TYPE_HALLTRANSIT_PROTOBUF_RECORD_TYPE_LINETRANSIT_PROTOBUF_RECORD_TYPE_LINKTRANSIT_PROTOBUF_RECORD_TYPE_MARKETTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHODTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHOD_REGIONTRANSIT_PROTOBUF_RECORD_TYPE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_SEGMENTTRANSIT_PROTOBUF_RECORD_TYPE_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_STATION_POLYGONTRANSIT_PROTOBUF_RECORD_TYPE_STOPTRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27CFFC0 = "TRANSIT_PROTOBUF_RECORD_TYPE_BRANDTRANSIT_PROTOBUF_RECORD_TYPE_CARTOGRAPHIC_LINE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_CONNECTED_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_FARETRANSIT_PROTOBUF_RECORD_TYPE_FARE_AREATRANSIT_PROTOBUF_RECORD_TYPE_FARE_CONTAINERTRANSIT_PROTOBUF_RECORD_TYPE_FARE_LEG_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_LEG_RULE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_FARE_NETWORKTRANSIT_PROTOBUF_RECORD_TYPE_FARE_NETWORK_SETTRANSIT_PROTOBUF_RECORD_TYPE_FARE_PROVIDERTRANSIT_PROTOBUF_RECORD_TYPE_FARE_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_FARE_ZONETRANSIT_PROTOBUF_RECORD_TYPE_FEEDTRANSIT_PROTOBUF_RECORD_TYPE_HALLTRANSIT_PROTOBUF_RECORD_TYPE_LINETRANSIT_PROTOBUF_RECORD_TYPE_LINKTRANSIT_PROTOBUF_RECORD_TYPE_MARKETTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHODTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHOD_REGIONTRANSIT_PROTOBUF_RECORD_TYPE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_SEGMENTTRANSIT_PROTOBUF_RECORD_TYPE_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_STATION_POLYGONTRANSIT_PROTOBUF_RECORD_TYPE_STOPTRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27CFFD8 = "TRANSIT_PROTOBUF_RECORD_TYPE_CARTOGRAPHIC_LINE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_CONNECTED_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_FARETRANSIT_PROTOBUF_RECORD_TYPE_FARE_AREATRANSIT_PROTOBUF_RECORD_TYPE_FARE_CONTAINERTRANSIT_PROTOBUF_RECORD_TYPE_FARE_LEG_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_LEG_RULE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_FARE_NETWORKTRANSIT_PROTOBUF_RECORD_TYPE_FARE_NETWORK_SETTRANSIT_PROTOBUF_RECORD_TYPE_FARE_PROVIDERTRANSIT_PROTOBUF_RECORD_TYPE_FARE_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_FARE_ZONETRANSIT_PROTOBUF_RECORD_TYPE_FEEDTRANSIT_PROTOBUF_RECORD_TYPE_HALLTRANSIT_PROTOBUF_RECORD_TYPE_LINETRANSIT_PROTOBUF_RECORD_TYPE_LINKTRANSIT_PROTOBUF_RECORD_TYPE_MARKETTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHODTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHOD_REGIONTRANSIT_PROTOBUF_RECORD_TYPE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_SEGMENTTRANSIT_PROTOBUF_RECORD_TYPE_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_STATION_POLYGONTRANSIT_PROTOBUF_RECORD_TYPE_STOPTRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27CFFF0 = "TRANSIT_PROTOBUF_RECORD_TYPE_CONNECTED_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_FARETRANSIT_PROTOBUF_RECORD_TYPE_FARE_AREATRANSIT_PROTOBUF_RECORD_TYPE_FARE_CONTAINERTRANSIT_PROTOBUF_RECORD_TYPE_FARE_LEG_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_LEG_RULE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_FARE_NETWORKTRANSIT_PROTOBUF_RECORD_TYPE_FARE_NETWORK_SETTRANSIT_PROTOBUF_RECORD_TYPE_FARE_PROVIDERTRANSIT_PROTOBUF_RECORD_TYPE_FARE_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_FARE_ZONETRANSIT_PROTOBUF_RECORD_TYPE_FEEDTRANSIT_PROTOBUF_RECORD_TYPE_HALLTRANSIT_PROTOBUF_RECORD_TYPE_LINETRANSIT_PROTOBUF_RECORD_TYPE_LINKTRANSIT_PROTOBUF_RECORD_TYPE_MARKETTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHODTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHOD_REGIONTRANSIT_PROTOBUF_RECORD_TYPE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_SEGMENTTRANSIT_PROTOBUF_RECORD_TYPE_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_STATION_POLYGONTRANSIT_PROTOBUF_RECORD_TYPE_STOPTRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27CFFF8 = 46;
+  qword_27D0008 = "TRANSIT_PROTOBUF_RECORD_TYPE_FARETRANSIT_PROTOBUF_RECORD_TYPE_FARE_AREATRANSIT_PROTOBUF_RECORD_TYPE_FARE_CONTAINERTRANSIT_PROTOBUF_RECORD_TYPE_FARE_LEG_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_LEG_RULE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_FARE_NETWORKTRANSIT_PROTOBUF_RECORD_TYPE_FARE_NETWORK_SETTRANSIT_PROTOBUF_RECORD_TYPE_FARE_PROVIDERTRANSIT_PROTOBUF_RECORD_TYPE_FARE_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_FARE_ZONETRANSIT_PROTOBUF_RECORD_TYPE_FEEDTRANSIT_PROTOBUF_RECORD_TYPE_HALLTRANSIT_PROTOBUF_RECORD_TYPE_LINETRANSIT_PROTOBUF_RECORD_TYPE_LINKTRANSIT_PROTOBUF_RECORD_TYPE_MARKETTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHODTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHOD_REGIONTRANSIT_PROTOBUF_RECORD_TYPE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_SEGMENTTRANSIT_PROTOBUF_RECORD_TYPE_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_STATION_POLYGONTRANSIT_PROTOBUF_RECORD_TYPE_STOPTRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27D0020 = "TRANSIT_PROTOBUF_RECORD_TYPE_FARE_AREATRANSIT_PROTOBUF_RECORD_TYPE_FARE_CONTAINERTRANSIT_PROTOBUF_RECORD_TYPE_FARE_LEG_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_LEG_RULE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_FARE_NETWORKTRANSIT_PROTOBUF_RECORD_TYPE_FARE_NETWORK_SETTRANSIT_PROTOBUF_RECORD_TYPE_FARE_PROVIDERTRANSIT_PROTOBUF_RECORD_TYPE_FARE_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_FARE_ZONETRANSIT_PROTOBUF_RECORD_TYPE_FEEDTRANSIT_PROTOBUF_RECORD_TYPE_HALLTRANSIT_PROTOBUF_RECORD_TYPE_LINETRANSIT_PROTOBUF_RECORD_TYPE_LINKTRANSIT_PROTOBUF_RECORD_TYPE_MARKETTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHODTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHOD_REGIONTRANSIT_PROTOBUF_RECORD_TYPE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_SEGMENTTRANSIT_PROTOBUF_RECORD_TYPE_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_STATION_POLYGONTRANSIT_PROTOBUF_RECORD_TYPE_STOPTRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27D0038 = "TRANSIT_PROTOBUF_RECORD_TYPE_FARE_CONTAINERTRANSIT_PROTOBUF_RECORD_TYPE_FARE_LEG_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_LEG_RULE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_FARE_NETWORKTRANSIT_PROTOBUF_RECORD_TYPE_FARE_NETWORK_SETTRANSIT_PROTOBUF_RECORD_TYPE_FARE_PROVIDERTRANSIT_PROTOBUF_RECORD_TYPE_FARE_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_FARE_ZONETRANSIT_PROTOBUF_RECORD_TYPE_FEEDTRANSIT_PROTOBUF_RECORD_TYPE_HALLTRANSIT_PROTOBUF_RECORD_TYPE_LINETRANSIT_PROTOBUF_RECORD_TYPE_LINKTRANSIT_PROTOBUF_RECORD_TYPE_MARKETTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHODTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHOD_REGIONTRANSIT_PROTOBUF_RECORD_TYPE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_SEGMENTTRANSIT_PROTOBUF_RECORD_TYPE_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_STATION_POLYGONTRANSIT_PROTOBUF_RECORD_TYPE_STOPTRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27D0068 = "TRANSIT_PROTOBUF_RECORD_TYPE_FARE_LEG_RULE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_FARE_NETWORKTRANSIT_PROTOBUF_RECORD_TYPE_FARE_NETWORK_SETTRANSIT_PROTOBUF_RECORD_TYPE_FARE_PROVIDERTRANSIT_PROTOBUF_RECORD_TYPE_FARE_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_FARE_ZONETRANSIT_PROTOBUF_RECORD_TYPE_FEEDTRANSIT_PROTOBUF_RECORD_TYPE_HALLTRANSIT_PROTOBUF_RECORD_TYPE_LINETRANSIT_PROTOBUF_RECORD_TYPE_LINKTRANSIT_PROTOBUF_RECORD_TYPE_MARKETTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHODTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHOD_REGIONTRANSIT_PROTOBUF_RECORD_TYPE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_SEGMENTTRANSIT_PROTOBUF_RECORD_TYPE_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_STATION_POLYGONTRANSIT_PROTOBUF_RECORD_TYPE_STOPTRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27D0080 = "TRANSIT_PROTOBUF_RECORD_TYPE_FARE_NETWORKTRANSIT_PROTOBUF_RECORD_TYPE_FARE_NETWORK_SETTRANSIT_PROTOBUF_RECORD_TYPE_FARE_PROVIDERTRANSIT_PROTOBUF_RECORD_TYPE_FARE_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_FARE_ZONETRANSIT_PROTOBUF_RECORD_TYPE_FEEDTRANSIT_PROTOBUF_RECORD_TYPE_HALLTRANSIT_PROTOBUF_RECORD_TYPE_LINETRANSIT_PROTOBUF_RECORD_TYPE_LINKTRANSIT_PROTOBUF_RECORD_TYPE_MARKETTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHODTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHOD_REGIONTRANSIT_PROTOBUF_RECORD_TYPE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_SEGMENTTRANSIT_PROTOBUF_RECORD_TYPE_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_STATION_POLYGONTRANSIT_PROTOBUF_RECORD_TYPE_STOPTRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27D0098 = "TRANSIT_PROTOBUF_RECORD_TYPE_FARE_NETWORK_SETTRANSIT_PROTOBUF_RECORD_TYPE_FARE_PROVIDERTRANSIT_PROTOBUF_RECORD_TYPE_FARE_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_FARE_ZONETRANSIT_PROTOBUF_RECORD_TYPE_FEEDTRANSIT_PROTOBUF_RECORD_TYPE_HALLTRANSIT_PROTOBUF_RECORD_TYPE_LINETRANSIT_PROTOBUF_RECORD_TYPE_LINKTRANSIT_PROTOBUF_RECORD_TYPE_MARKETTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHODTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHOD_REGIONTRANSIT_PROTOBUF_RECORD_TYPE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_SEGMENTTRANSIT_PROTOBUF_RECORD_TYPE_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_STATION_POLYGONTRANSIT_PROTOBUF_RECORD_TYPE_STOPTRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27D00B0 = "TRANSIT_PROTOBUF_RECORD_TYPE_FARE_PROVIDERTRANSIT_PROTOBUF_RECORD_TYPE_FARE_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_FARE_ZONETRANSIT_PROTOBUF_RECORD_TYPE_FEEDTRANSIT_PROTOBUF_RECORD_TYPE_HALLTRANSIT_PROTOBUF_RECORD_TYPE_LINETRANSIT_PROTOBUF_RECORD_TYPE_LINKTRANSIT_PROTOBUF_RECORD_TYPE_MARKETTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHODTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHOD_REGIONTRANSIT_PROTOBUF_RECORD_TYPE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_SEGMENTTRANSIT_PROTOBUF_RECORD_TYPE_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_STATION_POLYGONTRANSIT_PROTOBUF_RECORD_TYPE_STOPTRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27D00C8 = "TRANSIT_PROTOBUF_RECORD_TYPE_FARE_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_FARE_ZONETRANSIT_PROTOBUF_RECORD_TYPE_FEEDTRANSIT_PROTOBUF_RECORD_TYPE_HALLTRANSIT_PROTOBUF_RECORD_TYPE_LINETRANSIT_PROTOBUF_RECORD_TYPE_LINKTRANSIT_PROTOBUF_RECORD_TYPE_MARKETTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHODTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHOD_REGIONTRANSIT_PROTOBUF_RECORD_TYPE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_SEGMENTTRANSIT_PROTOBUF_RECORD_TYPE_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_STATION_POLYGONTRANSIT_PROTOBUF_RECORD_TYPE_STOPTRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27D00E0 = "TRANSIT_PROTOBUF_RECORD_TYPE_FARE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_FARE_ZONETRANSIT_PROTOBUF_RECORD_TYPE_FEEDTRANSIT_PROTOBUF_RECORD_TYPE_HALLTRANSIT_PROTOBUF_RECORD_TYPE_LINETRANSIT_PROTOBUF_RECORD_TYPE_LINKTRANSIT_PROTOBUF_RECORD_TYPE_MARKETTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHODTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHOD_REGIONTRANSIT_PROTOBUF_RECORD_TYPE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_SEGMENTTRANSIT_PROTOBUF_RECORD_TYPE_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_STATION_POLYGONTRANSIT_PROTOBUF_RECORD_TYPE_STOPTRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27D00F8 = "TRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_FARE_ZONETRANSIT_PROTOBUF_RECORD_TYPE_FEEDTRANSIT_PROTOBUF_RECORD_TYPE_HALLTRANSIT_PROTOBUF_RECORD_TYPE_LINETRANSIT_PROTOBUF_RECORD_TYPE_LINKTRANSIT_PROTOBUF_RECORD_TYPE_MARKETTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHODTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHOD_REGIONTRANSIT_PROTOBUF_RECORD_TYPE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_SEGMENTTRANSIT_PROTOBUF_RECORD_TYPE_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_STATION_POLYGONTRANSIT_PROTOBUF_RECORD_TYPE_STOPTRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  unk_27D0100 = 47;
+  qword_27D0110 = "TRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_FARE_ZONETRANSIT_PROTOBUF_RECORD_TYPE_FEEDTRANSIT_PROTOBUF_RECORD_TYPE_HALLTRANSIT_PROTOBUF_RECORD_TYPE_LINETRANSIT_PROTOBUF_RECORD_TYPE_LINKTRANSIT_PROTOBUF_RECORD_TYPE_MARKETTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHODTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHOD_REGIONTRANSIT_PROTOBUF_RECORD_TYPE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_SEGMENTTRANSIT_PROTOBUF_RECORD_TYPE_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_STATION_POLYGONTRANSIT_PROTOBUF_RECORD_TYPE_STOPTRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  unk_27D0118 = 53;
+  qword_27D0128 = "TRANSIT_PROTOBUF_RECORD_TYPE_FARE_ZONETRANSIT_PROTOBUF_RECORD_TYPE_FEEDTRANSIT_PROTOBUF_RECORD_TYPE_HALLTRANSIT_PROTOBUF_RECORD_TYPE_LINETRANSIT_PROTOBUF_RECORD_TYPE_LINKTRANSIT_PROTOBUF_RECORD_TYPE_MARKETTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHODTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHOD_REGIONTRANSIT_PROTOBUF_RECORD_TYPE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_SEGMENTTRANSIT_PROTOBUF_RECORD_TYPE_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_STATION_POLYGONTRANSIT_PROTOBUF_RECORD_TYPE_STOPTRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27D0140 = "TRANSIT_PROTOBUF_RECORD_TYPE_FEEDTRANSIT_PROTOBUF_RECORD_TYPE_HALLTRANSIT_PROTOBUF_RECORD_TYPE_LINETRANSIT_PROTOBUF_RECORD_TYPE_LINKTRANSIT_PROTOBUF_RECORD_TYPE_MARKETTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHODTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHOD_REGIONTRANSIT_PROTOBUF_RECORD_TYPE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_SEGMENTTRANSIT_PROTOBUF_RECORD_TYPE_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_STATION_POLYGONTRANSIT_PROTOBUF_RECORD_TYPE_STOPTRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27D0158 = "TRANSIT_PROTOBUF_RECORD_TYPE_HALLTRANSIT_PROTOBUF_RECORD_TYPE_LINETRANSIT_PROTOBUF_RECORD_TYPE_LINKTRANSIT_PROTOBUF_RECORD_TYPE_MARKETTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHODTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHOD_REGIONTRANSIT_PROTOBUF_RECORD_TYPE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_SEGMENTTRANSIT_PROTOBUF_RECORD_TYPE_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_STATION_POLYGONTRANSIT_PROTOBUF_RECORD_TYPE_STOPTRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27D0170 = "TRANSIT_PROTOBUF_RECORD_TYPE_LINETRANSIT_PROTOBUF_RECORD_TYPE_LINKTRANSIT_PROTOBUF_RECORD_TYPE_MARKETTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHODTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHOD_REGIONTRANSIT_PROTOBUF_RECORD_TYPE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_SEGMENTTRANSIT_PROTOBUF_RECORD_TYPE_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_STATION_POLYGONTRANSIT_PROTOBUF_RECORD_TYPE_STOPTRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27D0188 = "TRANSIT_PROTOBUF_RECORD_TYPE_LINKTRANSIT_PROTOBUF_RECORD_TYPE_MARKETTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHODTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHOD_REGIONTRANSIT_PROTOBUF_RECORD_TYPE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_SEGMENTTRANSIT_PROTOBUF_RECORD_TYPE_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_STATION_POLYGONTRANSIT_PROTOBUF_RECORD_TYPE_STOPTRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27D01A0 = "TRANSIT_PROTOBUF_RECORD_TYPE_MARKETTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHODTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHOD_REGIONTRANSIT_PROTOBUF_RECORD_TYPE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_SEGMENTTRANSIT_PROTOBUF_RECORD_TYPE_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_STATION_POLYGONTRANSIT_PROTOBUF_RECORD_TYPE_STOPTRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27D01B8 = "TRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHODTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHOD_REGIONTRANSIT_PROTOBUF_RECORD_TYPE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_SEGMENTTRANSIT_PROTOBUF_RECORD_TYPE_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_STATION_POLYGONTRANSIT_PROTOBUF_RECORD_TYPE_STOPTRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27D01D0 = "TRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHOD_REGIONTRANSIT_PROTOBUF_RECORD_TYPE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_SEGMENTTRANSIT_PROTOBUF_RECORD_TYPE_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_STATION_POLYGONTRANSIT_PROTOBUF_RECORD_TYPE_STOPTRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27D01E8 = "TRANSIT_PROTOBUF_RECORD_TYPE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_SEGMENTTRANSIT_PROTOBUF_RECORD_TYPE_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_STATION_POLYGONTRANSIT_PROTOBUF_RECORD_TYPE_STOPTRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27D0200 = "TRANSIT_PROTOBUF_RECORD_TYPE_SEGMENTTRANSIT_PROTOBUF_RECORD_TYPE_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_STATION_POLYGONTRANSIT_PROTOBUF_RECORD_TYPE_STOPTRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27D0218 = "TRANSIT_PROTOBUF_RECORD_TYPE_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_STATION_POLYGONTRANSIT_PROTOBUF_RECORD_TYPE_STOPTRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27D0230 = "TRANSIT_PROTOBUF_RECORD_TYPE_STATION_POLYGONTRANSIT_PROTOBUF_RECORD_TYPE_STOPTRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27D0248 = "TRANSIT_PROTOBUF_RECORD_TYPE_STOPTRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27D0260 = "TRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27D0050 = "TRANSIT_PROTOBUF_RECORD_TYPE_FARE_LEG_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_LEG_RULE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_FARE_NETWORKTRANSIT_PROTOBUF_RECORD_TYPE_FARE_NETWORK_SETTRANSIT_PROTOBUF_RECORD_TYPE_FARE_PROVIDERTRANSIT_PROTOBUF_RECORD_TYPE_FARE_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_FARE_ZONETRANSIT_PROTOBUF_RECORD_TYPE_FEEDTRANSIT_PROTOBUF_RECORD_TYPE_HALLTRANSIT_PROTOBUF_RECORD_TYPE_LINETRANSIT_PROTOBUF_RECORD_TYPE_LINKTRANSIT_PROTOBUF_RECORD_TYPE_MARKETTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHODTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHOD_REGIONTRANSIT_PROTOBUF_RECORD_TYPE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_SEGMENTTRANSIT_PROTOBUF_RECORD_TYPE_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_STATION_POLYGONTRANSIT_PROTOBUF_RECORD_TYPE_STOPTRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  unk_27D0058 = 42;
+  dword_27D00A8 = 42;
+  qword_27D00B8 = 42;
+  qword_27D00E8 = 42;
+  qword_27D0268 = 42;
+  qword_27D0278 = "TRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27D0290 = "TRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27D02A8 = "TRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27D02C0 = "TRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27D02D8 = "TRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27D02F0 = "TRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  qword_27CFF60 = "TRANSIT_PROTOBUF_RECORD_TYPE_ACCESS_POINTTRANSIT_PROTOBUF_RECORD_TYPE_ACCESS_POINT_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_ATTRIBUTIONTRANSIT_PROTOBUF_RECORD_TYPE_BLOCK_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_BRANDTRANSIT_PROTOBUF_RECORD_TYPE_CARTOGRAPHIC_LINE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_CONNECTED_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_FARETRANSIT_PROTOBUF_RECORD_TYPE_FARE_AREATRANSIT_PROTOBUF_RECORD_TYPE_FARE_CONTAINERTRANSIT_PROTOBUF_RECORD_TYPE_FARE_LEG_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_LEG_RULE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_FARE_NETWORKTRANSIT_PROTOBUF_RECORD_TYPE_FARE_NETWORK_SETTRANSIT_PROTOBUF_RECORD_TYPE_FARE_PROVIDERTRANSIT_PROTOBUF_RECORD_TYPE_FARE_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULETRANSIT_PROTOBUF_RECORD_TYPE_FARE_TRANSFER_RULE_GROUPTRANSIT_PROTOBUF_RECORD_TYPE_FARE_ZONETRANSIT_PROTOBUF_RECORD_TYPE_FEEDTRANSIT_PROTOBUF_RECORD_TYPE_HALLTRANSIT_PROTOBUF_RECORD_TYPE_LINETRANSIT_PROTOBUF_RECORD_TYPE_LINKTRANSIT_PROTOBUF_RECORD_TYPE_MARKETTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHODTRANSIT_PROTOBUF_RECORD_TYPE_PAYMENT_METHOD_REGIONTRANSIT_PROTOBUF_RECORD_TYPE_SCHEDULETRANSIT_PROTOBUF_RECORD_TYPE_SEGMENTTRANSIT_PROTOBUF_RECORD_TYPE_STATIONTRANSIT_PROTOBUF_RECORD_TYPE_STATION_POLYGONTRANSIT_PROTOBUF_RECORD_TYPE_STOPTRANSIT_PROTOBUF_RECORD_TYPE_STOP_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_SYSTEMTRANSIT_PROTOBUF_RECORD_TYPE_TIMED_TRANSFERTRANSIT_PROTOBUF_RECORD_TYPE_TRANSFER_GRAPHTRANSIT_PROTOBUF_RECORD_TYPE_TRIPTRANSIT_PROTOBUF_RECORD_TYPE_UNKNOWNTRANSIT_PROTOBUF_RECORD_TYPE_VEHICLE_CONFIGURATION";
+  *algn_27CFF68 = 41;
+  dword_27CFF70 = 10;
+  qword_27CFF80 = 55;
+  dword_27CFF88 = 11;
+  qword_27CFF98 = 40;
+  dword_27CFFA0 = 14;
+  qword_27CFFB0 = 43;
+  dword_27CFFB8 = 19;
+  qword_27CFFC8 = 34;
+  dword_27CFFD0 = 12;
+  qword_27CFFE0 = 52;
+  dword_27CFFE8 = 24;
+  dword_27D0000 = 13;
+  qword_27D0010 = 33;
+  dword_27D0018 = 27;
+  qword_27D0028 = 38;
+  dword_27D0030 = 32;
+  qword_27D0040 = 43;
+  dword_27D0048 = 38;
+  dword_27D0060 = 35;
+  qword_27D0070 = 48;
+  dword_27D0078 = 37;
+  qword_27D0088 = 41;
+  dword_27D0090 = 34;
+  qword_27D00A0 = 45;
+  dword_27D00C0 = 33;
+  qword_27D00D0 = 38;
+  dword_27D00D8 = 28;
+  dword_27D00F0 = 39;
+  dword_27D0108 = 36;
+  dword_27D0120 = 41;
+  qword_27D0130 = 38;
+  dword_27D0138 = 29;
+  qword_27D0148 = 33;
+  dword_27D0150 = 25;
+  qword_27D0160 = 33;
+  dword_27D0168 = 20;
+  qword_27D0178 = 33;
+  dword_27D0180 = 4;
+  qword_27D0190 = 33;
+  dword_27D0198 = 18;
+  qword_27D01A8 = 35;
+  dword_27D01B0 = 16;
+  qword_27D01C0 = 43;
+  dword_27D01C8 = 31;
+  qword_27D01D8 = 50;
+  dword_27D01E0 = 40;
+  qword_27D01F0 = 37;
+  dword_27D01F8 = 9;
+  qword_27D0208 = 36;
+  dword_27D0210 = 17;
+  qword_27D0220 = 36;
+  dword_27D0228 = 1;
+  qword_27D0238 = 44;
+  dword_27D0240 = 21;
+  qword_27D0250 = 33;
+  dword_27D0258 = 3;
+  dword_27D0270 = 22;
+  qword_27D0280 = 35;
+  dword_27D0288 = 5;
+  qword_27D0298 = 43;
+  dword_27D02A0 = 23;
+  qword_27D02B0 = 43;
+  dword_27D02B8 = 26;
+  qword_27D02C8 = 33;
+  dword_27D02D0 = 2;
+  qword_27D02E0 = 36;
+  dword_27D02E8 = 0;
+  qword_27D02F8 = 50;
+  dword_27D0300 = 30;
+  qword_27D0320 = "ACCESS_POINT_TYPE_DOORACCESS_POINT_TYPE_DOWN_ESCALATORACCESS_POINT_TYPE_EASEMENTACCESS_POINT_TYPE_ELEVATORACCESS_POINT_TYPE_ESCALATORACCESS_POINT_TYPE_RAMPACCESS_POINT_TYPE_STAIRACCESS_POINT_TYPE_STREET_ACCESSACCESS_POINT_TYPE_UP_ESCALATORACCESS_POINT_TYPE_VIA_AOIACCESS_POINT_TYPE_WHEELCHAIRLIFT";
+  qword_27D0338 = "ACCESS_POINT_TYPE_DOWN_ESCALATORACCESS_POINT_TYPE_EASEMENTACCESS_POINT_TYPE_ELEVATORACCESS_POINT_TYPE_ESCALATORACCESS_POINT_TYPE_RAMPACCESS_POINT_TYPE_STAIRACCESS_POINT_TYPE_STREET_ACCESSACCESS_POINT_TYPE_UP_ESCALATORACCESS_POINT_TYPE_VIA_AOIACCESS_POINT_TYPE_WHEELCHAIRLIFT";
+  qword_27D0350 = "ACCESS_POINT_TYPE_EASEMENTACCESS_POINT_TYPE_ELEVATORACCESS_POINT_TYPE_ESCALATORACCESS_POINT_TYPE_RAMPACCESS_POINT_TYPE_STAIRACCESS_POINT_TYPE_STREET_ACCESSACCESS_POINT_TYPE_UP_ESCALATORACCESS_POINT_TYPE_VIA_AOIACCESS_POINT_TYPE_WHEELCHAIRLIFT";
+  qword_27D0368 = "ACCESS_POINT_TYPE_ELEVATORACCESS_POINT_TYPE_ESCALATORACCESS_POINT_TYPE_RAMPACCESS_POINT_TYPE_STAIRACCESS_POINT_TYPE_STREET_ACCESSACCESS_POINT_TYPE_UP_ESCALATORACCESS_POINT_TYPE_VIA_AOIACCESS_POINT_TYPE_WHEELCHAIRLIFT";
+  qword_27D0380 = "ACCESS_POINT_TYPE_ESCALATORACCESS_POINT_TYPE_RAMPACCESS_POINT_TYPE_STAIRACCESS_POINT_TYPE_STREET_ACCESSACCESS_POINT_TYPE_UP_ESCALATORACCESS_POINT_TYPE_VIA_AOIACCESS_POINT_TYPE_WHEELCHAIRLIFT";
+  qword_27D0398 = "ACCESS_POINT_TYPE_RAMPACCESS_POINT_TYPE_STAIRACCESS_POINT_TYPE_STREET_ACCESSACCESS_POINT_TYPE_UP_ESCALATORACCESS_POINT_TYPE_VIA_AOIACCESS_POINT_TYPE_WHEELCHAIRLIFT";
+  qword_27D03B0 = "ACCESS_POINT_TYPE_STAIRACCESS_POINT_TYPE_STREET_ACCESSACCESS_POINT_TYPE_UP_ESCALATORACCESS_POINT_TYPE_VIA_AOIACCESS_POINT_TYPE_WHEELCHAIRLIFT";
+  qword_27D03C8 = "ACCESS_POINT_TYPE_STREET_ACCESSACCESS_POINT_TYPE_UP_ESCALATORACCESS_POINT_TYPE_VIA_AOIACCESS_POINT_TYPE_WHEELCHAIRLIFT";
+  qword_27D03E0 = "ACCESS_POINT_TYPE_UP_ESCALATORACCESS_POINT_TYPE_VIA_AOIACCESS_POINT_TYPE_WHEELCHAIRLIFT";
+  qword_27D03F8 = "ACCESS_POINT_TYPE_VIA_AOIACCESS_POINT_TYPE_WHEELCHAIRLIFT";
+  qword_27D0410 = "ACCESS_POINT_TYPE_WHEELCHAIRLIFT";
+  qword_27D0308 = "ACCESS_POINT_TYPE_DIRECTACCESS_POINT_TYPE_DOORACCESS_POINT_TYPE_DOWN_ESCALATORACCESS_POINT_TYPE_EASEMENTACCESS_POINT_TYPE_ELEVATORACCESS_POINT_TYPE_ESCALATORACCESS_POINT_TYPE_RAMPACCESS_POINT_TYPE_STAIRACCESS_POINT_TYPE_STREET_ACCESSACCESS_POINT_TYPE_UP_ESCALATORACCESS_POINT_TYPE_VIA_AOIACCESS_POINT_TYPE_WHEELCHAIRLIFT";
+  unk_27D0310 = 24;
+  dword_27D0318 = 8;
+  qword_27D0328 = 22;
+  dword_27D0330 = 0;
+  qword_27D0340 = 32;
+  dword_27D0348 = 5;
+  qword_27D0358 = 26;
+  dword_27D0360 = 1;
+  qword_27D0370 = 26;
+  dword_27D0378 = 2;
+  qword_27D0388 = 27;
+  dword_27D0390 = 3;
+  qword_27D03A0 = 22;
+  dword_27D03A8 = 6;
+  qword_27D03B8 = 23;
+  dword_27D03C0 = 7;
+  qword_27D03D0 = 31;
+  dword_27D03D8 = 11;
+  qword_27D03E8 = 30;
+  dword_27D03F0 = 4;
+  qword_27D0400 = 25;
+  dword_27D0408 = 9;
+  qword_27D0418 = 32;
+  dword_27D0420 = 10;
+  qword_27D0440 = "STRUCTURE_TYPE_ELEVATEDSTRUCTURE_TYPE_NONESTRUCTURE_TYPE_SHELTERSTRUCTURE_TYPE_UNDERGROUND";
+  qword_27D0458 = "STRUCTURE_TYPE_NONESTRUCTURE_TYPE_SHELTERSTRUCTURE_TYPE_UNDERGROUND";
+  unk_27D0460 = 19;
+  qword_27D0428 = "STRUCTURE_TYPE_BUILDINGSTRUCTURE_TYPE_ELEVATEDSTRUCTURE_TYPE_NONESTRUCTURE_TYPE_SHELTERSTRUCTURE_TYPE_UNDERGROUND";
+  unk_27D0430 = 23;
+  dword_27D0438 = 2;
+  qword_27D0448 = 23;
+  dword_27D0450 = 4;
+  dword_27D0468 = 0;
+  dword_27D0CD0 = 971;
+  qword_27D0CF0 = "CURRENCY_AMDCURRENCY_ANGCURRENCY_AOACURRENCY_ARSCURRENCY_AUDCURRENCY_AWGCURRENCY_AZNCURRENCY_BAMCURRENCY_BBDCURRENCY_BDTCURRENCY_BGNCURRENCY_BHDCURRENCY_BIFCURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D0D00 = 51;
+  qword_27D0D08 = "CURRENCY_ANGCURRENCY_AOACURRENCY_ARSCURRENCY_AUDCURRENCY_AWGCURRENCY_AZNCURRENCY_BAMCURRENCY_BBDCURRENCY_BDTCURRENCY_BGNCURRENCY_BHDCURRENCY_BIFCURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D0D18 = 532;
+  dword_27D0D30 = 973;
+  qword_27D0D38 = "CURRENCY_ARSCURRENCY_AUDCURRENCY_AWGCURRENCY_AZNCURRENCY_BAMCURRENCY_BBDCURRENCY_BDTCURRENCY_BGNCURRENCY_BHDCURRENCY_BIFCURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D0D50 = "CURRENCY_AUDCURRENCY_AWGCURRENCY_AZNCURRENCY_BAMCURRENCY_BBDCURRENCY_BDTCURRENCY_BGNCURRENCY_BHDCURRENCY_BIFCURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D0D68 = "CURRENCY_AWGCURRENCY_AZNCURRENCY_BAMCURRENCY_BBDCURRENCY_BDTCURRENCY_BGNCURRENCY_BHDCURRENCY_BIFCURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D0D78 = 533;
+  qword_27D0D80 = "CURRENCY_AZNCURRENCY_BAMCURRENCY_BBDCURRENCY_BDTCURRENCY_BGNCURRENCY_BHDCURRENCY_BIFCURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D0D90 = 944;
+  qword_27D0D98 = "CURRENCY_BAMCURRENCY_BBDCURRENCY_BDTCURRENCY_BGNCURRENCY_BHDCURRENCY_BIFCURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D0DA8 = 977;
+  qword_27D0DB0 = "CURRENCY_BBDCURRENCY_BDTCURRENCY_BGNCURRENCY_BHDCURRENCY_BIFCURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D0DC0 = 52;
+  qword_27D0DC8 = "CURRENCY_BDTCURRENCY_BGNCURRENCY_BHDCURRENCY_BIFCURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D0DE0 = "CURRENCY_BGNCURRENCY_BHDCURRENCY_BIFCURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D0DF0 = 975;
+  qword_27D0DF8 = "CURRENCY_BHDCURRENCY_BIFCURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D0E10 = "CURRENCY_BIFCURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D0E20 = 108;
+  qword_27D0E28 = "CURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D0E38 = 60;
+  qword_27D0E40 = "CURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D0E50 = 96;
+  qword_27D0E58 = "CURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D0E68 = 68;
+  qword_27D0E70 = "CURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D0E80 = 984;
+  qword_27D0E88 = "CURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D0E98 = 986;
+  qword_27D0EA0 = "CURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D0EB0 = 44;
+  qword_27D0EB8 = "CURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D0EC8 = 64;
+  qword_27D0ED0 = "CURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D0EE0 = 72;
+  qword_27D0EE8 = "CURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D0EF8 = 974;
+  qword_27D0F00 = "CURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D0F10 = 84;
+  qword_27D0F18 = "CURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D0F28 = 124;
+  qword_27D0F30 = "CURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D0F40 = 976;
+  qword_27D0F48 = "CURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D0F58 = 947;
+  qword_27D0F60 = "CURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D0F70 = 756;
+  qword_27D0F78 = "CURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D0F88 = 948;
+  qword_27D0F90 = "CURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D0FA0 = 990;
+  qword_27D0FA8 = "CURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D0FB8 = 152;
+  qword_27D0FC0 = "CURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D0FD0 = 156;
+  qword_27D0FD8 = "CURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D0FE8 = 170;
+  qword_27D0FF0 = "CURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1000 = 970;
+  qword_27D1008 = "CURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1018 = 188;
+  qword_27D1020 = "CURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1030 = 931;
+  qword_27D1038 = "CURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1048 = 192;
+  qword_27D1050 = "CURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1060 = 132;
+  qword_27D1068 = "CURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1078 = 203;
+  qword_27D1080 = "CURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1090 = 262;
+  qword_27D1098 = "CURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D10A8 = 208;
+  qword_27D10B0 = "CURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D10C0 = 214;
+  qword_27D10C8 = "CURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D10E0 = "CURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D10F0 = 818;
+  qword_27D10F8 = "CURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1108 = 232;
+  qword_27D1110 = "CURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1120 = 230;
+  qword_27D1128 = "CURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1138 = 978;
+  qword_27D1140 = "CURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1150 = 242;
+  qword_27D1158 = "CURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1168 = 238;
+  qword_27D1170 = "CURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1180 = 826;
+  qword_27D1188 = "CURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1198 = 981;
+  qword_27D11A0 = "CURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D11B0 = 936;
+  qword_27D11B8 = "CURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D11C8 = 292;
+  qword_27D11D0 = "CURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D11E0 = 270;
+  qword_27D11E8 = "CURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D11F8 = 324;
+  qword_27D1200 = "CURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1210 = 320;
+  qword_27D1218 = "CURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1228 = 328;
+  qword_27D1230 = "CURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1240 = 344;
+  qword_27D1248 = "CURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1258 = 340;
+  qword_27D1260 = "CURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1270 = 191;
+  qword_27D1278 = "CURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1288 = 332;
+  qword_27D1290 = "CURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D12A0 = 348;
+  qword_27D12A8 = "CURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D12B8 = 360;
+  qword_27D12C0 = "CURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D12D0 = 376;
+  qword_27D12D8 = "CURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D12E8 = 356;
+  qword_27D12F0 = "CURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1300 = 368;
+  qword_27D1308 = "CURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1318 = 364;
+  qword_27D1320 = "CURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1330 = 352;
+  qword_27D1338 = "CURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1348 = 388;
+  qword_27D1350 = "CURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1360 = 400;
+  qword_27D1368 = "CURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1378 = 392;
+  qword_27D1380 = "CURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1390 = 404;
+  qword_27D1398 = "CURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D13A8 = 417;
+  qword_27D13B0 = "CURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D13C0 = 116;
+  qword_27D13C8 = "CURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D13D8 = 174;
+  qword_27D13E0 = "CURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D13F0 = 408;
+  qword_27D13F8 = "CURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1408 = 410;
+  qword_27D1410 = "CURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1420 = 414;
+  qword_27D1428 = "CURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1438 = 136;
+  qword_27D1440 = "CURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1450 = 398;
+  qword_27D1458 = "CURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1468 = 418;
+  qword_27D1470 = "CURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1480 = 422;
+  qword_27D1488 = "CURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1498 = 144;
+  qword_27D14A0 = "CURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D14B0 = 430;
+  qword_27D14B8 = "CURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D14C8 = 426;
+  qword_27D14D0 = "CURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D14E0 = 434;
+  qword_27D14E8 = "CURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D14F8 = 504;
+  qword_27D1500 = "CURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1510 = 498;
+  qword_27D1518 = "CURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1528 = 969;
+  qword_27D1530 = "CURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1540 = 807;
+  qword_27D1548 = "CURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1558 = 104;
+  qword_27D1560 = "CURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1570 = 496;
+  qword_27D1578 = "CURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1588 = 446;
+  qword_27D1590 = "CURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D15A0 = 478;
+  qword_27D15A8 = "CURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D15B8 = 480;
+  qword_27D15C0 = "CURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D15D0 = 462;
+  qword_27D15D8 = "CURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D15E8 = 454;
+  qword_27D15F0 = "CURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1600 = 484;
+  qword_27D1608 = "CURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1618 = 979;
+  qword_27D1620 = "CURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1630 = 458;
+  qword_27D1638 = "CURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1648 = 943;
+  qword_27D1650 = "CURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1660 = 516;
+  qword_27D1668 = "CURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1678 = 566;
+  qword_27D1680 = "CURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1690 = 558;
+  qword_27D1698 = "CURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D16A8 = 578;
+  qword_27D16B0 = "CURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D16C0 = 524;
+  qword_27D16C8 = "CURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D16D8 = 554;
+  qword_27D16E0 = "CURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D16F0 = 512;
+  qword_27D16F8 = "CURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1708 = 590;
+  qword_27D1710 = "CURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1720 = 604;
+  qword_27D1728 = "CURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1738 = 598;
+  qword_27D1740 = "CURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1750 = 608;
+  qword_27D1758 = "CURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1768 = 586;
+  qword_27D1770 = "CURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1780 = 985;
+  qword_27D1788 = "CURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1798 = 600;
+  qword_27D17A0 = "CURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D17B0 = 634;
+  qword_27D17B8 = "CURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D17C8 = 946;
+  qword_27D17D0 = "CURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D17E0 = 941;
+  qword_27D17E8 = "CURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D17F8 = 643;
+  qword_27D1800 = "CURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1810 = 646;
+  qword_27D1818 = "CURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1828 = 682;
+  qword_27D1830 = "CURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1840 = 90;
+  qword_27D1848 = "CURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1858 = 690;
+  qword_27D1860 = "CURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1870 = 938;
+  qword_27D1878 = "CURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1888 = 752;
+  qword_27D1890 = "CURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D18A0 = 702;
+  qword_27D18A8 = "CURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D18B8 = 654;
+  qword_27D18C0 = "CURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D18D0 = 694;
+  qword_27D18D8 = "CURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D18E8 = 706;
+  qword_27D18F0 = "CURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1900 = 968;
+  qword_27D0CD8 = "CURRENCY_ALLCURRENCY_AMDCURRENCY_ANGCURRENCY_AOACURRENCY_ARSCURRENCY_AUDCURRENCY_AWGCURRENCY_AZNCURRENCY_BAMCURRENCY_BBDCURRENCY_BDTCURRENCY_BGNCURRENCY_BHDCURRENCY_BIFCURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  unk_27D0CE0 = 12;
+  dword_27D0CE8 = 8;
+  qword_27D0CF8 = 12;
+  qword_27D0D10 = 12;
+  qword_27D1CB8 = 12;
+  qword_27D1E18 = "TRANSIT_TRANSFER_NODE_TYPE_STATION_CONNECTION_ENTRANCETRANSIT_TRANSFER_NODE_TYPE_STOPTRANSIT_TRANSFER_NODE_TYPE_UNKNOWNTRANSIT_TRANSFER_NODE_TYPE_WAYPOINT";
+  qword_27D20D0 = "PAYMENT_METHOD_TYPE_OPEN_LOOPPAYMENT_METHOD_TYPE_OPEN_UNKNOWN";
+  qword_27D2430 = "UPDATED";
+  unk_27D2438 = 7;
+  dword_27D2440 = 2;
+  qword_27D2448 = "POPULARITY_DATAPOPULARITY_SCORE";
+  qword_27D23D0 = "STATUS_UNKNOWNSTATUS_UNKNOWN_PRECACHE";
+  qword_27D2418 = "DELETEDUPDATED";
+  unk_27D2420 = 7;
+  dword_27D2410 = 1;
+  dword_27D2428 = 3;
+  qword_27D2400 = "ADDEDDELETEDUPDATED";
+  *algn_27D2408 = 5;
+  qword_27D23E8 = "STATUS_UNKNOWN_PRECACHE";
+  unk_27D23F0 = 23;
+  dword_27D23F8 = 2;
+  qword_27D23B8 = "STATUS_SUCCESSSTATUS_UNKNOWNSTATUS_UNKNOWN_PRECACHE";
+  unk_27D23C0 = 14;
+  qword_27D23D8 = 14;
+  dword_27D23E0 = 0;
+  dword_27D23C8 = 1;
+  qword_27D23A0 = "TRANSIT_TRIP_UPDATE_TYPE_STOP_TIMES";
+  unk_27D23A8 = 35;
+  dword_27D23B0 = 0;
+  qword_27D2388 = "TRANSIT_TRIP_UPDATE_TYPE_DROP_TRIPTRANSIT_TRIP_UPDATE_TYPE_STOP_TIMES";
+  unk_27D2390 = 34;
+  dword_27D2398 = 1;
+  dword_27D2380 = 2;
+  qword_27D2370 = "STOP_TIME_UPDATE_SOURCE_SYNTHESIZED";
+  unk_27D2378 = 35;
+  qword_27D2358 = "STOP_TIME_UPDATE_SOURCE_PROVIDEDSTOP_TIME_UPDATE_SOURCE_SYNTHESIZED";
+  unk_27D2360 = 32;
+  dword_27D2368 = 1;
+  qword_27D2340 = "STOP_TIME_UPDATE_SOURCE_OTHERSTOP_TIME_UPDATE_SOURCE_PROVIDEDSTOP_TIME_UPDATE_SOURCE_SYNTHESIZED";
+  unk_27D2348 = 29;
+  dword_27D2350 = 0;
+  qword_27D2310 = "OCCUPANCY_STATUS_VERY_CROWDED";
+  unk_27D2318 = 29;
+  qword_27D2328 = "STOP_TIME_UPDATE_SOURCE_MERGEDSTOP_TIME_UPDATE_SOURCE_OTHERSTOP_TIME_UPDATE_SOURCE_PROVIDEDSTOP_TIME_UPDATE_SOURCE_SYNTHESIZED";
+  unk_27D2330 = 30;
+  dword_27D2338 = 3;
+  dword_27D2320 = 3;
+  qword_27D22F8 = "OCCUPANCY_STATUS_UNKNOWNOCCUPANCY_STATUS_VERY_CROWDED";
+  unk_27D2300 = 24;
+  dword_27D2308 = 0;
+  dword_27D22D8 = 4;
+  qword_27D22E0 = "OCCUPANCY_STATUS_NOT_CROWDEDOCCUPANCY_STATUS_UNKNOWNOCCUPANCY_STATUS_VERY_CROWDED";
+  unk_27D22E8 = 28;
+  dword_27D22F0 = 1;
+  qword_27D22B0 = "OCCUPANCY_STATUS_CROWDEDOCCUPANCY_STATUS_NOT_ACCEPTING_PASSENGERSOCCUPANCY_STATUS_NOT_CROWDEDOCCUPANCY_STATUS_UNKNOWNOCCUPANCY_STATUS_VERY_CROWDED";
+  *algn_27D22B8 = 24;
+  dword_27D22C0 = 2;
+  qword_27D22C8 = "OCCUPANCY_STATUS_NOT_ACCEPTING_PASSENGERSOCCUPANCY_STATUS_NOT_CROWDEDOCCUPANCY_STATUS_UNKNOWNOCCUPANCY_STATUS_VERY_CROWDED";
+  unk_27D22D0 = 41;
+  qword_27D2280 = "SUPPRESSION_REASON_CHINA_SBSMSUPPRESSION_REASON_UNKNOWN";
+  *algn_27D2288 = 29;
+  dword_27D22A8 = 0;
+  dword_27D2290 = 1;
+  qword_27D2298 = "SUPPRESSION_REASON_UNKNOWN";
+  unk_27D22A0 = 26;
+  qword_27D21D8 = "FARE_TIMEFRAME_TYPE_STOP_DEPARTUREFARE_TIMEFRAME_TYPE_TRIP_ARRIVALFARE_TIMEFRAME_TYPE_TRIP_DEPARTUREFARE_TIMEFRAME_TYPE_UNKNOWN";
+  qword_27D2268 = "FARE_EMPTY_FIELD_MATCHING_SCHEME_UNKNOWN";
+  qword_27D2270 = 40;
+  dword_27D2260 = 1;
+  dword_27D2278 = 0;
+  qword_27D2250 = "FARE_EMPTY_FIELD_MATCHING_SCHEME_ANYTHING_BUTFARE_EMPTY_FIELD_MATCHING_SCHEME_UNKNOWN";
+  qword_27D2258 = 45;
+  qword_27D2238 = "FARE_EMPTY_FIELD_MATCHING_SCHEME_ANYTHINGFARE_EMPTY_FIELD_MATCHING_SCHEME_ANYTHING_BUTFARE_EMPTY_FIELD_MATCHING_SCHEME_UNKNOWN";
+  unk_27D2240 = 41;
+  dword_27D2248 = 2;
+  qword_27D2220 = "FARE_TIMEFRAME_TYPE_UNKNOWN";
+  unk_27D2228 = 27;
+  dword_27D2218 = 4;
+  dword_27D2230 = 0;
+  qword_27D2208 = "FARE_TIMEFRAME_TYPE_TRIP_DEPARTUREFARE_TIMEFRAME_TYPE_UNKNOWN";
+  qword_27D21F0 = "FARE_TIMEFRAME_TYPE_TRIP_ARRIVALFARE_TIMEFRAME_TYPE_TRIP_DEPARTUREFARE_TIMEFRAME_TYPE_UNKNOWN";
+  unk_27D21F8 = 32;
+  dword_27D2200 = 3;
+  qword_27D2210 = 34;
+  qword_27D21C0 = "FARE_TIMEFRAME_TYPE_STOP_ARRIVALFARE_TIMEFRAME_TYPE_STOP_DEPARTUREFARE_TIMEFRAME_TYPE_TRIP_ARRIVALFARE_TIMEFRAME_TYPE_TRIP_DEPARTUREFARE_TIMEFRAME_TYPE_UNKNOWN";
+  *algn_27D21C8 = 32;
+  qword_27D21E0 = 34;
+  dword_27D21E8 = 2;
+  dword_27D21D0 = 1;
+  qword_27D21A8 = "PAYMENT_METHOD_OPEN_LOOP_TYPE_UNKNOWN";
+  unk_27D21B0 = 37;
+  dword_27D21B8 = 0;
+  qword_27D2148 = "PAYMENT_METHOD_TEXT_VARIATION_OPEN_LOOPPAYMENT_METHOD_TEXT_VARIATION_UNKNOWN";
+  qword_27D2190 = "PAYMENT_METHOD_OPEN_LOOP_TYPE_NON_EXPRESSPAYMENT_METHOD_OPEN_LOOP_TYPE_UNKNOWN";
+  unk_27D2198 = 41;
+  dword_27D2188 = 1;
+  dword_27D21A0 = 2;
+  qword_27D2178 = "PAYMENT_METHOD_OPEN_LOOP_TYPE_EXPRESSPAYMENT_METHOD_OPEN_LOOP_TYPE_NON_EXPRESSPAYMENT_METHOD_OPEN_LOOP_TYPE_UNKNOWN";
+  unk_27D2180 = 37;
+  qword_27D2160 = "PAYMENT_METHOD_TEXT_VARIATION_UNKNOWN";
+  unk_27D2168 = 37;
+  dword_27D2170 = 0;
+  qword_27D2130 = "PAYMENT_METHOD_TEXT_VARIATION_CLOSED_LOOP_SINGLEPAYMENT_METHOD_TEXT_VARIATION_OPEN_LOOPPAYMENT_METHOD_TEXT_VARIATION_UNKNOWN";
+  unk_27D2138 = 48;
+  dword_27D2140 = 1;
+  qword_27D2150 = 39;
+  dword_27D2158 = 4;
+  qword_27D2118 = "PAYMENT_METHOD_TEXT_VARIATION_CLOSED_LOOP_MULTIPLEPAYMENT_METHOD_TEXT_VARIATION_CLOSED_LOOP_SINGLEPAYMENT_METHOD_TEXT_VARIATION_OPEN_LOOPPAYMENT_METHOD_TEXT_VARIATION_UNKNOWN";
+  dword_27D0DD8 = 50;
+  qword_27D2120 = 50;
+  dword_27D2110 = 3;
+  dword_27D2128 = 2;
+  qword_27D2100 = "PAYMENT_METHOD_TEXT_VARIATION_CLOSED_LOOP_INTEROPERABLEPAYMENT_METHOD_TEXT_VARIATION_CLOSED_LOOP_MULTIPLEPAYMENT_METHOD_TEXT_VARIATION_CLOSED_LOOP_SINGLEPAYMENT_METHOD_TEXT_VARIATION_OPEN_LOOPPAYMENT_METHOD_TEXT_VARIATION_UNKNOWN";
+  *algn_27D2108 = 55;
+  qword_27D20E8 = "PAYMENT_METHOD_TYPE_OPEN_UNKNOWN";
+  unk_27D20F0 = 32;
+  dword_27D20F8 = 0;
+  qword_27D20B8 = "PAYMENT_METHOD_TYPE_CLOSED_LOOP_NON_DCIPAYMENT_METHOD_TYPE_OPEN_LOOPPAYMENT_METHOD_TYPE_OPEN_UNKNOWN";
+  unk_27D20C0 = 39;
+  dword_27D20C8 = 4;
+  qword_27D20D8 = 29;
+  dword_27D20E0 = 1;
+  qword_27D20A0 = "PAYMENT_METHOD_TYPE_CLOSED_LOOP_DCIPAYMENT_METHOD_TYPE_CLOSED_LOOP_NON_DCIPAYMENT_METHOD_TYPE_OPEN_LOOPPAYMENT_METHOD_TYPE_OPEN_UNKNOWN";
+  unk_27D20A8 = 35;
+  qword_27D2088 = "PAYMENT_METHOD_TYPE_CASHPAYMENT_METHOD_TYPE_CLOSED_LOOP_DCIPAYMENT_METHOD_TYPE_CLOSED_LOOP_NON_DCIPAYMENT_METHOD_TYPE_OPEN_LOOPPAYMENT_METHOD_TYPE_OPEN_UNKNOWN";
+  unk_27D2090 = 24;
+  dword_27D20B0 = 2;
+  dword_27D2098 = 3;
+  qword_27D2070 = "START_TO_START";
+  unk_27D2078 = 14;
+  qword_27D2058 = "START_TO_ENDSTART_TO_START";
+  unk_27D2060 = 12;
+  dword_27D2080 = 2;
+  dword_27D2068 = 1;
+  qword_27D1FE0 = "FROM_LEG_PLUS_TRANSFERMOST_EXPENSIVE_LEG_PLUS_TRANSFERTRANSFER_ONLY";
+  qword_27D2040 = "END_TO_STARTSTART_TO_ENDSTART_TO_START";
+  unk_27D2048 = 12;
+  dword_27D2038 = 4;
+  dword_27D2050 = 3;
+  qword_27D2028 = "END_TO_ENDEND_TO_STARTSTART_TO_ENDSTART_TO_START";
+  qword_27D2030 = 10;
+  qword_27D2010 = "TRANSFER_ONLY";
+  unk_27D2018 = 13;
+  dword_27D2020 = 4;
+  qword_27D1FC8 = "FROM_LEG_PLUS_TO_LEG_PLUS_TRANSFERFROM_LEG_PLUS_TRANSFERMOST_EXPENSIVE_LEG_PLUS_TRANSFERTRANSFER_ONLY";
+  unk_27D1FD0 = 34;
+  qword_27D1FF8 = "MOST_EXPENSIVE_LEG_PLUS_TRANSFERTRANSFER_ONLY";
+  unk_27D2000 = 32;
+  dword_27D1FF0 = 1;
+  dword_27D2008 = 3;
+  dword_27D1FD8 = 2;
+  qword_27D1FE8 = 22;
+  qword_27D1FB0 = "TRANSIT_PAYMENT_METHOD_PURPOSE_UNKNOWN";
+  unk_27D1FB8 = 38;
+  dword_27D1FC0 = 0;
+  qword_27D1F98 = "TRANSIT_PAYMENT_METHOD_PURPOSE_PRIMARYTRANSIT_PAYMENT_METHOD_PURPOSE_UNKNOWN";
+  unk_27D1FA0 = 38;
+  qword_27D1F80 = "TRANSIT_PAYMENT_METHOD_PURPOSE_COVERAGETRANSIT_PAYMENT_METHOD_PURPOSE_PRIMARYTRANSIT_PAYMENT_METHOD_PURPOSE_UNKNOWN";
+  *algn_27D1F88 = 39;
+  dword_27D1FA8 = 1;
+  dword_27D1F90 = 2;
+  qword_27D1F68 = "SIGNAL_STRENGTH_STRONG";
+  unk_27D1F70 = 22;
+  dword_27D1F78 = 1;
+  qword_27D1F38 = "NEARBY_DISPLAY_FILTER_USE_NAME";
+  unk_27D1F40 = 30;
+  qword_27D1F50 = "SIGNAL_STRENGTH_NONESIGNAL_STRENGTH_STRONG";
+  qword_27D1F58 = 20;
+  dword_27D1F60 = 0;
+  dword_27D1F48 = 1;
+  qword_27D1F20 = "NEARBY_DISPLAY_FILTER_USE_LOCALIZED_TRANSIT_TYPENEARBY_DISPLAY_FILTER_USE_NAME";
+  *algn_27D1F28 = 48;
+  dword_27D1F30 = 0;
+  qword_27D1F08 = "ROUTING_USE_NONE";
+  unk_27D1F10 = 16;
+  dword_27D1F18 = 0;
+  qword_27D1E20 = 54;
+  qword_27D1ED8 = "ROUTING_USE_CODEROUTING_USE_NAMEROUTING_USE_NONE";
+  unk_27D1EE0 = 16;
+  qword_27D1EF0 = "ROUTING_USE_NAMEROUTING_USE_NONE";
+  unk_27D1EF8 = 16;
+  dword_27D1F00 = 1;
+  dword_27D1EE8 = 2;
+  qword_27D1EC0 = "TRANSIT_DATA_SOURCE_AUTONAVI";
+  qword_27D1EA8 = "TRANSIT_DATA_SOURCE_APPLETRANSIT_DATA_SOURCE_AUTONAVI";
+  unk_27D1EB0 = 25;
+  qword_27D1EC8 = 28;
+  dword_27D1ED0 = 1;
+  dword_27D1EB8 = 0;
+  dword_27D1EA0 = 0;
+  qword_27D1E78 = "TRANSIT_INSTRUCTION_TYPE_FOLLOW_SIGNSTRANSIT_INSTRUCTION_TYPE_UNKNOWN";
+  unk_27D1E80 = 37;
+  qword_27D1E90 = "TRANSIT_INSTRUCTION_TYPE_UNKNOWN";
+  unk_27D1E98 = 32;
+  dword_27D1E88 = 1;
+  qword_27D1E60 = "TRANSIT_TRANSFER_NODE_TYPE_WAYPOINT";
+  unk_27D1E68 = 35;
+  dword_27D1E58 = 0;
+  dword_27D1E70 = 6;
+  qword_27D1E30 = "TRANSIT_TRANSFER_NODE_TYPE_STOPTRANSIT_TRANSFER_NODE_TYPE_UNKNOWNTRANSIT_TRANSFER_NODE_TYPE_WAYPOINT";
+  unk_27D1E38 = 31;
+  qword_27D1E48 = "TRANSIT_TRANSFER_NODE_TYPE_UNKNOWNTRANSIT_TRANSFER_NODE_TYPE_WAYPOINT";
+  unk_27D1E50 = 34;
+  dword_27D1E40 = 3;
+  qword_27D1E00 = "TRANSIT_TRANSFER_NODE_TYPE_FARE_GATETRANSIT_TRANSFER_NODE_TYPE_STATION_CONNECTION_ENTRANCETRANSIT_TRANSFER_NODE_TYPE_STOPTRANSIT_TRANSFER_NODE_TYPE_UNKNOWNTRANSIT_TRANSFER_NODE_TYPE_WAYPOINT";
+  unk_27D1E08 = 36;
+  dword_27D1E10 = 5;
+  dword_27D1E28 = 1;
+  qword_27D1DE8 = "TRANSIT_TRANSFER_NODE_TYPE_CONCOURSETRANSIT_TRANSFER_NODE_TYPE_FARE_GATETRANSIT_TRANSFER_NODE_TYPE_STATION_CONNECTION_ENTRANCETRANSIT_TRANSFER_NODE_TYPE_STOPTRANSIT_TRANSFER_NODE_TYPE_UNKNOWNTRANSIT_TRANSFER_NODE_TYPE_WAYPOINT";
+  unk_27D1DF0 = 36;
+  dword_27D0D60 = 36;
+  qword_27D1DD0 = "TRANSIT_TRANSFER_NODE_TYPE_ACCESS_POINTTRANSIT_TRANSFER_NODE_TYPE_CONCOURSETRANSIT_TRANSFER_NODE_TYPE_FARE_GATETRANSIT_TRANSFER_NODE_TYPE_STATION_CONNECTION_ENTRANCETRANSIT_TRANSFER_NODE_TYPE_STOPTRANSIT_TRANSFER_NODE_TYPE_UNKNOWNTRANSIT_TRANSFER_NODE_TYPE_WAYPOINT";
+  *algn_27D1DD8 = 39;
+  dword_27D1DF8 = 4;
+  dword_27D1DE0 = 2;
+  qword_27D1DA0 = "TRANSIT_TRIP_TYPE_INEXACT_FREQUENCYTRANSIT_TRIP_TYPE_STANDARD";
+  unk_27D1DA8 = 35;
+  qword_27D1DB8 = "TRANSIT_TRIP_TYPE_STANDARD";
+  unk_27D1DC0 = 26;
+  dword_27D1DB0 = 3;
+  dword_27D1DC8 = 0;
+  qword_27D1D88 = "TRANSIT_TRIP_TYPE_EXACT_FREQUENCYTRANSIT_TRIP_TYPE_INEXACT_FREQUENCYTRANSIT_TRIP_TYPE_STANDARD";
+  unk_27D1D90 = 33;
+  dword_27D1D98 = 2;
+  qword_27D1908 = "CURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1D68 = 932;
+  qword_27D1D70 = "TRANSIT_TRIP_TYPE_ENUMERATEDTRANSIT_TRIP_TYPE_EXACT_FREQUENCYTRANSIT_TRIP_TYPE_INEXACT_FREQUENCYTRANSIT_TRIP_TYPE_STANDARD";
+  *algn_27D1D78 = 28;
+  dword_27D1D80 = 1;
+  qword_27D1D40 = "CURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1D50 = 967;
+  qword_27D1D58 = "CURRENCY_ZWL";
+  qword_27D1D48 = 12;
+  qword_27D1D60 = 12;
+  dword_27D1D20 = 886;
+  qword_27D1D28 = "CURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1D38 = 710;
+  qword_27D1D30 = 12;
+  qword_27D1CF8 = "CURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1D08 = 999;
+  qword_27D1D10 = "CURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D1D00 = 12;
+  qword_27D1D18 = 12;
+  dword_27D1CA8 = 962;
+  dword_27D1CD8 = 963;
+  qword_27D1CE0 = "CURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1CF0 = 965;
+  qword_27D1CE8 = 12;
+  qword_27D1CB0 = "CURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1CC0 = 994;
+  qword_27D1CC8 = "CURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D1CD0 = 12;
+  dword_27D1C60 = 952;
+  dword_27D1C90 = 953;
+  qword_27D1C98 = "CURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D1C88 = 12;
+  qword_27D1CA0 = 12;
+  qword_27D1C68 = "CURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1C78 = 964;
+  qword_27D1C80 = "CURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D1C70 = 12;
+  dword_27D1C18 = 958;
+  dword_27D1C48 = 960;
+  qword_27D1C50 = "CURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D1C40 = 12;
+  qword_27D1C58 = 12;
+  qword_27D1C20 = "CURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1C30 = 951;
+  qword_27D1C38 = "CURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D1C28 = 12;
+  dword_27D1BD0 = 955;
+  dword_27D1C00 = 957;
+  qword_27D1C08 = "CURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D1BF8 = 12;
+  qword_27D1C10 = 12;
+  qword_27D1BD8 = "CURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1BE8 = 956;
+  qword_27D1BF0 = "CURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D1BE0 = 12;
+  dword_27D1B88 = 950;
+  dword_27D1BB8 = 959;
+  qword_27D1BC0 = "CURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D1BB0 = 12;
+  qword_27D1BC8 = 12;
+  qword_27D1B90 = "CURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1BA0 = 961;
+  qword_27D1BA8 = "CURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D1B98 = 12;
+  dword_27D1B40 = 704;
+  dword_27D1B70 = 882;
+  qword_27D1B78 = "CURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D1B68 = 12;
+  qword_27D1B80 = 12;
+  qword_27D1B48 = "CURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1B58 = 548;
+  qword_27D1B60 = "CURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D1B50 = 12;
+  dword_27D1AF8 = 858;
+  dword_27D1B28 = 937;
+  qword_27D1B30 = "CURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D1B20 = 12;
+  qword_27D1B38 = 12;
+  qword_27D1B00 = "CURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1B10 = 860;
+  qword_27D1B18 = "CURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D1B08 = 12;
+  dword_27D1AB0 = 840;
+  dword_27D1AE0 = 940;
+  qword_27D1AE8 = "CURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D1AD8 = 12;
+  qword_27D1AF0 = 12;
+  qword_27D1AB8 = "CURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1AC8 = 997;
+  qword_27D1AD0 = "CURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D1AC0 = 12;
+  dword_27D1A68 = 980;
+  qword_27D1AA0 = "CURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D1A90 = 16;
+  dword_27D1A98 = 0;
+  qword_27D1AA8 = 12;
+  qword_27D1A70 = "CURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1A80 = 800;
+  qword_27D1A88 = "CURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D1A78 = 12;
+  dword_27D1A20 = 780;
+  dword_27D1A50 = 834;
+  qword_27D1A58 = "CURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D1A48 = 12;
+  qword_27D1A60 = 12;
+  qword_27D1A28 = "CURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1A38 = 901;
+  qword_27D1A40 = "CURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D1A30 = 12;
+  dword_27D19D8 = 788;
+  dword_27D1A08 = 949;
+  qword_27D1A10 = "CURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D1A00 = 12;
+  qword_27D1A18 = 12;
+  qword_27D19E0 = "CURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D19F0 = 776;
+  qword_27D19F8 = "CURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D19E8 = 12;
+  dword_27D1990 = 764;
+  dword_27D19C0 = 934;
+  qword_27D19C8 = "CURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D19B8 = 12;
+  qword_27D19D0 = 12;
+  qword_27D1998 = "CURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D19A8 = 972;
+  qword_27D19B0 = "CURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D19A0 = 12;
+  dword_27D1948 = 222;
+  dword_27D1978 = 748;
+  qword_27D1980 = "CURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D1970 = 12;
+  qword_27D1988 = 12;
+  qword_27D1950 = "CURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  dword_27D1960 = 760;
+  qword_27D1968 = "CURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D1958 = 12;
+  dword_27D1918 = 728;
+  dword_27D1930 = 678;
+  qword_27D1938 = "CURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D1928 = 12;
+  qword_27D1940 = 12;
+  qword_27D1920 = "CURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  qword_27D0D20 = "CURRENCY_AOACURRENCY_ARSCURRENCY_AUDCURRENCY_AWGCURRENCY_AZNCURRENCY_BAMCURRENCY_BBDCURRENCY_BDTCURRENCY_BGNCURRENCY_BHDCURRENCY_BIFCURRENCY_BMDCURRENCY_BNDCURRENCY_BOBCURRENCY_BOVCURRENCY_BRLCURRENCY_BSDCURRENCY_BTNCURRENCY_BWPCURRENCY_BYRCURRENCY_BZDCURRENCY_CADCURRENCY_CDFCURRENCY_CHECURRENCY_CHFCURRENCY_CHWCURRENCY_CLFCURRENCY_CLPCURRENCY_CNYCURRENCY_COPCURRENCY_COUCURRENCY_CRCCURRENCY_CUCCURRENCY_CUPCURRENCY_CVECURRENCY_CZKCURRENCY_DJFCURRENCY_DKKCURRENCY_DOPCURRENCY_DZDCURRENCY_EGPCURRENCY_ERNCURRENCY_ETBCURRENCY_EURCURRENCY_FJDCURRENCY_FKPCURRENCY_GBPCURRENCY_GELCURRENCY_GHSCURRENCY_GIPCURRENCY_GMDCURRENCY_GNFCURRENCY_GTQCURRENCY_GYDCURRENCY_HKDCURRENCY_HNLCURRENCY_HRKCURRENCY_HTGCURRENCY_HUFCURRENCY_IDRCURRENCY_ILSCURRENCY_INRCURRENCY_IQDCURRENCY_IRRCURRENCY_ISKCURRENCY_JMDCURRENCY_JODCURRENCY_JPYCURRENCY_KESCURRENCY_KGSCURRENCY_KHRCURRENCY_KMFCURRENCY_KPWCURRENCY_KRWCURRENCY_KWDCURRENCY_KYDCURRENCY_KZTCURRENCY_LAKCURRENCY_LBPCURRENCY_LKRCURRENCY_LRDCURRENCY_LSLCURRENCY_LYDCURRENCY_MADCURRENCY_MDLCURRENCY_MGACURRENCY_MKDCURRENCY_MMKCURRENCY_MNTCURRENCY_MOPCURRENCY_MROCURRENCY_MURCURRENCY_MVRCURRENCY_MWKCURRENCY_MXNCURRENCY_MXVCURRENCY_MYRCURRENCY_MZNCURRENCY_NADCURRENCY_NGNCURRENCY_NIOCURRENCY_NOKCURRENCY_NPRCURRENCY_NZDCURRENCY_OMRCURRENCY_PABCURRENCY_PENCURRENCY_PGKCURRENCY_PHPCURRENCY_PKRCURRENCY_PLNCURRENCY_PYGCURRENCY_QARCURRENCY_RONCURRENCY_RSDCURRENCY_RUBCURRENCY_RWFCURRENCY_SARCURRENCY_SBDCURRENCY_SCRCURRENCY_SDGCURRENCY_SEKCURRENCY_SGDCURRENCY_SHPCURRENCY_SLLCURRENCY_SOSCURRENCY_SRDCURRENCY_SSPCURRENCY_STDCURRENCY_SVCCURRENCY_SYPCURRENCY_SZLCURRENCY_THBCURRENCY_TJSCURRENCY_TMTCURRENCY_TNDCURRENCY_TOPCURRENCY_TRYCURRENCY_TTDCURRENCY_TWDCURRENCY_TZSCURRENCY_UAHCURRENCY_UGXCURRENCY_UNKNOWNCURRENCY_USDCURRENCY_USNCURRENCY_UYICURRENCY_UYUCURRENCY_UZSCURRENCY_VEFCURRENCY_VNDCURRENCY_VUVCURRENCY_WSTCURRENCY_XAFCURRENCY_XAGCURRENCY_XAUCURRENCY_XBACURRENCY_XBBCURRENCY_XBCCURRENCY_XBDCURRENCY_XCDCURRENCY_XDRCURRENCY_XOFCURRENCY_XPDCURRENCY_XPFCURRENCY_XPTCURRENCY_XSUCURRENCY_XTSCURRENCY_XUACURRENCY_XXXCURRENCY_YERCURRENCY_ZARCURRENCY_ZMWCURRENCY_ZWL";
+  unk_27D0D28 = 12;
+  qword_27D18F8 = 12;
+  qword_27D1910 = 12;
+  qword_27D0D40 = 12;
+  dword_27D0D48 = 32;
+  qword_27D0D58 = 12;
+  qword_27D18C8 = 12;
+  qword_27D18E0 = 12;
+  qword_27D0D70 = 12;
+  qword_27D0D88 = 12;
+  qword_27D0DA0 = 12;
+  qword_27D0DB8 = 12;
+  qword_27D1898 = 12;
+  qword_27D18B0 = 12;
+  qword_27D0DD0 = 12;
+  qword_27D0DE8 = 12;
+  qword_27D0E00 = 12;
+  dword_27D0E08 = 48;
+  qword_27D1868 = 12;
+  qword_27D1880 = 12;
+  qword_27D0E18 = 12;
+  qword_27D0E30 = 12;
+  qword_27D0E48 = 12;
+  qword_27D0E60 = 12;
+  qword_27D1838 = 12;
+  qword_27D1850 = 12;
+  qword_27D0E78 = 12;
+  qword_27D0E90 = 12;
+  qword_27D0EA8 = 12;
+  qword_27D0EC0 = 12;
+  qword_27D1808 = 12;
+  qword_27D1820 = 12;
+  qword_27D0ED8 = 12;
+  qword_27D0EF0 = 12;
+  qword_27D0F08 = 12;
+  qword_27D0F20 = 12;
+  qword_27D17D8 = 12;
+  qword_27D17F0 = 12;
+  qword_27D0F38 = 12;
+  qword_27D0F50 = 12;
+  qword_27D0F68 = 12;
+  qword_27D0F80 = 12;
+  qword_27D17A8 = 12;
+  qword_27D17C0 = 12;
+  qword_27D0F98 = 12;
+  qword_27D0FB0 = 12;
+  qword_27D0FC8 = 12;
+  qword_27D0FE0 = 12;
+  qword_27D1778 = 12;
+  qword_27D1790 = 12;
+  qword_27D0FF8 = 12;
+  qword_27D1010 = 12;
+  qword_27D1028 = 12;
+  qword_27D1040 = 12;
+  qword_27D1748 = 12;
+  qword_27D1760 = 12;
+  qword_27D1058 = 12;
+  qword_27D1070 = 12;
+  qword_27D1088 = 12;
+  qword_27D10A0 = 12;
+  qword_27D1718 = 12;
+  qword_27D1730 = 12;
+  qword_27D10B8 = 12;
+  qword_27D10D0 = 12;
+  dword_27D10D8 = 12;
+  qword_27D10E8 = 12;
+  qword_27D16E8 = 12;
+  qword_27D1700 = 12;
+  qword_27D1100 = 12;
+  qword_27D1118 = 12;
+  qword_27D1130 = 12;
+  qword_27D1148 = 12;
+  qword_27D16B8 = 12;
+  qword_27D16D0 = 12;
+  qword_27D1160 = 12;
+  qword_27D1178 = 12;
+  qword_27D1190 = 12;
+  qword_27D11A8 = 12;
+  qword_27D1688 = 12;
+  qword_27D16A0 = 12;
+  qword_27D11C0 = 12;
+  qword_27D11D8 = 12;
+  qword_27D11F0 = 12;
+  qword_27D1208 = 12;
+  qword_27D1658 = 12;
+  qword_27D1670 = 12;
+  qword_27D1220 = 12;
+  qword_27D1238 = 12;
+  qword_27D1250 = 12;
+  qword_27D1268 = 12;
+  qword_27D1628 = 12;
+  qword_27D1640 = 12;
+  qword_27D1280 = 12;
+  qword_27D1298 = 12;
+  qword_27D12B0 = 12;
+  qword_27D12C8 = 12;
+  qword_27D15F8 = 12;
+  qword_27D1610 = 12;
+  qword_27D12E0 = 12;
+  qword_27D12F8 = 12;
+  qword_27D1310 = 12;
+  qword_27D1328 = 12;
+  qword_27D15C8 = 12;
+  qword_27D15E0 = 12;
+  qword_27D1340 = 12;
+  qword_27D1358 = 12;
+  qword_27D1370 = 12;
+  qword_27D1388 = 12;
+  qword_27D1598 = 12;
+  qword_27D15B0 = 12;
+  qword_27D13A0 = 12;
+  qword_27D13B8 = 12;
+  qword_27D13D0 = 12;
+  qword_27D13E8 = 12;
+  qword_27D1568 = 12;
+  qword_27D1580 = 12;
+  qword_27D1400 = 12;
+  qword_27D1418 = 12;
+  qword_27D1430 = 12;
+  qword_27D1448 = 12;
+  qword_27D1538 = 12;
+  qword_27D1550 = 12;
+  qword_27D1460 = 12;
+  qword_27D1478 = 12;
+  qword_27D1490 = 12;
+  qword_27D14A8 = 12;
+  qword_27D14C0 = 12;
+  qword_27D1520 = 12;
+  qword_27D14D8 = 12;
+  qword_27D14F0 = 12;
+  qword_27D1508 = 12;
+  qword_27D2460 = "POPULARITY_SCORE";
+  unk_27D2468 = 16;
+  qword_27D2450 = 15;
+  dword_27D2458 = 1;
+  dword_27D2470 = 0;
+  qword_27D2490 = "BUSINESS_CARDBUSINESS_CARD_COLLECTIONBUSINESS_CARD_EVENTCARTOGRAPHIC_LINE_GROUPMODULEMODULE_LISTTRANSIT_ACCESS_POINTTRANSIT_BLOCK_TRANSFERTRANSIT_BRANDTRANSIT_CONNECTED_STATIONSTRANSIT_HALLTRANSIT_LINETRANSIT_LINKTRANSIT_MARKETTRANSIT_SCHEDULETRANSIT_SEGMENTTRANSIT_STATIONTRANSIT_STATION_POLYGONTRANSIT_STOPTRANSIT_SYSTEMTRANSIT_TIMED_TRANSFERTRANSIT_TRANSFER_GRAPHTRANSIT_TRIPVENDOR";
+  qword_27D24A8 = "BUSINESS_CARD_COLLECTIONBUSINESS_CARD_EVENTCARTOGRAPHIC_LINE_GROUPMODULEMODULE_LISTTRANSIT_ACCESS_POINTTRANSIT_BLOCK_TRANSFERTRANSIT_BRANDTRANSIT_CONNECTED_STATIONSTRANSIT_HALLTRANSIT_LINETRANSIT_LINKTRANSIT_MARKETTRANSIT_SCHEDULETRANSIT_SEGMENTTRANSIT_STATIONTRANSIT_STATION_POLYGONTRANSIT_STOPTRANSIT_SYSTEMTRANSIT_TIMED_TRANSFERTRANSIT_TRANSFER_GRAPHTRANSIT_TRIPVENDOR";
+  qword_27D24C0 = "BUSINESS_CARD_EVENTCARTOGRAPHIC_LINE_GROUPMODULEMODULE_LISTTRANSIT_ACCESS_POINTTRANSIT_BLOCK_TRANSFERTRANSIT_BRANDTRANSIT_CONNECTED_STATIONSTRANSIT_HALLTRANSIT_LINETRANSIT_LINKTRANSIT_MARKETTRANSIT_SCHEDULETRANSIT_SEGMENTTRANSIT_STATIONTRANSIT_STATION_POLYGONTRANSIT_STOPTRANSIT_SYSTEMTRANSIT_TIMED_TRANSFERTRANSIT_TRANSFER_GRAPHTRANSIT_TRIPVENDOR";
+  qword_27D24D8 = "CARTOGRAPHIC_LINE_GROUPMODULEMODULE_LISTTRANSIT_ACCESS_POINTTRANSIT_BLOCK_TRANSFERTRANSIT_BRANDTRANSIT_CONNECTED_STATIONSTRANSIT_HALLTRANSIT_LINETRANSIT_LINKTRANSIT_MARKETTRANSIT_SCHEDULETRANSIT_SEGMENTTRANSIT_STATIONTRANSIT_STATION_POLYGONTRANSIT_STOPTRANSIT_SYSTEMTRANSIT_TIMED_TRANSFERTRANSIT_TRANSFER_GRAPHTRANSIT_TRIPVENDOR";
+  qword_27D2508 = "MODULE_LISTTRANSIT_ACCESS_POINTTRANSIT_BLOCK_TRANSFERTRANSIT_BRANDTRANSIT_CONNECTED_STATIONSTRANSIT_HALLTRANSIT_LINETRANSIT_LINKTRANSIT_MARKETTRANSIT_SCHEDULETRANSIT_SEGMENTTRANSIT_STATIONTRANSIT_STATION_POLYGONTRANSIT_STOPTRANSIT_SYSTEMTRANSIT_TIMED_TRANSFERTRANSIT_TRANSFER_GRAPHTRANSIT_TRIPVENDOR";
+  qword_27D2520 = "TRANSIT_ACCESS_POINTTRANSIT_BLOCK_TRANSFERTRANSIT_BRANDTRANSIT_CONNECTED_STATIONSTRANSIT_HALLTRANSIT_LINETRANSIT_LINKTRANSIT_MARKETTRANSIT_SCHEDULETRANSIT_SEGMENTTRANSIT_STATIONTRANSIT_STATION_POLYGONTRANSIT_STOPTRANSIT_SYSTEMTRANSIT_TIMED_TRANSFERTRANSIT_TRANSFER_GRAPHTRANSIT_TRIPVENDOR";
+  qword_27D2538 = "TRANSIT_BLOCK_TRANSFERTRANSIT_BRANDTRANSIT_CONNECTED_STATIONSTRANSIT_HALLTRANSIT_LINETRANSIT_LINKTRANSIT_MARKETTRANSIT_SCHEDULETRANSIT_SEGMENTTRANSIT_STATIONTRANSIT_STATION_POLYGONTRANSIT_STOPTRANSIT_SYSTEMTRANSIT_TIMED_TRANSFERTRANSIT_TRANSFER_GRAPHTRANSIT_TRIPVENDOR";
+  qword_27D2550 = "TRANSIT_BRANDTRANSIT_CONNECTED_STATIONSTRANSIT_HALLTRANSIT_LINETRANSIT_LINKTRANSIT_MARKETTRANSIT_SCHEDULETRANSIT_SEGMENTTRANSIT_STATIONTRANSIT_STATION_POLYGONTRANSIT_STOPTRANSIT_SYSTEMTRANSIT_TIMED_TRANSFERTRANSIT_TRANSFER_GRAPHTRANSIT_TRIPVENDOR";
+  qword_27D2568 = "TRANSIT_CONNECTED_STATIONSTRANSIT_HALLTRANSIT_LINETRANSIT_LINKTRANSIT_MARKETTRANSIT_SCHEDULETRANSIT_SEGMENTTRANSIT_STATIONTRANSIT_STATION_POLYGONTRANSIT_STOPTRANSIT_SYSTEMTRANSIT_TIMED_TRANSFERTRANSIT_TRANSFER_GRAPHTRANSIT_TRIPVENDOR";
+  qword_27D2598 = "TRANSIT_LINETRANSIT_LINKTRANSIT_MARKETTRANSIT_SCHEDULETRANSIT_SEGMENTTRANSIT_STATIONTRANSIT_STATION_POLYGONTRANSIT_STOPTRANSIT_SYSTEMTRANSIT_TIMED_TRANSFERTRANSIT_TRANSFER_GRAPHTRANSIT_TRIPVENDOR";
+  qword_27D25B0 = "TRANSIT_LINKTRANSIT_MARKETTRANSIT_SCHEDULETRANSIT_SEGMENTTRANSIT_STATIONTRANSIT_STATION_POLYGONTRANSIT_STOPTRANSIT_SYSTEMTRANSIT_TIMED_TRANSFERTRANSIT_TRANSFER_GRAPHTRANSIT_TRIPVENDOR";
+  qword_27D25C8 = "TRANSIT_MARKETTRANSIT_SCHEDULETRANSIT_SEGMENTTRANSIT_STATIONTRANSIT_STATION_POLYGONTRANSIT_STOPTRANSIT_SYSTEMTRANSIT_TIMED_TRANSFERTRANSIT_TRANSFER_GRAPHTRANSIT_TRIPVENDOR";
+  qword_27D25E0 = "TRANSIT_SCHEDULETRANSIT_SEGMENTTRANSIT_STATIONTRANSIT_STATION_POLYGONTRANSIT_STOPTRANSIT_SYSTEMTRANSIT_TIMED_TRANSFERTRANSIT_TRANSFER_GRAPHTRANSIT_TRIPVENDOR";
+  qword_27D25F8 = "TRANSIT_SEGMENTTRANSIT_STATIONTRANSIT_STATION_POLYGONTRANSIT_STOPTRANSIT_SYSTEMTRANSIT_TIMED_TRANSFERTRANSIT_TRANSFER_GRAPHTRANSIT_TRIPVENDOR";
+  qword_27D2610 = "TRANSIT_STATIONTRANSIT_STATION_POLYGONTRANSIT_STOPTRANSIT_SYSTEMTRANSIT_TIMED_TRANSFERTRANSIT_TRANSFER_GRAPHTRANSIT_TRIPVENDOR";
+  qword_27D2628 = "TRANSIT_STATION_POLYGONTRANSIT_STOPTRANSIT_SYSTEMTRANSIT_TIMED_TRANSFERTRANSIT_TRANSFER_GRAPHTRANSIT_TRIPVENDOR";
+  qword_27D2640 = "TRANSIT_STOPTRANSIT_SYSTEMTRANSIT_TIMED_TRANSFERTRANSIT_TRANSFER_GRAPHTRANSIT_TRIPVENDOR";
+  unk_27D2648 = 12;
+  qword_27D2658 = "TRANSIT_SYSTEMTRANSIT_TIMED_TRANSFERTRANSIT_TRANSFER_GRAPHTRANSIT_TRIPVENDOR";
+  qword_27D2670 = "TRANSIT_TIMED_TRANSFERTRANSIT_TRANSFER_GRAPHTRANSIT_TRIPVENDOR";
+  qword_27D2688 = "TRANSIT_TRANSFER_GRAPHTRANSIT_TRIPVENDOR";
+  qword_27D26A0 = "TRANSIT_TRIPVENDOR";
+  qword_27D2580 = "TRANSIT_HALLTRANSIT_LINETRANSIT_LINKTRANSIT_MARKETTRANSIT_SCHEDULETRANSIT_SEGMENTTRANSIT_STATIONTRANSIT_STATION_POLYGONTRANSIT_STOPTRANSIT_SYSTEMTRANSIT_TIMED_TRANSFERTRANSIT_TRANSFER_GRAPHTRANSIT_TRIPVENDOR";
+  unk_27D2588 = 12;
+  qword_27D25A0 = 12;
+  qword_27D25B8 = 12;
+  dword_27D2650 = 12;
+  qword_27D26A8 = 12;
+  qword_27D26B8 = "VENDOR";
+  qword_27D24F0 = "MODULEMODULE_LISTTRANSIT_ACCESS_POINTTRANSIT_BLOCK_TRANSFERTRANSIT_BRANDTRANSIT_CONNECTED_STATIONSTRANSIT_HALLTRANSIT_LINETRANSIT_LINKTRANSIT_MARKETTRANSIT_SCHEDULETRANSIT_SEGMENTTRANSIT_STATIONTRANSIT_STATION_POLYGONTRANSIT_STOPTRANSIT_SYSTEMTRANSIT_TIMED_TRANSFERTRANSIT_TRANSFER_GRAPHTRANSIT_TRIPVENDOR";
+  unk_27D24F8 = 6;
+  dword_27D2590 = 6;
+  qword_27D26C0 = 6;
+  qword_27D2478 = "BRANDBUSINESS_CARDBUSINESS_CARD_COLLECTIONBUSINESS_CARD_EVENTCARTOGRAPHIC_LINE_GROUPMODULEMODULE_LISTTRANSIT_ACCESS_POINTTRANSIT_BLOCK_TRANSFERTRANSIT_BRANDTRANSIT_CONNECTED_STATIONSTRANSIT_HALLTRANSIT_LINETRANSIT_LINKTRANSIT_MARKETTRANSIT_SCHEDULETRANSIT_SEGMENTTRANSIT_STATIONTRANSIT_STATION_POLYGONTRANSIT_STOPTRANSIT_SYSTEMTRANSIT_TIMED_TRANSFERTRANSIT_TRANSFER_GRAPHTRANSIT_TRIPVENDOR";
+  unk_27D2480 = 5;
+  dword_27D2488 = 20;
+  qword_27D2498 = 13;
+  dword_27D24A0 = 0;
+  qword_27D24B0 = 24;
+  dword_27D24B8 = 21;
+  qword_27D24C8 = 19;
+  dword_27D24D0 = 19;
+  result = 19;
+  qword_27D24E0 = 23;
+  dword_27D24E8 = 1;
+  dword_27D2500 = 23;
+  qword_27D2510 = 11;
+  dword_27D2518 = 24;
+  qword_27D2528 = 20;
+  dword_27D2530 = 2;
+  qword_27D2540 = 22;
+  dword_27D2548 = 3;
+  qword_27D2558 = 13;
+  dword_27D2560 = 4;
+  qword_27D2570 = 26;
+  dword_27D2578 = 5;
+  dword_27D25A8 = 7;
+  dword_27D25C0 = 8;
+  qword_27D25D0 = 14;
+  dword_27D25D8 = 9;
+  qword_27D25E8 = 16;
+  dword_27D25F0 = 10;
+  qword_27D2600 = 15;
+  dword_27D2608 = 11;
+  qword_27D2618 = 15;
+  dword_27D2620 = 17;
+  qword_27D2630 = 23;
+  dword_27D2638 = 18;
+  qword_27D2660 = 14;
+  dword_27D2668 = 13;
+  qword_27D2678 = 22;
+  dword_27D2680 = 14;
+  qword_27D2690 = 22;
+  dword_27D2698 = 15;
+  dword_27D26B0 = 16;
+  dword_27D26C8 = 22;
+  qword_27D26E8 = "ENRICHMENTRAPTRAFFIC_INCIDENTUNKNOWN";
+  unk_27D26F0 = 10;
+  qword_27D2700 = "RAPTRAFFIC_INCIDENTUNKNOWN";
+  unk_27D2708 = 3;
+  qword_27D2718 = "TRAFFIC_INCIDENTUNKNOWN";
+  unk_27D2720 = 16;
+  qword_27D2730 = "UNKNOWN";
+  unk_27D2738 = 7;
+  qword_27D26D0 = "BLUEGRASSENRICHMENTRAPTRAFFIC_INCIDENTUNKNOWN";
+  *algn_27D26D8 = 9;
+  dword_27D26E0 = 4;
+  dword_27D26F8 = 3;
+  dword_27D2710 = 1;
+  dword_27D2728 = 2;
+  dword_27D2740 = 0;
+  qword_27D2760 = "ROLE_SYSTEMROLE_UNSPECIFIED";
+  unk_27D2768 = 11;
+  qword_27D2778 = "ROLE_UNSPECIFIED";
+  unk_27D2780 = 16;
+  qword_27D2748 = "ROLE_REPRESENTATIVEROLE_SYSTEMROLE_UNSPECIFIED";
+  unk_27D2750 = 19;
+  dword_27D2758 = 2;
+  dword_27D2770 = 1;
+  dword_27D2788 = 0;
+  qword_27D27A8 = "DETECTION_TYPE_LICENSE_PLATEDETECTION_TYPE_UNKNOWN";
+  unk_27D27B0 = 28;
+  qword_27D27C0 = "DETECTION_TYPE_UNKNOWN";
+  unk_27D27C8 = 22;
+  qword_27D2790 = "DETECTION_TYPE_FACEDETECTION_TYPE_LICENSE_PLATEDETECTION_TYPE_UNKNOWN";
+  *algn_27D2798 = 19;
+  dword_27D27A0 = 1;
+  dword_27D27B8 = 2;
+  dword_27D27D0 = 0;
+  qword_27D27E0 = 43;
+  qword_27D27F0 = "PAYLOAD_TYPE_DATA_SHARE_OPT_IN_USERS_RESPONSE_AVAILABLEPAYLOAD_TYPE_UNSPECIFIEDPAYLOAD_TYPE_USER_ATTRIBUTION_RESPONSE_AVAILABLEPAYLOAD_TYPE_USER_ENRICHMENT_SUBMISSION";
+  qword_27D27F8 = 55;
+  qword_27D2820 = "PAYLOAD_TYPE_USER_ATTRIBUTION_RESPONSE_AVAILABLEPAYLOAD_TYPE_USER_ENRICHMENT_SUBMISSION";
+  unk_27D2828 = 48;
+  qword_27D2838 = "PAYLOAD_TYPE_USER_ENRICHMENT_SUBMISSION";
+  unk_27D2840 = 39;
+  qword_27D27D8 = "PAYLOAD_TYPE_BUSINESS_ENRICHMENT_SUBMISSIONPAYLOAD_TYPE_DATA_SHARE_OPT_IN_USERS_RESPONSE_AVAILABLEPAYLOAD_TYPE_UNSPECIFIEDPAYLOAD_TYPE_USER_ATTRIBUTION_RESPONSE_AVAILABLEPAYLOAD_TYPE_USER_ENRICHMENT_SUBMISSION";
+  qword_27D2808 = "PAYLOAD_TYPE_UNSPECIFIEDPAYLOAD_TYPE_USER_ATTRIBUTION_RESPONSE_AVAILABLEPAYLOAD_TYPE_USER_ENRICHMENT_SUBMISSION";
+  unk_27D2810 = 24;
+  dword_27D27E8 = 2;
+  dword_27D2800 = 4;
+  dword_27D2818 = 0;
+  dword_27D2830 = 3;
+  dword_27D2848 = 1;
+  qword_27D2868 = "IMAGE_VARIANT_ORIGINALIMAGE_VARIANT_UNSPECIFIED";
+  qword_27D2850 = "IMAGE_VARIANT_CENSOREDIMAGE_VARIANT_ORIGINALIMAGE_VARIANT_UNSPECIFIED";
+  *algn_27D2858 = 22;
+  dword_27D2860 = 2;
+  qword_27D2870 = 22;
+  dword_27D2878 = 1;
+  qword_27D2880 = "IMAGE_VARIANT_UNSPECIFIED";
+  unk_27D2888 = 25;
+  dword_27D2890 = 0;
+  qword_27D2898 = "AMENDMENT_REASON_PHOTO_PURGEAMENDMENT_REASON_UNSPECIFIED";
+  unk_27D28A0 = 28;
+  dword_27D28A8 = 1;
+  qword_27D28B0 = "AMENDMENT_REASON_UNSPECIFIED";
+  unk_27D28B8 = 28;
+  dword_27D28C0 = 0;
+  qword_27D28E0 = "UPDATE_TYPE_PLACEUPDATE_TYPE_SUBMISSIONUPDATE_TYPE_UNSPECIFIEDUPDATE_TYPE_USER";
+  unk_27D28E8 = 17;
+  qword_27D28F8 = "UPDATE_TYPE_SUBMISSIONUPDATE_TYPE_UNSPECIFIEDUPDATE_TYPE_USER";
+  unk_27D2900 = 22;
+  qword_27D2910 = "UPDATE_TYPE_UNSPECIFIEDUPDATE_TYPE_USER";
+  unk_27D2918 = 23;
+  qword_27D28C8 = "UPDATE_TYPE_IMAGESUPDATE_TYPE_PLACEUPDATE_TYPE_SUBMISSIONUPDATE_TYPE_UNSPECIFIEDUPDATE_TYPE_USER";
+  unk_27D28D0 = 18;
+  dword_27D28D8 = 2;
+  dword_27D28F0 = 4;
+  dword_27D2908 = 1;
+  dword_27D2920 = 0;
+  qword_27D2928 = "UPDATE_TYPE_USER";
+  unk_27D2930 = 16;
+  dword_27D2938 = 3;
+  qword_27D2940 = "INGEST_REJECTINGEST_SUCCESSRETRYUNKNOWN";
+  *algn_27D2948 = 13;
+  dword_27D2950 = 2;
+  qword_27D2958 = "INGEST_SUCCESSRETRYUNKNOWN";
+  unk_27D2960 = 14;
+  dword_27D2968 = 1;
+  qword_27D2970 = "RETRYUNKNOWN";
+  unk_27D2978 = 5;
+  dword_27D2980 = 3;
+  qword_27D2988 = "UNKNOWN";
+  unk_27D2990 = 7;
+  dword_27D2998 = 0;
+  qword_27D29B8 = "UNKNOWN";
+  unk_27D29C0 = 7;
+  qword_27D29A0 = "CARRY_OVERUNKNOWN";
+  *algn_27D29A8 = 10;
+  dword_27D29B0 = 1;
+  dword_27D29C8 = 0;
+  qword_27D29D0 = "SUBMISSION_ACTION_UNKNOWNSUBMISSION_REJECTED";
+  *algn_27D29D8 = 25;
+  qword_27D29E8 = "SUBMISSION_REJECTED";
+  unk_27D29F0 = 19;
+  dword_27D29E0 = 0;
+  dword_27D29F8 = 1;
+  qword_27D2A00 = "REQUESTED_USER_ACTION_BLOCK_USERREQUESTED_USER_ACTION_UNKNOWN";
+  *algn_27D2A08 = 32;
+  dword_27D2A10 = 1;
+  qword_27D2A18 = "REQUESTED_USER_ACTION_UNKNOWN";
+  unk_27D2A20 = 29;
+  dword_27D2A28 = 0;
+  qword_27D2A48 = "NEW_MESSAGE_ES_INDEXEDNEW_MESSAGE_PROCESSING_FAILURENEW_MESSAGE_QUEUEDUNKNOWN";
+  unk_27D2A50 = 22;
+  qword_27D2A60 = "NEW_MESSAGE_PROCESSING_FAILURENEW_MESSAGE_QUEUEDUNKNOWN";
+  qword_27D2A68 = 30;
+  qword_27D2A78 = "NEW_MESSAGE_QUEUEDUNKNOWN";
+  unk_27D2A80 = 18;
+  qword_27D2A30 = "CREATEDNEW_MESSAGE_ES_INDEXEDNEW_MESSAGE_PROCESSING_FAILURENEW_MESSAGE_QUEUEDUNKNOWN";
+  *algn_27D2A38 = 7;
+  dword_27D2A40 = 1;
+  dword_27D2A58 = 4;
+  dword_27D2A70 = 3;
+  dword_27D2A88 = 2;
+  qword_27D2A90 = "UNKNOWN";
+  unk_27D2A98 = 7;
+  dword_27D2AA0 = 0;
+  qword_27D2AC0 = "NEW_SUBMISSION_DELIVEREDNEW_SUBMISSION_GDPR_PURGEDNEW_SUBMISSION_PROCESSING_FAILURENEW_SUBMISSION_QUEUEDUNKNOWN";
+  unk_27D2AC8 = 24;
+  dword_27D2AD0 = 4;
+  qword_27D2AD8 = "NEW_SUBMISSION_GDPR_PURGEDNEW_SUBMISSION_PROCESSING_FAILURENEW_SUBMISSION_QUEUEDUNKNOWN";
+  unk_27D2AE0 = 26;
+  dword_27D2AE8 = 5;
+  qword_27D2AF0 = "NEW_SUBMISSION_PROCESSING_FAILURENEW_SUBMISSION_QUEUEDUNKNOWN";
+  unk_27D2AF8 = 33;
+  qword_27D2AA8 = "CREATEDNEW_SUBMISSION_DELIVEREDNEW_SUBMISSION_GDPR_PURGEDNEW_SUBMISSION_PROCESSING_FAILURENEW_SUBMISSION_QUEUEDUNKNOWN";
+  unk_27D2AB0 = 7;
+  dword_27D2AB8 = 1;
+  dword_27D2B00 = 3;
+  qword_27D2B08 = "NEW_SUBMISSION_QUEUEDUNKNOWN";
+  unk_27D2B10 = 21;
+  dword_27D2B18 = 2;
+  qword_27D2B20 = "UNKNOWN";
+  unk_27D2B28 = 7;
+  dword_27D2B30 = 0;
+  qword_27D2B38 = "DELIVERY_TYPE_UNKNOWNINCIDENT_REPORTPOI_ENRICHMENTRAP";
+  unk_27D2B40 = 21;
+  qword_27D2B50 = "INCIDENT_REPORTPOI_ENRICHMENTRAP";
+  unk_27D2B58 = 15;
+  qword_27D2B68 = "POI_ENRICHMENTRAP";
+  unk_27D2B70 = 14;
+  dword_27D2B48 = 0;
+  dword_27D2B60 = 2;
+  dword_27D2B78 = 3;
+  qword_27D2B80 = "RAP";
+  unk_27D2B88 = 3;
+  dword_27D2B90 = 1;
+  qword_27D2B98 = "ASSERTIONATTESTATIONROLLOVERUNKNOWN";
+  unk_27D2BA0 = 9;
+  qword_27D2BB0 = "ATTESTATIONROLLOVERUNKNOWN";
+  unk_27D2BB8 = 11;
+  qword_27D2BC8 = "ROLLOVERUNKNOWN";
+  unk_27D2BD0 = 8;
+  dword_27D2BA8 = 3;
+  dword_27D2BC0 = 2;
+  dword_27D2BD8 = 1;
+  qword_27D2BE0 = "UNKNOWN";
+  unk_27D2BE8 = 7;
+  dword_27D2BF0 = 0;
+  dword_27D2C08 = 3;
+  qword_27D2C10 = "CONVERSATION_MESSAGESUBMISSIONUNKNOWN";
+  unk_27D2C18 = 20;
+  dword_27D2C20 = 2;
+  qword_27D2BF8 = "APP_ATTESTCONVERSATION_MESSAGESUBMISSIONUNKNOWN";
+  unk_27D2C00 = 10;
+  qword_27D2C28 = "SUBMISSIONUNKNOWN";
+  unk_27D2C30 = 10;
+  dword_27D2C38 = 1;
+  qword_27D2C40 = "UNKNOWN";
+  unk_27D2C48 = 7;
+  dword_27D2C50 = 0;
+  return result;
+}
+
+double sub_15F4680(uint64_t a1, uint64_t a2, int a3)
+{
+  v3 = a2 | 2;
+  if (!a3)
+  {
+    v3 = a2;
+  }
+
+  *a1 = off_26F6198;
+  *(a1 + 8) = v3;
+  *(a1 + 16) = 0;
+  *(a1 + 24) = a2;
+  result = 0.0;
+  *(a1 + 32) = 0u;
+  *(a1 + 48) = 0u;
+  return result;
+}
+
+uint64_t sub_15F46B8(uint64_t a1)
+{
+  v3 = (a1 + 8);
+  v2 = *(a1 + 8);
+  v4 = (v2 & 0xFFFFFFFFFFFFFFFCLL);
+  if (v2)
+  {
+    if (*v4)
+    {
+      goto LABEL_10;
+    }
+  }
+
+  else if (v4)
+  {
+    goto LABEL_10;
+  }
+
+  if (a1 != &off_2779E38)
+  {
+    if (*(a1 + 48))
+    {
+      sub_16EE080();
+      operator delete();
+    }
+
+    v5 = *(a1 + 56);
+    if (v5)
+    {
+      sub_15F52B8(v5);
+      operator delete();
+    }
+  }
+
+  if (*v3)
+  {
+    sub_11F19CC(v3);
+  }
+
+LABEL_10:
+  sub_16365D0((a1 + 24));
+  *a1 = off_27215B8;
+  sub_195A5E8(v3);
+  return a1;
+}
+
+void sub_15F4794(uint64_t a1)
+{
+  sub_15F46B8(a1);
+
+  operator delete();
+}
+
+uint64_t sub_15F47CC(uint64_t result)
+{
+  v1 = result;
+  v2 = *(result + 32);
+  if (v2 >= 1)
+  {
+    v3 = (*(result + 40) + 8);
+    do
+    {
+      v4 = *v3++;
+      result = sub_15F8A04(v4);
+      --v2;
+    }
+
+    while (v2);
+    *(v1 + 32) = 0;
+  }
+
+  v5 = *(v1 + 16);
+  if ((v5 & 3) != 0)
+  {
+    if (v5)
+    {
+      result = sub_16EE0BC(*(v1 + 48));
+    }
+
+    if ((v5 & 2) != 0)
+    {
+      result = sub_15F4870(*(v1 + 56));
+    }
+  }
+
+  v7 = *(v1 + 8);
+  v6 = v1 + 8;
+  *(v6 + 8) = 0;
+  if (v7)
+  {
+
+    return sub_1957EA8(v6);
+  }
+
+  return result;
+}
+
+uint64_t sub_15F4870(uint64_t a1)
+{
+  result = sub_12A41D0(a1 + 24);
+  v3 = *(a1 + 16);
+  if ((v3 & 0xF) == 0)
+  {
+    goto LABEL_7;
+  }
+
+  if (v3)
+  {
+    v6 = *(a1 + 48) & 0xFFFFFFFFFFFFFFFELL;
+    if (*(v6 + 23) < 0)
+    {
+      **v6 = 0;
+      *(v6 + 8) = 0;
+      if ((v3 & 2) != 0)
+      {
+        goto LABEL_15;
+      }
+    }
+
+    else
+    {
+      *v6 = 0;
+      *(v6 + 23) = 0;
+      if ((v3 & 2) != 0)
+      {
+        goto LABEL_15;
+      }
+    }
+
+LABEL_4:
+    if ((v3 & 4) == 0)
+    {
+      goto LABEL_5;
+    }
+
+    goto LABEL_19;
+  }
+
+  if ((v3 & 2) == 0)
+  {
+    goto LABEL_4;
+  }
+
+LABEL_15:
+  v7 = *(a1 + 56) & 0xFFFFFFFFFFFFFFFELL;
+  if ((*(v7 + 23) & 0x80000000) == 0)
+  {
+    *v7 = 0;
+    *(v7 + 23) = 0;
+    if ((v3 & 4) != 0)
+    {
+      goto LABEL_19;
+    }
+
+LABEL_5:
+    if ((v3 & 8) == 0)
+    {
+      goto LABEL_7;
+    }
+
+    goto LABEL_6;
+  }
+
+  **v7 = 0;
+  *(v7 + 8) = 0;
+  if ((v3 & 4) == 0)
+  {
+    goto LABEL_5;
+  }
+
+LABEL_19:
+  v8 = *(a1 + 64) & 0xFFFFFFFFFFFFFFFELL;
+  if ((*(v8 + 23) & 0x80000000) == 0)
+  {
+    *v8 = 0;
+    *(v8 + 23) = 0;
+    if ((v3 & 8) == 0)
+    {
+      goto LABEL_7;
+    }
+
+LABEL_6:
+    result = sub_15F53F4(*(a1 + 72));
+    goto LABEL_7;
+  }
+
+  **v8 = 0;
+  *(v8 + 8) = 0;
+  if ((v3 & 8) != 0)
+  {
+    goto LABEL_6;
+  }
+
+LABEL_7:
+  v5 = *(a1 + 8);
+  v4 = a1 + 8;
+  *(v4 + 8) = 0;
+  if (v5)
+  {
+
+    return sub_1957EA8(v4);
+  }
+
+  return result;
+}
+
+char *sub_15F497C(uint64_t a1, char *a2, int32x2_t *a3)
+{
+  v29 = a2;
+  for (i = a3[11].i32[1]; (sub_195ADC0(a3, &v29, i) & 1) == 0; i = a3[11].i32[1])
+  {
+    v6 = v29 + 1;
+    v7 = *v29;
+    if (*v29 < 0)
+    {
+      v8 = v7 + (*v6 << 7);
+      v7 = v8 - 128;
+      if (*v6 < 0)
+      {
+        v6 = sub_1958824(v29, v8 - 128);
+        v7 = v9;
+      }
+
+      else
+      {
+        v6 = v29 + 2;
+      }
+    }
+
+    v29 = v6;
+    v10 = v7 >> 3;
+    if (v7 >> 3 == 5)
+    {
+      if (v7 == 42)
+      {
+        v19 = v6 - 1;
+        while (1)
+        {
+          v20 = (v19 + 1);
+          v29 = v19 + 1;
+          v21 = *(a1 + 40);
+          if (v21 && (v22 = *(a1 + 32), v22 < *v21))
+          {
+            *(a1 + 32) = v22 + 1;
+            v23 = *&v21[2 * v22 + 2];
+          }
+
+          else
+          {
+            sub_161758C(*(a1 + 24));
+            v23 = sub_19593CC(a1 + 24, v24);
+            v20 = v29;
+          }
+
+          v19 = sub_22281F4(a3, v23, v20);
+          v29 = v19;
+          if (!v19)
+          {
+            return 0;
+          }
+
+          if (*a3 <= v19 || *v19 != 42)
+          {
+            goto LABEL_42;
+          }
+        }
+      }
+    }
+
+    else if (v10 == 4)
+    {
+      if (v7 == 34)
+      {
+        *(a1 + 16) |= 2u;
+        v16 = *(a1 + 56);
+        if (!v16)
+        {
+          v17 = *(a1 + 8);
+          v18 = (v17 & 0xFFFFFFFFFFFFFFFCLL);
+          if (v17)
+          {
+            v18 = *v18;
+          }
+
+          v16 = sub_16171FC(v18);
+          *(a1 + 56) = v16;
+          v6 = v29;
+        }
+
+        v15 = sub_2228164(a3, v16, v6);
+        goto LABEL_41;
+      }
+    }
+
+    else if (v10 == 3 && v7 == 26)
+    {
+      *(a1 + 16) |= 1u;
+      v25 = *(a1 + 48);
+      if (!v25)
+      {
+        v26 = *(a1 + 8);
+        v27 = (v26 & 0xFFFFFFFFFFFFFFFCLL);
+        if (v26)
+        {
+          v27 = *v27;
+        }
+
+        v25 = sub_16F5F38(v27);
+        *(a1 + 48) = v25;
+        v6 = v29;
+      }
+
+      v15 = sub_21F4CD0(a3, v25, v6);
+      goto LABEL_41;
+    }
+
+    if (v7)
+    {
+      v12 = (v7 & 7) == 4;
+    }
+
+    else
+    {
+      v12 = 1;
+    }
+
+    if (v12)
+    {
+      if (v6)
+      {
+        a3[10].i32[0] = v7 - 1;
+        return v29;
+      }
+
+      return 0;
+    }
+
+    v13 = *(a1 + 8);
+    if (v13)
+    {
+      v14 = (v13 & 0xFFFFFFFFFFFFFFFCLL) + 8;
+    }
+
+    else
+    {
+      v14 = sub_11F1920((a1 + 8));
+      v6 = v29;
+    }
+
+    v15 = sub_1952690(v7, v14, v6, a3);
+LABEL_41:
+    v29 = v15;
+    if (!v15)
+    {
+      return 0;
+    }
+
+LABEL_42:
+    ;
+  }
+
+  return v29;
+}
+
+char *sub_15F4BB8(uint64_t a1, unint64_t __dst, unint64_t *a3)
+{
+  v4 = __dst;
+  v6 = *(a1 + 16);
+  if (v6)
+  {
+    if (*a3 <= __dst)
+    {
+      v4 = sub_225EB68(a3, __dst);
+    }
+
+    v7 = *(a1 + 48);
+    *v4 = 26;
+    v8 = *(v7 + 20);
+    v4[1] = v8;
+    if (v8 > 0x7F)
+    {
+      v9 = sub_19575D0(v8, v4 + 1);
+    }
+
+    else
+    {
+      v9 = v4 + 2;
+    }
+
+    v4 = sub_16EE2C4(v7, v9, a3);
+  }
+
+  if ((v6 & 2) != 0)
+  {
+    if (*a3 <= v4)
+    {
+      v4 = sub_225EB68(a3, v4);
+    }
+
+    v10 = *(a1 + 56);
+    *v4 = 34;
+    v11 = *(v10 + 20);
+    v4[1] = v11;
+    if (v11 > 0x7F)
+    {
+      v12 = sub_19575D0(v11, v4 + 1);
+    }
+
+    else
+    {
+      v12 = v4 + 2;
+    }
+
+    v4 = sub_15F5758(v10, v12, a3);
+  }
+
+  v13 = *(a1 + 32);
+  if (v13)
+  {
+    for (i = 0; i != v13; ++i)
+    {
+      if (*a3 <= v4)
+      {
+        v4 = sub_225EB68(a3, v4);
+      }
+
+      v15 = *(*(a1 + 40) + 8 * i + 8);
+      *v4 = 42;
+      v16 = *(v15 + 20);
+      v4[1] = v16;
+      if (v16 > 0x7F)
+      {
+        v17 = sub_19575D0(v16, v4 + 1);
+      }
+
+      else
+      {
+        v17 = v4 + 2;
+      }
+
+      v4 = sub_15F92AC(v15, v17, a3);
+    }
+  }
+
+  v18 = *(a1 + 8);
+  if ((v18 & 1) == 0)
+  {
+    return v4;
+  }
+
+  v20 = v18 & 0xFFFFFFFFFFFFFFFCLL;
+  v21 = *(v20 + 31);
+  if (v21 < 0)
+  {
+    v22 = *(v20 + 8);
+    v21 = *(v20 + 16);
+  }
+
+  else
+  {
+    v22 = (v20 + 8);
+  }
+
+  if ((*a3 - v4) >= v21)
+  {
+    v23 = v21;
+    memcpy(v4, v22, v21);
+    v4 += v23;
+    return v4;
+  }
+
+  return sub_1957130(a3, v22, v21, v4);
+}
+
+uint64_t sub_15F4DC4(uint64_t a1)
+{
+  v2 = *(a1 + 32);
+  v3 = *(a1 + 40);
+  if (v3)
+  {
+    v4 = (v3 + 8);
+  }
+
+  else
+  {
+    v4 = 0;
+  }
+
+  if (v2)
+  {
+    v5 = 8 * v2;
+    do
+    {
+      v6 = *v4++;
+      v7 = sub_15F98DC(v6);
+      v2 += v7 + ((9 * (__clz(v7 | 1) ^ 0x1F) + 73) >> 6);
+      v5 -= 8;
+    }
+
+    while (v5);
+  }
+
+  else
+  {
+    v2 = 0;
+  }
+
+  v8 = *(a1 + 16);
+  if ((v8 & 3) != 0)
+  {
+    if (v8)
+    {
+      v9 = sub_16EE474(*(a1 + 48));
+      v2 += v9 + ((9 * (__clz(v9 | 1) ^ 0x1F) + 73) >> 6) + 1;
+    }
+
+    if ((v8 & 2) != 0)
+    {
+      v10 = sub_15F5984(*(a1 + 56));
+      v2 += v10 + ((9 * (__clz(v10 | 1) ^ 0x1F) + 73) >> 6) + 1;
+    }
+  }
+
+  v11 = *(a1 + 8);
+  if (v11)
+  {
+    v13 = v11 & 0xFFFFFFFFFFFFFFFCLL;
+    v14 = *((v11 & 0xFFFFFFFFFFFFFFFCLL) + 31);
+    if (v14 < 0)
+    {
+      v14 = *(v13 + 16);
+    }
+
+    v2 += v14;
+  }
+
+  *(a1 + 20) = v2;
+  return v2;
+}
+
+void sub_15F4ED8(uint64_t a1, uint64_t a2)
+{
+  v4 = *(a2 + 32);
+  if (v4)
+  {
+    v5 = *(a2 + 40);
+    v6 = sub_19592E8(a1 + 24, *(a2 + 32));
+    sub_16373BC((a1 + 24), v6, (v5 + 8), v4, **(a1 + 40) - *(a1 + 32));
+    v7 = *(a1 + 32) + v4;
+    *(a1 + 32) = v7;
+    v8 = *(a1 + 40);
+    if (*v8 < v7)
+    {
+      *v8 = v7;
+    }
+  }
+
+  v9 = *(a2 + 16);
+  if ((v9 & 3) != 0)
+  {
+    if (v9)
+    {
+      *(a1 + 16) |= 1u;
+      v10 = *(a1 + 48);
+      if (!v10)
+      {
+        v11 = *(a1 + 8);
+        v12 = (v11 & 0xFFFFFFFFFFFFFFFCLL);
+        if (v11)
+        {
+          v12 = *v12;
+        }
+
+        v10 = sub_16F5F38(v12);
+        *(a1 + 48) = v10;
+      }
+
+      if (*(a2 + 48))
+      {
+        v13 = *(a2 + 48);
+      }
+
+      else
+      {
+        v13 = &off_277E980;
+      }
+
+      sub_121721C(v10, v13);
+    }
+
+    if ((v9 & 2) != 0)
+    {
+      *(a1 + 16) |= 2u;
+      v14 = *(a1 + 56);
+      if (!v14)
+      {
+        v15 = *(a1 + 8);
+        v16 = (v15 & 0xFFFFFFFFFFFFFFFCLL);
+        if (v15)
+        {
+          v16 = *v16;
+        }
+
+        v14 = sub_16171FC(v16);
+        *(a1 + 56) = v14;
+      }
+
+      if (*(a2 + 56))
+      {
+        v17 = *(a2 + 56);
+      }
+
+      else
+      {
+        v17 = &off_2779E78;
+      }
+
+      sub_15F5038(v14, v17);
+    }
+  }
+
+  v18 = *(a2 + 8);
+  if (v18)
+  {
+
+    sub_1957EF4((a1 + 8), (v18 & 0xFFFFFFFFFFFFFFFCLL) + 8);
+  }
+}
+
+std::string *sub_15F5038(std::string *result, uint64_t a2)
+{
+  v3 = result;
+  v4 = *(a2 + 32);
+  if (v4)
+  {
+    v5 = *(a2 + 40);
+    v6 = sub_19592E8(&result[1], *(a2 + 32));
+    result = sub_1201B48(&v3[1], v6, (v5 + 8), v4, *v3[1].__r_.__value_.__r.__words[2] - LODWORD(v3[1].__r_.__value_.__r.__words[1]));
+    v7 = LODWORD(v3[1].__r_.__value_.__r.__words[1]) + v4;
+    LODWORD(v3[1].__r_.__value_.__r.__words[1]) = v7;
+    v8 = v3[1].__r_.__value_.__r.__words[2];
+    if (*v8 < v7)
+    {
+      *v8 = v7;
+    }
+  }
+
+  v9 = *(a2 + 16);
+  if ((v9 & 0xF) == 0)
+  {
+    goto LABEL_27;
+  }
+
+  if ((v9 & 1) == 0)
+  {
+    if ((v9 & 2) == 0)
+    {
+      goto LABEL_7;
+    }
+
+LABEL_13:
+    v13 = *(a2 + 56);
+    LODWORD(v3->__r_.__value_.__r.__words[2]) |= 2u;
+    size = v3->__r_.__value_.__l.__size_;
+    v15 = (size & 0xFFFFFFFFFFFFFFFCLL);
+    if (size)
+    {
+      v15 = *v15;
+    }
+
+    result = sub_194EA1C(&v3[2].__r_.__value_.__l.__size_, (v13 & 0xFFFFFFFFFFFFFFFELL), v15);
+    if ((v9 & 4) == 0)
+    {
+LABEL_8:
+      if ((v9 & 8) == 0)
+      {
+        goto LABEL_27;
+      }
+
+      goto LABEL_19;
+    }
+
+    goto LABEL_16;
+  }
+
+  v10 = *(a2 + 48);
+  LODWORD(v3->__r_.__value_.__r.__words[2]) |= 1u;
+  v11 = v3->__r_.__value_.__l.__size_;
+  v12 = (v11 & 0xFFFFFFFFFFFFFFFCLL);
+  if (v11)
+  {
+    v12 = *v12;
+  }
+
+  result = sub_194EA1C(&v3[2], (v10 & 0xFFFFFFFFFFFFFFFELL), v12);
+  if ((v9 & 2) != 0)
+  {
+    goto LABEL_13;
+  }
+
+LABEL_7:
+  if ((v9 & 4) == 0)
+  {
+    goto LABEL_8;
+  }
+
+LABEL_16:
+  v16 = *(a2 + 64);
+  LODWORD(v3->__r_.__value_.__r.__words[2]) |= 4u;
+  v17 = v3->__r_.__value_.__l.__size_;
+  v18 = (v17 & 0xFFFFFFFFFFFFFFFCLL);
+  if (v17)
+  {
+    v18 = *v18;
+  }
+
+  result = sub_194EA1C(&v3[2].__r_.__value_.__r.__words[2], (v16 & 0xFFFFFFFFFFFFFFFELL), v18);
+  if ((v9 & 8) != 0)
+  {
+LABEL_19:
+    LODWORD(v3->__r_.__value_.__r.__words[2]) |= 8u;
+    data = v3[3].__r_.__value_.__l.__data_;
+    if (!data)
+    {
+      v20 = v3->__r_.__value_.__l.__size_;
+      v21 = (v20 & 0xFFFFFFFFFFFFFFFCLL);
+      if (v20)
+      {
+        v21 = *v21;
+      }
+
+      data = sub_16172A4(v21);
+      v3[3].__r_.__value_.__r.__words[0] = data;
+    }
+
+    if (*(a2 + 72))
+    {
+      v22 = *(a2 + 72);
+    }
+
+    else
+    {
+      v22 = &off_2779EC8;
+    }
+
+    result = sub_12C35F4(data, v22);
+  }
+
+LABEL_27:
+  v23 = *(a2 + 8);
+  if (v23)
+  {
+
+    return sub_1957EF4(&v3->__r_.__value_.__l.__size_, (v23 & 0xFFFFFFFFFFFFFFFCLL) + 8);
+  }
+
+  return result;
+}
+
+void sub_15F51F8(uint64_t a1, uint64_t a2)
+{
+  if (a2 != a1)
+  {
+    sub_15F47CC(a1);
+
+    sub_15F4ED8(a1, a2);
+  }
+}
+
+BOOL sub_15F5244(uint64_t a1)
+{
+  v2 = *(a1 + 32);
+  while (v2 >= 1)
+  {
+    v3 = v2 - 1;
+    v4 = sub_15FA058(*(*(a1 + 40) + 8 * v2));
+    v2 = v3;
+    if ((v4 & 1) == 0)
+    {
+      return 0;
+    }
+  }
+
+  if ((*(a1 + 16) & 1) == 0)
+  {
+    return 1;
+  }
+
+  result = sub_16EE510(*(a1 + 48));
+  if (result)
+  {
+    return 1;
+  }
+
+  return result;
+}
+
+uint64_t sub_15F52B8(uint64_t a1)
+{
+  v3 = (a1 + 8);
+  v2 = *(a1 + 8);
+  v4 = (v2 & 0xFFFFFFFFFFFFFFFCLL);
+  if (v2)
+  {
+    if (*v4)
+    {
+      goto LABEL_14;
+    }
+  }
+
+  else if (v4)
+  {
+    goto LABEL_14;
+  }
+
+  v5 = (a1 + 48);
+  if (*(a1 + 48) != &qword_278E990)
+  {
+    sub_194E89C(v5);
+  }
+
+  if (*(a1 + 56) != &qword_278E990)
+  {
+    sub_194E89C((a1 + 56));
+  }
+
+  if (*(a1 + 64) != &qword_278E990)
+  {
+    sub_194E89C((a1 + 64));
+  }
+
+  if (a1 != &off_2779E78)
+  {
+    v6 = *(a1 + 72);
+    if (v6)
+    {
+      sub_15F5B60(v6);
+      operator delete();
+    }
+  }
+
+  if (*v3)
+  {
+    sub_11F19CC(v3);
+  }
+
+LABEL_14:
+  sub_1956AFC((a1 + 24));
+  *a1 = off_27215B8;
+  sub_195A5E8(v3);
+  return a1;
+}
+
+void sub_15F53BC(uint64_t a1)
+{
+  sub_15F52B8(a1);
+
+  operator delete();
+}
+
+uint64_t sub_15F53F4(uint64_t a1)
+{
+  if (*(a1 + 16))
+  {
+    v1 = *(a1 + 24) & 0xFFFFFFFFFFFFFFFELL;
+    if (*(v1 + 23) < 0)
+    {
+      **v1 = 0;
+      *(v1 + 8) = 0;
+    }
+
+    else
+    {
+      *v1 = 0;
+      *(v1 + 23) = 0;
+    }
+  }
+
+  v3 = *(a1 + 8);
+  result = a1 + 8;
+  *(result + 24) = 0;
+  *(result + 8) = 0;
+  if (v3)
+  {
+    return sub_1957EA8(result);
+  }
+
+  return result;
+}
+
+uint64_t sub_15F543C(uint64_t a1, uint64_t a2, int32x2_t *a3)
+{
+  *v33 = a2;
+  if (sub_195ADC0(a3, v33, a3[11].i32[1]))
+  {
+    return *v33;
+  }
+
+  while (1)
+  {
+    v6 = (*v33 + 1);
+    v7 = **v33;
+    if (**v33 < 0)
+    {
+      v8 = v7 + (*v6 << 7);
+      v7 = v8 - 128;
+      if (*v6 < 0)
+      {
+        v6 = sub_1958824(*v33, v8 - 128);
+        v7 = v9;
+      }
+
+      else
+      {
+        v6 = (*v33 + 2);
+      }
+    }
+
+    *v33 = v6;
+    v10 = v7 >> 3;
+    if (v7 >> 3 <= 2)
+    {
+      break;
+    }
+
+    if (v10 == 3)
+    {
+      if (v7 == 26)
+      {
+        *(a1 + 16) |= 4u;
+        v23 = *(a1 + 8);
+        v21 = (v23 & 0xFFFFFFFFFFFFFFFCLL);
+        if (v23)
+        {
+          v21 = *v21;
+        }
+
+        v22 = (a1 + 64);
+LABEL_46:
+        v29 = sub_194DB04(v22, v21);
+        v27 = sub_1958890(v29, *v33, a3);
+        goto LABEL_54;
+      }
+
+      goto LABEL_47;
+    }
+
+    if (v10 != 4)
+    {
+      if (v10 == 5 && v7 == 42)
+      {
+        v11 = (v6 - 1);
+        while (1)
+        {
+          v12 = (v11 + 1);
+          *v33 = v11 + 1;
+          v13 = *(a1 + 40);
+          if (v13 && (v14 = *(a1 + 32), v14 < *v13))
+          {
+            *(a1 + 32) = v14 + 1;
+            v15 = *&v13[2 * v14 + 2];
+          }
+
+          else
+          {
+            v16 = *(a1 + 24);
+            if (!v16)
+            {
+              operator new();
+            }
+
+            *v18 = v17;
+            v18[1] = sub_195A650;
+            *v17 = 0;
+            v17[1] = 0;
+            v17[2] = 0;
+            v15 = sub_19593CC(a1 + 24, v17);
+            v12 = *v33;
+          }
+
+          v11 = sub_1958890(v15, v12, a3);
+          *v33 = v11;
+          if (!v11)
+          {
+            goto LABEL_60;
+          }
+
+          if (*a3 <= v11 || *v11 != 42)
+          {
+            goto LABEL_55;
+          }
+        }
+      }
+
+      goto LABEL_47;
+    }
+
+    if (v7 != 34)
+    {
+      goto LABEL_47;
+    }
+
+    *(a1 + 16) |= 8u;
+    v24 = *(a1 + 72);
+    if (!v24)
+    {
+      v25 = *(a1 + 8);
+      v26 = (v25 & 0xFFFFFFFFFFFFFFFCLL);
+      if (v25)
+      {
+        v26 = *v26;
+      }
+
+      v24 = sub_16172A4(v26);
+      *(a1 + 72) = v24;
+      v6 = *v33;
+    }
+
+    v27 = sub_2228284(a3, v24, v6);
+LABEL_54:
+    *v33 = v27;
+    if (!v27)
+    {
+      goto LABEL_60;
+    }
+
+LABEL_55:
+    if (sub_195ADC0(a3, v33, a3[11].i32[1]))
+    {
+      return *v33;
+    }
+  }
+
+  if (v10 == 1)
+  {
+    if (v7 == 10)
+    {
+      *(a1 + 16) |= 1u;
+      v28 = *(a1 + 8);
+      v21 = (v28 & 0xFFFFFFFFFFFFFFFCLL);
+      if (v28)
+      {
+        v21 = *v21;
+      }
+
+      v22 = (a1 + 48);
+      goto LABEL_46;
+    }
+  }
+
+  else if (v10 == 2 && v7 == 18)
+  {
+    *(a1 + 16) |= 2u;
+    v20 = *(a1 + 8);
+    v21 = (v20 & 0xFFFFFFFFFFFFFFFCLL);
+    if (v20)
+    {
+      v21 = *v21;
+    }
+
+    v22 = (a1 + 56);
+    goto LABEL_46;
+  }
+
+LABEL_47:
+  if (v7)
+  {
+    v30 = (v7 & 7) == 4;
+  }
+
+  else
+  {
+    v30 = 1;
+  }
+
+  if (!v30)
+  {
+    v31 = *(a1 + 8);
+    if (v31)
+    {
+      v32 = (v31 & 0xFFFFFFFFFFFFFFFCLL) + 8;
+    }
+
+    else
+    {
+      v32 = sub_11F1920((a1 + 8));
+      v6 = *v33;
+    }
+
+    v27 = sub_1952690(v7, v32, v6, a3);
+    goto LABEL_54;
+  }
+
+  if (v6)
+  {
+    a3[10].i32[0] = v7 - 1;
+    return *v33;
+  }
+
+LABEL_60:
+  *v33 = 0;
+  return *v33;
+}
+
+char *sub_15F5758(uint64_t a1, char *__dst, void *a3)
+{
+  v4 = __dst;
+  v6 = *(a1 + 16);
+  if (v6)
+  {
+    v4 = sub_128AEEC(a3, 1, *(a1 + 48) & 0xFFFFFFFFFFFFFFFELL, __dst);
+    if ((v6 & 2) == 0)
+    {
+LABEL_3:
+      if ((v6 & 4) == 0)
+      {
+        goto LABEL_4;
+      }
+
+      goto LABEL_8;
+    }
+  }
+
+  else if ((v6 & 2) == 0)
+  {
+    goto LABEL_3;
+  }
+
+  v4 = sub_128AEEC(a3, 2, *(a1 + 56) & 0xFFFFFFFFFFFFFFFELL, v4);
+  if ((v6 & 4) == 0)
+  {
+LABEL_4:
+    if ((v6 & 8) == 0)
+    {
+      goto LABEL_15;
+    }
+
+    goto LABEL_9;
+  }
+
+LABEL_8:
+  v4 = sub_128AEEC(a3, 3, *(a1 + 64) & 0xFFFFFFFFFFFFFFFELL, v4);
+  if ((v6 & 8) == 0)
+  {
+    goto LABEL_15;
+  }
+
+LABEL_9:
+  if (*a3 <= v4)
+  {
+    v4 = sub_225EB68(a3, v4);
+  }
+
+  v7 = *(a1 + 72);
+  *v4 = 34;
+  v8 = *(v7 + 20);
+  v4[1] = v8;
+  if (v8 > 0x7F)
+  {
+    v9 = sub_19575D0(v8, v4 + 1);
+  }
+
+  else
+  {
+    v9 = v4 + 2;
+  }
+
+  v4 = sub_15F5E04(v7, v9, a3);
+LABEL_15:
+  v10 = *(a1 + 32);
+  if (v10 >= 1)
+  {
+    v11 = 8;
+    do
+    {
+      v12 = *(*(a1 + 40) + v11);
+      v13 = *(v12 + 23);
+      if (v13 < 0 && (v13 = v12[1], v13 > 127) || *a3 - v4 + 14 < v13)
+      {
+        v4 = sub_1957480(a3, 5, v12, v4);
+      }
+
+      else
+      {
+        *v4 = 42;
+        v4[1] = v13;
+        if (*(v12 + 23) < 0)
+        {
+          v12 = *v12;
+        }
+
+        v14 = v4 + 2;
+        memcpy(v14, v12, v13);
+        v4 = &v14[v13];
+      }
+
+      v11 += 8;
+      --v10;
+    }
+
+    while (v10);
+  }
+
+  v15 = *(a1 + 8);
+  if ((v15 & 1) == 0)
+  {
+    return v4;
+  }
+
+  v17 = v15 & 0xFFFFFFFFFFFFFFFCLL;
+  v18 = *(v17 + 31);
+  if (v18 < 0)
+  {
+    v19 = *(v17 + 8);
+    v18 = *(v17 + 16);
+  }
+
+  else
+  {
+    v19 = (v17 + 8);
+  }
+
+  if (*a3 - v4 >= v18)
+  {
+    v20 = v18;
+    memcpy(v4, v19, v18);
+    v4 += v20;
+    return v4;
+  }
+
+  return sub_1957130(a3, v19, v18, v4);
+}
+
+uint64_t sub_15F5984(uint64_t a1)
+{
+  v2 = *(a1 + 32);
+  if (v2 < 1)
+  {
+    v4 = *(a1 + 32);
+  }
+
+  else
+  {
+    v3 = (*(a1 + 40) + 8);
+    v4 = *(a1 + 32);
+    do
+    {
+      v5 = *v3++;
+      v6 = *(v5 + 23);
+      v7 = *(v5 + 8);
+      if ((v6 & 0x80u) == 0)
+      {
+        v7 = v6;
+      }
+
+      v4 += v7 + ((9 * (__clz(v7 | 1) ^ 0x1F) + 73) >> 6);
+      --v2;
+    }
+
+    while (v2);
+  }
+
+  v8 = *(a1 + 16);
+  if ((v8 & 0xF) == 0)
+  {
+    goto LABEL_14;
+  }
+
+  if ((v8 & 1) == 0)
+  {
+    if ((v8 & 2) == 0)
+    {
+      goto LABEL_11;
+    }
+
+LABEL_19:
+    v15 = *(a1 + 56) & 0xFFFFFFFFFFFFFFFELL;
+    v16 = *(v15 + 23);
+    v17 = *(v15 + 8);
+    if ((v16 & 0x80u) == 0)
+    {
+      v17 = v16;
+    }
+
+    v4 += v17 + ((9 * (__clz(v17 | 1) ^ 0x1F) + 73) >> 6) + 1;
+    if ((v8 & 4) == 0)
+    {
+LABEL_12:
+      if ((v8 & 8) == 0)
+      {
+        goto LABEL_14;
+      }
+
+      goto LABEL_13;
+    }
+
+    goto LABEL_22;
+  }
+
+  v12 = *(a1 + 48) & 0xFFFFFFFFFFFFFFFELL;
+  v13 = *(v12 + 23);
+  v14 = *(v12 + 8);
+  if ((v13 & 0x80u) == 0)
+  {
+    v14 = v13;
+  }
+
+  v4 += v14 + ((9 * (__clz(v14 | 1) ^ 0x1F) + 73) >> 6) + 1;
+  if ((v8 & 2) != 0)
+  {
+    goto LABEL_19;
+  }
+
+LABEL_11:
+  if ((v8 & 4) == 0)
+  {
+    goto LABEL_12;
+  }
+
+LABEL_22:
+  v18 = *(a1 + 64) & 0xFFFFFFFFFFFFFFFELL;
+  v19 = *(v18 + 23);
+  v20 = *(v18 + 8);
+  if ((v19 & 0x80u) == 0)
+  {
+    v20 = v19;
+  }
+
+  v4 += v20 + ((9 * (__clz(v20 | 1) ^ 0x1F) + 73) >> 6) + 1;
+  if ((v8 & 8) != 0)
+  {
+LABEL_13:
+    v9 = sub_15F5F50(*(a1 + 72));
+    v4 += v9 + ((9 * (__clz(v9 | 1) ^ 0x1F) + 73) >> 6) + 1;
+  }
+
+LABEL_14:
+  v10 = *(a1 + 8);
+  if (v10)
+  {
+    v21 = v10 & 0xFFFFFFFFFFFFFFFCLL;
+    v22 = *((v10 & 0xFFFFFFFFFFFFFFFCLL) + 31);
+    if (v22 < 0)
+    {
+      v22 = *(v21 + 16);
+    }
+
+    v4 += v22;
+  }
+
+  *(a1 + 20) = v4;
+  return v4;
+}
+
+uint64_t sub_15F5B60(uint64_t a1)
+{
+  v3 = (a1 + 8);
+  v2 = *(a1 + 8);
+  v4 = (v2 & 0xFFFFFFFFFFFFFFFCLL);
+  if (v2)
+  {
+    if (*v4)
+    {
+      goto LABEL_7;
+    }
+  }
+
+  else if (v4)
+  {
+    goto LABEL_7;
+  }
+
+  v5 = (a1 + 24);
+  if (*(a1 + 24) != &qword_278E990)
+  {
+    sub_194E89C(v5);
+  }
+
+  if (v2)
+  {
+    sub_11F19CC(v3);
+  }
+
+LABEL_7:
+  *a1 = off_27215B8;
+  sub_195A5E8(v3);
+  return a1;
+}
+
+void sub_15F5C00(uint64_t a1)
+{
+  sub_15F5B60(a1);
+
+  operator delete();
+}
+
+uint64_t sub_15F5C38(uint64_t a1, uint64_t a2, int32x2_t *a3)
+{
+  *v24 = a2;
+  v5 = 0;
+  if (sub_195ADC0(a3, v24, a3[11].i32[1]))
+  {
+    goto LABEL_2;
+  }
+
+  while (1)
+  {
+    v7 = (*v24 + 1);
+    v8 = **v24;
+    if (**v24 < 0)
+    {
+      v9 = v8 + (*v7 << 7);
+      v8 = v9 - 128;
+      if (*v7 < 0)
+      {
+        v7 = sub_1958824(*v24, v9 - 128);
+        v8 = v10;
+      }
+
+      else
+      {
+        v7 = (*v24 + 2);
+      }
+    }
+
+    *v24 = v7;
+    if (v8 >> 3 != 2)
+    {
+      break;
+    }
+
+    if (v8 != 16)
+    {
+      goto LABEL_12;
+    }
+
+    v5 |= 2u;
+    v17 = v7 + 1;
+    v16 = *v7;
+    if ((v16 & 0x8000000000000000) == 0)
+    {
+      goto LABEL_23;
+    }
+
+    v18 = *v17;
+    v16 = (v18 << 7) + v16 - 128;
+    if ((v18 & 0x80000000) == 0)
+    {
+      v17 = v7 + 2;
+LABEL_23:
+      *v24 = v17;
+      *(a1 + 32) = v16;
+      goto LABEL_28;
+    }
+
+    v22 = sub_19587DC(v7, v16);
+    *v24 = v22;
+    *(a1 + 32) = v23;
+    if (!v22)
+    {
+      goto LABEL_35;
+    }
+
+LABEL_28:
+    if (sub_195ADC0(a3, v24, a3[11].i32[1]))
+    {
+      goto LABEL_2;
+    }
+  }
+
+  if (v8 >> 3 == 1 && v8 == 10)
+  {
+    *(a1 + 16) |= 1u;
+    v19 = *(a1 + 8);
+    v20 = (v19 & 0xFFFFFFFFFFFFFFFCLL);
+    if (v19)
+    {
+      v20 = *v20;
+    }
+
+    v21 = sub_194DB04((a1 + 24), v20);
+    v15 = sub_1958890(v21, *v24, a3);
+LABEL_27:
+    *v24 = v15;
+    if (!v15)
+    {
+      goto LABEL_35;
+    }
+
+    goto LABEL_28;
+  }
+
+LABEL_12:
+  if (v8)
+  {
+    v12 = (v8 & 7) == 4;
+  }
+
+  else
+  {
+    v12 = 1;
+  }
+
+  if (!v12)
+  {
+    v13 = *(a1 + 8);
+    if (v13)
+    {
+      v14 = (v13 & 0xFFFFFFFFFFFFFFFCLL) + 8;
+    }
+
+    else
+    {
+      v14 = sub_11F1920((a1 + 8));
+      v7 = *v24;
+    }
+
+    v15 = sub_1952690(v8, v14, v7, a3);
+    goto LABEL_27;
+  }
+
+  if (v7)
+  {
+    a3[10].i32[0] = v8 - 1;
+    goto LABEL_2;
+  }
+
+LABEL_35:
+  *v24 = 0;
+LABEL_2:
+  *(a1 + 16) |= v5;
+  return *v24;
+}
+
+char *sub_15F5E04(uint64_t a1, char *__dst, void *a3)
+{
+  v4 = __dst;
+  v6 = *(a1 + 16);
+  if (v6)
+  {
+    v4 = sub_128AEEC(a3, 1, *(a1 + 24) & 0xFFFFFFFFFFFFFFFELL, __dst);
+  }
+
+  if ((v6 & 2) != 0)
+  {
+    if (*a3 <= v4)
+    {
+      v4 = sub_225EB68(a3, v4);
+    }
+
+    v8 = *(a1 + 32);
+    *v4 = 16;
+    v4[1] = v8;
+    if (v8 > 0x7F)
+    {
+      v4[1] = v8 | 0x80;
+      v9 = v8 >> 7;
+      v4[2] = v8 >> 7;
+      v7 = v4 + 3;
+      if (v8 >= 0x4000)
+      {
+        LOBYTE(v10) = v4[2];
+        do
+        {
+          *(v7 - 1) = v10 | 0x80;
+          v10 = v9 >> 7;
+          *v7++ = v9 >> 7;
+          v11 = v9 >> 14;
+          v9 >>= 7;
+        }
+
+        while (v11);
+      }
+    }
+
+    else
+    {
+      v7 = v4 + 2;
+    }
+  }
+
+  else
+  {
+    v7 = v4;
+  }
+
+  v12 = *(a1 + 8);
+  if ((v12 & 1) == 0)
+  {
+    return v7;
+  }
+
+  v14 = v12 & 0xFFFFFFFFFFFFFFFCLL;
+  v15 = *(v14 + 31);
+  if (v15 < 0)
+  {
+    v16 = *(v14 + 8);
+    v15 = *(v14 + 16);
+  }
+
+  else
+  {
+    v16 = (v14 + 8);
+  }
+
+  if (*a3 - v7 >= v15)
+  {
+    v17 = v15;
+    memcpy(v7, v16, v15);
+    v7 += v17;
+    return v7;
+  }
+
+  return sub_1957130(a3, v16, v15, v7);
+}
+
+uint64_t sub_15F5F50(uint64_t a1)
+{
+  v1 = *(a1 + 16);
+  if ((v1 & 3) == 0)
+  {
+    v2 = 0;
+    goto LABEL_10;
+  }
+
+  if ((v1 & 1) == 0)
+  {
+    v2 = 0;
+    if ((v1 & 2) == 0)
+    {
+      goto LABEL_10;
+    }
+
+LABEL_9:
+    v2 += ((9 * (__clz(*(a1 + 32) | 1) ^ 0x3F) + 73) >> 6) + 1;
+    goto LABEL_10;
+  }
+
+  v3 = *(a1 + 24) & 0xFFFFFFFFFFFFFFFELL;
+  v4 = *(v3 + 23);
+  v5 = *(v3 + 8);
+  if ((v4 & 0x80u) == 0)
+  {
+    v5 = v4;
+  }
+
+  v2 = v5 + ((9 * (__clz(v5 | 1) ^ 0x1F) + 73) >> 6) + 1;
+  if ((v1 & 2) != 0)
+  {
+    goto LABEL_9;
+  }
+
+LABEL_10:
+  v6 = *(a1 + 8);
+  if (v6)
+  {
+    v8 = v6 & 0xFFFFFFFFFFFFFFFCLL;
+    v9 = *((v6 & 0xFFFFFFFFFFFFFFFCLL) + 31);
+    if (v9 < 0)
+    {
+      v9 = *(v8 + 16);
+    }
+
+    v2 += v9;
+  }
+
+  *(a1 + 20) = v2;
+  return v2;
+}
+
+void *sub_15F601C(void *a1)
+{
+  v3 = a1 + 1;
+  v2 = a1[1];
+  if ((v2 & 1) != 0 && !*(v2 & 0xFFFFFFFFFFFFFFFCLL))
+  {
+    sub_11F19CC(a1 + 1);
+  }
+
+  sub_1636654(a1 + 3);
+  *a1 = off_27215B8;
+  sub_195A5E8(v3);
+  return a1;
+}
+
+void sub_15F609C(void *a1)
+{
+  sub_15F601C(a1);
+
+  operator delete();
+}
+
+uint64_t sub_15F60D4(uint64_t result)
+{
+  v1 = result;
+  v2 = *(result + 32);
+  if (v2 >= 1)
+  {
+    v3 = (*(result + 40) + 8);
+    do
+    {
+      v4 = *v3++;
+      result = sub_15F6C68(v4);
+      --v2;
+    }
+
+    while (v2);
+    *(v1 + 32) = 0;
+  }
+
+  v6 = *(v1 + 8);
+  v5 = v1 + 8;
+  *(v5 + 40) = 0;
+  *(v5 + 8) = 0;
+  if (v6)
+  {
+
+    return sub_1957EA8(v5);
+  }
+
+  return result;
+}
+
+char *sub_15F6158(uint64_t a1, char *a2, int32x2_t *a3)
+{
+  v23 = a2;
+  for (i = a3[11].i32[1]; (sub_195ADC0(a3, &v23, i) & 1) == 0; i = a3[11].i32[1])
+  {
+    v6 = v23 + 1;
+    v7 = *v23;
+    if (*v23 < 0)
+    {
+      v8 = v7 + (*v6 << 7);
+      v7 = v8 - 128;
+      if (*v6 < 0)
+      {
+        v6 = sub_1958824(v23, v8 - 128);
+        v7 = v9;
+      }
+
+      else
+      {
+        v6 = v23 + 2;
+      }
+    }
+
+    v23 = v6;
+    if (v7 >> 3 == 2)
+    {
+      if (v7 == 18)
+      {
+        v14 = v6 - 1;
+        while (1)
+        {
+          v23 = v14 + 1;
+          v15 = *(a1 + 40);
+          if (v15 && (v16 = *(a1 + 32), v16 < *v15))
+          {
+            *(a1 + 32) = v16 + 1;
+            v17 = *&v15[2 * v16 + 2];
+          }
+
+          else
+          {
+            v18 = sub_1617448(*(a1 + 24));
+            v17 = sub_19593CC(a1 + 24, v18);
+          }
+
+          v14 = sub_2228314(a3, v17);
+          v23 = v14;
+          if (!v14)
+          {
+            return 0;
+          }
+
+          if (*a3 <= v14 || *v14 != 18)
+          {
+            goto LABEL_36;
+          }
+        }
+      }
+    }
+
+    else if (v7 >> 3 == 1 && v7 == 8)
+    {
+      v20 = v6 + 1;
+      v19 = *v6;
+      if ((v19 & 0x8000000000000000) == 0)
+      {
+        goto LABEL_33;
+      }
+
+      v21 = *v20;
+      v19 = (v21 << 7) + v19 - 128;
+      if (v21 < 0)
+      {
+        v23 = sub_19587DC(v6, v19);
+        if (!v23)
+        {
+          return 0;
+        }
+      }
+
+      else
+      {
+        v20 = v6 + 2;
+LABEL_33:
+        v23 = v20;
+      }
+
+      if (v19 > 9)
+      {
+        sub_12E8450();
+      }
+
+      else
+      {
+        *(a1 + 16) |= 1u;
+        *(a1 + 48) = v19;
+      }
+
+      continue;
+    }
+
+    if (v7)
+    {
+      v11 = (v7 & 7) == 4;
+    }
+
+    else
+    {
+      v11 = 1;
+    }
+
+    if (v11)
+    {
+      if (v6)
+      {
+        a3[10].i32[0] = v7 - 1;
+        return v23;
+      }
+
+      return 0;
+    }
+
+    v12 = *(a1 + 8);
+    if (v12)
+    {
+      v13 = (v12 & 0xFFFFFFFFFFFFFFFCLL) + 8;
+    }
+
+    else
+    {
+      v13 = sub_11F1920((a1 + 8));
+      v6 = v23;
+    }
+
+    v23 = sub_1952690(v7, v13, v6, a3);
+    if (!v23)
+    {
+      return 0;
+    }
+
+LABEL_36:
+    ;
+  }
+
+  return v23;
+}
+
+char *sub_15F6360(uint64_t a1, char *__dst, _DWORD *a3)
+{
+  if (*(a1 + 16))
+  {
+    if (*a3 <= __dst)
+    {
+      __dst = sub_225EB68(a3, __dst);
+    }
+
+    v6 = *(a1 + 48);
+    *__dst = 8;
+    __dst[1] = v6;
+    if (v6 > 0x7F)
+    {
+      __dst[1] = v6 | 0x80;
+      v7 = v6 >> 7;
+      __dst[2] = v6 >> 7;
+      v5 = __dst + 3;
+      if (v6 >= 0x4000)
+      {
+        LOBYTE(v8) = __dst[2];
+        do
+        {
+          *(v5 - 1) = v8 | 0x80;
+          v8 = v7 >> 7;
+          *v5++ = v7 >> 7;
+          v9 = v7 >> 14;
+          v7 >>= 7;
+        }
+
+        while (v9);
+      }
+    }
+
+    else
+    {
+      v5 = __dst + 2;
+    }
+  }
+
+  else
+  {
+    v5 = __dst;
+  }
+
+  v10 = *(a1 + 32);
+  if (v10)
+  {
+    for (i = 0; i != v10; ++i)
+    {
+      if (*a3 <= v5)
+      {
+        v5 = sub_225EB68(a3, v5);
+      }
+
+      v12 = *(*(a1 + 40) + 8 * i + 8);
+      *v5 = 18;
+      v13 = *(v12 + 20);
+      v5[1] = v13;
+      if (v13 > 0x7F)
+      {
+        v14 = sub_19575D0(v13, v5 + 1);
+      }
+
+      else
+      {
+        v14 = v5 + 2;
+      }
+
+      v5 = sub_15F7520(v12, v14, a3);
+    }
+  }
+
+  v15 = *(a1 + 8);
+  if ((v15 & 1) == 0)
+  {
+    return v5;
+  }
+
+  v17 = v15 & 0xFFFFFFFFFFFFFFFCLL;
+  v18 = *(v17 + 31);
+  if (v18 < 0)
+  {
+    v19 = *(v17 + 8);
+    v18 = *(v17 + 16);
+  }
+
+  else
+  {
+    v19 = (v17 + 8);
+  }
+
+  if (*a3 - v5 >= v18)
+  {
+    v20 = v18;
+    memcpy(v5, v19, v18);
+    v5 += v20;
+    return v5;
+  }
+
+  return sub_1957130(a3, v19, v18, v5);
+}
+
+uint64_t sub_15F6524(uint64_t a1)
+{
+  v2 = *(a1 + 32);
+  v3 = *(a1 + 40);
+  if (v3)
+  {
+    v4 = (v3 + 8);
+  }
+
+  else
+  {
+    v4 = 0;
+  }
+
+  if (v2)
+  {
+    v5 = 8 * v2;
+    do
+    {
+      v6 = *v4++;
+      v7 = sub_15F7AB8(v6);
+      v2 += v7 + ((9 * (__clz(v7 | 1) ^ 0x1F) + 73) >> 6);
+      v5 -= 8;
+    }
+
+    while (v5);
+  }
+
+  else
+  {
+    v2 = 0;
+  }
+
+  if (*(a1 + 16))
+  {
+    v8 = *(a1 + 48);
+    if (v8 < 0)
+    {
+      v9 = 11;
+    }
+
+    else
+    {
+      v9 = ((9 * (__clz(v8 | 1) ^ 0x1F) + 73) >> 6) + 1;
+    }
+
+    v2 += v9;
+  }
+
+  v10 = *(a1 + 8);
+  if (v10)
+  {
+    v12 = v10 & 0xFFFFFFFFFFFFFFFCLL;
+    v13 = *((v10 & 0xFFFFFFFFFFFFFFFCLL) + 31);
+    if (v13 < 0)
+    {
+      v13 = *(v12 + 16);
+    }
+
+    v2 += v13;
+  }
+
+  *(a1 + 20) = v2;
+  return v2;
+}
+
+std::string *sub_15F6604(std::string *result, uint64_t a2)
+{
+  v3 = result;
+  v4 = *(a2 + 32);
+  if (v4)
+  {
+    v5 = *(a2 + 40);
+    v6 = sub_19592E8(&result[1], *(a2 + 32));
+    result = sub_1637448(&v3[1], v6, (v5 + 8), v4, *v3[1].__r_.__value_.__r.__words[2] - LODWORD(v3[1].__r_.__value_.__r.__words[1]));
+    v7 = LODWORD(v3[1].__r_.__value_.__r.__words[1]) + v4;
+    LODWORD(v3[1].__r_.__value_.__r.__words[1]) = v7;
+    v8 = v3[1].__r_.__value_.__r.__words[2];
+    if (*v8 < v7)
+    {
+      *v8 = v7;
+    }
+  }
+
+  if (*(a2 + 16))
+  {
+    v9 = *(a2 + 48);
+    LODWORD(v3->__r_.__value_.__r.__words[2]) |= 1u;
+    LODWORD(v3[2].__r_.__value_.__l.__data_) = v9;
+  }
+
+  v10 = *(a2 + 8);
+  if (v10)
+  {
+
+    return sub_1957EF4(&v3->__r_.__value_.__l.__size_, (v10 & 0xFFFFFFFFFFFFFFFCLL) + 8);
+  }
+
+  return result;
+}
+
+uint64_t sub_15F66F4(uint64_t a1)
+{
+  v3 = (a1 + 8);
+  v2 = *(a1 + 8);
+  v4 = (v2 & 0xFFFFFFFFFFFFFFFCLL);
+  if (v2)
+  {
+    if (*v4)
+    {
+      goto LABEL_7;
+    }
+  }
+
+  else if (v4)
+  {
+    goto LABEL_7;
+  }
+
+  v5 = (a1 + 24);
+  if (*(a1 + 24) != &qword_278E990)
+  {
+    sub_194E89C(v5);
+  }
+
+  if (v2)
+  {
+    sub_11F19CC(v3);
+  }
+
+LABEL_7:
+  *a1 = off_27215B8;
+  sub_195A5E8(v3);
+  return a1;
+}
+
+void sub_15F6794(uint64_t a1)
+{
+  sub_15F66F4(a1);
+
+  operator delete();
+}
+
+uint64_t sub_15F67CC(uint64_t a1)
+{
+  if (*(a1 + 16))
+  {
+    v1 = *(a1 + 24) & 0xFFFFFFFFFFFFFFFELL;
+    if (*(v1 + 23) < 0)
+    {
+      **v1 = 0;
+      *(v1 + 8) = 0;
+    }
+
+    else
+    {
+      *v1 = 0;
+      *(v1 + 23) = 0;
+    }
+  }
+
+  v3 = *(a1 + 8);
+  result = a1 + 8;
+  *(result + 8) = 0;
+  if (v3)
+  {
+    return sub_1957EA8(result);
+  }
+
+  return result;
+}
+
+uint64_t sub_15F6810(uint64_t a1, uint64_t a2, int32x2_t *a3)
+{
+  *v18 = a2;
+  for (i = a3[11].i32[1]; (sub_195ADC0(a3, v18, i) & 1) == 0; i = a3[11].i32[1])
+  {
+    v6 = (*v18 + 1);
+    v7 = **v18;
+    if (**v18 < 0)
+    {
+      v8 = v7 + (*v6 << 7);
+      v7 = v8 - 128;
+      if (*v6 < 0)
+      {
+        v6 = sub_1958824(*v18, v8 - 128);
+        v7 = v9;
+      }
+
+      else
+      {
+        v6 = (*v18 + 2);
+      }
+    }
+
+    *v18 = v6;
+    if (v7 == 10)
+    {
+      *(a1 + 16) |= 1u;
+      v14 = *(a1 + 8);
+      v15 = (v14 & 0xFFFFFFFFFFFFFFFCLL);
+      if (v14)
+      {
+        v15 = *v15;
+      }
+
+      v16 = sub_194DB04((a1 + 24), v15);
+      v13 = sub_1958890(v16, *v18, a3);
+    }
+
+    else
+    {
+      if (v7)
+      {
+        v10 = (v7 & 7) == 4;
+      }
+
+      else
+      {
+        v10 = 1;
+      }
+
+      if (v10)
+      {
+        if (v6)
+        {
+          a3[10].i32[0] = v7 - 1;
+          return *v18;
+        }
+
+LABEL_24:
+        *v18 = 0;
+        return *v18;
+      }
+
+      v11 = *(a1 + 8);
+      if (v11)
+      {
+        v12 = (v11 & 0xFFFFFFFFFFFFFFFCLL) + 8;
+      }
+
+      else
+      {
+        v12 = sub_11F1920((a1 + 8));
+        v6 = *v18;
+      }
+
+      v13 = sub_1952690(v7, v12, v6, a3);
+    }
+
+    *v18 = v13;
+    if (!v13)
+    {
+      goto LABEL_24;
+    }
+  }
+
+  return *v18;
+}
+
+char *sub_15F6948(uint64_t a1, char *__dst, void *a3)
+{
+  v4 = __dst;
+  if (*(a1 + 16))
+  {
+    v4 = sub_128AEEC(a3, 1, *(a1 + 24) & 0xFFFFFFFFFFFFFFFELL, __dst);
+  }
+
+  v6 = *(a1 + 8);
+  if ((v6 & 1) == 0)
+  {
+    return v4;
+  }
+
+  v8 = v6 & 0xFFFFFFFFFFFFFFFCLL;
+  v9 = *(v8 + 31);
+  if (v9 < 0)
+  {
+    v10 = *(v8 + 8);
+    v9 = *(v8 + 16);
+  }
+
+  else
+  {
+    v10 = (v8 + 8);
+  }
+
+  if (*a3 - v4 >= v9)
+  {
+    v11 = v9;
+    memcpy(v4, v10, v9);
+    v4 += v11;
+    return v4;
+  }
+
+  return sub_1957130(a3, v10, v9, v4);
+}
+
+uint64_t sub_15F6A10(uint64_t a1)
+{
+  if (*(a1 + 16))
+  {
+    v2 = *(a1 + 24) & 0xFFFFFFFFFFFFFFFELL;
+    v3 = *(v2 + 23);
+    v4 = *(v2 + 8);
+    if ((v3 & 0x80u) == 0)
+    {
+      v4 = v3;
+    }
+
+    v1 = v4 + ((9 * (__clz(v4 | 1) ^ 0x1F) + 73) >> 6) + 1;
+  }
+
+  else
+  {
+    v1 = 0;
+  }
+
+  v5 = *(a1 + 8);
+  if (v5)
+  {
+    v7 = v5 & 0xFFFFFFFFFFFFFFFCLL;
+    v8 = *((v5 & 0xFFFFFFFFFFFFFFFCLL) + 31);
+    if (v8 < 0)
+    {
+      v8 = *(v7 + 16);
+    }
+
+    v1 += v8;
+  }
+
+  *(a1 + 20) = v1;
+  return v1;
+}
+
+void *sub_15F6AA4(void *a1)
+{
+  v3 = a1 + 1;
+  v2 = a1[1];
+  v4 = (v2 & 0xFFFFFFFFFFFFFFFCLL);
+  if (v2)
+  {
+    if (*v4)
+    {
+      goto LABEL_5;
+    }
+  }
+
+  else if (v4)
+  {
+    goto LABEL_5;
+  }
+
+  sub_15F6B48(a1);
+  if (*v3)
+  {
+    sub_11F19CC(v3);
+  }
+
+LABEL_5:
+  sub_163675C(a1 + 9);
+  sub_16366D8(a1 + 6);
+  sub_1956AFC(a1 + 3);
+  *a1 = off_27215B8;
+  sub_195A5E8(v3);
+  return a1;
+}
+
+void ***sub_15F6B48(uint64_t a1)
+{
+  v3 = *(a1 + 96);
+  v2 = (a1 + 96);
+  if (v3 != &qword_278E990)
+  {
+    sub_194E89C(v2);
+  }
+
+  if (*(a1 + 104) != &qword_278E990)
+  {
+    sub_194E89C((a1 + 104));
+  }
+
+  if (*(a1 + 112) != &qword_278E990)
+  {
+    sub_194E89C((a1 + 112));
+  }
+
+  if (*(a1 + 120) != &qword_278E990)
+  {
+    sub_194E89C((a1 + 120));
+  }
+
+  if (*(a1 + 128) != &qword_278E990)
+  {
+    sub_194E89C((a1 + 128));
+  }
+
+  result = (a1 + 136);
+  if (*(a1 + 136) != &qword_278E990)
+  {
+    sub_194E89C(result);
+  }
+
+  if (a1 != &off_2779F10)
+  {
+    result = *(a1 + 144);
+    if (result)
+    {
+      sub_15F66F4(result);
+
+      operator delete();
+    }
+  }
+
+  return result;
+}
+
+void sub_15F6C30(void *a1)
+{
+  sub_15F6AA4(a1);
+
+  operator delete();
+}
+
+uint64_t sub_15F6C68(uint64_t a1)
+{
+  result = sub_12A41D0(a1 + 24);
+  v3 = *(a1 + 56);
+  if (v3 >= 1)
+  {
+    v4 = (*(a1 + 64) + 8);
+    do
+    {
+      v5 = *v4++;
+      result = sub_160F93C(v5);
+      --v3;
+    }
+
+    while (v3);
+    *(a1 + 56) = 0;
+  }
+
+  v6 = *(a1 + 80);
+  if (v6 >= 1)
+  {
+    v7 = (*(a1 + 88) + 8);
+    do
+    {
+      v8 = *v7++;
+      result = sub_15F60D4(v8);
+      --v6;
+    }
+
+    while (v6);
+    *(a1 + 80) = 0;
+  }
+
+  v9 = *(a1 + 16);
+  if ((v9 & 0x7F) == 0)
+  {
+    goto LABEL_18;
+  }
+
+  if ((v9 & 1) == 0)
+  {
+    if ((v9 & 2) == 0)
+    {
+      goto LABEL_12;
+    }
+
+LABEL_28:
+    v13 = *(a1 + 104) & 0xFFFFFFFFFFFFFFFELL;
+    if (*(v13 + 23) < 0)
+    {
+      **v13 = 0;
+      *(v13 + 8) = 0;
+      if ((v9 & 4) != 0)
+      {
+        goto LABEL_32;
+      }
+    }
+
+    else
+    {
+      *v13 = 0;
+      *(v13 + 23) = 0;
+      if ((v9 & 4) != 0)
+      {
+        goto LABEL_32;
+      }
+    }
+
+LABEL_13:
+    if ((v9 & 8) == 0)
+    {
+      goto LABEL_14;
+    }
+
+LABEL_36:
+    v15 = *(a1 + 120) & 0xFFFFFFFFFFFFFFFELL;
+    if (*(v15 + 23) < 0)
+    {
+      **v15 = 0;
+      *(v15 + 8) = 0;
+      if ((v9 & 0x10) != 0)
+      {
+        goto LABEL_40;
+      }
+    }
+
+    else
+    {
+      *v15 = 0;
+      *(v15 + 23) = 0;
+      if ((v9 & 0x10) != 0)
+      {
+        goto LABEL_40;
+      }
+    }
+
+LABEL_15:
+    if ((v9 & 0x20) == 0)
+    {
+      goto LABEL_16;
+    }
+
+    goto LABEL_44;
+  }
+
+  v12 = *(a1 + 96) & 0xFFFFFFFFFFFFFFFELL;
+  if (*(v12 + 23) < 0)
+  {
+    **v12 = 0;
+    *(v12 + 8) = 0;
+    if ((v9 & 2) != 0)
+    {
+      goto LABEL_28;
+    }
+  }
+
+  else
+  {
+    *v12 = 0;
+    *(v12 + 23) = 0;
+    if ((v9 & 2) != 0)
+    {
+      goto LABEL_28;
+    }
+  }
+
+LABEL_12:
+  if ((v9 & 4) == 0)
+  {
+    goto LABEL_13;
+  }
+
+LABEL_32:
+  v14 = *(a1 + 112) & 0xFFFFFFFFFFFFFFFELL;
+  if (*(v14 + 23) < 0)
+  {
+    **v14 = 0;
+    *(v14 + 8) = 0;
+    if ((v9 & 8) != 0)
+    {
+      goto LABEL_36;
+    }
+  }
+
+  else
+  {
+    *v14 = 0;
+    *(v14 + 23) = 0;
+    if ((v9 & 8) != 0)
+    {
+      goto LABEL_36;
+    }
+  }
+
+LABEL_14:
+  if ((v9 & 0x10) == 0)
+  {
+    goto LABEL_15;
+  }
+
+LABEL_40:
+  v16 = *(a1 + 128) & 0xFFFFFFFFFFFFFFFELL;
+  if ((*(v16 + 23) & 0x80000000) == 0)
+  {
+    *v16 = 0;
+    *(v16 + 23) = 0;
+    if ((v9 & 0x20) != 0)
+    {
+      goto LABEL_44;
+    }
+
+LABEL_16:
+    if ((v9 & 0x40) == 0)
+    {
+      goto LABEL_18;
+    }
+
+    goto LABEL_17;
+  }
+
+  **v16 = 0;
+  *(v16 + 8) = 0;
+  if ((v9 & 0x20) == 0)
+  {
+    goto LABEL_16;
+  }
+
+LABEL_44:
+  v17 = *(a1 + 136) & 0xFFFFFFFFFFFFFFFELL;
+  if ((*(v17 + 23) & 0x80000000) == 0)
+  {
+    *v17 = 0;
+    *(v17 + 23) = 0;
+    if ((v9 & 0x40) == 0)
+    {
+      goto LABEL_18;
+    }
+
+LABEL_17:
+    result = sub_15F67CC(*(a1 + 144));
+    goto LABEL_18;
+  }
+
+  **v17 = 0;
+  *(v17 + 8) = 0;
+  if ((v9 & 0x40) != 0)
+  {
+    goto LABEL_17;
+  }
+
+LABEL_18:
+  *(a1 + 152) = 0;
+  if ((v9 & 0x700) != 0)
+  {
+    *(a1 + 168) = 0;
+    *(a1 + 160) = 0;
+  }
+
+  v11 = *(a1 + 8);
+  v10 = a1 + 8;
+  *(v10 + 8) = 0;
+  if (v11)
+  {
+
+    return sub_1957EA8(v10);
+  }
+
+  return result;
+}
+
+uint64_t sub_15F6E80(uint64_t a1, uint64_t a2, int32x2_t *a3)
+{
+  *v65 = a2;
+  v5 = 0;
+  if (sub_195ADC0(a3, v65, a3[11].i32[1]))
+  {
+    goto LABEL_2;
+  }
+
+  while (2)
+  {
+    v7 = (*v65 + 1);
+    v8 = **v65;
+    if (**v65 < 0)
+    {
+      v9 = v8 + (*v7 << 7);
+      v8 = v9 - 128;
+      if (*v7 < 0)
+      {
+        v7 = sub_1958824(*v65, v9 - 128);
+        v8 = v10;
+      }
+
+      else
+      {
+        v7 = (*v65 + 2);
+      }
+    }
+
+    *v65 = v7;
+    switch(v8 >> 3)
+    {
+      case 1u:
+        if (v8 != 8)
+        {
+          goto LABEL_96;
+        }
+
+        v5 |= 0x80u;
+        v12 = (v7 + 1);
+        v11 = *v7;
+        if ((v11 & 0x8000000000000000) == 0)
+        {
+          goto LABEL_12;
+        }
+
+        v13 = *v12;
+        v11 = (v13 << 7) + v11 - 128;
+        if ((v13 & 0x80000000) == 0)
+        {
+          v12 = (v7 + 2);
+LABEL_12:
+          *v65 = v12;
+          *(a1 + 152) = v11;
+          goto LABEL_94;
+        }
+
+        v59 = sub_19587DC(v7, v11);
+        *v65 = v59;
+        *(a1 + 152) = v60;
+        if (v59)
+        {
+          goto LABEL_94;
+        }
+
+        goto LABEL_115;
+      case 2u:
+        if (v8 != 18)
+        {
+          goto LABEL_96;
+        }
+
+        *(a1 + 16) |= 1u;
+        v43 = *(a1 + 8);
+        v21 = (v43 & 0xFFFFFFFFFFFFFFFCLL);
+        if (v43)
+        {
+          v21 = *v21;
+        }
+
+        v22 = (a1 + 96);
+        goto LABEL_92;
+      case 3u:
+        if (v8 != 26)
+        {
+          goto LABEL_96;
+        }
+
+        *(a1 + 16) |= 2u;
+        v28 = *(a1 + 8);
+        v21 = (v28 & 0xFFFFFFFFFFFFFFFCLL);
+        if (v28)
+        {
+          v21 = *v21;
+        }
+
+        v22 = (a1 + 104);
+        goto LABEL_92;
+      case 4u:
+        if (v8 != 34)
+        {
+          goto LABEL_96;
+        }
+
+        v29 = (v7 - 1);
+        while (1)
+        {
+          v30 = (v29 + 1);
+          *v65 = v29 + 1;
+          v31 = *(a1 + 40);
+          if (v31 && (v32 = *(a1 + 32), v32 < *v31))
+          {
+            *(a1 + 32) = v32 + 1;
+            v33 = *&v31[2 * v32 + 2];
+          }
+
+          else
+          {
+            v34 = *(a1 + 24);
+            if (!v34)
+            {
+              operator new();
+            }
+
+            *v36 = v35;
+            v36[1] = sub_195A650;
+            *v35 = 0;
+            v35[1] = 0;
+            v35[2] = 0;
+            v33 = sub_19593CC(a1 + 24, v35);
+            v30 = *v65;
+          }
+
+          v29 = sub_1958890(v33, v30, a3);
+          *v65 = v29;
+          if (!v29)
+          {
+            goto LABEL_115;
+          }
+
+          if (*a3 <= v29 || *v29 != 34)
+          {
+            goto LABEL_94;
+          }
+        }
+
+      case 5u:
+        if (v8 != 42)
+        {
+          goto LABEL_96;
+        }
+
+        *(a1 + 16) |= 4u;
+        v20 = *(a1 + 8);
+        v21 = (v20 & 0xFFFFFFFFFFFFFFFCLL);
+        if (v20)
+        {
+          v21 = *v21;
+        }
+
+        v22 = (a1 + 112);
+        goto LABEL_92;
+      case 6u:
+        if (v8 != 50)
+        {
+          goto LABEL_96;
+        }
+
+        *(a1 + 16) |= 8u;
+        v44 = *(a1 + 8);
+        v21 = (v44 & 0xFFFFFFFFFFFFFFFCLL);
+        if (v44)
+        {
+          v21 = *v21;
+        }
+
+        v22 = (a1 + 120);
+        goto LABEL_92;
+      case 7u:
+        if (v8 != 56)
+        {
+          goto LABEL_96;
+        }
+
+        v49 = (v7 + 1);
+        v48 = *v7;
+        if ((v48 & 0x8000000000000000) == 0)
+        {
+          goto LABEL_80;
+        }
+
+        v50 = *v49;
+        v48 = (v50 << 7) + v48 - 128;
+        if (v50 < 0)
+        {
+          *v65 = sub_19587DC(v7, v48);
+          if (!*v65)
+          {
+            goto LABEL_115;
+          }
+        }
+
+        else
+        {
+          v49 = (v7 + 2);
+LABEL_80:
+          *v65 = v49;
+        }
+
+        if (v48 > 0x50)
+        {
+          sub_13137F8();
+        }
+
+        else
+        {
+          *(a1 + 16) |= 0x100u;
+          *(a1 + 160) = v48;
+        }
+
+        goto LABEL_94;
+      case 8u:
+        if (v8 != 66)
+        {
+          goto LABEL_96;
+        }
+
+        v37 = v7 - 1;
+        while (1)
+        {
+          v38 = v37 + 1;
+          *v65 = v37 + 1;
+          v39 = *(a1 + 64);
+          if (v39 && (v40 = *(a1 + 56), v40 < *v39))
+          {
+            *(a1 + 56) = v40 + 1;
+            v41 = *&v39[2 * v40 + 2];
+          }
+
+          else
+          {
+            v42 = sub_1618758(*(a1 + 48));
+            v41 = sub_19593CC(a1 + 48, v42);
+            v38 = *v65;
+          }
+
+          v37 = sub_22283A4(a3, v41, v38);
+          *v65 = v37;
+          if (!v37)
+          {
+            goto LABEL_115;
+          }
+
+          if (*a3 <= v37 || *v37 != 66)
+          {
+            goto LABEL_94;
+          }
+        }
+
+      case 9u:
+        if (v8 != 74)
+        {
+          goto LABEL_96;
+        }
+
+        *(a1 + 16) |= 0x10u;
+        v54 = *(a1 + 8);
+        v21 = (v54 & 0xFFFFFFFFFFFFFFFCLL);
+        if (v54)
+        {
+          v21 = *v21;
+        }
+
+        v22 = (a1 + 128);
+        goto LABEL_92;
+      case 0xAu:
+        if (v8 != 82)
+        {
+          goto LABEL_96;
+        }
+
+        *(a1 + 16) |= 0x20u;
+        v27 = *(a1 + 8);
+        v21 = (v27 & 0xFFFFFFFFFFFFFFFCLL);
+        if (v27)
+        {
+          v21 = *v21;
+        }
+
+        v22 = (a1 + 136);
+LABEL_92:
+        v55 = sub_194DB04(v22, v21);
+        v26 = sub_1958890(v55, *v65, a3);
+        goto LABEL_93;
+      case 0xBu:
+        if (v8 != 88)
+        {
+          goto LABEL_96;
+        }
+
+        v5 |= 0x200u;
+        v51 = (v7 + 1);
+        v52 = *v7;
+        if ((*v7 & 0x80000000) == 0)
+        {
+          goto LABEL_87;
+        }
+
+        v53 = *v51;
+        v52 = v52 + (v53 << 7) - 128;
+        if (v53 < 0)
+        {
+          v63 = sub_1958770(v7, v52);
+          *v65 = v63;
+          *(a1 + 164) = v64;
+          if (!v63)
+          {
+            goto LABEL_115;
+          }
+        }
+
+        else
+        {
+          v51 = (v7 + 2);
+LABEL_87:
+          *v65 = v51;
+          *(a1 + 164) = v52;
+        }
+
+        goto LABEL_94;
+      case 0xCu:
+        if (v8 != 98)
+        {
+          goto LABEL_96;
+        }
+
+        v14 = (v7 - 1);
+        while (1)
+        {
+          v15 = (v14 + 1);
+          *v65 = v14 + 1;
+          v16 = *(a1 + 88);
+          if (v16 && (v17 = *(a1 + 80), v17 < *v16))
+          {
+            *(a1 + 80) = v17 + 1;
+            v18 = *&v16[2 * v17 + 2];
+          }
+
+          else
+          {
+            v19 = sub_1617328(*(a1 + 72));
+            v18 = sub_19593CC(a1 + 72, v19);
+            v15 = *v65;
+          }
+
+          v14 = sub_2228434(a3, v18, v15);
+          *v65 = v14;
+          if (!v14)
+          {
+            goto LABEL_115;
+          }
+
+          if (*a3 <= v14 || *v14 != 98)
+          {
+            goto LABEL_94;
+          }
+        }
+
+      case 0xDu:
+        if (v8 != 106)
+        {
+          goto LABEL_96;
+        }
+
+        *(a1 + 16) |= 0x40u;
+        v23 = *(a1 + 144);
+        if (!v23)
+        {
+          v24 = *(a1 + 8);
+          v25 = (v24 & 0xFFFFFFFFFFFFFFFCLL);
+          if (v24)
+          {
+            v25 = *v25;
+          }
+
+          v23 = sub_16173C4(v25);
+          *(a1 + 144) = v23;
+          v7 = *v65;
+        }
+
+        v26 = sub_22284C4(a3, v23, v7);
+        goto LABEL_93;
+      case 0xEu:
+        if (v8 != 112)
+        {
+          goto LABEL_96;
+        }
+
+        v5 |= 0x400u;
+        v45 = (v7 + 1);
+        v46 = *v7;
+        if ((*v7 & 0x80000000) == 0)
+        {
+          goto LABEL_75;
+        }
+
+        v47 = *v45;
+        v46 = v46 + (v47 << 7) - 128;
+        if (v47 < 0)
+        {
+          v61 = sub_1958770(v7, v46);
+          *v65 = v61;
+          *(a1 + 168) = v62;
+          if (!v61)
+          {
+            goto LABEL_115;
+          }
+        }
+
+        else
+        {
+          v45 = (v7 + 2);
+LABEL_75:
+          *v65 = v45;
+          *(a1 + 168) = v46;
+        }
+
+        goto LABEL_94;
+      default:
+LABEL_96:
+        if (v8)
+        {
+          v56 = (v8 & 7) == 4;
+        }
+
+        else
+        {
+          v56 = 1;
+        }
+
+        if (!v56)
+        {
+          v57 = *(a1 + 8);
+          if (v57)
+          {
+            v58 = (v57 & 0xFFFFFFFFFFFFFFFCLL) + 8;
+          }
+
+          else
+          {
+            v58 = sub_11F1920((a1 + 8));
+            v7 = *v65;
+          }
+
+          v26 = sub_1952690(v8, v58, v7, a3);
+LABEL_93:
+          *v65 = v26;
+          if (!v26)
+          {
+            goto LABEL_115;
+          }
+
+LABEL_94:
+          if (sub_195ADC0(a3, v65, a3[11].i32[1]))
+          {
+            goto LABEL_2;
+          }
+
+          continue;
+        }
+
+        if (v7)
+        {
+          a3[10].i32[0] = v8 - 1;
+        }
+
+        else
+        {
+LABEL_115:
+          *v65 = 0;
+        }
+
+LABEL_2:
+        *(a1 + 16) |= v5;
+        return *v65;
+    }
+  }
+}
+
+char *sub_15F7520(uint64_t a1, char *__dst, void *a3)
+{
+  v5 = *(a1 + 16);
+  if ((v5 & 0x80) != 0)
+  {
+    if (*a3 <= __dst)
+    {
+      __dst = sub_225EB68(a3, __dst);
+    }
+
+    v7 = *(a1 + 152);
+    *__dst = 8;
+    __dst[1] = v7;
+    if (v7 > 0x7F)
+    {
+      __dst[1] = v7 | 0x80;
+      v8 = v7 >> 7;
+      __dst[2] = v7 >> 7;
+      v6 = __dst + 3;
+      if (v7 >= 0x4000)
+      {
+        LOBYTE(v9) = __dst[2];
+        do
+        {
+          *(v6 - 1) = v9 | 0x80;
+          v9 = v8 >> 7;
+          *v6++ = v8 >> 7;
+          v10 = v8 >> 14;
+          v8 >>= 7;
+        }
+
+        while (v10);
+      }
+    }
+
+    else
+    {
+      v6 = __dst + 2;
+    }
+  }
+
+  else
+  {
+    v6 = __dst;
+  }
+
+  if (v5)
+  {
+    v6 = sub_128AEEC(a3, 2, *(a1 + 96) & 0xFFFFFFFFFFFFFFFELL, v6);
+  }
+
+  if ((v5 & 2) != 0)
+  {
+    v6 = sub_128AEEC(a3, 3, *(a1 + 104) & 0xFFFFFFFFFFFFFFFELL, v6);
+  }
+
+  v11 = *(a1 + 32);
+  if (v11 >= 1)
+  {
+    v12 = 8;
+    do
+    {
+      v13 = *(*(a1 + 40) + v12);
+      v14 = *(v13 + 23);
+      if (v14 < 0 && (v14 = v13[1], v14 > 127) || *a3 - v6 + 14 < v14)
+      {
+        v6 = sub_1957480(a3, 4, v13, v6);
+      }
+
+      else
+      {
+        *v6 = 34;
+        v6[1] = v14;
+        if (*(v13 + 23) < 0)
+        {
+          v13 = *v13;
+        }
+
+        v15 = v6 + 2;
+        memcpy(v6 + 2, v13, v14);
+        v6 = &v15[v14];
+      }
+
+      v12 += 8;
+      --v11;
+    }
+
+    while (v11);
+  }
+
+  if ((v5 & 4) == 0)
+  {
+    if ((v5 & 8) == 0)
+    {
+      goto LABEL_27;
+    }
+
+LABEL_30:
+    v6 = sub_128AEEC(a3, 6, *(a1 + 120) & 0xFFFFFFFFFFFFFFFELL, v6);
+    if ((v5 & 0x100) == 0)
+    {
+      goto LABEL_28;
+    }
+
+    goto LABEL_31;
+  }
+
+  v6 = sub_128AEEC(a3, 5, *(a1 + 112) & 0xFFFFFFFFFFFFFFFELL, v6);
+  if ((v5 & 8) != 0)
+  {
+    goto LABEL_30;
+  }
+
+LABEL_27:
+  if ((v5 & 0x100) == 0)
+  {
+LABEL_28:
+    v16 = v6;
+    goto LABEL_38;
+  }
+
+LABEL_31:
+  if (*a3 <= v6)
+  {
+    v6 = sub_225EB68(a3, v6);
+  }
+
+  v17 = *(a1 + 160);
+  *v6 = 56;
+  v6[1] = v17;
+  if (v17 > 0x7F)
+  {
+    v6[1] = v17 | 0x80;
+    v18 = v17 >> 7;
+    v6[2] = v17 >> 7;
+    v16 = v6 + 3;
+    if (v17 >= 0x4000)
+    {
+      LOBYTE(v19) = v6[2];
+      do
+      {
+        *(v16 - 1) = v19 | 0x80;
+        v19 = v18 >> 7;
+        *v16++ = v18 >> 7;
+        v20 = v18 >> 14;
+        v18 >>= 7;
+      }
+
+      while (v20);
+    }
+  }
+
+  else
+  {
+    v16 = v6 + 2;
+  }
+
+LABEL_38:
+  v21 = *(a1 + 56);
+  if (v21)
+  {
+    for (i = 0; i != v21; ++i)
+    {
+      if (*a3 <= v16)
+      {
+        v16 = sub_225EB68(a3, v16);
+      }
+
+      v23 = *(*(a1 + 64) + 8 * i + 8);
+      *v16 = 66;
+      v24 = *(v23 + 20);
+      v16[1] = v24;
+      if (v24 > 0x7F)
+      {
+        v25 = sub_19575D0(v24, v16 + 1);
+      }
+
+      else
+      {
+        v25 = v16 + 2;
+      }
+
+      v16 = sub_160FD48(v23, v25, a3);
+    }
+  }
+
+  if ((v5 & 0x10) == 0)
+  {
+    if ((v5 & 0x20) == 0)
+    {
+      goto LABEL_48;
+    }
+
+LABEL_51:
+    v16 = sub_128AEEC(a3, 10, *(a1 + 136) & 0xFFFFFFFFFFFFFFFELL, v16);
+    if ((v5 & 0x200) == 0)
+    {
+      goto LABEL_49;
+    }
+
+    goto LABEL_52;
+  }
+
+  v16 = sub_128AEEC(a3, 9, *(a1 + 128) & 0xFFFFFFFFFFFFFFFELL, v16);
+  if ((v5 & 0x20) != 0)
+  {
+    goto LABEL_51;
+  }
+
+LABEL_48:
+  if ((v5 & 0x200) == 0)
+  {
+LABEL_49:
+    v26 = v16;
+    goto LABEL_59;
+  }
+
+LABEL_52:
+  if (*a3 <= v16)
+  {
+    v16 = sub_225EB68(a3, v16);
+  }
+
+  v27 = *(a1 + 164);
+  *v16 = 88;
+  v16[1] = v27;
+  if (v27 > 0x7F)
+  {
+    v16[1] = v27 | 0x80;
+    v28 = v27 >> 7;
+    v16[2] = v27 >> 7;
+    v26 = v16 + 3;
+    if (v27 >= 0x4000)
+    {
+      LOBYTE(v16) = v16[2];
+      do
+      {
+        *(v26 - 1) = v16 | 0x80;
+        LODWORD(v16) = v28 >> 7;
+        *v26++ = v28 >> 7;
+        v29 = v28 >> 14;
+        v28 >>= 7;
+      }
+
+      while (v29);
+    }
+  }
+
+  else
+  {
+    v26 = v16 + 2;
+  }
+
+LABEL_59:
+  v30 = *(a1 + 80);
+  if (v30)
+  {
+    for (j = 0; j != v30; ++j)
+    {
+      if (*a3 <= v26)
+      {
+        v26 = sub_225EB68(a3, v26);
+      }
+
+      v32 = *(*(a1 + 88) + 8 * j + 8);
+      *v26 = 98;
+      v33 = *(v32 + 20);
+      v26[1] = v33;
+      if (v33 > 0x7F)
+      {
+        v34 = sub_19575D0(v33, v26 + 1);
+      }
+
+      else
+      {
+        v34 = v26 + 2;
+      }
+
+      v26 = sub_15F6360(v32, v34, a3);
+    }
+  }
+
+  if ((v5 & 0x40) != 0)
+  {
+    if (*a3 <= v26)
+    {
+      v26 = sub_225EB68(a3, v26);
+    }
+
+    v35 = *(a1 + 144);
+    *v26 = 106;
+    v36 = *(v35 + 20);
+    v26[1] = v36;
+    if (v36 > 0x7F)
+    {
+      v37 = sub_19575D0(v36, v26 + 1);
+    }
+
+    else
+    {
+      v37 = v26 + 2;
+    }
+
+    v26 = sub_15F6948(v35, v37, a3);
+  }
+
+  if ((v5 & 0x400) != 0)
+  {
+    if (*a3 <= v26)
+    {
+      v26 = sub_225EB68(a3, v26);
+    }
+
+    v39 = *(a1 + 168);
+    *v26 = 112;
+    v26[1] = v39;
+    if (v39 > 0x7F)
+    {
+      v26[1] = v39 | 0x80;
+      v40 = v39 >> 7;
+      v26[2] = v39 >> 7;
+      v38 = v26 + 3;
+      if (v39 >= 0x4000)
+      {
+        LOBYTE(v26) = v26[2];
+        do
+        {
+          *(v38 - 1) = v26 | 0x80;
+          LODWORD(v26) = v40 >> 7;
+          *v38++ = v40 >> 7;
+          v41 = v40 >> 14;
+          v40 >>= 7;
+        }
+
+        while (v41);
+      }
+    }
+
+    else
+    {
+      v38 = v26 + 2;
+    }
+  }
+
+  else
+  {
+    v38 = v26;
+  }
+
+  v42 = *(a1 + 8);
+  if ((v42 & 1) == 0)
+  {
+    return v38;
+  }
+
+  v44 = v42 & 0xFFFFFFFFFFFFFFFCLL;
+  v45 = *(v44 + 31);
+  if (v45 < 0)
+  {
+    v46 = *(v44 + 8);
+    v45 = *(v44 + 16);
+  }
+
+  else
+  {
+    v46 = (v44 + 8);
+  }
+
+  if (*a3 - v38 >= v45)
+  {
+    v47 = v45;
+    memcpy(v38, v46, v45);
+    v38 += v47;
+    return v38;
+  }
+
+  return sub_1957130(a3, v46, v45, v38);
+}
+
+uint64_t sub_15F7AB8(uint64_t a1)
+{
+  v2 = *(a1 + 32);
+  if (v2 < 1)
+  {
+    v4 = *(a1 + 32);
+  }
+
+  else
+  {
+    v3 = (*(a1 + 40) + 8);
+    v4 = *(a1 + 32);
+    do
+    {
+      v5 = *v3++;
+      v6 = *(v5 + 23);
+      v7 = *(v5 + 8);
+      if ((v6 & 0x80u) == 0)
+      {
+        v7 = v6;
+      }
+
+      v4 += v7 + ((9 * (__clz(v7 | 1) ^ 0x1F) + 73) >> 6);
+      --v2;
+    }
+
+    while (v2);
+  }
+
+  v8 = *(a1 + 56);
+  v9 = v4 + v8;
+  v10 = *(a1 + 64);
+  if (v10)
+  {
+    v11 = (v10 + 8);
+  }
+
+  else
+  {
+    v11 = 0;
+  }
+
+  if (v8)
+  {
+    v12 = 8 * v8;
+    do
+    {
+      v13 = *v11++;
+      v14 = sub_160FF64(v13);
+      v9 += v14 + ((9 * (__clz(v14 | 1) ^ 0x1F) + 73) >> 6);
+      v12 -= 8;
+    }
+
+    while (v12);
+  }
+
+  v15 = *(a1 + 80);
+  v16 = v9 + v15;
+  v17 = *(a1 + 88);
+  if (v17)
+  {
+    v18 = (v17 + 8);
+  }
+
+  else
+  {
+    v18 = 0;
+  }
+
+  if (v15)
+  {
+    v19 = 8 * v15;
+    do
+    {
+      v20 = *v18++;
+      v21 = sub_15F6524(v20);
+      v16 += v21 + ((9 * (__clz(v21 | 1) ^ 0x1F) + 73) >> 6);
+      v19 -= 8;
+    }
+
+    while (v19);
+  }
+
+  v22 = *(a1 + 16);
+  if (!v22)
+  {
+    goto LABEL_30;
+  }
+
+  if (v22)
+  {
+    v25 = *(a1 + 96) & 0xFFFFFFFFFFFFFFFELL;
+    v26 = *(v25 + 23);
+    v27 = *(v25 + 8);
+    if ((v26 & 0x80u) == 0)
+    {
+      v27 = v26;
+    }
+
+    v16 += v27 + ((9 * (__clz(v27 | 1) ^ 0x1F) + 73) >> 6) + 1;
+    if ((v22 & 2) == 0)
+    {
+LABEL_23:
+      if ((v22 & 4) == 0)
+      {
+        goto LABEL_24;
+      }
+
+      goto LABEL_43;
+    }
+  }
+
+  else if ((v22 & 2) == 0)
+  {
+    goto LABEL_23;
+  }
+
+  v28 = *(a1 + 104) & 0xFFFFFFFFFFFFFFFELL;
+  v29 = *(v28 + 23);
+  v30 = *(v28 + 8);
+  if ((v29 & 0x80u) == 0)
+  {
+    v30 = v29;
+  }
+
+  v16 += v30 + ((9 * (__clz(v30 | 1) ^ 0x1F) + 73) >> 6) + 1;
+  if ((v22 & 4) == 0)
+  {
+LABEL_24:
+    if ((v22 & 8) == 0)
+    {
+      goto LABEL_25;
+    }
+
+    goto LABEL_46;
+  }
+
+LABEL_43:
+  v31 = *(a1 + 112) & 0xFFFFFFFFFFFFFFFELL;
+  v32 = *(v31 + 23);
+  v33 = *(v31 + 8);
+  if ((v32 & 0x80u) == 0)
+  {
+    v33 = v32;
+  }
+
+  v16 += v33 + ((9 * (__clz(v33 | 1) ^ 0x1F) + 73) >> 6) + 1;
+  if ((v22 & 8) == 0)
+  {
+LABEL_25:
+    if ((v22 & 0x10) == 0)
+    {
+      goto LABEL_26;
+    }
+
+    goto LABEL_49;
+  }
+
+LABEL_46:
+  v34 = *(a1 + 120) & 0xFFFFFFFFFFFFFFFELL;
+  v35 = *(v34 + 23);
+  v36 = *(v34 + 8);
+  if ((v35 & 0x80u) == 0)
+  {
+    v36 = v35;
+  }
+
+  v16 += v36 + ((9 * (__clz(v36 | 1) ^ 0x1F) + 73) >> 6) + 1;
+  if ((v22 & 0x10) == 0)
+  {
+LABEL_26:
+    if ((v22 & 0x20) == 0)
+    {
+      goto LABEL_27;
+    }
+
+LABEL_52:
+    v40 = *(a1 + 136) & 0xFFFFFFFFFFFFFFFELL;
+    v41 = *(v40 + 23);
+    v42 = *(v40 + 8);
+    if ((v41 & 0x80u) == 0)
+    {
+      v42 = v41;
+    }
+
+    v16 += v42 + ((9 * (__clz(v42 | 1) ^ 0x1F) + 73) >> 6) + 1;
+    if ((v22 & 0x40) == 0)
+    {
+LABEL_28:
+      if ((v22 & 0x80) == 0)
+      {
+        goto LABEL_30;
+      }
+
+      goto LABEL_29;
+    }
+
+    goto LABEL_55;
+  }
+
+LABEL_49:
+  v37 = *(a1 + 128) & 0xFFFFFFFFFFFFFFFELL;
+  v38 = *(v37 + 23);
+  v39 = *(v37 + 8);
+  if ((v38 & 0x80u) == 0)
+  {
+    v39 = v38;
+  }
+
+  v16 += v39 + ((9 * (__clz(v39 | 1) ^ 0x1F) + 73) >> 6) + 1;
+  if ((v22 & 0x20) != 0)
+  {
+    goto LABEL_52;
+  }
+
+LABEL_27:
+  if ((v22 & 0x40) == 0)
+  {
+    goto LABEL_28;
+  }
+
+LABEL_55:
+  v43 = sub_15F6A10(*(a1 + 144));
+  v16 += v43 + ((9 * (__clz(v43 | 1) ^ 0x1F) + 73) >> 6) + 1;
+  if ((v22 & 0x80) != 0)
+  {
+LABEL_29:
+    v16 += ((9 * (__clz(*(a1 + 152) | 1) ^ 0x3F) + 73) >> 6) + 1;
+  }
+
+LABEL_30:
+  if ((v22 & 0x700) == 0)
+  {
+    goto LABEL_35;
+  }
+
+  if ((v22 & 0x100) != 0)
+  {
+    v44 = *(a1 + 160);
+    v45 = ((9 * (__clz(v44 | 1) ^ 0x1F) + 73) >> 6) + 1;
+    if (v44 >= 0)
+    {
+      v46 = v45;
+    }
+
+    else
+    {
+      v46 = 11;
+    }
+
+    v16 += v46;
+    if ((v22 & 0x200) == 0)
+    {
+LABEL_33:
+      if ((v22 & 0x400) == 0)
+      {
+        goto LABEL_35;
+      }
+
+      goto LABEL_34;
+    }
+  }
+
+  else if ((v22 & 0x200) == 0)
+  {
+    goto LABEL_33;
+  }
+
+  v16 += ((9 * (__clz(*(a1 + 164) | 1) ^ 0x1F) + 73) >> 6) + 1;
+  if ((v22 & 0x400) != 0)
+  {
+LABEL_34:
+    v16 += ((9 * (__clz(*(a1 + 168) | 1) ^ 0x1F) + 73) >> 6) + 1;
+  }
+
+LABEL_35:
+  v23 = *(a1 + 8);
+  if (v23)
+  {
+    v47 = v23 & 0xFFFFFFFFFFFFFFFCLL;
+    v48 = *((v23 & 0xFFFFFFFFFFFFFFFCLL) + 31);
+    if (v48 < 0)
+    {
+      v48 = *(v47 + 16);
+    }
+
+    v16 += v48;
+  }
+
+  *(a1 + 20) = v16;
+  return v16;
+}
+
+void sub_15F7EBC(uint64_t a1, uint64_t a2)
+{
+  v4 = *(a2 + 32);
+  if (v4)
+  {
+    v5 = *(a2 + 40);
+    v6 = sub_19592E8(a1 + 24, *(a2 + 32));
+    sub_1201B48(a1 + 24, v6, (v5 + 8), v4, **(a1 + 40) - *(a1 + 32));
+    v7 = *(a1 + 32) + v4;
+    *(a1 + 32) = v7;
+    v8 = *(a1 + 40);
+    if (*v8 < v7)
+    {
+      *v8 = v7;
+    }
+  }
+
+  v9 = *(a2 + 56);
+  if (v9)
+  {
+    v10 = *(a2 + 64);
+    v11 = sub_19592E8(a1 + 48, *(a2 + 56));
+    sub_16374D4((a1 + 48), v11, (v10 + 8), v9, **(a1 + 64) - *(a1 + 56));
+    v12 = *(a1 + 56) + v9;
+    *(a1 + 56) = v12;
+    v13 = *(a1 + 64);
+    if (*v13 < v12)
+    {
+      *v13 = v12;
+    }
+  }
+
+  v14 = *(a2 + 80);
+  if (v14)
+  {
+    v15 = *(a2 + 88);
+    v16 = sub_19592E8(a1 + 72, *(a2 + 80));
+    sub_1637560((a1 + 72), v16, (v15 + 8), v14, **(a1 + 88) - *(a1 + 80));
+    v17 = *(a1 + 80) + v14;
+    *(a1 + 80) = v17;
+    v18 = *(a1 + 88);
+    if (*v18 < v17)
+    {
+      *v18 = v17;
+    }
+  }
+
+  v19 = *(a2 + 16);
+  if (v19)
+  {
+    if (v19)
+    {
+      v21 = *(a2 + 96);
+      *(a1 + 16) |= 1u;
+      v22 = *(a1 + 8);
+      v23 = (v22 & 0xFFFFFFFFFFFFFFFCLL);
+      if (v22)
+      {
+        v23 = *v23;
+      }
+
+      sub_194EA1C((a1 + 96), (v21 & 0xFFFFFFFFFFFFFFFELL), v23);
+      if ((v19 & 2) == 0)
+      {
+LABEL_13:
+        if ((v19 & 4) == 0)
+        {
+          goto LABEL_14;
+        }
+
+        goto LABEL_37;
+      }
+    }
+
+    else if ((v19 & 2) == 0)
+    {
+      goto LABEL_13;
+    }
+
+    v24 = *(a2 + 104);
+    *(a1 + 16) |= 2u;
+    v25 = *(a1 + 8);
+    v26 = (v25 & 0xFFFFFFFFFFFFFFFCLL);
+    if (v25)
+    {
+      v26 = *v26;
+    }
+
+    sub_194EA1C((a1 + 104), (v24 & 0xFFFFFFFFFFFFFFFELL), v26);
+    if ((v19 & 4) == 0)
+    {
+LABEL_14:
+      if ((v19 & 8) == 0)
+      {
+        goto LABEL_15;
+      }
+
+      goto LABEL_40;
+    }
+
+LABEL_37:
+    v27 = *(a2 + 112);
+    *(a1 + 16) |= 4u;
+    v28 = *(a1 + 8);
+    v29 = (v28 & 0xFFFFFFFFFFFFFFFCLL);
+    if (v28)
+    {
+      v29 = *v29;
+    }
+
+    sub_194EA1C((a1 + 112), (v27 & 0xFFFFFFFFFFFFFFFELL), v29);
+    if ((v19 & 8) == 0)
+    {
+LABEL_15:
+      if ((v19 & 0x10) == 0)
+      {
+        goto LABEL_16;
+      }
+
+      goto LABEL_43;
+    }
+
+LABEL_40:
+    v30 = *(a2 + 120);
+    *(a1 + 16) |= 8u;
+    v31 = *(a1 + 8);
+    v32 = (v31 & 0xFFFFFFFFFFFFFFFCLL);
+    if (v31)
+    {
+      v32 = *v32;
+    }
+
+    sub_194EA1C((a1 + 120), (v30 & 0xFFFFFFFFFFFFFFFELL), v32);
+    if ((v19 & 0x10) == 0)
+    {
+LABEL_16:
+      if ((v19 & 0x20) == 0)
+      {
+        goto LABEL_17;
+      }
+
+      goto LABEL_46;
+    }
+
+LABEL_43:
+    v33 = *(a2 + 128);
+    *(a1 + 16) |= 0x10u;
+    v34 = *(a1 + 8);
+    v35 = (v34 & 0xFFFFFFFFFFFFFFFCLL);
+    if (v34)
+    {
+      v35 = *v35;
+    }
+
+    sub_194EA1C((a1 + 128), (v33 & 0xFFFFFFFFFFFFFFFELL), v35);
+    if ((v19 & 0x20) == 0)
+    {
+LABEL_17:
+      if ((v19 & 0x40) == 0)
+      {
+        goto LABEL_18;
+      }
+
+      goto LABEL_49;
+    }
+
+LABEL_46:
+    v36 = *(a2 + 136);
+    *(a1 + 16) |= 0x20u;
+    v37 = *(a1 + 8);
+    v38 = (v37 & 0xFFFFFFFFFFFFFFFCLL);
+    if (v37)
+    {
+      v38 = *v38;
+    }
+
+    sub_194EA1C((a1 + 136), (v36 & 0xFFFFFFFFFFFFFFFELL), v38);
+    if ((v19 & 0x40) == 0)
+    {
+LABEL_18:
+      if ((v19 & 0x80) == 0)
+      {
+LABEL_20:
+        *(a1 + 16) |= v19;
+        goto LABEL_21;
+      }
+
+LABEL_19:
+      *(a1 + 152) = *(a2 + 152);
+      goto LABEL_20;
+    }
+
+LABEL_49:
+    *(a1 + 16) |= 0x40u;
+    v39 = *(a1 + 144);
+    if (!v39)
+    {
+      v40 = *(a1 + 8);
+      v41 = (v40 & 0xFFFFFFFFFFFFFFFCLL);
+      if (v40)
+      {
+        v41 = *v41;
+      }
+
+      v39 = sub_16173C4(v41);
+      *(a1 + 144) = v39;
+    }
+
+    if (*(a2 + 144))
+    {
+      v42 = *(a2 + 144);
+    }
+
+    else
+    {
+      v42 = &off_2779EF0;
+    }
+
+    sub_132DE2C(v39, v42);
+    if ((v19 & 0x80) == 0)
+    {
+      goto LABEL_20;
+    }
+
+    goto LABEL_19;
+  }
+
+LABEL_21:
+  if ((v19 & 0x700) == 0)
+  {
+    goto LABEL_27;
+  }
+
+  if ((v19 & 0x100) == 0)
+  {
+    if ((v19 & 0x200) == 0)
+    {
+      goto LABEL_24;
+    }
+
+LABEL_59:
+    *(a1 + 164) = *(a2 + 164);
+    if ((v19 & 0x400) == 0)
+    {
+      goto LABEL_26;
+    }
+
+    goto LABEL_25;
+  }
+
+  *(a1 + 160) = *(a2 + 160);
+  if ((v19 & 0x200) != 0)
+  {
+    goto LABEL_59;
+  }
+
+LABEL_24:
+  if ((v19 & 0x400) != 0)
+  {
+LABEL_25:
+    *(a1 + 168) = *(a2 + 168);
+  }
+
+LABEL_26:
+  *(a1 + 16) |= v19;
+LABEL_27:
+  v20 = *(a2 + 8);
+  if (v20)
+  {
+
+    sub_1957EF4((a1 + 8), (v20 & 0xFFFFFFFFFFFFFFFCLL) + 8);
+  }
+}
+
+uint64_t sub_15F8254(uint64_t result)
+{
+  v1 = result;
+  v2 = *(result + 24);
+  if (v2 >= 1)
+  {
+    v3 = (*(result + 32) + 8);
+    do
+    {
+      v4 = *v3++;
+      result = sub_162D308(v4);
+      --v2;
+    }
+
+    while (v2);
+    *(v1 + 24) = 0;
+  }
+
+  v6 = *(v1 + 8);
+  v5 = (v1 + 8);
+  if (v6)
+  {
+
+    return sub_1957EA8(v5);
+  }
+
+  return result;
+}
+
+uint64_t sub_15F82D0(uint64_t a1)
+{
+  v3 = (a1 + 8);
+  v2 = *(a1 + 8);
+  v4 = (v2 & 0xFFFFFFFFFFFFFFFCLL);
+  if (v2)
+  {
+    if (*v4)
+    {
+      goto LABEL_8;
+    }
+  }
+
+  else if (v4)
+  {
+    goto LABEL_8;
+  }
+
+  v5 = *(a1 + 8) & 1;
+  if (a1 != &off_2779FC0)
+  {
+    v6 = *(a1 + 24);
+    if (v6)
+    {
+      sub_162E4F4(v6);
+      operator delete();
+    }
+  }
+
+  if (v5)
+  {
+    sub_11F19CC(v3);
+  }
+
+LABEL_8:
+  *a1 = off_27215B8;
+  sub_195A5E8(v3);
+  return a1;
+}
+
+void sub_15F8388(uint64_t a1)
+{
+  sub_15F82D0(a1);
+
+  operator delete();
+}
+
+uint64_t sub_15F83C0(uint64_t result)
+{
+  v1 = result;
+  if (*(result + 16))
+  {
+    result = sub_15F8254(*(result + 24));
+  }
+
+  v3 = *(v1 + 8);
+  v2 = v1 + 8;
+  *(v2 + 8) = 0;
+  if (v3)
+  {
+
+    return sub_1957EA8(v2);
+  }
+
+  return result;
+}
+
+char *sub_15F841C(uint64_t a1, char *a2, int32x2_t *a3)
+{
+  v18 = a2;
+  for (i = a3[11].i32[1]; (sub_195ADC0(a3, &v18, i) & 1) == 0; i = a3[11].i32[1])
+  {
+    v6 = v18 + 1;
+    v7 = *v18;
+    if (*v18 < 0)
+    {
+      v8 = v7 + (*v6 << 7);
+      v7 = v8 - 128;
+      if (*v6 < 0)
+      {
+        v6 = sub_1958824(v18, v8 - 128);
+        v7 = v9;
+      }
+
+      else
+      {
+        v6 = v18 + 2;
+      }
+    }
+
+    v18 = v6;
+    if (v7 == 18)
+    {
+      *(a1 + 16) |= 1u;
+      v14 = *(a1 + 24);
+      if (!v14)
+      {
+        v15 = *(a1 + 8);
+        v16 = (v15 & 0xFFFFFFFFFFFFFFFCLL);
+        if (v15)
+        {
+          v16 = *v16;
+        }
+
+        v14 = sub_1632A08(v16);
+        *(a1 + 24) = v14;
+        v6 = v18;
+      }
+
+      v13 = sub_2228554(a3, v14, v6);
+    }
+
+    else
+    {
+      if (v7)
+      {
+        v10 = (v7 & 7) == 4;
+      }
+
+      else
+      {
+        v10 = 1;
+      }
+
+      if (v10)
+      {
+        if (v6)
+        {
+          a3[10].i32[0] = v7 - 1;
+          return v18;
+        }
+
+        return 0;
+      }
+
+      v11 = *(a1 + 8);
+      if (v11)
+      {
+        v12 = (v11 & 0xFFFFFFFFFFFFFFFCLL) + 8;
+      }
+
+      else
+      {
+        v12 = sub_11F1920((a1 + 8));
+        v6 = v18;
+      }
+
+      v13 = sub_1952690(v7, v12, v6, a3);
+    }
+
+    v18 = v13;
+    if (!v13)
+    {
+      return 0;
+    }
+  }
+
+  return v18;
+}
+
+char *sub_15F8560(uint64_t a1, unint64_t __dst, unint64_t *a3)
+{
+  v4 = __dst;
+  if (*(a1 + 16))
+  {
+    if (*a3 <= __dst)
+    {
+      v4 = sub_225EB68(a3, __dst);
+    }
+
+    v6 = *(a1 + 24);
+    *v4 = 18;
+    v7 = *(v6 + 40);
+    v4[1] = v7;
+    if (v7 > 0x7F)
+    {
+      v8 = sub_19575D0(v7, v4 + 1);
+    }
+
+    else
+    {
+      v8 = v4 + 2;
+    }
+
+    v4 = sub_162E73C(v6, v8, a3);
+  }
+
+  v9 = *(a1 + 8);
+  if ((v9 & 1) == 0)
+  {
+    return v4;
+  }
+
+  v11 = v9 & 0xFFFFFFFFFFFFFFFCLL;
+  v12 = *(v11 + 31);
+  if (v12 < 0)
+  {
+    v13 = *(v11 + 8);
+    v12 = *(v11 + 16);
+  }
+
+  else
+  {
+    v13 = (v11 + 8);
+  }
+
+  if ((*a3 - v4) >= v12)
+  {
+    v14 = v12;
+    memcpy(v4, v13, v12);
+    v4 += v14;
+    return v4;
+  }
+
+  return sub_1957130(a3, v13, v12, v4);
+}
+
+uint64_t sub_15F866C(uint64_t a1)
+{
+  if (*(a1 + 16))
+  {
+    v3 = sub_162E87C(*(a1 + 24));
+    result = v3 + ((9 * (__clz(v3 | 1) ^ 0x1F) + 73) >> 6) + 1;
+  }
+
+  else
+  {
+    result = 0;
+  }
+
+  v4 = *(a1 + 8);
+  if (v4)
+  {
+    v5 = v4 & 0xFFFFFFFFFFFFFFFCLL;
+    v6 = *((v4 & 0xFFFFFFFFFFFFFFFCLL) + 31);
+    if (v6 < 0)
+    {
+      v6 = *(v5 + 16);
+    }
+
+    result += v6;
+  }
+
+  *(a1 + 20) = result;
+  return result;
+}
+
+void sub_15F86EC(uint64_t a1, uint64_t a2)
+{
+  if (*(a2 + 16))
+  {
+    v4 = *(a2 + 24);
+    *(a1 + 16) |= 1u;
+    v5 = *(a1 + 24);
+    if (!v5)
+    {
+      v6 = *(a1 + 8);
+      v7 = (v6 & 0xFFFFFFFFFFFFFFFCLL);
+      if (v6)
+      {
+        v7 = *v7;
+      }
+
+      v5 = sub_1632A08(v7);
+      *(a1 + 24) = v5;
+      v4 = *(a2 + 24);
+    }
+
+    if (v4)
+    {
+      v8 = v4;
+    }
+
+    else
+    {
+      v8 = &off_277B3A8;
+    }
+
+    sub_15F8794(v5, v8);
+  }
+
+  v9 = *(a2 + 8);
+  if (v9)
+  {
+
+    sub_1957EF4((a1 + 8), (v9 & 0xFFFFFFFFFFFFFFFCLL) + 8);
+  }
+}
+
+void sub_15F8794(uint64_t a1, uint64_t a2)
+{
+  v4 = *(a2 + 24);
+  if (v4)
+  {
+    v5 = *(a2 + 32);
+    v6 = sub_19592E8(a1 + 16, *(a2 + 24));
+    sub_16390E0((a1 + 16), v6, (v5 + 8), v4, **(a1 + 32) - *(a1 + 24));
+    v7 = *(a1 + 24) + v4;
+    *(a1 + 24) = v7;
+    v8 = *(a1 + 32);
+    if (*v8 < v7)
+    {
+      *v8 = v7;
+    }
+  }
+
+  v9 = *(a2 + 8);
+  if (v9)
+  {
+
+    sub_1957EF4((a1 + 8), (v9 & 0xFFFFFFFFFFFFFFFCLL) + 8);
+  }
+}
+
+uint64_t sub_15F8850(uint64_t a1)
+{
+  if ((*(a1 + 16) & 1) == 0)
+  {
+    return 1;
+  }
+
+  result = sub_162E924(*(a1 + 24) + 16);
+  if (result)
+  {
+    return 1;
+  }
+
+  return result;
+}
+
+uint64_t sub_15F889C(uint64_t a1)
+{
+  v3 = (a1 + 8);
+  v2 = *(a1 + 8);
+  v4 = (v2 & 0xFFFFFFFFFFFFFFFCLL);
+  if (v2)
+  {
+    if (*v4)
+    {
+      goto LABEL_10;
+    }
+  }
+
+  else if (v4)
+  {
+    goto LABEL_10;
+  }
+
+  if (a1 != &off_2779FE0)
+  {
+    v5 = *(a1 + 216);
+    if (v5)
+    {
+      sub_15F6AA4(v5);
+      operator delete();
+    }
+
+    v6 = *(a1 + 224);
+    if (v6)
+    {
+      sub_15F82D0(v6);
+      operator delete();
+    }
+  }
+
+  if (*v3)
+  {
+    sub_11F19CC(v3);
+  }
+
+LABEL_10:
+  sub_1636B7C((a1 + 192));
+  sub_1636AF8((a1 + 168));
+  sub_1636A74((a1 + 144));
+  sub_16369F0((a1 + 120));
+  sub_163696C((a1 + 96));
+  sub_16368E8((a1 + 72));
+  sub_1636864((a1 + 48));
+  sub_16367E0((a1 + 24));
+  *a1 = off_27215B8;
+  sub_195A5E8(v3);
+  return a1;
+}
+
+void sub_15F89CC(uint64_t a1)
+{
+  sub_15F889C(a1);
+
+  operator delete();
+}
+
+uint64_t sub_15F8A04(uint64_t result)
+{
+  v1 = result;
+  v2 = *(result + 32);
+  if (v2 >= 1)
+  {
+    v3 = (*(result + 40) + 8);
+    do
+    {
+      v4 = *v3++;
+      result = sub_15FD60C(v4);
+      --v2;
+    }
+
+    while (v2);
+    *(v1 + 32) = 0;
+  }
+
+  v5 = *(v1 + 56);
+  if (v5 >= 1)
+  {
+    v6 = (*(v1 + 64) + 8);
+    do
+    {
+      v7 = *v6++;
+      result = sub_160C0D0(v7);
+      --v5;
+    }
+
+    while (v5);
+    *(v1 + 56) = 0;
+  }
+
+  v8 = *(v1 + 80);
+  if (v8 >= 1)
+  {
+    v9 = (*(v1 + 88) + 8);
+    do
+    {
+      v10 = *v9++;
+      result = sub_15FA30C(v10);
+      --v8;
+    }
+
+    while (v8);
+    *(v1 + 80) = 0;
+  }
+
+  v11 = *(v1 + 104);
+  if (v11 >= 1)
+  {
+    v12 = (*(v1 + 112) + 8);
+    do
+    {
+      v13 = *v12++;
+      result = sub_15FD6BC(v13);
+      --v11;
+    }
+
+    while (v11);
+    *(v1 + 104) = 0;
+  }
+
+  v14 = *(v1 + 128);
+  if (v14 >= 1)
+  {
+    v15 = (*(v1 + 136) + 8);
+    do
+    {
+      v16 = *v15++;
+      result = sub_15FF6FC(v16);
+      --v14;
+    }
+
+    while (v14);
+    *(v1 + 128) = 0;
+  }
+
+  v17 = *(v1 + 152);
+  if (v17 >= 1)
+  {
+    v18 = (*(v1 + 160) + 8);
+    do
+    {
+      v19 = *v18++;
+      result = sub_1616834(v19);
+      --v17;
+    }
+
+    while (v17);
+    *(v1 + 152) = 0;
+  }
+
+  v20 = *(v1 + 176);
+  if (v20 >= 1)
+  {
+    v21 = (*(v1 + 184) + 8);
+    do
+    {
+      v22 = *v21++;
+      result = sub_15FAD10(v22);
+      --v20;
+    }
+
+    while (v20);
+    *(v1 + 176) = 0;
+  }
+
+  v23 = *(v1 + 200);
+  if (v23 >= 1)
+  {
+    v24 = (*(v1 + 208) + 8);
+    do
+    {
+      v25 = *v24++;
+      result = sub_15FE8C0(v25);
+      --v23;
+    }
+
+    while (v23);
+    *(v1 + 200) = 0;
+  }
+
+  v26 = *(v1 + 16);
+  if ((v26 & 3) != 0)
+  {
+    if (v26)
+    {
+      result = sub_15F6C68(*(v1 + 216));
+    }
+
+    if ((v26 & 2) != 0)
+    {
+      result = sub_15F83C0(*(v1 + 224));
+    }
+  }
+
+  v28 = *(v1 + 8);
+  v27 = v1 + 8;
+  *(v27 + 224) = 0;
+  *(v27 + 8) = 0;
+  if (v28)
+  {
+
+    return sub_1957EA8(v27);
+  }
+
+  return result;
+}
+
+char *sub_15F8BC4(uint64_t a1, char *a2, int32x2_t *a3)
+{
+  v76 = a2;
+  v5 = 0;
+  if (sub_195ADC0(a3, &v76, a3[11].i32[1]))
+  {
+    goto LABEL_2;
+  }
+
+  while (1)
+  {
+    v7 = v76 + 1;
+    v8 = *v76;
+    if (*v76 < 0)
+    {
+      v9 = v8 + (*v7 << 7);
+      v8 = v9 - 128;
+      if (*v7 < 0)
+      {
+        v7 = sub_1958824(v76, v9 - 128);
+        v8 = v10;
+      }
+
+      else
+      {
+        v7 = v76 + 2;
+      }
+    }
+
+    v76 = v7;
+    v11 = v8 >> 3;
+    if (v8 >> 3 > 5)
+    {
+      if (v8 >> 3 > 8)
+      {
+        if (v11 == 9)
+        {
+          if (v8 == 74)
+          {
+            v65 = v7 - 1;
+            while (1)
+            {
+              v66 = (v65 + 1);
+              v76 = v65 + 1;
+              v67 = *(a1 + 160);
+              if (v67 && (v68 = *(a1 + 152), v68 < *v67))
+              {
+                *(a1 + 152) = v68 + 1;
+                v69 = *&v67[2 * v68 + 2];
+              }
+
+              else
+              {
+                v70 = sub_1618E98(*(a1 + 144));
+                v69 = sub_19593CC(a1 + 144, v70);
+                v66 = v76;
+              }
+
+              v65 = sub_2228948(a3, v69, v66);
+              v76 = v65;
+              if (!v65)
+              {
+                goto LABEL_136;
+              }
+
+              if (*a3 <= v65 || *v65 != 74)
+              {
+                goto LABEL_129;
+              }
+            }
+          }
+        }
+
+        else if (v11 == 10)
+        {
+          if (v8 == 82)
+          {
+            v47 = v7 - 1;
+            while (1)
+            {
+              v48 = (v47 + 1);
+              v76 = v47 + 1;
+              v49 = *(a1 + 184);
+              if (v49 && (v50 = *(a1 + 176), v50 < *v49))
+              {
+                *(a1 + 176) = v50 + 1;
+                v51 = *&v49[2 * v50 + 2];
+              }
+
+              else
+              {
+                v52 = sub_16176F0(*(a1 + 168));
+                v51 = sub_19593CC(a1 + 168, v52);
+                v48 = v76;
+              }
+
+              v47 = sub_22289D8(a3, v51, v48);
+              v76 = v47;
+              if (!v47)
+              {
+                goto LABEL_136;
+              }
+
+              if (*a3 <= v47 || *v47 != 82)
+              {
+                goto LABEL_129;
+              }
+            }
+          }
+        }
+
+        else if (v11 == 11 && v8 == 90)
+        {
+          v21 = v7 - 1;
+          while (1)
+          {
+            v22 = (v21 + 1);
+            v76 = v21 + 1;
+            v23 = *(a1 + 208);
+            if (v23 && (v24 = *(a1 + 200), v24 < *v23))
+            {
+              *(a1 + 200) = v24 + 1;
+              v25 = *&v23[2 * v24 + 2];
+            }
+
+            else
+            {
+              v26 = sub_1617A14(*(a1 + 192));
+              v25 = sub_19593CC(a1 + 192, v26);
+              v22 = v76;
+            }
+
+            v21 = sub_2228A68(a3, v25, v22);
+            v76 = v21;
+            if (!v21)
+            {
+              goto LABEL_136;
+            }
+
+            if (*a3 <= v21 || *v21 != 90)
+            {
+              goto LABEL_129;
+            }
+          }
+        }
+
+        goto LABEL_121;
+      }
+
+      if (v11 == 6)
+      {
+        if (v8 == 50)
+        {
+          v59 = v7 - 1;
+          while (1)
+          {
+            v60 = (v59 + 1);
+            v76 = v59 + 1;
+            v61 = *(a1 + 112);
+            if (v61 && (v62 = *(a1 + 104), v62 < *v61))
+            {
+              *(a1 + 104) = v62 + 1;
+              v63 = *&v61[2 * v62 + 2];
+            }
+
+            else
+            {
+              v64 = sub_1617A90(*(a1 + 96));
+              v63 = sub_19593CC(a1 + 96, v64);
+              v60 = v76;
+            }
+
+            v59 = sub_2228798(a3, v63, v60);
+            v76 = v59;
+            if (!v59)
+            {
+              goto LABEL_136;
+            }
+
+            if (*a3 <= v59 || *v59 != 50)
+            {
+              goto LABEL_129;
+            }
+          }
+        }
+
+        goto LABEL_121;
+      }
+
+      if (v11 != 7)
+      {
+        if (v11 == 8 && v8 == 66)
+        {
+          v12 = v7 - 1;
+          while (1)
+          {
+            v13 = (v12 + 1);
+            v76 = v12 + 1;
+            v14 = *(a1 + 136);
+            if (v14 && (v15 = *(a1 + 128), v15 < *v14))
+            {
+              *(a1 + 128) = v15 + 1;
+              v16 = *&v14[2 * v15 + 2];
+            }
+
+            else
+            {
+              sub_1617B48(*(a1 + 120));
+              v16 = sub_19593CC(a1 + 120, v17);
+              v13 = v76;
+            }
+
+            v12 = sub_22288B8(a3, v16, v13);
+            v76 = v12;
+            if (!v12)
+            {
+              goto LABEL_136;
+            }
+
+            if (*a3 <= v12 || *v12 != 66)
+            {
+              goto LABEL_129;
+            }
+          }
+        }
+
+        goto LABEL_121;
+      }
+
+      if (v8 != 58)
+      {
+        goto LABEL_121;
+      }
+
+      *(a1 + 16) |= 2u;
+      v44 = *(a1 + 224);
+      if (!v44)
+      {
+        v45 = *(a1 + 8);
+        v46 = (v45 & 0xFFFFFFFFFFFFFFFCLL);
+        if (v45)
+        {
+          v46 = *v46;
+        }
+
+        v44 = sub_1617514(v46);
+        *(a1 + 224) = v44;
+        v7 = v76;
+      }
+
+      v37 = sub_2228828(a3, v44, v7);
+LABEL_128:
+      v76 = v37;
+      if (!v37)
+      {
+        goto LABEL_136;
+      }
+
+      goto LABEL_129;
+    }
+
+    if (v8 >> 3 <= 2)
+    {
+      break;
+    }
+
+    if (v11 == 3)
+    {
+      if (v8 == 26)
+      {
+        v53 = v7 - 1;
+        while (1)
+        {
+          v54 = (v53 + 1);
+          v76 = v53 + 1;
+          v55 = *(a1 + 64);
+          if (v55 && (v56 = *(a1 + 56), v56 < *v55))
+          {
+            *(a1 + 56) = v56 + 1;
+            v57 = *&v55[2 * v56 + 2];
+          }
+
+          else
+          {
+            sub_161862C(*(a1 + 48));
+            v57 = sub_19593CC(a1 + 48, v58);
+            v54 = v76;
+          }
+
+          sub_2228674(a3, v57, v54);
+          v76 = v53;
+          if (!v53)
+          {
+            goto LABEL_136;
+          }
+
+          if (*a3 <= v53 || *v53 != 26)
+          {
+            goto LABEL_129;
+          }
+        }
+      }
+
+      goto LABEL_121;
+    }
+
+    if (v11 == 4)
+    {
+      if (v8 == 34)
+      {
+        v38 = v7 - 1;
+        while (1)
+        {
+          v39 = (v38 + 1);
+          v76 = v38 + 1;
+          v40 = *(a1 + 88);
+          if (v40 && (v41 = *(a1 + 80), v41 < *v40))
+          {
+            *(a1 + 80) = v41 + 1;
+            v42 = *&v40[2 * v41 + 2];
+          }
+
+          else
+          {
+            v43 = sub_1617674(*(a1 + 72));
+            v42 = sub_19593CC(a1 + 72, v43);
+            v39 = v76;
+          }
+
+          v38 = sub_2228708(a3, v42, v39);
+          v76 = v38;
+          if (!v38)
+          {
+            goto LABEL_136;
+          }
+
+          if (*a3 <= v38 || *v38 != 34)
+          {
+            goto LABEL_129;
+          }
+        }
+      }
+
+      goto LABEL_121;
+    }
+
+    if (v11 != 5 || v8 != 40)
+    {
+      goto LABEL_121;
+    }
+
+    v5 |= 4u;
+    v19 = v7 + 1;
+    v18 = *v7;
+    if ((v18 & 0x8000000000000000) == 0)
+    {
+      goto LABEL_30;
+    }
+
+    v20 = *v19;
+    v18 = (v20 << 7) + v18 - 128;
+    if ((v20 & 0x80000000) == 0)
+    {
+      v19 = v7 + 2;
+LABEL_30:
+      v76 = v19;
+      *(a1 + 232) = v18;
+      goto LABEL_129;
+    }
+
+    v74 = sub_19587DC(v7, v18);
+    v76 = v74;
+    *(a1 + 232) = v75;
+    if (!v74)
+    {
+      goto LABEL_136;
+    }
+
+LABEL_129:
+    if (sub_195ADC0(a3, &v76, a3[11].i32[1]))
+    {
+      goto LABEL_2;
+    }
+  }
+
+  if (v11 == 1)
+  {
+    if (v8 != 10)
+    {
+      goto LABEL_121;
+    }
+
+    *(a1 + 16) |= 1u;
+    v34 = *(a1 + 216);
+    if (!v34)
+    {
+      v35 = *(a1 + 8);
+      v36 = (v35 & 0xFFFFFFFFFFFFFFFCLL);
+      if (v35)
+      {
+        v36 = *v36;
+      }
+
+      v34 = sub_1617448(v36);
+      *(a1 + 216) = v34;
+      v7 = v76;
+    }
+
+    v37 = sub_2228314(a3, v34, v7);
+    goto LABEL_128;
+  }
+
+  if (v11 == 2 && v8 == 18)
+  {
+    v28 = v7 - 1;
+    while (1)
+    {
+      v29 = (v28 + 1);
+      v76 = v28 + 1;
+      v30 = *(a1 + 40);
+      if (v30 && (v31 = *(a1 + 32), v31 < *v30))
+      {
+        *(a1 + 32) = v31 + 1;
+        v32 = *&v30[2 * v31 + 2];
+      }
+
+      else
+      {
+        sub_1617990(*(a1 + 24));
+        v32 = sub_19593CC(a1 + 24, v33);
+        v29 = v76;
+      }
+
+      v28 = sub_22285E4(a3, v32, v29);
+      v76 = v28;
+      if (!v28)
+      {
+        goto LABEL_136;
+      }
+
+      if (*a3 <= v28 || *v28 != 18)
+      {
+        goto LABEL_129;
+      }
+    }
+  }
+
+LABEL_121:
+  if (v8)
+  {
+    v71 = (v8 & 7) == 4;
+  }
+
+  else
+  {
+    v71 = 1;
+  }
+
+  if (!v71)
+  {
+    v72 = *(a1 + 8);
+    if (v72)
+    {
+      v73 = (v72 & 0xFFFFFFFFFFFFFFFCLL) + 8;
+    }
+
+    else
+    {
+      v73 = sub_11F1920((a1 + 8));
+      v7 = v76;
+    }
+
+    v37 = sub_1952690(v8, v73, v7, a3);
+    goto LABEL_128;
+  }
+
+  if (v7)
+  {
+    a3[10].i32[0] = v8 - 1;
+    goto LABEL_2;
+  }
+
+LABEL_136:
+  v76 = 0;
+LABEL_2:
+  *(a1 + 16) |= v5;
+  return v76;
+}
+
+char *sub_15F92AC(uint64_t a1, unint64_t __dst, unint64_t *a3)
+{
+  v4 = __dst;
+  v6 = *(a1 + 16);
+  if (v6)
+  {
+    if (*a3 <= __dst)
+    {
+      v4 = sub_225EB68(a3, __dst);
+    }
+
+    v7 = *(a1 + 216);
+    *v4 = 10;
+    v8 = *(v7 + 20);
+    v4[1] = v8;
+    if (v8 > 0x7F)
+    {
+      v9 = sub_19575D0(v8, v4 + 1);
+    }
+
+    else
+    {
+      v9 = v4 + 2;
+    }
+
+    v4 = sub_15F7520(v7, v9, a3);
+  }
+
+  v10 = *(a1 + 32);
+  if (v10)
+  {
+    for (i = 0; i != v10; ++i)
+    {
+      if (*a3 <= v4)
+      {
+        v4 = sub_225EB68(a3, v4);
+      }
+
+      v12 = *(*(a1 + 40) + 8 * i + 8);
+      *v4 = 18;
+      v13 = *(v12 + 20);
+      v4[1] = v13;
+      if (v13 > 0x7F)
+      {
+        v14 = sub_19575D0(v13, v4 + 1);
+      }
+
+      else
+      {
+        v14 = v4 + 2;
+      }
+
+      v4 = sub_15FDBF0(v12, v14, a3);
+    }
+  }
+
+  v15 = *(a1 + 56);
+  if (v15)
+  {
+    for (j = 0; j != v15; ++j)
+    {
+      if (*a3 <= v4)
+      {
+        v4 = sub_225EB68(a3, v4);
+      }
+
+      v17 = *(*(a1 + 64) + 8 * j + 8);
+      *v4 = 26;
+      v18 = *(v17 + 24);
+      v4[1] = v18;
+      if (v18 > 0x7F)
+      {
+        v19 = sub_19575D0(v18, v4 + 1);
+      }
+
+      else
+      {
+        v19 = v4 + 2;
+      }
+
+      v4 = sub_160C484(v17, v19, a3);
+    }
+  }
+
+  v20 = *(a1 + 80);
+  if (v20)
+  {
+    for (k = 0; k != v20; ++k)
+    {
+      if (*a3 <= v4)
+      {
+        v4 = sub_225EB68(a3, v4);
+      }
+
+      v22 = *(*(a1 + 88) + 8 * k + 8);
+      *v4 = 34;
+      v23 = *(v22 + 20);
+      v4[1] = v23;
+      if (v23 > 0x7F)
+      {
+        v24 = sub_19575D0(v23, v4 + 1);
+      }
+
+      else
+      {
+        v24 = v4 + 2;
+      }
+
+      v4 = sub_15FA608(v22, v24, a3);
+    }
+  }
+
+  if ((v6 & 4) != 0)
+  {
+    if (*a3 <= v4)
+    {
+      v4 = sub_225EB68(a3, v4);
+    }
+
+    v26 = *(a1 + 232);
+    *v4 = 40;
+    v4[1] = v26;
+    if (v26 > 0x7F)
+    {
+      v4[1] = v26 | 0x80;
+      v27 = v26 >> 7;
+      v4[2] = v26 >> 7;
+      v25 = v4 + 3;
+      if (v26 >= 0x4000)
+      {
+        LOBYTE(v4) = v4[2];
+        do
+        {
+          *(v25 - 1) = v4 | 0x80;
+          v4 = (v27 >> 7);
+          *v25++ = v27 >> 7;
+          v28 = v27 >> 14;
+          v27 >>= 7;
+        }
+
+        while (v28);
+      }
+    }
+
+    else
+    {
+      v25 = v4 + 2;
+    }
+  }
+
+  else
+  {
+    v25 = v4;
+  }
+
+  v29 = *(a1 + 104);
+  if (v29)
+  {
+    for (m = 0; m != v29; ++m)
+    {
+      if (*a3 <= v25)
+      {
+        v25 = sub_225EB68(a3, v25);
+      }
+
+      v31 = *(*(a1 + 112) + 8 * m + 8);
+      *v25 = 50;
+      v32 = *(v31 + 20);
+      v25[1] = v32;
+      if (v32 > 0x7F)
+      {
+        v33 = sub_19575D0(v32, v25 + 1);
+      }
+
+      else
+      {
+        v33 = v25 + 2;
+      }
+
+      v25 = sub_15FF174(v31, v33, a3);
+    }
+  }
+
+  if ((v6 & 2) != 0)
+  {
+    if (*a3 <= v25)
+    {
+      v25 = sub_225EB68(a3, v25);
+    }
+
+    v34 = *(a1 + 224);
+    *v25 = 58;
+    v35 = *(v34 + 20);
+    v25[1] = v35;
+    if (v35 > 0x7F)
+    {
+      v36 = sub_19575D0(v35, v25 + 1);
+    }
+
+    else
+    {
+      v36 = v25 + 2;
+    }
+
+    v25 = sub_15F8560(v34, v36, a3);
+  }
+
+  v37 = *(a1 + 128);
+  if (v37)
+  {
+    for (n = 0; n != v37; ++n)
+    {
+      if (*a3 <= v25)
+      {
+        v25 = sub_225EB68(a3, v25);
+      }
+
+      v39 = *(*(a1 + 136) + 8 * n + 8);
+      *v25 = 66;
+      v40 = *(v39 + 20);
+      v25[1] = v40;
+      if (v40 > 0x7F)
+      {
+        v41 = sub_19575D0(v40, v25 + 1);
+      }
+
+      else
+      {
+        v41 = v25 + 2;
+      }
+
+      v25 = sub_15FFB18(v39, v41, a3);
+    }
+  }
+
+  v42 = *(a1 + 152);
+  if (v42)
+  {
+    for (ii = 0; ii != v42; ++ii)
+    {
+      if (*a3 <= v25)
+      {
+        v25 = sub_225EB68(a3, v25);
+      }
+
+      v44 = *(*(a1 + 160) + 8 * ii + 8);
+      *v25 = 74;
+      v45 = *(v44 + 20);
+      v25[1] = v45;
+      if (v45 > 0x7F)
+      {
+        v46 = sub_19575D0(v45, v25 + 1);
+      }
+
+      else
+      {
+        v46 = v25 + 2;
+      }
+
+      v25 = sub_1616BD8(v44, v46, a3);
+    }
+  }
+
+  v47 = *(a1 + 176);
+  if (v47)
+  {
+    for (jj = 0; jj != v47; ++jj)
+    {
+      if (*a3 <= v25)
+      {
+        v25 = sub_225EB68(a3, v25);
+      }
+
+      v49 = *(*(a1 + 184) + 8 * jj + 8);
+      *v25 = 82;
+      v50 = *(v49 + 20);
+      v25[1] = v50;
+      if (v50 > 0x7F)
+      {
+        v51 = sub_19575D0(v50, v25 + 1);
+      }
+
+      else
+      {
+        v51 = v25 + 2;
+      }
+
+      v25 = sub_15FAF68(v49, v51, a3);
+    }
+  }
+
+  v52 = *(a1 + 200);
+  if (v52)
+  {
+    for (kk = 0; kk != v52; ++kk)
+    {
+      if (*a3 <= v25)
+      {
+        v25 = sub_225EB68(a3, v25);
+      }
+
+      v54 = *(*(a1 + 208) + 8 * kk + 8);
+      *v25 = 90;
+      v55 = *(v54 + 20);
+      v25[1] = v55;
+      if (v55 > 0x7F)
+      {
+        v56 = sub_19575D0(v55, v25 + 1);
+      }
+
+      else
+      {
+        v56 = v25 + 2;
+      }
+
+      v25 = sub_15FEAEC(v54, v56, a3);
+    }
+  }
+
+  v57 = *(a1 + 8);
+  if ((v57 & 1) == 0)
+  {
+    return v25;
+  }
+
+  v59 = v57 & 0xFFFFFFFFFFFFFFFCLL;
+  v60 = *(v59 + 31);
+  if (v60 < 0)
+  {
+    v61 = *(v59 + 8);
+    v60 = *(v59 + 16);
+  }
+
+  else
+  {
+    v61 = (v59 + 8);
+  }
+
+  if ((*a3 - v25) >= v60)
+  {
+    v62 = v60;
+    memcpy(v25, v61, v60);
+    v25 += v62;
+    return v25;
+  }
+
+  return sub_1957130(a3, v61, v60, v25);
+}
+
+uint64_t sub_15F98DC(uint64_t a1)
+{
+  v2 = *(a1 + 32);
+  v3 = *(a1 + 40);
+  if (v3)
+  {
+    v4 = (v3 + 8);
+  }
+
+  else
+  {
+    v4 = 0;
+  }
+
+  if (v2)
+  {
+    v5 = 8 * v2;
+    do
+    {
+      v6 = *v4++;
+      v7 = sub_15FE144(v6);
+      v2 += v7 + ((9 * (__clz(v7 | 1) ^ 0x1F) + 73) >> 6);
+      v5 -= 8;
+    }
+
+    while (v5);
+  }
+
+  else
+  {
+    v2 = 0;
+  }
+
+  v8 = *(a1 + 56);
+  v9 = v2 + v8;
+  v10 = *(a1 + 64);
+  if (v10)
+  {
+    v11 = (v10 + 8);
+  }
+
+  else
+  {
+    v11 = 0;
+  }
+
+  if (v8)
+  {
+    v12 = 8 * v8;
+    do
+    {
+      v13 = *v11++;
+      v14 = sub_160D7D4(v13);
+      v9 += v14 + ((9 * (__clz(v14 | 1) ^ 0x1F) + 73) >> 6);
+      v12 -= 8;
+    }
+
+    while (v12);
+  }
+
+  v15 = *(a1 + 80);
+  v16 = v9 + v15;
+  v17 = *(a1 + 88);
+  if (v17)
+  {
+    v18 = (v17 + 8);
+  }
+
+  else
+  {
+    v18 = 0;
+  }
+
+  if (v15)
+  {
+    v19 = 8 * v15;
+    do
+    {
+      v20 = *v18++;
+      v21 = sub_15FA794(v20);
+      v16 += v21 + ((9 * (__clz(v21 | 1) ^ 0x1F) + 73) >> 6);
+      v19 -= 8;
+    }
+
+    while (v19);
+  }
+
+  v22 = *(a1 + 104);
+  v23 = v16 + v22;
+  v24 = *(a1 + 112);
+  if (v24)
+  {
+    v25 = (v24 + 8);
+  }
+
+  else
+  {
+    v25 = 0;
+  }
+
+  if (v22)
+  {
+    v26 = 8 * v22;
+    do
+    {
+      v27 = *v25++;
+      v28 = sub_15FF46C(v27);
+      v23 += v28 + ((9 * (__clz(v28 | 1) ^ 0x1F) + 73) >> 6);
+      v26 -= 8;
+    }
+
+    while (v26);
+  }
+
+  v29 = *(a1 + 128);
+  v30 = v23 + v29;
+  v31 = *(a1 + 136);
+  if (v31)
+  {
+    v32 = (v31 + 8);
+  }
+
+  else
+  {
+    v32 = 0;
+  }
+
+  if (v29)
+  {
+    v33 = 8 * v29;
+    do
+    {
+      v34 = *v32++;
+      v35 = sub_15FFE74(v34);
+      v30 += v35 + ((9 * (__clz(v35 | 1) ^ 0x1F) + 73) >> 6);
+      v33 -= 8;
+    }
+
+    while (v33);
+  }
+
+  v36 = *(a1 + 152);
+  v37 = v30 + v36;
+  v38 = *(a1 + 160);
+  if (v38)
+  {
+    v39 = (v38 + 8);
+  }
+
+  else
+  {
+    v39 = 0;
+  }
+
+  if (v36)
+  {
+    v40 = 8 * v36;
+    do
+    {
+      v41 = *v39++;
+      v42 = sub_1616EAC(v41);
+      v37 += v42 + ((9 * (__clz(v42 | 1) ^ 0x1F) + 73) >> 6);
+      v40 -= 8;
+    }
+
+    while (v40);
+  }
+
+  v43 = *(a1 + 176);
+  v44 = v37 + v43;
+  v45 = *(a1 + 184);
+  if (v45)
+  {
+    v46 = (v45 + 8);
+  }
+
+  else
+  {
+    v46 = 0;
+  }
+
+  if (v43)
+  {
+    v47 = 8 * v43;
+    do
+    {
+      v48 = *v46++;
+      v49 = sub_15FB0F4(v48);
+      v44 += v49 + ((9 * (__clz(v49 | 1) ^ 0x1F) + 73) >> 6);
+      v47 -= 8;
+    }
+
+    while (v47);
+  }
+
+  v50 = *(a1 + 200);
+  v51 = v44 + v50;
+  v52 = *(a1 + 208);
+  if (v52)
+  {
+    v53 = (v52 + 8);
+  }
+
+  else
+  {
+    v53 = 0;
+  }
+
+  if (v50)
+  {
+    v54 = 8 * v50;
+    do
+    {
+      v55 = *v53++;
+      v56 = sub_15FEC78(v55);
+      v51 += v56 + ((9 * (__clz(v56 | 1) ^ 0x1F) + 73) >> 6);
+      v54 -= 8;
+    }
+
+    while (v54);
+  }
+
+  v57 = *(a1 + 16);
+  if ((v57 & 7) != 0)
+  {
+    if (v57)
+    {
+      v60 = sub_15F7AB8(*(a1 + 216));
+      v51 += v60 + ((9 * (__clz(v60 | 1) ^ 0x1F) + 73) >> 6) + 1;
+      if ((v57 & 2) == 0)
+      {
+LABEL_54:
+        if ((v57 & 4) == 0)
+        {
+          goto LABEL_56;
+        }
+
+        goto LABEL_55;
+      }
+    }
+
+    else if ((v57 & 2) == 0)
+    {
+      goto LABEL_54;
+    }
+
+    v61 = sub_15F866C(*(a1 + 224));
+    v51 += v61 + ((9 * (__clz(v61 | 1) ^ 0x1F) + 73) >> 6) + 1;
+    if ((v57 & 4) != 0)
+    {
+LABEL_55:
+      v51 += ((9 * (__clz(*(a1 + 232) | 1) ^ 0x3F) + 73) >> 6) + 1;
+    }
+  }
+
+LABEL_56:
+  v58 = *(a1 + 8);
+  if (v58)
+  {
+    v62 = v58 & 0xFFFFFFFFFFFFFFFCLL;
+    v63 = *((v58 & 0xFFFFFFFFFFFFFFFCLL) + 31);
+    if (v63 < 0)
+    {
+      v63 = *(v62 + 16);
+    }
+
+    v51 += v63;
+  }
+
+  *(a1 + 20) = v51;
+  return v51;
+}

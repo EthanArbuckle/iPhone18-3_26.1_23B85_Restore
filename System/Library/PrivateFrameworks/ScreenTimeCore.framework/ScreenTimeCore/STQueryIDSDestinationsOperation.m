@@ -1,0 +1,117 @@
+@interface STQueryIDSDestinationsOperation
+- (STQueryIDSDestinationsOperation)initWithServiceName:(id)a3 destinations:(id)a4;
+- (void)main;
+@end
+
+@implementation STQueryIDSDestinationsOperation
+
+- (STQueryIDSDestinationsOperation)initWithServiceName:(id)a3 destinations:(id)a4
+{
+  v7 = a3;
+  v8 = a4;
+  v16.receiver = self;
+  v16.super_class = STQueryIDSDestinationsOperation;
+  v9 = [(STOperation *)&v16 init];
+  if (v9)
+  {
+    v10 = dispatch_queue_create([@"com.apple.ScreenTimeAgent.ids-query-delegate" UTF8String], 0);
+    serviceQueryQueue = v9->_serviceQueryQueue;
+    v9->_serviceQueryQueue = v10;
+
+    v12 = [v8 copy];
+    destinations = v9->_destinations;
+    v9->_destinations = v12;
+
+    objc_storeStrong(&v9->_serviceName, a3);
+  }
+
+  v14 = +[STLog familyMessaging];
+  if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+  {
+    *buf = 136446466;
+    v18 = "[STQueryIDSDestinationsOperation initWithServiceName:destinations:]";
+    v19 = 2114;
+    v20 = v8;
+    _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[v1] %{public}s: \ndestinations: %{public}@", buf, 0x16u);
+  }
+
+  return v9;
+}
+
+- (void)main
+{
+  v3 = +[STLog familyMessaging];
+  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  {
+    destinations = self->_destinations;
+    *buf = 136446466;
+    v28 = "[STQueryIDSDestinationsOperation main]";
+    v29 = 2114;
+    v30 = destinations;
+    _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[v1] %{public}s: \ndestinations: %{public}@ - entered", buf, 0x16u);
+  }
+
+  v5 = [(STQueryIDSDestinationsOperation *)self destinations];
+  v6 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v5 count]);
+
+  v24 = 0u;
+  v25 = 0u;
+  v22 = 0u;
+  v23 = 0u;
+  v7 = [(STQueryIDSDestinationsOperation *)self destinations];
+  v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  if (v8)
+  {
+    v9 = v8;
+    v10 = *v23;
+    do
+    {
+      v11 = 0;
+      do
+      {
+        if (*v23 != v10)
+        {
+          objc_enumerationMutation(v7);
+        }
+
+        v12 = *(*(&v22 + 1) + 8 * v11);
+        v13 = IDSCopyAddressDestinationForDestination();
+        [v6 setObject:v12 forKeyedSubscript:v13];
+
+        v11 = v11 + 1;
+      }
+
+      while (v9 != v11);
+      v9 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    }
+
+    while (v9);
+  }
+
+  v14 = [v6 copy];
+  [(STQueryIDSDestinationsOperation *)self setOriginalDestinationByIDSDestination:v14];
+
+  v15 = +[STLog familyMessaging];
+  if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+  {
+    originalDestinationByIDSDestination = self->_originalDestinationByIDSDestination;
+    *buf = 136446466;
+    v28 = "[STQueryIDSDestinationsOperation main]";
+    v29 = 2114;
+    v30 = originalDestinationByIDSDestination;
+    _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[v1] %{public}s: \noriginalDestinationByIDSDestination: %{public}@", buf, 0x16u);
+  }
+
+  v17 = +[IDSIDQueryController sharedInstance];
+  v18 = [v6 allKeys];
+  v19 = [(STQueryIDSDestinationsOperation *)self serviceName];
+  v20 = [(STQueryIDSDestinationsOperation *)self serviceQueryQueue];
+  v21[0] = _NSConcreteStackBlock;
+  v21[1] = 3221225472;
+  v21[2] = sub_10005F1E4;
+  v21[3] = &unk_1001A4CE8;
+  v21[4] = self;
+  [v17 refreshIDStatusForDestinations:v18 service:v19 listenerID:@"STAgent" queue:v20 completionBlock:v21];
+}
+
+@end

@@ -1,0 +1,52 @@
+@interface TintableShapeLayer
+- (_TtC9SeymourUI18TintableShapeLayer)init;
+- (_TtC9SeymourUI18TintableShapeLayer)initWithLayer:(id)a3;
+- (void)setBorderColor:(CGColor *)a3;
+- (void)setStrokeColor:(CGColor *)a3;
+@end
+
+@implementation TintableShapeLayer
+
+- (void)setBorderColor:(CGColor *)a3
+{
+  v5 = a3;
+  v6 = self;
+  sub_20B5EB248(a3, &selRef_setBorderColor_, &selRef_borderColor, &OBJC_IVAR____TtC9SeymourUI18TintableShapeLayer_undimmedBorderColor);
+}
+
+- (void)setStrokeColor:(CGColor *)a3
+{
+  v5 = a3;
+  v6 = self;
+  sub_20B5EB248(a3, &selRef_setStrokeColor_, &selRef_strokeColor, &OBJC_IVAR____TtC9SeymourUI18TintableShapeLayer_undimmedStrokeColor);
+}
+
+- (_TtC9SeymourUI18TintableShapeLayer)init
+{
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI18TintableShapeLayer_tintAdjustmentMode) = 0;
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI18TintableShapeLayer_undimmedBorderColor) = 0;
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI18TintableShapeLayer_undimmedStrokeColor) = 0;
+  v3.receiver = self;
+  v3.super_class = type metadata accessor for TintableShapeLayer();
+  return [(TintableShapeLayer *)&v3 init];
+}
+
+- (_TtC9SeymourUI18TintableShapeLayer)initWithLayer:(id)a3
+{
+  swift_unknownObjectRetain();
+  sub_20C13DA64();
+  swift_unknownObjectRelease();
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI18TintableShapeLayer_tintAdjustmentMode) = 0;
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI18TintableShapeLayer_undimmedBorderColor) = 0;
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI18TintableShapeLayer_undimmedStrokeColor) = 0;
+  __swift_project_boxed_opaque_existential_1(v8, v8[3]);
+  v4 = sub_20C13DFD4();
+  v7.receiver = self;
+  v7.super_class = type metadata accessor for TintableShapeLayer();
+  v5 = [(TintableShapeLayer *)&v7 initWithLayer:v4];
+  swift_unknownObjectRelease();
+  __swift_destroy_boxed_opaque_existential_1(v8);
+  return v5;
+}
+
+@end

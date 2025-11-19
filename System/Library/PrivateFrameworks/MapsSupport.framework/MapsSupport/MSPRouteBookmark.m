@@ -1,0 +1,124 @@
+@interface MSPRouteBookmark
+- (BOOL)isEqual:(id)a3;
+- (id)copyWithZone:(_NSZone *)a3;
+- (id)description;
+- (id)dictionaryRepresentation;
+- (void)copyTo:(id)a3;
+- (void)mergeFrom:(id)a3;
+- (void)writeTo:(id)a3;
+@end
+
+@implementation MSPRouteBookmark
+
+- (id)description
+{
+  v3 = MEMORY[0x277CCACA8];
+  v8.receiver = self;
+  v8.super_class = MSPRouteBookmark;
+  v4 = [(MSPRouteBookmark *)&v8 description];
+  v5 = [(MSPRouteBookmark *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+
+  return v6;
+}
+
+- (id)dictionaryRepresentation
+{
+  v3 = [MEMORY[0x277CBEB38] dictionary];
+  routeRequestStorage = self->_routeRequestStorage;
+  if (routeRequestStorage)
+  {
+    v5 = [(GEOStorageRouteRequestStorage *)routeRequestStorage dictionaryRepresentation];
+    [v3 setObject:v5 forKey:@"routeRequestStorage"];
+  }
+
+  unknownFields = self->_unknownFields;
+  if (unknownFields)
+  {
+    v7 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
+    [v3 setObject:v7 forKey:@"Unknown Fields"];
+  }
+
+  return v3;
+}
+
+- (void)writeTo:(id)a3
+{
+  v4 = a3;
+  v5 = v4;
+  if (self->_routeRequestStorage)
+  {
+    PBDataWriterWriteSubmessage();
+    v4 = v5;
+  }
+
+  [(PBUnknownFields *)self->_unknownFields writeTo:v4];
+}
+
+- (void)copyTo:(id)a3
+{
+  routeRequestStorage = self->_routeRequestStorage;
+  if (routeRequestStorage)
+  {
+    [a3 setRouteRequestStorage:routeRequestStorage];
+  }
+}
+
+- (id)copyWithZone:(_NSZone *)a3
+{
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v6 = [(GEOStorageRouteRequestStorage *)self->_routeRequestStorage copyWithZone:a3];
+  v7 = *(v5 + 16);
+  *(v5 + 16) = v6;
+
+  objc_storeStrong((v5 + 8), self->_unknownFields);
+  return v5;
+}
+
+- (BOOL)isEqual:(id)a3
+{
+  v4 = a3;
+  if ([v4 isMemberOfClass:objc_opt_class()])
+  {
+    routeRequestStorage = self->_routeRequestStorage;
+    if (routeRequestStorage | v4[2])
+    {
+      v6 = [(GEOStorageRouteRequestStorage *)routeRequestStorage isEqual:?];
+    }
+
+    else
+    {
+      v6 = 1;
+    }
+  }
+
+  else
+  {
+    v6 = 0;
+  }
+
+  return v6;
+}
+
+- (void)mergeFrom:(id)a3
+{
+  v4 = a3;
+  routeRequestStorage = self->_routeRequestStorage;
+  v6 = v4[2];
+  if (routeRequestStorage)
+  {
+    if (v6)
+    {
+      [(GEOStorageRouteRequestStorage *)routeRequestStorage mergeFrom:?];
+    }
+  }
+
+  else if (v6)
+  {
+    [(MSPRouteBookmark *)self setRouteRequestStorage:?];
+  }
+
+  MEMORY[0x2821F96F8]();
+}
+
+@end

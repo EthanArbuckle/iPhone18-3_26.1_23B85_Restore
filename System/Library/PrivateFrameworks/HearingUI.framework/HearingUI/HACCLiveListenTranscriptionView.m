@@ -1,0 +1,440 @@
+@interface HACCLiveListenTranscriptionView
+- (HACCContentModuleDelegate)delegate;
+- (HACCLiveListenTranscriptionView)initWithFrame:(CGRect)a3;
+- (double)_heightConstant;
+- (void)_scrollToBottomIfNecessary;
+- (void)_updateDeviceLockStatus:(BOOL)a3;
+- (void)_updateVoiceOverAnnouncement:(id)a3;
+- (void)_voiceOverAnnounceUtterance:(id)a3 fromIndex:(unint64_t)a4;
+- (void)dealloc;
+- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
+- (void)subscribeListeners;
+- (void)updateValue;
+@end
+
+@implementation HACCLiveListenTranscriptionView
+
+- (HACCLiveListenTranscriptionView)initWithFrame:(CGRect)a3
+{
+  v71[5] = *MEMORY[0x277D85DE8];
+  v68.receiver = self;
+  v68.super_class = HACCLiveListenTranscriptionView;
+  v3 = [(HACCLiveListenTranscriptionView *)&v68 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  if (v3)
+  {
+    v4 = objc_alloc_init(HACCCapsuleDarkBackground);
+    backgroundView = v3->_backgroundView;
+    v3->_backgroundView = v4;
+
+    [(HACCCapsuleDarkBackground *)v3->_backgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(HACCLiveListenTranscriptionView *)v3 addSubview:v3->_backgroundView];
+    [(HACCCapsuleDarkBackground *)v3->_backgroundView sizeToFit];
+    v6 = [(HACCLiveListenTranscriptionView *)v3 heightAnchor];
+    [(HACCLiveListenTranscriptionView *)v3 _heightConstant];
+    v7 = [v6 constraintEqualToConstant:?];
+    heightConstraint = v3->_heightConstraint;
+    v3->_heightConstraint = v7;
+
+    v49 = MEMORY[0x277CCAAD0];
+    v71[0] = v3->_heightConstraint;
+    v61 = [(HACCCapsuleDarkBackground *)v3->_backgroundView leadingAnchor];
+    v58 = [(HACCLiveListenTranscriptionView *)v3 leadingAnchor];
+    v55 = [v61 constraintEqualToAnchor:v58];
+    v71[1] = v55;
+    v52 = [(HACCCapsuleDarkBackground *)v3->_backgroundView trailingAnchor];
+    v9 = [(HACCLiveListenTranscriptionView *)v3 trailingAnchor];
+    v10 = [v52 constraintEqualToAnchor:v9];
+    v71[2] = v10;
+    v11 = [(HACCCapsuleDarkBackground *)v3->_backgroundView topAnchor];
+    v12 = [(HACCLiveListenTranscriptionView *)v3 topAnchor];
+    v13 = [v11 constraintEqualToAnchor:v12];
+    v71[3] = v13;
+    v14 = [(HACCCapsuleDarkBackground *)v3->_backgroundView bottomAnchor];
+    v15 = [(HACCLiveListenTranscriptionView *)v3 bottomAnchor];
+    v16 = [v14 constraintEqualToAnchor:v15];
+    v71[4] = v16;
+    v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v71 count:5];
+    [v49 activateConstraints:v17];
+
+    v18 = objc_alloc_init(MEMORY[0x277D759D8]);
+    scrollView = v3->_scrollView;
+    v3->_scrollView = v18;
+
+    [(UIScrollView *)v3->_scrollView setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(UIScrollView *)v3->_scrollView setShowsVerticalScrollIndicator:0];
+    [(UIScrollView *)v3->_scrollView setBackgroundColor:0];
+    [(UIScrollView *)v3->_scrollView setDelegate:v3];
+    [(HACCLiveListenTranscriptionView *)v3 addSubview:v3->_scrollView];
+    v47 = MEMORY[0x277CCAAD0];
+    v62 = [(UIScrollView *)v3->_scrollView leadingAnchor];
+    v59 = [(HACCLiveListenTranscriptionView *)v3 leadingAnchor];
+    v56 = [v62 constraintEqualToAnchor:v59];
+    v70[0] = v56;
+    v53 = [(UIScrollView *)v3->_scrollView trailingAnchor];
+    v50 = [(HACCLiveListenTranscriptionView *)v3 trailingAnchor];
+    v20 = [v53 constraintEqualToAnchor:v50];
+    v70[1] = v20;
+    v21 = [(UIScrollView *)v3->_scrollView topAnchor];
+    v22 = [(HACCLiveListenTranscriptionView *)v3 topAnchor];
+    v23 = [v21 constraintEqualToAnchor:v22];
+    v70[2] = v23;
+    v24 = [(UIScrollView *)v3->_scrollView bottomAnchor];
+    v25 = [(HACCLiveListenTranscriptionView *)v3 bottomAnchor];
+    v26 = [v24 constraintEqualToAnchor:v25];
+    v70[3] = v26;
+    v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v70 count:4];
+    [v47 activateConstraints:v27];
+
+    v28 = HUICCMenuTextLabel();
+    transcriptionLabel = v3->_transcriptionLabel;
+    v3->_transcriptionLabel = v28;
+
+    [(UIScrollView *)v3->_scrollView addSubview:v3->_transcriptionLabel];
+    -[UILabel setTextAlignment:](v3->_transcriptionLabel, "setTextAlignment:", 2 * ([MEMORY[0x277D75D18] userInterfaceLayoutDirectionForSemanticContentAttribute:{-[HACCLiveListenTranscriptionView semanticContentAttribute](v3, "semanticContentAttribute")}] == 1));
+    [(UILabel *)v3->_transcriptionLabel setLineBreakMode:0];
+    [(UILabel *)v3->_transcriptionLabel setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(UILabel *)v3->_transcriptionLabel setNumberOfLines:0];
+    v30 = v3->_transcriptionLabel;
+    v31 = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v30 setTextColor:v31];
+
+    [(UILabel *)v3->_transcriptionLabel sizeToFit];
+    v32 = v3->_transcriptionLabel;
+    v33 = _AXSBrailleInputDeviceConnected();
+    v34 = MEMORY[0x277D765D0];
+    if (!v33)
+    {
+      v34 = MEMORY[0x277D765A8];
+    }
+
+    [(UILabel *)v32 setAccessibilityTraits:*v34];
+    visualStylingProvider = v3->_visualStylingProvider;
+    v36 = [(HACCLiveListenTranscriptionView *)v3 transcriptionLabel];
+    [(MTVisualStylingProvider *)visualStylingProvider automaticallyUpdateView:v36 withStyle:1];
+
+    v48 = MEMORY[0x277CCAAD0];
+    v63 = [(UILabel *)v3->_transcriptionLabel leadingAnchor];
+    v60 = [(HACCLiveListenTranscriptionView *)v3 leadingAnchor];
+    v57 = [v63 constraintEqualToAnchor:v60 constant:20.0];
+    v69[0] = v57;
+    v54 = [(UILabel *)v3->_transcriptionLabel trailingAnchor];
+    v51 = [(HACCLiveListenTranscriptionView *)v3 trailingAnchor];
+    v37 = [v54 constraintEqualToAnchor:v51 constant:-20.0];
+    v69[1] = v37;
+    v38 = [(UILabel *)v3->_transcriptionLabel topAnchor];
+    v39 = [(UIScrollView *)v3->_scrollView topAnchor];
+    v40 = [v38 constraintEqualToAnchor:v39 constant:20.0];
+    v69[2] = v40;
+    v41 = [(UILabel *)v3->_transcriptionLabel bottomAnchor];
+    v42 = [(UIScrollView *)v3->_scrollView bottomAnchor];
+    v43 = [v41 constraintEqualToAnchor:v42 constant:-20.0];
+    v69[3] = v43;
+    v44 = [MEMORY[0x277CBEA60] arrayWithObjects:v69 count:4];
+    [v48 activateConstraints:v44];
+
+    objc_initWeak(&location, v3);
+    v45 = MEMORY[0x277D85CD0];
+    handler[0] = MEMORY[0x277D85DD0];
+    handler[1] = 3221225472;
+    handler[2] = __49__HACCLiveListenTranscriptionView_initWithFrame___block_invoke;
+    handler[3] = &unk_2796F6EC8;
+    objc_copyWeak(&v66, &location);
+    notify_register_dispatch("com.apple.springboard.passcodeLockedOrBlocked", &v3->_lockStateNotifyToken, MEMORY[0x277D85CD0], handler);
+
+    objc_copyWeak(&v64, &location);
+    AXPerformBlockOnMainThreadAfterDelay();
+    objc_destroyWeak(&v64);
+    objc_destroyWeak(&v66);
+    objc_destroyWeak(&location);
+  }
+
+  return v3;
+}
+
+void __49__HACCLiveListenTranscriptionView_initWithFrame___block_invoke(uint64_t a1, int token)
+{
+  v9 = *MEMORY[0x277D85DE8];
+  state64 = 0;
+  notify_get_state(token, &state64);
+  v3 = state64;
+  v4 = HCLogHearingAids();
+  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  {
+    *buf = 67109120;
+    v8 = v3 != 0;
+    _os_log_impl(&dword_252166000, v4, OS_LOG_TYPE_DEFAULT, "Device lock state changed: %d", buf, 8u);
+  }
+
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  [WeakRetained _updateDeviceLockStatus:v3 != 0];
+}
+
+void __49__HACCLiveListenTranscriptionView_initWithFrame___block_invoke_287(uint64_t a1)
+{
+  v9 = *MEMORY[0x277D85DE8];
+  out_token = 0;
+  notify_register_check("com.apple.springboard.passcodeLockedOrBlocked", &out_token);
+  v5 = 0;
+  notify_get_state(out_token, &v5);
+  v2 = v5;
+  v3 = HCLogHearingAids();
+  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  {
+    *buf = 67109120;
+    v8 = v2 != 0;
+    _os_log_impl(&dword_252166000, v3, OS_LOG_TYPE_DEFAULT, "Initial device lock state: %d", buf, 8u);
+  }
+
+  WeakRetained = objc_loadWeakRetained((a1 + 32));
+  [WeakRetained _updateDeviceLockStatus:v2 != 0];
+}
+
+- (void)dealloc
+{
+  notify_cancel(self->_lockStateNotifyToken);
+  v3.receiver = self;
+  v3.super_class = HACCLiveListenTranscriptionView;
+  [(HACCLiveListenTranscriptionView *)&v3 dealloc];
+}
+
+- (void)subscribeListeners
+{
+  objc_initWeak(&location, self);
+  v3 = [MEMORY[0x277D12DE8] sharedInstance];
+  v4[0] = MEMORY[0x277D85DD0];
+  v4[1] = 3221225472;
+  v4[2] = __53__HACCLiveListenTranscriptionView_subscribeListeners__block_invoke;
+  v4[3] = &unk_2796F6F18;
+  objc_copyWeak(&v5, &location);
+  [v3 registerListener:self forLiveListenHandler:v4];
+
+  objc_destroyWeak(&v5);
+  objc_destroyWeak(&location);
+}
+
+void __53__HACCLiveListenTranscriptionView_subscribeListeners__block_invoke(uint64_t a1, void *a2, char a3, void *a4)
+{
+  v7 = a4;
+  objc_copyWeak(v9, (a1 + 32));
+  v8 = v7;
+  v10 = a3;
+  v9[1] = a2;
+  AXPerformBlockOnMainThread();
+
+  objc_destroyWeak(v9);
+}
+
+void __53__HACCLiveListenTranscriptionView_subscribeListeners__block_invoke_2(uint64_t a1)
+{
+  WeakRetained = objc_loadWeakRetained((a1 + 40));
+  [WeakRetained setTranscription:*(a1 + 32)];
+
+  v3 = objc_loadWeakRetained((a1 + 40));
+  [v3 setIsPlayingBack:*(a1 + 56)];
+
+  v4 = objc_loadWeakRetained((a1 + 40));
+  [v4 setLiveListenState:*(a1 + 48)];
+
+  v5 = objc_loadWeakRetained((a1 + 40));
+  [v5 updateValue];
+}
+
+- (void)updateValue
+{
+  v3 = [(NSString *)self->_transcription length];
+  transcriptionLabel = self->_transcriptionLabel;
+  if (!v3)
+  {
+    [(UILabel *)self->_transcriptionLabel setAlpha:0.7];
+    v7 = self->_transcriptionLabel;
+    goto LABEL_7;
+  }
+
+  v5 = [(HACCLiveListenTranscriptionView *)self deviceIsLocked];
+  v6 = 1.0;
+  if (v5)
+  {
+    v6 = 0.7;
+  }
+
+  [(UILabel *)transcriptionLabel setAlpha:v6];
+  if ([(HACCLiveListenTranscriptionView *)self deviceIsLocked])
+  {
+    v7 = self->_transcriptionLabel;
+LABEL_7:
+    v8 = hearingLocString();
+    [(UILabel *)v7 setText:v8];
+
+    goto LABEL_8;
+  }
+
+  v10 = [(HACCLiveListenTranscriptionView *)self transcriptionLabel];
+  v11 = [v10 text];
+  v12 = [v11 isEqualToString:self->_transcription];
+
+  if ((v12 & 1) == 0)
+  {
+    isPlayingBack = self->_isPlayingBack;
+    v14 = [(HACCLiveListenTranscriptionView *)self transcriptionLabel];
+    v15 = v14;
+    v16 = 1.0;
+    if (isPlayingBack)
+    {
+      v16 = 0.7;
+    }
+
+    [v14 setAlpha:v16];
+
+    v17 = [(HACCLiveListenTranscriptionView *)self transcriptionLabel];
+    [v17 setText:self->_transcription];
+
+    [(HACCLiveListenTranscriptionView *)self _updateVoiceOverAnnouncement:self->_transcription];
+  }
+
+LABEL_8:
+  [(HACCLiveListenTranscriptionView *)self _scrollToBottomIfNecessary];
+  [(HACCLiveListenTranscriptionView *)self _heightConstant];
+  heightConstraint = self->_heightConstraint;
+
+  [(NSLayoutConstraint *)heightConstraint setConstant:?];
+}
+
+- (double)_heightConstant
+{
+  v2 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
+  [v2 lineHeight];
+  v4 = v3;
+  [v2 pointSize];
+  v6 = (v4 + (v4 - v5) * 0.5) * 3.0 + 20.0;
+
+  return v6;
+}
+
+- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+{
+  self->_lastUserScrollDate = [MEMORY[0x277CBEAA8] date];
+
+  MEMORY[0x2821F96F8]();
+}
+
+- (void)_scrollToBottomIfNecessary
+{
+  [(UIScrollView *)self->_scrollView contentSize];
+  v4 = v3;
+  [(NSLayoutConstraint *)self->_heightConstraint constant];
+  if (v4 > v5)
+  {
+    lastUserScrollDate = self->_lastUserScrollDate;
+    if (!lastUserScrollDate || ([(NSDate *)lastUserScrollDate timeIntervalSinceNow], fabs(v7) > 5.0))
+    {
+      scrollView = self->_scrollView;
+      [(UIScrollView *)scrollView contentSize];
+      v10 = v9;
+      [(NSLayoutConstraint *)self->_heightConstraint constant];
+
+      [(UIScrollView *)scrollView setContentOffset:1 animated:0.0, v10 - v11];
+    }
+  }
+}
+
+- (void)_updateDeviceLockStatus:(BOOL)a3
+{
+  v3 = a3;
+  if ([(HACCLiveListenTranscriptionView *)self deviceIsLocked]!= a3)
+  {
+    [(HACCLiveListenTranscriptionView *)self setDeviceIsLocked:v3];
+    AXPerformBlockOnMainThread();
+  }
+}
+
+- (void)_updateVoiceOverAnnouncement:(id)a3
+{
+  v4 = a3;
+  v5 = [(HACCLiveListenTranscriptionView *)self transcriptionLabel];
+  v6 = [v5 accessibilityElementIsFocused];
+
+  if (v6)
+  {
+    v7 = [(HACCLiveListenTranscriptionView *)self voAnnouncementTimer];
+
+    if (!v7)
+    {
+      v8 = objc_alloc(MEMORY[0x277CE6950]);
+      v9 = [v8 initWithTargetSerialQueue:MEMORY[0x277D85CD0]];
+      [(HACCLiveListenTranscriptionView *)self setVoAnnouncementTimer:v9];
+    }
+
+    v10 = [v4 componentsSeparatedByString:@"\n"];
+    v11 = [v10 count];
+    if (v11 <= [(HACCLiveListenTranscriptionView *)self lastVOAnnouncedUtteranceIndex])
+    {
+      [(HACCLiveListenTranscriptionView *)self setLastVOAnnouncedUtteranceIndex:0x7FFFFFFFFFFFFFFFLL];
+      [(HACCLiveListenTranscriptionView *)self setLastVOAnnouncedUtterance:0];
+    }
+
+    [(AXDispatchTimer *)self->_voAnnouncementTimer cancel];
+    if ([v10 count] >= 2)
+    {
+      v12 = [v10 count] - 2;
+      v13 = [v10 objectAtIndex:v12];
+      if (-[HACCLiveListenTranscriptionView lastVOAnnouncedUtteranceIndex](self, "lastVOAnnouncedUtteranceIndex") == 0x7FFFFFFFFFFFFFFFLL || v12 > -[HACCLiveListenTranscriptionView lastVOAnnouncedUtteranceIndex](self, "lastVOAnnouncedUtteranceIndex") || v12 == -[HACCLiveListenTranscriptionView lastVOAnnouncedUtteranceIndex](self, "lastVOAnnouncedUtteranceIndex") && (-[HACCLiveListenTranscriptionView lastVOAnnouncedUtterance](self, "lastVOAnnouncedUtterance"), v19 = objc_claimAutoreleasedReturnValue(), v20 = [v13 isEqualToString:v19], v19, (v20 & 1) == 0))
+      {
+        [(HACCLiveListenTranscriptionView *)self _voiceOverAnnounceUtterance:v13 fromIndex:v12];
+      }
+    }
+
+    v14 = [v10 count] - 1;
+    v15 = [v10 objectAtIndex:v14];
+    if (-[HACCLiveListenTranscriptionView lastVOAnnouncedUtteranceIndex](self, "lastVOAnnouncedUtteranceIndex") == 0x7FFFFFFFFFFFFFFFLL || v14 > -[HACCLiveListenTranscriptionView lastVOAnnouncedUtteranceIndex](self, "lastVOAnnouncedUtteranceIndex") || v14 == -[HACCLiveListenTranscriptionView lastVOAnnouncedUtteranceIndex](self, "lastVOAnnouncedUtteranceIndex") && (-[HACCLiveListenTranscriptionView lastVOAnnouncedUtterance](self, "lastVOAnnouncedUtterance"), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v15 isEqualToString:v17], v17, (v18 & 1) == 0))
+    {
+      voAnnouncementTimer = self->_voAnnouncementTimer;
+      v21[0] = MEMORY[0x277D85DD0];
+      v21[1] = 3221225472;
+      v21[2] = __64__HACCLiveListenTranscriptionView__updateVoiceOverAnnouncement___block_invoke;
+      v21[3] = &unk_2796F6F40;
+      v21[4] = self;
+      v22 = v15;
+      v23 = v14;
+      [(AXDispatchTimer *)voAnnouncementTimer afterDelay:v21 processBlock:2.0];
+    }
+  }
+}
+
+- (void)_voiceOverAnnounceUtterance:(id)a3 fromIndex:(unint64_t)a4
+{
+  v6 = a3;
+  v7 = [(HACCLiveListenTranscriptionView *)self transcriptionLabel];
+  v8 = [v7 accessibilityElementIsFocused];
+
+  if (v8)
+  {
+    v9 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v12 = [v6 stringByTrimmingCharactersInSet:v9];
+
+    if ([v12 length])
+    {
+      v10 = [MEMORY[0x277CE6B98] stringWithString:v12];
+      [v10 setAttribute:&unk_2864654E0 forKey:*MEMORY[0x277CE6BC8]];
+      [v10 setAttribute:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CE6CA0]];
+      UIAccessibilityPostNotification(*MEMORY[0x277D76438], v10);
+      [(HACCLiveListenTranscriptionView *)self setLastVOAnnouncedUtterance:v12];
+      [(HACCLiveListenTranscriptionView *)self setLastVOAnnouncedUtteranceIndex:a4];
+    }
+
+    v11 = v12;
+  }
+
+  else
+  {
+    v11 = v6;
+  }
+}
+
+- (HACCContentModuleDelegate)delegate
+{
+  WeakRetained = objc_loadWeakRetained(&self->delegate);
+
+  return WeakRetained;
+}
+
+@end

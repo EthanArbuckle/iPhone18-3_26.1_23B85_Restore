@@ -1,0 +1,541 @@
+@interface NEIKEv2EncryptedKeyIDIdentifier
+- (BOOL)isEqual:(id)a3;
+- (NEIKEv2EncryptedKeyIDIdentifier)initWithKeyID:(id)a3 aad:(id)a4 key:(id)a5;
+- (NEIKEv2EncryptedKeyIDIdentifier)initWithKeyID:(id)a3 aad:(id)a4 keyRef:(__SecKey *)a5;
+- (NEIKEv2EncryptedKeyIDIdentifier)initWithKeyIDString:(id)a3 aad:(id)a4 key:(id)a5;
+- (NEIKEv2EncryptedKeyIDIdentifier)initWithKeyIDString:(id)a3 aad:(id)a4 keyRef:(__SecKey *)a5;
+- (id)copyWithZone:(_NSZone *)a3;
+- (id)decryptWithSession:(id)a3 returnError:(id *)a4;
+- (unint64_t)hash;
+- (void)dealloc;
+- (void)setAad:(uint64_t)a1;
+- (void)setKeyData:(uint64_t)a1;
+@end
+
+@implementation NEIKEv2EncryptedKeyIDIdentifier
+
+- (id)decryptWithSession:(id)a3 returnError:(id *)a4
+{
+  if (!a3 || (v10 = objc_getProperty(a3, a2, 352, 1)) == 0)
+  {
+    ErrorInternal = NEIKEv2CreateErrorInternal(@"Missing IKE SA", a2, a3, a4, v4, v5, v6, v7, v40);
+    v11 = 0;
+    v25 = 0;
+    if (!a4)
+    {
+      goto LABEL_23;
+    }
+
+    goto LABEL_22;
+  }
+
+  v11 = v10;
+  v12 = self;
+  location = 0;
+  v13 = [(NEIKEv2Identifier *)v12 identifierData];
+  v14 = [v13 length];
+
+  if (v14 <= 0x20)
+  {
+    v15 = [(NEIKEv2Identifier *)v12 identifierData];
+    v16 = [v15 length];
+    ErrorPeerInvalidSyntax = NEIKEv2CreateErrorPeerInvalidSyntax(@"Encrypted identifier length %u too short", v17, v18, v19, v20, v21, v22, v23, v16);
+    location = ErrorPeerInvalidSyntax;
+
+    v25 = 0;
+    goto LABEL_18;
+  }
+
+  v26 = [(NEIKEv2IKESA *)v11 createConcatenatedSPIsAndReturnError:?];
+  if (!v26)
+  {
+    v25 = 0;
+    goto LABEL_17;
+  }
+
+  v27 = [(NEIKEv2IKESA *)v11 createConcatedNoncesAndReturnError:?];
+  if (!v27)
+  {
+    v25 = 0;
+    goto LABEL_16;
+  }
+
+  if (v12)
+  {
+    v28 = v12->_keyRef == 0;
+  }
+
+  else
+  {
+    v28 = 1;
+  }
+
+  v29 = [NEIKEv2CryptoKitHPKE alloc];
+  v30 = [(NEIKEv2Identifier *)v12 identifierData];
+  if (!v12)
+  {
+    v31 = 0;
+    keyRef = 0;
+    keyData = 0;
+    if (v28)
+    {
+      goto LABEL_12;
+    }
+
+LABEL_14:
+    v34 = [(NEIKEv2CryptoKitHPKE *)v29 initWithPayload:v30 aad:v31 psk:v27 pskID:v26 keyRef:keyRef];
+    goto LABEL_15;
+  }
+
+  v31 = v12->_aad;
+  if (!v28)
+  {
+    keyRef = v12->_keyRef;
+    goto LABEL_14;
+  }
+
+  keyData = v12->_keyData;
+LABEL_12:
+  v33 = keyData;
+  v34 = [(NEIKEv2CryptoKitHPKE *)v29 initWithPayload:v30 aad:v31 psk:v27 pskID:v26 keyData:v33];
+
+LABEL_15:
+  obj = location;
+  v25 = [(NEIKEv2CryptoKitHPKE *)v34 performOpenAndReturnError:&obj];
+  objc_storeStrong(&location, obj);
+
+LABEL_16:
+LABEL_17:
+
+  ErrorPeerInvalidSyntax = location;
+LABEL_18:
+  ErrorInternal = ErrorPeerInvalidSyntax;
+  if (ErrorInternal)
+  {
+
+    v25 = 0;
+    v37 = location;
+  }
+
+  else
+  {
+    v37 = 0;
+  }
+
+  if (a4)
+  {
+LABEL_22:
+    v38 = ErrorInternal;
+    *a4 = ErrorInternal;
+  }
+
+LABEL_23:
+
+  return v25;
+}
+
+- (BOOL)isEqual:(id)a3
+{
+  v4 = a3;
+  v24.receiver = self;
+  v24.super_class = NEIKEv2EncryptedKeyIDIdentifier;
+  if ([(NEIKEv2Identifier *)&v24 isEqual:v4])
+  {
+    v5 = v4;
+    if (self)
+    {
+      aad = self->_aad;
+    }
+
+    else
+    {
+      aad = 0;
+    }
+
+    v7 = aad;
+    v8 = v7;
+    if (v5)
+    {
+      v9 = v5[4];
+    }
+
+    else
+    {
+      v9 = 0;
+    }
+
+    if (v7 == v9)
+    {
+
+      if (!self)
+      {
+        goto LABEL_28;
+      }
+
+      goto LABEL_15;
+    }
+
+    if (self)
+    {
+      v10 = self->_aad;
+      if (v5)
+      {
+LABEL_9:
+        v11 = v5[4];
+LABEL_10:
+        v12 = v10;
+        v13 = v9;
+        v14 = [(NSData *)v12 isEqual:v11];
+
+        v15 = 0;
+        if (!v14 || !self)
+        {
+          goto LABEL_29;
+        }
+
+LABEL_15:
+        v16 = self->_keyData;
+        if (v16)
+        {
+          if (!v5)
+          {
+
+            goto LABEL_28;
+          }
+
+          v17 = v5[3];
+
+          if (v17)
+          {
+            keyData = self->_keyData;
+            v19 = v5[3];
+            v20 = keyData;
+            v15 = [(NSData *)v20 isEqualToData:v19];
+
+LABEL_29:
+            goto LABEL_30;
+          }
+        }
+
+        v15 = 0;
+        if (!v5)
+        {
+          goto LABEL_29;
+        }
+
+        keyRef = self->_keyRef;
+        if (!keyRef)
+        {
+          goto LABEL_29;
+        }
+
+        v22 = v5[2];
+        if (v22)
+        {
+          v15 = CFEqual(keyRef, v22) != 0;
+          goto LABEL_29;
+        }
+
+LABEL_28:
+        v15 = 0;
+        goto LABEL_29;
+      }
+    }
+
+    else
+    {
+      v10 = 0;
+      if (v5)
+      {
+        goto LABEL_9;
+      }
+    }
+
+    v11 = 0;
+    goto LABEL_10;
+  }
+
+  v15 = 0;
+LABEL_30:
+
+  return v15;
+}
+
+- (unint64_t)hash
+{
+  v10.receiver = self;
+  v10.super_class = NEIKEv2EncryptedKeyIDIdentifier;
+  v3 = [(NEIKEv2Identifier *)&v10 hash];
+  if (self)
+  {
+    if (self->_keyRef)
+    {
+      v4 = SecKeyCopyPublicKeyHash();
+      v5 = [v4 hash];
+
+      v6 = v5 ^ v3;
+      goto LABEL_6;
+    }
+
+    keyData = self->_keyData;
+  }
+
+  else
+  {
+    keyData = 0;
+  }
+
+  v6 = [(NSData *)keyData hash]^ v3;
+  if (!self)
+  {
+    aad = 0;
+    return [(NSData *)aad hash]^ v6;
+  }
+
+LABEL_6:
+  aad = self->_aad;
+  return [(NSData *)aad hash]^ v6;
+}
+
+- (id)copyWithZone:(_NSZone *)a3
+{
+  v10.receiver = self;
+  v10.super_class = NEIKEv2EncryptedKeyIDIdentifier;
+  v4 = [(NEIKEv2Identifier *)&v10 copyWithZone:a3];
+  v6 = v4;
+  if (self)
+  {
+    keyRef = self->_keyRef;
+    if (!v4)
+    {
+      goto LABEL_4;
+    }
+
+    goto LABEL_3;
+  }
+
+  keyRef = 0;
+  if (v4)
+  {
+LABEL_3:
+    objc_setProperty_nonatomic(v4, v5, keyRef, 16);
+  }
+
+LABEL_4:
+  if (self)
+  {
+    [(NEIKEv2EncryptedKeyIDIdentifier *)v6 setKeyData:?];
+    aad = self->_aad;
+  }
+
+  else
+  {
+    [(NEIKEv2EncryptedKeyIDIdentifier *)v6 setKeyData:?];
+    aad = 0;
+  }
+
+  [(NEIKEv2EncryptedKeyIDIdentifier *)v6 setAad:?];
+  return v6;
+}
+
+- (void)setKeyData:(uint64_t)a1
+{
+  if (a1)
+  {
+    objc_storeStrong((a1 + 24), a2);
+  }
+}
+
+- (void)setAad:(uint64_t)a1
+{
+  if (a1)
+  {
+    objc_storeStrong((a1 + 32), a2);
+  }
+}
+
+- (void)dealloc
+{
+  if (self)
+  {
+    objc_setProperty_nonatomic(self, a2, 0, 16);
+  }
+
+  v3.receiver = self;
+  v3.super_class = NEIKEv2EncryptedKeyIDIdentifier;
+  [(NEIKEv2EncryptedKeyIDIdentifier *)&v3 dealloc];
+}
+
+- (NEIKEv2EncryptedKeyIDIdentifier)initWithKeyIDString:(id)a3 aad:(id)a4 key:(id)a5
+{
+  v20 = *MEMORY[0x1E69E9840];
+  v8 = a3;
+  v9 = a4;
+  v10 = a5;
+  v11 = v10;
+  if (!v10)
+  {
+    v16 = ne_log_obj();
+    if (!os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
+    {
+LABEL_8:
+
+      v13 = 0;
+      goto LABEL_4;
+    }
+
+    v18 = 136315138;
+    v19 = "[NEIKEv2EncryptedKeyIDIdentifier initWithKeyIDString:aad:key:]";
+    v17 = "%s called with null key";
+LABEL_10:
+    _os_log_fault_impl(&dword_1BA83C000, v16, OS_LOG_TYPE_FAULT, v17, &v18, 0xCu);
+    goto LABEL_8;
+  }
+
+  if ([v10 length] != 32)
+  {
+    v16 = ne_log_obj();
+    if (!os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
+    {
+      goto LABEL_8;
+    }
+
+    v18 = 134217984;
+    v19 = [v11 length];
+    v17 = "Invalid key length %tu!";
+    goto LABEL_10;
+  }
+
+  v12 = [(NEIKEv2KeyIDIdentifier *)self initWithKeyIDString:v8];
+  [(NEIKEv2EncryptedKeyIDIdentifier *)v12 setKeyData:v11];
+  [(NEIKEv2EncryptedKeyIDIdentifier *)v12 setAad:v9];
+  self = v12;
+  v13 = self;
+LABEL_4:
+
+  v14 = *MEMORY[0x1E69E9840];
+  return v13;
+}
+
+- (NEIKEv2EncryptedKeyIDIdentifier)initWithKeyIDString:(id)a3 aad:(id)a4 keyRef:(__SecKey *)a5
+{
+  v19 = *MEMORY[0x1E69E9840];
+  v9 = a4;
+  if (a5)
+  {
+    v10 = [(NEIKEv2KeyIDIdentifier *)self initWithKeyIDString:a3];
+    p_isa = &v10->super.super.super.isa;
+    if (v10)
+    {
+      objc_setProperty_nonatomic(v10, v11, a5, 16);
+      objc_storeStrong(p_isa + 4, a4);
+    }
+
+    self = p_isa;
+    v13 = self;
+  }
+
+  else
+  {
+    v16 = ne_log_obj();
+    if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
+    {
+      v17 = 136315138;
+      v18 = "[NEIKEv2EncryptedKeyIDIdentifier initWithKeyIDString:aad:keyRef:]";
+      _os_log_fault_impl(&dword_1BA83C000, v16, OS_LOG_TYPE_FAULT, "%s called with null keyRef", &v17, 0xCu);
+    }
+
+    v13 = 0;
+  }
+
+  v14 = *MEMORY[0x1E69E9840];
+  return v13;
+}
+
+- (NEIKEv2EncryptedKeyIDIdentifier)initWithKeyID:(id)a3 aad:(id)a4 key:(id)a5
+{
+  v20 = *MEMORY[0x1E69E9840];
+  v8 = a3;
+  v9 = a4;
+  v10 = a5;
+  v11 = v10;
+  if (!v10)
+  {
+    v16 = ne_log_obj();
+    if (!os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
+    {
+LABEL_8:
+
+      v13 = 0;
+      goto LABEL_4;
+    }
+
+    v18 = 136315138;
+    v19 = "[NEIKEv2EncryptedKeyIDIdentifier initWithKeyID:aad:key:]";
+    v17 = "%s called with null key";
+LABEL_10:
+    _os_log_fault_impl(&dword_1BA83C000, v16, OS_LOG_TYPE_FAULT, v17, &v18, 0xCu);
+    goto LABEL_8;
+  }
+
+  if ([v10 length] != 32)
+  {
+    v16 = ne_log_obj();
+    if (!os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
+    {
+      goto LABEL_8;
+    }
+
+    v18 = 134217984;
+    v19 = [v11 length];
+    v17 = "Invalid key length %tu!";
+    goto LABEL_10;
+  }
+
+  v12 = [(NEIKEv2KeyIDIdentifier *)self initWithKeyID:v8];
+  [(NEIKEv2EncryptedKeyIDIdentifier *)v12 setKeyData:v11];
+  [(NEIKEv2EncryptedKeyIDIdentifier *)v12 setAad:v9];
+  self = v12;
+  v13 = self;
+LABEL_4:
+
+  v14 = *MEMORY[0x1E69E9840];
+  return v13;
+}
+
+- (NEIKEv2EncryptedKeyIDIdentifier)initWithKeyID:(id)a3 aad:(id)a4 keyRef:(__SecKey *)a5
+{
+  v19 = *MEMORY[0x1E69E9840];
+  v9 = a4;
+  if (a5)
+  {
+    v10 = [(NEIKEv2KeyIDIdentifier *)self initWithKeyID:a3];
+    p_isa = &v10->super.super.super.isa;
+    if (v10)
+    {
+      objc_setProperty_nonatomic(v10, v11, a5, 16);
+      objc_storeStrong(p_isa + 4, a4);
+    }
+
+    self = p_isa;
+    v13 = self;
+  }
+
+  else
+  {
+    v16 = ne_log_obj();
+    if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
+    {
+      v17 = 136315138;
+      v18 = "[NEIKEv2EncryptedKeyIDIdentifier initWithKeyID:aad:keyRef:]";
+      _os_log_fault_impl(&dword_1BA83C000, v16, OS_LOG_TYPE_FAULT, "%s called with null keyRef", &v17, 0xCu);
+    }
+
+    v13 = 0;
+  }
+
+  v14 = *MEMORY[0x1E69E9840];
+  return v13;
+}
+
+@end

@@ -1,0 +1,143 @@
+@interface HDSPSleepModeExitDetector
+- (HDSPEnvironment)environment;
+- (HDSPSleepModeExitDetector)initWithEnvironment:(id)a3;
+- (HDSPWakeDetectorDelegate)wakeDetectorDelegate;
+- (void)sleepModeDidChange:(int64_t)a3 previousMode:(int64_t)a4 reason:(unint64_t)a5;
+- (void)startDetecting;
+- (void)stopDetecting;
+@end
+
+@implementation HDSPSleepModeExitDetector
+
+- (HDSPSleepModeExitDetector)initWithEnvironment:(id)a3
+{
+  v4 = a3;
+  v9.receiver = self;
+  v9.super_class = HDSPSleepModeExitDetector;
+  v5 = [(HDSPSleepModeExitDetector *)&v9 init];
+  v6 = v5;
+  if (v5)
+  {
+    objc_storeWeak(&v5->_environment, v4);
+    v7 = v6;
+  }
+
+  return v6;
+}
+
+- (void)startDetecting
+{
+  v10 = *MEMORY[0x277D85DE8];
+  if (!self->_isDetecting)
+  {
+    v3 = HKSPLogForCategory();
+    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    {
+      v8 = 138543362;
+      v9 = objc_opt_class();
+      v4 = v9;
+      _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] startDetecting", &v8, 0xCu);
+    }
+
+    self->_isDetecting = 1;
+    WeakRetained = objc_loadWeakRetained(&self->_environment);
+    v6 = [WeakRetained sleepModeManager];
+    [v6 addObserver:self];
+  }
+
+  v7 = *MEMORY[0x277D85DE8];
+}
+
+- (void)stopDetecting
+{
+  v10 = *MEMORY[0x277D85DE8];
+  v3 = HKSPLogForCategory();
+  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  {
+    v8 = 138543362;
+    v9 = objc_opt_class();
+    v4 = v9;
+    _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] stopDetecting", &v8, 0xCu);
+  }
+
+  self->_isDetecting = 0;
+  WeakRetained = objc_loadWeakRetained(&self->_environment);
+  v6 = [WeakRetained sleepModeManager];
+  [v6 removeObserver:self];
+
+  v7 = *MEMORY[0x277D85DE8];
+}
+
+- (void)sleepModeDidChange:(int64_t)a3 previousMode:(int64_t)a4 reason:(unint64_t)a5
+{
+  v23 = *MEMORY[0x277D85DE8];
+  v7 = [(HDSPSleepModeExitDetector *)self environment:a3];
+  v8 = [v7 currentContext];
+
+  if (!a3 && HKSPSleepModeChangeReasonTreatedAsUserRequestedLocally() && [(HDSPSleepModeExitDetector *)self isDetecting])
+  {
+    v9 = [v8 source];
+    if (objc_opt_respondsToSelector())
+    {
+      v10 = [v8 source];
+      v11 = [v10 dontSync];
+
+      if (v11)
+      {
+        v12 = HKSPLogForCategory();
+        if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+        {
+          v21 = 138543362;
+          v22 = objc_opt_class();
+          v13 = v22;
+          _os_log_impl(&dword_269B11000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] ignoring remote sleep mode exit", &v21, 0xCu);
+        }
+
+LABEL_12:
+
+        goto LABEL_13;
+      }
+    }
+
+    else
+    {
+    }
+
+    v14 = HKSPLogForCategory();
+    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    {
+      v21 = 138543362;
+      v22 = objc_opt_class();
+      v15 = v22;
+      _os_log_impl(&dword_269B11000, v14, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleep mode manually exited, treating as wake up event", &v21, 0xCu);
+    }
+
+    v12 = [(HDSPSleepModeExitDetector *)self wakeDetectorDelegate];
+    WeakRetained = objc_loadWeakRetained(&self->_environment);
+    v17 = [WeakRetained currentDateProvider];
+    v19 = v17[2](v17, v18);
+    [v12 wakeDetector:self didDetectWakeUpEventOnDate:v19];
+
+    goto LABEL_12;
+  }
+
+LABEL_13:
+
+  v20 = *MEMORY[0x277D85DE8];
+}
+
+- (HDSPWakeDetectorDelegate)wakeDetectorDelegate
+{
+  WeakRetained = objc_loadWeakRetained(&self->_wakeDetectorDelegate);
+
+  return WeakRetained;
+}
+
+- (HDSPEnvironment)environment
+{
+  WeakRetained = objc_loadWeakRetained(&self->_environment);
+
+  return WeakRetained;
+}
+
+@end

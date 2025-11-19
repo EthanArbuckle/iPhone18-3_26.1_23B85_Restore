@@ -1,0 +1,36 @@
+@interface SFPrivacyReportGridRowLayoutInfo
+- (SFPrivacyReportGridRowLayoutInfo)initWithRow:(int64_t)a3 itemRange:(_NSRange)a4;
+- (_NSRange)itemRange;
+@end
+
+@implementation SFPrivacyReportGridRowLayoutInfo
+
+- (SFPrivacyReportGridRowLayoutInfo)initWithRow:(int64_t)a3 itemRange:(_NSRange)a4
+{
+  length = a4.length;
+  location = a4.location;
+  v11.receiver = self;
+  v11.super_class = SFPrivacyReportGridRowLayoutInfo;
+  v7 = [(SFPrivacyReportGridRowLayoutInfo *)&v11 init];
+  v8 = v7;
+  if (v7)
+  {
+    v7->_row = a3;
+    v7->_itemRange.location = location;
+    v7->_itemRange.length = length;
+    v9 = v7;
+  }
+
+  return v8;
+}
+
+- (_NSRange)itemRange
+{
+  length = self->_itemRange.length;
+  location = self->_itemRange.location;
+  result.length = length;
+  result.location = location;
+  return result;
+}
+
+@end

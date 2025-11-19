@@ -1,0 +1,104 @@
+@interface REElementGroup
++ (id)adjoiningElementGroupWithIdentifier:(id)a3;
++ (id)topElementGroupWithIdentifier:(id)a3;
+- (BOOL)isEqual:(id)a3;
+- (REElementGroup)initWithGroupIdentifier:(id)a3;
+- (id)copyWithZone:(_NSZone *)a3;
+@end
+
+@implementation REElementGroup
+
+- (REElementGroup)initWithGroupIdentifier:(id)a3
+{
+  v4 = a3;
+  v9.receiver = self;
+  v9.super_class = REElementGroup;
+  v5 = [(REElementGroup *)&v9 init];
+  if (v5)
+  {
+    v6 = [v4 copy];
+    groupIdentifier = v5->_groupIdentifier;
+    v5->_groupIdentifier = v6;
+  }
+
+  return v5;
+}
+
++ (id)topElementGroupWithIdentifier:(id)a3
+{
+  v3 = a3;
+  v4 = [objc_alloc(objc_opt_class()) initWithGroupIdentifier:v3];
+
+  [v4 setBehavior:1];
+  [v4 setMaxElementCount:1];
+
+  return v4;
+}
+
++ (id)adjoiningElementGroupWithIdentifier:(id)a3
+{
+  v3 = a3;
+  v4 = [objc_alloc(objc_opt_class()) initWithGroupIdentifier:v3];
+
+  [v4 setBehavior:1];
+  [v4 setMaxElementCount:-1];
+
+  return v4;
+}
+
+- (BOOL)isEqual:(id)a3
+{
+  v4 = a3;
+  if (self == v4)
+  {
+    v11 = 1;
+  }
+
+  else
+  {
+    objc_opt_class();
+    if (objc_opt_isKindOfClass())
+    {
+      v5 = v4;
+      v6 = v5;
+      if (self->_behavior == v5->_behavior && self->_maxElementCount == v5->_maxElementCount)
+      {
+        groupIdentifier = self->_groupIdentifier;
+        v8 = v5->_groupIdentifier;
+        v9 = groupIdentifier;
+        v10 = v9;
+        if (v9 == v8)
+        {
+          v11 = 1;
+        }
+
+        else
+        {
+          v11 = [(NSString *)v9 isEqual:v8];
+        }
+      }
+
+      else
+      {
+        v11 = 0;
+      }
+    }
+
+    else
+    {
+      v11 = 0;
+    }
+  }
+
+  return v11;
+}
+
+- (id)copyWithZone:(_NSZone *)a3
+{
+  v4 = [objc_alloc(objc_opt_class()) initWithGroupIdentifier:self->_groupIdentifier];
+  [v4 setBehavior:self->_behavior];
+  [v4 setMaxElementCount:self->_maxElementCount];
+  return v4;
+}
+
+@end

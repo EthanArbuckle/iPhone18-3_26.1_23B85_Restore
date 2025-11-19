@@ -1,0 +1,29 @@
+@interface SBSwitcherChamoisSnapPaddingSettings
+- (SBSwitcherChamoisSnapPaddingSettings)initWithDefaultValues;
+@end
+
+@implementation SBSwitcherChamoisSnapPaddingSettings
+
+- (SBSwitcherChamoisSnapPaddingSettings)initWithDefaultValues
+{
+  v8.receiver = self;
+  v8.super_class = SBSwitcherChamoisSnapPaddingSettings;
+  v2 = [(SBSwitcherWindowingSnapPaddingSettings *)&v8 initWithDefaultValues];
+  v3 = v2;
+  if (v2)
+  {
+    [(SBSwitcherWindowingSnapPaddingSettings *)v2 setEdgePadding:45.0];
+    [(SBSwitcherWindowingSnapPaddingSettings *)v3 edgePadding];
+    [(SBSwitcherWindowingSnapPaddingSettings *)v3 setSingleAppCenterPadding:v4 + v4];
+    [(SBSwitcherWindowingSnapPaddingSettings *)v3 edgePadding];
+    [(SBSwitcherWindowingSnapPaddingSettings *)v3 setMultiAppCenterPadding:v5 * 0.5];
+    [(SBSwitcherWindowingSnapPaddingSettings *)v3 edgePadding];
+    [(SBSwitcherWindowingSnapPaddingSettings *)v3 setFullScreenSnapPadding:v6 * 0.5];
+    [(SBSwitcherWindowingSnapPaddingSettings *)v3 edgePadding];
+    [(SBSwitcherWindowingSnapPaddingSettings *)v3 setInterItemPadding:?];
+  }
+
+  return v3;
+}
+
+@end

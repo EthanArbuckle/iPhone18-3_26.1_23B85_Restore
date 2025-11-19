@@ -1,0 +1,13 @@
+@interface AXSFullKeyboardAccessUsesSimulatedKeyboardForAutomation
+@end
+
+@implementation AXSFullKeyboardAccessUsesSimulatedKeyboardForAutomation
+
+uint64_t ___AXSFullKeyboardAccessUsesSimulatedKeyboardForAutomation_block_invoke()
+{
+  result = CFPreferencesGetAppBooleanValue(@"FullKeyboardAccessUsesSimulatedKeyboardForAutomation", kAXSAccessibilityPreferenceDomain, 0);
+  _AXSFullKeyboardAccessUsesSimulatedKeyboardForAutomation_UsesSimulatedKeyboard = result;
+  return result;
+}
+
+@end

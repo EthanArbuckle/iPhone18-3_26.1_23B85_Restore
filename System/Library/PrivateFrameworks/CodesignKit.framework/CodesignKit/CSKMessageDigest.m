@@ -1,0 +1,22 @@
+@interface CSKMessageDigest
+- (_TtC11CodesignKit16CSKMessageDigest)init;
+- (void)encodeWithCoder:(id)a3;
+@end
+
+@implementation CSKMessageDigest
+
+- (void)encodeWithCoder:(id)a3
+{
+  v4 = a3;
+  v5 = self;
+  sub_243B8CD68(v4);
+}
+
+- (_TtC11CodesignKit16CSKMessageDigest)init
+{
+  result = _swift_stdlib_reportUnimplementedInitializer();
+  __break(1u);
+  return result;
+}
+
+@end

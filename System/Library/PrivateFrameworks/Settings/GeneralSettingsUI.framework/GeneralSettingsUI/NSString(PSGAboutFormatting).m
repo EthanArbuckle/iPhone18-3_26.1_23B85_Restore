@@ -1,0 +1,52 @@
+@interface NSString(PSGAboutFormatting)
+- (id)psg_ICCIDString;
+- (id)psg_IMEIString;
+@end
+
+@implementation NSString(PSGAboutFormatting)
+
+- (id)psg_ICCIDString
+{
+  v2 = [a1 mutableCopy];
+  if ([a1 length] >= 4 && objc_msgSend(a1, "length") >= 5)
+  {
+    v3 = 0;
+    v4 = 4;
+    do
+    {
+      if ([a1 length] > v4)
+      {
+        [v2 insertString:@" " atIndex:v4 + v3++];
+      }
+
+      v4 += 4;
+    }
+
+    while ([a1 length] > v4);
+  }
+
+  return v2;
+}
+
+- (id)psg_IMEIString
+{
+  v1 = [a1 mutableCopy];
+  if ([v1 length] >= 3)
+  {
+    [v1 insertString:@" " atIndex:2];
+  }
+
+  if ([v1 length] >= 0xA)
+  {
+    [v1 insertString:@" " atIndex:9];
+  }
+
+  if ([v1 length] >= 0x11)
+  {
+    [v1 insertString:@" " atIndex:16];
+  }
+
+  return v1;
+}
+
+@end

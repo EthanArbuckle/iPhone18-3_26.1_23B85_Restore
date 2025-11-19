@@ -1,0 +1,468 @@
+@interface PUParallaxDebugInfoView
+- (PUParallaxDebugInfoView)initWithViewModel:(id)a3;
+- (PUParallaxLayerStackViewModel)viewModel;
+- (UILabel)debugHUDLabel;
+- (id)_rectViewForIdentifier:(id)a3;
+- (void)_layoutWithCurrentLayoutInfo;
+- (void)_updateDebugHUDString;
+- (void)displayAdditionalDebugInfo:(id)a3;
+- (void)layoutWithInfo:(id)a3;
+- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)setAdditionalDebugInfo:(id)a3;
+- (void)setCurrentLayoutInfo:(id)a3;
+- (void)setDebugHUDString:(id)a3;
+- (void)setDebugTimeRect:(id)a3;
+@end
+
+@implementation PUParallaxDebugInfoView
+
+- (PUParallaxLayerStackViewModel)viewModel
+{
+  WeakRetained = objc_loadWeakRetained(&self->_viewModel);
+
+  return WeakRetained;
+}
+
+- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+{
+  v5 = a4;
+  v7 = a3;
+  if ((v5 & 0x200) != 0)
+  {
+    [(PUParallaxDebugInfoView *)self _layoutWithCurrentLayoutInfo];
+  }
+
+  if ((*&v5 & 0xC0000) != 0)
+  {
+    [(PUParallaxDebugInfoView *)self _invalidateDebugHUDString];
+  }
+}
+
+- (void)_layoutWithCurrentLayoutInfo
+{
+  v3 = [(PUParallaxDebugInfoView *)self currentLayoutInfo];
+  if (v3 && (-[PUParallaxDebugInfoView viewModel](self, "viewModel"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 showsDebugHUD], v4, (v5 & 1) != 0))
+  {
+    [(PUParallaxDebugInfoView *)self setHidden:0];
+    [v3 containerFrame];
+    v7 = v6;
+    v9 = v8;
+    v11 = v10;
+    v13 = v12;
+    v14 = [(PUParallaxDebugInfoView *)self _rectViewForIdentifier:@"timeFrame"];
+    v15 = [(PUParallaxDebugInfoView *)self debugTimeRect];
+    [v15 CGRectValue];
+    [v14 setFrame:?];
+
+    [v3 additionalTransform];
+    v58 = v59;
+    [(PUParallaxDebugInfoView *)self setTransform:&v58];
+    v16 = [(PUParallaxDebugInfoView *)self debugHUDString];
+    v17 = [(PUParallaxDebugInfoView *)self debugHUDLabel];
+    [v17 setText:v16];
+
+    v18 = [(PUParallaxDebugInfoView *)self debugHUDLabel];
+    v19 = [v18 superview];
+
+    v20 = [(PUParallaxDebugInfoView *)self debugHUDLabel];
+    [v20 sizeThatFits:{v11, v13}];
+    v22 = v21;
+
+    v23 = [v3 deviceOrientation];
+    v24 = v7;
+    v25 = v9;
+    v26 = v11;
+    v27 = v13;
+    if ((v23 - 3) > 1)
+    {
+      MaxY = CGRectGetMaxY(*&v24);
+    }
+
+    else
+    {
+      MaxY = CGRectGetMaxX(*&v24);
+    }
+
+    v29 = MaxY;
+    [v19 safeAreaInsets];
+    v31 = v30;
+    v60.origin.x = v7;
+    v60.origin.y = v9;
+    v60.size.width = v11;
+    v60.size.height = v13;
+    Width = CGRectGetWidth(v60);
+    v33 = [v3 deviceOrientation];
+    [v3 containerFrame];
+    PUPosterAdditionalTransformForDeviceOrientationAndContainerFrame(v33, &v58);
+    v61.origin.x = v31;
+    v61.origin.y = v29 + -250.0 - v22;
+    v61.size.width = Width;
+    v61.size.height = v22;
+    v62 = CGRectApplyAffineTransform(v61, &v58);
+    x = v62.origin.x;
+    y = v62.origin.y;
+    v36 = v62.size.width;
+    height = v62.size.height;
+    v38 = [(PUParallaxDebugInfoView *)self debugHUDLabel];
+    [v38 setFrame:{x, y, v36, height}];
+
+    [v3 visibleFrame];
+    [v3 viewFrameForLayerFrame:?];
+    v40 = v39;
+    v42 = v41;
+    v44 = v43;
+    v46 = v45;
+    [v3 additionalContentTransform];
+    v63.origin.x = v40;
+    v63.origin.y = v42;
+    v63.size.width = v44;
+    v63.size.height = v46;
+    v64 = CGRectApplyAffineTransform(v63, &v58);
+    CGRectGetHeight(v64);
+    PXRectWithOriginAndSize();
+    [v3 visibilityAmount];
+    v57 = v47;
+    PXRectByLinearlyInterpolatingRects();
+    [v3 visibilityEdge];
+    PXRectWithSizeAlignedToRectEdges();
+    v49 = v48;
+    v51 = v50;
+    v53 = v52;
+    v55 = v54;
+    v56 = [(PUParallaxDebugInfoView *)self maskLayer];
+    [v56 setFrame:{v49, v51, v53, v55}];
+
+    PXRectWithSize();
+    [(PUParallaxDebugInfoView *)self setBounds:?];
+    PXRectGetCenter();
+    [(PUParallaxDebugInfoView *)self setCenter:?];
+  }
+
+  else
+  {
+    [(PUParallaxDebugInfoView *)self setHidden:1];
+  }
+}
+
+- (void)setDebugTimeRect:(id)a3
+{
+  v4 = a3;
+  debugTimeRect = self->_debugTimeRect;
+  if (debugTimeRect != v4)
+  {
+    v8 = v4;
+    debugTimeRect = [debugTimeRect isEqual:v4];
+    v4 = v8;
+    if ((debugTimeRect & 1) == 0)
+    {
+      v6 = [v8 copy];
+      v7 = self->_debugTimeRect;
+      self->_debugTimeRect = v6;
+
+      debugTimeRect = [(PUParallaxDebugInfoView *)self _layoutWithCurrentLayoutInfo];
+      v4 = v8;
+    }
+  }
+
+  MEMORY[0x1EEE66BB8](debugTimeRect, v4);
+}
+
+- (void)setDebugHUDString:(id)a3
+{
+  v4 = a3;
+  debugHUDString = self->_debugHUDString;
+  if (debugHUDString != v4)
+  {
+    v8 = v4;
+    debugHUDString = [debugHUDString isEqual:v4];
+    v4 = v8;
+    if ((debugHUDString & 1) == 0)
+    {
+      v6 = [v8 copy];
+      v7 = self->_debugHUDString;
+      self->_debugHUDString = v6;
+
+      debugHUDString = [(PUParallaxDebugInfoView *)self _layoutWithCurrentLayoutInfo];
+      v4 = v8;
+    }
+  }
+
+  MEMORY[0x1EEE66BB8](debugHUDString, v4);
+}
+
+- (void)_updateDebugHUDString
+{
+  v2 = self;
+  v35 = *MEMORY[0x1E69E9840];
+  v3 = [(PUParallaxDebugInfoView *)self viewModel];
+  v4 = [v3 showsDebugHUD];
+
+  if (v4)
+  {
+    v5 = [(PUParallaxDebugInfoView *)v2 viewModel];
+    v6 = [v5 debugHUDRepresentation];
+
+    v7 = objc_alloc_init(MEMORY[0x1E696AD60]);
+    v8 = [MEMORY[0x1E696AE30] processInfo];
+    [v7 appendFormat:@"pid: %d\n", objc_msgSend(v8, "processIdentifier")];
+
+    v31 = 0u;
+    v32 = 0u;
+    v29 = 0u;
+    v30 = 0u;
+    v9 = v6;
+    v10 = [v9 countByEnumeratingWithState:&v29 objects:v34 count:16];
+    if (v10)
+    {
+      v11 = v10;
+      v12 = *v30;
+      do
+      {
+        for (i = 0; i != v11; ++i)
+        {
+          if (*v30 != v12)
+          {
+            objc_enumerationMutation(v9);
+          }
+
+          v14 = *(*(&v29 + 1) + 8 * i);
+          v15 = [v9 objectForKeyedSubscript:v14];
+          [v7 appendFormat:@"\n%@ : %@", v14, v15];
+        }
+
+        v11 = [v9 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      }
+
+      while (v11);
+    }
+
+    v16 = [(PUParallaxDebugInfoView *)v2 additionalDebugInfo];
+    if ([v16 count])
+    {
+      v24 = v2;
+      [v7 appendString:@"\n"];
+      v27 = 0u;
+      v28 = 0u;
+      v25 = 0u;
+      v26 = 0u;
+      v17 = v16;
+      v18 = [v17 countByEnumeratingWithState:&v25 objects:v33 count:16];
+      if (v18)
+      {
+        v19 = v18;
+        v20 = *v26;
+        do
+        {
+          for (j = 0; j != v19; ++j)
+          {
+            if (*v26 != v20)
+            {
+              objc_enumerationMutation(v17);
+            }
+
+            v22 = *(*(&v25 + 1) + 8 * j);
+            v23 = [v17 objectForKeyedSubscript:v22];
+            [v7 appendFormat:@"\n%@ : %@", v22, v23];
+          }
+
+          v19 = [v17 countByEnumeratingWithState:&v25 objects:v33 count:16];
+        }
+
+        while (v19);
+      }
+
+      v2 = v24;
+    }
+
+    [(PUParallaxDebugInfoView *)v2 setDebugHUDString:v7];
+  }
+}
+
+- (void)setAdditionalDebugInfo:(id)a3
+{
+  v4 = a3;
+  additionalDebugInfo = self->_additionalDebugInfo;
+  if (additionalDebugInfo != v4)
+  {
+    v8 = v4;
+    additionalDebugInfo = [additionalDebugInfo isEqual:v4];
+    v4 = v8;
+    if ((additionalDebugInfo & 1) == 0)
+    {
+      v6 = [v8 copy];
+      v7 = self->_additionalDebugInfo;
+      self->_additionalDebugInfo = v6;
+
+      additionalDebugInfo = [(PUParallaxDebugInfoView *)self _invalidateDebugHUDString];
+      v4 = v8;
+    }
+  }
+
+  MEMORY[0x1EEE66BB8](additionalDebugInfo, v4);
+}
+
+- (void)displayAdditionalDebugInfo:(id)a3
+{
+  v4 = a3;
+  v5 = [(PUParallaxDebugInfoView *)self additionalDebugInfo];
+  v6 = [v5 mutableCopy];
+
+  [v6 addEntriesFromDictionary:v4];
+  [(PUParallaxDebugInfoView *)self setAdditionalDebugInfo:v6];
+}
+
+- (UILabel)debugHUDLabel
+{
+  debugHUDLabel = self->_debugHUDLabel;
+  if (!debugHUDLabel)
+  {
+    v4 = objc_alloc(MEMORY[0x1E69DCC10]);
+    [(PUParallaxDebugInfoView *)self bounds];
+    v5 = [v4 initWithFrame:?];
+    v6 = [MEMORY[0x1E69DB878] monospacedSystemFontOfSize:10.0 weight:*MEMORY[0x1E69DB980]];
+    [(UILabel *)v5 setFont:v6];
+
+    v7 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.5];
+    [(UILabel *)v5 setBackgroundColor:v7];
+
+    v8 = [MEMORY[0x1E69DC888] systemDarkOrangeColor];
+    [(UILabel *)v5 setTextColor:v8];
+
+    [(UILabel *)v5 setUserInteractionEnabled:0];
+    v9 = [(UILabel *)v5 layer];
+    [v9 setZPosition:1.79769313e308];
+
+    [(UILabel *)v5 setNumberOfLines:0];
+    [(PUParallaxDebugInfoView *)self addSubview:v5];
+    v10 = self->_debugHUDLabel;
+    self->_debugHUDLabel = v5;
+
+    debugHUDLabel = self->_debugHUDLabel;
+  }
+
+  return debugHUDLabel;
+}
+
+- (id)_rectViewForIdentifier:(id)a3
+{
+  v4 = a3;
+  v5 = [(PUParallaxDebugInfoView *)self rectViewsByIdentifier];
+  v6 = [v5 objectForKeyedSubscript:v4];
+
+  if (!v6)
+  {
+    v7 = [PUParallaxDebugInfoRectView alloc];
+    v6 = [(PUParallaxDebugInfoRectView *)v7 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+    [(PUParallaxDebugInfoRectView *)v6 setIdentifier:v4];
+    [(PUParallaxDebugInfoView *)self addSubview:v6];
+    v8 = [(PUParallaxDebugInfoView *)self rectViewsByIdentifier];
+    [v8 setObject:v6 forKeyedSubscript:v4];
+  }
+
+  return v6;
+}
+
+- (void)setCurrentLayoutInfo:(id)a3
+{
+  v8 = a3;
+  v5 = self->_currentLayoutInfo;
+  v6 = v5;
+  if (v5 == v8)
+  {
+  }
+
+  else
+  {
+    v7 = [(PUParallaxLayerLayoutInfo *)v5 isEqual:?];
+
+    if (!v7)
+    {
+      objc_storeStrong(&self->_currentLayoutInfo, a3);
+      [(PUParallaxDebugInfoView *)self _layoutWithCurrentLayoutInfo];
+    }
+  }
+}
+
+- (void)layoutWithInfo:(id)a3
+{
+  v5.receiver = self;
+  v5.super_class = PUParallaxDebugInfoView;
+  v4 = a3;
+  [(PUParallaxLayerView *)&v5 layoutWithInfo:v4];
+  [(PUParallaxDebugInfoView *)self setCurrentLayoutInfo:v4, v5.receiver, v5.super_class];
+}
+
+- (PUParallaxDebugInfoView)initWithViewModel:(id)a3
+{
+  v38[3] = *MEMORY[0x1E69E9840];
+  v4 = a3;
+  v36.receiver = self;
+  v36.super_class = PUParallaxDebugInfoView;
+  v5 = [(PUParallaxDebugInfoView *)&v36 init];
+  if (v5)
+  {
+    if ([v4 environment] == 2)
+    {
+      v6 = [MEMORY[0x1E6979398] layer];
+      v7 = [MEMORY[0x1E69DC888] blackColor];
+      -[CALayer setBackgroundColor:](v6, "setBackgroundColor:", [v7 CGColor]);
+
+      v37[0] = @"bounds";
+      v8 = [MEMORY[0x1E695DFB0] null];
+      v38[0] = v8;
+      v37[1] = @"position";
+      v9 = [MEMORY[0x1E695DFB0] null];
+      v38[1] = v9;
+      v37[2] = @"frame";
+      v10 = [MEMORY[0x1E695DFB0] null];
+      v38[2] = v10;
+      v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:v37 count:3];
+      [(CALayer *)v6 setActions:v11];
+
+      v12 = [(PUParallaxDebugInfoView *)v5 layer];
+      [v12 setMask:v6];
+
+      maskLayer = v5->_maskLayer;
+      v5->_maskLayer = v6;
+    }
+
+    v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
+    additionalDebugInfo = v5->_additionalDebugInfo;
+    v5->_additionalDebugInfo = v14;
+
+    v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
+    rectViewsByIdentifier = v5->_rectViewsByIdentifier;
+    v5->_rectViewsByIdentifier = v16;
+
+    objc_storeWeak(&v5->_viewModel, v4);
+    v18 = [(PUParallaxDebugInfoView *)v5 viewModel];
+    v19 = [v18 currentLayerStack];
+    v20 = [v19 layout];
+    [v20 adaptiveTimeFrame];
+    v21 = [(PUParallaxDebugInfoView *)v5 viewModel];
+    v22 = [v21 currentLayerStack];
+    v23 = [v22 layout];
+    [v23 imageSize];
+    PXRectWithOriginAndSize();
+    PXRectFlippedVertically();
+    v25 = v24;
+    v27 = v26;
+    v29 = v28;
+    v31 = v30;
+
+    v35[0] = v25;
+    v35[1] = v27;
+    v35[2] = v29;
+    v35[3] = v31;
+    v32 = [MEMORY[0x1E696B098] valueWithBytes:v35 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
+    debugTimeRect = v5->_debugTimeRect;
+    v5->_debugTimeRect = v32;
+
+    [v4 registerChangeObserver:v5 context:"ViewModelObservationContext"];
+    [(PUParallaxDebugInfoView *)v5 _invalidateDebugHUDString];
+  }
+
+  return v5;
+}
+
+@end

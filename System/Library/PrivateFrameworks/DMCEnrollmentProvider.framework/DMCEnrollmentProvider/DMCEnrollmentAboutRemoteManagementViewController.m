@@ -1,0 +1,44 @@
+@interface DMCEnrollmentAboutRemoteManagementViewController
++ (void)presentAboutRemoteManagementViewControllerWithBaseViewController:(id)a3;
+- (void)rightBarButtonTapped:(id)a3;
+- (void)viewWillAppear:(BOOL)a3;
+@end
+
+@implementation DMCEnrollmentAboutRemoteManagementViewController
+
++ (void)presentAboutRemoteManagementViewControllerWithBaseViewController:(id)a3
+{
+  v3 = a3;
+  v4 = [DMCEnrollmentAboutRemoteManagementViewController alloc];
+  v5 = DMCLocalizedString();
+  v6 = DMCLocalizedString();
+  v8 = [(DMCEnrollmentTemplateTableViewController *)v4 initWithIconName:@"gear" title:v5 subTitle:v6];
+
+  v7 = [[DMCNavigationController alloc] initWithRootViewController:v8];
+  [v3 presentViewController:v7 animated:1 completion:0];
+}
+
+- (void)viewWillAppear:(BOOL)a3
+{
+  v7.receiver = self;
+  v7.super_class = DMCEnrollmentAboutRemoteManagementViewController;
+  [(DMCEnrollmentTemplateTableViewController *)&v7 viewWillAppear:a3];
+  v4 = [[DMCEnrollmentUIBarButtonItem alloc] initWithType:4 target:self action:sel_rightBarButtonTapped_];
+  v5 = [(DMCEnrollmentAboutRemoteManagementViewController *)self navigationItem];
+  [v5 setRightBarButtonItem:v4];
+
+  v6 = [(DMCEnrollmentAboutRemoteManagementViewController *)self navigationItem];
+  DMCSendNavUIUpdatedNotification(v6);
+}
+
+- (void)rightBarButtonTapped:(id)a3
+{
+  block[0] = MEMORY[0x277D85DD0];
+  block[1] = 3221225472;
+  block[2] = __73__DMCEnrollmentAboutRemoteManagementViewController_rightBarButtonTapped___block_invoke;
+  block[3] = &unk_278EE74C0;
+  block[4] = self;
+  dispatch_async(MEMORY[0x277D85CD0], block);
+}
+
+@end
